@@ -1,0 +1,33 @@
+name: Deploy Dev
+
+# Pushes to the `dev` branch auto-deploy to a stable preview URL at
+# https://dev.know-2nth.pages.dev (the Cloudflare branch alias for
+# the dev branch on the know-2nth project).
+#
+# Use this for accumulating multiple in-flight pieces of work in one
+# place to review together — different shape from per-PR previews
+# (which live at <branch-slug>.know-2nth.pages.dev and disappear on
+# branch deletion).
+
+on:
+  push:
+    branches: [dev]
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout dev
+        uses: actions/checkout@v4
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          # Explicit ASCII commit message — Cloudflare's deployments API rejects
+          # non-ASCII (em-dashes, middle-dots, curly quotes) with code 8000111.
+          command: pages deploy . --project-name=know-2nth --branch=dev --commit-dirty=true --commit-message="Auto-deploy dev ${{ github.sha }}"
