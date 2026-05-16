@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>POPIA-clean document agent &mdash; Pilot spec &mdash; know.2nth.ai</title>
+<meta name="description" content="Pilot spec for a POPIA-clean document agent on GCP africa-south1 + Cloudflare edge + Gemma 4. Single L4 GPU VM, Cloudflare R2 + Workers + Vectorize, Ollama serving Gemma 4 31B, LiteParse for OCR. End-to-end in 2–3 weeks; ~R3,250/month operating cost; 100% in-country data residency. Validates the post-Documentum + agent-readiness pitch on a real workload.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/popia-document-agent-pilot.html">
+<meta property="og:title" content="POPIA-clean document agent &mdash; Pilot spec">
+<meta property="og:description" content="Pilot spec: GCP africa-south1 + Cloudflare + Gemma 4. Document ingest → OCR → classify → index → ask. POPIA-clean, ~R3,250/month, end-to-end in 2–3 weeks.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="POPIA-clean document agent &mdash; Pilot spec">
+<meta name="twitter:description" content="Pilot: GCP + Cloudflare + Gemma 4. POPIA-clean document agent, end-to-end in 2–3 weeks at ~R3,250/month.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12); --violet: #8B5CF6; --violet-soft: rgba(139, 92, 246, 0.12); --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-soft: rgba(99, 102, 241, 0.12); --sky-soft: rgba(56, 189, 248, 0.12); --bg: var(--ink); --bg-raised: var(--navy); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(56, 189, 248, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(56, 189, 248, 0.3); --max-w: 1200px; --read-w: 760px; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-raised: #FFFFFF; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(56, 189, 248, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(56, 189, 248, 0.25); }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.sky { width: 600px; height: 600px; background: var(--sky); top: -200px; right: -100px; }
+  .glow-orb.green { width: 500px; height: 500px; background: var(--green); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--sky); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--sky); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .read { max-width: var(--read-w); }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--sky); }
+  .crumb-sep { opacity: 0.5; }
+  .crumb-current { color: var(--text-secondary); }
+  .hero { padding: 48px 0 56px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--green); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 12px var(--green); }
+  .hero h1 { font-size: clamp(38px, 6vw, 60px); font-weight: 800; line-height: 1.05; letter-spacing: -2px; margin-bottom: 22px; max-width: 22ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--green), var(--sky), var(--sky-muted)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 760px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.accent { background: var(--sky-soft); color: var(--sky); border-color: rgba(56, 189, 248, 0.25); }
+  .pill.green { background: var(--green-soft); color: var(--green); border-color: rgba(16, 185, 129, 0.25); }
+  .pill.indigo { background: var(--indigo-soft); color: var(--indigo); border-color: rgba(99, 102, 241, 0.25); }
+  section { padding: 48px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--green); margin-bottom: 14px; }
+  .section-title { font-size: clamp(24px, 3vw, 32px); font-weight: 700; letter-spacing: -0.6px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 28px; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--sky); }
+  .prose ul, .prose ol { padding-left: 24px; margin-bottom: 18px; max-width: var(--read-w); }
+  .prose li { font-size: 15px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 8px; }
+  .prose li strong { color: var(--text-primary); font-weight: 600; }
+  pre.code { background: var(--ink-deep); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px 22px; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.65; color: var(--mist); margin: 0 0 20px; max-width: var(--read-w); }
+  pre.code.diagram { color: var(--sky-muted); font-size: 12px; line-height: 1.45; }
+  [data-theme="light"] pre.code { background: #0F172A; color: #E2E8F0; }
+  pre.code .k { color: var(--sky); }
+  pre.code .s { color: #A5F3B8; }
+  pre.code .c { color: var(--text-muted); font-style: italic; }
+  pre.code .h { color: var(--green); font-weight: 600; }
+  pre.code .n { color: #FCD34D; }
+  .step-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--green); margin: 28px 0 10px; display: block; }
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px 28px; max-width: var(--read-w); margin-bottom: 20px; }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.indigo { border-left: 3px solid var(--indigo); }
+  .info-card.rose { border-left: 3px solid var(--rose); }
+  .info-card h4 { font-size: 15px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .info-card code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--ink-deep); border: 1px solid var(--border); padding: 1px 5px; border-radius: 4px; color: var(--sky); }
+  [data-theme="light"] .info-card code { background: rgba(15, 23, 42, 0.06); }
+  .scope-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 14px; max-width: var(--read-w); margin-bottom: 20px; }
+  .scope-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px 24px; }
+  .scope-card.in { border-left: 3px solid var(--green); }
+  .scope-card.out { border-left: 3px solid var(--text-muted); opacity: 0.85; }
+  .scope-card h4 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; margin-bottom: 12px; }
+  .scope-card.in h4 { color: var(--green); }
+  .scope-card.out h4 { color: var(--text-muted); }
+  .scope-card ul { padding-left: 18px; margin: 0; }
+  .scope-card li { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 6px; }
+  .scope-card li strong { color: var(--text-primary); }
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: var(--read-w); margin-bottom: 20px; }
+  .compare-wrap.wide { max-width: none; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--green); background: rgba(16, 185, 129, 0.04); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); }
+  .compare td.name { font-weight: 600; color: var(--text-primary); white-space: nowrap; }
+  .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--sky); }
+  .compare td strong { color: var(--text-primary); }
+  .compare td.metric { font-weight: 600; color: var(--text-primary); }
+  .compare td.total { font-weight: 700; color: var(--text-primary); background: rgba(16, 185, 129, 0.04); }
+  .connect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .connect-node { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; transition: all 0.3s; text-decoration: none; color: inherit; display: block; }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node .tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+  footer { padding: 56px 0 36px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--sky); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .compare { font-size: 12px; } .compare th, .compare td { padding: 10px 12px; } pre.code, pre.code.diagram { font-size: 11px; padding: 14px 16px; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+
+<div class="glow-orb sky"></div>
+<div class="glow-orb green"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="./" class="nav-brand"><span class="nav-brand-mark">know.2nth.ai</span><span class="nav-brand-sub">pilot spec</span></a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">&larr; Home</a>
+      <a href="./#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x1F319;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="./">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">Pilot &middot; POPIA-clean document agent</span>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> Pilot spec &middot; build-ready &middot; 2026-05-16</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      Document agent pilot &mdash; GCP + Cloudflare + <span class="gradient">Gemma 4 in country.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      A 2&ndash;3 week pilot proving the post-Documentum + agent-readiness story on a real workload. A PDF is dropped at a Cloudflare URL; it's OCR'd, classified, summarised, and indexed; questions can be asked of the resulting corpus in natural language. <strong>Nothing leaves South Africa</strong> &mdash; a single GCP Compute Engine VM in <code>africa-south1</code> with an NVIDIA L4 runs Gemma 4 31B via Ollama + LiteParse for OCR; Cloudflare R2 + Workers + Vectorize handle the public surface, storage, and search. Steady-state cost: ~R3,250 / month at moderate load.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill green">Build-ready</span>
+      <span class="pill accent">GCP &middot; africa-south1</span>
+      <span class="pill">Cloudflare R2 + Workers + Vectorize</span>
+      <span class="pill indigo">Gemma 4 31B (Ollama)</span>
+      <span class="pill">~R3,250 / month</span>
+    </div>
+  </div>
+</section>
+
+<section id="scope">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; Scope</div>
+      <h2 class="section-title">What's in and out of the pilot.</h2>
+    </div>
+    <div class="scope-grid fade-up" style="transition-delay: 0.05s">
+      <div class="scope-card in">
+        <h4>&check; In scope</h4>
+        <ul>
+          <li>Upload a PDF &rarr; OCR &rarr; classify + summarise &rarr; store + index</li>
+          <li>Natural-language Q&amp;A across the indexed corpus</li>
+          <li>Single GCP VM (L4 GPU) running Gemma 4 31B + LiteParse</li>
+          <li>Cloudflare R2 + Workers + Vectorize as the public surface</li>
+          <li>Bilingual SA test set (English + Afrikaans / Zulu invoices or letters)</li>
+        </ul>
+      </div>
+      <div class="scope-card out">
+        <h4>&times; Out of scope</h4>
+        <ul>
+          <li>Full ECM (Alfresco / Mayan) &mdash; defer; pilot uses R2 + Vectorize as the storage + search layer</li>
+          <li>Multi-region / HA &mdash; single-VM, single-region</li>
+          <li>Customer-facing auth &mdash; shared API key, not real user accounts</li>
+          <li>Production audit / records retention &mdash; defer to the ECM phase</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="prereqs">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; Prerequisites</div>
+      <h2 class="section-title">Four things to have in place before kickoff.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <ol>
+        <li><strong>GCP project</strong> with billing enabled and owner access to enable APIs (Compute Engine; Vertex AI optional for later).</li>
+        <li><strong>Cloudflare account</strong> with R2 enabled (Workers free tier covers the pilot).</li>
+        <li><strong>Budget envelope</strong> agreed before going live &mdash; ~R3,500 / month as a soft ceiling.</li>
+        <li><strong>L4 GPU quota</strong> in <code>africa-south1</code>. Check Compute Engine &rarr; Quotas for "GPUs (all regions)" and "NVIDIA L4 GPUs". Request raise if not granted &mdash; typically 1&ndash;3 working days.</li>
+      </ol>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.08s">
+      <h4>File the GPU quota request first</h4>
+      <p>It's the longest lead-time item. Everything else can move in parallel while waiting.</p>
+    </div>
+  </div>
+</section>
+
+<section id="architecture">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; Architecture</div>
+      <h2 class="section-title">Three planes, one closed loop.</h2>
+      <p class="section-lede">The pilot has three operational planes: Cloudflare for the public surface and the search index, GCP for compute and Gemma 4 inference, and a private Cloudflare Tunnel between them so the GCP VM never has a public IP. The diagram is the entire production topology &mdash; nothing else is needed for the pilot scope.</p>
+    </div>
+
+    <pre class="code diagram fade-up" style="transition-delay: 0.05s">              &#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;
+              &#x2502;  Cloudflare (public edge)              &#x2502;
+              &#x2502;                                         &#x2502;
+   PDF &#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x25BA;&#x2502;  R2 bucket (JNB)                       &#x2502;
+              &#x2502;   &#x2502;                                     &#x2502;
+              &#x2502;   &#x25BC;                                     &#x2502;
+              &#x2502;  Worker: ingest                         &#x2502;
+              &#x2502;   &#x2502;                                     &#x2502;
+              &#x2502;   &#x25BC; (POST + signed URL)                 &#x2502;
+              &#x2514;&#x2500;&#x2500;&#x2500;&#x253C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;
+                  &#x2502;  Cloudflare Tunnel (no public IP)
+              &#x250C;&#x2500;&#x2500;&#x2500;&#x25BC;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;
+              &#x2502;  GCP Compute Engine (africa-south1)    &#x2502;
+              &#x2502;   g2-standard-4 + L4 GPU                &#x2502;
+              &#x2502;                                         &#x2502;
+              &#x2502;   &#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;  &#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;     &#x2502;
+              &#x2502;   &#x2502; LiteParse  &#x2502;&#x2192; &#x2502; Gemma 4 31B  &#x2502;     &#x2502;
+              &#x2502;   &#x2502; (OCR)      &#x2502;  &#x2502; (Ollama)     &#x2502;     &#x2502;
+              &#x2502;   &#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;  &#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;     &#x2502;
+              &#x2502;           &#x2502;                             &#x2502;
+              &#x2502;           &#x25BC;                             &#x2502;
+              &#x2502;   JSON: {text, type, summary, fields}  &#x2502;
+              &#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x252C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;
+                          &#x2502;
+              &#x250C;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x25BC;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2510;
+              &#x2502;  Cloudflare                            &#x2502;
+              &#x2502;   &bull; R2: store extracted text + JSON    &#x2502;
+              &#x2502;   &bull; Vectorize: embed + index           &#x2502;
+              &#x2502;   &bull; Worker: search / Q&amp;A endpoint      &#x2502;
+              &#x2514;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2518;</pre>
+
+    <div class="info-card indigo fade-up" style="transition-delay: 0.08s">
+      <h4>Why Cloudflare Tunnel between Cloudflare and GCP</h4>
+      <p>The GCP VM stays private &mdash; no public IP, no firewall surface to defend. The tunnel makes the bridge endpoint reachable only from Cloudflare's network, and Cloudflare's authentication and rate-limiting protect it. This is the SA-banking-friendly topology: zero attack surface on the inference VM.</p>
+    </div>
+  </div>
+</section>
+
+<section id="build">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; Build steps</div>
+      <h2 class="section-title">Four phases, ~3 hours of active work.</h2>
+      <p class="section-lede">The first three phases are independent and can run in parallel. Phase 4 is the integration test that proves the loop closes.</p>
+    </div>
+
+    <span class="step-label fade-up">Phase 1 &middot; GCP VM &middot; ~1 hour</span>
+    <pre class="code fade-up" style="transition-delay: 0.05s"><span class="c"># Set defaults</span>
+gcloud config set project YOUR_PROJECT
+gcloud config set compute/region africa-south1
+gcloud config set compute/zone africa-south1-a
+
+<span class="c"># Create the VM (L4 is the cheapest GPU that runs Gemma 4 31B comfortably)</span>
+<span class="k">gcloud compute instances create</span> gemma-pilot \
+  --machine-type=g2-standard-4 \
+  --accelerator=type=nvidia-l4,count=<span class="n">1</span> \
+  --image-family=ubuntu-2404-lts \
+  --image-project=ubuntu-os-cloud \
+  --boot-disk-size=200GB \
+  --boot-disk-type=pd-balanced \
+  --maintenance-policy=TERMINATE \
+  --metadata=<span class="s">"install-nvidia-driver=True"</span>
+
+<span class="c"># Verify the GPU is visible</span>
+gcloud compute ssh gemma-pilot --command=<span class="s">"nvidia-smi"</span></pre>
+
+    <span class="step-label fade-up">Phase 2 &middot; Software on the VM &middot; ~1 hour (mostly waiting)</span>
+    <pre class="code fade-up" style="transition-delay: 0.05s"><span class="c"># On the VM</span>
+
+<span class="c"># 1. Ollama + Gemma 4</span>
+curl -fsSL https://ollama.com/install.sh | sh
+ollama pull gemma4:31b           <span class="c"># ~18 GB download</span>
+ollama serve &                    <span class="c"># listens on 11434</span>
+
+<span class="c"># 2. LiteParse (the data/engineering leaf's pick) + bridge deps</span>
+python3 -m venv ~/litparse-env
+source ~/litparse-env/bin/activate
+pip install llama-parse pypdf pillow fastapi uvicorn requests
+
+<span class="c"># 3. Cloudflare Tunnel — no public IP needed on the VM</span>
+curl -L https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64 \
+  -o cloudflared && chmod +x cloudflared && sudo mv cloudflared /usr/local/bin/
+cloudflared tunnel login           <span class="c"># browser flow</span>
+cloudflared tunnel create gemma-pilot
+cloudflared tunnel route dns gemma-pilot pilot-api.your-domain.com
+
+<span class="c"># 4. Run the bridge + tunnel</span>
+nohup uvicorn bridge:app --host 0.0.0.0 --port 8000 &amp;
+cloudflared tunnel run --url http://localhost:8000 gemma-pilot</pre>
+
+    <p style="font-size: 14px; color: var(--text-secondary); max-width: var(--read-w); margin: -8px 0 14px;">
+      The bridge script (<code style="font-family:'JetBrains Mono',monospace;font-size:0.88em;color:var(--sky);">~/bridge.py</code>) &mdash; FastAPI exposes one endpoint that runs OCR &rarr; Gemma 4 classification &rarr; returns JSON:
+    </p>
+
+    <pre class="code fade-up" style="transition-delay: 0.08s"><span class="c"># ~/bridge.py — 50 lines</span>
+<span class="h">from</span> fastapi <span class="h">import</span> FastAPI, UploadFile
+<span class="h">from</span> llama_parse <span class="h">import</span> LlamaParse
+<span class="h">import</span> requests, json
+
+app = FastAPI()
+parser = LlamaParse(result_type=<span class="s">"markdown"</span>)
+
+<span class="h">@app.post</span>(<span class="s">"/process"</span>)
+<span class="h">async def</span> process(file: UploadFile):
+    pdf_bytes = <span class="h">await</span> file.read()
+    <span class="k">open</span>(<span class="s">"/tmp/in.pdf"</span>, <span class="s">"wb"</span>).write(pdf_bytes)
+    docs = parser.load_data(<span class="s">"/tmp/in.pdf"</span>)
+    text = <span class="s">"\n\n"</span>.join(d.text <span class="h">for</span> d <span class="h">in</span> docs)
+
+    prompt = <span class="s">f"""Classify the following document and extract key fields.
+Return JSON only: {{"type": "...", "summary": "...", "fields": {{...}}}}
+
+DOCUMENT:
+{text[:8000]}"""</span>
+
+    r = requests.post(<span class="s">"http://localhost:11434/api/generate"</span>,
+                      json={<span class="s">"model"</span>: <span class="s">"gemma4:31b"</span>, <span class="s">"prompt"</span>: prompt, <span class="s">"stream"</span>: <span class="k">False</span>,
+                            <span class="s">"format"</span>: <span class="s">"json"</span>})
+    <span class="h">return</span> {<span class="s">"text"</span>: text, <span class="s">"analysis"</span>: json.loads(r.json()[<span class="s">"response"</span>])}</pre>
+
+    <span class="step-label fade-up">Phase 3 &middot; Cloudflare side &middot; ~1 hour</span>
+    <pre class="code fade-up" style="transition-delay: 0.05s"><span class="c"># Worker scaffolding</span>
+<span class="k">npx wrangler@latest init</span> doc-pilot --type=worker --ts
+<span class="k">cd</span> doc-pilot
+
+<span class="c"># Add bindings to wrangler.toml</span>
+<span class="k">cat</span> &gt;&gt; wrangler.toml &lt;&lt;EOF
+[[r2_buckets]]
+binding = <span class="s">"DOCS"</span>
+bucket_name = <span class="s">"doc-pilot"</span>
+
+[[vectorize]]
+binding = <span class="s">"VEC"</span>
+index_name = <span class="s">"doc-pilot-idx"</span>
+
+[vars]
+PILOT_API = <span class="s">"https://pilot-api.your-domain.com"</span>
+EOF
+
+<span class="c"># Create the R2 bucket and Vectorize index</span>
+<span class="k">npx wrangler</span> r2 bucket create doc-pilot
+<span class="k">npx wrangler</span> vectorize create doc-pilot-idx --dimensions=<span class="n">768</span> --metric=cosine</pre>
+
+    <p style="font-size: 14px; color: var(--text-secondary); max-width: var(--read-w); margin: -8px 0 14px;">
+      The Worker (<code style="font-family:'JetBrains Mono',monospace;font-size:0.88em;color:var(--sky);">src/index.ts</code>) &mdash; two endpoints: <code style="font-family:'JetBrains Mono',monospace;font-size:0.88em;color:var(--sky);">/upload</code> ingests a PDF; <code style="font-family:'JetBrains Mono',monospace;font-size:0.88em;color:var(--sky);">/ask</code> answers questions over the indexed corpus:
+    </p>
+
+    <pre class="code fade-up" style="transition-delay: 0.08s"><span class="c">// src/index.ts</span>
+<span class="h">export default</span> {
+  <span class="h">async</span> fetch(req: Request, env: Env) {
+    <span class="k">const</span> url = <span class="k">new</span> URL(req.url);
+
+    <span class="c">// POST /upload — multipart PDF, returns doc id</span>
+    <span class="h">if</span> (url.pathname === <span class="s">"/upload"</span> &amp;&amp; req.method === <span class="s">"POST"</span>) {
+      <span class="k">const</span> form = <span class="h">await</span> req.formData();
+      <span class="k">const</span> file = form.get(<span class="s">"file"</span>) <span class="h">as</span> File;
+      <span class="k">const</span> id = crypto.randomUUID();
+
+      <span class="c">// 1. Store PDF in R2</span>
+      <span class="h">await</span> env.DOCS.put(<span class="s">`pdf/${id}.pdf`</span>, file.stream());
+
+      <span class="c">// 2. Forward to GCP for processing</span>
+      <span class="k">const</span> fd = <span class="k">new</span> FormData();
+      fd.append(<span class="s">"file"</span>, file);
+      <span class="k">const</span> proc = <span class="h">await</span> fetch(<span class="s">`${env.PILOT_API}/process`</span>, { method: <span class="s">"POST"</span>, body: fd });
+      <span class="k">const</span> result = <span class="h">await</span> proc.json();
+
+      <span class="c">// 3. Store extracted text + analysis</span>
+      <span class="h">await</span> env.DOCS.put(<span class="s">`text/${id}.json`</span>, <span class="k">JSON</span>.<span class="k">stringify</span>(result));
+
+      <span class="c">// 4. Index for search via Workers AI embedding</span>
+      <span class="k">const</span> emb = <span class="h">await</span> env.AI.run(<span class="s">"@cf/baai/bge-base-en-v1.5"</span>, { text: result.text.slice(<span class="n">0</span>, <span class="n">4000</span>) });
+      <span class="h">await</span> env.VEC.insert([{ id, values: emb.data[<span class="n">0</span>], metadata: { type: result.analysis.type } }]);
+
+      <span class="h">return</span> Response.json({ id, ...result.analysis });
+    }
+
+    <span class="c">// POST /ask — natural-language Q&amp;A over the indexed corpus</span>
+    <span class="h">if</span> (url.pathname === <span class="s">"/ask"</span> &amp;&amp; req.method === <span class="s">"POST"</span>) {
+      <span class="k">const</span> { query } = <span class="h">await</span> req.json();
+      <span class="k">const</span> qemb = <span class="h">await</span> env.AI.run(<span class="s">"@cf/baai/bge-base-en-v1.5"</span>, { text: query });
+      <span class="k">const</span> matches = <span class="h">await</span> env.VEC.query(qemb.data[<span class="n">0</span>], { topK: <span class="n">3</span> });
+      <span class="k">const</span> ctx = <span class="h">await</span> Promise.all(matches.matches.map(m =&gt;
+        env.DOCS.get(<span class="s">`text/${m.id}.json`</span>).then(o =&gt; o?.json())));
+
+      <span class="c">// Ask Gemma 4 with the retrieved context — call /process or a dedicated /ask endpoint</span>
+      <span class="k">const</span> r = <span class="h">await</span> fetch(<span class="s">`${env.PILOT_API}/ask`</span>, {
+        method: <span class="s">"POST"</span>,
+        headers: { <span class="s">"Content-Type"</span>: <span class="s">"application/json"</span> },
+        body: <span class="k">JSON</span>.<span class="k">stringify</span>({ query, context: ctx })
+      });
+      <span class="h">return</span> Response.json(<span class="h">await</span> r.json());
+    }
+
+    <span class="h">return new</span> Response(<span class="s">"doc-pilot"</span>, { status: <span class="n">200</span> });
+  }
+};</pre>
+
+    <pre class="code fade-up" style="transition-delay: 0.1s"><span class="c"># Deploy the Worker</span>
+<span class="k">npx wrangler</span> deploy</pre>
+
+    <span class="step-label fade-up">Phase 4 &middot; End-to-end test &middot; ~30 minutes</span>
+    <pre class="code fade-up" style="transition-delay: 0.05s"><span class="c"># Upload a test PDF (a SARS invoice or BBBEE certificate is the SA-realistic case)</span>
+curl -F <span class="s">"file=@invoice.pdf"</span> https://doc-pilot.your-worker.workers.dev/upload
+
+<span class="c"># Expected response:</span>
+<span class="c"># {</span>
+<span class="c">#   "id": "uuid",</span>
+<span class="c">#   "type": "tax-invoice",</span>
+<span class="c">#   "summary": "Invoice from X to Y, R12,500, due 2026-06-15",</span>
+<span class="c">#   "fields": { "invoice_no": "INV-2026-001", "vat": "1.875", "due_date": "..." }</span>
+<span class="c"># }</span>
+
+<span class="c"># Ask a question over the corpus</span>
+curl -X POST https://doc-pilot.your-worker.workers.dev/ask \
+  -H <span class="s">'Content-Type: application/json'</span> \
+  -d <span class="s">'{"query": "what invoices are overdue?"}'</span></pre>
+  </div>
+</section>
+
+<section id="success">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; Success criteria</div>
+      <h2 class="section-title">Five measurable outcomes.</h2>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead><tr><th>Metric</th><th>Target</th><th>How to measure</th></tr></thead>
+        <tbody>
+          <tr><td class="metric">End-to-end latency</td><td>&lt; 30s per single-page PDF</td><td>Worker logs (Cloudflare dashboard)</td></tr>
+          <tr><td class="metric">Classification accuracy</td><td>&gt; 85% on a 20-doc SA test set</td><td>Manual review against ground truth</td></tr>
+          <tr><td class="metric">Cost per 1k docs processed</td><td>&lt; R150</td><td>GCP + Cloudflare bills divided by doc count</td></tr>
+          <tr><td class="metric">Residency</td><td>100% in-country, evidenced</td><td>tcpdump on the VM + Cloudflare logs</td></tr>
+          <tr><td class="metric">Voice / multimodal extension feasibility</td><td>Spec'd in writing</td><td>Architecture follow-up doc</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="cost">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; Cost summary</div>
+      <h2 class="section-title">Steady state at ~100 docs / day.</h2>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead><tr><th>Line item</th><th>Monthly (USD)</th><th>Monthly (ZAR @ R18.50)</th></tr></thead>
+        <tbody>
+          <tr><td class="metric">GCP <code>g2-standard-4</code> + L4 in <code>africa-south1</code> (24/7)</td><td>~$155</td><td>~R2,870</td></tr>
+          <tr><td class="metric">GCP storage (200 GB SSD)</td><td>~$20</td><td>~R370</td></tr>
+          <tr><td class="metric">Cloudflare R2 (50 GB)</td><td>~$0.75</td><td>~R14</td></tr>
+          <tr><td class="metric">Cloudflare Workers + Vectorize</td><td>$0 (free tier)</td><td>R0</td></tr>
+          <tr><td class="metric">Cloudflare Tunnel</td><td>$0</td><td>R0</td></tr>
+          <tr><td class="total">Total steady-state</td><td class="total">~$176</td><td class="total">~R3,250</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="info-card green fade-up" style="transition-delay: 0.08s">
+      <h4>Cost optimisation: schedule the VM to stop overnight</h4>
+      <p>Cloud Scheduler + the start/stop API can cut the VM cost ~50% if the pilot is business-hours only. The model weights stay on the persistent disk &mdash; only the GPU compute charge stops. Net steady-state drops to ~R1,750 / month for a 12-hour daily window.</p>
+    </div>
+  </div>
+</section>
+
+<section id="open">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; Open questions</div>
+      <h2 class="section-title">Four things to resolve before kickoff.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <ol>
+        <li><strong>L4 quota in <code>africa-south1</code></strong> &mdash; may take 1&ndash;3 working days to grant. File the request before doing anything else.</li>
+        <li><strong>Test set</strong> &mdash; need ~20 representative SA documents (real or synthetic) to measure classification accuracy. Banking client docs, internal docs, or synthetic?</li>
+        <li><strong>Domain</strong> &mdash; does <code>pilot-api.your-domain.com</code> use an existing 2nth.ai domain, a Cloudflare-provided subdomain, or new?</li>
+        <li><strong>Audit logging destination</strong> &mdash; for the POPIA evidence trail, logs to BigQuery (GCP-native) or to R2 (Cloudflare-native)?</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section id="done">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 &middot; What "done" looks like</div>
+      <h2 class="section-title">A 5-minute demo and the numbers behind it.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>After 2&ndash;3 weeks: a working pilot that can ingest a PDF, classify and summarise it via Gemma 4 in Johannesburg, and answer natural-language questions about a corpus of 100+ documents &mdash; all without data leaving SA. Demonstrable in a 5-minute screen-share.</p>
+      <p>Concrete numbers on latency, accuracy, and cost-per-document that turn into the basis for a paid SA banking / insurance pilot. The architecture extends naturally to a production deployment: swap the single VM for a GKE cluster, swap the in-pilot R2-as-storage for Alfresco or Mayan EDMS on the same VPC, add Cloudflare Access for real user auth, and the rest of the loop is unchanged.</p>
+    </div>
+  </div>
+</section>
+
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">09 &middot; Related leaves on the tree</div>
+      <h2 class="section-title">Where this pilot draws on the rest.</h2>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="explainers/agents/gemma.html" class="connect-node">
+        <span class="tag">agents/gemma</span>
+        <div class="skill">Gemma 4</div>
+        <div class="why">The model running on the GCP VM. The pilot validates the 31B size on a single L4 for production OCR + classification quality.</div>
+      </a>
+      <a href="explainers/biz/ecm/open-source-ecm.html" class="connect-node">
+        <span class="tag">biz/ecm/open-source-ecm</span>
+        <div class="skill">Open-source ECM</div>
+        <div class="why">The strategic narrative this pilot validates. Alfresco / Mayan are the production targets for the storage + records-management layer after the pilot completes.</div>
+      </a>
+      <a href="explainers/tech/cloudflare/workers.html" class="connect-node">
+        <span class="tag">tech/cloudflare/workers</span>
+        <div class="skill">Cloudflare Workers</div>
+        <div class="why">The runtime for the public surface, ingest pipeline, and Q&amp;A endpoint. Free tier covers the entire pilot load.</div>
+      </a>
+      <a href="explainers/tech/cloudflare/r2.html" class="connect-node">
+        <span class="tag">tech/cloudflare/r2</span>
+        <div class="skill">Cloudflare R2</div>
+        <div class="why">Object storage in JNB / CPT for the raw PDFs and extracted text. Zero egress fees; SA-resident.</div>
+      </a>
+      <a href="explainers/tech/cloudflare/vectorize.html" class="connect-node">
+        <span class="tag">tech/cloudflare/vectorize</span>
+        <div class="skill">Cloudflare Vectorize</div>
+        <div class="why">The embedding index for retrieval-augmented Q&amp;A. 768-dim BGE embeddings via Workers AI.</div>
+      </a>
+      <a href="explainers/data/engineering/liteparse.html" class="connect-node">
+        <span class="tag">data/engineering/liteparse</span>
+        <div class="skill">LiteParse</div>
+        <div class="why">The OCR layer on the VM. Local document parsing &mdash; no per-page pricing, no cloud round-trip for the source content.</div>
+      </a>
+      <a href="explainers/tech/google/" class="connect-node">
+        <span class="tag">tech/google</span>
+        <div class="skill">Google Cloud</div>
+        <div class="why">The compute layer. <code>africa-south1</code> in Johannesburg is the SA residency anchor.</div>
+      </a>
+      <a href="explainers/agents/ollama.html" class="connect-node">
+        <span class="tag">agents/ollama</span>
+        <div class="skill">Ollama</div>
+        <div class="why">The model server for Gemma 4 on the GCP VM. <code>ollama serve</code> exposes the OpenAI-compatible API the bridge script calls.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="./">Skills tree</a>
+      <a href="./#domains">All domains</a>
+      <a href="explainers/biz/ecm/open-source-ecm.html">Open-source ECM &nearr;</a>
+      <a href="explainers/agents/gemma.html">Gemma 4 &nearr;</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in Johannesburg, South Africa</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme(){const html=document.documentElement;const current=html.getAttribute('data-theme');const next=current==='dark'?'light':'dark';html.setAttribute('data-theme',next);document.querySelector('.theme-toggle').textContent=next==='dark'?'☀️':'🌙';localStorage.setItem('theme',next);}
+  const saved=localStorage.getItem('theme');if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.theme-toggle').textContent=saved==='dark'?'☀️':'🌙';}
+  const observer=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting)entry.target.classList.add('visible');});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>
