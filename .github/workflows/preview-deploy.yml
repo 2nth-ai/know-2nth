@@ -22,7 +22,8 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy . --project-name=know-2nth --branch=${{ github.head_ref }} --commit-dirty=true
+          # Explicit ASCII commit message — see deploy-production.yml comment.
+          command: pages deploy . --project-name=know-2nth --branch=${{ github.head_ref }} --commit-dirty=true --commit-message="Preview ${{ github.event.pull_request.head.sha }}"
 
       - name: Post preview URL comment
         uses: actions/github-script@v7

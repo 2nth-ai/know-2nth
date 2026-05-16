@@ -19,4 +19,9 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy . --project-name=know-2nth --branch=main --commit-dirty=true
+          # Pass an explicit ASCII commit message — Cloudflare's deployments API
+          # rejects non-ASCII (em-dashes, middle-dots, curly quotes, arrows etc.)
+          # with [code: 8000111]. Without --commit-message, wrangler reads HEAD's
+          # raw commit message and we depend on commit-message hygiene we cannot
+          # enforce. Use the short SHA + branch as a clean fallback.
+          command: pages deploy . --project-name=know-2nth --branch=main --commit-dirty=true --commit-message="Auto-deploy main ${{ github.sha }}"
