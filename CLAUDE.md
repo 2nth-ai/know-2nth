@@ -14,8 +14,14 @@ Sibling sites in the ecosystem:
 
 - **GitHub**: `2nth-ai/know-2nth` (default branch `main`)
 - **Hosting**: Cloudflare Pages, project `know-2nth`, custom domain `know.2nth.ai`
-- **Deploy is manual.** The Pages project is NOT wired to GitHub — `git push` does not deploy. Production updates only happen when someone runs `npx wrangler pages deploy . --project-name=know-2nth --branch=main` from the repo root.
-- **Implication**: git and prod can drift in both directions. Uncommitted local files will deploy; committed files won't ship until the wrangler command is run. After every PR merge, pull main and run the deploy.
+- **Deploy is automated** via GitHub Actions:
+  - **Preview** — every PR against `main` auto-deploys to `<branch-slug>.know-2nth.pages.dev` and the workflow comments the URL on the PR
+  - **Production** — every push to `main` (i.e. every PR merge) auto-deploys to `know.2nth.ai`
+- **Workflows**: `.github/workflows/preview-deploy.yml` + `.github/workflows/deploy-production.yml`
+- **Required secrets** (set once in GitHub repo settings → Secrets and variables → Actions):
+  - `CLOUDFLARE_API_TOKEN` — Cloudflare API token with Pages:Edit permission for the `know-2nth` project
+  - `CLOUDFLARE_ACCOUNT_ID` — the Cloudflare account ID hosting the project
+- **Manual escape hatch** (if CI is broken or for a one-off ad-hoc deploy): `npx wrangler pages deploy . --project-name=know-2nth --branch=main`
 
 ## Repo layout
 
@@ -144,18 +150,18 @@ git add explainers/<path>/<file>.html
 git commit -m "Author <topic> leaf"
 git push -u origin chore/<feature>
 
-# Open and merge the PR
+# Open the PR — CI auto-deploys a preview to <branch-slug>.know-2nth.pages.dev
+# and posts the URL as a PR comment. Review the preview, then merge.
 gh pr create --base main --head chore/<feature> --title "…" --body "…"
 gh pr merge <PR#> --squash --delete-branch
+
+# On merge: CI auto-deploys main → know.2nth.ai. No manual wrangler step needed.
 
 # Clean up the worktree
 cd ../know-2nth          # or wherever the main checkout lives on this Mac
 git worktree remove ../know-2nth-<short>
 git branch -D chore/<feature>
 git pull origin main
-
-# Deploy (manual)
-npx wrangler pages deploy . --project-name=know-2nth --branch=main
 ```
 
 The local path of the main checkout varies per machine. On the primary Mac it's `~/2nth/know.2nth`; the `know-2nth-setup.html` reference doc at the repo's parent directory documents the canonical setup for that machine.
