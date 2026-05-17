@@ -10,18 +10,33 @@ Sibling sites in the ecosystem:
 - **2nth.io** — compute infrastructure layer
 - **imbila.ai** — parent consultancy brand
 
+### Related repos that are NOT this one
+
+- **`github.com/2nth-ai/skills`** — the agent-facing skills repo with `SKILL.md` files that Penny / Grant / Leo / Eric load at runtime. Different consumer (agents, not humans), different artefact (markdown with YAML frontmatter, not HTML). The legacy public rendering of those files was `skills.2nth.ai` (project `2nth-skills-hub` on Cloudflare) — **retired 2026-05-17;** custom domains unmapped, projects kept as orphan `*.pages.dev` containers for a brief grace period. know.2nth.ai is the canonical public surface for the ecosystem now. Don't add new `skills.2nth.ai` URLs anywhere.
+
 ## Repo & deploy
 
 - **GitHub**: `2nth-ai/know-2nth` (default branch `main`)
 - **Hosting**: Cloudflare Pages, project `know-2nth`, custom domain `know.2nth.ai`
 - **Deploy is automated** via GitHub Actions:
   - **Preview** — every PR against `main` auto-deploys to `<branch-slug>.know-2nth.pages.dev` and the workflow comments the URL on the PR
-  - **Production** — every push to `main` (i.e. every PR merge) auto-deploys to `know.2nth.ai`
-- **Workflows**: `.github/workflows/preview-deploy.yml` + `.github/workflows/deploy-production.yml`
+  - **Dev** — every push to the `dev` branch auto-deploys to `dev.know-2nth.pages.dev` (stable accumulator URL for multi-piece review; no custom domain, by design — `dev.know.2nth.ai` was deferred because the Cloudflare custom-domain wizard doesn't expose branch selection)
+  - **Production** — every push to `main` (every PR merge) auto-deploys to `know.2nth.ai`
+- **Workflows**: `.github/workflows/preview-deploy.yml`, `.github/workflows/deploy-dev.yml`, `.github/workflows/deploy-production.yml`
 - **Required secrets** (set once in GitHub repo settings → Secrets and variables → Actions):
   - `CLOUDFLARE_API_TOKEN` — Cloudflare API token with Pages:Edit permission for the `know-2nth` project
   - `CLOUDFLARE_ACCOUNT_ID` — the Cloudflare account ID hosting the project
-- **Manual escape hatch** (if CI is broken or for a one-off ad-hoc deploy): `npx wrangler pages deploy . --project-name=know-2nth --branch=main`
+- **All three workflows pass `--commit-message="<ASCII string>"` explicitly.** This is load-bearing. Cloudflare's deployments API rejects non-ASCII commit messages (em-dashes, middle-dots, curly quotes, arrows — all things that appear regularly in PR titles) with error code `8000111`. Without an explicit message, wrangler reads HEAD's raw commit and fails on otherwise-clean PRs. Don't remove these flags.
+- **Manual escape hatch** (if CI is broken or for a one-off ad-hoc deploy): `npx wrangler pages deploy . --project-name=know-2nth --branch=main --commit-message="Manual deploy"`
+
+### URL summary
+
+| URL | Branch | Use |
+|---|---|---|
+| `https://know.2nth.ai` | main | Production (canonical) |
+| `https://know-2nth.pages.dev` | main | Same content as canonical, no Cloudflare edge transformations (useful for debugging email-obfuscation diffs, etc.) |
+| `https://dev.know-2nth.pages.dev` | dev | Staging accumulator for multi-piece review |
+| `https://<branch-slug>.know-2nth.pages.dev` | feature | Per-PR preview (slug truncated to 28 chars) |
 
 ## Repo layout
 
@@ -183,5 +198,5 @@ Confirm latest commit is the one just merged, working tree is clean, on `main`. 
 
 ## What's NOT in this repo
 
-- The other 2nth-ai sites (`2nth.ai`, `dev.2nth.ai`, `agents.2nth.ai`, `clients.2nth.ai`, `skills.2nth.ai`, `2nth-skills.pages.dev`) are separate repos with their own deploy flows.
+- Other 2nth-ai sites (`2nth.ai`, `dev.2nth.ai`, `agents.2nth.ai`, `clients.2nth.ai`) are separate repos with their own deploy flows. `skills.2nth.ai` and `dev.skills.2nth.ai` were retired 2026-05-17 — see "Related repos" above.
 - There is no agent-context API (`/api/context/…`) and no Workers in this repo. If a structured-export endpoint is added later, document it here.
