@@ -217,7 +217,8 @@
     </div>
 
     <div class="stack-grid fade-up" style="transition-delay: 0.04s">
-      <a class="stack-cell" href="runtime.html"><span class="member-tag">Member</span><span class="layer">Runtime</span><h4>Claude Agent SDK</h4><p>Python + TypeScript. Native <code>allowed_tools</code>, <code>disallowed_tools</code>, PreToolUse hooks.</p><span class="vendor">anthropics &middot; oss</span></a>
+      <a class="stack-cell" href="runtime.html"><span class="member-tag">Member</span><span class="layer">Runtime</span><h4>Multi-provider runtime</h4><p>LangGraph or Vercel AI SDK &mdash; switches between Claude, GPT, Gemini, Ollama, vLLM by config.</p><span class="vendor">oss &middot; multi-provider</span></a>
+      <div class="stack-cell"><span class="layer">Model gateway</span><h4>Cloudflare AI Gateway + LiteLLM</h4><p>Edge caching + rate limits + routing proxy that targets any provider. Keeps model choice a config decision.</p><span class="vendor">cloudflare + oss</span></div>
       <div class="stack-cell"><span class="layer">Protocol</span><h4>MCP &mdash; Model Context Protocol</h4><p>500+ servers in the official registry. Tool discovery + invocation, vendor-neutral.</p><span class="vendor">anthropic-origin &middot; oss</span></div>
       <div class="stack-cell"><span class="layer">Permissions</span><h4>Cerbos PDP</h4><p>YAML policies per agent. &lt;1 ms decision. One <code>principalPolicy</code> file per role.</p><span class="vendor">cerbos &middot; oss (Apache-2)</span></div>
       <div class="stack-cell"><span class="layer">Audit</span><h4>Langfuse (self-hosted)</h4><p>OpenTelemetry-compatible. Replayable traces. ClickHouse-backed. Free at scale.</p><span class="vendor">langfuse &middot; oss (MIT)</span></div>

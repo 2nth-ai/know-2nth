@@ -183,7 +183,7 @@
       A reference architecture <span class="gradient">for agent tool</span> calls.
     </h1>
     <p class="sub fade-up" style="transition-delay: 0.1s">
-      A control plane shape for agent tool calls &mdash; described as designed, not as a running system. In this architecture, each agent runs on the Claude Agent SDK with a tight <code style="font-family:'JetBrains Mono',monospace;font-size:0.86em;color:var(--sky);background:rgba(56,189,248,0.06);border:1px solid var(--border);padding:1px 5px;border-radius:4px;">allowed_tools</code> list, and every call routes through one Cloudflare Worker that asks Cerbos for a decision, optionally pauses for human approval via Inngest, forwards to a vendor MCP server, and emits an OpenTelemetry trace to a self-hosted Langfuse. Mutating tools are modelled as Inngest functions so the same code path can serve a human form and an agent. Reference knowledge &mdash; this page documents the design so it can be adopted, adapted, or argued with.
+      A control plane shape for agent tool calls &mdash; described as designed, not as a running system. In this architecture, agents run on a <strong>multi-provider runtime</strong> that calls models through a <strong>model gateway</strong> (so the model itself stays a config choice &mdash; open weights through frontier, never tied to one provider). Each agent carries a tight <code style="font-family:'JetBrains Mono',monospace;font-size:0.86em;color:var(--sky);background:rgba(56,189,248,0.06);border:1px solid var(--border);padding:1px 5px;border-radius:4px;">allowed_tools</code> list, and every call routes through one Cloudflare Worker that asks Cerbos for a decision, optionally pauses for human approval via Inngest, forwards to a vendor MCP server, and emits an OpenTelemetry trace to a self-hosted Langfuse. Mutating tools are modelled as Inngest functions so the same code path can serve a human form and an agent. Reference knowledge &mdash; this page documents the design so it can be adopted, adapted, or argued with.
     </p>
     <div class="hero-meta fade-up" style="transition-delay: 0.15s">
       <span class="pill accent">Cloudflare-first edge</span>
@@ -227,7 +227,8 @@
 
     <pre class="diagram fade-up" style="transition-delay: 0.04s"><span class="note"># One Worker entry. Five downstreams. Same shape for every call.</span>
 
-  <span class="agent">agent (Claude Agent SDK)</span>      <span class="agent">human (HTML form on know.2nth.ai/tools/&hellip;)</span>
+  <span class="agent">agent (multi-provider runtime</span>      <span class="agent">human (HTML form)</span>
+  <span class="agent">  + model gateway)</span>
        <span class="arrow">|</span>                                  <span class="arrow">|</span>
        <span class="arrow">|</span>  MCP tool call                    <span class="arrow">|</span>  POST form
        <span class="arrow">v</span>                                  <span class="arrow">v</span>
@@ -272,7 +273,8 @@
       <table class="compare">
         <thead><tr><th>Layer</th><th>Pick</th><th>Why this, not the alternative</th></tr></thead>
         <tbody>
-          <tr><td><strong>Agent runtime</strong></td><td><strong><a href="runtime.html" style="color:var(--sky);text-decoration:none;border-bottom:1px solid var(--sky)">Claude Agent SDK</a></strong> <span style="font-size:10px;color:var(--indigo);font-family:'JetBrains Mono',monospace;letter-spacing:1px;text-transform:uppercase;padding:2px 7px;border-radius:100px;background:rgba(99,102,241,0.12);border:1px solid rgba(99,102,241,0.3);margin-left:4px">member</span></td><td>Native <code>allowed_tools</code> / <code>disallowed_tools</code>, PreToolUse hooks, MCP-aware. Direct fit for the showcase pattern. See the runtime leaf for the full decision rationale.</td></tr>
+          <tr><td><strong>Agent runtime</strong></td><td><strong><a href="runtime.html" style="color:var(--sky);text-decoration:none;border-bottom:1px solid var(--sky)">Multi-provider runtime</a></strong> <span style="font-size:10px;color:var(--indigo);font-family:'JetBrains Mono',monospace;letter-spacing:1px;text-transform:uppercase;padding:2px 7px;border-radius:100px;background:rgba(99,102,241,0.12);border:1px solid rgba(99,102,241,0.3);margin-left:4px">member</span></td><td>LangGraph (Python), Vercel AI SDK (TS), or Pydantic AI &mdash; pick the one that switches between Claude, GPT, Gemini, Ollama, vLLM by config. See the runtime decision leaf for the trade-offs.</td></tr>
+          <tr><td><strong>Model gateway</strong></td><td><strong>Cloudflare AI Gateway + LiteLLM</strong></td><td>Edge caching + rate limits + analytics in front of a routing proxy that targets any provider. Keeps the model itself a config choice rather than a code commitment.</td></tr>
           <tr><td><strong>Tool protocol</strong></td><td><strong>MCP</strong> (Model Context Protocol)</td><td>500+ servers in the official registry; vendor-maintained ones are the safest picks for a partner-facing showcase.</td></tr>
           <tr><td><strong>Permission policy</strong></td><td><strong>Cerbos PDP</strong></td><td>YAML policies, &lt;1 ms decisions, Apache-2 OSS, self-hostable. Permit.io rejected: SaaS.</td></tr>
           <tr><td><strong>Proof of work</strong></td><td><strong>Langfuse self-hosted</strong></td><td>MIT, ClickHouse-backed, free at scale, replayable traces. LangSmith rejected: SaaS lock-in.</td></tr>

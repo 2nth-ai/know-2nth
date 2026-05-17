@@ -178,7 +178,7 @@
       Last reviewed: 2026-05-17 &middot; Cadence: hot (quarterly) &middot; Worked example: <a href="example.html" style="color:var(--sky);text-decoration:none;border-bottom:1px solid var(--sky)">tools/example</a>
     </p>
     <div class="hub-stats fade-up" style="transition-delay: 0.15s">
-      <div class="hub-stat"><div class="num">10</div><div class="label">Categories</div></div>
+      <div class="hub-stat"><div class="num">11</div><div class="label">Categories</div></div>
       <div class="hub-stat"><div class="num">~50</div><div class="label">Picks listed</div></div>
       <div class="hub-stat"><div class="num">5</div><div class="label">Choosing heuristics</div></div>
       <div class="hub-stat"><div class="num">1</div><div class="label">Worked example</div></div>
@@ -191,12 +191,12 @@
   <div class="container">
     <div class="fade-up">
       <div class="hub-label">01 &middot; What an agent platform actually needs</div>
-      <h2 class="hub-title">Ten categories, plus one cross-cutting.</h2>
+      <h2 class="hub-title">Eleven categories, plus one cross-cutting.</h2>
     </div>
 
     <div class="prose fade-up" style="transition-delay: 0.04s">
-      <p>An agent is software that calls external systems with permissions and leaves a trail. To do that <strong>in production</strong> &mdash; not in a demo &mdash; you need ten categories of tooling. They are not all the same category of decision: some picks are sticky (the tool protocol your whole stack speaks), some are reversible (the audit backend, if you stuck to a standard), some are cheap-to-buy, some are cheap-to-build. A team that maps all ten at the start avoids the worst mistake: discovering at week six that there is no plan for &ldquo;how a human approves before this sends.&rdquo;</p>
-      <p>The categories below are the ones that show up in every credible agent stack as of mid-2026. The eleventh, pre-built vendor MCP servers, cuts across all of them &mdash; it is the universe of integrations agents can call without writing custom code.</p>
+      <p>An agent is software that calls external systems with permissions and leaves a trail. To do that <strong>in production</strong> &mdash; not in a demo &mdash; you need eleven categories of tooling, plus one that cross-cuts the rest. They are not all the same category of decision: some picks are sticky (the tool protocol your whole stack speaks), some are reversible (the audit backend, if you stuck to a standard), some are cheap-to-buy, some are cheap-to-build. A team that maps all ten at the start avoids the worst mistake: discovering at week six that there is no plan for &ldquo;how a human approves before this sends.&rdquo;</p>
+      <p>The categories below are the ones that show up in every credible agent stack as of mid-2026. The twelfth (cross-cutting), pre-built vendor MCP servers, applies across all of them &mdash; it is the universe of integrations agents can call without writing custom code.</p>
     </div>
   </div>
 </section>
@@ -212,16 +212,17 @@
 
     <div class="cat-grid fade-up" style="transition-delay: 0.04s">
       <div class="cat-cell"><span class="num">01</span><h4>Runtime / framework</h4><p>What hosts the agent loop &mdash; the model call, the tool-call parsing, the result feedback, the next call. Manages context window and (often) MCP plumbing.</p><span class="q">Multi-provider or first-party?</span></div>
-      <div class="cat-cell"><span class="num">02</span><h4>Tool protocol</h4><p>How the agent talks to external systems. Defines tool schemas, invocation, error handling, streaming. The choice composes (or doesn't) with everything downstream.</p><span class="q">Standardised or per-vendor?</span></div>
-      <div class="cat-cell"><span class="num">03</span><h4>Tool registries / discovery</h4><p>Where agents and humans find tools to call. Catalogues of pre-built integrations with auth handled. Often the only way to avoid writing custom adapter code.</p><span class="q">Free + community, or paid + curated?</span></div>
-      <div class="cat-cell"><span class="num">04</span><h4>Permissions / policy</h4><p>What each agent is allowed to do, expressed as policy a non-engineer can read. The load-bearing layer for any audit / compliance / regulated-environment story.</p><span class="q">Centralised policy engine or framework allowlists?</span></div>
-      <div class="cat-cell"><span class="num">05</span><h4>Audit / observability</h4><p>How a human (or another agent) reconstructs what happened. Replayable traces, prompt + result + token + cost capture, by-agent / by-tool / by-time queries.</p><span class="q">OSS self-hosted or SaaS managed?</span></div>
-      <div class="cat-cell"><span class="num">06</span><h4>Sandboxed code execution</h4><p>Where agent-written code runs without taking down the host. Tradeoff is between cold start and isolation strength; hardware vs container vs language-level.</p><span class="q">Hardware isolation or container isolation?</span></div>
-      <div class="cat-cell"><span class="num">07</span><h4>Dual-use / workflow</h4><p>The same operation triggered by humans (form) or agents (tool call). Durable functions with sleep, retry, fan-out, and "pause until event" as first-class primitives.</p><span class="q">First-class workflow primitive or DIY?</span></div>
-      <div class="cat-cell"><span class="num">08</span><h4>Identity / auth</h4><p>Who the agent is when it acts. Short-TTL scoped tokens, per-agent service accounts, sender-constraint proofs. Without this, "permissions" is just a name on a policy file.</p><span class="q">Edge service tokens or enterprise IdP?</span></div>
-      <div class="cat-cell"><span class="num">09</span><h4>Approval / human-in-the-loop</h4><p>What blocks until a human says yes. Mutating actions, financial transfers, message sends, irreversible state changes &mdash; all candidates. Cheap to add, expensive to retrofit.</p><span class="q">Built into the workflow engine or external UI?</span></div>
-      <div class="cat-cell"><span class="num">10</span><h4>Memory / state</h4><p>What the agent remembers between calls and across sessions. Per-conversation, per-user, per-organisation; managed memory vs explicit state machines vs DIY.</p><span class="q">Per-session state or persistent memory?</span></div>
-      <div class="cat-cell" style="border-left:3px solid var(--warm)"><span class="num" style="color:var(--warm)">11 &middot; cross-cut</span><h4>Pre-built vendor MCP servers</h4><p>The universe of packaged integrations agents can call without writing custom code. 500+ servers in the official MCP registry as of mid-2026, first-party + community mixed.</p><span class="q">First-party only, or accept community?</span></div>
+      <div class="cat-cell"><span class="num">02</span><h4>Model gateway / routing</h4><p>Where calls to the model actually go. Routes between providers (Claude, GPT, Gemini, Ollama, vLLM), handles fallback + caching + rate limits + cost tracking. The layer that buys you model portability.</p><span class="q">Edge gateway, unified API, or self-hosted proxy?</span></div>
+      <div class="cat-cell"><span class="num">03</span><h4>Tool protocol</h4><p>How the agent talks to external systems. Defines tool schemas, invocation, error handling, streaming. The choice composes (or doesn't) with everything downstream.</p><span class="q">Standardised or per-vendor?</span></div>
+      <div class="cat-cell"><span class="num">04</span><h4>Tool registries / discovery</h4><p>Where agents and humans find tools to call. Catalogues of pre-built integrations with auth handled. Often the only way to avoid writing custom adapter code.</p><span class="q">Free + community, or paid + curated?</span></div>
+      <div class="cat-cell"><span class="num">05</span><h4>Permissions / policy</h4><p>What each agent is allowed to do, expressed as policy a non-engineer can read. The load-bearing layer for any audit / compliance / regulated-environment story.</p><span class="q">Centralised policy engine or framework allowlists?</span></div>
+      <div class="cat-cell"><span class="num">06</span><h4>Audit / observability</h4><p>How a human (or another agent) reconstructs what happened. Replayable traces, prompt + result + token + cost capture, by-agent / by-tool / by-time queries.</p><span class="q">OSS self-hosted or SaaS managed?</span></div>
+      <div class="cat-cell"><span class="num">07</span><h4>Sandboxed code execution</h4><p>Where agent-written code runs without taking down the host. Tradeoff is between cold start and isolation strength; hardware vs container vs language-level.</p><span class="q">Hardware isolation or container isolation?</span></div>
+      <div class="cat-cell"><span class="num">08</span><h4>Dual-use / workflow</h4><p>The same operation triggered by humans (form) or agents (tool call). Durable functions with sleep, retry, fan-out, and "pause until event" as first-class primitives.</p><span class="q">First-class workflow primitive or DIY?</span></div>
+      <div class="cat-cell"><span class="num">09</span><h4>Identity / auth</h4><p>Who the agent is when it acts. Short-TTL scoped tokens, per-agent service accounts, sender-constraint proofs. Without this, "permissions" is just a name on a policy file.</p><span class="q">Edge service tokens or enterprise IdP?</span></div>
+      <div class="cat-cell"><span class="num">10</span><h4>Approval / human-in-the-loop</h4><p>What blocks until a human says yes. Mutating actions, financial transfers, message sends, irreversible state changes &mdash; all candidates. Cheap to add, expensive to retrofit.</p><span class="q">Built into the workflow engine or external UI?</span></div>
+      <div class="cat-cell"><span class="num">11</span><h4>Memory / state</h4><p>What the agent remembers between calls and across sessions. Per-conversation, per-user, per-organisation; managed memory vs explicit state machines vs DIY.</p><span class="q">Per-session state or persistent memory?</span></div>
+      <div class="cat-cell" style="border-left:3px solid var(--warm)"><span class="num" style="color:var(--warm)">12 &middot; cross-cut</span><h4>Pre-built vendor MCP servers</h4><p>The universe of packaged integrations agents can call without writing custom code. 500+ servers in the official MCP registry as of mid-2026, first-party + community mixed.</p><span class="q">First-party only, or accept community?</span></div>
     </div>
   </div>
 </section>
@@ -256,9 +257,28 @@
       </div>
     </div>
 
-    <!-- 02 Tool protocol -->
+    <!-- 02 Model gateway / routing -->
     <div class="layer-block fade-up" style="transition-delay: 0.03s">
-      <div class="layer-band"><span class="num">02</span><span class="name">Tool protocol</span><span class="rule"></span></div>
+      <div class="layer-band"><span class="num">02</span><span class="name">Model gateway / routing</span><span class="rule"></span></div>
+      <p class="layer-intro">Where calls to the model actually go. The layer that decouples agent code from &ldquo;which model does this call?&rdquo; Without it, swapping from Claude to Gemini means refactoring; with it, it's a config change. Cheap to add early, expensive to retrofit once dozens of code paths call <code>anthropic.messages.create</code> (or equivalent) directly. The category that buys you model portability &mdash; open weights through frontier &mdash; without rewrites.</p>
+      <div class="compare-wrap">
+        <table class="compare">
+          <thead><tr><th>Pick</th><th>Maintainer</th><th>Trade-off / when to choose</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Cloudflare AI Gateway</strong></td><td>Cloudflare</td><td>Edge-native, caching + rate limits + analytics built in. Cheapest if you're already on Cloudflare; fits the edge-first story.</td></tr>
+            <tr><td><strong>OpenRouter</strong></td><td>OpenRouter</td><td>Unified API across 100+ models including open-weights (Llama, Qwen, DeepSeek) and frontiers (Claude, GPT, Gemini). Pay-per-call.</td></tr>
+            <tr><td><strong>LiteLLM</strong></td><td>BerriAI (OSS)</td><td>Self-hostable OpenAI-compatible proxy that routes anywhere (Anthropic, OpenAI, Bedrock, Vertex, Ollama). Strong control-plane choice.</td></tr>
+            <tr><td><strong>Vertex AI Model Garden</strong></td><td>Google</td><td>Google's hosted catalogue. Strong for Gemini + Claude + Llama in one place; GCP-native auth.</td></tr>
+            <tr><td><strong>Amazon Bedrock</strong></td><td>AWS</td><td>AWS-native model gateway. Right if you're already on AWS; heavy otherwise.</td></tr>
+            <tr><td><strong>Ollama / vLLM (direct)</strong></td><td>OSS</td><td>For self-hosting open-weights models. Pair with LiteLLM upstream or call directly.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 03 Tool protocol -->
+    <div class="layer-block fade-up" style="transition-delay: 0.03s">
+      <div class="layer-band"><span class="num">03</span><span class="name">Tool protocol</span><span class="rule"></span></div>
       <p class="layer-intro">How the agent talks to external systems. This pick is sticky &mdash; everything downstream depends on it. Bias toward standards.</p>
       <div class="compare-wrap">
         <table class="compare">
@@ -273,9 +293,9 @@
       </div>
     </div>
 
-    <!-- 03 Tool registries -->
+    <!-- 04 Tool registries -->
     <div class="layer-block fade-up" style="transition-delay: 0.03s">
-      <div class="layer-band"><span class="num">03</span><span class="name">Tool registries / discovery</span><span class="rule"></span></div>
+      <div class="layer-band"><span class="num">04</span><span class="name">Tool registries / discovery</span><span class="rule"></span></div>
       <p class="layer-intro">Where the agent finds tools to call. The alternative to a registry is writing your own adapters &mdash; viable for 5 tools, unmanageable at 50.</p>
       <div class="compare-wrap">
         <table class="compare">
@@ -290,9 +310,9 @@
       </div>
     </div>
 
-    <!-- 04 Permissions -->
+    <!-- 05 Permissions -->
     <div class="layer-block fade-up" style="transition-delay: 0.03s">
-      <div class="layer-band"><span class="num">04</span><span class="name">Permissions / policy</span><span class="rule"></span></div>
+      <div class="layer-band"><span class="num">05</span><span class="name">Permissions / policy</span><span class="rule"></span></div>
       <p class="layer-intro">What each agent is allowed to do. Externalised from code so non-engineers (and auditors) can read it. Without a policy engine, you are doing RBAC in code &mdash; fine at small scale, awful past it.</p>
       <div class="compare-wrap">
         <table class="compare">
@@ -308,9 +328,9 @@
       </div>
     </div>
 
-    <!-- 05 Audit -->
+    <!-- 06 Audit -->
     <div class="layer-block fade-up" style="transition-delay: 0.03s">
-      <div class="layer-band"><span class="num">05</span><span class="name">Audit / observability</span><span class="rule"></span></div>
+      <div class="layer-band"><span class="num">06</span><span class="name">Audit / observability</span><span class="rule"></span></div>
       <p class="layer-intro">How you reconstruct what happened. Three things matter: that traces are replayable, that args and results are captured (not just metadata), and that the schema follows the OpenTelemetry GenAI conventions so the backend is swappable.</p>
       <div class="compare-wrap">
         <table class="compare">
@@ -328,9 +348,9 @@
       </div>
     </div>
 
-    <!-- 06 Sandbox -->
+    <!-- 07 Sandbox -->
     <div class="layer-block fade-up" style="transition-delay: 0.03s">
-      <div class="layer-band"><span class="num">06</span><span class="name">Sandboxed code execution</span><span class="rule"></span></div>
+      <div class="layer-band"><span class="num">07</span><span class="name">Sandboxed code execution</span><span class="rule"></span></div>
       <p class="layer-intro">Where agent-written code runs without taking down the host. Hardware isolation (Firecracker) is the credible pick for untrusted output; container isolation is faster but weaker.</p>
       <div class="compare-wrap">
         <table class="compare">
@@ -345,9 +365,9 @@
       </div>
     </div>
 
-    <!-- 07 Dual-use -->
+    <!-- 08 Dual-use -->
     <div class="layer-block fade-up" style="transition-delay: 0.03s">
-      <div class="layer-band"><span class="num">07</span><span class="name">Dual-use / workflow</span><span class="rule"></span></div>
+      <div class="layer-band"><span class="num">08</span><span class="name">Dual-use / workflow</span><span class="rule"></span></div>
       <p class="layer-intro">The same operation, callable by a human (HTML form) or by an agent (MCP tool). Durable functions with "pause until event" are the cleanest way to model this so the audit trail is identical for both callers.</p>
       <div class="compare-wrap">
         <table class="compare">
@@ -364,9 +384,9 @@
       </div>
     </div>
 
-    <!-- 08 Identity -->
+    <!-- 09 Identity -->
     <div class="layer-block fade-up" style="transition-delay: 0.03s">
-      <div class="layer-band"><span class="num">08</span><span class="name">Identity / auth</span><span class="rule"></span></div>
+      <div class="layer-band"><span class="num">09</span><span class="name">Identity / auth</span><span class="rule"></span></div>
       <p class="layer-intro">Who the agent is when it acts. Short-TTL scoped tokens per (agent, tool) pair, signed by the runtime. Without this layer, "permissions" is just a wishful name on a policy file.</p>
       <div class="compare-wrap">
         <table class="compare">
@@ -382,9 +402,9 @@
       </div>
     </div>
 
-    <!-- 09 Approval -->
+    <!-- 10 Approval -->
     <div class="layer-block fade-up" style="transition-delay: 0.03s">
-      <div class="layer-band"><span class="num">09</span><span class="name">Approval / human-in-the-loop</span><span class="rule"></span></div>
+      <div class="layer-band"><span class="num">10</span><span class="name">Approval / human-in-the-loop</span><span class="rule"></span></div>
       <p class="layer-intro">What blocks until a human says yes. Cheap to add as a first-class workflow primitive on day one; expensive to retrofit after the audit log shows agents shipping money out the door without anyone approving it.</p>
       <div class="compare-wrap">
         <table class="compare">
@@ -401,9 +421,9 @@
       </div>
     </div>
 
-    <!-- 10 Memory -->
+    <!-- 11 Memory -->
     <div class="layer-block fade-up" style="transition-delay: 0.03s">
-      <div class="layer-band"><span class="num">10</span><span class="name">Memory / state</span><span class="rule"></span></div>
+      <div class="layer-band"><span class="num">11</span><span class="name">Memory / state</span><span class="rule"></span></div>
       <p class="layer-intro">What the agent remembers between calls and across sessions. Three flavours: per-session state (the conversation), explicit state machines (the workflow), persistent memory (the agent's long-term knowledge of a user).</p>
       <div class="compare-wrap">
         <table class="compare">
@@ -419,9 +439,9 @@
       </div>
     </div>
 
-    <!-- 11 Vendor MCP (cross-cutting) -->
+    <!-- 12 Vendor MCP (cross-cutting) -->
     <div class="layer-block fade-up" style="transition-delay: 0.03s">
-      <div class="layer-band"><span class="num">11 &middot; cross-cut</span><span class="name">Pre-built vendor MCP servers</span><span class="rule"></span></div>
+      <div class="layer-band"><span class="num">12 &middot; cross-cut</span><span class="name">Pre-built vendor MCP servers</span><span class="rule"></span></div>
       <p class="layer-intro">The universe of packaged integrations. Cuts across all the other categories. The constraint that matters: first-party (vendor-maintained) servers are zero-effort to maintain; community servers can be richer but you adopt them at your own pace.</p>
       <div class="compare-wrap">
         <table class="compare">

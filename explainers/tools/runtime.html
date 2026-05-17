@@ -3,21 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Agent runtime &mdash; the Claude Agent SDK choice &mdash; know.2nth.ai</title>
-<meta name="description" content="Why the 2nth.ai agent platform runs on the Claude Agent SDK, not LangGraph or CrewAI or a raw API loop. Decision rationale, what the SDK actually does for us, alternatives weighed, implications to plan for (model lock-in, June-2026 pricing change, single-vendor velocity), and the hook-composition gotcha that will trip up a partner copying the pattern.">
+<title>Agent runtime &mdash; choosing a multi-provider runtime &mdash; know.2nth.ai</title>
+<meta name="description" content="The runtime layer in a model-portable architecture. Why a multi-provider runtime is the right pick when the architecture must support models from open weights (Ollama, vLLM) through frontier (Claude, GPT, Gemini) and never lock to one provider. LangGraph as the recommendation, with Vercel AI SDK and Pydantic AI as credible alternatives. Claude Agent SDK rejected for this architecture (Claude-locked) but explained for when commitment to one model makes it the right call.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="know.2nth.ai">
 <meta property="og:url" content="https://know.2nth.ai/explainers/tools/runtime">
-<meta property="og:title" content="Agent runtime &mdash; the Claude Agent SDK choice &mdash; know.2nth.ai">
-<meta property="og:description" content="Why the 2nth.ai agent platform runs on the Claude Agent SDK. Decision rationale, alternatives weighed, implications. Member content.">
+<meta property="og:title" content="Agent runtime &mdash; choosing a multi-provider runtime &mdash; know.2nth.ai">
+<meta property="og:description" content="The runtime layer in a model-portable architecture. LangGraph as the recommendation; Vercel AI SDK and Pydantic AI as credible alternatives. Member content.">
 <meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Agent runtime &mdash; the Claude Agent SDK choice &mdash; know.2nth.ai">
-<meta name="twitter:description" content="Why the 2nth.ai agent platform runs on the Claude Agent SDK. Member content.">
+<meta name="twitter:title" content="Agent runtime &mdash; choosing a multi-provider runtime &mdash; know.2nth.ai">
+<meta name="twitter:description" content="The runtime layer in a model-portable architecture. LangGraph + Vercel AI SDK + Pydantic AI. Member content.">
 <meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -159,10 +159,10 @@
   <div class="container">
     <div class="eyebrow fade-up"><span class="dot"></span> tools &middot; substrate decision &middot; runtime layer</div>
     <h1 class="fade-up" style="transition-delay: 0.05s">
-      Why we run on the <span class="gradient">Claude Agent SDK.</span>
+      Choosing a runtime when <span class="gradient">model portability</span> is the constraint.
     </h1>
     <p class="sub fade-up" style="transition-delay: 0.1s">
-      The 2nth.ai agent platform commits to one runtime: Anthropic's official <strong>Claude Agent SDK</strong> (<code style="font-family:'JetBrains Mono',monospace;font-size:0.86em;color:var(--sky);background:rgba(56,189,248,0.06);border:1px solid var(--border);padding:1px 5px;border-radius:4px;">claude-agent-sdk</code> Python, <code style="font-family:'JetBrains Mono',monospace;font-size:0.86em;color:var(--sky);background:rgba(56,189,248,0.06);border:1px solid var(--border);padding:1px 5px;border-radius:4px;">@anthropic-ai/claude-agent-sdk</code> TypeScript) &mdash; the same engine Claude Code itself runs on. This leaf documents the decision: the alternatives we weighed, what the SDK actually does for us, the implications you will run into in a real pilot.
+      Strategic constraint: agents must support model choices from open weights (Ollama, vLLM) through frontier (Claude, GPT, Gemini), and the architecture must never be tied to one provider. That requirement immediately narrows the runtime layer to options that are <strong>multi-provider native</strong>. This leaf works the decision: which runtime, what it gives you, what you give up, and when the calculus flips toward a first-party SDK like Claude Agent SDK instead.
     </p>
     <div class="hero-meta fade-up" style="transition-delay: 0.15s">
       <span class="pill member">Members &middot; gated</span>
@@ -182,12 +182,12 @@
     </div>
 
     <div class="prose fade-up" style="transition-delay: 0.04s">
-      <p>The Claude Agent SDK is not a framework in the LangChain sense. It is a tight wrapper around the Anthropic API that adds the agent loop, MCP support, and a handful of primitives the platform needs: <code>allowed_tools</code>, <code>disallowed_tools</code>, <code>PreToolUse</code> hooks, structured output, and prompt caching. It is the same engine Claude Code itself runs on, which means partners reading the SDK docs already understand 80% of what we built. The full decision rationale &mdash; including the comparison table, the implications you should plan for, and the hook-composition gotcha &mdash; is in the sections below.</p>
+      <p><strong>The recommendation:</strong> <strong>LangGraph</strong> as the runtime, paired with a model gateway underneath (Cloudflare AI Gateway, OpenRouter, LiteLLM &mdash; see the <a href="index.html#03" style="color:var(--sky);text-decoration:none;border-bottom:1px solid var(--sky)">model gateway category</a>). LangGraph is multi-provider native (provider switching is a config call to <code>init_chat_model</code>), mature (v1.0 late 2025, 90k+ stars), MCP-aware, and pairs cleanly with both LangSmith and OTel-based audit. The second pick is <strong>Vercel AI SDK</strong> for TypeScript-first shops; <strong>Pydantic AI</strong> for type-first Python. The Claude Agent SDK is the right choice only when you have committed to Claude as the single model &mdash; which, by the architecture's stated constraint, this design hasn't.</p>
     </div>
 
-    <div class="info-card sky fade-up" style="transition-delay: 0.06s" style2="margin-top:12px">
+    <div class="info-card sky fade-up" style="transition-delay: 0.06s">
       <h4>About this leaf</h4>
-      <p>This is the first <strong>member-tier</strong> leaf on know.2nth.ai. Opinionated decision content &mdash; "why we picked X over Y and what it costs" &mdash; goes behind the join wall. Reference content (what a tool is, how it works) stays open. Sign up via the <a href="../../join.html" style="color:var(--sky);text-decoration:none;border-bottom:1px solid var(--sky)">join form</a> to unlock.</p>
+      <p>This is a <strong>member-tier</strong> decision leaf on know.2nth.ai. Opinionated content &mdash; "the runtime layer choice and what it costs" &mdash; goes behind the join wall. Reference content (the landscape, categories, options per category) stays open at <a href="index.html" style="color:var(--sky);text-decoration:none;border-bottom:1px solid var(--sky)">/tools/</a>. Sign up via the <a href="../../join.html" style="color:var(--sky);text-decoration:none;border-bottom:1px solid var(--sky)">join form</a> to unlock the rest.</p>
     </div>
   </div>
 </section>
@@ -196,27 +196,30 @@
 <section>
   <div class="container">
     <div class="fade-up">
-      <div class="section-label member-label">02 &middot; Why this, not the alternatives <span class="lock">&#x1F512;</span></div>
-      <h2 class="section-title">Five frameworks we passed on, with the reasons.</h2>
-      <p class="section-lede">The agent-framework market in 2026 is crowded. Each has a real audience. Here is why none of them won the runtime layer for the 2nth.ai showcase &mdash; and the one consideration that decided it.</p>
+      <div class="section-label member-label">02 &middot; Why LangGraph, what we considered <span class="lock">&#x1F512;</span></div>
+      <h2 class="section-title">Six runtimes weighed, ranked by model-portability fit.</h2>
+      <p class="section-lede">The model-portability constraint cuts the candidate list immediately: any first-party SDK that locks to one provider is out. Among multi-provider options, the deciding factor is maturity at scale (state, multi-agent orchestration, MCP support, ecosystem) versus ergonomics (DX, type safety, smaller mental model).</p>
     </div>
 
     <div data-tier="member">
       <div class="compare-wrap fade-up" style="transition-delay: 0.04s">
         <table class="compare">
-          <thead><tr><th>Alternative</th><th>Why we passed</th></tr></thead>
+          <thead><tr><th>Runtime</th><th>Verdict</th></tr></thead>
           <tbody>
-            <tr><td><strong>LangGraph</strong></td><td>Best-in-class for stateful multi-agent orchestration, but generic &mdash; partners would have to learn LangGraph <em>and</em> our wiring. Twice the surface to onboard onto.</td></tr>
-            <tr><td><strong>CrewAI</strong></td><td>Role-based, fast adoption (60%+ Fortune 500 by Jan 2026), but coarser permission model. We would be papering over <code>allowed_tools</code> ourselves at exactly the load-bearing seam where we cannot afford bugs.</td></tr>
-            <tr><td><strong>Vercel AI SDK</strong></td><td>TypeScript-only, lovely DX, but less aligned with how Anthropic ships MCP and Skills. We would pay a permanent catch-up tax as Anthropic's primitives evolve.</td></tr>
-            <tr><td><strong>OpenAI Agents SDK</strong></td><td>Locks the runtime to OpenAI models. The whole point is to use Claude.</td></tr>
-            <tr><td><strong>Build on the raw Anthropic API</strong></td><td>We would recreate the agent loop, context compaction, tool-result feeding, and MCP plumbing for no upside. The SDK gives us all four free.</td></tr>
+            <tr><td><strong>LangGraph</strong> <span style="color:var(--green);font-weight:600">&mdash; pick</span></td><td>Multi-provider native via <code>init_chat_model</code>. Mature (v1.0 late 2025, 90k+ stars). MCP-aware as of late 2025. Best-in-class for stateful multi-agent orchestration when you grow into it. Strong observability story (LangSmith native; Langfuse via OTel exporter). Pairs cleanly with LiteLLM as the model gateway. Python ecosystem is the broader hireable pool.</td></tr>
+            <tr><td><strong>Vercel AI SDK v6</strong> <span style="color:var(--sky);font-weight:600">&mdash; alt for TS shops</span></td><td>TypeScript-first, native multi-provider, lovely DX, ToolLoopAgent for production. Narrower scope than LangGraph for complex orchestration. Right pick if the team is TS-only.</td></tr>
+            <tr><td><strong>Pydantic AI</strong> <span style="color:var(--sky);font-weight:600">&mdash; alt for type-first Python</span></td><td>Multi-provider; Pydantic-typed everywhere. Smaller community; less mature for complex multi-agent. Right pick if your stance is "types over flexibility."</td></tr>
+            <tr><td><strong>CrewAI</strong></td><td>Role-based, fast adoption (60%+ Fortune 500 by Jan 2026). Multi-provider. Coarser permission model than LangGraph; less granular hook surface for layering Cerbos / Langfuse. Outgrown by teams that need fine-grained control.</td></tr>
+            <tr><td><strong>Claude Agent SDK</strong> <span style="color:var(--rose);font-weight:600">&mdash; rejected here</span></td><td>First-party for Claude. Beautiful primitives (<code>allowed_tools</code>, <code>PreToolUse</code> hooks, MCP-native, Skills, prompt caching). <strong>Claude-only.</strong> The right pick when the team has committed to Claude as the single model; ruled out by this architecture's model-portability constraint.</td></tr>
+            <tr><td><strong>OpenAI Agents SDK</strong> <span style="color:var(--rose);font-weight:600">&mdash; rejected here</span></td><td>OpenAI-only. Same shape of disqualification as Claude Agent SDK, opposite direction.</td></tr>
+            <tr><td><strong>Raw API + DIY loop</strong></td><td>Maximum control; you rebuild the loop, context compaction, tool-result feeding, MCP plumbing. Worth it if you have unusual constraints; otherwise the LangGraph-style runtime saves months of work.</td></tr>
           </tbody>
         </table>
       </div>
 
       <div class="prose fade-up" style="transition-delay: 0.06s">
-        <p><strong>The deciding factor.</strong> <code>allowed_tools</code> is the permission primitive the architecture needs, and <code>PreToolUse</code> hooks are a clean single integration point for everything we layer on (the Cerbos check, the Langfuse span emit, the Inngest event fire). Picking the Claude Agent SDK means writing ~50 lines of hook code, not ~500 lines of framework adapter. Every alternative imposes a more expensive wiring tax.</p>
+        <p><strong>The deciding factor.</strong> If model portability is a stated requirement, <em>any</em> first-party SDK that locks to one provider is disqualified before the analysis starts. That leaves multi-provider runtimes. Among those, LangGraph's combination of maturity, multi-agent depth, and MCP support wins for production workloads. Vercel AI SDK wins for TypeScript-only shops. Pydantic AI wins for teams that prize type safety over flexibility.</p>
+        <p>The architecture lets you reverse this later: swapping LangGraph for Vercel AI SDK is roughly one day per agent, since MCP, Cerbos, Langfuse, and Inngest all sit downstream of the runtime and don't care which one is on top.</p>
       </div>
     </div>
   </div>
@@ -226,26 +229,27 @@
 <section>
   <div class="container">
     <div class="fade-up">
-      <div class="section-label member-label">03 &middot; What the SDK actually does for us <span class="lock">&#x1F512;</span></div>
-      <h2 class="section-title">Five concrete jobs &mdash; and what we layer on top.</h2>
-      <p class="section-lede">The SDK is intentionally narrow. Knowing exactly what it gives you (and what it does not) is the difference between leveraging it cleanly and accidentally fighting it.</p>
+      <div class="section-label member-label">03 &middot; What LangGraph does, what you layer on top <span class="lock">&#x1F512;</span></div>
+      <h2 class="section-title">Five concrete jobs &mdash; and what the architecture wires around it.</h2>
+      <p class="section-lede">A runtime is narrow by design. Knowing exactly what LangGraph gives you (and what it doesn't) is the difference between using it cleanly and fighting it.</p>
     </div>
 
     <div data-tier="member">
       <div class="does-grid fade-up" style="transition-delay: 0.04s">
-        <div class="does-cell"><h4>1 &middot; Hosts the agent loop</h4><p>Model call, tool-call parsing, tool execution, result feedback, repeat. Context compaction built in.</p></div>
-        <div class="does-cell"><h4>2 &middot; Speaks MCP natively</h4><p>Points at our <code>mcp-gateway</code> Worker URL like any other MCP server. No translation layer.</p></div>
-        <div class="does-cell"><h4>3 &middot; First-line permission gate</h4><p><code>allowed_tools</code> filters before a tool is even invoked. Cerbos is the second line, inside the hook.</p></div>
-        <div class="does-cell"><h4>4 &middot; PreToolUse hook surface</h4><p>One <code>(agent, tool, args)</code> callback where the gateway dispatch + audit emit + approval check live.</p></div>
-        <div class="does-cell"><h4>5 &middot; Skills + prompt caching</h4><p>Agent personas (Grant, Penny, Leo, Grace, Katharine) load as Skills. Caching keeps token cost down across runs.</p></div>
+        <div class="does-cell"><h4>1 &middot; Hosts the agent loop</h4><p>Model call, tool-call parsing, tool execution, result feedback, state transitions. Multi-step graphs as a first-class primitive.</p></div>
+        <div class="does-cell"><h4>2 &middot; Multi-provider model calls</h4><p><code>init_chat_model("claude-opus-4-7")</code> or <code>"gpt-5"</code> or <code>"ollama:llama-4"</code>. Switch with a config change, not a refactor.</p></div>
+        <div class="does-cell"><h4>3 &middot; MCP-aware (as of late 2025)</h4><p>Connects to MCP servers directly. Points at the <code>mcp-gateway</code> Worker URL like any other MCP source.</p></div>
+        <div class="does-cell"><h4>4 &middot; Interrupts + state checkpoints</h4><p>Built-in human-in-the-loop interrupts. State checkpointing for replay + persistence. Pair with Inngest for cross-process pauses.</p></div>
+        <div class="does-cell"><h4>5 &middot; Native LangSmith observability</h4><p>Traces flow into LangSmith out of the box; OTel exporter sends them to Langfuse instead if that's the audit backend.</p></div>
       </div>
 
       <div class="info-card indigo fade-up" style="transition-delay: 0.06s">
-        <h4>What the SDK does NOT do &mdash; and what we layer in</h4>
-        <p><strong>Audit / proof of work.</strong> Layered in via Langfuse, called from the PreToolUse hook.</p>
-        <p><strong>Permission policy beyond the allowlist.</strong> Layered in via Cerbos, called from the same hook.</p>
-        <p><strong>Human-in-the-loop approval gates.</strong> Layered in via Inngest, triggered through the MCP gateway when an action is destructive.</p>
-        <p><strong>Human-facing surface for the same actions.</strong> An HTML form on Cloudflare Pages that POSTs to the same Inngest event &mdash; identical code path.</p>
+        <h4>What LangGraph does NOT do &mdash; and what the architecture layers in</h4>
+        <p><strong>Model routing across providers + cost / cache.</strong> Layered in via the model gateway (Cloudflare AI Gateway + LiteLLM) below LangGraph.</p>
+        <p><strong>Audit / proof of work.</strong> LangGraph emits traces; Langfuse stores them via the OTel GenAI exporter.</p>
+        <p><strong>Permission policy beyond the framework allowlist.</strong> Layered in via Cerbos, called from a custom node or pre-tool hook.</p>
+        <p><strong>Cross-process human-in-the-loop approval.</strong> LangGraph's interrupts are in-process; for durable approvals (HTML form, hours-long wait, retries), Inngest sits alongside.</p>
+        <p><strong>Human-facing surface for the same actions.</strong> An HTML form on Cloudflare Pages that fires the same Inngest event &mdash; identical code path.</p>
       </div>
     </div>
   </div>
@@ -255,41 +259,41 @@
 <section>
   <div class="container">
     <div class="fade-up">
-      <div class="section-label member-label">04 &middot; Implications you should plan for <span class="lock">&#x1F512;</span></div>
-      <h2 class="section-title">The honest cost-of-being-wrong.</h2>
-      <p class="section-lede">Every runtime choice has a tax. Here are the six the Claude Agent SDK will levy on you, ranked by what hurts most in a real pilot.</p>
+      <div class="section-label member-label">04 &middot; Implications to plan for <span class="lock">&#x1F512;</span></div>
+      <h2 class="section-title">The honest cost-of-being-right.</h2>
+      <p class="section-lede">A multi-provider runtime keeps the model itself optional, which is the whole point. But the layer isn't free. Six implications worth saying out loud.</p>
     </div>
 
     <div data-tier="member">
       <div class="fade-up" style="transition-delay: 0.04s">
-        <div class="info-card amber">
-          <h4>1 &middot; Model lock-in</h4>
-          <p>Agents are coupled to Claude. Tools are not &mdash; MCP is provider-neutral. If Anthropic ever falters or you decide to move to GPT or Gemini, migration cost is the runtime layer only, roughly <strong>one day per agent</strong> to rewire. Acceptable, but worth saying out loud before partners commit.</p>
-        </div>
-
-        <div class="info-card rose">
-          <h4>2 &middot; June 15, 2026 pricing change</h4>
-          <p>Starting <strong>2026-06-15</strong>, programmatic Claude SDK usage starts drawing separate credits ($20&ndash;$200/mo depending on plan tier). Budget this per agent <em>before</em> pilots scale. At one-call-per-day per agent it is a rounding error; at fleet scale it adds up to real money.</p>
-        </div>
-
-        <div class="info-card indigo">
-          <h4>3 &middot; Single-vendor SDK velocity</h4>
-          <p>Anthropic ships fast. The SDK was renamed from <code>claude-code-sdk</code> in mid-2025; MCP went GA; Skills landed; prompt caching changed shape twice. Budget <strong>~half a day per quarter</strong> for SDK version bumps. The catalog cadence on <a href="index.html" style="color:var(--sky);text-decoration:none;border-bottom:1px solid var(--sky)">/tools/</a> is Hot (quarterly) for exactly this reason.</p>
-        </div>
-
         <div class="info-card green">
-          <h4>4 &middot; Weaker multi-agent orchestration than LangGraph</h4>
-          <p>If you ever want Grant + Katharine to coordinate without human-in-loop &mdash; e.g. CFO and CRO jointly close a deal &mdash; you will bolt on a state machine. Likely an <strong>Inngest workflow</strong>, since Inngest is already in the architecture. Do not switch runtimes for this; layer on instead.</p>
+          <h4>1 &middot; Provider-portable, by construction</h4>
+          <p>The whole reason for picking LangGraph (or Vercel AI SDK / Pydantic AI) is that <code>init_chat_model("&lt;provider&gt;:&lt;model&gt;")</code> swaps the model. Going from Claude to GPT to a self-hosted Llama via Ollama is a <strong>config change</strong>, not a code change. The architecture's downstream layers (MCP, Cerbos, Langfuse, Inngest) are all provider-neutral too.</p>
         </div>
 
         <div class="info-card sky">
-          <h4>5 &middot; Partner-copyability is cheap</h4>
-          <p>A partner cloning this needs <strong>one Anthropic API key</strong>. That is the entire dependency. Cheaper than the GCP/Vertex alternative (project + billing + Vertex enablement + service-account setup) and easier than the OpenAI alternative if they want Claude-specific features (Skills, MCP, longer context).</p>
+          <h4>2 &middot; Multi-provider testing is a tax</h4>
+          <p>If you actually use the portability &mdash; routing one task to Claude, another to GPT, another to Llama &mdash; you need an <strong>eval harness that runs across providers</strong>. Different models have different tool-calling reliability, different context-window costs, different refusal patterns. Budget time for an eval suite from day one.</p>
+        </div>
+
+        <div class="info-card indigo">
+          <h4>3 &middot; State-graph mental model</h4>
+          <p>LangGraph models agents as state graphs &mdash; nodes for steps, edges for transitions, interrupts for human gates. Worth the learning curve at production scale (multi-agent orchestration, replay-debuggable workflows) but slower to start than a one-loop SDK. Expect a week of ramp-up per engineer.</p>
         </div>
 
         <div class="info-card amber">
-          <h4>6 &middot; Hook-composition gotcha</h4>
-          <p>The <code>PreToolUse</code> hook is the place where <strong>four concerns intersect</strong>: policy check, approval gate, audit emit, vendor MCP forward. Keep that hook short and well-tested &mdash; it is the load-bearing seam of the whole architecture. If it grows past ~150 lines, factor each concern into its own module <em>before</em> it ossifies. A partner who skips this will be debugging spaghetti six months in.</p>
+          <h4>4 &middot; Observability backend choice is downstream</h4>
+          <p>LangGraph emits traces to LangSmith by default; that's the slick path. For Langfuse (self-hosted, OSS), use the OpenTelemetry GenAI exporter and accept slightly less polish in the UI in exchange for owning the trace store. The reversal cost is low &mdash; pick later if you need to.</p>
+        </div>
+
+        <div class="info-card rose">
+          <h4>5 &middot; Model gateway sits underneath, not inside</h4>
+          <p>LangGraph's <code>init_chat_model</code> can route to provider-direct (e.g. Anthropic SDK, OpenAI SDK) <em>or</em> to a unified endpoint (LiteLLM, OpenRouter, Cloudflare AI Gateway). Use the unified endpoint &mdash; centralised auth + caching + rate limits + cost metering matter more than the marginal latency of a hop. The model gateway is its own layer in the architecture, deliberately.</p>
+        </div>
+
+        <div class="info-card amber">
+          <h4>6 &middot; If you commit to Claude later, switch back</h4>
+          <p>The Claude Agent SDK is genuinely the best fit when (and only when) Claude is the only model. If a pilot proves that's the right call &mdash; Claude wins on every task that matters &mdash; <strong>switching to Claude Agent SDK is ~1 day per agent</strong>. The lock-in becomes acceptable because it bought first-party features (Skills, MCP, prompt caching, sub-agents). Don't pre-commit; reserve the option.</p>
         </div>
       </div>
     </div>
@@ -328,14 +332,16 @@
     </div>
 
     <div class="resource-grid fade-up" style="transition-delay: 0.03s">
-      <a class="resource" href="https://github.com/anthropics/claude-agent-sdk-python" target="_blank" rel="noopener"><span class="r-kind">Repo</span><span class="r-title">claude-agent-sdk (Python)</span><span class="r-url">github.com/anthropics/claude-agent-sdk-python</span></a>
-      <a class="resource" href="https://github.com/anthropics/claude-agent-sdk-typescript" target="_blank" rel="noopener"><span class="r-kind">Repo</span><span class="r-title">claude-agent-sdk (TypeScript)</span><span class="r-url">github.com/anthropics/claude-agent-sdk-typescript</span></a>
-      <a class="resource" href="https://code.claude.com/docs/en/agent-sdk/overview" target="_blank" rel="noopener"><span class="r-kind">Docs</span><span class="r-title">Claude Agent SDK overview</span><span class="r-url">code.claude.com/docs/en/agent-sdk/overview</span></a>
+      <a class="resource" href="https://www.langchain.com/langgraph" target="_blank" rel="noopener"><span class="r-kind">Recommended runtime</span><span class="r-title">LangGraph</span><span class="r-url">langchain.com/langgraph</span></a>
+      <a class="resource" href="https://github.com/langchain-ai/langgraph" target="_blank" rel="noopener"><span class="r-kind">Repo</span><span class="r-title">LangGraph on GitHub</span><span class="r-url">github.com/langchain-ai/langgraph</span></a>
+      <a class="resource" href="https://ai-sdk.dev" target="_blank" rel="noopener"><span class="r-kind">Alt runtime &middot; TS</span><span class="r-title">Vercel AI SDK</span><span class="r-url">ai-sdk.dev</span></a>
+      <a class="resource" href="https://ai.pydantic.dev" target="_blank" rel="noopener"><span class="r-kind">Alt runtime &middot; types</span><span class="r-title">Pydantic AI</span><span class="r-url">ai.pydantic.dev</span></a>
+      <a class="resource" href="https://docs.crewai.com" target="_blank" rel="noopener"><span class="r-kind">Alt runtime &middot; roles</span><span class="r-title">CrewAI</span><span class="r-url">docs.crewai.com</span></a>
+      <a class="resource" href="https://github.com/anthropics/claude-agent-sdk-python" target="_blank" rel="noopener"><span class="r-kind">First-party</span><span class="r-title">Claude Agent SDK (Python)</span><span class="r-url">github.com/anthropics/claude-agent-sdk-python</span></a>
+      <a class="resource" href="https://github.com/BerriAI/litellm" target="_blank" rel="noopener"><span class="r-kind">Model gateway</span><span class="r-title">LiteLLM</span><span class="r-url">github.com/BerriAI/litellm</span></a>
+      <a class="resource" href="https://developers.cloudflare.com/ai-gateway/" target="_blank" rel="noopener"><span class="r-kind">Model gateway</span><span class="r-title">Cloudflare AI Gateway</span><span class="r-url">developers.cloudflare.com/ai-gateway</span></a>
+      <a class="resource" href="https://openrouter.ai" target="_blank" rel="noopener"><span class="r-kind">Model gateway</span><span class="r-title">OpenRouter</span><span class="r-url">openrouter.ai</span></a>
       <a class="resource" href="https://modelcontextprotocol.io" target="_blank" rel="noopener"><span class="r-kind">Protocol</span><span class="r-title">Model Context Protocol</span><span class="r-url">modelcontextprotocol.io</span></a>
-      <a class="resource" href="https://registry.modelcontextprotocol.io" target="_blank" rel="noopener"><span class="r-kind">Discovery</span><span class="r-title">Official MCP Registry</span><span class="r-url">registry.modelcontextprotocol.io</span></a>
-      <a class="resource" href="https://www.langchain.com/langgraph" target="_blank" rel="noopener"><span class="r-kind">Alternative</span><span class="r-title">LangGraph</span><span class="r-url">langchain.com/langgraph</span></a>
-      <a class="resource" href="https://docs.crewai.com" target="_blank" rel="noopener"><span class="r-kind">Alternative</span><span class="r-title">CrewAI docs</span><span class="r-url">docs.crewai.com</span></a>
-      <a class="resource" href="https://ai-sdk.dev" target="_blank" rel="noopener"><span class="r-kind">Alternative</span><span class="r-title">Vercel AI SDK</span><span class="r-url">ai-sdk.dev</span></a>
     </div>
   </div>
 </section>
