@@ -4,12 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Agent platform architecture &mdash; know.2nth.ai</title>
-<meta name="description" content="The reference architecture for the 2nth.ai agent tools platform — how Grant CFO, Penny CMO, Leo CLO, Grace CHRO, and Katharine CRO call tools with proof of work, per-agent permissions, and dual-use (human + agent) surfaces. Cloudflare-first edge (Workers + D1 + R2) glued to Cerbos PDP, Langfuse audit, Inngest dual-use functions, and vendor MCP servers (GitHub, HubSpot, Salesforce, Google Workspace, Slack, Notion, BigQuery, Atlassian). Scaffolding and testing with pilot customers. Designed to be copied by partners.">
+<meta name="description" content="A reference architecture for agent tool platforms — how a fractional-agent set-up could call tools with proof of work, per-agent permissions, and dual-use (human + agent) surfaces. Cloudflare-first edge (Workers + D1 + R2) glued to Cerbos PDP, Langfuse audit, Inngest dual-use functions, and vendor MCP servers (GitHub, HubSpot, Salesforce, Google Workspace, Slack, Notion, BigQuery, Atlassian). Reference knowledge — design described, not running state.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="know.2nth.ai">
 <meta property="og:url" content="https://know.2nth.ai/explainers/tools/architecture">
 <meta property="og:title" content="Agent platform architecture &mdash; know.2nth.ai">
-<meta property="og:description" content="The reference architecture for 2nth.ai's agent tools platform — Cloudflare-first edge + Cerbos + Langfuse + Inngest + vendor MCP servers. Scaffolding with pilot customers. Partner-copyable.">
+<meta property="og:description" content="A reference architecture for agent tool platforms — Cloudflare-first edge + Cerbos + Langfuse + Inngest + vendor MCP servers. Reference knowledge — design, not running state.">
+<meta name="twitter:description" content="A reference architecture for agent tool platforms. Cerbos + Langfuse + Inngest + vendor MCP on Cloudflare. Reference knowledge.">
 <meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
@@ -17,7 +18,6 @@
 <meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Agent platform architecture &mdash; know.2nth.ai">
-<meta name="twitter:description" content="The 2nth.ai agent tools platform reference architecture. Cerbos + Langfuse + Inngest + vendor MCP, on Cloudflare. Partner-copyable.">
 <meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -180,10 +180,10 @@
   <div class="container">
     <div class="eyebrow fade-up"><span class="dot"></span> tools &middot; reference architecture</div>
     <h1 class="fade-up" style="transition-delay: 0.05s">
-      How the <span class="gradient">2nth.ai agents</span> actually call tools.
+      A reference architecture <span class="gradient">for agent tool</span> calls.
     </h1>
     <p class="sub fade-up" style="transition-delay: 0.1s">
-      The control plane behind the catalog. Each agent runs on the Claude Agent SDK with a tight <code style="font-family:'JetBrains Mono',monospace;font-size:0.86em;color:var(--sky);background:rgba(56,189,248,0.06);border:1px solid var(--border);padding:1px 5px;border-radius:4px;">allowed_tools</code> list. Every call lands in one Cloudflare Worker that asks Cerbos for a decision, optionally pauses for human approval via Inngest, forwards to a vendor MCP server, and emits an OpenTelemetry trace to a self-hosted Langfuse. Mutating tools live as Inngest functions so the same code path serves a human form and an agent. Scaffolding and testing with pilot customers. Built to be cloned by partners.
+      A control plane shape for agent tool calls &mdash; described as designed, not as a running system. In this architecture, each agent runs on the Claude Agent SDK with a tight <code style="font-family:'JetBrains Mono',monospace;font-size:0.86em;color:var(--sky);background:rgba(56,189,248,0.06);border:1px solid var(--border);padding:1px 5px;border-radius:4px;">allowed_tools</code> list, and every call routes through one Cloudflare Worker that asks Cerbos for a decision, optionally pauses for human approval via Inngest, forwards to a vendor MCP server, and emits an OpenTelemetry trace to a self-hosted Langfuse. Mutating tools are modelled as Inngest functions so the same code path can serve a human form and an agent. Reference knowledge &mdash; this page documents the design so it can be adopted, adapted, or argued with.
     </p>
     <div class="hero-meta fade-up" style="transition-delay: 0.15s">
       <span class="pill accent">Cloudflare-first edge</span>
@@ -200,17 +200,17 @@
     <div class="fade-up">
       <div class="section-label">01 &middot; What it is</div>
       <h2 class="section-title">A reference architecture, not a hosted service.</h2>
-      <p class="section-lede">The fractional agents at 2nth.ai (Grant CFO, Penny CMO, Leo CLO, Grace CHRO, Katharine CRO) are how we show partners what a real-world agent setup looks like. To make that credible &mdash; agents that actually do work, leave proof, and respect permissions &mdash; we needed real tools wired the right way. This page documents the plan. Every file referenced is in the public <code style="font-family:'JetBrains Mono',monospace;font-size:0.86em;color:var(--sky);background:rgba(56,189,248,0.06);border:1px solid var(--border);padding:1px 5px;border-radius:4px;">2nth-ai/agent-platform</code> repo, or at <code style="font-family:'JetBrains Mono',monospace;font-size:0.86em;color:var(--sky);background:rgba(56,189,248,0.06);border:1px solid var(--border);padding:1px 5px;border-radius:4px;">/agent-platform/</code> locally for now.</p>
+      <p class="section-lede">A fractional-agent set-up &mdash; for illustration, agents named after C-suite roles like Grant (CFO), Penny (CMO), Leo (CLO), Grace (CHRO), Katharine (CRO) &mdash; needs real tools wired the right way: agents that do work, leave proof of work, and respect permissions. This page documents one such architecture, end to end, so it can be adapted or copied. The agent names below are illustrative; the architecture is independent of any specific roster.</p>
     </div>
 
     <div class="prose fade-up" style="transition-delay: 0.04s">
-      <p><strong>Status: scaffolding and testing with pilot customers.</strong> As of <strong>2026-05-17</strong> the scaffold is on disk &mdash; six Cerbos policy files, the D1 schema, the gateway Worker skeleton, one Inngest function (Penny's send-email). Pilot customers are exercising the pattern; the next PRs make one path real end-to-end (Cerbos deploy, Langfuse deploy, vendor MCP wiring). The page is published early on purpose: partners can react to the shape while we wire it.</p>
+      <p><strong>About the descriptions below.</strong> Sections 02 to 08 describe the architecture as designed. They use the architectural present (&ldquo;the gateway forwards&hellip;&rdquo;, &ldquo;the function pauses&hellip;&rdquo;) for clarity, but read them as advisory &mdash; this is what the system would do in the design, not a claim about a currently-running deployment.</p>
 
-      <p><strong>Three guarantees the architecture enforces:</strong></p>
+      <p><strong>Three guarantees the architecture is designed to enforce:</strong></p>
       <ul>
-        <li><strong>Proof of work.</strong> Every tool call, by every agent and every human, emits four artifacts tied to one <code>run_id</code> &mdash; an OTel trace in Langfuse, a row in D1, an R2 object if any file was produced, and an approval record if it was a mutation. Off-record action is impossible.</li>
-        <li><strong>Per-agent permissions.</strong> One Cerbos <code>principalPolicy</code> file per agent enumerates the exact (resource, action) pairs that agent can call. No wildcards. The files are partner-readable.</li>
-        <li><strong>Dual-use surfaces.</strong> Every mutating action exists once, as an Inngest function. The function is callable by an HTML form (humans) or by an MCP tool (agents). Identical code path, identical audit shape.</li>
+        <li><strong>Proof of work.</strong> Every tool call would emit four artifacts tied to one <code>run_id</code> &mdash; an OTel trace in Langfuse, a row in D1, an R2 object if any file was produced, and an approval record if it was a mutation. By construction, off-record action would not be possible.</li>
+        <li><strong>Per-agent permissions.</strong> One Cerbos <code>principalPolicy</code> file per agent enumerates the exact (resource, action) pairs that agent is allowed to call. No wildcards. The files are partner-readable.</li>
+        <li><strong>Dual-use surfaces.</strong> Every mutating action would live once, as an Inngest function callable by an HTML form (humans) or an MCP tool (agents). Same code path, same audit shape.</li>
       </ul>
     </div>
   </div>
@@ -222,7 +222,7 @@
     <div class="fade-up">
       <div class="section-label">02 &middot; Architecture</div>
       <h2 class="section-title">One Worker. One PDP. One audit store. One function-per-mutation.</h2>
-      <p class="section-lede">There is exactly one entry point for every tool call. Everything that follows &mdash; policy, approval, vendor MCP, audit, storage &mdash; is downstream of that single Worker, which means the audit trail is complete by construction.</p>
+      <p class="section-lede">By design there is exactly one entry point for every tool call. Everything downstream &mdash; policy, approval, vendor MCP, audit, storage &mdash; sits behind that single Worker, which is what makes the audit trail complete by construction.</p>
     </div>
 
     <pre class="diagram fade-up" style="transition-delay: 0.04s"><span class="note"># One Worker entry. Five downstreams. Same shape for every call.</span>
@@ -254,7 +254,7 @@
                   <span class="note">(Cloudflare R2)</span></pre>
 
     <div class="prose fade-up" style="transition-delay: 0.06s">
-      <p>The Worker is intentionally thin. It does not invent a new protocol; it forwards MCP calls to vendor MCP servers with a per-agent scoped token. It does not invent an audit format; it emits standard OpenTelemetry GenAI spans. It does not implement its own policy engine; it asks Cerbos. Each downstream service is something a partner can independently swap or self-host. That is the point.</p>
+      <p>The Worker is intentionally thin. By design it doesn't invent a new protocol &mdash; it would forward MCP calls to vendor MCP servers with a per-agent scoped token. It doesn't invent an audit format &mdash; it would emit standard OpenTelemetry GenAI spans. It doesn't implement its own policy engine &mdash; it would ask Cerbos. Each downstream service is one a partner can independently swap or self-host. That is the point.</p>
     </div>
   </div>
 </section>
@@ -265,7 +265,7 @@
     <div class="fade-up">
       <div class="section-label">03 &middot; The substrate</div>
       <h2 class="section-title">Eight layers. Why each pick beats the obvious alternative.</h2>
-      <p class="section-lede">The agents share this substrate. None of these are 2nth-built; all are off-the-shelf. The "why" for each pick is more important than the pick itself &mdash; if a partner reads the rationale they can substitute a different OSS option without breaking the architecture.</p>
+      <p class="section-lede">The agents are designed to share this substrate. None of these are 2nth-built; all are off-the-shelf. The "why" for each pick matters more than the pick itself &mdash; if a partner reads the rationale they can substitute a different OSS option without breaking the architecture.</p>
     </div>
 
     <div class="compare-wrap fade-up" style="transition-delay: 0.04s">
@@ -313,7 +313,7 @@
 
     <div class="info-card indigo fade-up" style="transition-delay: 0.06s">
       <h4>The per-agent allocation</h4>
-      <p>Each of the five agents gets an allowlist of <strong>eight tools or fewer</strong>, drawn from the universal pool above plus a few domain-specific picks (Xero for Grant, SARS eFiling for Grant, BambooHR-style HR tools for Grace, etc.). The complete map lives on the <a href="index.html" style="color:var(--sky);text-decoration:none;border-bottom:1px solid var(--sky)">tools hub</a>; the enforceable version is the per-agent Cerbos YAML in <code>2nth-ai/agent-platform/cerbos/policies/&lt;name&gt;.yaml</code>.</p>
+      <p>Each agent in this kind of set-up would get an allowlist of <strong>eight tools or fewer</strong>, drawn from the universal pool above plus a few domain-specific picks (e.g. Xero or SARS eFiling for a CFO agent, BambooHR-style HR tools for a CHRO agent). The enforceable version is one Cerbos <code>principalPolicy</code> YAML per agent, sitting at a stable path like <code>cerbos/policies/&lt;agent&gt;.yaml</code>. Allocation lives in the <a href="index.html" style="color:var(--sky);text-decoration:none;border-bottom:1px solid var(--sky)">tools catalog</a> for one illustrative roster.</p>
     </div>
   </div>
 </section>
@@ -324,18 +324,18 @@
     <div class="fade-up">
       <div class="section-label">05 &middot; Proof of work</div>
       <h2 class="section-title">Four artifacts. One join key. Replayable end-to-end.</h2>
-      <p class="section-lede">Every tool call produces all four artifacts. The <code>run_id</code> is the universal join key &mdash; a partner pivoting from a single Langfuse trace can find the D1 row, the R2 file, and the approval record without any other identifier.</p>
+      <p class="section-lede">In the design, every tool call produces all four artifacts. The <code>run_id</code> would be the universal join key &mdash; a partner pivoting from a single Langfuse trace could find the D1 row, the R2 file, and the approval record without any other identifier.</p>
     </div>
 
     <div class="stack-grid fade-up" style="transition-delay: 0.04s">
-      <div class="stack-cell"><span class="layer">Artifact 1</span><h4>OTel GenAI span</h4><p>Replayable trace in Langfuse. Agent prompt, tool args, decisions, latencies, costs &mdash; everything an auditor needs to reconstruct what happened.</p><span class="vendor">langfuse.2nth.io</span></div>
+      <div class="stack-cell"><span class="layer">Artifact 1</span><h4>OTel GenAI span</h4><p>Replayable trace in Langfuse. Agent prompt, tool args, decisions, latencies, costs &mdash; everything an auditor needs to reconstruct what happened.</p><span class="vendor">langfuse, self-hosted</span></div>
       <div class="stack-cell"><span class="layer">Artifact 2</span><h4>D1 row</h4><p>Durable summary in <code>tool_calls</code>. Cheap to query, indexed by agent / tool / decision / time. Powers dashboards without paging the trace store.</p><span class="vendor">cloudflare D1</span></div>
-      <div class="stack-cell"><span class="layer">Artifact 3</span><h4>R2 artifact</h4><p>When a tool produces a file (PDF, CSV, image, audio), it lands at <code>runs/{run_id}/{filename}</code>. The trace and the row both link to it.</p><span class="vendor">cloudflare R2</span></div>
+      <div class="stack-cell"><span class="layer">Artifact 3</span><h4>R2 artifact</h4><p>When a tool produces a file (PDF, CSV, image, audio), it would land at <code>runs/{run_id}/{filename}</code>. The trace and the row both link to it.</p><span class="vendor">cloudflare R2</span></div>
       <div class="stack-cell"><span class="layer">Artifact 4</span><h4>Approval record</h4><p>Destructive actions block until a human decides. The decision is its own row in <code>approvals</code> with approver id, time, and note. A "yes" is as audited as a "no".</p><span class="vendor">cloudflare D1</span></div>
     </div>
 
     <div class="prose fade-up" style="transition-delay: 0.06s">
-      <p><strong>The schema</strong> &mdash; three tables, append-only by convention: <code>agent_runs</code> (one row per session), <code>tool_calls</code> (one row per call within a run), <code>approvals</code> (one row per approval decision). The full DDL is in <code>schema/d1/0001_init.sql</code>. Indexes cover the three real query shapes: by-agent-by-time, by-decision-by-time, and pending-approvals.</p>
+      <p><strong>The schema</strong> &mdash; three tables, append-only by convention: <code>agent_runs</code> (one row per session), <code>tool_calls</code> (one row per call within a run), <code>approvals</code> (one row per approval decision). Indexes cover the three real query shapes: by-agent-by-time, by-decision-by-time, and pending-approvals.</p>
     </div>
   </div>
 </section>
@@ -346,15 +346,16 @@
     <div class="fade-up">
       <div class="section-label">06 &middot; Dual-use pattern</div>
       <h2 class="section-title">One function. Two doors. Identical audit shape.</h2>
-      <p class="section-lede">A mutating action lives <strong>once</strong>, as an Inngest function. The function is triggered by either an HTML form on <code>know.2nth.ai/tools/&hellip;</code> (humans) or an MCP tool call routed through the gateway (agents). Same code path. Same Langfuse trace shape. Only the <code>source</code> attribute differs.</p>
+      <p class="section-lede">In the design, a mutating action lives <strong>once</strong>, as an Inngest function. The function would be triggered by either an HTML form on <code>know.2nth.ai/tools/&hellip;</code> (humans) or an MCP tool call routed through the gateway (agents). Same code path. Same Langfuse trace shape. Only the <code>source</code> attribute differs.</p>
     </div>
 
     <div class="info-card indigo fade-up" style="transition-delay: 0.04s">
-      <h4>Worked example &middot; <code>penny.send-email</code></h4>
-      <p><strong>Agent path.</strong> Penny calls <code>penny.send_marketing_email</code> via MCP. The gateway sees a destructive action, logs <code>decision=approval_required</code>, and fires Inngest event <code>penny.send_email.requested</code> with <code>source: "agent"</code>. The function pauses on <code>approval.decided</code> keyed by <code>run_id</code>.</p>
-      <p><strong>Approval step.</strong> A human approver opens the audit UI (Langfuse, behind Cloudflare Access), sees a pending card with the proposed copy + audience, clicks approve. The decision becomes its own D1 row and fires the matching event.</p>
-      <p><strong>Send step.</strong> The function unpauses, calls the HubSpot Marketing Email API via the per-agent scoped token, writes the result back to the gateway, closes the <code>tool_calls</code> row.</p>
-      <p><strong>Human path.</strong> A marketing manager opens <code>know.2nth.ai/tools/penny/send-email.html</code> and submits the form. The form POSTs to a Worker which fires <code>penny.send_email.requested</code> with <code>source: "human"</code>. No pause &mdash; the form submission is the approval. Send step runs identically.</p>
+      <h4>Worked example &middot; <code>send-marketing-email</code></h4>
+      <p style="font-style:italic;color:var(--text-muted);margin-bottom:14px">How a call would flow through the system &mdash; using a marketing-email-send action as the illustration:</p>
+      <p><strong>Agent path.</strong> An agent (e.g. a CMO role) calls <code>send_marketing_email</code> via MCP. The gateway sees a destructive action, logs <code>decision=approval_required</code>, and fires an Inngest event with <code>source: "agent"</code>. The function pauses on <code>approval.decided</code> keyed by <code>run_id</code>.</p>
+      <p><strong>Approval step.</strong> A human approver opens the audit UI (Langfuse, behind a corporate access gateway), sees a pending card with the proposed copy + audience, clicks approve. The decision becomes its own D1 row and fires the matching event.</p>
+      <p><strong>Send step.</strong> The function unpauses, calls the relevant vendor API (e.g. HubSpot Marketing Email) via the per-agent scoped token, writes the result back to the gateway, closes the <code>tool_calls</code> row.</p>
+      <p><strong>Human path.</strong> A marketing operator opens an HTML form for the same action and submits it. The form POSTs to a Worker which fires the same Inngest event with <code>source: "human"</code>. No pause &mdash; the form submission is the approval. Send step runs identically.</p>
       <p><strong>Audit parity.</strong> The Langfuse trace shape is identical across both paths. The single attribute <code>source</code> on the root span distinguishes them &mdash; everything else is the same.</p>
     </div>
   </div>
@@ -364,19 +365,19 @@
 <section>
   <div class="container">
     <div class="fade-up">
-      <div class="section-label">07 &middot; Build phases</div>
+      <div class="section-label">07 &middot; Adoption path</div>
       <h2 class="section-title">Seven PRs from scaffold to live audit UI.</h2>
-      <p class="section-lede">Each phase is one PR. Each builds on the last. Phase 1 is on disk as of 2026-05-17 &mdash; the remaining six are scoped, sequenced, and being shaped against what we're learning from pilot customers.</p>
+      <p class="section-lede">If a team adopts this architecture, the natural sequence is seven PRs. Each is one logical change; each builds on the last. Order matters &mdash; the audit and policy layer comes before any gateway code, so the first real tool call lands in a system that can see it and decide on it.</p>
     </div>
 
     <div class="phase-list fade-up" style="transition-delay: 0.04s">
-      <div class="phase"><div class="num">01</div><div class="body"><h4>Scaffold platform repo <span class="pill green" style="font-size:9px;padding:3px 8px;margin-left:6px">Done</span></h4><p>Create <code>2nth-ai/agent-platform</code>, the CI/CD with ASCII commit messages (per the Cloudflare 8000111 gotcha), README pointing at this plan. <strong>Done locally 2026-05-17.</strong></p></div></div>
-      <div class="phase"><div class="num">02</div><div class="body"><h4>Stand up audit + policy</h4><p>Deploy Langfuse and Cerbos on Fly.io <code>jnb</code>. Write the first example trace. Load the six Cerbos policies. Confirm a denied call lands in the audit log.</p></div></div>
-      <div class="phase"><div class="num">03</div><div class="body"><h4>MCP gateway Worker</h4><p>Implement <code>workers/mcp-gateway</code>: receive MCP call, check Cerbos, forward to vendor MCP, emit OTel span. End-to-end smoke test with the GitHub MCP server.</p></div></div>
-      <div class="phase"><div class="num">04</div><div class="body"><h4>Penny end-to-end</h4><p>Build <code>penny.send-email</code> end-to-end (Inngest fn + form Worker + MCP tool registration). Verify dual-use parity: agent and human produce identical traces.</p></div></div>
-      <div class="phase"><div class="num">05</div><div class="body"><h4>Roll out the other four</h4><p>Replicate the Penny pattern for Grant, Leo, Grace, Katharine. Each gets at least one Inngest function for a mutating action.</p></div></div>
-      <div class="phase"><div class="num">06</div><div class="body"><h4>Per-tool leaves on know.2nth.ai</h4><p>Author <code>/explainers/tools/&lt;tool&gt;.html</code> for each of the ~12 tools in the catalog. Flip the matching <code>soon</code> cards on the hub to Live.</p></div></div>
-      <div class="phase"><div class="num">07</div><div class="body"><h4>Audit UI</h4><p>Stand up <code>clients.2nth.ai/audit</code>, embedding Langfuse behind Cloudflare Access for human auditors and partners.</p></div></div>
+      <div class="phase"><div class="num">01</div><div class="body"><h4>Scaffold the platform repo</h4><p>Create an <code>agent-platform</code> repo with the canonical folder layout (workers, functions, cerbos/policies, schema, fly). Set up CI with ASCII-only commit messages (Cloudflare Pages rejects non-ASCII with error <code>8000111</code>). Land a README pointing at the architecture.</p></div></div>
+      <div class="phase"><div class="num">02</div><div class="body"><h4>Stand up audit + policy</h4><p>Deploy Langfuse and Cerbos on Fly.io (or equivalent). Write one example trace by hand. Load the per-agent Cerbos policies. Confirm a denied call lands in the audit log.</p></div></div>
+      <div class="phase"><div class="num">03</div><div class="body"><h4>MCP gateway Worker</h4><p>Implement <code>workers/mcp-gateway</code>: receive MCP call, check Cerbos, forward to a vendor MCP server, emit OTel span. End-to-end smoke test against the GitHub MCP server (read-only is safest).</p></div></div>
+      <div class="phase"><div class="num">04</div><div class="body"><h4>First agent end-to-end</h4><p>Build one mutating action end-to-end (Inngest function + form Worker + MCP tool registration). Verify dual-use parity: agent and human produce identical traces, only the <code>source</code> attribute differs.</p></div></div>
+      <div class="phase"><div class="num">05</div><div class="body"><h4>Roll out the remaining agents</h4><p>Replicate the pattern for each remaining agent in scope. Each gets at least one Inngest function for a mutating action.</p></div></div>
+      <div class="phase"><div class="num">06</div><div class="body"><h4>Per-tool documentation</h4><p>Author one leaf per tool in the catalog (what it is, scopes, audit surface, sample agent + sample human call). Flip the matching <code>soon</code> cards on the catalog hub to Live.</p></div></div>
+      <div class="phase"><div class="num">07</div><div class="body"><h4>Audit UI</h4><p>Stand up the auditor surface &mdash; typically Langfuse embedded behind a corporate access gateway &mdash; so human auditors and partners can replay any run by <code>run_id</code>.</p></div></div>
     </div>
   </div>
 </section>
@@ -386,16 +387,16 @@
   <div class="container">
     <div class="fade-up">
       <div class="section-label">08 &middot; Verification</div>
-      <h2 class="section-title">Five paths a partner can run against their own deploy.</h2>
-      <p class="section-lede">Each verification produces a specific, observable outcome. If any fail in a partner's clone, the architecture is broken &mdash; not the partner.</p>
+      <h2 class="section-title">Five paths to verify, once deployed.</h2>
+      <p class="section-lede">Acceptance criteria for any deployment of this architecture. Each verification should produce a specific, observable outcome once the system is wired and running. If any fail, the design has been broken in implementation.</p>
     </div>
 
     <div class="verify-grid fade-up" style="transition-delay: 0.04s">
-      <div class="verify"><h4>Agent path</h4><p>From Claude Code, Grant runs a BigQuery query. The gateway logs a span with <code>source=agent</code>, <code>agent_id=grant</code>, <code>tool=bigquery.query</code>, <code>decision=allow</code>. A row appears in D1. The trace replays in Langfuse with the exact prompt + response.</p></div>
-      <div class="verify"><h4>Human path</h4><p>A user opens <code>know.2nth.ai/tools/grant/run-query.html</code> and submits the form. The Inngest function fires. The Langfuse trace appears with <code>source=human</code>, identical schema otherwise.</p></div>
-      <div class="verify"><h4>Denied path</h4><p>Grant attempts <code>slack.delete_channel</code> (not in his allowlist). Cerbos returns <code>DENY</code>. The denial is logged with <code>decision=deny</code>, <code>reason=policy_no_match</code>. No mutation occurs.</p></div>
-      <div class="verify"><h4>Approval path</h4><p>Penny attempts <code>hubspot.update_deal_stage</code>. Inngest pauses. An approver opens <code>clients.2nth.ai/approvals</code>, sees the pending action, approves. The action completes. The Langfuse trace has a child <code>approval</code> span with <code>approver_id</code> and <code>latency</code>.</p></div>
-      <div class="verify"><h4>Partner copyability</h4><p>A partner clones <code>2nth-ai/agent-platform</code>, points DNS at their own Cloudflare account, deploys, swaps the Cerbos policies for their own agent names. Their agents work the same way. No 2nth-only credentials involved.</p></div>
+      <div class="verify"><h4>Agent path</h4><p>An agent (e.g. a CFO role) issues a BigQuery query via the gateway. The gateway logs a span with <code>source=agent</code>, the agent id, <code>tool=bigquery.query</code>, <code>decision=allow</code>. A row appears in D1. The trace replays in Langfuse with the exact prompt + response.</p></div>
+      <div class="verify"><h4>Human path</h4><p>A user opens the matching HTML form and submits the same operation. The Inngest function fires. The Langfuse trace appears with <code>source=human</code>, identical schema otherwise.</p></div>
+      <div class="verify"><h4>Denied path</h4><p>An agent attempts an action not in its allowlist (e.g. a CFO agent trying <code>slack.delete_channel</code>). Cerbos returns <code>DENY</code>. The denial is logged with <code>decision=deny</code>, <code>reason=policy_no_match</code>. No mutation occurs.</p></div>
+      <div class="verify"><h4>Approval path</h4><p>An agent attempts a destructive action (e.g. <code>hubspot.update_deal_stage</code>). Inngest pauses. An approver opens the approvals surface, sees the pending action, approves. The action completes. The Langfuse trace has a child <code>approval</code> span with <code>approver_id</code> and <code>latency</code>.</p></div>
+      <div class="verify"><h4>Portability</h4><p>The same code clones onto another team's Cloudflare account, with their own Cerbos policies and their own vendor MCP tokens. Agents work the same way. No origin-team credentials involved.</p></div>
     </div>
   </div>
 </section>
@@ -404,23 +405,13 @@
 <section>
   <div class="container">
     <div class="fade-up">
-      <div class="section-label">09 &middot; Things that will surprise a partner</div>
-      <h2 class="section-title">The non-obvious bits.</h2>
+      <div class="section-label">09 &middot; Non-obvious things to watch</div>
+      <h2 class="section-title">One practical warning for anyone wiring this.</h2>
     </div>
 
     <div class="info-card amber fade-up" style="transition-delay: 0.04s">
       <h4>Cloudflare's ASCII commit gotcha</h4>
-      <p>The Cloudflare Pages deployments API rejects non-ASCII commit messages (em-dashes, middle-dots, curly quotes, arrows) with error code <strong>8000111</strong>. Every <code>wrangler deploy</code> in this repo's CI must pass <code>--commit-message="&lt;ASCII string&gt;"</code> explicitly, with a SHA-based value. This is load-bearing on day one. The matching fix landed in <code>know-2nth</code> PR #42 and is documented in detail in the project memory.</p>
-    </div>
-
-    <div class="info-card indigo fade-up" style="transition-delay: 0.05s">
-      <h4>No bespoken auth</h4>
-      <p>The <code>gate.js</code> tier-gate hook on <code>know.2nth.ai</code> is intentionally inert. This plan does not introduce a new auth system; it uses Cloudflare Access service tokens for agents and Cloudflare Access SSO for human auditors. Magic-link for general human users is parked indefinitely &mdash; the conversion play remains the <code>/join</code> form.</p>
-    </div>
-
-    <div class="info-card green fade-up" style="transition-delay: 0.06s">
-      <h4>The open question, parked deliberately</h4>
-      <p>Whether to add a thin 2nth control plane on top &mdash; a registry API, a custom approvals UI, a per-tenant management layer &mdash; is parked until the curated shortlist has run through 2&ndash;3 real pilots. The honest expectation is that discoverability and partner-onboarding ergonomics will be the friction points; building a control plane before that's confirmed is speculation.</p>
+      <p>The Cloudflare Pages deployments API rejects non-ASCII commit messages (em-dashes, middle-dots, curly quotes, arrows) with error code <strong>8000111</strong>. Any <code>wrangler deploy</code> step in CI should pass <code>--commit-message="&lt;ASCII string&gt;"</code> explicitly, with a SHA-based value. Without it, wrangler reads HEAD's raw git commit and any Unicode in there silently fails the deploy. Load-bearing on day one.</p>
     </div>
   </div>
 </section>
