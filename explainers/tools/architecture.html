@@ -4,12 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Agent platform architecture &mdash; know.2nth.ai</title>
-<meta name="description" content="The reference architecture for the 2nth.ai agent tools platform — how Grant CFO, Penny CMO, Leo CLO, Grace CHRO, and Katharine CRO call tools with proof of work, per-agent permissions, and dual-use (human + agent) surfaces. Cloudflare-first edge (Workers + D1 + R2) glued to Cerbos PDP, Langfuse audit, Inngest dual-use functions, and vendor MCP servers (GitHub, HubSpot, Salesforce, Google Workspace, Slack, Notion, BigQuery, Atlassian). Greenfield. Designed to be copied by partners.">
+<meta name="description" content="The reference architecture for the 2nth.ai agent tools platform — how Grant CFO, Penny CMO, Leo CLO, Grace CHRO, and Katharine CRO call tools with proof of work, per-agent permissions, and dual-use (human + agent) surfaces. Cloudflare-first edge (Workers + D1 + R2) glued to Cerbos PDP, Langfuse audit, Inngest dual-use functions, and vendor MCP servers (GitHub, HubSpot, Salesforce, Google Workspace, Slack, Notion, BigQuery, Atlassian). Scaffolding and testing with pilot customers. Designed to be copied by partners.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="know.2nth.ai">
 <meta property="og:url" content="https://know.2nth.ai/explainers/tools/architecture">
 <meta property="og:title" content="Agent platform architecture &mdash; know.2nth.ai">
-<meta property="og:description" content="The reference architecture for 2nth.ai's agent tools platform — Cloudflare-first edge + Cerbos + Langfuse + Inngest + vendor MCP servers. Greenfield. Partner-copyable.">
+<meta property="og:description" content="The reference architecture for 2nth.ai's agent tools platform — Cloudflare-first edge + Cerbos + Langfuse + Inngest + vendor MCP servers. Scaffolding with pilot customers. Partner-copyable.">
 <meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
@@ -183,7 +183,7 @@
       How the <span class="gradient">2nth.ai agents</span> actually call tools.
     </h1>
     <p class="sub fade-up" style="transition-delay: 0.1s">
-      The control plane behind the catalog. Each agent runs on the Claude Agent SDK with a tight <code style="font-family:'JetBrains Mono',monospace;font-size:0.86em;color:var(--sky);background:rgba(56,189,248,0.06);border:1px solid var(--border);padding:1px 5px;border-radius:4px;">allowed_tools</code> list. Every call lands in one Cloudflare Worker that asks Cerbos for a decision, optionally pauses for human approval via Inngest, forwards to a vendor MCP server, and emits an OpenTelemetry trace to a self-hosted Langfuse. Mutating tools live as Inngest functions so the same code path serves a human form and an agent. Greenfield. Built to be cloned by partners.
+      The control plane behind the catalog. Each agent runs on the Claude Agent SDK with a tight <code style="font-family:'JetBrains Mono',monospace;font-size:0.86em;color:var(--sky);background:rgba(56,189,248,0.06);border:1px solid var(--border);padding:1px 5px;border-radius:4px;">allowed_tools</code> list. Every call lands in one Cloudflare Worker that asks Cerbos for a decision, optionally pauses for human approval via Inngest, forwards to a vendor MCP server, and emits an OpenTelemetry trace to a self-hosted Langfuse. Mutating tools live as Inngest functions so the same code path serves a human form and an agent. Scaffolding and testing with pilot customers. Built to be cloned by partners.
     </p>
     <div class="hero-meta fade-up" style="transition-delay: 0.15s">
       <span class="pill accent">Cloudflare-first edge</span>
@@ -204,7 +204,7 @@
     </div>
 
     <div class="prose fade-up" style="transition-delay: 0.04s">
-      <p><strong>Status: greenfield.</strong> As of <strong>2026-05-17</strong> the scaffold exists &mdash; six Cerbos policy files, a D1 schema, the gateway Worker skeleton, one Inngest function (Penny's send-email) &mdash; but the vendor MCP wiring, the Langfuse deploy, the Cerbos deploy, and the per-tool leaves are all still ahead. The page is published early on purpose: partners can react to the shape before a single side-car ships.</p>
+      <p><strong>Status: scaffolding and testing with pilot customers.</strong> As of <strong>2026-05-17</strong> the scaffold is on disk &mdash; six Cerbos policy files, the D1 schema, the gateway Worker skeleton, one Inngest function (Penny's send-email). Pilot customers are exercising the pattern; the next PRs make one path real end-to-end (Cerbos deploy, Langfuse deploy, vendor MCP wiring). The page is published early on purpose: partners can react to the shape while we wire it.</p>
 
       <p><strong>Three guarantees the architecture enforces:</strong></p>
       <ul>
@@ -365,8 +365,8 @@
   <div class="container">
     <div class="fade-up">
       <div class="section-label">07 &middot; Build phases</div>
-      <h2 class="section-title">Seven PRs from greenfield to live audit UI.</h2>
-      <p class="section-lede">Each phase is one PR. Each builds on the last. Phase 1 is on disk as of 2026-05-17 &mdash; the remaining six are scoped but not started.</p>
+      <h2 class="section-title">Seven PRs from scaffold to live audit UI.</h2>
+      <p class="section-lede">Each phase is one PR. Each builds on the last. Phase 1 is on disk as of 2026-05-17 &mdash; the remaining six are scoped, sequenced, and being shaped against what we're learning from pilot customers.</p>
     </div>
 
     <div class="phase-list fade-up" style="transition-delay: 0.04s">
