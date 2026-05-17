@@ -413,17 +413,12 @@
       <p>The Cloudflare Pages deployments API rejects non-ASCII commit messages (em-dashes, middle-dots, curly quotes, arrows) with error code <strong>8000111</strong>. Every <code>wrangler deploy</code> in this repo's CI must pass <code>--commit-message="&lt;ASCII string&gt;"</code> explicitly, with a SHA-based value. This is load-bearing on day one. The matching fix landed in <code>know-2nth</code> PR #42 and is documented in detail in the project memory.</p>
     </div>
 
-    <div class="info-card rose fade-up" style="transition-delay: 0.05s">
-      <h4><code>skills.2nth.ai</code> is retired</h4>
-      <p>The legacy public renderer for agent skills was retired on <strong>2026-05-17</strong>. Partners should consume agent skills directly from the <code>2nth-ai/skills</code> repo (the <code>AGENT.md</code> + <code>SKILL.md</code> files), not from the dead public hub. The MCP servers in this architecture are runtime tools; skills are static role descriptions. Different artefact, different consumer.</p>
-    </div>
-
-    <div class="info-card indigo fade-up" style="transition-delay: 0.06s">
+    <div class="info-card indigo fade-up" style="transition-delay: 0.05s">
       <h4>No bespoken auth</h4>
       <p>The <code>gate.js</code> tier-gate hook on <code>know.2nth.ai</code> is intentionally inert. This plan does not introduce a new auth system; it uses Cloudflare Access service tokens for agents and Cloudflare Access SSO for human auditors. Magic-link for general human users is parked indefinitely &mdash; the conversion play remains the <code>/join</code> form.</p>
     </div>
 
-    <div class="info-card green fade-up" style="transition-delay: 0.07s">
+    <div class="info-card green fade-up" style="transition-delay: 0.06s">
       <h4>The open question, parked deliberately</h4>
       <p>Whether to add a thin 2nth control plane on top &mdash; a registry API, a custom approvals UI, a per-tenant management layer &mdash; is parked until the curated shortlist has run through 2&ndash;3 real pilots. The honest expectation is that discoverability and partner-onboarding ergonomics will be the friction points; building a control plane before that's confirmed is speculation.</p>
     </div>
