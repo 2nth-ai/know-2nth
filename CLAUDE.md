@@ -134,11 +134,16 @@ Both work; pick whichever the surrounding hub uses. **Stubs use the `soon` modif
 - **Buttons**: Outfit, pill radius. Primary = blue→sky gradient. Ghost = transparent + 1px border.
 - **Fade-in**: `.fade-up` with IntersectionObserver, ~24px translate, 0.6s ease.
 
-## Tier-gating: currently inert
+## Tier-gating: active for opinionated decision content (from 2026-05-17)
 
-Per PR #15, **all content is open**. `gate.js` is loaded on every leaf (~95 files) but does nothing because no element on the site carries `data-tier="member"`. The hook is wired to set a `2nth-know-member` localStorage flag on successful HubSpot form submit (typically from `/join.html`).
+The membership flag system is in use. `gate.js` is loaded on every leaf and applies an overlay to any element carrying `data-tier="member"` for visitors without the `2nth-know-member` localStorage flag (set on successful HubSpot form submit from `/join.html`).
 
-**Don't add new `data-tier="member"` attributes when authoring leaves** — they will silently do nothing now and create cleanup work later. Re-gating is a Phase 2 decision tied to magic-link auth; until then, the conversion play is the `/join` form for tracking who's reading.
+**Policy as of 2026-05-17:**
+- **Reference content** (what a tool is, how it works, neutral explainers, hub leaves) stays **open**. That's the default for new leaves.
+- **Opinionated decision content** (why we picked X over Y, cost-of-being-wrong, partner gotchas, implications-to-plan-for) is **member-tier**. Wrap the section *bodies* in `<div data-tier="member">…</div>`; keep the section label + title + lede *outside* the gate so non-members see the table of contents and know what they're signing up for.
+- **First leaf using this pattern:** `/explainers/tools/runtime.html`. Use it as a template for future decision leaves.
+
+Magic-link auth remains parked. The HubSpot-flag-in-localStorage is a soft signal — anyone who joined once stays a "member" forever (until they clear storage). That's intentional for the current low-stakes use; if we ever want hard auth we'll layer it on later. The conversion play remains the `/join` form.
 
 ## Voice
 

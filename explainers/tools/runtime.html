@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent runtime &mdash; choosing a multi-provider runtime &mdash; know.2nth.ai</title>
+<meta name="description" content="The runtime layer in a model-portable architecture. Why a multi-provider runtime is the right pick when the architecture must support models from open weights (Ollama, vLLM) through frontier (Claude, GPT, Gemini) and never lock to one provider. LangGraph as the recommendation, with Vercel AI SDK and Pydantic AI as credible alternatives. Claude Agent SDK rejected for this architecture (Claude-locked) but explained for when commitment to one model makes it the right call.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/tools/runtime">
+<meta property="og:title" content="Agent runtime &mdash; choosing a multi-provider runtime &mdash; know.2nth.ai">
+<meta property="og:description" content="The runtime layer in a model-portable architecture. LangGraph as the recommendation; Vercel AI SDK and Pydantic AI as credible alternatives. Member content.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Agent runtime &mdash; choosing a multi-provider runtime &mdash; know.2nth.ai">
+<meta name="twitter:description" content="The runtime layer in a model-portable architecture. LangGraph + Vercel AI SDK + Pydantic AI. Member content.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3Cline x1='16' y1='3' x2='16' y2='7' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='16' y1='25' x2='16' y2='29' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='3' y1='16' x2='7' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='25' y1='16' x2='29' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3C/svg%3E">
+<style>
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12); --violet: #8B5CF6; --violet-soft: rgba(139, 92, 246, 0.12); --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-soft: rgba(99, 102, 241, 0.12); --bg: var(--ink); --bg-raised: var(--navy); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(37, 99, 235, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(56, 189, 248, 0.3); --max-w: 1200px; --read-w: 760px; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-raised: #FFFFFF; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(37, 99, 235, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(37, 99, 235, 0.25); }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.blue { width: 600px; height: 600px; background: var(--blue); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--sky); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--sky); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .read { max-width: var(--read-w); }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--sky); }
+  .crumb-sep { opacity: 0.5; }
+  .crumb-current { color: var(--text-secondary); }
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--indigo); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--indigo); box-shadow: 0 0 12px var(--indigo); }
+  .hero h1 { font-size: clamp(38px, 5.6vw, 60px); font-weight: 800; line-height: 1.05; letter-spacing: -2px; margin-bottom: 22px; max-width: 18ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--blue-glow), var(--sky), var(--sky-muted)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 720px; line-height: 1.7; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.accent { background: rgba(37, 99, 235, 0.12); color: var(--blue-glow); border-color: rgba(37, 99, 235, 0.25); }
+  .pill.green { background: var(--green-soft); color: var(--green); border-color: rgba(16, 185, 129, 0.25); }
+  .pill.indigo { background: var(--indigo-soft); color: var(--indigo); border-color: rgba(99, 102, 241, 0.25); }
+  .pill.warm { background: var(--warm-soft); color: var(--warm); border-color: rgba(245, 158, 11, 0.25); }
+  .pill.member { background: linear-gradient(135deg, rgba(37, 99, 235, 0.18), rgba(99, 102, 241, 0.22)); color: var(--blue-glow); border-color: rgba(99, 102, 241, 0.4); }
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--sky); margin-bottom: 14px; }
+  .section-label.member-label { color: var(--indigo); }
+  .section-label .lock { font-size: 10px; margin-left: 6px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .section-lede strong { color: var(--text-primary); font-weight: 600; }
+  .section-lede code { font-family: 'JetBrains Mono', monospace; font-size: 0.86em; background: rgba(56, 189, 248, 0.06); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--sky); }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--sky); }
+  .prose ul, .prose ol { padding-left: 24px; margin-bottom: 18px; max-width: var(--read-w); }
+  .prose li { font-size: 15px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 8px; }
+  .prose li strong { color: var(--text-primary); font-weight: 600; }
+  .prose li code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; color: var(--sky); background: rgba(56, 189, 248, 0.06); padding: 1px 5px; border-radius: 3px; }
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: 1040px; margin-bottom: 24px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--sky); background: rgba(37, 99, 235, 0.04); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); }
+  .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--sky); }
+  .compare td strong { color: var(--text-primary); }
+  .does-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; max-width: 1040px; margin-bottom: 20px; }
+  .does-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--blue); border-radius: var(--radius-md); padding: 18px 22px; }
+  .does-cell h4 { font-size: 14px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.2px; }
+  .does-cell p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+  .does-cell code { font-family: 'JetBrains Mono', monospace; font-size: 0.86em; color: var(--sky); background: rgba(56, 189, 248, 0.06); padding: 1px 5px; border-radius: 3px; }
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px 28px; max-width: var(--read-w); margin-bottom: 16px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.indigo { border-left: 3px solid var(--indigo); }
+  .info-card.rose { border-left: 3px solid var(--rose); }
+  .info-card.sky { border-left: 3px solid var(--sky); }
+  .info-card h4 { font-size: 15px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .info-card code { font-family: 'JetBrains Mono', monospace; font-size: 0.86em; color: var(--sky); background: rgba(56, 189, 248, 0.06); padding: 1px 5px; border-radius: 4px; }
+  .info-card strong { color: var(--text-primary); font-weight: 600; }
+  .cross-links { display: flex; gap: 10px; flex-wrap: wrap; }
+  .cross-link { font-family: 'JetBrains Mono', monospace; font-size: 12px; padding: 10px 20px; border-radius: var(--radius-pill); border: 1px solid var(--border); background: var(--bg-card); text-decoration: none; color: var(--text-secondary); transition: all 0.3s; letter-spacing: 0.5px; }
+  .cross-link:hover { border-color: var(--border-hover); color: var(--sky); transform: translateY(-1px); }
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--sky); word-break: break-all; }
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--sky); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .footer-review { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); margin-top: 14px; letter-spacing: 0.4px; }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+
+<div class="glow-orb blue"></div>
+<div class="glow-orb sky"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand">
+      <span class="nav-brand-mark">know.2nth.ai</span>
+      <span class="nav-brand-sub">tools &middot; runtime</span>
+    </a>
+    <div class="nav-right">
+      <a href="index.html" class="nav-link">&larr; Tools</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x1F319;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="index.html">Tools</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">Runtime &middot; Claude Agent SDK</span>
+  </div>
+</div>
+
+<!-- HERO (open) -->
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> tools &middot; substrate decision &middot; runtime layer</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      Choosing a runtime when <span class="gradient">model portability</span> is the constraint.
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      Strategic constraint: agents must support model choices from open weights (Ollama, vLLM) through frontier (Claude, GPT, Gemini), and the architecture must never be tied to one provider. That requirement immediately narrows the runtime layer to options that are <strong>multi-provider native</strong>. This leaf works the decision: which runtime, what it gives you, what you give up, and when the calculus flips toward a first-party SDK like Claude Agent SDK instead.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill member">Members &middot; gated</span>
+      <span class="pill accent">Runtime layer</span>
+      <span class="pill indigo">Decision doc</span>
+      <span class="pill warm">Hot &middot; quarterly review</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 · TL;DR (open as teaser) -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; TL;DR</div>
+      <h2 class="section-title">What the SDK is, in one paragraph.</h2>
+    </div>
+
+    <div class="prose fade-up" style="transition-delay: 0.04s">
+      <p><strong>The recommendation:</strong> <strong>LangGraph</strong> as the runtime, paired with a model gateway underneath (Cloudflare AI Gateway, OpenRouter, LiteLLM &mdash; see the <a href="index.html#03" style="color:var(--sky);text-decoration:none;border-bottom:1px solid var(--sky)">model gateway category</a>). LangGraph is multi-provider native (provider switching is a config call to <code>init_chat_model</code>), mature (v1.0 late 2025, 90k+ stars), MCP-aware, and pairs cleanly with both LangSmith and OTel-based audit. The second pick is <strong>Vercel AI SDK</strong> for TypeScript-first shops; <strong>Pydantic AI</strong> for type-first Python. The Claude Agent SDK is the right choice only when you have committed to Claude as the single model &mdash; which, by the architecture's stated constraint, this design hasn't.</p>
+    </div>
+
+    <div class="info-card sky fade-up" style="transition-delay: 0.06s">
+      <h4>About this leaf</h4>
+      <p>This is a <strong>member-tier</strong> decision leaf on know.2nth.ai. Opinionated content &mdash; "the runtime layer choice and what it costs" &mdash; goes behind the join wall. Reference content (the landscape, categories, options per category) stays open at <a href="index.html" style="color:var(--sky);text-decoration:none;border-bottom:1px solid var(--sky)">/tools/</a>. Sign up via the <a href="../../join.html" style="color:var(--sky);text-decoration:none;border-bottom:1px solid var(--sky)">join form</a> to unlock the rest.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 · ALTERNATIVES (gated) -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label member-label">02 &middot; Why LangGraph, what we considered <span class="lock">&#x1F512;</span></div>
+      <h2 class="section-title">Six runtimes weighed, ranked by model-portability fit.</h2>
+      <p class="section-lede">The model-portability constraint cuts the candidate list immediately: any first-party SDK that locks to one provider is out. Among multi-provider options, the deciding factor is maturity at scale (state, multi-agent orchestration, MCP support, ecosystem) versus ergonomics (DX, type safety, smaller mental model).</p>
+    </div>
+
+    <div data-tier="member">
+      <div class="compare-wrap fade-up" style="transition-delay: 0.04s">
+        <table class="compare">
+          <thead><tr><th>Runtime</th><th>Verdict</th></tr></thead>
+          <tbody>
+            <tr><td><strong>LangGraph</strong> <span style="color:var(--green);font-weight:600">&mdash; pick</span></td><td>Multi-provider native via <code>init_chat_model</code>. Mature (v1.0 late 2025, 90k+ stars). MCP-aware as of late 2025. Best-in-class for stateful multi-agent orchestration when you grow into it. Strong observability story (LangSmith native; Langfuse via OTel exporter). Pairs cleanly with LiteLLM as the model gateway. Python ecosystem is the broader hireable pool.</td></tr>
+            <tr><td><strong>Vercel AI SDK v6</strong> <span style="color:var(--sky);font-weight:600">&mdash; alt for TS shops</span></td><td>TypeScript-first, native multi-provider, lovely DX, ToolLoopAgent for production. Narrower scope than LangGraph for complex orchestration. Right pick if the team is TS-only.</td></tr>
+            <tr><td><strong>Pydantic AI</strong> <span style="color:var(--sky);font-weight:600">&mdash; alt for type-first Python</span></td><td>Multi-provider; Pydantic-typed everywhere. Smaller community; less mature for complex multi-agent. Right pick if your stance is "types over flexibility."</td></tr>
+            <tr><td><strong>CrewAI</strong></td><td>Role-based, fast adoption (60%+ Fortune 500 by Jan 2026). Multi-provider. Coarser permission model than LangGraph; less granular hook surface for layering Cerbos / Langfuse. Outgrown by teams that need fine-grained control.</td></tr>
+            <tr><td><strong>Claude Agent SDK</strong> <span style="color:var(--rose);font-weight:600">&mdash; rejected here</span></td><td>First-party for Claude. Beautiful primitives (<code>allowed_tools</code>, <code>PreToolUse</code> hooks, MCP-native, Skills, prompt caching). <strong>Claude-only.</strong> The right pick when the team has committed to Claude as the single model; ruled out by this architecture's model-portability constraint.</td></tr>
+            <tr><td><strong>OpenAI Agents SDK</strong> <span style="color:var(--rose);font-weight:600">&mdash; rejected here</span></td><td>OpenAI-only. Same shape of disqualification as Claude Agent SDK, opposite direction.</td></tr>
+            <tr><td><strong>Raw API + DIY loop</strong></td><td>Maximum control; you rebuild the loop, context compaction, tool-result feeding, MCP plumbing. Worth it if you have unusual constraints; otherwise the LangGraph-style runtime saves months of work.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="prose fade-up" style="transition-delay: 0.06s">
+        <p><strong>The deciding factor.</strong> If model portability is a stated requirement, <em>any</em> first-party SDK that locks to one provider is disqualified before the analysis starts. That leaves multi-provider runtimes. Among those, LangGraph's combination of maturity, multi-agent depth, and MCP support wins for production workloads. Vercel AI SDK wins for TypeScript-only shops. Pydantic AI wins for teams that prize type safety over flexibility.</p>
+        <p>The architecture lets you reverse this later: swapping LangGraph for Vercel AI SDK is roughly one day per agent, since MCP, Cerbos, Langfuse, and Inngest all sit downstream of the runtime and don't care which one is on top.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 · WHAT THE SDK DOES FOR US (gated) -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label member-label">03 &middot; What LangGraph does, what you layer on top <span class="lock">&#x1F512;</span></div>
+      <h2 class="section-title">Five concrete jobs &mdash; and what the architecture wires around it.</h2>
+      <p class="section-lede">A runtime is narrow by design. Knowing exactly what LangGraph gives you (and what it doesn't) is the difference between using it cleanly and fighting it.</p>
+    </div>
+
+    <div data-tier="member">
+      <div class="does-grid fade-up" style="transition-delay: 0.04s">
+        <div class="does-cell"><h4>1 &middot; Hosts the agent loop</h4><p>Model call, tool-call parsing, tool execution, result feedback, state transitions. Multi-step graphs as a first-class primitive.</p></div>
+        <div class="does-cell"><h4>2 &middot; Multi-provider model calls</h4><p><code>init_chat_model("claude-opus-4-7")</code> or <code>"gpt-5"</code> or <code>"ollama:llama-4"</code>. Switch with a config change, not a refactor.</p></div>
+        <div class="does-cell"><h4>3 &middot; MCP-aware (as of late 2025)</h4><p>Connects to MCP servers directly. Points at the <code>mcp-gateway</code> Worker URL like any other MCP source.</p></div>
+        <div class="does-cell"><h4>4 &middot; Interrupts + state checkpoints</h4><p>Built-in human-in-the-loop interrupts. State checkpointing for replay + persistence. Pair with Inngest for cross-process pauses.</p></div>
+        <div class="does-cell"><h4>5 &middot; Native LangSmith observability</h4><p>Traces flow into LangSmith out of the box; OTel exporter sends them to Langfuse instead if that's the audit backend.</p></div>
+      </div>
+
+      <div class="info-card indigo fade-up" style="transition-delay: 0.06s">
+        <h4>What LangGraph does NOT do &mdash; and what the architecture layers in</h4>
+        <p><strong>Model routing across providers + cost / cache.</strong> Layered in via the model gateway (Cloudflare AI Gateway + LiteLLM) below LangGraph.</p>
+        <p><strong>Audit / proof of work.</strong> LangGraph emits traces; Langfuse stores them via the OTel GenAI exporter.</p>
+        <p><strong>Permission policy beyond the framework allowlist.</strong> Layered in via Cerbos, called from a custom node or pre-tool hook.</p>
+        <p><strong>Cross-process human-in-the-loop approval.</strong> LangGraph's interrupts are in-process; for durable approvals (HTML form, hours-long wait, retries), Inngest sits alongside.</p>
+        <p><strong>Human-facing surface for the same actions.</strong> An HTML form on Cloudflare Pages that fires the same Inngest event &mdash; identical code path.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 · IMPLICATIONS (gated) -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label member-label">04 &middot; Implications to plan for <span class="lock">&#x1F512;</span></div>
+      <h2 class="section-title">The honest cost-of-being-right.</h2>
+      <p class="section-lede">A multi-provider runtime keeps the model itself optional, which is the whole point. But the layer isn't free. Six implications worth saying out loud.</p>
+    </div>
+
+    <div data-tier="member">
+      <div class="fade-up" style="transition-delay: 0.04s">
+        <div class="info-card green">
+          <h4>1 &middot; Provider-portable, by construction</h4>
+          <p>The whole reason for picking LangGraph (or Vercel AI SDK / Pydantic AI) is that <code>init_chat_model("&lt;provider&gt;:&lt;model&gt;")</code> swaps the model. Going from Claude to GPT to a self-hosted Llama via Ollama is a <strong>config change</strong>, not a code change. The architecture's downstream layers (MCP, Cerbos, Langfuse, Inngest) are all provider-neutral too.</p>
+        </div>
+
+        <div class="info-card sky">
+          <h4>2 &middot; Multi-provider testing is a tax</h4>
+          <p>If you actually use the portability &mdash; routing one task to Claude, another to GPT, another to Llama &mdash; you need an <strong>eval harness that runs across providers</strong>. Different models have different tool-calling reliability, different context-window costs, different refusal patterns. Budget time for an eval suite from day one.</p>
+        </div>
+
+        <div class="info-card indigo">
+          <h4>3 &middot; State-graph mental model</h4>
+          <p>LangGraph models agents as state graphs &mdash; nodes for steps, edges for transitions, interrupts for human gates. Worth the learning curve at production scale (multi-agent orchestration, replay-debuggable workflows) but slower to start than a one-loop SDK. Expect a week of ramp-up per engineer.</p>
+        </div>
+
+        <div class="info-card amber">
+          <h4>4 &middot; Observability backend choice is downstream</h4>
+          <p>LangGraph emits traces to LangSmith by default; that's the slick path. For Langfuse (self-hosted, OSS), use the OpenTelemetry GenAI exporter and accept slightly less polish in the UI in exchange for owning the trace store. The reversal cost is low &mdash; pick later if you need to.</p>
+        </div>
+
+        <div class="info-card rose">
+          <h4>5 &middot; Model gateway sits underneath, not inside</h4>
+          <p>LangGraph's <code>init_chat_model</code> can route to provider-direct (e.g. Anthropic SDK, OpenAI SDK) <em>or</em> to a unified endpoint (LiteLLM, OpenRouter, Cloudflare AI Gateway). Use the unified endpoint &mdash; centralised auth + caching + rate limits + cost metering matter more than the marginal latency of a hop. The model gateway is its own layer in the architecture, deliberately.</p>
+        </div>
+
+        <div class="info-card amber">
+          <h4>6 &middot; If you commit to Claude later, switch back</h4>
+          <p>The Claude Agent SDK is genuinely the best fit when (and only when) Claude is the only model. If a pilot proves that's the right call &mdash; Claude wins on every task that matters &mdash; <strong>switching to Claude Agent SDK is ~1 day per agent</strong>. The lock-in becomes acceptable because it bought first-party features (Skills, MCP, prompt caching, sub-agents). Don't pre-commit; reserve the option.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 · CONNECTIONS (open) -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; Connections</div>
+      <h2 class="section-title">Where this leaf links into the rest of the tree.</h2>
+    </div>
+
+    <div class="cross-links fade-up" style="transition-delay: 0.03s">
+      <a href="index.html" class="cross-link">&rarr; Tools catalog</a>
+      <a href="architecture.html" class="cross-link">&rarr; Architecture</a>
+      <a href="../agents/anthropic-agent-sdk.html" class="cross-link">&rarr; Claude Agent SDK (general explainer)</a>
+      <a href="../agents/mcp.html" class="cross-link">&rarr; MCP</a>
+      <a href="../agents/skills.html" class="cross-link">&rarr; Agent Skills</a>
+      <a href="../agents/claude.html" class="cross-link">&rarr; Claude (the model)</a>
+      <a href="../agents/langgraph.html" class="cross-link">&rarr; LangGraph (alternative we passed on)</a>
+      <a href="../agents/crewai.html" class="cross-link">&rarr; CrewAI (alternative we passed on)</a>
+      <a href="../agents/openai-agents-sdk.html" class="cross-link">&rarr; OpenAI Agents SDK (alternative)</a>
+    </div>
+  </div>
+</section>
+
+<!-- 06 · RESOURCES (open) -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; Resources</div>
+      <h2 class="section-title">Primary sources.</h2>
+      <p class="section-lede">Linked tersely. The SDK moves fast &mdash; verify the version against the date on this leaf.</p>
+    </div>
+
+    <div class="resource-grid fade-up" style="transition-delay: 0.03s">
+      <a class="resource" href="https://www.langchain.com/langgraph" target="_blank" rel="noopener"><span class="r-kind">Recommended runtime</span><span class="r-title">LangGraph</span><span class="r-url">langchain.com/langgraph</span></a>
+      <a class="resource" href="https://github.com/langchain-ai/langgraph" target="_blank" rel="noopener"><span class="r-kind">Repo</span><span class="r-title">LangGraph on GitHub</span><span class="r-url">github.com/langchain-ai/langgraph</span></a>
+      <a class="resource" href="https://ai-sdk.dev" target="_blank" rel="noopener"><span class="r-kind">Alt runtime &middot; TS</span><span class="r-title">Vercel AI SDK</span><span class="r-url">ai-sdk.dev</span></a>
+      <a class="resource" href="https://ai.pydantic.dev" target="_blank" rel="noopener"><span class="r-kind">Alt runtime &middot; types</span><span class="r-title">Pydantic AI</span><span class="r-url">ai.pydantic.dev</span></a>
+      <a class="resource" href="https://docs.crewai.com" target="_blank" rel="noopener"><span class="r-kind">Alt runtime &middot; roles</span><span class="r-title">CrewAI</span><span class="r-url">docs.crewai.com</span></a>
+      <a class="resource" href="https://github.com/anthropics/claude-agent-sdk-python" target="_blank" rel="noopener"><span class="r-kind">First-party</span><span class="r-title">Claude Agent SDK (Python)</span><span class="r-url">github.com/anthropics/claude-agent-sdk-python</span></a>
+      <a class="resource" href="https://github.com/BerriAI/litellm" target="_blank" rel="noopener"><span class="r-kind">Model gateway</span><span class="r-title">LiteLLM</span><span class="r-url">github.com/BerriAI/litellm</span></a>
+      <a class="resource" href="https://developers.cloudflare.com/ai-gateway/" target="_blank" rel="noopener"><span class="r-kind">Model gateway</span><span class="r-title">Cloudflare AI Gateway</span><span class="r-url">developers.cloudflare.com/ai-gateway</span></a>
+      <a class="resource" href="https://openrouter.ai" target="_blank" rel="noopener"><span class="r-kind">Model gateway</span><span class="r-title">OpenRouter</span><span class="r-url">openrouter.ai</span></a>
+      <a class="resource" href="https://modelcontextprotocol.io" target="_blank" rel="noopener"><span class="r-kind">Protocol</span><span class="r-title">Model Context Protocol</span><span class="r-url">modelcontextprotocol.io</span></a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <div class="footer-tagline">The Knowledge Tree</div>
+    <div class="footer-links">
+      <a href="../../index.html">Tree</a>
+      <a href="index.html">Tools</a>
+      <a href="../../about.html">About</a>
+      <a href="../../join.html">Join</a>
+      <a href="https://2nth.ai">2nth.ai</a>
+    </div>
+    <div class="footer-copy">&copy; 2026 imbila.ai &middot; All knowledge open &middot; some opinionated content gated to Members</div>
+    <div class="footer-review">Last reviewed: 2026-05-17 &middot; Cadence: hot (quarterly) &middot; Tier: member</div>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme() {
+    const cur = document.documentElement.getAttribute('data-theme');
+    const next = cur === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('2nth-theme', next);
+  }
+  const stored = localStorage.getItem('2nth-theme');
+  if (stored) document.documentElement.setAttribute('data-theme', stored);
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.05 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+
+<script src="/gate.js" defer></script>
+
+</body>
+</html>
