@@ -3,50 +3,28 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tools &mdash; know.2nth.ai</title>
-<meta name="description" content="The Tools catalog on know.2nth.ai — a curated, off-the-shelf toolset for a fractional-agent set-up (illustrative roster: Grant CFO, Penny CMO, Leo CLO, Grace CHRO, Katharine CRO). Vendor-maintained MCP servers (GitHub, HubSpot, Salesforce, Google Workspace, Slack, Notion, BigQuery, Atlassian) on top of a Cloudflare-first substrate: Claude Agent SDK + Cerbos for permissions + Langfuse for proof of work + Inngest for dual-use. Reference knowledge — the catalog describes the design.">
+<title>Tools &mdash; the agent tool landscape &mdash; know.2nth.ai</title>
+<meta name="description" content="The agent tool landscape — what categories of tooling an agent platform actually needs to ship into production, what credible options exist in each, and how to choose between them. Ten categories (runtime, tool protocol, registries, permissions, audit, sandbox, dual-use workflow, identity, approval, memory) plus the cross-cutting universe of vendor MCP servers. Reference knowledge — no claims about anyone's deployment.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="know.2nth.ai">
 <meta property="og:url" content="https://know.2nth.ai/explainers/tools/">
-<meta property="og:title" content="Tools &mdash; know.2nth.ai">
-<meta property="og:description" content="A tools catalog for a fractional-agent set-up. Vendor MCP servers + Cerbos permissions + Langfuse proof of work + Inngest dual-use. Reference knowledge, copyable.">
+<meta property="og:title" content="Tools &mdash; the agent tool landscape &mdash; know.2nth.ai">
+<meta property="og:description" content="The agent tool landscape — ten categories, options per category, how to choose. Reference knowledge for shipping agents into production.">
 <meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Tools &mdash; know.2nth.ai">
-<meta name="twitter:description" content="A tools catalog for fractional-agent set-ups. Vendor MCP + Cerbos + Langfuse + Inngest. Reference.">
+<meta name="twitter:title" content="Tools &mdash; the agent tool landscape &mdash; know.2nth.ai">
+<meta name="twitter:description" content="The agent tool landscape — ten categories, options per category, how to choose.">
 <meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3Cline x1='16' y1='3' x2='16' y2='7' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='16' y1='25' x2='16' y2='29' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='3' y1='16' x2='7' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='25' y1='16' x2='29' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3C/svg%3E">
 <style>
-  :root {
-    --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33;
-    --blue: #2563EB; --blue-glow: #3B82F6;
-    --sky: #38BDF8; --sky-muted: #7DD3FC;
-    --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8;
-    --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12);
-    --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12);
-    --violet: #8B5CF6; --violet-soft: rgba(139, 92, 246, 0.12);
-    --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12);
-    --indigo: #6366F1; --indigo-soft: rgba(99, 102, 241, 0.12);
-    --bg: var(--ink); --bg-raised: var(--navy);
-    --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(37, 99, 235, 0.06);
-    --text-primary: var(--paper); --text-secondary: var(--slate);
-    --text-muted: #64748B;
-    --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(56, 189, 248, 0.3);
-    --max-w: 1200px;
-    --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px;
-  }
-  [data-theme="light"] {
-    --bg: #F1F5F9; --bg-raised: #FFFFFF;
-    --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(37, 99, 235, 0.04);
-    --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8;
-    --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(37, 99, 235, 0.25);
-  }
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12); --violet: #8B5CF6; --violet-soft: rgba(139, 92, 246, 0.12); --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-soft: rgba(99, 102, 241, 0.12); --bg: var(--ink); --bg-raised: var(--navy); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(37, 99, 235, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(56, 189, 248, 0.3); --max-w: 1200px; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-raised: #FFFFFF; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(37, 99, 235, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(37, 99, 235, 0.25); }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html { scroll-behavior: smooth; }
   body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
@@ -55,7 +33,6 @@
   .glow-orb.blue { width: 600px; height: 600px; background: var(--blue); top: -200px; right: -100px; }
   .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
   [data-theme="light"] .glow-orb { opacity: 0.04; }
-
   nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
   [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
   .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
@@ -67,79 +44,86 @@
   .nav-link:hover { color: var(--sky); }
   .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
   .theme-toggle:hover { border-color: var(--border-hover); color: var(--sky); }
-
   .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
-
   .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
   .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
   .crumb a:hover { color: var(--sky); }
   .crumb-sep { opacity: 0.5; }
   .crumb-current { color: var(--text-secondary); }
-
   .hub-hero { padding: 48px 0 56px; }
   .hub-hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--indigo); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
   .hub-hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--indigo); box-shadow: 0 0 12px var(--indigo); }
   .hub-hero h1 { font-size: clamp(40px, 6.4vw, 66px); font-weight: 800; line-height: 1.05; letter-spacing: -2px; margin-bottom: 24px; max-width: 18ch; }
   .hub-hero h1 .gradient { background: linear-gradient(135deg, var(--blue-glow), var(--sky), var(--sky-muted)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-  .hub-hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 720px; line-height: 1.7; font-weight: 300; margin-bottom: 28px; }
+  .hub-hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 760px; line-height: 1.7; font-weight: 300; margin-bottom: 28px; }
   .hub-hero .review { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.4px; margin-bottom: 24px; }
   .hub-stats { display: flex; gap: 32px; flex-wrap: wrap; }
   .hub-stat { padding-right: 32px; border-right: 1px solid var(--border); }
   .hub-stat:last-child { border-right: none; padding-right: 0; }
   .hub-stat .num { font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 700; background: linear-gradient(135deg, var(--blue-glow), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1; margin-bottom: 6px; }
   .hub-stat .label { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
-
-  section.hub-section { padding: 32px 0 48px; position: relative; }
+  section.hub-section { padding: 36px 0 48px; position: relative; }
   .hub-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--sky); margin-bottom: 14px; }
   .hub-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 14px; line-height: 1.2; }
-  .hub-lede { font-size: 16px; color: var(--text-secondary); max-width: 720px; line-height: 1.7; font-weight: 300; margin-bottom: 32px; }
+  .hub-lede { font-size: 16px; color: var(--text-secondary); max-width: 760px; line-height: 1.7; font-weight: 300; margin-bottom: 32px; }
   .hub-lede strong { color: var(--text-primary); font-weight: 600; }
-
-  .category-band { display: flex; align-items: center; gap: 16px; margin: 40px 0 18px; }
-  .category-band:first-of-type { margin-top: 0; }
-  .category-band .c-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 600; letter-spacing: 1.6px; text-transform: uppercase; color: var(--indigo); white-space: nowrap; }
-  .category-band .c-role { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
-  .category-band .c-rule { flex: 1; height: 1px; background: linear-gradient(90deg, var(--border-hover), transparent); }
-
-  .svc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
-  .svc-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 24px; text-decoration: none; color: inherit; display: block; transition: all 0.3s; position: relative; }
-  .svc-card:hover { border-color: var(--border-hover); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); }
-  .svc-card.soon { cursor: default; opacity: 0.74; }
-  .svc-card.soon:hover { transform: none; box-shadow: none; border-color: var(--border); }
-  .svc-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
-  .svc-name { font-size: 16px; font-weight: 700; letter-spacing: -0.3px; }
-  .svc-state { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.1px; text-transform: uppercase; padding: 3px 9px; border-radius: var(--radius-pill); font-weight: 600; flex-shrink: 0; }
-  .svc-state.live { background: rgba(37, 99, 235, 0.12); color: var(--blue-glow); }
-  .svc-state.soon { background: transparent; border: 1px dashed var(--border); color: var(--text-muted); }
-  .svc-path { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: var(--text-muted); margin-bottom: 10px; display: block; }
-  .svc-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
-
-  .stack-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; max-width: 1040px; margin-bottom: 20px; }
-  .stack-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--indigo); border-radius: var(--radius-md); padding: 20px 24px; text-decoration: none; color: inherit; display: block; transition: all 0.3s; position: relative; }
-  a.stack-cell:hover { border-color: var(--border-hover); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); }
-  .stack-cell .member-tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.1px; text-transform: uppercase; padding: 2px 7px; border-radius: var(--radius-pill); font-weight: 600; background: linear-gradient(135deg, rgba(37, 99, 235, 0.18), rgba(99, 102, 241, 0.22)); color: var(--blue-glow); border: 1px solid rgba(99, 102, 241, 0.4); position: absolute; top: 10px; right: 10px; }
-  .stack-cell .layer { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
-  .stack-cell h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.3px; }
-  .stack-cell p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
-  .stack-cell .vendor { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--sky); display: block; margin-top: 6px; letter-spacing: 0.4px; }
-
-  .principles { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 14px; max-width: 1040px; }
-  .principle { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--indigo); border-radius: var(--radius-md); padding: 22px 26px; }
-  .principle h4 { font-size: 15px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.2px; }
-  .principle p { font-size: 13px; color: var(--text-secondary); line-height: 1.65; }
-
-  .flow { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 32px; max-width: 760px; margin-bottom: 24px; }
-  .flow h4 { font-size: 16px; font-weight: 700; margin-bottom: 12px; letter-spacing: -0.2px; }
-  .flow ol { padding-left: 20px; }
-  .flow li { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 8px; }
-  .flow li strong { color: var(--text-primary); font-weight: 600; }
-  .flow li code { font-family: 'JetBrains Mono', monospace; font-size: 0.86em; background: rgba(56, 189, 248, 0.08); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--sky); }
-
+  .hub-lede code { font-family: 'JetBrains Mono', monospace; font-size: 0.86em; background: rgba(56, 189, 248, 0.06); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--sky); }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: 760px; margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .cat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .cat-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px 24px; text-decoration: none; color: inherit; display: block; transition: all 0.3s; position: relative; }
+  .cat-cell:hover { border-color: var(--border-hover); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); }
+  .cat-cell .num { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 600; letter-spacing: 1.4px; color: var(--indigo); display: block; margin-bottom: 6px; }
+  .cat-cell h4 { font-size: 16px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.3px; }
+  .cat-cell p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 10px; }
+  .cat-cell .q { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--sky); display: block; padding-top: 8px; border-top: 1px dashed var(--border); letter-spacing: 0.3px; }
+  .cat-cell .q::before { content: 'Q · '; color: var(--text-muted); }
+  .layer-block { padding-bottom: 32px; margin-bottom: 24px; border-bottom: 1px dashed var(--border); }
+  .layer-block:last-of-type { border-bottom: none; }
+  .layer-band { display: flex; align-items: baseline; gap: 14px; margin: 28px 0 16px; }
+  .layer-band:first-of-type { margin-top: 0; }
+  .layer-band .num { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; color: var(--indigo); }
+  .layer-band .name { font-size: 19px; font-weight: 700; letter-spacing: -0.3px; }
+  .layer-band .rule { flex: 1; height: 1px; background: linear-gradient(90deg, var(--border-hover), transparent); margin-left: 8px; }
+  .layer-intro { font-size: 14px; color: var(--text-secondary); max-width: 760px; margin-bottom: 14px; line-height: 1.7; }
+  .layer-intro strong { color: var(--text-primary); font-weight: 600; }
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; max-width: 1040px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td { padding: 11px 14px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--sky); background: rgba(37, 99, 235, 0.04); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); }
+  .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--sky); }
+  .compare td strong { color: var(--text-primary); }
+  .heuristic-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 14px; max-width: 1040px; }
+  .heuristic { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--indigo); border-radius: var(--radius-md); padding: 22px 26px; }
+  .heuristic.warm { border-left-color: var(--warm); }
+  .heuristic.green { border-left-color: var(--green); }
+  .heuristic.rose { border-left-color: var(--rose); }
+  .heuristic.sky { border-left-color: var(--sky); }
+  .heuristic h4 { font-size: 15px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.2px; }
+  .heuristic p { font-size: 13.5px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 8px; }
+  .heuristic p:last-child { margin-bottom: 0; }
+  .heuristic strong { color: var(--text-primary); font-weight: 600; }
+  .heuristic code { font-family: 'JetBrains Mono', monospace; font-size: 0.86em; color: var(--sky); background: rgba(56, 189, 248, 0.06); padding: 1px 5px; border-radius: 3px; }
+  .stack-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 32px; max-width: 1040px; }
+  .stack-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 14px; letter-spacing: -0.2px; }
+  .stack-card .links { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+  .stack-link { background: var(--bg-raised); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; text-decoration: none; color: inherit; transition: all 0.3s; display: block; }
+  .stack-link:hover { border-color: var(--border-hover); transform: translateY(-2px); }
+  .stack-link .label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--sky); display: block; margin-bottom: 6px; }
+  .stack-link .title { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+  .stack-link .desc { font-size: 12.5px; color: var(--text-secondary); line-height: 1.55; }
+  .stack-link .tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; padding: 2px 7px; border-radius: var(--radius-pill); font-weight: 600; background: linear-gradient(135deg, rgba(37, 99, 235, 0.18), rgba(99, 102, 241, 0.22)); color: var(--blue-glow); border: 1px solid rgba(99, 102, 241, 0.4); margin-left: 6px; }
   .cross-links { display: flex; gap: 10px; flex-wrap: wrap; }
   .cross-link { font-family: 'JetBrains Mono', monospace; font-size: 12px; padding: 10px 20px; border-radius: var(--radius-pill); border: 1px solid var(--border); background: var(--bg-card); text-decoration: none; color: var(--text-secondary); transition: all 0.3s; letter-spacing: 0.5px; }
   .cross-link:hover { border-color: var(--border-hover); color: var(--sky); transform: translateY(-1px); }
-  .cross-link.soon { opacity: 0.5; cursor: default; border-style: dashed; }
-
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 16px 20px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--sky); word-break: break-all; }
   footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 60px; }
   .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
   .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
@@ -148,12 +132,9 @@
   .footer-links a:hover { color: var(--sky); }
   .footer-copy { font-size: 12px; color: var(--text-muted); }
   .footer-review { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); margin-top: 14px; letter-spacing: 0.4px; }
-
   .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
   .fade-up.visible { opacity: 1; transform: translateY(0); }
-
   @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } .hub-stats { gap: 20px; } .hub-stat { padding-right: 20px; } }
-
   *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
 </style>
 </head>
@@ -186,239 +167,408 @@
 <!-- HERO -->
 <section class="hub-hero">
   <div class="container">
-    <div class="eyebrow fade-up"><span class="dot"></span> tools &middot; Catalog for an illustrative fractional-agent set-up</div>
+    <div class="eyebrow fade-up"><span class="dot"></span> tools &middot; landscape map</div>
     <h1 class="fade-up" style="transition-delay: 0.05s">
-      The tools <span class="gradient">Grant, Penny, Leo, Grace, and Katharine</span> actually use.
+      The agent tool <span class="gradient">landscape.</span>
     </h1>
     <p class="sub fade-up" style="transition-delay: 0.1s">
-      Fractional agents that do real work need <strong>real tools</strong>, with <strong>real permissions</strong>, and they have to leave a <strong>real trail</strong> &mdash; the proof of work a human auditor can replay. The same tools have to be callable by humans through a form, not just by agents through MCP, so the audit log captures both kinds of caller. This catalog is an opinionated, off-the-shelf shortlist that meets those constraints. Pick the tools, write the policies, point the agents at them.
+      What categories of tooling an agent platform actually needs to ship into <strong>production</strong>, what credible options exist in each, and how to choose between them. Reference knowledge &mdash; no claims about anyone's deployment. The point of this leaf is orientation: most teams get one or two categories right and discover the others under deadline pressure. This page maps them so the gaps surface before the deadline, not after.
     </p>
     <p class="review fade-up" style="transition-delay: 0.13s">
-      Last reviewed: 2026-05-17 &middot; Cadence: hot (quarterly) &middot; Plan: agent-platform repo
+      Last reviewed: 2026-05-17 &middot; Cadence: hot (quarterly) &middot; Worked example: <a href="example.html" style="color:var(--sky);text-decoration:none;border-bottom:1px solid var(--sky)">tools/example</a>
     </p>
     <div class="hub-stats fade-up" style="transition-delay: 0.15s">
-      <div class="hub-stat"><div class="num">5</div><div class="label">Agents</div></div>
-      <div class="hub-stat"><div class="num">8</div><div class="label">Vendor MCP servers</div></div>
-      <div class="hub-stat"><div class="num">4</div><div class="label">Proof-of-work artifacts</div></div>
-      <div class="hub-stat"><div class="num">1</div><div class="label">Dual-use pattern</div></div>
+      <div class="hub-stat"><div class="num">10</div><div class="label">Categories</div></div>
+      <div class="hub-stat"><div class="num">~50</div><div class="label">Picks listed</div></div>
+      <div class="hub-stat"><div class="num">5</div><div class="label">Choosing heuristics</div></div>
+      <div class="hub-stat"><div class="num">1</div><div class="label">Worked example</div></div>
     </div>
   </div>
 </section>
 
-<!-- 01 · THE SUBSTRATE -->
+<!-- 01 · WHAT AN AGENT PLATFORM NEEDS -->
 <section class="hub-section">
   <div class="container">
     <div class="fade-up">
-      <div class="hub-label">01 &middot; The substrate</div>
-      <h2 class="hub-title">Eight things every agent shares.</h2>
-      <p class="hub-lede">Before a single vendor MCP server lights up, an agent needs a <strong>runtime</strong>, a <strong>protocol</strong>, a <strong>permission gate</strong>, an <strong>audit trail</strong>, a <strong>sandbox for code</strong>, an <strong>identity</strong>, a <strong>dual-use bridge</strong>, and a <strong>trace contract</strong>. These are the eight load-bearing picks. Each is verified production in 2026 and self-hostable, so a partner can clone the whole pattern.</p>
+      <div class="hub-label">01 &middot; What an agent platform actually needs</div>
+      <h2 class="hub-title">Ten categories, plus one cross-cutting.</h2>
     </div>
 
-    <div class="stack-grid fade-up" style="transition-delay: 0.04s">
-      <a class="stack-cell" href="runtime.html"><span class="member-tag">Member</span><span class="layer">Runtime</span><h4>Claude Agent SDK</h4><p>Python + TypeScript. Native <code>allowed_tools</code>, <code>disallowed_tools</code>, PreToolUse hooks.</p><span class="vendor">anthropics &middot; oss</span></a>
-      <div class="stack-cell"><span class="layer">Protocol</span><h4>MCP &mdash; Model Context Protocol</h4><p>500+ servers in the official registry. Tool discovery + invocation, vendor-neutral.</p><span class="vendor">anthropic-origin &middot; oss</span></div>
-      <div class="stack-cell"><span class="layer">Permissions</span><h4>Cerbos PDP</h4><p>YAML policies per agent. &lt;1 ms decision. One <code>principalPolicy</code> file per role.</p><span class="vendor">cerbos &middot; oss (Apache-2)</span></div>
-      <div class="stack-cell"><span class="layer">Audit</span><h4>Langfuse (self-hosted)</h4><p>OpenTelemetry-compatible. Replayable traces. ClickHouse-backed. Free at scale.</p><span class="vendor">langfuse &middot; oss (MIT)</span></div>
-      <div class="stack-cell"><span class="layer">Sandbox</span><h4>E2B</h4><p>Firecracker microVMs. Hardware boundary for code an agent writes itself.</p><span class="vendor">e2b &middot; oss core</span></div>
-      <div class="stack-cell"><span class="layer">Identity</span><h4>Cloudflare Access service tokens</h4><p>Per-agent service token + short-TTL capability JWTs. No extra IdP.</p><span class="vendor">cloudflare &middot; saas</span></div>
-      <div class="stack-cell"><span class="layer">Dual-use</span><h4>Inngest</h4><p>One function fires from a form OR an MCP tool. Single code path, single audit row.</p><span class="vendor">inngest &middot; oss core + cloud</span></div>
-      <div class="stack-cell"><span class="layer">Trace contract</span><h4>OpenTelemetry GenAI</h4><p>Semantic conventions for <code>gen_ai.agent.id</code>, <code>gen_ai.tool.call.id</code>, etc.</p><span class="vendor">otel &middot; oss</span></div>
+    <div class="prose fade-up" style="transition-delay: 0.04s">
+      <p>An agent is software that calls external systems with permissions and leaves a trail. To do that <strong>in production</strong> &mdash; not in a demo &mdash; you need ten categories of tooling. They are not all the same category of decision: some picks are sticky (the tool protocol your whole stack speaks), some are reversible (the audit backend, if you stuck to a standard), some are cheap-to-buy, some are cheap-to-build. A team that maps all ten at the start avoids the worst mistake: discovering at week six that there is no plan for &ldquo;how a human approves before this sends.&rdquo;</p>
+      <p>The categories below are the ones that show up in every credible agent stack as of mid-2026. The eleventh, pre-built vendor MCP servers, cuts across all of them &mdash; it is the universe of integrations agents can call without writing custom code.</p>
     </div>
   </div>
 </section>
 
-<!-- 02 · VENDOR MCP SERVERS -->
+<!-- 02 · THE TEN CATEGORIES -->
 <section class="hub-section">
   <div class="container">
     <div class="fade-up">
-      <div class="hub-label">02 &middot; Vendor MCP servers</div>
-      <h2 class="hub-title">The eight servers everyone draws from.</h2>
-      <p class="hub-lede">All eight are <strong>vendor-maintained</strong>, GA, and as of May 2026 the safest picks for a partner-facing showcase. A third-party MCP server might be richer, but every dependency is a future maintenance bill &mdash; vendor-hosted servers are zero-effort to keep alive.</p>
+      <div class="hub-label">02 &middot; The ten categories at a glance</div>
+      <h2 class="hub-title">Each card: what the category is, and the question that picks the layer apart.</h2>
+      <p class="hub-lede">Read this section to orient. The next section breaks each category into its credible options.</p>
     </div>
 
-    <div class="svc-grid fade-up" style="transition-delay: 0.03s">
-      <div class="svc-card soon"><div class="svc-head"><span class="svc-name">GitHub MCP</span><span class="svc-state soon">Soon</span></div><span class="svc-path">tools/github</span><p>Repos, PRs, issues, code search. The legal-review and platform-engineering substrate.</p></div>
-      <div class="svc-card soon"><div class="svc-head"><span class="svc-name">HubSpot MCP</span><span class="svc-state soon">Soon</span></div><span class="svc-path">tools/hubspot</span><p>Contacts, deals, marketing-email send, campaign analytics. Penny + Katharine's CRM.</p></div>
-      <div class="svc-card soon"><div class="svc-head"><span class="svc-name">Salesforce MCP</span><span class="svc-state soon">Soon</span></div><span class="svc-path">tools/salesforce</span><p>Pipeline objects + flows. Katharine's enterprise-CRM lane for teams running on Salesforce.</p></div>
-      <div class="svc-card soon"><div class="svc-head"><span class="svc-name">Google Workspace MCP</span><span class="svc-state soon">Soon</span></div><span class="svc-path">tools/google-workspace</span><p>Gmail, Drive, Calendar, Sheets, Docs. The default office substrate for many SME setups.</p></div>
-      <div class="svc-card soon"><div class="svc-head"><span class="svc-name">BigQuery Remote MCP</span><span class="svc-state soon">Soon</span></div><span class="svc-path">tools/bigquery</span><p>Read-only analytics queries. Grant's CFO data backend; Katharine read-only too.</p></div>
-      <div class="svc-card soon"><div class="svc-head"><span class="svc-name">Slack MCP</span><span class="svc-state soon">Soon</span></div><span class="svc-path">tools/slack</span><p>Post messages, read channels, list users. Posting is destructive: gated by approval.</p></div>
-      <div class="svc-card soon"><div class="svc-head"><span class="svc-name">Notion MCP</span><span class="svc-state soon">Soon</span></div><span class="svc-path">tools/notion</span><p>Pages, databases, comments. Where agent drafts and playbooks accrue.</p></div>
-      <div class="svc-card soon"><div class="svc-head"><span class="svc-name">Atlassian MCP</span><span class="svc-state soon">Soon</span></div><span class="svc-path">tools/atlassian</span><p>Jira issues + Confluence pages. Leo's compliance lane + general engineering tracker.</p></div>
+    <div class="cat-grid fade-up" style="transition-delay: 0.04s">
+      <div class="cat-cell"><span class="num">01</span><h4>Runtime / framework</h4><p>What hosts the agent loop &mdash; the model call, the tool-call parsing, the result feedback, the next call. Manages context window and (often) MCP plumbing.</p><span class="q">Multi-provider or first-party?</span></div>
+      <div class="cat-cell"><span class="num">02</span><h4>Tool protocol</h4><p>How the agent talks to external systems. Defines tool schemas, invocation, error handling, streaming. The choice composes (or doesn't) with everything downstream.</p><span class="q">Standardised or per-vendor?</span></div>
+      <div class="cat-cell"><span class="num">03</span><h4>Tool registries / discovery</h4><p>Where agents and humans find tools to call. Catalogues of pre-built integrations with auth handled. Often the only way to avoid writing custom adapter code.</p><span class="q">Free + community, or paid + curated?</span></div>
+      <div class="cat-cell"><span class="num">04</span><h4>Permissions / policy</h4><p>What each agent is allowed to do, expressed as policy a non-engineer can read. The load-bearing layer for any audit / compliance / regulated-environment story.</p><span class="q">Centralised policy engine or framework allowlists?</span></div>
+      <div class="cat-cell"><span class="num">05</span><h4>Audit / observability</h4><p>How a human (or another agent) reconstructs what happened. Replayable traces, prompt + result + token + cost capture, by-agent / by-tool / by-time queries.</p><span class="q">OSS self-hosted or SaaS managed?</span></div>
+      <div class="cat-cell"><span class="num">06</span><h4>Sandboxed code execution</h4><p>Where agent-written code runs without taking down the host. Tradeoff is between cold start and isolation strength; hardware vs container vs language-level.</p><span class="q">Hardware isolation or container isolation?</span></div>
+      <div class="cat-cell"><span class="num">07</span><h4>Dual-use / workflow</h4><p>The same operation triggered by humans (form) or agents (tool call). Durable functions with sleep, retry, fan-out, and "pause until event" as first-class primitives.</p><span class="q">First-class workflow primitive or DIY?</span></div>
+      <div class="cat-cell"><span class="num">08</span><h4>Identity / auth</h4><p>Who the agent is when it acts. Short-TTL scoped tokens, per-agent service accounts, sender-constraint proofs. Without this, "permissions" is just a name on a policy file.</p><span class="q">Edge service tokens or enterprise IdP?</span></div>
+      <div class="cat-cell"><span class="num">09</span><h4>Approval / human-in-the-loop</h4><p>What blocks until a human says yes. Mutating actions, financial transfers, message sends, irreversible state changes &mdash; all candidates. Cheap to add, expensive to retrofit.</p><span class="q">Built into the workflow engine or external UI?</span></div>
+      <div class="cat-cell"><span class="num">10</span><h4>Memory / state</h4><p>What the agent remembers between calls and across sessions. Per-conversation, per-user, per-organisation; managed memory vs explicit state machines vs DIY.</p><span class="q">Per-session state or persistent memory?</span></div>
+      <div class="cat-cell" style="border-left:3px solid var(--warm)"><span class="num" style="color:var(--warm)">11 &middot; cross-cut</span><h4>Pre-built vendor MCP servers</h4><p>The universe of packaged integrations agents can call without writing custom code. 500+ servers in the official MCP registry as of mid-2026, first-party + community mixed.</p><span class="q">First-party only, or accept community?</span></div>
     </div>
   </div>
 </section>
 
-<!-- 03 · TOOLS BY AGENT -->
+<!-- 03 · OPTIONS PER CATEGORY -->
 <section class="hub-section">
   <div class="container">
     <div class="fade-up">
-      <div class="hub-label">03 &middot; Tools by agent</div>
-      <h2 class="hub-title">Who can do what.</h2>
-      <p class="hub-lede">Each agent has a <strong>tight allowlist</strong> &mdash; eight tools or fewer. Read scopes are wide by default; mutations are narrow and gated. Each agent's Cerbos <code class="hub-code">principalPolicy</code> lives at a stable path like <code class="hub-code">cerbos/policies/&lt;agent&gt;.yaml</code> &mdash; readable rules, not implementation details to take on trust.</p>
+      <div class="hub-label">03 &middot; Options in each category</div>
+      <h2 class="hub-title">Credible picks, who maintains them, the one-line trade-off.</h2>
+      <p class="hub-lede">Each table has three columns: <strong>pick</strong>, <strong>maintainer</strong>, and <strong>trade-off / when to choose</strong>. Not exhaustive &mdash; just the picks that show up in production agent stacks in mid-2026. Skim the picks; the rationale for any single choice belongs in its own decision leaf.</p>
     </div>
 
-    <!-- Grant CFO -->
-    <div class="category-band fade-up">
-      <span class="c-label">Grant &middot; CFO</span>
-      <span class="c-role">Finance &middot; reads broadly &middot; mutates with approval</span>
-      <span class="c-rule"></span>
-    </div>
-    <div class="svc-grid fade-up" style="transition-delay: 0.03s">
-      <div class="svc-card soon"><div class="svc-head"><span class="svc-name">BigQuery</span><span class="svc-state soon">Soon</span></div><span class="svc-path">tools/bigquery</span><p>Read finance datasets, run analytics SQL. The CFO's primary data tool.</p></div>
-      <div class="svc-card soon"><div class="svc-head"><span class="svc-name">Xero</span><span class="svc-state soon">Soon</span></div><span class="svc-path">tools/xero</span><p>Read the books; create invoices and bills with human approval.</p></div>
-      <div class="svc-card soon"><div class="svc-head"><span class="svc-name">Postgres / Hyperdrive</span><span class="svc-state soon">Soon</span></div><span class="svc-path">tools/postgres</span><p>The warehouse layer for non-BigQuery finance data.</p></div>
-      <div class="svc-card soon"><div class="svc-head"><span class="svc-name">Sheets</span><span class="svc-state soon">Soon</span></div><span class="svc-path">tools/google-workspace</span><p>Working files. Grant can write to spreadsheets he owns.</p></div>
-      <div class="svc-card soon"><div class="svc-head"><span class="svc-name">Slack (finance)</span><span class="svc-state soon">Soon</span></div><span class="svc-path">tools/slack</span><p>Post to <code>#finance</code>, <code>#cfo-updates</code>, <code>#leadership</code>. Approval required.</p></div>
-      <div class="svc-card soon"><div class="svc-head"><span class="svc-name">SARS eFiling</span><span class="svc-state soon">Soon</span></div><span class="svc-path">tools/sars</span><p>Submit returns. Always approval-gated. Typically a thin wrapper over SARS eFiling APIs.</p></div>
-      <div class="svc-card soon"><div class="svc-head"><span class="svc-name">E2B (Python)</span><span class="svc-state soon">Soon</span></div><span class="svc-path">tools/e2b</span><p>Run finance models in a sandbox &mdash; recon, forecasts, journal generation.</p></div>
-      <div class="svc-card soon"><div class="svc-head"><span class="svc-name">Inngest banking-export</span><span class="svc-state soon">Soon</span></div><span class="svc-path">tools/inngest</span><p>The dual-use export. Same fn fires from a CFO form or from Grant directly.</p></div>
-    </div>
-
-    <!-- Penny CMO -->
-    <div class="category-band fade-up">
-      <span class="c-label">Penny &middot; CMO</span>
-      <span class="c-role">Marketing &middot; drafts by default &middot; sends with approval</span>
-      <span class="c-rule"></span>
-    </div>
-    <div class="svc-grid fade-up" style="transition-delay: 0.03s">
-      <div class="svc-card soon"><div class="svc-head"><span class="svc-name">HubSpot</span><span class="svc-state soon">Soon</span></div><span class="svc-path">tools/hubspot</span><p>Contacts, lists, deals, campaigns. Sends gated by approval.</p></div>
-      <div class="svc-card soon"><div class="svc-head"><span class="svc-name">Gmail (draft)</span><span class="svc-state soon">Soon</span></div><span class="svc-path">tools/google-workspace</span><p>Drafts only by default. Send goes through the Inngest gate.</p></div>
-      <div class="svc-card soon"><div class="svc-head"><span class="svc-name">Drive (marketing/brand)</span><span class="svc-state soon">Soon</span></div><span class="svc-path">tools/google-workspace</span><p>Write scoped to <code>marketing</code> and <code>brand</code> folders.</p></div>
-      <div class="svc-card soon"><div class="svc-head"><span class="svc-name">Notion</span><span class="svc-state soon">Soon</span></div><span class="svc-path">tools/notion</span><p>Briefs, playbooks, campaign trackers. Read + create + update.</p></div>
-      <div class="svc-card soon"><div class="svc-head"><span class="svc-name">R2 brand-assets</span><span class="svc-state soon">Soon</span></div><span class="svc-path">tools/r2</span><p>Logo + image bucket. Penny can read and write here, no other agent can.</p></div>
-      <div class="svc-card soon"><div class="svc-head"><span class="svc-name">Slack</span><span class="svc-state soon">Soon</span></div><span class="svc-path">tools/slack</span><p>Read freely; post with approval.</p></div>
-      <div class="svc-card soon"><div class="svc-head"><span class="svc-name">E2B (image gen)</span><span class="svc-state soon">Soon</span></div><span class="svc-path">tools/e2b</span><p>Generate images via Vertex Imagen / Flux inside the sandbox; outputs land in R2.</p></div>
-      <div class="svc-card soon"><div class="svc-head"><span class="svc-name">Inngest send-email</span><span class="svc-state soon">Soon</span></div><span class="svc-path">tools/inngest</span><p>The flagship dual-use fn. Human form or agent tool, same code path.</p></div>
+    <!-- 01 Runtime -->
+    <div class="layer-block fade-up" style="transition-delay: 0.03s">
+      <div class="layer-band"><span class="num">01</span><span class="name">Runtime / framework</span><span class="rule"></span></div>
+      <p class="layer-intro">The agent's host environment. Manages the model call &harr; tool call &harr; result feedback loop, often the MCP plumbing too. Pick the one closest to the model you are using; switch costs are real but bounded (~1 day per agent).</p>
+      <div class="compare-wrap">
+        <table class="compare">
+          <thead><tr><th>Pick</th><th>Maintainer</th><th>Trade-off / when to choose</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Claude Agent SDK</strong></td><td>Anthropic (first-party)</td><td>Best fit if Claude is the model. Native <code>allowed_tools</code> + <code>PreToolUse</code> hooks; MCP-aware out of the box.</td></tr>
+            <tr><td><strong>LangGraph</strong></td><td>LangChain</td><td>Best for stateful multi-agent orchestration. Multi-provider. v1.0 in late 2025; 90k+ stars.</td></tr>
+            <tr><td><strong>Vercel AI SDK v6</strong></td><td>Vercel</td><td>TypeScript-first, lovely DX, ToolLoopAgent for production. Narrower scope than LangGraph.</td></tr>
+            <tr><td><strong>CrewAI</strong></td><td>community + commercial</td><td>Role-based, fast adoption (60%+ Fortune 500 by Jan 2026), coarser permission model.</td></tr>
+            <tr><td><strong>OpenAI Agents SDK</strong></td><td>OpenAI (first-party)</td><td>Best fit if OpenAI is the model. Locks the runtime to OpenAI.</td></tr>
+            <tr><td><strong>Microsoft Agent Framework</strong></td><td>Microsoft (unified AutoGen + SK)</td><td>Enterprise .NET / Azure shops. GA Q1 2026.</td></tr>
+            <tr><td><strong>Pydantic AI</strong></td><td>Pydantic</td><td>Type-first Python; small but credible.</td></tr>
+            <tr><td><strong>Raw model API + DIY loop</strong></td><td>&mdash;</td><td>Maximum control; you rebuild the loop, context compaction, MCP plumbing yourself.</td></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
-    <!-- Leo CLO -->
-    <div class="category-band fade-up">
-      <span class="c-label">Leo &middot; CLO</span>
-      <span class="c-role">Legal &middot; flags risk &middot; drafts redlines &middot; never signs</span>
-      <span class="c-rule"></span>
-    </div>
-    <div class="svc-grid fade-up" style="transition-delay: 0.03s">
-      <div class="svc-card soon"><div class="svc-head"><span class="svc-name">GitHub</span><span class="svc-state soon">Soon</span></div><span class="svc-path">tools/github</span><p>Read repos and PRs for IP / open-source compliance. Comment, never merge.</p></div>
-      <div class="svc-card soon"><div class="svc-head"><span class="svc-name">Drive (legal)</span><span class="svc-state soon">Soon</span></div><span class="svc-path">tools/google-workspace</span><p>Write scoped to <code>legal</code>, <code>contracts</code>, <code>compliance</code> folders.</p></div>
-      <div class="svc-card soon"><div class="svc-head"><span class="svc-name">Gmail (draft)</span><span class="svc-state soon">Soon</span></div><span class="svc-path">tools/google-workspace</span><p>Read incoming + draft replies. Send is human-only.</p></div>
-      <div class="svc-card soon"><div class="svc-head"><span class="svc-name">Notion (playbooks)</span><span class="svc-state soon">Soon</span></div><span class="svc-path">tools/notion</span><p>Legal playbooks, POPIA checklists, contract templates.</p></div>
-      <div class="svc-card soon"><div class="svc-head"><span class="svc-name">Web search</span><span class="svc-state soon">Soon</span></div><span class="svc-path">tools/web-search</span><p>Case-law and regulatory lookups. Read-only.</p></div>
-      <div class="svc-card soon"><div class="svc-head"><span class="svc-name">E2B (redline)</span><span class="svc-state soon">Soon</span></div><span class="svc-path">tools/e2b</span><p>Run diff tools across contract drafts; output the redlined PDF to R2.</p></div>
-      <div class="svc-card soon"><div class="svc-head"><span class="svc-name">Slack (legal)</span><span class="svc-state soon">Soon</span></div><span class="svc-path">tools/slack</span><p>Post to <code>#legal</code>, <code>#compliance</code>, <code>#leadership</code>. Approval gated.</p></div>
-      <div class="svc-card soon"><div class="svc-head"><span class="svc-name">Inngest contract-sign</span><span class="svc-state soon">Soon</span></div><span class="svc-path">tools/inngest</span><p>Routes a contract for signature to the human signatory.</p></div>
-    </div>
-
-    <!-- Grace CHRO -->
-    <div class="category-band fade-up">
-      <span class="c-label">Grace &middot; CHRO</span>
-      <span class="c-role">People &middot; sensitive defaults &middot; offers via approval</span>
-      <span class="c-rule"></span>
-    </div>
-    <div class="svc-grid fade-up" style="transition-delay: 0.03s">
-      <div class="svc-card soon"><div class="svc-head"><span class="svc-name">Gmail (HR)</span><span class="svc-state soon">Soon</span></div><span class="svc-path">tools/google-workspace</span><p>Read + draft. Sends via Inngest with approval.</p></div>
-      <div class="svc-card soon"><div class="svc-head"><span class="svc-name">Drive (people/hr)</span><span class="svc-state soon">Soon</span></div><span class="svc-path">tools/google-workspace</span><p>Strictly scoped to people / hr / playbooks folders.</p></div>
-      <div class="svc-card soon"><div class="svc-head"><span class="svc-name">Calendar</span><span class="svc-state soon">Soon</span></div><span class="svc-path">tools/google-workspace</span><p>Read, create, update events. The interview / 1-1 / review surface.</p></div>
-      <div class="svc-card soon"><div class="svc-head"><span class="svc-name">Sheets (HR)</span><span class="svc-state soon">Soon</span></div><span class="svc-path">tools/google-workspace</span><p>Write only to spreadsheets Grace owns. Read broadly.</p></div>
-      <div class="svc-card soon"><div class="svc-head"><span class="svc-name">Notion (playbooks)</span><span class="svc-state soon">Soon</span></div><span class="svc-path">tools/notion</span><p>HR playbooks, onboarding tracks, leadership memos.</p></div>
-      <div class="svc-card soon"><div class="svc-head"><span class="svc-name">Slack (DMs + people)</span><span class="svc-state soon">Soon</span></div><span class="svc-path">tools/slack</span><p>DMs free; <code>#people</code> + <code>#leadership</code> posts approval-gated.</p></div>
-      <div class="svc-card soon"><div class="svc-head"><span class="svc-name">Inngest offer-letter</span><span class="svc-state soon">Soon</span></div><span class="svc-path">tools/inngest</span><p>The offer + onboarding-pack dual-use fns. Always human-approved.</p></div>
+    <!-- 02 Tool protocol -->
+    <div class="layer-block fade-up" style="transition-delay: 0.03s">
+      <div class="layer-band"><span class="num">02</span><span class="name">Tool protocol</span><span class="rule"></span></div>
+      <p class="layer-intro">How the agent talks to external systems. This pick is sticky &mdash; everything downstream depends on it. Bias toward standards.</p>
+      <div class="compare-wrap">
+        <table class="compare">
+          <thead><tr><th>Pick</th><th>Maintainer</th><th>Trade-off / when to choose</th></tr></thead>
+          <tbody>
+            <tr><td><strong>MCP (Model Context Protocol)</strong></td><td>Anthropic-origin, open spec</td><td>The vendor-neutral standard. 500+ servers in the official registry. Cross-runtime by design.</td></tr>
+            <tr><td><strong>OpenAI function-calling</strong></td><td>OpenAI</td><td>Works inside OpenAI tooling. Tool definitions tied to one provider.</td></tr>
+            <tr><td><strong>Direct HTTP / vendor SDKs</strong></td><td>per-vendor</td><td>No discovery, no composition; fine for one-off integrations, awful as the count grows.</td></tr>
+            <tr><td><strong>GraphQL endpoints</strong></td><td>per-team</td><td>Niche &mdash; useful only if the backend is already GraphQL-native.</td></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
-    <!-- Katharine CRO -->
-    <div class="category-band fade-up">
-      <span class="c-label">Katharine &middot; CRO</span>
-      <span class="c-role">Revenue &middot; pipeline &middot; deal moves are explicit</span>
-      <span class="c-rule"></span>
+    <!-- 03 Tool registries -->
+    <div class="layer-block fade-up" style="transition-delay: 0.03s">
+      <div class="layer-band"><span class="num">03</span><span class="name">Tool registries / discovery</span><span class="rule"></span></div>
+      <p class="layer-intro">Where the agent finds tools to call. The alternative to a registry is writing your own adapters &mdash; viable for 5 tools, unmanageable at 50.</p>
+      <div class="compare-wrap">
+        <table class="compare">
+          <thead><tr><th>Pick</th><th>Maintainer</th><th>Trade-off / when to choose</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Official MCP Registry</strong></td><td>Anthropic-maintained</td><td>The canonical discovery surface. Free. Listings for first-party and community servers.</td></tr>
+            <tr><td><strong>Composio</strong></td><td>Composio (SaaS)</td><td>500+ pre-built actions with OAuth handled. Paid.</td></tr>
+            <tr><td><strong>Arcade.dev</strong></td><td>Arcade (commercial)</td><td>MCP-first runtime with per-user scoped tokens. Smaller catalog than Composio.</td></tr>
+            <tr><td><strong>Pipedream</strong></td><td>Pipedream (SaaS)</td><td>2000+ app integrations. Agent-callable via API. Workflow-flavoured rather than MCP-native.</td></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
-    <div class="svc-grid fade-up" style="transition-delay: 0.03s">
-      <div class="svc-card soon"><div class="svc-head"><span class="svc-name">HubSpot (deals)</span><span class="svc-state soon">Soon</span></div><span class="svc-path">tools/hubspot</span><p>Read everything; update contacts + deals (deal-stage changes are gated).</p></div>
-      <div class="svc-card soon"><div class="svc-head"><span class="svc-name">Salesforce</span><span class="svc-state soon">Soon</span></div><span class="svc-path">tools/salesforce</span><p>For teams on SFDC. Same patterns as HubSpot.</p></div>
-      <div class="svc-card soon"><div class="svc-head"><span class="svc-name">Slack (sales)</span><span class="svc-state soon">Soon</span></div><span class="svc-path">tools/slack</span><p><code>#sales</code>, <code>#revenue</code>, <code>#deals</code>, <code>#leadership</code>.</p></div>
-      <div class="svc-card soon"><div class="svc-head"><span class="svc-name">Gmail (drafts)</span><span class="svc-state soon">Soon</span></div><span class="svc-path">tools/google-workspace</span><p>Draft outreach. Send via Inngest send-proposal fn.</p></div>
-      <div class="svc-card soon"><div class="svc-head"><span class="svc-name">Calendar</span><span class="svc-state soon">Soon</span></div><span class="svc-path">tools/google-workspace</span><p>Book discovery and demo slots.</p></div>
-      <div class="svc-card soon"><div class="svc-head"><span class="svc-name">Notion (deals)</span><span class="svc-state soon">Soon</span></div><span class="svc-path">tools/notion</span><p>Account plans, deal rooms, proposals.</p></div>
-      <div class="svc-card soon"><div class="svc-head"><span class="svc-name">BigQuery (read-only)</span><span class="svc-state soon">Soon</span></div><span class="svc-path">tools/bigquery</span><p>Scoped to <code>sales_marts</code> + <code>revenue_reporting</code> datasets.</p></div>
-      <div class="svc-card soon"><div class="svc-head"><span class="svc-name">Inngest deal-stage-change</span><span class="svc-state soon">Soon</span></div><span class="svc-path">tools/inngest</span><p>Moving a deal to Closed-Won is never silent. Always logged, always approved.</p></div>
+
+    <!-- 04 Permissions -->
+    <div class="layer-block fade-up" style="transition-delay: 0.03s">
+      <div class="layer-band"><span class="num">04</span><span class="name">Permissions / policy</span><span class="rule"></span></div>
+      <p class="layer-intro">What each agent is allowed to do. Externalised from code so non-engineers (and auditors) can read it. Without a policy engine, you are doing RBAC in code &mdash; fine at small scale, awful past it.</p>
+      <div class="compare-wrap">
+        <table class="compare">
+          <thead><tr><th>Pick</th><th>Maintainer</th><th>Trade-off / when to choose</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Cerbos</strong></td><td>Cerbos (OSS, Apache-2)</td><td>YAML policies, sub-ms decisions, self-hostable. Partner-readable.</td></tr>
+            <tr><td><strong>Permit.io</strong></td><td>Permit (SaaS)</td><td>Managed RBAC/ABAC with a UI. Policies live in their database.</td></tr>
+            <tr><td><strong>OPA / Rego</strong></td><td>CNCF (OSS)</td><td>Generalist policy engine. Rego is powerful but opaque; higher learning curve.</td></tr>
+            <tr><td><strong>Framework allowlists</strong></td><td>per-framework</td><td>Built into the SDK (e.g. Claude SDK's <code>allowed_tools</code>). Sufficient at small scale.</td></tr>
+            <tr><td><strong>Aembit</strong></td><td>Aembit (commercial)</td><td>Machine-identity-first. Newer entrant, narrower focus.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 05 Audit -->
+    <div class="layer-block fade-up" style="transition-delay: 0.03s">
+      <div class="layer-band"><span class="num">05</span><span class="name">Audit / observability</span><span class="rule"></span></div>
+      <p class="layer-intro">How you reconstruct what happened. Three things matter: that traces are replayable, that args and results are captured (not just metadata), and that the schema follows the OpenTelemetry GenAI conventions so the backend is swappable.</p>
+      <div class="compare-wrap">
+        <table class="compare">
+          <thead><tr><th>Pick</th><th>Maintainer</th><th>Trade-off / when to choose</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Langfuse</strong></td><td>Langfuse (OSS, MIT; ClickHouse-acquired Jan 2026)</td><td>Self-hostable, replayable traces, free at scale. Most popular OSS pick.</td></tr>
+            <tr><td><strong>LangSmith</strong></td><td>LangChain (SaaS)</td><td>Deepest LangGraph integration; per-seat priced.</td></tr>
+            <tr><td><strong>Helicone</strong></td><td>Helicone (OSS + SaaS)</td><td>Proxy-based, simplest to deploy. Narrower than dedicated trace stores.</td></tr>
+            <tr><td><strong>Braintrust</strong></td><td>Braintrust (SaaS)</td><td>Eval-first; tracing is secondary. Strong for evaluation workflows.</td></tr>
+            <tr><td><strong>Arize Phoenix</strong></td><td>Arize (OSS)</td><td>ML-grade rigor; embedding analysis. Mixed LLM + traditional ML.</td></tr>
+            <tr><td><strong>Pydantic Logfire</strong></td><td>Pydantic (SaaS)</td><td>AI-specific UI; emerging.</td></tr>
+            <tr><td><strong>OpenTelemetry GenAI</strong></td><td>OTel community (standard)</td><td>The vendor-neutral semantic conventions underneath every backend. Not a backend itself.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 06 Sandbox -->
+    <div class="layer-block fade-up" style="transition-delay: 0.03s">
+      <div class="layer-band"><span class="num">06</span><span class="name">Sandboxed code execution</span><span class="rule"></span></div>
+      <p class="layer-intro">Where agent-written code runs without taking down the host. Hardware isolation (Firecracker) is the credible pick for untrusted output; container isolation is faster but weaker.</p>
+      <div class="compare-wrap">
+        <table class="compare">
+          <thead><tr><th>Pick</th><th>Maintainer</th><th>Trade-off / when to choose</th></tr></thead>
+          <tbody>
+            <tr><td><strong>E2B</strong></td><td>E2B (commercial)</td><td>Firecracker microVMs &mdash; hardware boundary. Sub-second cold starts.</td></tr>
+            <tr><td><strong>Daytona</strong></td><td>Daytona (commercial)</td><td>Docker-based, sub-90ms cold starts. Container-level isolation.</td></tr>
+            <tr><td><strong>Modal Sandboxes</strong></td><td>Modal (commercial)</td><td>GPU support, gVisor isolation. Higher cost; niche unless you need GPU.</td></tr>
+            <tr><td><strong>Cloudflare Sandboxes</strong></td><td>Cloudflare</td><td>Edge-native, emerging. Worth tracking, not yet the production pick.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 07 Dual-use -->
+    <div class="layer-block fade-up" style="transition-delay: 0.03s">
+      <div class="layer-band"><span class="num">07</span><span class="name">Dual-use / workflow</span><span class="rule"></span></div>
+      <p class="layer-intro">The same operation, callable by a human (HTML form) or by an agent (MCP tool). Durable functions with "pause until event" are the cleanest way to model this so the audit trail is identical for both callers.</p>
+      <div class="compare-wrap">
+        <table class="compare">
+          <thead><tr><th>Pick</th><th>Maintainer</th><th>Trade-off / when to choose</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Inngest</strong></td><td>Inngest (OSS core + cloud)</td><td>Durable functions; "pause until event" primitive. Free tier covers pilot scale.</td></tr>
+            <tr><td><strong>Trigger.dev v3</strong></td><td>Trigger.dev (OSS)</td><td>Similar to Inngest. TypeScript-first.</td></tr>
+            <tr><td><strong>Temporal</strong></td><td>Temporal (OSS)</td><td>Heavyweight enterprise option. Powerful, more infrastructure.</td></tr>
+            <tr><td><strong>n8n</strong></td><td>n8n (OSS + cloud)</td><td>Low-code workflows. Bidirectional MCP integration since April 2025.</td></tr>
+            <tr><td><strong>Hookdeck</strong></td><td>Hookdeck (SaaS)</td><td>Webhook infrastructure with an MCP server. Good when webhooks dominate.</td></tr>
+            <tr><td><strong>DIY: one function, multiple entry points</strong></td><td>&mdash;</td><td>Works at small scale; you re-implement durability when you grow.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 08 Identity -->
+    <div class="layer-block fade-up" style="transition-delay: 0.03s">
+      <div class="layer-band"><span class="num">08</span><span class="name">Identity / auth</span><span class="rule"></span></div>
+      <p class="layer-intro">Who the agent is when it acts. Short-TTL scoped tokens per (agent, tool) pair, signed by the runtime. Without this layer, "permissions" is just a wishful name on a policy file.</p>
+      <div class="compare-wrap">
+        <table class="compare">
+          <thead><tr><th>Pick</th><th>Maintainer</th><th>Trade-off / when to choose</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Cloudflare Access service tokens</strong></td><td>Cloudflare</td><td>Zero-trust, edge-native, no separate IdP. Cheapest path if you are already on Cloudflare.</td></tr>
+            <tr><td><strong>Auth0 / Okta Agent IAM</strong></td><td>Okta (SaaS)</td><td>Enterprise identity, broader scope. Heavier; right for regulated industries.</td></tr>
+            <tr><td><strong>SPIFFE / SPIRE</strong></td><td>CNCF (OSS)</td><td>Workload identity standard for K8s. Right if you are running on Kubernetes.</td></tr>
+            <tr><td><strong>DPoP-bound JWTs</strong></td><td>open spec (RFC 9449)</td><td>Sender-constrained tokens. Most secure; most implementation work.</td></tr>
+            <tr><td><strong>Asgardeo / WSO2</strong></td><td>WSO2 (commercial)</td><td>Identity-as-a-service with agent-specific flows. Newer, niche adoption.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 09 Approval -->
+    <div class="layer-block fade-up" style="transition-delay: 0.03s">
+      <div class="layer-band"><span class="num">09</span><span class="name">Approval / human-in-the-loop</span><span class="rule"></span></div>
+      <p class="layer-intro">What blocks until a human says yes. Cheap to add as a first-class workflow primitive on day one; expensive to retrofit after the audit log shows agents shipping money out the door without anyone approving it.</p>
+      <div class="compare-wrap">
+        <table class="compare">
+          <thead><tr><th>Pick</th><th>Maintainer</th><th>Trade-off / when to choose</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Inngest pause-and-resume</strong></td><td>Inngest</td><td>First-class workflow primitive. "Wait for approval keyed by run_id" in one line.</td></tr>
+            <tr><td><strong>LangGraph interrupts</strong></td><td>LangChain</td><td>Built into the agent loop. Right if LangGraph is the runtime.</td></tr>
+            <tr><td><strong>AutoGen human handoff</strong></td><td>Microsoft</td><td>Pattern within Microsoft's framework.</td></tr>
+            <tr><td><strong>n8n approval nodes</strong></td><td>n8n</td><td>Visual workflow with explicit approval steps. Lower code.</td></tr>
+            <tr><td><strong>Slack-bot approval</strong></td><td>per-team</td><td>Decisions happen where the team already talks. Lightweight, ergonomic.</td></tr>
+            <tr><td><strong>Custom approvals UI + queue</strong></td><td>&mdash;</td><td>DIY when frameworks don't fit. Most work; most control.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 10 Memory -->
+    <div class="layer-block fade-up" style="transition-delay: 0.03s">
+      <div class="layer-band"><span class="num">10</span><span class="name">Memory / state</span><span class="rule"></span></div>
+      <p class="layer-intro">What the agent remembers between calls and across sessions. Three flavours: per-session state (the conversation), explicit state machines (the workflow), persistent memory (the agent's long-term knowledge of a user).</p>
+      <div class="compare-wrap">
+        <table class="compare">
+          <thead><tr><th>Pick</th><th>Maintainer</th><th>Trade-off / when to choose</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Anthropic Memory primitives</strong></td><td>Anthropic (first-party)</td><td>Built into Claude Agent SDK. Lowest friction if Claude is the runtime.</td></tr>
+            <tr><td><strong>Letta</strong> (MemGPT-derived)</td><td>Letta (OSS)</td><td>Persistent memory, conversation-centric. 15k stars.</td></tr>
+            <tr><td><strong>mem0</strong></td><td>mem0 (commercial)</td><td>Managed memory service. Saves you running a vector DB.</td></tr>
+            <tr><td><strong>LangGraph state machines</strong></td><td>LangChain</td><td>Explicit per-workflow state. Right when your "memory" is really workflow state.</td></tr>
+            <tr><td><strong>Vector DB + retrieval (DIY)</strong></td><td>&mdash;</td><td>Maximum flexibility, you own the orchestration. Pick a DB (Postgres + pgvector, Pinecone, Qdrant) and build.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 11 Vendor MCP (cross-cutting) -->
+    <div class="layer-block fade-up" style="transition-delay: 0.03s">
+      <div class="layer-band"><span class="num">11 &middot; cross-cut</span><span class="name">Pre-built vendor MCP servers</span><span class="rule"></span></div>
+      <p class="layer-intro">The universe of packaged integrations. Cuts across all the other categories. The constraint that matters: first-party (vendor-maintained) servers are zero-effort to maintain; community servers can be richer but you adopt them at your own pace.</p>
+      <div class="compare-wrap">
+        <table class="compare">
+          <thead><tr><th>Server</th><th>Maintainer</th><th>What it brings</th></tr></thead>
+          <tbody>
+            <tr><td><strong>GitHub MCP</strong></td><td>GitHub (first-party)</td><td>Repos, PRs, issues, code search. The legal-review and platform-engineering substrate.</td></tr>
+            <tr><td><strong>HubSpot MCP</strong></td><td>HubSpot (first-party, GA Apr 2026)</td><td>Contacts, deals, marketing email, campaign analytics.</td></tr>
+            <tr><td><strong>Salesforce MCP</strong></td><td>Salesforce (first-party)</td><td>Pipeline objects, flows, Apex actions. Enterprise CRM.</td></tr>
+            <tr><td><strong>Google Workspace MCP</strong></td><td>Google (first-party)</td><td>Gmail, Drive, Sheets, Calendar, Docs. The default office substrate.</td></tr>
+            <tr><td><strong>BigQuery Remote MCP</strong></td><td>Google (first-party)</td><td>Analytics queries. Read-only by default; write needs explicit scoping.</td></tr>
+            <tr><td><strong>Slack MCP</strong></td><td>Slack (first-party)</td><td>Read channels, post messages, list users. Post is destructive; gate it.</td></tr>
+            <tr><td><strong>Notion MCP</strong></td><td>Notion (first-party)</td><td>Pages, databases, comments.</td></tr>
+            <tr><td><strong>Atlassian MCP</strong></td><td>Atlassian (first-party)</td><td>Jira issues, Confluence pages. Engineering and compliance.</td></tr>
+            <tr><td>+ ~500 more in the registry</td><td>mixed (first-party + community)</td><td>Check the official MCP registry. Production-pick rule: prefer first-party.</td></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- 04 · PROOF OF WORK -->
+<!-- 04 · HOW TO CHOOSE -->
 <section class="hub-section">
   <div class="container">
     <div class="fade-up">
-      <div class="hub-label">04 &middot; Proof of work</div>
-      <h2 class="hub-title">Every call leaves a trail. Four artifacts. One join key.</h2>
-      <p class="hub-lede">Every tool call &mdash; agent or human &mdash; emits the same four artifacts, all tied by a single <code class="hub-code">run_id</code>. Anyone reviewing the catalog &mdash; an auditor, another agent &mdash; can pivot from any one of them to the others, replay the run in the Langfuse UI, and verify nothing happened off-record.</p>
+      <div class="hub-label">04 &middot; How to choose</div>
+      <h2 class="hub-title">Five heuristics, weighted for production-readiness.</h2>
+      <p class="hub-lede">Most picks pass any single heuristic. Run a candidate through all five and the picks narrow fast. These are biased toward shipping into production, not toward the cleverest architecture for a demo.</p>
     </div>
 
-    <div class="principles fade-up" style="transition-delay: 0.03s">
-      <div class="principle"><h4>OTel GenAI span &rarr; Langfuse</h4><p>The replayable trace. Agent prompts, tool args, decisions, latencies, costs &mdash; everything an auditor needs to reconstruct what happened, including the agent's reasoning.</p></div>
-      <div class="principle"><h4>D1 row in <code>tool_calls</code></h4><p>The durable summary. Cheap to query, indexed by agent, tool, decision, time. Powers dashboards and approval queues without paging the trace store.</p></div>
-      <div class="principle"><h4>R2 artifact</h4><p>When the tool produced a file (image, PDF, CSV, audio), it lands at <code>runs/{run_id}/{filename}</code>. The trace and the row both link to it.</p></div>
-      <div class="principle"><h4>Approval record</h4><p>Destructive actions block until a human decides. The decision is its own row in <code>approvals</code> with approver id, time, and note. A "yes" is as audited as a "no".</p></div>
+    <div class="heuristic-grid fade-up" style="transition-delay: 0.04s">
+      <div class="heuristic">
+        <h4>1 &middot; OSS vs SaaS</h4>
+        <p><strong>What does lock-in cost in 24 months?</strong> SaaS is faster to start; costs more long-term; the audit log lives on someone else's infrastructure. OSS is more setup, full data sovereignty. For agents handling sensitive data (financial, HR, legal, regulated), audit-log ownership often makes the OSS choice non-negotiable.</p>
+        <p><em>Rule of thumb:</em> SaaS for the layers that are commodity (model gateway, registry); OSS for the layers that hold the audit (Langfuse over LangSmith), the policy (Cerbos over Permit.io), and any data plane.</p>
+      </div>
+      <div class="heuristic warm">
+        <h4>2 &middot; Vendor-maintained vs community</h4>
+        <p><strong>What does the maintenance bill look like in a year?</strong> A vendor-maintained MCP server (GitHub's, HubSpot's, Salesforce's) is zero effort to maintain &mdash; the vendor ships fixes alongside their API changes. A community server can be richer but is someone's side project; you may inherit the patch responsibility.</p>
+        <p><em>Rule of thumb:</em> For production, vendor-maintained wins unless you can afford to fork it and own the patches.</p>
+      </div>
+      <div class="heuristic green">
+        <h4>3 &middot; Single-tenant vs multi-tenant</h4>
+        <p><strong>Who owns the audit log?</strong> In a multi-tenant SaaS, the log is in the provider's database. You can read it; you don't own it. For regulated environments (POPIA, GDPR, sector compliance) this is often disqualifying &mdash; the regulator wants the log under your control, not on someone else's terms of service.</p>
+        <p><em>Rule of thumb:</em> Treat audit and policy as single-tenant by default. Treat catalogues and model traffic as multi-tenant if the vendor's terms hold.</p>
+      </div>
+      <div class="heuristic rose">
+        <h4>4 &middot; Depth vs breadth</h4>
+        <p><strong>At your scale, when does "good enough" beat "best in class"?</strong> At 5 agents and 12 tools, breadth (one credible pick per category, all working together) matters more than depth (the best possible audit tool). At 50 agents and 200 tools, depth in your weakest category becomes the constraint.</p>
+        <p><em>Rule of thumb:</em> First production deploy &mdash; breadth. Second &mdash; deepen the layer that hurt most. Don't optimise before the pain shows up.</p>
+      </div>
+      <div class="heuristic sky">
+        <h4>5 &middot; Reversibility</h4>
+        <p><strong>What does swapping cost if the pick was wrong?</strong> The tool protocol (MCP vs not) is sticky &mdash; the whole stack speaks it. The audit backend can swap in a weekend if you stuck to OpenTelemetry GenAI conventions. The runtime is one-day-per-agent. Some layers are cheap to change later; some aren't.</p>
+        <p><em>Rule of thumb:</em> Spend more time on the sticky picks (protocol, identity, dual-use shape). Spend less on the reversible ones (audit backend, sandbox provider). Bias toward standards when sticky.</p>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- 05 · DUAL-USE PATTERN -->
+<!-- 05 · FROM LANDSCAPE TO STACK -->
 <section class="hub-section">
   <div class="container">
     <div class="fade-up">
-      <div class="hub-label">05 &middot; Dual-use pattern</div>
-      <h2 class="hub-title">One function. Human form or agent tool.</h2>
-      <p class="hub-lede">A tool that mutates state lives <strong>once</strong>, as an Inngest function. The function is callable from a plain HTML form (humans) or from the MCP gateway (agents). The Langfuse trace is identical except for one attribute: <code class="hub-code">source</code>. That's how the audit log treats humans and agents the same way &mdash; because the code path is the same.</p>
+      <div class="hub-label">05 &middot; From landscape to stack</div>
+      <h2 class="hub-title">How the categories wire together, and one worked example.</h2>
+      <p class="hub-lede">The categories above are not independent. The dual-use workflow primitive expects the audit layer to capture both callers identically; the permissions layer expects scoped identity tokens to bind decisions to agents; the runtime drives most of it. Two leaves go deeper.</p>
     </div>
 
-    <div class="flow fade-up" style="transition-delay: 0.03s">
-      <h4>Worked example &middot; <code>penny.send-email</code></h4>
-      <ol>
-        <li><strong>Agent path:</strong> Penny calls <code>penny.send_marketing_email</code> via MCP. The gateway logs <code>decision=approval_required</code> and fires Inngest event <code>penny.send_email.requested</code> with <code>source: "agent"</code>.</li>
-        <li>The Inngest function pauses on <code>approval.decided</code>. A human approver sees a card in the audit UI, reviews the proposed copy + audience, clicks approve.</li>
-        <li>The function unpauses, calls the HubSpot Marketing Email API, writes the result back to the gateway, closes the <code>tool_calls</code> row.</li>
-        <li><strong>Human path:</strong> a marketing operator opens the matching HTML form for the same action and submits it. The form POSTs to a Worker which fires the same Inngest event with <code>source: "human"</code>. No pause &mdash; the form submission is the approval.</li>
-        <li>The Langfuse trace shape is identical in both paths. Only the <code>source</code> attribute differs.</li>
-      </ol>
+    <div class="stack-card fade-up" style="transition-delay: 0.04s">
+      <h4>Three places to dig in</h4>
+      <div class="links">
+        <a href="architecture.html" class="stack-link">
+          <span class="label">Reference architecture</span>
+          <div class="title">How the categories wire together</div>
+          <div class="desc">A single Worker entry point + Cerbos + Inngest + Langfuse + vendor MCP, end to end. Described as designed, not as running state.</div>
+        </a>
+        <a href="example.html" class="stack-link">
+          <span class="label">Worked example</span>
+          <div class="title">A five-agent fractional tool stack</div>
+          <div class="desc">An illustrative roster (Grant CFO, Penny CMO, Leo CLO, Grace CHRO, Katharine CRO) with specific picks across the categories. One stack among many.</div>
+        </a>
+        <a href="runtime.html" class="stack-link">
+          <span class="label">Decision leaf <span class="tag">Member</span></span>
+          <div class="title">The runtime layer choice</div>
+          <div class="desc">Why pick the Claude Agent SDK over LangGraph, CrewAI, Vercel AI SDK, etc. First in a series of per-layer decision leaves.</div>
+        </a>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- 06 · WHAT THIS IS NOT -->
+<!-- 06 · CONNECTIONS -->
 <section class="hub-section">
   <div class="container">
     <div class="fade-up">
-      <div class="hub-label">06 &middot; What this is not</div>
-      <h2 class="hub-title">The honest disclaimers.</h2>
-    </div>
-
-    <div class="principles fade-up" style="transition-delay: 0.03s">
-      <div class="principle"><h4>Self-host, not a hosted product</h4><p>The catalog describes a self-hostable pattern. There is no managed multi-tenant service behind it &mdash; teams clone the architecture and run it on their own Cloudflare + Fly accounts.</p></div>
-      <div class="principle"><h4>Tool calls, not model traffic</h4><p>The catalog gates <em>tool</em> calls. Model traffic (Anthropic, Vertex, Bedrock) goes direct from the agent. Use Cloudflare AI Gateway or equivalent for model-side routing.</p></div>
-      <div class="principle"><h4>One of several stacks</h4><p>Multiple stacks land at the same architecture. The picks in this catalog favour OSS + self-hostable + readable policies. Substitute confidently when a different OSS option suits the situation; the architecture survives the swap.</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- 07 · CONNECTIONS -->
-<section class="hub-section">
-  <div class="container">
-    <div class="fade-up">
-      <div class="hub-label">07 &middot; Connections</div>
-      <h2 class="hub-title">Where else this catalog touches the tree.</h2>
+      <div class="hub-label">06 &middot; Connections</div>
+      <h2 class="hub-title">Where else this touches the tree.</h2>
     </div>
 
     <div class="cross-links fade-up" style="transition-delay: 0.03s">
-      <a href="architecture.html" class="cross-link">&rarr; Architecture (the deep dive)</a>
+      <a href="architecture.html" class="cross-link">&rarr; Architecture</a>
+      <a href="example.html" class="cross-link">&rarr; Worked example</a>
       <a href="runtime.html" class="cross-link">&rarr; Runtime decision &middot; member</a>
       <a href="../agents/" class="cross-link">&rarr; Agents</a>
-      <a href="../agents/skills.html" class="cross-link">&rarr; Skills (the agent-side spec)</a>
+      <a href="../agents/skills.html" class="cross-link">&rarr; Agent Skills</a>
       <a href="../agents/mcp.html" class="cross-link">&rarr; MCP</a>
       <a href="../agents/anthropic-agent-sdk.html" class="cross-link">&rarr; Claude Agent SDK</a>
-      <a href="../tech/cloudflare/" class="cross-link">&rarr; Cloudflare (Workers, D1, R2)</a>
-      <a href="../tech/google/" class="cross-link">&rarr; Google Workspace + BigQuery</a>
+      <a href="../agents/langgraph.html" class="cross-link">&rarr; LangGraph</a>
+      <a href="../agents/crewai.html" class="cross-link">&rarr; CrewAI</a>
+      <a href="../tech/cloudflare/" class="cross-link">&rarr; Cloudflare</a>
+      <a href="../tech/google/" class="cross-link">&rarr; Google (Workspace + BigQuery)</a>
       <a href="../biz/crm/" class="cross-link">&rarr; CRM (HubSpot, Salesforce, Frappe)</a>
-      <a href="../tech/frappe/" class="cross-link">&rarr; Frappe</a>
+    </div>
+  </div>
+</section>
+
+<!-- 07 · RESOURCES -->
+<section class="hub-section">
+  <div class="container">
+    <div class="fade-up">
+      <div class="hub-label">07 &middot; Resources</div>
+      <h2 class="hub-title">Primary sources.</h2>
+      <p class="hub-lede">Linked tersely. The landscape moves fast &mdash; verify the version against the date on this leaf.</p>
+    </div>
+
+    <div class="resource-grid fade-up" style="transition-delay: 0.03s">
+      <a class="resource" href="https://modelcontextprotocol.io" target="_blank" rel="noopener"><span class="r-kind">Protocol</span><span class="r-title">Model Context Protocol</span><span class="r-url">modelcontextprotocol.io</span></a>
+      <a class="resource" href="https://registry.modelcontextprotocol.io" target="_blank" rel="noopener"><span class="r-kind">Discovery</span><span class="r-title">Official MCP Registry</span><span class="r-url">registry.modelcontextprotocol.io</span></a>
+      <a class="resource" href="https://github.com/anthropics/claude-agent-sdk-python" target="_blank" rel="noopener"><span class="r-kind">Runtime</span><span class="r-title">Claude Agent SDK</span><span class="r-url">github.com/anthropics/claude-agent-sdk-python</span></a>
+      <a class="resource" href="https://www.langchain.com/langgraph" target="_blank" rel="noopener"><span class="r-kind">Runtime</span><span class="r-title">LangGraph</span><span class="r-url">langchain.com/langgraph</span></a>
+      <a class="resource" href="https://docs.crewai.com" target="_blank" rel="noopener"><span class="r-kind">Runtime</span><span class="r-title">CrewAI</span><span class="r-url">docs.crewai.com</span></a>
+      <a class="resource" href="https://ai-sdk.dev" target="_blank" rel="noopener"><span class="r-kind">Runtime</span><span class="r-title">Vercel AI SDK</span><span class="r-url">ai-sdk.dev</span></a>
+      <a class="resource" href="https://www.cerbos.dev" target="_blank" rel="noopener"><span class="r-kind">Permissions</span><span class="r-title">Cerbos</span><span class="r-url">cerbos.dev</span></a>
+      <a class="resource" href="https://www.permit.io" target="_blank" rel="noopener"><span class="r-kind">Permissions</span><span class="r-title">Permit.io</span><span class="r-url">permit.io</span></a>
+      <a class="resource" href="https://langfuse.com" target="_blank" rel="noopener"><span class="r-kind">Audit</span><span class="r-title">Langfuse</span><span class="r-url">langfuse.com</span></a>
+      <a class="resource" href="https://www.langchain.com/langsmith" target="_blank" rel="noopener"><span class="r-kind">Audit</span><span class="r-title">LangSmith</span><span class="r-url">langchain.com/langsmith</span></a>
+      <a class="resource" href="https://opentelemetry.io/docs/specs/semconv/gen-ai/" target="_blank" rel="noopener"><span class="r-kind">Trace contract</span><span class="r-title">OpenTelemetry GenAI semconv</span><span class="r-url">opentelemetry.io/docs/specs/semconv/gen-ai</span></a>
+      <a class="resource" href="https://e2b.dev" target="_blank" rel="noopener"><span class="r-kind">Sandbox</span><span class="r-title">E2B</span><span class="r-url">e2b.dev</span></a>
+      <a class="resource" href="https://www.daytona.io" target="_blank" rel="noopener"><span class="r-kind">Sandbox</span><span class="r-title">Daytona</span><span class="r-url">daytona.io</span></a>
+      <a class="resource" href="https://www.inngest.com" target="_blank" rel="noopener"><span class="r-kind">Dual-use</span><span class="r-title">Inngest</span><span class="r-url">inngest.com</span></a>
+      <a class="resource" href="https://trigger.dev" target="_blank" rel="noopener"><span class="r-kind">Dual-use</span><span class="r-title">Trigger.dev</span><span class="r-url">trigger.dev</span></a>
+      <a class="resource" href="https://temporal.io" target="_blank" rel="noopener"><span class="r-kind">Dual-use</span><span class="r-title">Temporal</span><span class="r-url">temporal.io</span></a>
+      <a class="resource" href="https://composio.dev" target="_blank" rel="noopener"><span class="r-kind">Registry</span><span class="r-title">Composio</span><span class="r-url">composio.dev</span></a>
+      <a class="resource" href="https://www.arcade.dev" target="_blank" rel="noopener"><span class="r-kind">Registry</span><span class="r-title">Arcade.dev</span><span class="r-url">arcade.dev</span></a>
+      <a class="resource" href="https://github.com/letta-ai/letta" target="_blank" rel="noopener"><span class="r-kind">Memory</span><span class="r-title">Letta</span><span class="r-url">github.com/letta-ai/letta</span></a>
+      <a class="resource" href="https://mem0.ai" target="_blank" rel="noopener"><span class="r-kind">Memory</span><span class="r-title">mem0</span><span class="r-url">mem0.ai</span></a>
     </div>
   </div>
 </section>
@@ -429,11 +579,13 @@
     <div class="footer-tagline">The Knowledge Tree</div>
     <div class="footer-links">
       <a href="../../index.html">Tree</a>
+      <a href="architecture.html">Architecture</a>
+      <a href="example.html">Worked example</a>
       <a href="../../about.html">About</a>
       <a href="../../join.html">Join</a>
       <a href="https://2nth.ai">2nth.ai</a>
     </div>
-    <div class="footer-copy">&copy; 2026 imbila.ai &middot; All knowledge open</div>
+    <div class="footer-copy">&copy; 2026 imbila.ai &middot; All knowledge open &middot; some opinionated content gated to Members</div>
     <div class="footer-review">Last reviewed: 2026-05-17 &middot; Cadence: hot (quarterly)</div>
   </div>
 </footer>
