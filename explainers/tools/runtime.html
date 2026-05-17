@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent runtime &mdash; the Claude Agent SDK choice &mdash; know.2nth.ai</title>
+<meta name="description" content="Why the 2nth.ai agent platform runs on the Claude Agent SDK, not LangGraph or CrewAI or a raw API loop. Decision rationale, what the SDK actually does for us, alternatives weighed, implications to plan for (model lock-in, June-2026 pricing change, single-vendor velocity), and the hook-composition gotcha that will trip up a partner copying the pattern.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/tools/runtime">
+<meta property="og:title" content="Agent runtime &mdash; the Claude Agent SDK choice &mdash; know.2nth.ai">
+<meta property="og:description" content="Why the 2nth.ai agent platform runs on the Claude Agent SDK. Decision rationale, alternatives weighed, implications. Member content.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Agent runtime &mdash; the Claude Agent SDK choice &mdash; know.2nth.ai">
+<meta name="twitter:description" content="Why the 2nth.ai agent platform runs on the Claude Agent SDK. Member content.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3Cline x1='16' y1='3' x2='16' y2='7' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='16' y1='25' x2='16' y2='29' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='3' y1='16' x2='7' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='25' y1='16' x2='29' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3C/svg%3E">
+<style>
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12); --violet: #8B5CF6; --violet-soft: rgba(139, 92, 246, 0.12); --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-soft: rgba(99, 102, 241, 0.12); --bg: var(--ink); --bg-raised: var(--navy); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(37, 99, 235, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(56, 189, 248, 0.3); --max-w: 1200px; --read-w: 760px; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-raised: #FFFFFF; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(37, 99, 235, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(37, 99, 235, 0.25); }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.blue { width: 600px; height: 600px; background: var(--blue); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--sky); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--sky); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .read { max-width: var(--read-w); }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--sky); }
+  .crumb-sep { opacity: 0.5; }
+  .crumb-current { color: var(--text-secondary); }
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--indigo); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--indigo); box-shadow: 0 0 12px var(--indigo); }
+  .hero h1 { font-size: clamp(38px, 5.6vw, 60px); font-weight: 800; line-height: 1.05; letter-spacing: -2px; margin-bottom: 22px; max-width: 18ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--blue-glow), var(--sky), var(--sky-muted)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 720px; line-height: 1.7; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.accent { background: rgba(37, 99, 235, 0.12); color: var(--blue-glow); border-color: rgba(37, 99, 235, 0.25); }
+  .pill.green { background: var(--green-soft); color: var(--green); border-color: rgba(16, 185, 129, 0.25); }
+  .pill.indigo { background: var(--indigo-soft); color: var(--indigo); border-color: rgba(99, 102, 241, 0.25); }
+  .pill.warm { background: var(--warm-soft); color: var(--warm); border-color: rgba(245, 158, 11, 0.25); }
+  .pill.member { background: linear-gradient(135deg, rgba(37, 99, 235, 0.18), rgba(99, 102, 241, 0.22)); color: var(--blue-glow); border-color: rgba(99, 102, 241, 0.4); }
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--sky); margin-bottom: 14px; }
+  .section-label.member-label { color: var(--indigo); }
+  .section-label .lock { font-size: 10px; margin-left: 6px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .section-lede strong { color: var(--text-primary); font-weight: 600; }
+  .section-lede code { font-family: 'JetBrains Mono', monospace; font-size: 0.86em; background: rgba(56, 189, 248, 0.06); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--sky); }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--sky); }
+  .prose ul, .prose ol { padding-left: 24px; margin-bottom: 18px; max-width: var(--read-w); }
+  .prose li { font-size: 15px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 8px; }
+  .prose li strong { color: var(--text-primary); font-weight: 600; }
+  .prose li code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; color: var(--sky); background: rgba(56, 189, 248, 0.06); padding: 1px 5px; border-radius: 3px; }
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: 1040px; margin-bottom: 24px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--sky); background: rgba(37, 99, 235, 0.04); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); }
+  .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--sky); }
+  .compare td strong { color: var(--text-primary); }
+  .does-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; max-width: 1040px; margin-bottom: 20px; }
+  .does-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--blue); border-radius: var(--radius-md); padding: 18px 22px; }
+  .does-cell h4 { font-size: 14px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.2px; }
+  .does-cell p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+  .does-cell code { font-family: 'JetBrains Mono', monospace; font-size: 0.86em; color: var(--sky); background: rgba(56, 189, 248, 0.06); padding: 1px 5px; border-radius: 3px; }
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px 28px; max-width: var(--read-w); margin-bottom: 16px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.indigo { border-left: 3px solid var(--indigo); }
+  .info-card.rose { border-left: 3px solid var(--rose); }
+  .info-card.sky { border-left: 3px solid var(--sky); }
+  .info-card h4 { font-size: 15px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .info-card code { font-family: 'JetBrains Mono', monospace; font-size: 0.86em; color: var(--sky); background: rgba(56, 189, 248, 0.06); padding: 1px 5px; border-radius: 4px; }
+  .info-card strong { color: var(--text-primary); font-weight: 600; }
+  .cross-links { display: flex; gap: 10px; flex-wrap: wrap; }
+  .cross-link { font-family: 'JetBrains Mono', monospace; font-size: 12px; padding: 10px 20px; border-radius: var(--radius-pill); border: 1px solid var(--border); background: var(--bg-card); text-decoration: none; color: var(--text-secondary); transition: all 0.3s; letter-spacing: 0.5px; }
+  .cross-link:hover { border-color: var(--border-hover); color: var(--sky); transform: translateY(-1px); }
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--sky); word-break: break-all; }
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--sky); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .footer-review { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); margin-top: 14px; letter-spacing: 0.4px; }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+
+<div class="glow-orb blue"></div>
+<div class="glow-orb sky"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand">
+      <span class="nav-brand-mark">know.2nth.ai</span>
+      <span class="nav-brand-sub">tools &middot; runtime</span>
+    </a>
+    <div class="nav-right">
+      <a href="index.html" class="nav-link">&larr; Tools</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x1F319;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="index.html">Tools</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">Runtime &middot; Claude Agent SDK</span>
+  </div>
+</div>
+
+<!-- HERO (open) -->
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> tools &middot; substrate decision &middot; runtime layer</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      Why we run on the <span class="gradient">Claude Agent SDK.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      The 2nth.ai agent platform commits to one runtime: Anthropic's official <strong>Claude Agent SDK</strong> (<code style="font-family:'JetBrains Mono',monospace;font-size:0.86em;color:var(--sky);background:rgba(56,189,248,0.06);border:1px solid var(--border);padding:1px 5px;border-radius:4px;">claude-agent-sdk</code> Python, <code style="font-family:'JetBrains Mono',monospace;font-size:0.86em;color:var(--sky);background:rgba(56,189,248,0.06);border:1px solid var(--border);padding:1px 5px;border-radius:4px;">@anthropic-ai/claude-agent-sdk</code> TypeScript) &mdash; the same engine Claude Code itself runs on. This leaf documents the decision: the alternatives we weighed, what the SDK actually does for us, the implications you will run into in a real pilot.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill member">Members &middot; gated</span>
+      <span class="pill accent">Runtime layer</span>
+      <span class="pill indigo">Decision doc</span>
+      <span class="pill warm">Hot &middot; quarterly review</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 · TL;DR (open as teaser) -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; TL;DR</div>
+      <h2 class="section-title">What the SDK is, in one paragraph.</h2>
+    </div>
+
+    <div class="prose fade-up" style="transition-delay: 0.04s">
+      <p>The Claude Agent SDK is not a framework in the LangChain sense. It is a tight wrapper around the Anthropic API that adds the agent loop, MCP support, and a handful of primitives the platform needs: <code>allowed_tools</code>, <code>disallowed_tools</code>, <code>PreToolUse</code> hooks, structured output, and prompt caching. It is the same engine Claude Code itself runs on, which means partners reading the SDK docs already understand 80% of what we built. The full decision rationale &mdash; including the comparison table, the implications you should plan for, and the hook-composition gotcha &mdash; is in the sections below.</p>
+    </div>
+
+    <div class="info-card sky fade-up" style="transition-delay: 0.06s" style2="margin-top:12px">
+      <h4>About this leaf</h4>
+      <p>This is the first <strong>member-tier</strong> leaf on know.2nth.ai. Opinionated decision content &mdash; "why we picked X over Y and what it costs" &mdash; goes behind the join wall. Reference content (what a tool is, how it works) stays open. Sign up via the <a href="../../join.html" style="color:var(--sky);text-decoration:none;border-bottom:1px solid var(--sky)">join form</a> to unlock.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 · ALTERNATIVES (gated) -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label member-label">02 &middot; Why this, not the alternatives <span class="lock">&#x1F512;</span></div>
+      <h2 class="section-title">Five frameworks we passed on, with the reasons.</h2>
+      <p class="section-lede">The agent-framework market in 2026 is crowded. Each has a real audience. Here is why none of them won the runtime layer for the 2nth.ai showcase &mdash; and the one consideration that decided it.</p>
+    </div>
+
+    <div data-tier="member">
+      <div class="compare-wrap fade-up" style="transition-delay: 0.04s">
+        <table class="compare">
+          <thead><tr><th>Alternative</th><th>Why we passed</th></tr></thead>
+          <tbody>
+            <tr><td><strong>LangGraph</strong></td><td>Best-in-class for stateful multi-agent orchestration, but generic &mdash; partners would have to learn LangGraph <em>and</em> our wiring. Twice the surface to onboard onto.</td></tr>
+            <tr><td><strong>CrewAI</strong></td><td>Role-based, fast adoption (60%+ Fortune 500 by Jan 2026), but coarser permission model. We would be papering over <code>allowed_tools</code> ourselves at exactly the load-bearing seam where we cannot afford bugs.</td></tr>
+            <tr><td><strong>Vercel AI SDK</strong></td><td>TypeScript-only, lovely DX, but less aligned with how Anthropic ships MCP and Skills. We would pay a permanent catch-up tax as Anthropic's primitives evolve.</td></tr>
+            <tr><td><strong>OpenAI Agents SDK</strong></td><td>Locks the runtime to OpenAI models. The whole point is to use Claude.</td></tr>
+            <tr><td><strong>Build on the raw Anthropic API</strong></td><td>We would recreate the agent loop, context compaction, tool-result feeding, and MCP plumbing for no upside. The SDK gives us all four free.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="prose fade-up" style="transition-delay: 0.06s">
+        <p><strong>The deciding factor.</strong> <code>allowed_tools</code> is the permission primitive the architecture needs, and <code>PreToolUse</code> hooks are a clean single integration point for everything we layer on (the Cerbos check, the Langfuse span emit, the Inngest event fire). Picking the Claude Agent SDK means writing ~50 lines of hook code, not ~500 lines of framework adapter. Every alternative imposes a more expensive wiring tax.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 · WHAT THE SDK DOES FOR US (gated) -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label member-label">03 &middot; What the SDK actually does for us <span class="lock">&#x1F512;</span></div>
+      <h2 class="section-title">Five concrete jobs &mdash; and what we layer on top.</h2>
+      <p class="section-lede">The SDK is intentionally narrow. Knowing exactly what it gives you (and what it does not) is the difference between leveraging it cleanly and accidentally fighting it.</p>
+    </div>
+
+    <div data-tier="member">
+      <div class="does-grid fade-up" style="transition-delay: 0.04s">
+        <div class="does-cell"><h4>1 &middot; Hosts the agent loop</h4><p>Model call, tool-call parsing, tool execution, result feedback, repeat. Context compaction built in.</p></div>
+        <div class="does-cell"><h4>2 &middot; Speaks MCP natively</h4><p>Points at our <code>mcp-gateway</code> Worker URL like any other MCP server. No translation layer.</p></div>
+        <div class="does-cell"><h4>3 &middot; First-line permission gate</h4><p><code>allowed_tools</code> filters before a tool is even invoked. Cerbos is the second line, inside the hook.</p></div>
+        <div class="does-cell"><h4>4 &middot; PreToolUse hook surface</h4><p>One <code>(agent, tool, args)</code> callback where the gateway dispatch + audit emit + approval check live.</p></div>
+        <div class="does-cell"><h4>5 &middot; Skills + prompt caching</h4><p>Agent personas (Grant, Penny, Leo, Grace, Katharine) load as Skills. Caching keeps token cost down across runs.</p></div>
+      </div>
+
+      <div class="info-card indigo fade-up" style="transition-delay: 0.06s">
+        <h4>What the SDK does NOT do &mdash; and what we layer in</h4>
+        <p><strong>Audit / proof of work.</strong> Layered in via Langfuse, called from the PreToolUse hook.</p>
+        <p><strong>Permission policy beyond the allowlist.</strong> Layered in via Cerbos, called from the same hook.</p>
+        <p><strong>Human-in-the-loop approval gates.</strong> Layered in via Inngest, triggered through the MCP gateway when an action is destructive.</p>
+        <p><strong>Human-facing surface for the same actions.</strong> An HTML form on Cloudflare Pages that POSTs to the same Inngest event &mdash; identical code path.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 · IMPLICATIONS (gated) -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label member-label">04 &middot; Implications you should plan for <span class="lock">&#x1F512;</span></div>
+      <h2 class="section-title">The honest cost-of-being-wrong.</h2>
+      <p class="section-lede">Every runtime choice has a tax. Here are the six the Claude Agent SDK will levy on you, ranked by what hurts most in a real pilot.</p>
+    </div>
+
+    <div data-tier="member">
+      <div class="fade-up" style="transition-delay: 0.04s">
+        <div class="info-card amber">
+          <h4>1 &middot; Model lock-in</h4>
+          <p>Agents are coupled to Claude. Tools are not &mdash; MCP is provider-neutral. If Anthropic ever falters or you decide to move to GPT or Gemini, migration cost is the runtime layer only, roughly <strong>one day per agent</strong> to rewire. Acceptable, but worth saying out loud before partners commit.</p>
+        </div>
+
+        <div class="info-card rose">
+          <h4>2 &middot; June 15, 2026 pricing change</h4>
+          <p>Starting <strong>2026-06-15</strong>, programmatic Claude SDK usage starts drawing separate credits ($20&ndash;$200/mo depending on plan tier). Budget this per agent <em>before</em> pilots scale. At one-call-per-day per agent it is a rounding error; at fleet scale it adds up to real money.</p>
+        </div>
+
+        <div class="info-card indigo">
+          <h4>3 &middot; Single-vendor SDK velocity</h4>
+          <p>Anthropic ships fast. The SDK was renamed from <code>claude-code-sdk</code> in mid-2025; MCP went GA; Skills landed; prompt caching changed shape twice. Budget <strong>~half a day per quarter</strong> for SDK version bumps. The catalog cadence on <a href="index.html" style="color:var(--sky);text-decoration:none;border-bottom:1px solid var(--sky)">/tools/</a> is Hot (quarterly) for exactly this reason.</p>
+        </div>
+
+        <div class="info-card green">
+          <h4>4 &middot; Weaker multi-agent orchestration than LangGraph</h4>
+          <p>If you ever want Grant + Katharine to coordinate without human-in-loop &mdash; e.g. CFO and CRO jointly close a deal &mdash; you will bolt on a state machine. Likely an <strong>Inngest workflow</strong>, since Inngest is already in the architecture. Do not switch runtimes for this; layer on instead.</p>
+        </div>
+
+        <div class="info-card sky">
+          <h4>5 &middot; Partner-copyability is cheap</h4>
+          <p>A partner cloning this needs <strong>one Anthropic API key</strong>. That is the entire dependency. Cheaper than the GCP/Vertex alternative (project + billing + Vertex enablement + service-account setup) and easier than the OpenAI alternative if they want Claude-specific features (Skills, MCP, longer context).</p>
+        </div>
+
+        <div class="info-card amber">
+          <h4>6 &middot; Hook-composition gotcha</h4>
+          <p>The <code>PreToolUse</code> hook is the place where <strong>four concerns intersect</strong>: policy check, approval gate, audit emit, vendor MCP forward. Keep that hook short and well-tested &mdash; it is the load-bearing seam of the whole architecture. If it grows past ~150 lines, factor each concern into its own module <em>before</em> it ossifies. A partner who skips this will be debugging spaghetti six months in.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 · CONNECTIONS (open) -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; Connections</div>
+      <h2 class="section-title">Where this leaf links into the rest of the tree.</h2>
+    </div>
+
+    <div class="cross-links fade-up" style="transition-delay: 0.03s">
+      <a href="index.html" class="cross-link">&rarr; Tools catalog</a>
+      <a href="architecture.html" class="cross-link">&rarr; Architecture</a>
+      <a href="../agents/anthropic-agent-sdk.html" class="cross-link">&rarr; Claude Agent SDK (general explainer)</a>
+      <a href="../agents/mcp.html" class="cross-link">&rarr; MCP</a>
+      <a href="../agents/skills.html" class="cross-link">&rarr; Agent Skills</a>
+      <a href="../agents/claude.html" class="cross-link">&rarr; Claude (the model)</a>
+      <a href="../agents/langgraph.html" class="cross-link">&rarr; LangGraph (alternative we passed on)</a>
+      <a href="../agents/crewai.html" class="cross-link">&rarr; CrewAI (alternative we passed on)</a>
+      <a href="../agents/openai-agents-sdk.html" class="cross-link">&rarr; OpenAI Agents SDK (alternative)</a>
+    </div>
+  </div>
+</section>
+
+<!-- 06 · RESOURCES (open) -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; Resources</div>
+      <h2 class="section-title">Primary sources.</h2>
+      <p class="section-lede">Linked tersely. The SDK moves fast &mdash; verify the version against the date on this leaf.</p>
+    </div>
+
+    <div class="resource-grid fade-up" style="transition-delay: 0.03s">
+      <a class="resource" href="https://github.com/anthropics/claude-agent-sdk-python" target="_blank" rel="noopener"><span class="r-kind">Repo</span><span class="r-title">claude-agent-sdk (Python)</span><span class="r-url">github.com/anthropics/claude-agent-sdk-python</span></a>
+      <a class="resource" href="https://github.com/anthropics/claude-agent-sdk-typescript" target="_blank" rel="noopener"><span class="r-kind">Repo</span><span class="r-title">claude-agent-sdk (TypeScript)</span><span class="r-url">github.com/anthropics/claude-agent-sdk-typescript</span></a>
+      <a class="resource" href="https://code.claude.com/docs/en/agent-sdk/overview" target="_blank" rel="noopener"><span class="r-kind">Docs</span><span class="r-title">Claude Agent SDK overview</span><span class="r-url">code.claude.com/docs/en/agent-sdk/overview</span></a>
+      <a class="resource" href="https://modelcontextprotocol.io" target="_blank" rel="noopener"><span class="r-kind">Protocol</span><span class="r-title">Model Context Protocol</span><span class="r-url">modelcontextprotocol.io</span></a>
+      <a class="resource" href="https://registry.modelcontextprotocol.io" target="_blank" rel="noopener"><span class="r-kind">Discovery</span><span class="r-title">Official MCP Registry</span><span class="r-url">registry.modelcontextprotocol.io</span></a>
+      <a class="resource" href="https://www.langchain.com/langgraph" target="_blank" rel="noopener"><span class="r-kind">Alternative</span><span class="r-title">LangGraph</span><span class="r-url">langchain.com/langgraph</span></a>
+      <a class="resource" href="https://docs.crewai.com" target="_blank" rel="noopener"><span class="r-kind">Alternative</span><span class="r-title">CrewAI docs</span><span class="r-url">docs.crewai.com</span></a>
+      <a class="resource" href="https://ai-sdk.dev" target="_blank" rel="noopener"><span class="r-kind">Alternative</span><span class="r-title">Vercel AI SDK</span><span class="r-url">ai-sdk.dev</span></a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <div class="footer-tagline">The Knowledge Tree</div>
+    <div class="footer-links">
+      <a href="../../index.html">Tree</a>
+      <a href="index.html">Tools</a>
+      <a href="../../about.html">About</a>
+      <a href="../../join.html">Join</a>
+      <a href="https://2nth.ai">2nth.ai</a>
+    </div>
+    <div class="footer-copy">&copy; 2026 imbila.ai &middot; All knowledge open &middot; some opinionated content gated to Members</div>
+    <div class="footer-review">Last reviewed: 2026-05-17 &middot; Cadence: hot (quarterly) &middot; Tier: member</div>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme() {
+    const cur = document.documentElement.getAttribute('data-theme');
+    const next = cur === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('2nth-theme', next);
+  }
+  const stored = localStorage.getItem('2nth-theme');
+  if (stored) document.documentElement.setAttribute('data-theme', stored);
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.05 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+
+<script src="/gate.js" defer></script>
+
+</body>
+</html>

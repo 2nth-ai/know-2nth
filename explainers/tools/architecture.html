@@ -272,7 +272,7 @@
       <table class="compare">
         <thead><tr><th>Layer</th><th>Pick</th><th>Why this, not the alternative</th></tr></thead>
         <tbody>
-          <tr><td><strong>Agent runtime</strong></td><td><strong>Claude Agent SDK</strong></td><td>Native <code>allowed_tools</code> / <code>disallowed_tools</code>, PreToolUse hooks, MCP-aware. Direct fit for the showcase pattern.</td></tr>
+          <tr><td><strong>Agent runtime</strong></td><td><strong><a href="runtime.html" style="color:var(--sky);text-decoration:none;border-bottom:1px solid var(--sky)">Claude Agent SDK</a></strong> <span style="font-size:10px;color:var(--indigo);font-family:'JetBrains Mono',monospace;letter-spacing:1px;text-transform:uppercase;padding:2px 7px;border-radius:100px;background:rgba(99,102,241,0.12);border:1px solid rgba(99,102,241,0.3);margin-left:4px">member</span></td><td>Native <code>allowed_tools</code> / <code>disallowed_tools</code>, PreToolUse hooks, MCP-aware. Direct fit for the showcase pattern. See the runtime leaf for the full decision rationale.</td></tr>
           <tr><td><strong>Tool protocol</strong></td><td><strong>MCP</strong> (Model Context Protocol)</td><td>500+ servers in the official registry; vendor-maintained ones are the safest picks for a partner-facing showcase.</td></tr>
           <tr><td><strong>Permission policy</strong></td><td><strong>Cerbos PDP</strong></td><td>YAML policies, &lt;1 ms decisions, Apache-2 OSS, self-hostable. Permit.io rejected: SaaS.</td></tr>
           <tr><td><strong>Proof of work</strong></td><td><strong>Langfuse self-hosted</strong></td><td>MIT, ClickHouse-backed, free at scale, replayable traces. LangSmith rejected: SaaS lock-in.</td></tr>
@@ -510,6 +510,8 @@
   }, { threshold: 0.05 });
   document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 </script>
+
+<script src="/gate.js" defer></script>
 
 </body>
 </html>

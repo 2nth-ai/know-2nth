@@ -115,7 +115,9 @@
   .svc-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
 
   .stack-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; max-width: 1040px; margin-bottom: 20px; }
-  .stack-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--indigo); border-radius: var(--radius-md); padding: 20px 24px; }
+  .stack-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--indigo); border-radius: var(--radius-md); padding: 20px 24px; text-decoration: none; color: inherit; display: block; transition: all 0.3s; position: relative; }
+  a.stack-cell:hover { border-color: var(--border-hover); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); }
+  .stack-cell .member-tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.1px; text-transform: uppercase; padding: 2px 7px; border-radius: var(--radius-pill); font-weight: 600; background: linear-gradient(135deg, rgba(37, 99, 235, 0.18), rgba(99, 102, 241, 0.22)); color: var(--blue-glow); border: 1px solid rgba(99, 102, 241, 0.4); position: absolute; top: 10px; right: 10px; }
   .stack-cell .layer { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
   .stack-cell h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.3px; }
   .stack-cell p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
@@ -213,7 +215,7 @@
     </div>
 
     <div class="stack-grid fade-up" style="transition-delay: 0.04s">
-      <div class="stack-cell"><span class="layer">Runtime</span><h4>Claude Agent SDK</h4><p>Python + TypeScript. Native <code>allowed_tools</code>, <code>disallowed_tools</code>, PreToolUse hooks.</p><span class="vendor">anthropics &middot; oss</span></div>
+      <a class="stack-cell" href="runtime.html"><span class="member-tag">Member</span><span class="layer">Runtime</span><h4>Claude Agent SDK</h4><p>Python + TypeScript. Native <code>allowed_tools</code>, <code>disallowed_tools</code>, PreToolUse hooks.</p><span class="vendor">anthropics &middot; oss</span></a>
       <div class="stack-cell"><span class="layer">Protocol</span><h4>MCP &mdash; Model Context Protocol</h4><p>500+ servers in the official registry. Tool discovery + invocation, vendor-neutral.</p><span class="vendor">anthropic-origin &middot; oss</span></div>
       <div class="stack-cell"><span class="layer">Permissions</span><h4>Cerbos PDP</h4><p>YAML policies per agent. &lt;1 ms decision. One <code>principalPolicy</code> file per role.</p><span class="vendor">cerbos &middot; oss (Apache-2)</span></div>
       <div class="stack-cell"><span class="layer">Audit</span><h4>Langfuse (self-hosted)</h4><p>OpenTelemetry-compatible. Replayable traces. ClickHouse-backed. Free at scale.</p><span class="vendor">langfuse &middot; oss (MIT)</span></div>
@@ -409,6 +411,7 @@
 
     <div class="cross-links fade-up" style="transition-delay: 0.03s">
       <a href="architecture.html" class="cross-link">&rarr; Architecture (the deep dive)</a>
+      <a href="runtime.html" class="cross-link">&rarr; Runtime decision &middot; member</a>
       <a href="../agents/" class="cross-link">&rarr; Agents</a>
       <a href="../agents/skills.html" class="cross-link">&rarr; Skills (the agent-side spec)</a>
       <a href="../agents/mcp.html" class="cross-link">&rarr; MCP</a>
@@ -451,6 +454,8 @@
   }, { threshold: 0.05 });
   document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 </script>
+
+<script src="/gate.js" defer></script>
 
 </body>
 </html>
