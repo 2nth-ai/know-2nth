@@ -12,7 +12,7 @@ Sibling sites in the ecosystem:
 
 ### Related repos that are NOT this one
 
-- **`github.com/2nth-ai/skills`** — the agent-facing skills repo with `SKILL.md` files that Penny / Grant / Leo / Eric load at runtime. Different consumer (agents, not humans), different artefact (markdown with YAML frontmatter, not HTML). The legacy public rendering of those files was `skills.2nth.ai` (project `2nth-skills-hub` on Cloudflare) — **that UI is being phased out;** know.2nth.ai is the canonical public surface for the ecosystem now. Don't publish human-facing content to `skills.2nth.ai`.
+- **`github.com/2nth-ai/skills`** — the agent-facing skills repo with `SKILL.md` files that Penny / Grant / Leo / Eric load at runtime. Different consumer (agents, not humans), different artefact (markdown with YAML frontmatter, not HTML). The legacy public rendering of those files was `skills.2nth.ai` (project `2nth-skills-hub` on Cloudflare) — **retired 2026-05-17;** custom domains unmapped, projects kept as orphan `*.pages.dev` containers for a brief grace period. know.2nth.ai is the canonical public surface for the ecosystem now. Don't add new `skills.2nth.ai` URLs anywhere.
 
 ## Repo & deploy
 
@@ -198,5 +198,5 @@ Confirm latest commit is the one just merged, working tree is clean, on `main`. 
 
 ## What's NOT in this repo
 
-- The other 2nth-ai sites (`2nth.ai`, `dev.2nth.ai`, `agents.2nth.ai`, `clients.2nth.ai`, `skills.2nth.ai`, `2nth-skills.pages.dev`) are separate repos with their own deploy flows.
+- Other 2nth-ai sites (`2nth.ai`, `dev.2nth.ai`, `agents.2nth.ai`, `clients.2nth.ai`) are separate repos with their own deploy flows. `skills.2nth.ai` and `dev.skills.2nth.ai` were retired 2026-05-17 — see "Related repos" above.
 - There is no agent-context API (`/api/context/…`) and no Workers in this repo. If a structured-export endpoint is added later, document it here.
