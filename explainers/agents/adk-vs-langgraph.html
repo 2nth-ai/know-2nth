@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Google ADK vs LangGraph &mdash; know.2nth.ai</title>
+<meta name="description" content="A neutral side-by-side of two of the most credible agent frameworks in 2026 — Google's Agent Development Kit (ADK) and LangChain's LangGraph. Both Python-first, both open-source, both multi-provider, both production-grade. Different centers of gravity: ADK leans into managed compliance via Vertex AI Agent Engine; LangGraph leans into vendor neutrality and broader ecosystem. When each wins, when to combine them, and the SA / regulated-industry angle.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/agents/adk-vs-langgraph">
+<meta property="og:title" content="Google ADK vs LangGraph &mdash; know.2nth.ai">
+<meta property="og:description" content="Neutral side-by-side of two production agent frameworks. ADK for managed compliance on GCP; LangGraph for vendor neutrality. When each wins.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Google ADK vs LangGraph &mdash; know.2nth.ai">
+<meta name="twitter:description" content="Two production agent frameworks compared. ADK for managed compliance; LangGraph for vendor neutrality.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3Cline x1='16' y1='3' x2='16' y2='7' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='16' y1='25' x2='16' y2='29' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='3' y1='16' x2='7' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='25' y1='16' x2='29' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3C/svg%3E">
+<style>
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12); --violet: #8B5CF6; --violet-soft: rgba(139, 92, 246, 0.12); --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-soft: rgba(99, 102, 241, 0.12); --bg: var(--ink); --bg-raised: var(--navy); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(37, 99, 235, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(56, 189, 248, 0.3); --max-w: 1200px; --read-w: 760px; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-raised: #FFFFFF; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(37, 99, 235, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(37, 99, 235, 0.25); }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.blue { width: 600px; height: 600px; background: var(--blue); top: -200px; right: -100px; }
+  .glow-orb.indigo { width: 500px; height: 500px; background: var(--indigo); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--sky); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--sky); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .read { max-width: var(--read-w); }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--sky); }
+  .crumb-sep { opacity: 0.5; }
+  .crumb-current { color: var(--text-secondary); }
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--indigo); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--indigo); box-shadow: 0 0 12px var(--indigo); }
+  .hero h1 { font-size: clamp(40px, 6vw, 64px); font-weight: 800; line-height: 1.05; letter-spacing: -2px; margin-bottom: 22px; max-width: 18ch; }
+  .hero h1 .vs { color: var(--text-muted); font-weight: 300; padding: 0 0.3ch; }
+  .hero h1 .adk { background: linear-gradient(135deg, #4285F4, #34A853); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero h1 .lg { background: linear-gradient(135deg, var(--violet), var(--indigo)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 760px; line-height: 1.7; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.accent { background: rgba(37, 99, 235, 0.12); color: var(--blue-glow); border-color: rgba(37, 99, 235, 0.25); }
+  .pill.indigo { background: var(--indigo-soft); color: var(--indigo); border-color: rgba(99, 102, 241, 0.25); }
+  .pill.warm { background: var(--warm-soft); color: var(--warm); border-color: rgba(245, 158, 11, 0.25); }
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--sky); margin-bottom: 14px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .section-lede strong { color: var(--text-primary); font-weight: 600; }
+  .section-lede code { font-family: 'JetBrains Mono', monospace; font-size: 0.86em; background: rgba(56, 189, 248, 0.06); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--sky); }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--sky); }
+  .pair-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 1040px; margin-bottom: 24px; }
+  @media (max-width: 720px) { .pair-grid { grid-template-columns: 1fr; } }
+  .pair-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 24px 28px; }
+  .pair-cell.adk { border-top: 3px solid #4285F4; }
+  .pair-cell.lg { border-top: 3px solid var(--violet); }
+  .pair-cell .tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1.4px; text-transform: uppercase; display: block; margin-bottom: 10px; font-weight: 600; }
+  .pair-cell.adk .tag { color: #4285F4; }
+  .pair-cell.lg .tag { color: var(--violet); }
+  .pair-cell h4 { font-size: 17px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.3px; }
+  .pair-cell p { font-size: 14px; color: var(--text-secondary); line-height: 1.65; margin-bottom: 10px; }
+  .pair-cell p:last-child { margin-bottom: 0; }
+  .pair-cell code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; color: var(--sky); background: rgba(56, 189, 248, 0.06); padding: 1px 5px; border-radius: 3px; }
+  .pair-cell strong { color: var(--text-primary); font-weight: 600; }
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: 1040px; margin-bottom: 24px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td { padding: 11px 14px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--sky); background: rgba(37, 99, 235, 0.04); }
+  .compare thead th.adk-col { color: #4285F4; }
+  .compare thead th.lg-col { color: var(--violet); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); }
+  .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--sky); }
+  .compare td strong { color: var(--text-primary); }
+  .compare td.dim-name { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 600; color: var(--text-primary); letter-spacing: 0.3px; text-transform: uppercase; width: 22%; }
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 26px 30px; max-width: var(--read-w); margin-bottom: 18px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.indigo { border-left: 3px solid var(--indigo); }
+  .info-card.rose { border-left: 3px solid var(--rose); }
+  .info-card.sky { border-left: 3px solid var(--sky); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14.5px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .info-card code { font-family: 'JetBrains Mono', monospace; font-size: 0.86em; color: var(--sky); background: rgba(56, 189, 248, 0.06); padding: 1px 5px; border-radius: 4px; }
+  .info-card strong { color: var(--text-primary); font-weight: 600; }
+  .when-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 1040px; }
+  @media (max-width: 720px) { .when-grid { grid-template-columns: 1fr; } }
+  .when-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 24px 28px; }
+  .when-card.adk { border-top: 3px solid #4285F4; }
+  .when-card.lg { border-top: 3px solid var(--violet); }
+  .when-card .label { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; display: block; margin-bottom: 8px; font-weight: 600; }
+  .when-card.adk .label { color: #4285F4; }
+  .when-card.lg .label { color: var(--violet); }
+  .when-card h4 { font-size: 17px; font-weight: 700; margin-bottom: 14px; letter-spacing: -0.3px; }
+  .when-card ul { list-style: none; padding: 0; }
+  .when-card li { font-size: 14px; color: var(--text-secondary); line-height: 1.65; padding-left: 16px; position: relative; margin-bottom: 8px; }
+  .when-card li::before { content: '\2192'; position: absolute; left: 0; color: var(--text-muted); }
+  .when-card li strong { color: var(--text-primary); font-weight: 600; }
+  .cross-links { display: flex; gap: 10px; flex-wrap: wrap; }
+  .cross-link { font-family: 'JetBrains Mono', monospace; font-size: 12px; padding: 10px 20px; border-radius: var(--radius-pill); border: 1px solid var(--border); background: var(--bg-card); text-decoration: none; color: var(--text-secondary); transition: all 0.3s; letter-spacing: 0.5px; }
+  .cross-link:hover { border-color: var(--border-hover); color: var(--sky); transform: translateY(-1px); }
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 16px 20px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--sky); word-break: break-all; }
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--sky); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .footer-review { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); margin-top: 14px; letter-spacing: 0.4px; }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+
+<div class="glow-orb blue"></div>
+<div class="glow-orb indigo"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand">
+      <span class="nav-brand-mark">know.2nth.ai</span>
+      <span class="nav-brand-sub">agents &middot; comparison</span>
+    </a>
+    <div class="nav-right">
+      <a href="index.html" class="nav-link">&larr; Agents</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x1F319;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="index.html">Agents</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">Google ADK vs LangGraph</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> agents &middot; framework comparison</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      <span class="adk">Google ADK</span><span class="vs">vs</span><span class="lg">LangGraph</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      Two of the most credible agent frameworks in 2026. Both Python-first, both open-source, both support multi-provider model routing, both ship first-class multi-agent orchestration. Different centers of gravity: <strong>ADK leans into managed compliance via Vertex AI Agent Engine</strong>; <strong>LangGraph leans into vendor neutrality and ecosystem breadth</strong>. This leaf helps you pick the right one for the situation in front of you.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill accent">Reference comparison</span>
+      <span class="pill indigo">Agents domain</span>
+      <span class="pill warm">Hot &middot; quarterly review</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 · WHAT THEY ARE -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; What they are</div>
+      <h2 class="section-title">Two production frameworks. Different origin stories.</h2>
+      <p class="section-lede">Read this if you're orienting before scanning the table. Skip to section 02 if you already know both and want the side-by-side.</p>
+    </div>
+
+    <div class="pair-grid fade-up" style="transition-delay: 0.04s">
+      <div class="pair-cell adk">
+        <span class="tag">Google ADK</span>
+        <h4>Agent Development Kit + Vertex AI Agent Engine</h4>
+        <p><strong>ADK</strong> is Google's official agent framework. Apache 2 licensed Python (Java + JS exist). Ships first-class abstractions for agents, tools, sub-agents, delegation, parallel execution, and hand-off.</p>
+        <p><strong>Vertex AI Agent Engine</strong> is the optional managed runtime on GCP. It hosts the agent, captures every turn via the session service, manages memory via Memory Bank, and exposes everything through GCP IAM. The pair makes "agent + compliance-grade audit" a turnkey deployment rather than something you assemble from OSS pieces.</p>
+        <p>You can also run ADK locally or on Cloud Run without Agent Engine. The framework stays useful; you give up the managed audit story.</p>
+      </div>
+      <div class="pair-cell lg">
+        <span class="tag">LangGraph</span>
+        <h4>Stateful graph runtime + LangChain ecosystem</h4>
+        <p><strong>LangGraph</strong> is LangChain Inc.'s graph-based agent framework. MIT licensed Python (TS narrower). Agents are modelled as <strong>state graphs</strong> &mdash; nodes are steps, edges are transitions, interrupts pause for human input.</p>
+        <p>v1.0 landed late 2025. 90k+ GitHub stars. Multi-provider is native via <code>init_chat_model("&lt;provider&gt;:&lt;model&gt;")</code>. MCP support was added in late 2025. <strong>LangSmith</strong> is the SaaS observability backend; <strong>Langfuse</strong> (OSS, self-hosted) works via the OpenTelemetry GenAI exporter.</p>
+        <p>LangGraph is one part of a larger ecosystem (LangChain Core, LangSmith, LangServe). You can use it standalone or as the orchestration layer within a fuller stack.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 · SIDE-BY-SIDE -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; Side-by-side</div>
+      <h2 class="section-title">Ten dimensions, scored honestly.</h2>
+      <p class="section-lede">Where the frameworks differ in shape. Neutral &mdash; "different" is more common than "better."</p>
+    </div>
+
+    <div class="compare-wrap fade-up" style="transition-delay: 0.04s">
+      <table class="compare">
+        <thead>
+          <tr><th>Dimension</th><th class="adk-col">Google ADK</th><th class="lg-col">LangGraph</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="dim-name">Maintainer / License</td><td>Google &middot; Apache 2</td><td>LangChain Inc. &middot; MIT</td></tr>
+          <tr><td class="dim-name">Maturity</td><td>GA 2024; mature on Google stack</td><td>v1.0 late 2025; 90k+ stars; broad community</td></tr>
+          <tr><td class="dim-name">Primary language</td><td>Python (Java + JS exist)</td><td>Python (TS narrower)</td></tr>
+          <tr><td class="dim-name">Mental model</td><td><strong>Agents + tools + sub-agents.</strong> Delegate, hand-off, parallel. Maps cleanly to "what would a person do."</td><td><strong>State graph.</strong> Nodes are steps, edges are transitions, interrupts gate humans. More powerful, steeper.</td></tr>
+          <tr><td class="dim-name">Multi-provider</td><td>Yes, via adapters. Gemini is the easy path; Claude / GPT / others work but Vertex Agent Engine assumes Gemini for deepest integration.</td><td>Yes, native. <code>init_chat_model("provider:model")</code> switches with a config call. All providers (including Ollama / vLLM) first-class.</td></tr>
+          <tr><td class="dim-name">Managed runtime</td><td><strong>Vertex AI Agent Engine</strong> on GCP. Compliance-grade out of the box.</td><td>Self-host, or <strong>LangGraph Cloud</strong> (managed by LangChain). Or stand it up on any Python host.</td></tr>
+          <tr><td class="dim-name">Multi-agent orchestration</td><td>First-class. Sub-agents, parallel agents, sequential agents, loop agents are all framework primitives.</td><td>First-class via graphs. Supervisors, branches, hierarchical agents, conditional routing.</td></tr>
+          <tr><td class="dim-name">Memory / state</td><td><strong>Memory Bank</strong> (managed long-term memory) + <strong>session service</strong> (per-conversation state with audit).</td><td>Checkpointers (Postgres, Redis, SQLite). <strong>LangMem</strong> for long-term memory. DIY vector store integrations.</td></tr>
+          <tr><td class="dim-name">MCP support</td><td>Via tool-server wrappers. Works but less polished as of mid-2026.</td><td>Native (added late 2025). Direct MCP-server consumption.</td></tr>
+          <tr><td class="dim-name">A2A protocol</td><td>Native &mdash; Google co-authored the spec.</td><td>Via adapters.</td></tr>
+          <tr><td class="dim-name">Observability</td><td>Vertex AI tracing + GCP audit logs. POPIA / GDPR audit story integrated.</td><td><strong>LangSmith</strong> (SaaS, polished) or <strong>Langfuse</strong> (OSS, self-hosted, OTel-based). Pick by data-ownership preference.</td></tr>
+          <tr><td class="dim-name">IAM / auth</td><td>GCP IAM service accounts. Turnkey for enterprise.</td><td>DIY &mdash; Auth.js, Cloudflare Access, SPIFFE, etc. More choice, more setup.</td></tr>
+          <tr><td class="dim-name">Compliance story</td><td><strong>Integrated.</strong> Agent Engine handles audit trails, IAM, data residency in one package.</td><td><strong>Composed.</strong> LangGraph + Langfuse + Cerbos + identity layer of choice. Full control, more pieces to wire.</td></tr>
+          <tr><td class="dim-name">Ecosystem size</td><td>Smaller, growing fast. Strong on Google services (BigQuery, Workspace, Vertex models).</td><td>Bigger, broadest community. Tooling and integrations for almost everything.</td></tr>
+          <tr><td class="dim-name">Hiring pool</td><td>Smaller (newer framework); Google-ecosystem engineers.</td><td>Broader. "LangChain experience" appears on most agent-engineer CVs in 2026.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 03 · MENTAL MODELS -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; Mental models</div>
+      <h2 class="section-title">The single biggest conceptual difference.</h2>
+      <p class="section-lede">Most other differences flow from this one. Pick the mental model that matches how the team thinks; everything else follows.</p>
+    </div>
+
+    <div class="pair-grid fade-up" style="transition-delay: 0.04s">
+      <div class="pair-cell adk">
+        <span class="tag">ADK &middot; agents with tools</span>
+        <h4>"What would a person do?"</h4>
+        <p>An agent is a function-like object: instructions, model, tools, optionally sub-agents it can delegate to. Hand-offs are explicit. Memory is a side-channel. The mental model maps cleanly to real-world workflows &mdash; <strong>customer support escalation</strong>, <strong>sales hand-off</strong>, <strong>research agent calling a writer agent</strong>.</p>
+        <p>Engineers ramp fast (a few days). Code reads top-down. Trade-off: less powerful for highly-branching parallel orchestration, where the mental cost of expressing "wait for A and B to both complete, then run C or D depending on A" stacks up.</p>
+      </div>
+      <div class="pair-cell lg">
+        <span class="tag">LangGraph &middot; stateful graphs</span>
+        <h4>"What state machine describes this?"</h4>
+        <p>A workflow is a graph. Nodes are functions that read state and emit state updates. Edges are conditional transitions (including back-edges for loops and parallel fan-out). Interrupts pause for human input. State is the first-class primitive; agents are graph patterns.</p>
+        <p>Engineers ramp slower (about a week to feel fluent). Code reads as state transitions, which can be unfamiliar. Trade-off: vastly more power for complex orchestration, replay-debuggable workflows, and <strong>fine-grained control over what runs in parallel vs sequentially</strong>.</p>
+      </div>
+    </div>
+
+    <div class="prose fade-up" style="transition-delay: 0.06s">
+      <p><strong>Heuristic.</strong> If you can describe the agent's workflow in natural English as a sequence of decisions a person might make, ADK is the faster path. If you find yourself drawing a flowchart with branches, joins, and retries, LangGraph's primitives will save you reinventing them.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 · MULTI-PROVIDER STORY -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; The multi-provider story</div>
+      <h2 class="section-title">Both support it. They lean different directions.</h2>
+      <p class="section-lede">A first-principles question for any architecture that wants to remain provider-agnostic. Both frameworks pass; the lean matters.</p>
+    </div>
+
+    <div class="pair-grid fade-up" style="transition-delay: 0.04s">
+      <div class="pair-cell adk">
+        <span class="tag">ADK &middot; Gemini-easy</span>
+        <h4>Multi-provider via adapters</h4>
+        <p>ADK works with Gemini natively and supports Claude, GPT, and others through the model adapter system. Switching providers per agent is a configuration change.</p>
+        <p><strong>The catch:</strong> Vertex AI Agent Engine assumes Gemini for its deepest integrations (Memory Bank optimisations, native tool-call routing, audit-log enrichment). Running ADK with non-Gemini models works but you give up some of Agent Engine's managed value. The "easy path" is Gemini all the way down.</p>
+      </div>
+      <div class="pair-cell lg">
+        <span class="tag">LangGraph &middot; provider-neutral</span>
+        <h4>Multi-provider native</h4>
+        <p><code>init_chat_model("anthropic:claude-opus-4-7")</code> or <code>"openai:gpt-5"</code> or <code>"ollama:llama-4"</code>. All providers are first-class &mdash; none is "the easy path." Switching providers is a single function call.</p>
+        <p>Pairs naturally with a model gateway underneath (LiteLLM, OpenRouter, Cloudflare AI Gateway) for centralised caching, rate limits, and cost metering. The runtime stays vendor-neutral by design, not as an afterthought.</p>
+      </div>
+    </div>
+
+    <div class="prose fade-up" style="transition-delay: 0.06s">
+      <p>For an architecture with a stated constraint of <em>never tied to one provider, must support open weights through frontier</em>, LangGraph fits the constraint more cleanly. ADK fits when the team has decided Gemini is the primary model with occasional escapes to Claude or GPT.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 · WHEN TO PICK EACH -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; When to pick each</div>
+      <h2 class="section-title">The honest decision matrix.</h2>
+      <p class="section-lede">Not a single recommendation &mdash; both are excellent. Pick the one whose strengths match the constraints of the situation in front of you.</p>
+    </div>
+
+    <div class="when-grid fade-up" style="transition-delay: 0.04s">
+      <div class="when-card adk">
+        <span class="label">When ADK wins</span>
+        <h4>Pick Google ADK if&hellip;</h4>
+        <ul>
+          <li>Already running on <strong>GCP / Vertex AI</strong>; the operational story is integrated</li>
+          <li><strong>POPIA / GDPR / data-residency</strong> is a hard requirement, and Vertex AI Agent Engine's session service + IAM is the cleanest path to compliance</li>
+          <li>Need turnkey enterprise audit + IAM + deployment without composing OSS pieces</li>
+          <li><strong>Gemini</strong> is the primary model (other providers as occasional escapes)</li>
+          <li>Multi-agent orchestration is non-trivial and you want Google's deeply-integrated abstractions (delegation, parallel agents, sub-agents) without writing custom graphs</li>
+          <li><strong>Java team</strong> &mdash; ADK has solid Java support; LangGraph doesn't</li>
+          <li>Working with regulated industries (banking, insurance, healthcare) already GCP-anchored</li>
+        </ul>
+      </div>
+      <div class="when-card lg">
+        <span class="label">When LangGraph wins</span>
+        <h4>Pick LangGraph if&hellip;</h4>
+        <ul>
+          <li>True <strong>multi-provider</strong> stance &mdash; no tilt toward any single model vendor</li>
+          <li>Cloudflare-first or non-GCP infrastructure (edge-deployed agents)</li>
+          <li>Want <strong>OSS observability</strong> (Langfuse) with full data ownership</li>
+          <li>Need <strong>MCP-native</strong> support today (LangGraph integrated faster)</li>
+          <li>Complex orchestration &mdash; parallel branches, conditional routing, retries, replay-debuggable workflows</li>
+          <li>Larger hiring pool matters; "LangChain experience" is on most agent-engineer CVs</li>
+          <li>Want to compose best-of-breed components (audit, policy, sandboxing, dual-use) yourself rather than buy an integrated suite</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 · COMBINING THEM -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; Edge cases &middot; combining them</div>
+      <h2 class="section-title">It's not always either-or.</h2>
+    </div>
+
+    <div class="info-card indigo fade-up" style="transition-delay: 0.04s">
+      <h4>Both speak MCP. You can run both.</h4>
+      <p>The two frameworks interoperate cleanly. A common pattern in larger orgs:</p>
+      <p>&mdash; <strong>ADK for some agents</strong>: Gemini-heavy, GCP-resident, compliance-critical (think: customer-data agents in regulated industries, where Vertex Agent Engine's audit trail is the deciding factor).</p>
+      <p>&mdash; <strong>LangGraph for others</strong>: provider-mixed, edge-deployed, cost-sensitive (think: marketing or operations agents where Claude + GPT + Ollama in rotation makes economic sense).</p>
+      <p>&mdash; <strong>Both expose tools via MCP</strong>, so a LangGraph agent can call an ADK-hosted agent's tools and vice versa. The Agent-to-Agent (A2A) protocol provides the higher-level co-ordination layer; ADK is A2A-native, LangGraph via adapters.</p>
+      <p>The cost: two frameworks to maintain, two mental models for engineers, two observability paths to reconcile. Worth it when the integration value (compliance for ADK agents, portability for LangGraph agents) outweighs the maintenance.</p>
+    </div>
+
+    <div class="info-card amber fade-up" style="transition-delay: 0.05s">
+      <h4>ADK on Cloud Run, without Vertex Agent Engine</h4>
+      <p>If you want ADK's framework abstractions but not the GCP lock-in of Agent Engine, run ADK Python on <strong>Cloud Run</strong> (or any container host). You give up Memory Bank, the session service, and the integrated audit trail &mdash; bringing the trade-offs closer to LangGraph's "compose your own audit" stance. ADK becomes a Python framework choice rather than a managed-runtime choice.</p>
+    </div>
+
+    <div class="info-card sky fade-up" style="transition-delay: 0.06s">
+      <h4>LangGraph + Vertex (yes, that combination works)</h4>
+      <p>LangGraph can call Gemini via <code>init_chat_model("vertex:gemini-2.5-pro")</code> just like any other provider. You can run LangGraph on Cloud Run and ingest traces into Vertex AI's tracing system. The combination loses Agent Engine's integrated audit (you'd build that via Langfuse instead) but keeps Gemini as a first-class model.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 07 · SA / PRODUCTION CONTEXT -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; South African / production context</div>
+      <h2 class="section-title">Where the decision actually lands in SA.</h2>
+      <p class="section-lede">Compliance, latency, and ecosystem all push in different directions for South African builds. The honest read:</p>
+    </div>
+
+    <div class="prose fade-up" style="transition-delay: 0.04s">
+      <p><strong>POPIA matters.</strong> Data residency, audit trails, processor accountability &mdash; all enterprise asks for South African banks, insurers, telcos, and healthcare. Vertex AI Agent Engine has the cleanest <em>out-of-the-box</em> story for "agent calls happen in <code>africa-south1</code>, audit logs live in our GCP project, IAM controls who can deploy and query." For regulated industries on GCP, ADK is the path of least resistance to a compliance review.</p>
+      <p><strong>For SA SMEs and growth-stage companies</strong> less constrained by regulation, LangGraph + Langfuse + Cloudflare AI Gateway is cheaper, more portable, and less tied to one cloud. The Cloudflare Johannesburg edge is materially closer to end-users than GCP <code>africa-south1</code> for latency-sensitive interactive agents.</p>
+      <p><strong>Rule of thumb.</strong> Regulated industries already on GCP &rarr; ADK with Agent Engine. Growth-stage SMEs, edge deployments, multi-provider explicit &rarr; LangGraph with Langfuse. Hybrid orgs &rarr; both, with MCP as the bridge.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 08 · CONNECTIONS -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 &middot; Connections</div>
+      <h2 class="section-title">Where this leaf links into the rest of the tree.</h2>
+    </div>
+
+    <div class="cross-links fade-up" style="transition-delay: 0.03s">
+      <a href="google-adk.html" class="cross-link">&rarr; Google ADK (deep dive)</a>
+      <a href="langgraph.html" class="cross-link">&rarr; LangGraph (deep dive)</a>
+      <a href="mcp.html" class="cross-link">&rarr; MCP</a>
+      <a href="a2a.html" class="cross-link">&rarr; A2A (agent-to-agent protocol)</a>
+      <a href="anthropic-agent-sdk.html" class="cross-link">&rarr; Claude Agent SDK</a>
+      <a href="openai-agents-sdk.html" class="cross-link">&rarr; OpenAI Agents SDK</a>
+      <a href="crewai.html" class="cross-link">&rarr; CrewAI</a>
+      <a href="../tools/" class="cross-link">&rarr; Tools landscape</a>
+      <a href="../tools/runtime.html" class="cross-link">&rarr; Runtime decision &middot; member</a>
+      <a href="../tools/architecture.html" class="cross-link">&rarr; Reference architecture</a>
+      <a href="../tech/google/" class="cross-link">&rarr; Google (Vertex, BigQuery, Workspace)</a>
+    </div>
+  </div>
+</section>
+
+<!-- 09 · RESOURCES -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">09 &middot; Resources</div>
+      <h2 class="section-title">Primary sources.</h2>
+      <p class="section-lede">Verify the versions against the date on this leaf &mdash; both frameworks move fast.</p>
+    </div>
+
+    <div class="resource-grid fade-up" style="transition-delay: 0.03s">
+      <a class="resource" href="https://google.github.io/adk-docs/" target="_blank" rel="noopener"><span class="r-kind">Docs &middot; ADK</span><span class="r-title">Google ADK documentation</span><span class="r-url">google.github.io/adk-docs</span></a>
+      <a class="resource" href="https://github.com/google/adk-python" target="_blank" rel="noopener"><span class="r-kind">Repo &middot; ADK</span><span class="r-title">adk-python on GitHub</span><span class="r-url">github.com/google/adk-python</span></a>
+      <a class="resource" href="https://cloud.google.com/vertex-ai/generative-ai/docs/agent-engine/overview" target="_blank" rel="noopener"><span class="r-kind">Managed runtime</span><span class="r-title">Vertex AI Agent Engine</span><span class="r-url">cloud.google.com/vertex-ai/generative-ai/docs/agent-engine</span></a>
+      <a class="resource" href="https://www.langchain.com/langgraph" target="_blank" rel="noopener"><span class="r-kind">Docs &middot; LangGraph</span><span class="r-title">LangGraph</span><span class="r-url">langchain.com/langgraph</span></a>
+      <a class="resource" href="https://github.com/langchain-ai/langgraph" target="_blank" rel="noopener"><span class="r-kind">Repo &middot; LangGraph</span><span class="r-title">langgraph on GitHub</span><span class="r-url">github.com/langchain-ai/langgraph</span></a>
+      <a class="resource" href="https://docs.langchain.com/oss/python/langgraph/overview" target="_blank" rel="noopener"><span class="r-kind">Tutorial</span><span class="r-title">LangGraph overview</span><span class="r-url">docs.langchain.com/oss/python/langgraph</span></a>
+      <a class="resource" href="https://modelcontextprotocol.io" target="_blank" rel="noopener"><span class="r-kind">Protocol</span><span class="r-title">Model Context Protocol (MCP)</span><span class="r-url">modelcontextprotocol.io</span></a>
+      <a class="resource" href="https://a2aproject.github.io/A2A/" target="_blank" rel="noopener"><span class="r-kind">Protocol</span><span class="r-title">A2A &mdash; Agent-to-Agent</span><span class="r-url">a2aproject.github.io/A2A</span></a>
+      <a class="resource" href="https://langfuse.com" target="_blank" rel="noopener"><span class="r-kind">Audit</span><span class="r-title">Langfuse</span><span class="r-url">langfuse.com</span></a>
+      <a class="resource" href="https://smith.langchain.com" target="_blank" rel="noopener"><span class="r-kind">Audit</span><span class="r-title">LangSmith</span><span class="r-url">smith.langchain.com</span></a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <div class="footer-tagline">The Knowledge Tree</div>
+    <div class="footer-links">
+      <a href="../../index.html">Tree</a>
+      <a href="index.html">Agents</a>
+      <a href="../tools/">Tools</a>
+      <a href="../../about.html">About</a>
+      <a href="../../join.html">Join</a>
+      <a href="https://2nth.ai">2nth.ai</a>
+    </div>
+    <div class="footer-copy">&copy; 2026 imbila.ai &middot; All knowledge open</div>
+    <div class="footer-review">Last reviewed: 2026-05-18 &middot; Cadence: hot (quarterly)</div>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme() {
+    const cur = document.documentElement.getAttribute('data-theme');
+    const next = cur === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('2nth-theme', next);
+  }
+  const stored = localStorage.getItem('2nth-theme');
+  if (stored) document.documentElement.setAttribute('data-theme', stored);
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.05 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+
+<script src="/gate.js" defer></script>
+
+</body>
+</html>
