@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coding CLI agents &mdash; Claude Code vs Codex CLI vs Copilot CLI &mdash; know.2nth.ai</title>
+<meta name="description" content="The three agentic coding CLIs that matter in mid-2026 — Anthropic's Claude Code, OpenAI's Codex CLI, and GitHub Copilot CLI. Side-by-side across model lock-in, sandbox model, pricing shape, extensibility, IDE bridges, and open-source posture. When each wins, the open-source alternatives, and the South African / production context.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/agents/coding-cli-agents">
+<meta property="og:title" content="Coding CLI agents &mdash; Claude Code vs Codex CLI vs Copilot CLI">
+<meta property="og:description" content="The three agentic coding CLIs that matter in mid-2026. Neutral side-by-side; when each wins; the open-source alternatives.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Coding CLI agents &mdash; comparison">
+<meta name="twitter:description" content="Claude Code vs OpenAI Codex CLI vs GitHub Copilot CLI. Side-by-side; when each wins; OSS alternatives.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12); --violet: #8B5CF6; --violet-soft: rgba(139, 92, 246, 0.12); --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-soft: rgba(99, 102, 241, 0.12); --anthropic: #D97706; --openai: #10A37F; --github: #6E40C9; --bg: var(--ink); --bg-raised: var(--navy); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(37, 99, 235, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(56, 189, 248, 0.3); --max-w: 1200px; --read-w: 760px; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-raised: #FFFFFF; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(37, 99, 235, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(37, 99, 235, 0.25); }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.blue { width: 600px; height: 600px; background: var(--blue); top: -200px; right: -100px; }
+  .glow-orb.violet { width: 500px; height: 500px; background: var(--violet); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--sky); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--sky); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--sky); }
+  .crumb-sep { opacity: 0.5; }
+  .crumb-current { color: var(--text-secondary); }
+  .hero { padding: 48px 0 56px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--indigo); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--indigo); box-shadow: 0 0 12px var(--indigo); }
+  .hero h1 { font-size: clamp(34px, 5vw, 54px); font-weight: 800; line-height: 1.05; letter-spacing: -2px; margin-bottom: 22px; }
+  .hero h1 .vs { color: var(--text-muted); font-weight: 300; padding: 0 0.2ch; }
+  .hero h1 .cc { color: var(--anthropic); }
+  .hero h1 .cx { color: var(--openai); }
+  .hero h1 .gc { color: var(--github); }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 780px; line-height: 1.7; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.accent { background: rgba(37, 99, 235, 0.12); color: var(--blue-glow); border-color: rgba(37, 99, 235, 0.25); }
+  .pill.indigo { background: var(--indigo-soft); color: var(--indigo); border-color: rgba(99, 102, 241, 0.25); }
+  .pill.warm { background: var(--warm-soft); color: var(--warm); border-color: rgba(245, 158, 11, 0.25); }
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--sky); margin-bottom: 14px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .section-lede strong { color: var(--text-primary); font-weight: 600; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--sky); }
+  .triple-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; margin-bottom: 24px; }
+  .tool-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 26px; }
+  .tool-cell.cc { border-top: 3px solid var(--anthropic); }
+  .tool-cell.cx { border-top: 3px solid var(--openai); }
+  .tool-cell.gc { border-top: 3px solid var(--github); }
+  .tool-cell .tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1.4px; text-transform: uppercase; display: block; margin-bottom: 10px; font-weight: 600; }
+  .tool-cell.cc .tag { color: var(--anthropic); }
+  .tool-cell.cx .tag { color: var(--openai); }
+  .tool-cell.gc .tag { color: var(--github); }
+  .tool-cell h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.3px; }
+  .tool-cell p { font-size: 13.5px; color: var(--text-secondary); line-height: 1.65; margin-bottom: 10px; }
+  .tool-cell p:last-child { margin-bottom: 0; }
+  .tool-cell code { font-family: 'JetBrains Mono', monospace; font-size: 0.86em; color: var(--sky); background: rgba(56, 189, 248, 0.06); padding: 1px 5px; border-radius: 3px; }
+  .tool-cell strong { color: var(--text-primary); font-weight: 600; }
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow-x: auto; max-width: 1100px; margin-bottom: 24px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 720px; }
+  .compare th, .compare td { padding: 11px 14px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; background: rgba(37, 99, 235, 0.04); color: var(--sky); }
+  .compare thead th.cc-col { color: var(--anthropic); }
+  .compare thead th.cx-col { color: var(--openai); }
+  .compare thead th.gc-col { color: var(--github); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); }
+  .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--sky); }
+  .compare td strong { color: var(--text-primary); }
+  .compare td.dim-name { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 600; color: var(--text-primary); letter-spacing: 0.3px; text-transform: uppercase; width: 18%; }
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px 28px; max-width: var(--read-w); margin-bottom: 16px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.indigo { border-left: 3px solid var(--indigo); }
+  .info-card.sky { border-left: 3px solid var(--sky); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14.5px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .info-card code { font-family: 'JetBrains Mono', monospace; font-size: 0.86em; color: var(--sky); background: rgba(56, 189, 248, 0.06); padding: 1px 5px; border-radius: 4px; }
+  .info-card strong { color: var(--text-primary); font-weight: 600; }
+  .when-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 24px 28px; }
+  .when-card.cc { border-top: 3px solid var(--anthropic); }
+  .when-card.cx { border-top: 3px solid var(--openai); }
+  .when-card.gc { border-top: 3px solid var(--github); }
+  .when-card .label { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; display: block; margin-bottom: 8px; font-weight: 600; }
+  .when-card.cc .label { color: var(--anthropic); }
+  .when-card.cx .label { color: var(--openai); }
+  .when-card.gc .label { color: var(--github); }
+  .when-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 14px; letter-spacing: -0.3px; }
+  .when-card ul { list-style: none; padding: 0; }
+  .when-card li { font-size: 13.5px; color: var(--text-secondary); line-height: 1.6; padding-left: 16px; position: relative; margin-bottom: 8px; }
+  .when-card li::before { content: '\2192'; position: absolute; left: 0; color: var(--text-muted); }
+  .when-card li strong { color: var(--text-primary); font-weight: 600; }
+  .cross-links { display: flex; gap: 10px; flex-wrap: wrap; }
+  .cross-link { font-family: 'JetBrains Mono', monospace; font-size: 12px; padding: 10px 20px; border-radius: var(--radius-pill); border: 1px solid var(--border); background: var(--bg-card); text-decoration: none; color: var(--text-secondary); transition: all 0.3s; letter-spacing: 0.5px; }
+  .cross-link:hover { border-color: var(--border-hover); color: var(--sky); transform: translateY(-1px); }
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 16px 20px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--sky); word-break: break-all; }
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--sky); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .footer-review { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); margin-top: 14px; letter-spacing: 0.4px; }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+
+<div class="glow-orb blue"></div>
+<div class="glow-orb violet"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand">
+      <span class="nav-brand-mark">know.2nth.ai</span>
+      <span class="nav-brand-sub">agents &middot; coding CLIs</span>
+    </a>
+    <div style="display:flex;align-items:center;gap:16px">
+      <a href="index.html" class="nav-link">&larr; Agents</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x1F319;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="index.html">Agents</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">Coding CLI agents</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> agents &middot; coding CLI comparison</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      <span class="cc">Claude Code</span><span class="vs">&middot;</span><span class="cx">Codex CLI</span><span class="vs">&middot;</span><span class="gc">Copilot CLI</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      The three agentic coding CLIs that matter in mid-2026 &mdash; <strong>Anthropic's Claude Code</strong>, <strong>OpenAI's Codex CLI</strong>, and <strong>GitHub Copilot CLI</strong>. All three sit in the terminal, read codebases, plan multi-file changes, run tests, and iterate on failures. They differ in <em>model lock-in</em>, <em>sandbox model</em>, <em>pricing shape</em>, and <em>extensibility</em>. This leaf maps where each wins.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill accent">Reference comparison</span>
+      <span class="pill indigo">Agents domain</span>
+      <span class="pill warm">Hot &middot; quarterly review</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 · WHAT THEY ARE -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; What they are</div>
+      <h2 class="section-title">Three terminal-native coding agents. Different design centres.</h2>
+      <p class="section-lede">All three operate at the <strong>project level</strong> rather than line-by-line autocomplete. Read codebases, plan changes, edit multiple files, run tests, iterate. The differences begin at the model layer.</p>
+    </div>
+
+    <div class="triple-grid fade-up" style="transition-delay: 0.04s">
+      <div class="tool-cell cc">
+        <span class="tag">Claude Code</span>
+        <h4>Anthropic's coding agent</h4>
+        <p>The same engine the Claude Agent SDK runs on. Locked to Claude (Sonnet, Opus). Native <code>Skills</code>, hooks, MCP, sub-agents, plan-mode. Bundled with Claude Pro / Max / Team / Enterprise subscriptions.</p>
+        <p><a href="claude-code.html" style="color:var(--sky);text-decoration:none;border-bottom:1px solid var(--sky)">Deep dive on Claude Code &rarr;</a></p>
+      </div>
+      <div class="tool-cell cx">
+        <span class="tag">OpenAI Codex CLI</span>
+        <h4>Cloud-sandbox parallel agent</h4>
+        <p>Open-source CLI binary (Rust, MIT) backed by OpenAI's <code>codex-1</code> (o3-based) and <code>codex-mini</code> (o4-mini-based) models. Cloud-sandboxed by default; parallel task execution. Bundled with ChatGPT Plus / Pro / Business / Enterprise.</p>
+        <p><a href="openai-codex.html" style="color:var(--sky);text-decoration:none;border-bottom:1px solid var(--sky)">Deep dive on Codex CLI &rarr;</a></p>
+      </div>
+      <div class="tool-cell gc">
+        <span class="tag">GitHub Copilot CLI</span>
+        <h4>Multi-model GitHub-native agent</h4>
+        <p>Routes between Claude (Sonnet/Opus 4.6) and GPT-5.2&ndash;5.5 from one CLI; switch with <code>/model</code>. Worktree-isolation, self-iterating code review, Plan vs Autopilot modes. Bundled with Copilot Pro / Pro+ / Business / Enterprise; moves to usage-based AI Credits June 1 2026.</p>
+        <p><a href="github-copilot-cli.html" style="color:var(--sky);text-decoration:none;border-bottom:1px solid var(--sky)">Deep dive on Copilot CLI &rarr;</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 · SIDE-BY-SIDE -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; Side-by-side</div>
+      <h2 class="section-title">Fifteen dimensions, scored honestly.</h2>
+      <p class="section-lede">Where the three differ in shape. "Different" is more common than "better."</p>
+    </div>
+
+    <div class="compare-wrap fade-up" style="transition-delay: 0.04s">
+      <table class="compare">
+        <thead><tr><th>Dimension</th><th class="cc-col">Claude Code</th><th class="cx-col">Codex CLI</th><th class="gc-col">Copilot CLI</th></tr></thead>
+        <tbody>
+          <tr><td class="dim-name">Maker</td><td>Anthropic</td><td>OpenAI</td><td>Microsoft / GitHub</td></tr>
+          <tr><td class="dim-name">CLI license</td><td>Proprietary</td><td><strong>Open source (Rust)</strong></td><td>Proprietary</td></tr>
+          <tr><td class="dim-name">Model</td><td>Claude only (Sonnet, Opus)</td><td>OpenAI only (codex-1, codex-mini)</td><td><strong>Multi-model</strong> &mdash; Claude 4.5/4.6 + GPT-5.2&ndash;5.5</td></tr>
+          <tr><td class="dim-name">Switch models</td><td>n/a (single model)</td><td>n/a (OpenAI-only)</td><td><code>/model</code> mid-task</td></tr>
+          <tr><td class="dim-name">Where it runs</td><td>Terminal &middot; VS Code &middot; JetBrains &middot; <code>claude.ai/code</code> web</td><td>Terminal &middot; web (<code>codex.app</code>) &middot; IDE &middot; Chrome extension</td><td>Terminal &middot; VS Code &middot; JetBrains delegation &middot; Copilot Workspace</td></tr>
+          <tr><td class="dim-name">Sandbox model</td><td>Local execution; approval-gated</td><td><strong>Cloud sandboxes</strong> by default; parallel tasks</td><td><strong>Worktree</strong> or workspace isolation; local</td></tr>
+          <tr><td class="dim-name">Approval model</td><td>Approval-by-default; Plan + Autopilot</td><td>Approval-by-default</td><td>Plan (approval) or <strong>Autopilot</strong> (autonomous)</td></tr>
+          <tr><td class="dim-name">Sub-agents</td><td>Yes &mdash; context-isolated with restricted tools</td><td>Code-review agent built in</td><td>Yes &mdash; <code>Explore</code>, <code>Task</code> + custom in <code>~/.copilot/agents/</code></td></tr>
+          <tr><td class="dim-name">MCP</td><td>Native; first-class</td><td>Native</td><td>Native</td></tr>
+          <tr><td class="dim-name">Skills / customisation</td><td>Skills, hooks, sub-agents, slash commands</td><td>Modal Vim editing, custom workflows, MCP</td><td>Custom agents, <code>/delegate</code>, image analysis</td></tr>
+          <tr><td class="dim-name">IDE bridge</td><td>VS Code + JetBrains extensions</td><td>Various IDE integrations</td><td>JetBrains delegation (May 2026 preview); VS Code native</td></tr>
+          <tr><td class="dim-name">Entry pricing</td><td>Pro $20/mo</td><td>ChatGPT Plus $20/mo</td><td>Copilot Pro $10/mo + $10 AI Credits</td></tr>
+          <tr><td class="dim-name">Pricing shape</td><td>Tiered credits (Pro / Max / Team)</td><td>Rolling 5-hr usage windows; tier multipliers</td><td><strong>Usage-based credits</strong> (June 1 2026); 1 credit = $0.01</td></tr>
+          <tr><td class="dim-name">June 2026 change</td><td>SDK credits separate from chat credits (Jun 15)</td><td>Stable as of May 2026</td><td>Pivot to usage-based AI Credits (Jun 1)</td></tr>
+          <tr><td class="dim-name">Standout</td><td>Stripe migrated 10k lines in 4 days vs 10 weeks manual</td><td><code>codex-1</code> RL-trained on real PRs; cloud-parallel</td><td>Self-iterating code review before opening PRs</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 03 · THE THREE DIFFERENCES THAT ACTUALLY MATTER -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; The differences that actually matter</div>
+      <h2 class="section-title">Three structural choices the others can't easily change.</h2>
+      <p class="section-lede">Below the surface noise, each tool has made one structural commitment that the others can't replicate without redesigning. These are the differences worth weighting.</p>
+    </div>
+
+    <div class="info-card amber fade-up" style="transition-delay: 0.04s">
+      <h4>1 &middot; Model lock-in vs flexibility</h4>
+      <p><strong>Claude Code</strong> commits to Claude. <strong>Codex CLI</strong> commits to OpenAI. <strong>Copilot CLI</strong> deliberately doesn't commit &mdash; you pick the model per task via <code>/model</code>. For teams hedging on model choice (or wanting open weights through frontier without rewrites), Copilot CLI's design is the only one that fits structurally. For teams that have already picked their lane, Claude Code or Codex CLI win on first-party depth.</p>
+    </div>
+
+    <div class="info-card green fade-up" style="transition-delay: 0.05s">
+      <h4>2 &middot; Local vs cloud sandbox</h4>
+      <p><strong>Claude Code</strong> and <strong>Copilot CLI</strong> are local-first &mdash; the agent runs in your terminal, edits your files, runs your tests. <strong>Codex CLI</strong> defaults to cloud-sandboxed execution &mdash; the agent works on a copy in OpenAI's sandbox while you keep coding locally. This makes parallel work natural: fire off three tasks in three sandboxes, review the PRs when they're done. For teams who want "kick off a migration and forget about it for an hour," Codex CLI's cloud-parallel pattern is genuinely different.</p>
+    </div>
+
+    <div class="info-card sky fade-up" style="transition-delay: 0.06s">
+      <h4>3 &middot; Open-source CLI vs proprietary</h4>
+      <p>The <strong>Codex CLI binary itself</strong> is open source (Rust, npm-installable, Homebrew). Read the source, fork it, swap binaries. The proprietary part is the model behind the OpenAI API it calls. <strong>Claude Code</strong> and <strong>Copilot CLI</strong> are fully proprietary CLI binaries that call proprietary models. For teams that want auditable agent-side code (security-sensitive environments, regulated industries), the Codex CLI's OSS posture is unique among the three.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 · WHEN TO PICK EACH -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; When to pick each</div>
+      <h2 class="section-title">The honest decision matrix.</h2>
+      <p class="section-lede">Three real tools, three real fits. The right pick is rarely "which is best overall" &mdash; it's "which matches the team you have, the model you're already paying for, and the workflow shape that fits your repo."</p>
+    </div>
+
+    <div class="triple-grid fade-up" style="transition-delay: 0.04s">
+      <div class="when-card cc">
+        <span class="label">Pick Claude Code if&hellip;</span>
+        <h4>You're on the Claude stack</h4>
+        <ul>
+          <li>The team already pays for <strong>Claude Pro / Max</strong></li>
+          <li>You want the <strong>deepest single-codebase reasoning</strong> &mdash; Stripe / Wiz-style multi-file refactors</li>
+          <li>Anthropic-ecosystem extensibility (Skills, hooks, MCP, sub-agents) matches your customisation needs</li>
+          <li>Single-model is a feature, not a limitation &mdash; fewer knobs</li>
+          <li>You value <strong>safety-first defaults</strong> with mature Plan / Autopilot modes</li>
+          <li>Cross-platform IDE story matters (VS Code + JetBrains + web)</li>
+        </ul>
+      </div>
+      <div class="when-card cx">
+        <span class="label">Pick Codex CLI if&hellip;</span>
+        <h4>You want parallel cloud work</h4>
+        <ul>
+          <li>The team already pays for <strong>ChatGPT Plus / Pro</strong></li>
+          <li><strong>Cloud-sandboxed parallel work</strong> matches your workflow &mdash; fire off N tasks, review PRs when they finish</li>
+          <li>You want an <strong>open-source CLI binary</strong> you can audit and fork (Rust, npm)</li>
+          <li><code>codex-1</code>'s RL-on-PRs training matters for your use case</li>
+          <li>Modal Vim editing in the composer matters</li>
+          <li>Cross-tab browser work via the Chrome extension is in scope</li>
+        </ul>
+      </div>
+      <div class="when-card gc">
+        <span class="label">Pick Copilot CLI if&hellip;</span>
+        <h4>You're GitHub-native + want flexibility</h4>
+        <ul>
+          <li>The team lives on <strong>GitHub</strong> &mdash; PRs, issues, Actions, code review</li>
+          <li><strong>Multi-model from one CLI</strong> &mdash; switch Claude / GPT per task without juggling API keys</li>
+          <li>You want the <strong>self-iterating code review</strong> pattern before opening PRs</li>
+          <li>Worktree isolation matches your branching workflow</li>
+          <li>You'd rather pay <strong>usage-based credits</strong> than tier-fixed pricing (or vice versa &mdash; model carefully)</li>
+          <li>Image analysis from bug-report screenshots is in scope</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 · COMBINING + OSS ALTERNATIVES -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; Combining them &middot; open-source alternatives</div>
+      <h2 class="section-title">It's not always either-or.</h2>
+    </div>
+
+    <div class="info-card indigo fade-up" style="transition-delay: 0.04s">
+      <h4>Running more than one is normal</h4>
+      <p>All three are subscription-bundled with chat tools the team probably already pays for. It's common to see Claude Code for deep refactors, Codex CLI for cloud-parallel tasks, and Copilot CLI for GitHub-native PR work &mdash; all on the same machine, swapped per task. Cost of running multiple: minimal (each is included in its parent subscription). Cost of context-switching between mental models: real but bounded.</p>
+    </div>
+
+    <div class="info-card green fade-up" style="transition-delay: 0.05s">
+      <h4>Open-source alternatives worth knowing</h4>
+      <p>If subscription-gated CLIs don't fit, the credible OSS alternatives in mid-2026:</p>
+      <p>&mdash; <strong>Aider</strong> &mdash; Python, git-native, terminal-first; brings your own model API key (Claude, GPT, Gemini, Ollama).</p>
+      <p>&mdash; <strong>Cline</strong> &mdash; MIT-licensed VS Code agent; 1.5M+ installs by April 2026; autonomous multi-file execution.</p>
+      <p>&mdash; <strong>Gemini CLI</strong> &mdash; Google's offering; pairs with Gemini Code Assist.</p>
+      <p>&mdash; <strong>Continue.dev</strong> &mdash; open-source IDE plugin; multi-model.</p>
+      <p>&mdash; <strong>OpenHands</strong>, <strong>Goose</strong>, <strong>Roo Code</strong>, <strong>Qwen Code</strong>, <strong>Kimi CLI</strong> &mdash; various OSS options.</p>
+      <p>&mdash; <strong>Cursor</strong> (Cursor 3 released April 2026) &mdash; IDE-first with cloud agents, <code>/worktree</code>, parallel Agent Tabs; not CLI-shaped but covers the same workflow.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 · SA / PRODUCTION CONTEXT -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; South African / production context</div>
+      <h2 class="section-title">What lands in SA dev shops.</h2>
+    </div>
+
+    <div class="prose fade-up" style="transition-delay: 0.04s">
+      <p><strong>Cost ceiling matters more in SA than in US-based teams.</strong> At ZAR/USD exchange rates and SME margins, the difference between $10/mo and $200/mo per developer is material. <strong>Copilot Pro</strong> at $10/mo (with $10 AI Credits) is the cheapest entry. <strong>Claude Pro</strong> and <strong>ChatGPT Plus</strong> at $20/mo are the next rung. Heavy-usage tiers (Pro+ / Max / Pro200) only make sense once you've proved the workflow pays off.</p>
+      <p><strong>Local model support</strong> matters when bandwidth or POPIA-sensitive data is in scope. None of these three CLIs supports fully-local inference natively &mdash; the closest is using them as the framework while routing through a model gateway that hits Ollama / vLLM. For "code never leaves the building" environments, <strong>Aider + Ollama</strong> is the cleanest path.</p>
+      <p><strong>GitHub is the dominant SCM in SA dev shops.</strong> That alone gives <strong>Copilot CLI</strong> a default-pick gravity for many teams. The friction of "set up GitHub auth" is zero (already done); the friction of "set up a third subscription" is real.</p>
+      <p><strong>Talent pool consideration.</strong> Engineers in SA in 2026 are most likely to have used Cursor or Copilot before any of the three CLIs. Onboarding cost for Claude Code or Codex CLI is real &mdash; not insurmountable, just real. Plan a sprint of pair-programming for whichever tool you pick.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 07 · CONNECTIONS -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; Connections</div>
+      <h2 class="section-title">Where this leaf links into the rest of the tree.</h2>
+    </div>
+
+    <div class="cross-links fade-up" style="transition-delay: 0.03s">
+      <a href="claude-code.html" class="cross-link">&rarr; Claude Code (deep dive)</a>
+      <a href="openai-codex.html" class="cross-link">&rarr; Codex CLI (deep dive)</a>
+      <a href="github-copilot-cli.html" class="cross-link">&rarr; Copilot CLI (deep dive)</a>
+      <a href="anthropic-agent-sdk.html" class="cross-link">&rarr; Claude Agent SDK</a>
+      <a href="openai-agents-sdk.html" class="cross-link">&rarr; OpenAI Agents SDK</a>
+      <a href="claude.html" class="cross-link">&rarr; Claude (the model)</a>
+      <a href="gpt.html" class="cross-link">&rarr; GPT</a>
+      <a href="mcp.html" class="cross-link">&rarr; MCP</a>
+      <a href="skills.html" class="cross-link">&rarr; Agent Skills</a>
+      <a href="adk-vs-langgraph.html" class="cross-link">&rarr; ADK vs LangGraph (sibling comparison)</a>
+      <a href="../tools/" class="cross-link">&rarr; Tools landscape</a>
+    </div>
+  </div>
+</section>
+
+<!-- 08 · RESOURCES -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 &middot; Resources</div>
+      <h2 class="section-title">Primary sources.</h2>
+      <p class="section-lede">All three move fast &mdash; verify versions against the date on this leaf.</p>
+    </div>
+
+    <div class="resource-grid fade-up" style="transition-delay: 0.03s">
+      <a class="resource" href="https://www.anthropic.com/product/claude-code" target="_blank" rel="noopener"><span class="r-kind">Product &middot; Claude</span><span class="r-title">Anthropic Claude Code</span><span class="r-url">anthropic.com/product/claude-code</span></a>
+      <a class="resource" href="https://code.claude.com/docs" target="_blank" rel="noopener"><span class="r-kind">Docs &middot; Claude</span><span class="r-title">Claude Code documentation</span><span class="r-url">code.claude.com/docs</span></a>
+      <a class="resource" href="https://claude.com/pricing" target="_blank" rel="noopener"><span class="r-kind">Pricing &middot; Claude</span><span class="r-title">Claude pricing</span><span class="r-url">claude.com/pricing</span></a>
+      <a class="resource" href="https://developers.openai.com/codex/cli" target="_blank" rel="noopener"><span class="r-kind">Product &middot; OpenAI</span><span class="r-title">OpenAI Codex CLI</span><span class="r-url">developers.openai.com/codex/cli</span></a>
+      <a class="resource" href="https://developers.openai.com/codex/pricing" target="_blank" rel="noopener"><span class="r-kind">Pricing &middot; OpenAI</span><span class="r-title">Codex pricing</span><span class="r-url">developers.openai.com/codex/pricing</span></a>
+      <a class="resource" href="https://github.com/github/copilot-cli" target="_blank" rel="noopener"><span class="r-kind">Repo &middot; GitHub</span><span class="r-title">github/copilot-cli</span><span class="r-url">github.com/github/copilot-cli</span></a>
+      <a class="resource" href="https://github.com/features/copilot/cli" target="_blank" rel="noopener"><span class="r-kind">Product &middot; GitHub</span><span class="r-title">GitHub Copilot CLI features</span><span class="r-url">github.com/features/copilot/cli</span></a>
+      <a class="resource" href="https://github.blog/news-insights/company-news/github-copilot-is-moving-to-usage-based-billing/" target="_blank" rel="noopener"><span class="r-kind">Pricing &middot; GitHub</span><span class="r-title">Copilot moves to usage-based billing</span><span class="r-url">github.blog/.../usage-based-billing</span></a>
+      <a class="resource" href="https://artificialanalysis.ai/agents/coding" target="_blank" rel="noopener"><span class="r-kind">Comparison</span><span class="r-title">AI coding agents (Artificial Analysis)</span><span class="r-url">artificialanalysis.ai/agents/coding</span></a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <div class="footer-tagline">The Knowledge Tree</div>
+    <div class="footer-links">
+      <a href="../../index.html">Tree</a>
+      <a href="index.html">Agents</a>
+      <a href="../tools/">Tools</a>
+      <a href="../../about.html">About</a>
+      <a href="../../join.html">Join</a>
+      <a href="https://2nth.ai">2nth.ai</a>
+    </div>
+    <div class="footer-copy">&copy; 2026 imbila.ai &middot; All knowledge open</div>
+    <div class="footer-review">Last reviewed: 2026-05-18 &middot; Cadence: hot (quarterly)</div>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme() {
+    const cur = document.documentElement.getAttribute('data-theme');
+    const next = cur === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('2nth-theme', next);
+  }
+  const stored = localStorage.getItem('2nth-theme');
+  if (stored) document.documentElement.setAttribute('data-theme', stored);
+  const observer = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold: 0.05 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+
+<script src="/gate.js" defer></script>
+
+</body>
+</html>

@@ -4,12 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Agents &mdash; know.2nth.ai</title>
-<meta name="description" content="The Agents domain on know.2nth.ai — the agentic frameworks, protocols, models, and inference platforms that matter in 2026. Twenty Live leaves across four bands: seven frameworks (Google ADK, LangGraph, CrewAI, OpenAI Agents SDK, Anthropic Agent SDK, AutoGen, AgentForce), three protocols (A2A, MCP, Agent Skills), six models, and four inference platforms. Built around the principle that agents are software, not prompt soup.">
+<meta name="description" content="The Agents domain on know.2nth.ai — the agentic frameworks, protocols, models, inference platforms, and coding CLI agents that matter in 2026. Twenty-four Live leaves across five bands: seven frameworks (Google ADK, LangGraph, CrewAI, OpenAI Agents SDK, Anthropic Agent SDK, AutoGen, AgentForce), three protocols (A2A, MCP, Agent Skills), six models, four inference platforms, and four coding CLI agents (Claude Code, OpenAI Codex CLI, GitHub Copilot CLI plus a comparison). Built around the principle that agents are software, not prompt soup.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="know.2nth.ai">
 <meta property="og:url" content="https://know.2nth.ai/explainers/agents/">
 <meta property="og:title" content="Agents &mdash; know.2nth.ai">
-<meta property="og:description" content="The Agents domain — frameworks, protocols, models, inference. 20 Live leaves across four bands. AgentForce joins the Frameworks band as the vendor-platform entry.">
+<meta property="og:description" content="The Agents domain — frameworks, protocols, models, inference, coding CLI agents. 24 Live leaves across five bands.">
 <meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
@@ -17,7 +17,7 @@
 <meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Agents &mdash; know.2nth.ai">
-<meta name="twitter:description" content="The Agents domain — 20 Live leaves. Frameworks (incl. AgentForce), protocols (A2A, MCP, Skills), models, inference. Agents are software.">
+<meta name="twitter:description" content="The Agents domain — 24 Live leaves across 5 bands. Frameworks, protocols, models, inference, coding CLI agents. Agents are software.">
 <meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -168,7 +168,7 @@
   <div class="container">
     <div class="eyebrow fade-up"><span class="dot"></span> agents &middot; Top-level domain hub</div>
     <h1 class="fade-up" style="transition-delay: 0.05s">
-      Frameworks, protocols, <span class="gradient">models, inference. The full stack.</span>
+      Frameworks, protocols, models, <span class="gradient">inference, CLI agents. The full stack.</span>
     </h1>
     <p class="sub fade-up" style="transition-delay: 0.1s">
       The Agents domain is the operational heart of know.2nth.ai going forward. Now that the data layer and systems-of-record are in place, agents are how that infrastructure turns into work. The full stack lives here: <strong>frameworks</strong> (how agents orchestrate), <strong>protocols</strong> (how they talk to each other and to tools), <strong>models</strong> (what they actually call), and <strong>inference platforms</strong> (where models run). All four layers matter. Most production agent stacks in 2026 have a strong opinion at every layer.
@@ -178,7 +178,8 @@
       <div class="hub-stat"><div class="num">3</div><div class="label">Protocols</div></div>
       <div class="hub-stat"><div class="num">6</div><div class="label">Models</div></div>
       <div class="hub-stat"><div class="num">4</div><div class="label">Inference</div></div>
-      <div class="hub-stat"><div class="num">20</div><div class="label">Live leaves</div></div>
+      <div class="hub-stat"><div class="num">4</div><div class="label">Coding CLIs</div></div>
+      <div class="hub-stat"><div class="num">24</div><div class="label">Live leaves</div></div>
     </div>
   </div>
 </section>
@@ -404,6 +405,51 @@
         </div>
         <span class="svc-path">agents/openrouter</span>
         <p>Hosted multiplexer over hundreds of models from dozens of providers. One API key, one billing relationship, every frontier model. The pragmatic choice for teams that want vendor flexibility without managing N billing relationships.</p>
+      </a>
+
+    </div>
+
+    <!-- Coding CLI agents -->
+    <div class="category-band fade-up">
+      <span class="c-label">Coding CLI agents &middot; 4</span>
+      <span class="c-rule"></span>
+    </div>
+    <div class="svc-grid fade-up" style="transition-delay: 0.03s">
+
+      <a href="claude-code.html" class="svc-card">
+        <div class="svc-head">
+          <div class="svc-name">Claude Code</div>
+          <span class="svc-state live">Live</span>
+        </div>
+        <span class="svc-path">agents/claude-code</span>
+        <p>Anthropic's agentic terminal. Reads entire codebases, plans multi-file changes, runs tests, iterates. Skills, hooks, MCP, sub-agents, Plan + Autopilot modes. Claude-locked; bundled with Pro / Max / Team / Enterprise. Stripe migrated 10k lines in 4 days.</p>
+      </a>
+
+      <a href="openai-codex.html" class="svc-card">
+        <div class="svc-head">
+          <div class="svc-name">OpenAI Codex CLI</div>
+          <span class="svc-state live">Live</span>
+        </div>
+        <span class="svc-path">agents/openai-codex</span>
+        <p>OpenAI's cloud-sandboxed coding agent. Open-source Rust binary, parallel task execution in isolated sandboxes. Backed by <code>codex-1</code> (o3-based, RL-trained on PRs) and <code>codex-mini</code>. Bundled with ChatGPT Plus / Pro / Business / Enterprise.</p>
+      </a>
+
+      <a href="github-copilot-cli.html" class="svc-card">
+        <div class="svc-head">
+          <div class="svc-name">GitHub Copilot CLI</div>
+          <span class="svc-state live">Live</span>
+        </div>
+        <span class="svc-path">agents/github-copilot-cli</span>
+        <p>Multi-model agentic terminal. Switches between Claude 4.5/4.6 and GPT-5.2&ndash;5.5 via <code>/model</code>. Worktree isolation, self-iterating code review, Plan and Autopilot modes. Usage-based AI Credits from June 1 2026.</p>
+      </a>
+
+      <a href="coding-cli-agents.html" class="svc-card">
+        <div class="svc-head">
+          <div class="svc-name">Comparison &middot; all three</div>
+          <span class="svc-state live">Live</span>
+        </div>
+        <span class="svc-path">agents/coding-cli-agents</span>
+        <p>Side-by-side of all three CLIs. 15-row compare table, mental-model breakdown, when-to-pick decision cards, open-source alternatives, SA / production context. The orientation leaf before drilling into any one tool.</p>
       </a>
 
     </div>
