@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Code &mdash; Anthropic's agentic coding CLI &mdash; know.2nth.ai</title>
+<meta name="description" content="Claude Code is Anthropic's agentic coding environment — a terminal-native agent that reads entire codebases, plans multi-file changes, runs tests, and iterates on failures. Available with Claude Pro / Max / Team / Enterprise. Same engine as the Claude Agent SDK. Native Skills, hooks, MCP, sub-agents, plan and autopilot modes. Stripe migrated 10,000 lines in 4 days; Wiz refactored a 50,000-line library in 20 hours. May 2026 reference.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/agents/claude-code">
+<meta property="og:title" content="Claude Code &mdash; Anthropic's agentic coding CLI">
+<meta property="og:description" content="Anthropic's terminal-native coding agent. Full codebase reasoning, autonomous iteration, Skills + hooks + MCP + sub-agents.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Claude Code &mdash; Anthropic's agentic coding CLI">
+<meta name="twitter:description" content="Terminal-native coding agent from Anthropic. Skills, hooks, MCP, sub-agents.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12); --violet: #8B5CF6; --violet-soft: rgba(139, 92, 246, 0.12); --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-soft: rgba(99, 102, 241, 0.12); --anthropic: #D97706; --bg: var(--ink); --bg-raised: var(--navy); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(37, 99, 235, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(56, 189, 248, 0.3); --max-w: 1200px; --read-w: 760px; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-raised: #FFFFFF; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(37, 99, 235, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(37, 99, 235, 0.25); }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.1; pointer-events: none; z-index: 0; }
+  .glow-orb.warm { width: 600px; height: 600px; background: var(--anthropic); top: -200px; right: -100px; }
+  .glow-orb.blue { width: 500px; height: 500px; background: var(--blue); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.05; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--sky); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--sky); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--sky); }
+  .crumb-sep { opacity: 0.5; }
+  .crumb-current { color: var(--text-secondary); }
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--anthropic); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--anthropic); box-shadow: 0 0 12px var(--anthropic); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .grad { background: linear-gradient(135deg, var(--anthropic), #F59E0B, #FBBF24); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 720px; line-height: 1.7; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.warm { background: rgba(217, 119, 6, 0.12); color: var(--anthropic); border-color: rgba(217, 119, 6, 0.3); }
+  .pill.indigo { background: var(--indigo-soft); color: var(--indigo); border-color: rgba(99, 102, 241, 0.25); }
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--sky); margin-bottom: 14px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .section-lede strong { color: var(--text-primary); font-weight: 600; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--sky); }
+  .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; max-width: 1040px; margin-bottom: 20px; }
+  .feature-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--anthropic); border-radius: var(--radius-md); padding: 20px 24px; }
+  .feature-cell h4 { font-size: 15px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.2px; }
+  .feature-cell p { font-size: 13.5px; color: var(--text-secondary); line-height: 1.65; }
+  .feature-cell code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; color: var(--sky); background: rgba(56, 189, 248, 0.06); padding: 1px 5px; border-radius: 3px; }
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 26px 30px; max-width: var(--read-w); margin-bottom: 18px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.indigo { border-left: 3px solid var(--indigo); }
+  .info-card.rose { border-left: 3px solid var(--rose); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14.5px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .info-card code { font-family: 'JetBrains Mono', monospace; font-size: 0.86em; color: var(--sky); background: rgba(56, 189, 248, 0.06); padding: 1px 5px; border-radius: 4px; }
+  .info-card strong { color: var(--text-primary); font-weight: 600; }
+  .pair-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 1040px; }
+  @media (max-width: 720px) { .pair-grid { grid-template-columns: 1fr; } }
+  .when-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 24px 28px; }
+  .when-card.use { border-top: 3px solid var(--green); }
+  .when-card.skip { border-top: 3px solid var(--rose); }
+  .when-card .label { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; display: block; margin-bottom: 8px; font-weight: 600; }
+  .when-card.use .label { color: var(--green); }
+  .when-card.skip .label { color: var(--rose); }
+  .when-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 14px; letter-spacing: -0.3px; }
+  .when-card ul { list-style: none; padding: 0; }
+  .when-card li { font-size: 13.5px; color: var(--text-secondary); line-height: 1.6; padding-left: 16px; position: relative; margin-bottom: 8px; }
+  .when-card li::before { content: '\2192'; position: absolute; left: 0; color: var(--text-muted); }
+  .when-card li strong { color: var(--text-primary); font-weight: 600; }
+  .cross-links { display: flex; gap: 10px; flex-wrap: wrap; }
+  .cross-link { font-family: 'JetBrains Mono', monospace; font-size: 12px; padding: 10px 20px; border-radius: var(--radius-pill); border: 1px solid var(--border); background: var(--bg-card); text-decoration: none; color: var(--text-secondary); transition: all 0.3s; letter-spacing: 0.5px; }
+  .cross-link:hover { border-color: var(--border-hover); color: var(--sky); transform: translateY(-1px); }
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 16px 20px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--sky); word-break: break-all; }
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--sky); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .footer-review { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); margin-top: 14px; letter-spacing: 0.4px; }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+
+<div class="glow-orb warm"></div>
+<div class="glow-orb blue"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand">
+      <span class="nav-brand-mark">know.2nth.ai</span>
+      <span class="nav-brand-sub">agents &middot; claude code</span>
+    </a>
+    <div style="display:flex;align-items:center;gap:16px">
+      <a href="index.html" class="nav-link">&larr; Agents</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x1F319;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="index.html">Agents</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">Claude Code</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> agents &middot; coding CLI &middot; Anthropic</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      <span class="grad">Claude Code.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      Anthropic's <strong>agentic terminal</strong> &mdash; a coding agent that reads entire codebases, plans multi-file changes, edits, runs tests, and iterates on failures. The same engine the Claude Agent SDK runs on, with a tightly-curated CLI surface. Bundled with Claude Pro, Max, Team, and Enterprise subscriptions; locked to Claude (Sonnet / Opus) as the model.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill warm">Anthropic &middot; Claude-locked</span>
+      <span class="pill indigo">Reference explainer</span>
+      <span class="pill">Hot &middot; quarterly review</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 · WHAT IT IS -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; What it is</div>
+      <h2 class="section-title">A coding agent that thinks at the project level.</h2>
+      <p class="section-lede">Not autocomplete. Not chat-with-code. A <strong>persistent agent</strong> that holds the whole codebase in mind, plans changes across files, executes them, runs your tests, reads the output, and iterates until things pass.</p>
+    </div>
+
+    <div class="prose fade-up" style="transition-delay: 0.04s">
+      <p>Claude Code launched as Anthropic's answer to the "AI pair programmer" framing &mdash; but pitched a level above. The agent doesn't suggest the next line; it commits to a multi-step plan ("read these six files, refactor the auth middleware, update the three call sites, run the tests, fix the failures") and works the plan to completion. Approval-by-default at every destructive step keeps a human in the loop.</p>
+      <p>It runs in the terminal first &mdash; that is the primary product surface &mdash; with VS Code, JetBrains, and a <code>claude.ai/code</code> web app available for teams that prefer those entry points. Same engine across all surfaces; only the affordances differ.</p>
+      <p>Two production receipts that come up in every comparison: <strong>Stripe migrated 10,000 lines of code in 4 days</strong> using Claude Code, against a 10-week manual estimate. <strong>Wiz refactored a 50,000-line library in roughly 20 hours</strong>. These are real, vendor-cited outcomes; the savings are not theoretical.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 · KEY FEATURES -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; Key features</div>
+      <h2 class="section-title">What's actually in the box.</h2>
+      <p class="section-lede">Six load-bearing capabilities. Each is shipped, documented, and used in production.</p>
+    </div>
+
+    <div class="feature-grid fade-up" style="transition-delay: 0.04s">
+      <div class="feature-cell">
+        <h4>1 &middot; Full-codebase reasoning</h4>
+        <p>Reads the project, traces dependencies, performs multi-file refactors. Not "this file"; the whole graph.</p>
+      </div>
+      <div class="feature-cell">
+        <h4>2 &middot; Autonomous test-iterate loops</h4>
+        <p>Runs tests, reads error output, fixes code, re-runs. Stops when green or the budget hits. Plan mode requires step-by-step approval; Autopilot mode lets it run.</p>
+      </div>
+      <div class="feature-cell">
+        <h4>3 &middot; Safety defaults</h4>
+        <p>Approval-by-default before file mutations or shell commands. Configurable per-project. The agent will not write a destructive command without confirming.</p>
+      </div>
+      <div class="feature-cell">
+        <h4>4 &middot; Skills + hooks + MCP</h4>
+        <p>Skills are markdown instructions in <code>~/.claude/skills/</code>. Hooks fire on git events. MCP integrates 3,000+ external tools (databases, GitHub, Sentry, etc.). All three compose.</p>
+      </div>
+      <div class="feature-cell">
+        <h4>5 &middot; Sub-agents</h4>
+        <p>Delegate tasks to specialised agents with isolated context, custom prompts, and restricted tool access. Prevents context bloat on long tasks.</p>
+      </div>
+      <div class="feature-cell">
+        <h4>6 &middot; Plan and Autopilot</h4>
+        <p>Plan mode guides you through task analysis before execution. Autopilot mode iterates autonomously through the plan. Switch per task with a slash command.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 · WHERE IT RUNS -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; Where it runs</div>
+      <h2 class="section-title">Four surfaces, one engine.</h2>
+      <p class="section-lede">All four call the same Anthropic API and run the same agent loop. Pick the surface that matches how the team works.</p>
+    </div>
+
+    <div class="feature-grid fade-up" style="transition-delay: 0.04s">
+      <div class="feature-cell">
+        <h4>Terminal (primary)</h4>
+        <p>The canonical experience. <code>claude</code> launches the agent in your shell with full repo access. Most features land here first.</p>
+      </div>
+      <div class="feature-cell">
+        <h4>VS Code extension</h4>
+        <p>Side-panel chat + inline diffs. Skills and MCP servers carry over from the terminal install. Best for teams already in VS Code.</p>
+      </div>
+      <div class="feature-cell">
+        <h4>JetBrains plugin</h4>
+        <p>IntelliJ, GoLand, PyCharm, etc. Feature parity is close but slightly behind the terminal.</p>
+      </div>
+      <div class="feature-cell">
+        <h4>Web app &middot; claude.ai/code</h4>
+        <p>Browser-based sandbox for quick experiments without local setup. Limited compared to terminal but useful for exploration.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 · PRICING -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; Pricing reality</div>
+      <h2 class="section-title">Bundled with Claude subscriptions. SDK credits split out June 15 2026.</h2>
+      <p class="section-lede">Claude Code is not a standalone product &mdash; it's included with paid Claude tiers. The interesting price signal is the upcoming separation of programmatic SDK usage from chat credits.</p>
+    </div>
+
+    <div class="info-card amber fade-up" style="transition-delay: 0.04s">
+      <h4>Current tiers (as of May 2026)</h4>
+      <p><strong>Claude Pro</strong> &mdash; $20/month (or $17/month annual). Includes Claude Code at standard usage limits. The default starting point.</p>
+      <p><strong>Claude Max 5x</strong> &mdash; $100/month. Claude Code with 5&times; usage multiplier. For heavy individual users.</p>
+      <p><strong>Claude Max 20x</strong> &mdash; $200/month. 20&times; usage. For developers running Claude Code most of the day.</p>
+      <p><strong>Team</strong> and <strong>Enterprise</strong> &mdash; per-seat with admin controls, SSO, audit log retention. Pricing on request.</p>
+      <p>The free Claude tier (web + mobile chat) does <strong>not</strong> include Claude Code.</p>
+    </div>
+
+    <div class="info-card rose fade-up" style="transition-delay: 0.05s">
+      <h4>June 15 2026 change &mdash; Agent SDK credits</h4>
+      <p>From <strong>2026-06-15</strong>, programmatic SDK usage (i.e. Claude Code calls beyond the chat experience) starts drawing on a <em>separate</em> credit pool:</p>
+      <p>&mdash; Pro: $20/month SDK credits<br>&mdash; Max 5&times;: $100/month SDK credits<br>&mdash; Max 20&times;: $200/month SDK credits</p>
+      <p>This separation effectively raises the cost ceiling for heavy programmatic use. Budget it before the date if your team uses Claude Code intensively.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 · WHEN TO USE / SKIP -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; Decision guide</div>
+      <h2 class="section-title">When to use Claude Code &mdash; and when to skip.</h2>
+      <p class="section-lede">Honest tradeoffs. Single-model is its strength and its limit.</p>
+    </div>
+
+    <div class="pair-grid fade-up" style="transition-delay: 0.04s">
+      <div class="when-card use">
+        <span class="label">Use Claude Code if&hellip;</span>
+        <h4>It fits</h4>
+        <ul>
+          <li>The team already pays for <strong>Claude Pro / Max</strong> for chat</li>
+          <li>You want <strong>deep single-codebase reasoning</strong> &mdash; multi-file refactors, library migrations</li>
+          <li>Anthropic-ecosystem extensibility (Skills, hooks, MCP, sub-agents) is what you want to customise around</li>
+          <li>Safety-first defaults match your culture (no silent commits)</li>
+          <li>You like the terminal as the primary surface</li>
+          <li>Cross-IDE flexibility matters (VS Code + JetBrains parity)</li>
+        </ul>
+      </div>
+      <div class="when-card skip">
+        <span class="label">Skip if&hellip;</span>
+        <h4>It's the wrong fit</h4>
+        <ul>
+          <li>You need <strong>model portability</strong> &mdash; Claude Code is Claude-only</li>
+          <li>You need <strong>parallel cloud-sandboxed tasks</strong> &mdash; Codex CLI is built for that, Claude Code isn't</li>
+          <li>You want a multi-model CLI that switches between Claude and GPT &mdash; Copilot CLI fits this</li>
+          <li>The team is already on ChatGPT / Copilot and won't pay for a third subscription</li>
+          <li>You're cost-floor-sensitive and $20/month doesn't pencil for the team size</li>
+          <li>You want an open-source CLI binary you can audit / fork (Codex CLI is OSS)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 · SA CONTEXT -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; South African / production context</div>
+      <h2 class="section-title">What lands in SA dev shops.</h2>
+    </div>
+
+    <div class="prose fade-up" style="transition-delay: 0.04s">
+      <p><strong>Pricing.</strong> At ZAR/USD rates, Pro at $20/month is roughly R380/month per developer (mid-2026). For a 10-person team that's ~R45k/year. Max 20&times; at $200/month is R3,800/month per seat &mdash; only worth it for developers running Claude Code most of the day.</p>
+      <p><strong>Local model alternative.</strong> Claude Code does not support local inference. For "code never leaves the building" environments (regulated industries, sensitive client work), pair it with the API tier and a region that meets your residency constraint, or use an OSS alternative like <a href="#" style="color:var(--sky);text-decoration:none;border-bottom:1px solid var(--sky)">Aider</a> against Ollama instead.</p>
+      <p><strong>Talent.</strong> Most SA engineers in 2026 have used Cursor or Copilot before Claude Code. Plan a sprint or two of pair-programming for onboarding &mdash; the model shift (Claude vs whatever they're used to) and the CLI-first surface (vs IDE-first Cursor) both take some adjustment.</p>
+      <p><strong>POPIA.</strong> Anthropic offers data-residency commitments at the Enterprise tier; consult the current terms before deploying on customer data. Free / Pro / Max tiers do not carry the same guarantees.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 07 · CONNECTIONS -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; Connections</div>
+      <h2 class="section-title">Where this leaf links into the rest of the tree.</h2>
+    </div>
+
+    <div class="cross-links fade-up" style="transition-delay: 0.03s">
+      <a href="coding-cli-agents.html" class="cross-link">&rarr; Coding CLIs comparison</a>
+      <a href="openai-codex.html" class="cross-link">&rarr; OpenAI Codex CLI</a>
+      <a href="github-copilot-cli.html" class="cross-link">&rarr; GitHub Copilot CLI</a>
+      <a href="anthropic-agent-sdk.html" class="cross-link">&rarr; Claude Agent SDK (same engine)</a>
+      <a href="claude.html" class="cross-link">&rarr; Claude (the model)</a>
+      <a href="skills.html" class="cross-link">&rarr; Agent Skills</a>
+      <a href="mcp.html" class="cross-link">&rarr; MCP</a>
+      <a href="../tools/runtime.html" class="cross-link">&rarr; Runtime decision &middot; member</a>
+    </div>
+  </div>
+</section>
+
+<!-- 08 · RESOURCES -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 &middot; Resources</div>
+      <h2 class="section-title">Primary sources.</h2>
+      <p class="section-lede">Claude Code moves fast &mdash; verify versions against the date on this leaf.</p>
+    </div>
+
+    <div class="resource-grid fade-up" style="transition-delay: 0.03s">
+      <a class="resource" href="https://www.anthropic.com/product/claude-code" target="_blank" rel="noopener"><span class="r-kind">Product</span><span class="r-title">Anthropic Claude Code</span><span class="r-url">anthropic.com/product/claude-code</span></a>
+      <a class="resource" href="https://code.claude.com/docs" target="_blank" rel="noopener"><span class="r-kind">Docs</span><span class="r-title">Claude Code documentation</span><span class="r-url">code.claude.com/docs</span></a>
+      <a class="resource" href="https://claude.com/pricing" target="_blank" rel="noopener"><span class="r-kind">Pricing</span><span class="r-title">Claude pricing</span><span class="r-url">claude.com/pricing</span></a>
+      <a class="resource" href="https://code.claude.com/docs/en/sub-agents" target="_blank" rel="noopener"><span class="r-kind">Docs</span><span class="r-title">Sub-agents</span><span class="r-url">code.claude.com/docs/en/sub-agents</span></a>
+      <a class="resource" href="https://code.claude.com/docs/en/skills" target="_blank" rel="noopener"><span class="r-kind">Docs</span><span class="r-title">Skills</span><span class="r-url">code.claude.com/docs/en/skills</span></a>
+      <a class="resource" href="https://modelcontextprotocol.io" target="_blank" rel="noopener"><span class="r-kind">Protocol</span><span class="r-title">Model Context Protocol</span><span class="r-url">modelcontextprotocol.io</span></a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <div class="footer-tagline">The Knowledge Tree</div>
+    <div class="footer-links">
+      <a href="../../index.html">Tree</a>
+      <a href="index.html">Agents</a>
+      <a href="coding-cli-agents.html">CLI comparison</a>
+      <a href="../../about.html">About</a>
+      <a href="../../join.html">Join</a>
+      <a href="https://2nth.ai">2nth.ai</a>
+    </div>
+    <div class="footer-copy">&copy; 2026 imbila.ai &middot; All knowledge open</div>
+    <div class="footer-review">Last reviewed: 2026-05-18 &middot; Cadence: hot (quarterly)</div>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme() {
+    const cur = document.documentElement.getAttribute('data-theme');
+    const next = cur === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('2nth-theme', next);
+  }
+  const stored = localStorage.getItem('2nth-theme');
+  if (stored) document.documentElement.setAttribute('data-theme', stored);
+  const observer = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold: 0.05 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+
+<script src="/gate.js" defer></script>
+
+</body>
+</html>

@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenAI Codex CLI &mdash; cloud-sandboxed coding agent &mdash; know.2nth.ai</title>
+<meta name="description" content="OpenAI Codex CLI is OpenAI's terminal-native coding agent — open-source Rust binary, cloud-sandboxed by default, capable of parallel task execution. Powered by codex-1 (o3-based, RL-trained on real PRs) and codex-mini (o4-mini). Available with ChatGPT Plus / Pro / Business / Enterprise. Launched May 2025; reached production maturity through 2025-2026 with web app, IDE integrations, and Chrome extension. May 2026 reference.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/agents/openai-codex">
+<meta property="og:title" content="OpenAI Codex CLI &mdash; cloud-sandboxed coding agent">
+<meta property="og:description" content="OpenAI's terminal coding agent. Open-source CLI binary, cloud-sandboxed parallel task execution.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="OpenAI Codex CLI &mdash; cloud-sandboxed coding agent">
+<meta name="twitter:description" content="OpenAI's terminal coding agent. Open-source CLI binary, cloud-sandboxed parallel tasks.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12); --violet: #8B5CF6; --violet-soft: rgba(139, 92, 246, 0.12); --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-soft: rgba(99, 102, 241, 0.12); --openai: #10A37F; --openai-deep: #0E8268; --bg: var(--ink); --bg-raised: var(--navy); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(37, 99, 235, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(56, 189, 248, 0.3); --max-w: 1200px; --read-w: 760px; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-raised: #FFFFFF; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(37, 99, 235, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(37, 99, 235, 0.25); }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.1; pointer-events: none; z-index: 0; }
+  .glow-orb.green { width: 600px; height: 600px; background: var(--openai); top: -200px; right: -100px; }
+  .glow-orb.blue { width: 500px; height: 500px; background: var(--blue); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.05; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--sky); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--sky); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--sky); }
+  .crumb-sep { opacity: 0.5; }
+  .crumb-current { color: var(--text-secondary); }
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--openai); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--openai); box-shadow: 0 0 12px var(--openai); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 18ch; }
+  .hero h1 .grad { background: linear-gradient(135deg, var(--openai-deep), var(--openai), #34D399); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 720px; line-height: 1.7; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.green { background: rgba(16, 163, 127, 0.12); color: var(--openai); border-color: rgba(16, 163, 127, 0.3); }
+  .pill.indigo { background: var(--indigo-soft); color: var(--indigo); border-color: rgba(99, 102, 241, 0.25); }
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--sky); margin-bottom: 14px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .section-lede strong { color: var(--text-primary); font-weight: 600; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--sky); }
+  .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; max-width: 1040px; margin-bottom: 20px; }
+  .feature-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--openai); border-radius: var(--radius-md); padding: 20px 24px; }
+  .feature-cell h4 { font-size: 15px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.2px; }
+  .feature-cell p { font-size: 13.5px; color: var(--text-secondary); line-height: 1.65; }
+  .feature-cell code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; color: var(--sky); background: rgba(56, 189, 248, 0.06); padding: 1px 5px; border-radius: 3px; }
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 26px 30px; max-width: var(--read-w); margin-bottom: 18px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.indigo { border-left: 3px solid var(--indigo); }
+  .info-card.rose { border-left: 3px solid var(--rose); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14.5px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .info-card code { font-family: 'JetBrains Mono', monospace; font-size: 0.86em; color: var(--sky); background: rgba(56, 189, 248, 0.06); padding: 1px 5px; border-radius: 4px; }
+  .info-card strong { color: var(--text-primary); font-weight: 600; }
+  .pair-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 1040px; }
+  @media (max-width: 720px) { .pair-grid { grid-template-columns: 1fr; } }
+  .when-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 24px 28px; }
+  .when-card.use { border-top: 3px solid var(--green); }
+  .when-card.skip { border-top: 3px solid var(--rose); }
+  .when-card .label { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; display: block; margin-bottom: 8px; font-weight: 600; }
+  .when-card.use .label { color: var(--green); }
+  .when-card.skip .label { color: var(--rose); }
+  .when-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 14px; letter-spacing: -0.3px; }
+  .when-card ul { list-style: none; padding: 0; }
+  .when-card li { font-size: 13.5px; color: var(--text-secondary); line-height: 1.6; padding-left: 16px; position: relative; margin-bottom: 8px; }
+  .when-card li::before { content: '\2192'; position: absolute; left: 0; color: var(--text-muted); }
+  .when-card li strong { color: var(--text-primary); font-weight: 600; }
+  .cross-links { display: flex; gap: 10px; flex-wrap: wrap; }
+  .cross-link { font-family: 'JetBrains Mono', monospace; font-size: 12px; padding: 10px 20px; border-radius: var(--radius-pill); border: 1px solid var(--border); background: var(--bg-card); text-decoration: none; color: var(--text-secondary); transition: all 0.3s; letter-spacing: 0.5px; }
+  .cross-link:hover { border-color: var(--border-hover); color: var(--sky); transform: translateY(-1px); }
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 16px 20px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--sky); word-break: break-all; }
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--sky); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .footer-review { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); margin-top: 14px; letter-spacing: 0.4px; }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+
+<div class="glow-orb green"></div>
+<div class="glow-orb blue"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand">
+      <span class="nav-brand-mark">know.2nth.ai</span>
+      <span class="nav-brand-sub">agents &middot; codex CLI</span>
+    </a>
+    <div style="display:flex;align-items:center;gap:16px">
+      <a href="index.html" class="nav-link">&larr; Agents</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x1F319;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="index.html">Agents</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">OpenAI Codex CLI</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> agents &middot; coding CLI &middot; OpenAI</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      <span class="grad">OpenAI Codex CLI.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      OpenAI's <strong>cloud-sandboxed coding agent</strong> &mdash; a terminal-native, open-source Rust binary that runs tasks in isolated sandboxes by default and can execute several in parallel. Backed by <code style="font-family:'JetBrains Mono',monospace;font-size:0.86em;color:var(--sky);background:rgba(56,189,248,0.06);border:1px solid var(--border);padding:1px 5px;border-radius:4px;">codex-1</code> (an o3 variant RL-trained on real-world PRs) and <code style="font-family:'JetBrains Mono',monospace;font-size:0.86em;color:var(--sky);background:rgba(56,189,248,0.06);border:1px solid var(--border);padding:1px 5px;border-radius:4px;">codex-mini</code>. Bundled with ChatGPT Plus / Pro / Business / Enterprise.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill green">OpenAI &middot; OSS CLI</span>
+      <span class="pill indigo">Reference explainer</span>
+      <span class="pill">Hot &middot; quarterly review</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 · WHAT IT IS -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; What it is</div>
+      <h2 class="section-title">A terminal agent built for cloud-parallel work.</h2>
+      <p class="section-lede">Codex CLI inverts the local-first assumption other coding agents make. The agent works in <strong>isolated cloud sandboxes</strong> by default, so you can kick off three tasks in parallel and review the PRs when they're done &mdash; not block on each one.</p>
+    </div>
+
+    <div class="prose fade-up" style="transition-delay: 0.04s">
+      <p>Codex CLI launched as a research preview on <strong>May 16, 2025</strong> and reached general availability inside ChatGPT Plus on <strong>June 3, 2025</strong>. Through 2025-2026 it matured into a full surface: terminal TUI with composer, file explorer, and integrated shell; a web app at <code>codex.app</code>; IDE integrations; and a Chrome extension (May 2026) that lets the agent work across tabs without taking over the browser.</p>
+      <p>The CLI binary itself is <strong>open source</strong> &mdash; Rust, MIT-licensed, installable via <code>npm install -g @openai/codex</code> or <code>brew install --cask codex</code>. The proprietary parts are the models it calls (<code>codex-1</code> and <code>codex-mini</code>) and the cloud-sandbox runtime. This OSS-CLI / proprietary-model split is unique among the major coding agents.</p>
+      <p>The <code>codex-1</code> model is a specialised variant of o3, trained via reinforcement learning on real-world coding tasks and PR conventions &mdash; the kind of training set that produces code matching human style rather than generic LLM-flavoured output. <code>codex-mini</code> (o4-mini-based) is optimised for low-latency code Q&amp;A and fast editing workflows; it's the default model in the CLI.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 · KEY FEATURES -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; Key features</div>
+      <h2 class="section-title">What's actually in the box.</h2>
+      <p class="section-lede">Six load-bearing capabilities. Verified against current docs as of May 2026.</p>
+    </div>
+
+    <div class="feature-grid fade-up" style="transition-delay: 0.04s">
+      <div class="feature-cell">
+        <h4>1 &middot; Cloud-sandboxed by default</h4>
+        <p>The agent works on a copy of your repo in an isolated cloud sandbox, not your local working directory. You keep coding; it works in parallel. PRs come back when tasks finish.</p>
+      </div>
+      <div class="feature-cell">
+        <h4>2 &middot; Parallel task execution</h4>
+        <p>Fire off multiple tasks at once. Each runs in its own sandbox. Useful for "do these three migrations" patterns where local serial execution would block you.</p>
+      </div>
+      <div class="feature-cell">
+        <h4>3 &middot; Specialised <code>codex-1</code> + <code>codex-mini</code></h4>
+        <p><code>codex-1</code> for big tasks (o3-based, RL-trained on PRs); <code>codex-mini</code> for fast iteration (o4-mini, default in CLI). Switch via flag or task.</p>
+      </div>
+      <div class="feature-cell">
+        <h4>4 &middot; Code review agent</h4>
+        <p>Separate review agent inspects changes before opening a PR. Self-iterates on its own work &mdash; you don't open a PR until it has reviewed itself.</p>
+      </div>
+      <div class="feature-cell">
+        <h4>5 &middot; Web search + MCP</h4>
+        <p>Fetches current information for tasks. Connects to MCP servers for third-party tools (databases, GitHub, Slack, etc.).</p>
+      </div>
+      <div class="feature-cell">
+        <h4>6 &middot; Modal Vim editing + Chrome extension</h4>
+        <p>Composer supports <code>/vim</code> and Vim keymaps for muscle memory. Chrome extension (May 2026) lets the agent work across browser tabs in background &mdash; reading docs while you stay in your tab.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 · WHERE IT RUNS -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; Where it runs</div>
+      <h2 class="section-title">Terminal-first. Web second. IDE and browser alongside.</h2>
+      <p class="section-lede">Four surfaces, one agent. Pick the entry point that matches the work.</p>
+    </div>
+
+    <div class="feature-grid fade-up" style="transition-delay: 0.04s">
+      <div class="feature-cell">
+        <h4>Terminal (primary)</h4>
+        <p>The Rust binary. <code>codex</code> command launches a TUI with composer, file explorer, and shell. macOS, Linux, Windows (native PowerShell or WSL2).</p>
+      </div>
+      <div class="feature-cell">
+        <h4>Web app &middot; codex.app</h4>
+        <p>Browser-based interface to the same sandboxed agent. Useful when you're not at your terminal.</p>
+      </div>
+      <div class="feature-cell">
+        <h4>IDE integrations</h4>
+        <p>VS Code and IDE-specific plugins. Feature parity is close but the terminal gets new features first.</p>
+      </div>
+      <div class="feature-cell">
+        <h4>Chrome extension</h4>
+        <p>Added May 2026. Works across tabs in the background. Lets the agent read documentation, navigate web UIs, and stay out of your way while you keep using the browser.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 · PRICING -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; Pricing reality</div>
+      <h2 class="section-title">Bundled with ChatGPT subscriptions. Rolling usage windows.</h2>
+      <p class="section-lede">No standalone Codex subscription &mdash; you pay for ChatGPT and get Codex CLI included. Usage is tracked in rolling 5-hour windows with soft and hard caps; higher tiers get multipliers.</p>
+    </div>
+
+    <div class="info-card amber fade-up" style="transition-delay: 0.04s">
+      <h4>Current tiers (as of May 2026)</h4>
+      <p><strong>ChatGPT Plus</strong> &mdash; $20/month. Codex CLI included with standard usage caps in rolling 5-hour windows.</p>
+      <p><strong>ChatGPT Pro</strong> &mdash; $200/month. 20&times; usage multiplier (launched June 3 2025).</p>
+      <p><strong>ChatGPT Pro Promotional</strong> &mdash; $100/month, 10&times; usage (promotional through May 31 2026; standard 5&times; ongoing).</p>
+      <p><strong>Business</strong> and <strong>Enterprise</strong> &mdash; per-seat or custom pricing. Admin controls, SSO, longer retention.</p>
+      <p>There is no free tier for Codex CLI.</p>
+    </div>
+
+    <div class="info-card green fade-up" style="transition-delay: 0.05s">
+      <h4>Open-source CLI distribution</h4>
+      <p>Even though usage is gated by ChatGPT subscription, the <strong>CLI binary itself is open source</strong>. Install via:</p>
+      <p><code>npm install -g @openai/codex</code> &middot; or <code>brew install --cask codex</code></p>
+      <p>Read the source, audit it, fork it, swap binaries. The proprietary parts stay server-side. Unique posture among the major coding CLIs.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 · WHEN TO USE / SKIP -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; Decision guide</div>
+      <h2 class="section-title">When to use Codex CLI &mdash; and when to skip.</h2>
+      <p class="section-lede">Honest tradeoffs. Cloud-sandbox-first is its strength and its limit.</p>
+    </div>
+
+    <div class="pair-grid fade-up" style="transition-delay: 0.04s">
+      <div class="when-card use">
+        <span class="label">Use Codex CLI if&hellip;</span>
+        <h4>It fits</h4>
+        <ul>
+          <li>The team already pays for <strong>ChatGPT Plus / Pro</strong></li>
+          <li>You want <strong>parallel task execution</strong> &mdash; "do these three migrations" in parallel sandboxes</li>
+          <li>You value the <strong>open-source CLI binary</strong> &mdash; audit, fork, swap</li>
+          <li><code>codex-1</code>'s RL-on-PRs training fits your use case (matching human PR style)</li>
+          <li>Cross-tab web work via the Chrome extension matters</li>
+          <li>You prefer Vim keymaps in the composer</li>
+        </ul>
+      </div>
+      <div class="when-card skip">
+        <span class="label">Skip if&hellip;</span>
+        <h4>It's the wrong fit</h4>
+        <ul>
+          <li>You need <strong>model portability</strong> &mdash; Codex CLI is OpenAI-only</li>
+          <li>You need <strong>local-only execution</strong> for sensitive data &mdash; cloud sandboxes don't fit (use Aider against Ollama instead)</li>
+          <li>The team is already on Claude / Copilot and won't pay for a third subscription</li>
+          <li>You want a multi-model CLI &mdash; Copilot CLI fits</li>
+          <li>You want Anthropic's Skills / hooks extensibility pattern &mdash; Claude Code fits</li>
+          <li>Rolling 5-hour usage windows don't match your work pattern (heavy bursts followed by quiet)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 · SA CONTEXT -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; South African / production context</div>
+      <h2 class="section-title">What lands in SA dev shops.</h2>
+    </div>
+
+    <div class="prose fade-up" style="transition-delay: 0.04s">
+      <p><strong>Pricing.</strong> ChatGPT Plus at $20/month is roughly R380/month per developer at mid-2026 rates. ChatGPT Pro at $200/month is R3,800/month per seat &mdash; only worth it for developers running Codex CLI most of the day, given the 20&times; multiplier.</p>
+      <p><strong>Cloud sandbox + data residency.</strong> Because Codex CLI runs in OpenAI-managed sandboxes by default, your code temporarily lives in OpenAI's infrastructure during task execution. This is a friction point for POPIA-sensitive work &mdash; check OpenAI's current enterprise residency commitments before deploying on customer data. For "code never leaves the building" environments, Codex CLI is the wrong fit; use a local-only tool like Aider with Ollama instead.</p>
+      <p><strong>Talent.</strong> SA engineers in 2026 are familiar with ChatGPT but less familiar with Codex CLI as a separate product. Plan onboarding time. The CLI's TUI is closer to vim/tmux culture than IDE-native tools like Cursor; teams that prefer terminal workflows take to it faster.</p>
+      <p><strong>OSS posture.</strong> The open-source CLI binary is a real advantage for security-conscious clients &mdash; banks, government, healthcare &mdash; who want to audit the agent-side code. They can't audit the model behind the API, but the CLI is fully inspectable.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 07 · CONNECTIONS -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; Connections</div>
+      <h2 class="section-title">Where this leaf links into the rest of the tree.</h2>
+    </div>
+
+    <div class="cross-links fade-up" style="transition-delay: 0.03s">
+      <a href="coding-cli-agents.html" class="cross-link">&rarr; Coding CLIs comparison</a>
+      <a href="claude-code.html" class="cross-link">&rarr; Claude Code</a>
+      <a href="github-copilot-cli.html" class="cross-link">&rarr; GitHub Copilot CLI</a>
+      <a href="openai-agents-sdk.html" class="cross-link">&rarr; OpenAI Agents SDK</a>
+      <a href="gpt.html" class="cross-link">&rarr; GPT (the model family)</a>
+      <a href="mcp.html" class="cross-link">&rarr; MCP</a>
+      <a href="../tools/runtime.html" class="cross-link">&rarr; Runtime decision &middot; member</a>
+    </div>
+  </div>
+</section>
+
+<!-- 08 · RESOURCES -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 &middot; Resources</div>
+      <h2 class="section-title">Primary sources.</h2>
+    </div>
+
+    <div class="resource-grid fade-up" style="transition-delay: 0.03s">
+      <a class="resource" href="https://developers.openai.com/codex/cli" target="_blank" rel="noopener"><span class="r-kind">Product</span><span class="r-title">OpenAI Codex CLI</span><span class="r-url">developers.openai.com/codex/cli</span></a>
+      <a class="resource" href="https://developers.openai.com/codex/pricing" target="_blank" rel="noopener"><span class="r-kind">Pricing</span><span class="r-title">Codex pricing</span><span class="r-url">developers.openai.com/codex/pricing</span></a>
+      <a class="resource" href="https://github.com/openai/codex" target="_blank" rel="noopener"><span class="r-kind">Repo</span><span class="r-title">openai/codex (OSS CLI)</span><span class="r-url">github.com/openai/codex</span></a>
+      <a class="resource" href="https://codex.app" target="_blank" rel="noopener"><span class="r-kind">Web app</span><span class="r-title">codex.app</span><span class="r-url">codex.app</span></a>
+      <a class="resource" href="https://modelcontextprotocol.io" target="_blank" rel="noopener"><span class="r-kind">Protocol</span><span class="r-title">Model Context Protocol</span><span class="r-url">modelcontextprotocol.io</span></a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <div class="footer-tagline">The Knowledge Tree</div>
+    <div class="footer-links">
+      <a href="../../index.html">Tree</a>
+      <a href="index.html">Agents</a>
+      <a href="coding-cli-agents.html">CLI comparison</a>
+      <a href="../../about.html">About</a>
+      <a href="../../join.html">Join</a>
+      <a href="https://2nth.ai">2nth.ai</a>
+    </div>
+    <div class="footer-copy">&copy; 2026 imbila.ai &middot; All knowledge open</div>
+    <div class="footer-review">Last reviewed: 2026-05-18 &middot; Cadence: hot (quarterly)</div>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme() {
+    const cur = document.documentElement.getAttribute('data-theme');
+    const next = cur === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('2nth-theme', next);
+  }
+  const stored = localStorage.getItem('2nth-theme');
+  if (stored) document.documentElement.setAttribute('data-theme', stored);
+  const observer = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold: 0.05 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+
+<script src="/gate.js" defer></script>
+
+</body>
+</html>
