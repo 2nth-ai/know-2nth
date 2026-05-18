@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Process orchestration &middot; 2026 &mdash; know.2nth.ai</title>
+<meta name="description" content="Process orchestration in 2026 — Camunda 8, Temporal, Orkes Conductor, Flowable, and Argo Workflows as the credible replacements for IBM BPM, Oracle BPM Suite, TIBCO ActiveMatrix, and Pega. Camunda mindshare dropped from 21.5% to 9.9% YoY but the category is shifting, not shrinking: enterprise workflow moved to BPMN-as-code (Camunda 8) or workflow-as-code (Temporal). Top 5 modern orchestrators, the migration patterns, the honest cost picture for SA enterprise.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/biz/bpm/process-orchestration">
+<meta property="og:title" content="Process orchestration &middot; 2026 &mdash; know.2nth.ai">
+<meta property="og:description" content="Process orchestration in 2026 — Camunda 8, Temporal, Orkes Conductor, Flowable, Argo Workflows as replacements for IBM BPM / Oracle / TIBCO / Pega. Migration patterns + decision guide + SA enterprise context.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Process orchestration &middot; 2026">
+<meta name="twitter:description" content="Process orchestration in 2026 — Camunda 8, Temporal, Orkes Conductor, Flowable, Argo Workflows. Replacing IBM BPM / Oracle / TIBCO / Pega, honestly.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12); --violet: #8B5CF6; --violet-soft: rgba(139, 92, 246, 0.12); --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-soft: rgba(99, 102, 241, 0.12); --bg: var(--ink); --bg-raised: var(--navy); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(245, 158, 11, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(245, 158, 11, 0.3); --max-w: 1200px; --read-w: 760px; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; --domain: var(--warm); --domain-glow: var(--warm-glow); }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-raised: #FFFFFF; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(245, 158, 11, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(245, 158, 11, 0.25); }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.warm { width: 600px; height: 600px; background: var(--warm); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--warm-glow); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--warm-glow); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .read { max-width: var(--read-w); }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--warm-glow); }
+  .crumb-sep { opacity: 0.5; }
+  .crumb-current { color: var(--text-secondary); }
+  .hero { padding: 48px 0 56px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--warm-glow); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--warm-glow); box-shadow: 0 0 12px var(--warm-glow); }
+  .hero h1 { font-size: clamp(40px, 6vw, 60px); font-weight: 800; line-height: 1.05; letter-spacing: -2px; margin-bottom: 22px; max-width: 18ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--warm), var(--warm-glow), #FDE047); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 720px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.accent { background: var(--warm-soft); color: var(--warm-glow); border-color: rgba(245, 158, 11, 0.25); }
+  .pill.rose { background: var(--rose-soft); color: var(--rose); border-color: rgba(244, 63, 94, 0.25); }
+  .pill.green { background: var(--green-soft); color: var(--green); border-color: rgba(16, 185, 129, 0.25); }
+  section { padding: 48px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--warm-glow); margin-bottom: 14px; }
+  .section-title { font-size: clamp(24px, 3vw, 32px); font-weight: 700; letter-spacing: -0.6px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 28px; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--warm-glow); }
+  .prose ul, .prose ol { padding-left: 24px; margin-bottom: 18px; max-width: var(--read-w); }
+  .prose li { font-size: 15px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 8px; }
+  .prose li strong { color: var(--text-primary); font-weight: 600; }
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px 28px; max-width: var(--read-w); margin-bottom: 20px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.indigo { border-left: 3px solid var(--indigo); }
+  .info-card.rose { border-left: 3px solid var(--rose); }
+  .info-card h4 { font-size: 15px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .info-card code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--ink-deep); border: 1px solid var(--border); padding: 1px 5px; border-radius: 4px; color: var(--warm-glow); }
+  [data-theme="light"] .info-card code { background: rgba(15, 23, 42, 0.06); }
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: var(--read-w); margin-bottom: 20px; }
+  .compare-wrap.wide { max-width: none; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--warm-glow); background: rgba(245, 158, 11, 0.04); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); }
+  .compare td.name { font-weight: 600; color: var(--text-primary); white-space: nowrap; }
+  .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--warm-glow); }
+  .compare td strong { color: var(--text-primary); }
+  .compare td .drop { color: var(--rose); font-weight: 600; }
+  .compare td .gain { color: var(--green); font-weight: 600; }
+  .stack-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; max-width: var(--read-w); margin-bottom: 20px; }
+  .stack-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--warm); border-radius: var(--radius-md); padding: 18px 22px; }
+  .stack-cell .layer { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .stack-cell h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.3px; }
+  .stack-cell p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+  .surface-grid { display: grid; grid-template-columns: 1fr; gap: 16px; max-width: var(--read-w); margin-bottom: 20px; }
+  .surface { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 22px 26px; }
+  .surface .s-head { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 10px; }
+  .surface h4 { font-size: 18px; font-weight: 700; letter-spacing: -0.3px; }
+  .surface .s-tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--warm-glow); background: rgba(245, 158, 11, 0.08); padding: 4px 10px; border-radius: var(--radius-pill); border: 1px solid rgba(245, 158, 11, 0.2); }
+  .surface .s-meta { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); margin-bottom: 10px; display: block; }
+  .surface .s-meta a { color: var(--sky); text-decoration: none; }
+  .surface .s-meta a:hover { text-decoration: underline; }
+  .surface p { font-size: 14px; color: var(--text-secondary); line-height: 1.65; margin-bottom: 10px; }
+  .surface p:last-child { margin-bottom: 0; }
+  .surface .s-pillset { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+  .surface .s-pillset .s-pill { font-family: 'JetBrains Mono', monospace; font-size: 10px; padding: 3px 9px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-muted); }
+  .surface .s-pillset .s-pill.oss { background: var(--green-soft); color: var(--green); border-color: rgba(16, 185, 129, 0.25); }
+  .surface .s-pillset .s-pill.bpmn { background: rgba(245, 158, 11, 0.12); color: var(--warm-glow); border-color: rgba(245, 158, 11, 0.25); }
+  .connect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .connect-node { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; transition: all 0.3s; text-decoration: none; color: inherit; display: block; }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node.soon { cursor: default; opacity: 0.72; }
+  .connect-node .tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--warm-glow); word-break: break-all; }
+  footer { padding: 56px 0 36px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--warm-glow); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .compare { font-size: 12px; } .compare th, .compare td { padding: 10px 12px; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+
+<div class="glow-orb warm"></div>
+<div class="glow-orb sky"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../../index.html" class="nav-brand"><span class="nav-brand-mark">know.2nth.ai</span><span class="nav-brand-sub">biz/bpm/process-orchestration</span></a>
+    <div class="nav-right">
+      <a href="../" class="nav-link">&larr; Business</a>
+      <a href="../../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x1F319;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="../../../index.html#domains">Business</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="../">biz</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">bpm &middot; process orchestration</span>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> biz/bpm &middot; Process orchestration &middot; Skill Leaf</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      Orchestration after <span class="gradient">IBM BPM and Pega.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      The enterprise BPM category that IBM, Oracle, TIBCO and Pega dominated for two decades has split in two. The "BPMN modelled, audited, governed" use case shifted to <strong>Camunda 8</strong> &mdash; cloud-native, BPMN 2.0, modular. The "long-running distributed workflow in code" use case grew into a new category around <strong>Temporal</strong> and <strong>Orkes Conductor</strong>. Camunda's analyst mindshare fell from 21.5% to 9.9% YoY (PeerSpot Jan 2026) while IBM BPM dropped from 7.3% to 4.1% &mdash; the whole category is contracting at the BPM-suite framing and growing under the orchestration framing. Top 5 modern platforms below, with migration patterns and SA enterprise context.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill accent">Process orchestration 2026</span>
+      <span class="pill rose">Legacy in decline</span>
+      <span class="pill green">5 modern picks</span>
+      <span class="pill">BPMN 2.0 &middot; workflow-as-code</span>
+    </div>
+  </div>
+</section>
+
+<section id="shift">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; The category shift</div>
+      <h2 class="section-title">"BPM Suite" is two distinct products now.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>From the mid-2000s through the mid-2010s, the BPM Suite category was a single thing: a heavyweight server (often Java EE) that ran BPMN process models authored in a vendor-specific modeller, with built-in human-task forms, an admin console, and tight bindings to a vendor's ESB and rules engine. IBM BPM (formerly Lombardi Teamworks), Oracle BPM Suite, TIBCO ActiveMatrix BPM, Software AG webMethods BPMS, and Pega were the global incumbents. Six-figure USD licensing was normal; year-long implementations were typical.</p>
+      <p>By 2026, that single category has cleanly split into two:</p>
+      <ul>
+        <li><strong>Modern BPMN-modelled orchestration</strong> — Camunda 8 is the dominant entry. Visual BPMN 2.0 modelling, but the engine (Zeebe) is cloud-native, the deployment is Kubernetes-shaped, and the developer experience (Modeler + connectors + CI/CD) treats process models like code.</li>
+        <li><strong>Workflow as code</strong> — Temporal (Uber Cadence lineage), Orkes Conductor (Netflix lineage), Argo Workflows (Kubernetes-native). Workflows are written in the host language (Go, Java, TypeScript, Python), the engine guarantees durable execution + retries + versioning, no visual modeller required.</li>
+      </ul>
+      <p>The two halves serve different buyers. BPMN-modelled orchestration fits the buyer who needs auditable business processes, human-task approvals, and compliance reporting (banks, insurers, government, BPO). Workflow-as-code fits the buyer who is composing microservices into long-running flows with strict reliability semantics (e-commerce checkout, billing, identity, distributed jobs). A third half &mdash; <strong>data orchestration</strong> — has its own well-established category (Apache Airflow, Prefect, Dagster) but is rarely called "BPM."</p>
+    </div>
+    <div class="info-card rose fade-up" style="transition-delay: 0.08s">
+      <h4>Why the legacy suites are contracting</h4>
+      <p>Three structural pressures push the same way:</p>
+      <p><strong>Cost.</strong> A typical IBM BPM or Pega deployment runs into seven figures USD over five years across licences, infrastructure, and partner-led implementation. Camunda 8 Self-Managed plus a small platform team often comes in at 30&ndash;50% TCO; Temporal Cloud (managed) bills per-action and scales naturally with use.</p>
+      <p><strong>Cloud-native deployment.</strong> The legacy stacks were built around dedicated J2EE servers and proprietary middleware. Modern platforms ship as containers, deploy with Helm to any Kubernetes cluster, and integrate with the cloud-native observability stack (OpenTelemetry, Prometheus, Grafana) by default.</p>
+      <p><strong>Developer experience.</strong> Process models in modern platforms live in git, get reviewed in PRs, are tested in CI, and deploy through standard CD pipelines. The legacy "deploy via the admin console, hope it works" model lost developer mindshare a decade ago and is still losing buyer mindshare.</p>
+    </div>
+  </div>
+</section>
+
+<section id="capabilities">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; What an orchestrator actually delivers</div>
+      <h2 class="section-title">Eight capabilities, then the rest is wrapping.</h2>
+      <p class="section-lede">Every credible process orchestrator &mdash; legacy or modern &mdash; is some implementation of these eight capabilities. The differences between platforms are how each capability is realised, how it scales, and how it composes with the rest of the stack.</p>
+    </div>
+
+    <div class="stack-grid fade-up" style="transition-delay: 0.05s">
+      <div class="stack-cell">
+        <span class="layer">Modeling</span>
+        <h4>Process definition</h4>
+        <p>BPMN 2.0 (Camunda, Flowable) or code (Temporal, Conductor, Argo). The notation is the buyer interface; the engine is the runtime.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Runtime</span>
+        <h4>Durable execution</h4>
+        <p>Process state survives crashes, restarts, infrastructure failures. The defining technical claim of the category. Persistence in Postgres / Cassandra / dedicated stores (Zeebe).</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Compose</span>
+        <h4>Task workers + connectors</h4>
+        <p>External workers poll for tasks (Camunda 8, Temporal, Conductor) or the engine invokes connectors directly. Workers in any language; connectors for SaaS APIs.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Process</span>
+        <h4>Versioning + migration</h4>
+        <p>Long-running processes outlive deployments. Versioning isolates running instances; migration policies handle in-flight upgrades. Often the hardest production concern.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Human</span>
+        <h4>Human task management</h4>
+        <p>Approval queues, forms, role assignment, escalations. First-class in BPMN platforms; second-class in workflow-as-code platforms.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Decisions</span>
+        <h4>Decision tables (DMN)</h4>
+        <p>Business rules in DMN 1.3 tables that business analysts can author. Camunda and Flowable ship this natively; Temporal / Conductor leave rules to host code.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Observability</span>
+        <h4>Process monitoring</h4>
+        <p>Per-instance state, audit trail, SLA breach alerts, throughput dashboards. Camunda Operate / Optimize, Temporal UI, Conductor UI.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Integration</span>
+        <h4>Events + messaging</h4>
+        <p>Kafka, NATS, RabbitMQ, AWS SQS / EventBridge integration as first-class. Modern orchestrators are event-native; legacy ones bolt this on.</p>
+      </div>
+    </div>
+
+    <div class="info-card amber fade-up" style="transition-delay: 0.08s">
+      <h4>BPMN 2.0 — the under-recognised standard</h4>
+      <p><strong>Business Process Model and Notation 2.0</strong> is the OMG-standardised visual notation for process models. Camunda, Flowable, IBM BPM, Activiti, Bonita, and many others implement BPMN to some degree. The practical implication: a BPMN model authored in one vendor's modeller is portable to another vendor's engine &mdash; though "portable" hides real friction, especially when IBM BPM exports drop diagram metadata (a documented Camunda migration gotcha). The <strong>DMN 1.3</strong> companion standard does the same for decision tables. Together, BPMN + DMN are the reason migration from IBM BPM to Camunda is feasible at all.</p>
+    </div>
+  </div>
+</section>
+
+<section id="top5">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; The top 5 modern orchestrators</div>
+      <h2 class="section-title">Five credible platforms, by use-case shape.</h2>
+      <p class="section-lede">The five below cover the realistic modern process-orchestration market for enterprise workloads. Two BPMN-modelled options (Camunda 8, Flowable) for IBM BPM / Oracle / TIBCO replacement scope; two workflow-as-code options (Temporal, Orkes Conductor) for distributed-system orchestration; one Kubernetes-native option (Argo Workflows) for compute-heavy / data-pipeline-adjacent workloads.</p>
+    </div>
+
+    <div class="surface-grid fade-up" style="transition-delay: 0.05s">
+
+      <div class="surface">
+        <div class="s-head">
+          <h4>1. Camunda 8</h4>
+          <span class="s-tag">BPMN &middot; enterprise replacement</span>
+        </div>
+        <span class="s-meta">Zeebe engine (Go), BPMN 2.0 + DMN 1.3, Self-Managed or SaaS &middot; <a href="https://camunda.com" target="_blank" rel="noopener">camunda.com</a> &middot; <a href="https://github.com/camunda" target="_blank" rel="noopener">github.com/camunda</a></span>
+        <p>The most credible direct replacement for IBM BPM, Oracle BPM Suite, and TIBCO ActiveMatrix at the enterprise tier. Cloud-native architecture (Zeebe is a stream processor over a partitioned log, deployed as Kubernetes pods), BPMN 2.0 + DMN 1.3 standards-compliant, REST and gRPC APIs, Modeler is a separate desktop / web app, task workers in any language. Self-Managed edition is source-available (a commercial licence is required for production); SaaS edition (Camunda Cloud) is managed by Camunda. The Camunda migration consulting team ships tools specifically for IBM BPM, IBM Blueworks Live, and TIBCO process imports.</p>
+        <p><strong>Pick when:</strong> the replacement target is IBM BPM / Oracle / TIBCO / Pega and the buyer needs BPMN modelling, human-task workflow, DMN decision tables, and an audit-grade engine. The default for SA bank / insurer migrations off the legacy stacks.</p>
+        <div class="s-pillset">
+          <span class="s-pill">Camunda licence</span>
+          <span class="s-pill bpmn">BPMN 2.0</span>
+          <span class="s-pill bpmn">DMN 1.3</span>
+          <span class="s-pill">Zeebe / Kafka-shaped</span>
+          <span class="s-pill">k8s-native</span>
+        </div>
+      </div>
+
+      <div class="surface">
+        <div class="s-head">
+          <h4>2. Temporal</h4>
+          <span class="s-tag">Workflow-as-code &middot; hyperscale</span>
+        </div>
+        <span class="s-meta">Apache 2.0 OSS + Temporal Cloud (commercial), Go core, SDKs everywhere &middot; <a href="https://temporal.io" target="_blank" rel="noopener">temporal.io</a> &middot; <a href="https://github.com/temporalio" target="_blank" rel="noopener">github.com/temporalio</a></span>
+        <p>The dominant workflow-as-code platform. Forked from Uber's internal Cadence by the original authors in 2019; now powers durable-execution workflows at Uber, Snap, Coinbase, Stripe, and Datadog. Workflows are written in the host language (Go, Java, TypeScript, Python, .NET, PHP, Ruby) and the Temporal engine guarantees durable execution &mdash; state survives crashes, retries are automatic, versioning is built-in, signals and queries are first-class. No visual modeller; the workflow IS the code. Temporal Cloud is the managed offering (per-action billing); Temporal Self-Hosted is Apache 2.0 OSS.</p>
+        <p><strong>Pick when:</strong> the workload is distributed-system orchestration (microservices composing into long-running flows) and the team has the engineering depth to operate it. Not the right pick for BPMN-modelled business processes or human-task heavy approval chains.</p>
+        <div class="s-pillset">
+          <span class="s-pill oss">Apache 2.0</span>
+          <span class="s-pill">Go core</span>
+          <span class="s-pill">Multi-language SDK</span>
+          <span class="s-pill">Durable execution</span>
+          <span class="s-pill">Cloud or self-hosted</span>
+        </div>
+      </div>
+
+      <div class="surface">
+        <div class="s-head">
+          <h4>3. Orkes Conductor</h4>
+          <span class="s-tag">Code + visual &middot; Netflix lineage</span>
+        </div>
+        <span class="s-meta">Apache 2.0 OSS (Netflix Conductor) + Orkes Conductor (commercial) &middot; <a href="https://orkes.io" target="_blank" rel="noopener">orkes.io</a> &middot; <a href="https://github.com/conductor-oss/conductor" target="_blank" rel="noopener">github.com/conductor-oss/conductor</a></span>
+        <p>Netflix originated Conductor in 2016 to orchestrate microservices that drive the Netflix studio and platform. Orkes (founded by the original Conductor authors) commercialised it as a managed enterprise platform in 2022. Workflows can be defined as code, in a UI editor, or in JSON configuration &mdash; the cross-edit between formats is a distinguishing feature. Strong observability dashboards; pragmatic developer-meets-ops positioning. Apache 2.0 OSS for the open source; Orkes commercial for the managed enterprise tier.</p>
+        <p><strong>Pick when:</strong> the team wants flexibility across code and visual workflow definition, or already has Netflix Conductor in production and wants the managed upgrade path.</p>
+        <div class="s-pillset">
+          <span class="s-pill oss">Apache 2.0</span>
+          <span class="s-pill">Code / UI / JSON</span>
+          <span class="s-pill">Netflix lineage</span>
+          <span class="s-pill">Java core</span>
+        </div>
+      </div>
+
+      <div class="surface">
+        <div class="s-head">
+          <h4>4. Flowable</h4>
+          <span class="s-tag">BPMN &middot; open-source default</span>
+        </div>
+        <span class="s-meta">Java, Apache 2.0 OSS + Flowable Work (commercial) &middot; <a href="https://flowable.com" target="_blank" rel="noopener">flowable.com</a> &middot; <a href="https://github.com/flowable" target="_blank" rel="noopener">github.com/flowable</a></span>
+        <p>The most credible fully-open-source BPMN engine. Fork of Activiti (which itself is the open-source lineage of jBPM); Flowable forked in 2016 and has been more active since. Implements BPMN 2.0, DMN 1.3, and CMMN 1.1 (Case Management Model and Notation) under a single engine. Apache 2.0 across the board for the core engine; Flowable Work / Engage / Inspect are the commercial add-ons for human-task UI and admin consoles. Smaller community than Camunda but a real production option for teams that need an open-source BPMN engine without commercial licence dependencies.</p>
+        <p><strong>Pick when:</strong> the requirement is BPMN + DMN + CMMN under permissive open-source licensing and the team is willing to integrate / build the human-task UI themselves (or pay for Flowable's commercial add-ons).</p>
+        <div class="s-pillset">
+          <span class="s-pill oss">Apache 2.0</span>
+          <span class="s-pill bpmn">BPMN 2.0</span>
+          <span class="s-pill bpmn">DMN 1.3 + CMMN 1.1</span>
+          <span class="s-pill">Java / Spring</span>
+        </div>
+      </div>
+
+      <div class="surface">
+        <div class="s-head">
+          <h4>5. Argo Workflows</h4>
+          <span class="s-tag">Kubernetes-native &middot; compute-heavy</span>
+        </div>
+        <span class="s-meta">CNCF graduated, Apache 2.0, container-per-step &middot; <a href="https://argoproj.github.io/workflows/" target="_blank" rel="noopener">argoproj.github.io/workflows</a> &middot; <a href="https://github.com/argoproj/argo-workflows" target="_blank" rel="noopener">github.com/argoproj/argo-workflows</a></span>
+        <p>Kubernetes-native workflow engine. Every workflow step is a container, every workflow is a Kubernetes CRD. Designed for compute-heavy parallel workloads (ML training, scientific computing, data pipelines) where the orchestrator should treat the cluster as the runtime. CNCF graduated project (mature governance), Apache 2.0 OSS. Not a BPMN engine and not a workflow-as-code engine in the Temporal sense &mdash; workflows are YAML or code-generated YAML. Pairs with Argo Events for trigger-based execution and Argo CD for continuous deployment.</p>
+        <p><strong>Pick when:</strong> workloads are container-shaped, compute-heavy, and already on Kubernetes &mdash; especially ML pipelines, batch jobs, and infrastructure orchestration. Not the right pick for business-process orchestration with human tasks.</p>
+        <div class="s-pillset">
+          <span class="s-pill oss">Apache 2.0 (CNCF graduated)</span>
+          <span class="s-pill">k8s-native</span>
+          <span class="s-pill">Container per step</span>
+          <span class="s-pill">YAML / DSL</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="info-card fade-up" style="transition-delay: 0.08s">
+      <h4>Honourable mentions</h4>
+      <p><strong>n8n</strong> &mdash; low-code workflow automation for citizen developers and integration use cases; fair-code (sustainable-use) licence; not enterprise BPM but excellent for SaaS integrations and operational glue. <strong>Apache Airflow</strong> &mdash; the dominant data-orchestration platform; Python DAGs; not designed for transactional business processes but the right answer for ETL / ELT scheduling. <strong>Prefect</strong> and <strong>Dagster</strong> &mdash; modern data-orchestration alternatives to Airflow with cleaner developer experience. <strong>Windmill</strong> &mdash; newer fair-code automation platform combining workflows + scripts + UI. <strong>AWS Step Functions</strong> &mdash; managed state-machine orchestration for AWS-native shops; vendor-bound but operationally clean. <strong>Activiti</strong> and <strong>Bonita</strong> &mdash; older BPMN engines, declining; usually replaced by Camunda or Flowable in new deployments.</p>
+    </div>
+  </div>
+</section>
+
+<section id="vs">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; Modern vs legacy BPM Suite</div>
+      <h2 class="section-title">Head-to-head on the capability matrix.</h2>
+    </div>
+    <div class="compare-wrap wide fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead><tr><th>Concern</th><th>IBM BPM</th><th>Pega Platform</th><th>Camunda 8</th><th>Temporal</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Licence cost</strong></td><td>USD per-PVU + per-CPU; seven-figure floor</td><td>USD per-user + per-server; seven-figure floor</td><td>Camunda commercial licence (~mid five figures for entry) or SaaS per-process; Self-Managed source-available</td><td>Temporal Cloud per-action; Self-Hosted Apache 2.0 free</td></tr>
+          <tr><td><strong>BPMN modelling</strong></td><td>Native; proprietary extensions to BPMN</td><td>Proprietary case-flow (not BPMN); some BPMN import</td><td>Native; BPMN 2.0 reference implementation</td><td>None (workflow is code)</td></tr>
+          <tr><td><strong>DMN decisions</strong></td><td>Vendor-specific rules engine</td><td>Pega Rules</td><td>Native DMN 1.3</td><td>Decisions in host language</td></tr>
+          <tr><td><strong>Cloud-native deploy</strong></td><td>Java EE; containerisable but not k8s-native</td><td>Java EE; vendor-managed cloud or self-hosted</td><td>Kubernetes-native; Helm charts</td><td>Kubernetes-native; Helm charts</td></tr>
+          <tr><td><strong>Human task workflow</strong></td><td>Native + portal</td><td>Native + portal (the strongest in the field)</td><td>Native via Tasklist + Forms</td><td>External (UI must be built; SDK provides primitives)</td></tr>
+          <tr><td><strong>Mindshare trajectory (Jan 2026)</strong></td><td><span class="drop">4.1% (was 7.3%)</span></td><td>Steady in low-code BPM</td><td><span class="drop">9.9% (was 21.5%)</span> &mdash; whole category contracting</td><td><span class="gain">Rising in workflow-as-code</span></td></tr>
+          <tr><td><strong>Vendor lock-in</strong></td><td>High &mdash; proprietary process artefacts, IBM ecosystem assumptions</td><td>High &mdash; Pega-specific everything</td><td>Low &mdash; BPMN exports portable, OSS Self-Managed available</td><td>Low &mdash; workflow code is yours, OSS is Apache 2.0</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="info-card indigo fade-up" style="transition-delay: 0.08s">
+      <h4>Camunda 7 vs Camunda 8 — different products</h4>
+      <p>An important nuance for migration planning. <strong>Camunda 7</strong> is the older Java embedded engine (released 2013, last 7.x line received support through 2025+ with extended LTS). <strong>Camunda 8</strong> is the newer cloud-native rewrite around Zeebe (released 2022). They are <em>different products with the same brand</em> — different engine, different operations model, different commercial terms. New deployments default to Camunda 8 unless there's a specific reason to extend Camunda 7. Migration from Camunda 7 → Camunda 8 is a real project (engine differences, deployment model, connector pattern), not a version upgrade.</p>
+    </div>
+  </div>
+</section>
+
+<section id="migration">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; Migration patterns</div>
+      <h2 class="section-title">Strangler, BPMN-import, greenfield.</h2>
+      <p class="section-lede">Three credible migration shapes from IBM BPM / Oracle / TIBCO / Pega to a modern orchestrator. None is fast; all are doable. Camunda Consulting has shipped the most-used migration toolchain — tools that parse IBM BPM, Blueworks Live, and TIBCO exports and emit BPMN-2.0-compliant files, but in practice 30&ndash;50% of the model is hand-rewriting because the legacy stacks embed vendor-specific extensions (BPEL, custom Java service tasks, IBM-only event subprocess shapes) that don't map cleanly.</p>
+    </div>
+
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p><strong>1. Strangler (most common for IBM BPM / Oracle / TIBCO).</strong> New processes are authored natively in Camunda 8 (or Temporal) from day one. Existing processes stay on the legacy engine and migrate process-by-process, usually keyed off business-event boundaries (a new product launch, a regulatory change that requires re-implementation anyway, a SLA renewal that justifies the project). Both engines coexist for the migration window (often 2&ndash;5 years). The legacy licence cost drops only when an entire process suite is decommissioned, so cohort sizing matters for cost realisation. Camunda's <em>"Replace Legacy BPMS"</em> playbook documents this pattern in depth.</p>
+      <p><strong>2. BPMN-import + adapt (for in-scope greenfield rewrites).</strong> Use the Camunda Migration Toolkit to parse the legacy export, regenerate as Camunda-compatible BPMN, and accept that the regenerated model is a <em>starting point for rebuild</em>, not a drop-in replacement. The structure transfers; the task implementations, forms, and engine-specific extensions need to be re-authored. Useful when the legacy model has long since lost its original authors and the documentation is the BPMN itself.</p>
+      <p><strong>3. Greenfield (for transactional / event-driven workflows).</strong> The workflow is rewritten in Temporal or Orkes Conductor as code, without any attempt to preserve the legacy BPMN model. Appropriate when the legacy process is technical (service composition, distributed transactions) rather than business-process-shaped, and the team is willing to take the workflow-as-code stance.</p>
+    </div>
+
+    <div class="info-card green fade-up" style="transition-delay: 0.08s">
+      <h4>The diagram-info gotcha (IBM BPM specifically)</h4>
+      <p>IBM BPM exports are BPMN-compliant <em>except</em> they omit the diagram metadata. Open them in Camunda Modeler and you get a "No Diagram To Display" error &mdash; the process definition is there, but the visual layout was stripped. Camunda's migration tools work around this by regenerating layout from the structure. Plan accordingly: the migration is faster than "re-implement from scratch," but slower than "import and ship."</p>
+    </div>
+  </div>
+</section>
+
+<section id="sa">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; South African context</div>
+      <h2 class="section-title">Banking, insurance, parastatals, and the SI conversation.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p><strong>Banking + insurance are the SA install base.</strong> Most of the country's major banks and insurers ran (or still run) IBM BPM, Pega, or Oracle BPM Suite as the BPMN engine behind onboarding, claims processing, loan origination, and KYC. These deployments are typically 10&ndash;15 years old. As with the ECM equivalent, the move to modern orchestrators is strangler-pattern almost everywhere &mdash; new lines of business launch on Camunda 8 (or Camunda Cloud); legacy workflows stay on the incumbent until SLA renewal or regulatory change forces re-implementation.</p>
+      <p><strong>Parastatals + government.</strong> Several SA parastatals run Pega or IBM BPM, often via large SI partners (Accenture, Deloitte, EOH-line successors, BCX). The B-BBEE preferential-procurement framework affects partner selection; the choice of modern orchestrator follows the partner's competency. Camunda has a small but growing SA partner network; Temporal is largely self-implemented in SA today.</p>
+      <p><strong>POPIA-friendly residency.</strong> Self-hosted Camunda 8 Self-Managed or Temporal Self-Hosted on SA-resident infrastructure (Hetzner Cape Town, Teraco, on-prem datacentre) keeps process state and audit trail in country. Camunda SaaS (Camunda Cloud) is hosted in vendor-selected regions; verify residency in writing before signing. Temporal Cloud has multi-region support; SA hosting requires either AWS af-south-1 (limited Temporal Cloud presence) or self-managed Temporal on a local cluster.</p>
+      <p><strong>Cost in ZAR.</strong> Legacy BPM Suite licences are USD-denominated and a meaningful chunk of TCO. A R200k/month IBM BPM annual support cost (per typical SA enterprise contract) becomes R210k/month at R18.50→R19.50 FX. Camunda commercial licences are also USD but materially smaller; self-managed Camunda or Temporal removes the licence-FX exposure entirely (only infrastructure and labour remain). For SA businesses managing rand-driven operating costs, the modern stack is an FX hedge in addition to a feature decision.</p>
+      <p><strong>Skills availability.</strong> Java BPMN engineers (Camunda, Flowable) are findable in SA at acceptable rates. Temporal expertise is rarer and more expensive; greenfield Temporal projects typically rely on remote / offshore engineering for the first 6&ndash;12 months while local skills are built. Factor into platform selection.</p>
+    </div>
+  </div>
+</section>
+
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; Connections</div>
+      <h2 class="section-title">Where process orchestration links in the tree.</h2>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="../ecm/open-source-ecm.html" class="connect-node">
+        <span class="tag">biz/ecm/open-source-ecm</span>
+        <div class="skill">Open-source ECM (sibling pattern)</div>
+        <div class="why">Same shift &mdash; legacy enterprise vendors (IBM, OpenText, Oracle) being replaced by cloud-native open-source platforms. The migration patterns and SA banking context apply across both.</div>
+      </a>
+      <a href="../erp/odoo.html" class="connect-node">
+        <span class="tag">biz/erp/odoo</span>
+        <div class="skill">Odoo</div>
+        <div class="why">Open-source-replacing-enterprise-vendor in the ERP layer. Same TCO and FX-hedge arguments; different category.</div>
+      </a>
+      <a href="../../agents/agentforce.html" class="connect-node">
+        <span class="tag">agents/agentforce</span>
+        <div class="skill">AgentForce</div>
+        <div class="why">The agentic orchestration counterpart on the Salesforce side. AgentForce orchestrates agent actions over the Salesforce platform; Camunda / Temporal orchestrate business processes across systems. Different layers; complementary.</div>
+      </a>
+      <a href="../../agents/mcp.html" class="connect-node">
+        <span class="tag">agents/mcp</span>
+        <div class="skill">Model Context Protocol</div>
+        <div class="why">Modern orchestrators are increasingly consuming MCP tools as workflow activities &mdash; the orchestrator runs the process, the LLM (via MCP) handles unstructured steps.</div>
+      </a>
+      <a href="../../data/engineering/liteparse.html" class="connect-node">
+        <span class="tag">data/engineering/liteparse</span>
+        <div class="skill">Document parsing</div>
+        <div class="why">In document-heavy workflows (KYC, claims, loan origination), the orchestrator typically calls a parsing service (LiteParse, AWS Textract, Google DocumentAI) as a workflow step.</div>
+      </a>
+      <a href="../../tech/cloudflare/workers.html" class="connect-node">
+        <span class="tag">tech/cloudflare/workers</span>
+        <div class="skill">Cloudflare Workers</div>
+        <div class="why">Common host for the lightweight task workers that Camunda or Temporal call out to. Edge-resident, low-latency, no idle cost.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 &middot; Resources</div>
+      <h2 class="section-title">Primary sources only.</h2>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://camunda.com" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Platform</span>
+        <span class="r-title">Camunda 8</span>
+        <span class="r-url">camunda.com</span>
+      </a>
+      <a href="https://github.com/camunda" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Source</span>
+        <span class="r-title">Camunda on GitHub</span>
+        <span class="r-url">github.com/camunda</span>
+      </a>
+      <a href="https://camunda.com/solutions/replace-legacy-bpms/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Migration</span>
+        <span class="r-title">Replace Legacy BPMS &middot; Camunda playbook</span>
+        <span class="r-url">camunda.com/solutions/replace-legacy-bpms</span>
+      </a>
+      <a href="https://camunda.com/blog/2020/04/migrating-process-bpmn-from-ibm-bpm-to-camunda-step-by-step-tutorial/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Migration</span>
+        <span class="r-title">IBM BPM → Camunda migration tutorial</span>
+        <span class="r-url">camunda.com/blog/.../migrating-process-bpmn-from-ibm-bpm</span>
+      </a>
+      <a href="https://temporal.io" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Platform</span>
+        <span class="r-title">Temporal</span>
+        <span class="r-url">temporal.io</span>
+      </a>
+      <a href="https://github.com/temporalio" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Source</span>
+        <span class="r-title">Temporal on GitHub</span>
+        <span class="r-url">github.com/temporalio</span>
+      </a>
+      <a href="https://orkes.io" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Platform</span>
+        <span class="r-title">Orkes Conductor</span>
+        <span class="r-url">orkes.io</span>
+      </a>
+      <a href="https://github.com/conductor-oss/conductor" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Source</span>
+        <span class="r-title">Conductor OSS on GitHub</span>
+        <span class="r-url">github.com/conductor-oss/conductor</span>
+      </a>
+      <a href="https://flowable.com" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Platform</span>
+        <span class="r-title">Flowable</span>
+        <span class="r-url">flowable.com</span>
+      </a>
+      <a href="https://argoproj.github.io/workflows/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Platform</span>
+        <span class="r-title">Argo Workflows</span>
+        <span class="r-url">argoproj.github.io/workflows</span>
+      </a>
+      <a href="https://www.omg.org/spec/BPMN/2.0/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Spec</span>
+        <span class="r-title">BPMN 2.0 (OMG standard)</span>
+        <span class="r-url">omg.org/spec/BPMN/2.0</span>
+      </a>
+      <a href="https://www.omg.org/spec/DMN/1.3/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Spec</span>
+        <span class="r-title">DMN 1.3 (OMG standard)</span>
+        <span class="r-url">omg.org/spec/DMN/1.3</span>
+      </a>
+      <a href="https://www.peerspot.com/products/comparisons/camunda_vs_ibm-bpm" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Market</span>
+        <span class="r-title">PeerSpot Camunda vs IBM BPM (mindshare data)</span>
+        <span class="r-url">peerspot.com/.../camunda_vs_ibm-bpm</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../../index.html">Skills tree</a>
+      <a href="../">Business hub</a>
+      <a href="https://camunda.com" target="_blank" rel="noopener">Camunda &nearr;</a>
+      <a href="https://temporal.io" target="_blank" rel="noopener">Temporal &nearr;</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in Johannesburg, South Africa</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme(){const html=document.documentElement;const current=html.getAttribute('data-theme');const next=current==='dark'?'light':'dark';html.setAttribute('data-theme',next);document.querySelector('.theme-toggle').textContent=next==='dark'?'☀️':'🌙';localStorage.setItem('theme',next);}
+  const saved=localStorage.getItem('theme');if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.theme-toggle').textContent=saved==='dark'?'☀️':'🌙';}
+  const observer=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting)entry.target.classList.add('visible');});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>
