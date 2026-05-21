@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ElevenLabs &mdash; the voice AI platform &mdash; know.2nth.ai</title>
+<meta name="description" content="ElevenLabs is the deepest voice AI platform as of mid-2026 — ElevenCreative (text-to-speech across 70+ languages, voice cloning, music, sound effects), ElevenAgents (conversational voice agents, omnichannel), and ElevenAPI for developers. Flagship models: Eleven Flash (75ms latency), Multilingual v2, Eleven v3 (most expressive), Scribe v2 (speech-to-text). Credit-based per-character pricing. The default pick for creators and developers; what to know before committing.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/media/elevenlabs">
+<meta property="og:title" content="ElevenLabs &mdash; the voice AI platform">
+<meta property="og:description" content="The deepest voice AI platform — TTS, voice cloning, dubbing, conversational agents, music. Flagship models, pricing, decision guide.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ElevenLabs &mdash; the voice AI platform">
+<meta name="twitter:description" content="The deepest voice AI platform. TTS, cloning, dubbing, agents, music. Models, pricing, decision guide.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12); --violet: #8B5CF6; --violet-soft: rgba(139, 92, 246, 0.12); --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-soft: rgba(99, 102, 241, 0.12); --media: #DB2777; --media-glow: #EC4899; --media-soft: rgba(219, 39, 119, 0.12); --bg: var(--ink); --bg-raised: var(--navy); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(219, 39, 119, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(236, 72, 153, 0.3); --max-w: 1200px; --read-w: 760px; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-raised: #FFFFFF; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(219, 39, 119, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(219, 39, 119, 0.25); }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.1; pointer-events: none; z-index: 0; }
+  .glow-orb.media { width: 600px; height: 600px; background: var(--media); top: -200px; right: -100px; }
+  .glow-orb.violet { width: 500px; height: 500px; background: var(--violet); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.05; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--media-glow); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--media-glow); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--media-glow); }
+  .crumb-sep { opacity: 0.5; }
+  .crumb-current { color: var(--text-secondary); }
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--media); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--media); box-shadow: 0 0 12px var(--media); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--media), var(--media-glow), #F9A8D4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 720px; line-height: 1.7; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.media { background: var(--media-soft); color: var(--media-glow); border-color: rgba(219, 39, 119, 0.3); }
+  .pill.warm { background: var(--warm-soft); color: var(--warm); border-color: rgba(245, 158, 11, 0.25); }
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--media); margin-bottom: 14px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .section-lede strong { color: var(--text-primary); font-weight: 600; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--media-glow); }
+  .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; max-width: 1040px; margin-bottom: 20px; }
+  .feature-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--media); border-radius: var(--radius-md); padding: 20px 24px; }
+  .feature-cell h4 { font-size: 15px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.2px; }
+  .feature-cell p { font-size: 13.5px; color: var(--text-secondary); line-height: 1.65; }
+  .feature-cell code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; color: var(--media-glow); background: var(--media-soft); padding: 1px 5px; border-radius: 3px; }
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow-x: auto; max-width: 1040px; margin-bottom: 24px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 640px; }
+  .compare th, .compare td { padding: 11px 14px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--media-glow); background: rgba(219, 39, 119, 0.04); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); }
+  .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--media-glow); }
+  .compare td strong { color: var(--text-primary); }
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 26px 30px; max-width: var(--read-w); margin-bottom: 18px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.rose { border-left: 3px solid var(--rose); }
+  .info-card.media { border-left: 3px solid var(--media); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14.5px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .info-card code { font-family: 'JetBrains Mono', monospace; font-size: 0.86em; color: var(--media-glow); background: var(--media-soft); padding: 1px 5px; border-radius: 4px; }
+  .info-card strong { color: var(--text-primary); font-weight: 600; }
+  .pair-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 1040px; }
+  @media (max-width: 720px) { .pair-grid { grid-template-columns: 1fr; } }
+  .when-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 24px 28px; }
+  .when-card.use { border-top: 3px solid var(--green); }
+  .when-card.skip { border-top: 3px solid var(--rose); }
+  .when-card .label { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; display: block; margin-bottom: 8px; font-weight: 600; }
+  .when-card.use .label { color: var(--green); }
+  .when-card.skip .label { color: var(--rose); }
+  .when-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 14px; letter-spacing: -0.3px; }
+  .when-card ul { list-style: none; padding: 0; }
+  .when-card li { font-size: 13.5px; color: var(--text-secondary); line-height: 1.6; padding-left: 16px; position: relative; margin-bottom: 8px; }
+  .when-card li::before { content: '\2192'; position: absolute; left: 0; color: var(--text-muted); }
+  .when-card li strong { color: var(--text-primary); font-weight: 600; }
+  .cross-links { display: flex; gap: 10px; flex-wrap: wrap; }
+  .cross-link { font-family: 'JetBrains Mono', monospace; font-size: 12px; padding: 10px 20px; border-radius: var(--radius-pill); border: 1px solid var(--border); background: var(--bg-card); text-decoration: none; color: var(--text-secondary); transition: all 0.3s; letter-spacing: 0.5px; }
+  .cross-link:hover { border-color: var(--border-hover); color: var(--media-glow); transform: translateY(-1px); }
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 16px 20px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--media-glow); word-break: break-all; }
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--media-glow); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .footer-review { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); margin-top: 14px; letter-spacing: 0.4px; }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+
+<div class="glow-orb media"></div>
+<div class="glow-orb violet"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand">
+      <span class="nav-brand-mark">know.2nth.ai</span>
+      <span class="nav-brand-sub">media &middot; elevenlabs</span>
+    </a>
+    <div class="nav-right">
+      <a href="index.html" class="nav-link">&larr; Media</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x1F319;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="index.html">Media</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">ElevenLabs</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> media &middot; voice &amp; speech &middot; vendor</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      <span class="gradient">ElevenLabs.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      The deepest voice AI platform as of mid-2026. Three product lines: <strong>ElevenCreative</strong> (text-to-speech across 70+ languages, voice cloning, music, sound effects), <strong>ElevenAgents</strong> (conversational voice agents, omnichannel), and <strong>ElevenAPI</strong> for developers. The default pick for creators and developers &mdash; not always the right pick. This leaf covers what's in the box, the models, the pricing reality, and when to choose something else.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill media">Voice AI platform</span>
+      <span class="pill">Reference explainer</span>
+      <span class="pill warm">Hot &middot; quarterly review</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 · WHAT IT IS -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; What it is</div>
+      <h2 class="section-title">The voice AI &ldquo;kitchen sink.&rdquo;</h2>
+      <p class="section-lede">Where most voice vendors specialise &mdash; Cartesia on latency, Hume on emotion, Deepgram on transcription &mdash; ElevenLabs does the whole arena competently. That breadth is the product.</p>
+    </div>
+
+    <div class="prose fade-up" style="transition-delay: 0.04s">
+      <p>ElevenLabs built its reputation on text-to-speech that crossed the uncanny-valley line earlier than the field, then expanded outward: voice cloning, dubbing, conversational agents, sound effects, and (more recently) music and image/video creation. By mid-2026 it positions itself as &ldquo;the most realistic voice AI platform,&rdquo; with research-backed foundational models and a safety story &mdash; moderation, accountability, audio provenance disclosure &mdash; built in rather than bolted on.</p>
+      <p>The enterprise client list is real: Disney, Cisco, Meta, Nvidia, and government entities. But the centre of gravity remains creators and developers &mdash; people generating audiobooks, podcast voices, game dialogue, video narration, and increasingly the voice layer of conversational products.</p>
+      <p>The honest framing: ElevenLabs is the <strong>default</strong>, not the <strong>optimum</strong>. If you need the absolute lowest latency, Cartesia beats it. If you need emotion as a first-class signal, Hume beats it. If you need voice inside your LLM reasoning loop, OpenAI's <code>gpt-realtime</code> beats it. ElevenLabs wins when you want one platform that does everything well and a developer experience that does not fight you.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 · PRODUCT LINEUP -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; The product lineup</div>
+      <h2 class="section-title">Three product lines.</h2>
+      <p class="section-lede">ElevenLabs organises around three surfaces. Most teams touch one or two; the API underpins all of them.</p>
+    </div>
+
+    <div class="feature-grid fade-up" style="transition-delay: 0.04s">
+      <div class="feature-cell">
+        <h4>ElevenCreative</h4>
+        <p>The all-in-one content creation platform. Ultra-realistic text-to-speech across 70+ languages, voice cloning, studio-grade music generation from natural-language prompts, sound effects, and audio design. Increasingly also image and video creation/editing.</p>
+      </div>
+      <div class="feature-cell">
+        <h4>ElevenAgents</h4>
+        <p>Conversational AI &mdash; natural, human-sounding voice agents in 70+ languages, omnichannel across phone, chat, email, and WhatsApp. Ships analytics, testing, guardrails, and workflow management for agent deployments.</p>
+      </div>
+      <div class="feature-cell">
+        <h4>ElevenAPI</h4>
+        <p>Developer access to the core models &mdash; TTS, STT, voice cloning, dubbing &mdash; behind a clean API. The layer that puts ElevenLabs voices inside other products. Separate API pricing tiers from the consumer plans.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 · THE MODELS -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; The models</div>
+      <h2 class="section-title">Flash, Multilingual, v3, Scribe, Music.</h2>
+      <p class="section-lede">ElevenLabs ships several models tuned for different points on the latency / expressiveness trade-off. Pick by use case &mdash; real-time agent vs long-form narration vs maximum emotion.</p>
+    </div>
+
+    <div class="compare-wrap fade-up" style="transition-delay: 0.04s">
+      <table class="compare">
+        <thead><tr><th>Model</th><th>Category</th><th>Best for</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Eleven Flash</strong> (v2.5)</td><td>TTS</td><td>Real-time agents. ~75ms latency, the fast tier. The pick when conversation pacing matters.</td></tr>
+          <tr><td><strong>Eleven Turbo</strong> (v2.5)</td><td>TTS</td><td>Balanced &mdash; ~250&ndash;300ms, lower cost than the expressive models, good quality. The middle option.</td></tr>
+          <tr><td><strong>Eleven Multilingual v2</strong></td><td>TTS</td><td>Long-form &mdash; audiobooks, narration. Consistency and lifelike quality over raw speed.</td></tr>
+          <tr><td><strong>Eleven v3</strong></td><td>TTS</td><td>Maximum expressiveness &mdash; the most emotionally nuanced model. Use when delivery matters more than latency.</td></tr>
+          <tr><td><strong>Scribe v2</strong></td><td>STT</td><td>Speech-to-text. ElevenLabs' transcription model &mdash; the speech-in side of the platform.</td></tr>
+          <tr><td><strong>Eleven Music</strong></td><td>Music gen</td><td>Studio-grade music from natural-language prompts. Trained on licensed data, so commercial use is clean.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="prose fade-up" style="transition-delay: 0.06s">
+      <p><strong>The trade-off in one line:</strong> Flash for agents, Multilingual v2 for long-form, v3 when the emotion is the point. Most teams end up using two &mdash; one fast model for interactive paths, one expressive model for produced content.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 · PRICING -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; Pricing reality</div>
+      <h2 class="section-title">Credit-based, per character.</h2>
+      <p class="section-lede">ElevenLabs prices in credits, consumed per character of generated speech. Faster models cost fewer credits per character; expressive long-form models cost more. Plans tier on monthly credit allotment.</p>
+    </div>
+
+    <div class="info-card media fade-up" style="transition-delay: 0.04s">
+      <h4>The shape of it</h4>
+      <p><strong>Consumer / creator plans</strong> run from a free tier (a small monthly credit allotment, non-commercial) up through Starter, Creator, Pro, Scale, and Business &mdash; each step buying a larger monthly credit pool and unlocking features (commercial licensing, professional voice cloning, higher concurrency).</p>
+      <p><strong>API plans</strong> are tiered separately from the consumer plans, priced for production volume.</p>
+      <p><strong>Credit cost varies by model</strong> &mdash; the fast Flash / Turbo models consume roughly half the credits per character of the expressive long-form models. Budgeting means estimating characters-per-month and the model mix, not just picking a plan tier.</p>
+      <p><em>Exact figures move &mdash; check <code>elevenlabs.io/pricing</code> against the date on this leaf. The structure (credit-based, per-character, model-dependent rates, separate API tiers) is stable; the numbers are not.</em></p>
+    </div>
+
+    <div class="info-card amber fade-up" style="transition-delay: 0.05s">
+      <h4>The lock-in to watch</h4>
+      <p>Credit systems encourage commitment &mdash; you buy a monthly pool and there is mild pressure to use it. That is fine if voice is core to the product. If voice is a secondary feature with spiky usage, a per-character or per-minute pay-as-you-go vendor (or an open model like Kokoro self-hosted) may pencil better. Model the real usage curve before committing to a large tier.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 · DECISION GUIDE -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; Decision guide</div>
+      <h2 class="section-title">When to use ElevenLabs &mdash; and when to skip.</h2>
+      <p class="section-lede">Breadth is the strength and the tell. ElevenLabs wins on &ldquo;does everything well&rdquo;; it loses to specialists on any single axis.</p>
+    </div>
+
+    <div class="pair-grid fade-up" style="transition-delay: 0.04s">
+      <div class="when-card use">
+        <span class="label">Use ElevenLabs if&hellip;</span>
+        <h4>It fits</h4>
+        <ul>
+          <li>You want <strong>one platform</strong> for TTS, cloning, dubbing, agents, and music</li>
+          <li>Voice quality and <strong>naturalness</strong> are the priority</li>
+          <li>You're a <strong>creator or developer</strong> &mdash; audiobooks, video narration, game dialogue, product voice</li>
+          <li>You need <strong>voice cloning with commercial-licensing clarity</strong> and consent enforcement</li>
+          <li>You want a developer experience that doesn't fight you</li>
+          <li>70+ language coverage matters</li>
+        </ul>
+      </div>
+      <div class="when-card skip">
+        <span class="label">Look elsewhere if&hellip;</span>
+        <h4>A specialist wins</h4>
+        <ul>
+          <li>You need the <strong>absolute lowest latency</strong> &mdash; Cartesia Sonic-3 (~90ms) beats Flash</li>
+          <li>You need <strong>emotion as a first-class signal</strong> &mdash; Hume EVI reads and responds to it</li>
+          <li>You want <strong>voice inside the LLM reasoning loop</strong> &mdash; OpenAI <code>gpt-realtime</code></li>
+          <li>You need <strong>best-in-class transcription</strong> &mdash; Deepgram Nova or AssemblyAI</li>
+          <li>You need <strong>fully local / on-device</strong> inference &mdash; self-host Kokoro or Whisper</li>
+          <li>Voice is a spiky secondary feature &mdash; a pay-as-you-go vendor may cost less than a credit pool</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 · SA CONTEXT -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; South African / production context</div>
+      <h2 class="section-title">What lands in SA.</h2>
+    </div>
+
+    <div class="prose fade-up" style="transition-delay: 0.04s">
+      <p><strong>SA English.</strong> ElevenLabs handles South African English, though &mdash; like every major vendor &mdash; it has not tuned a model specifically for the SA-English accent to the bar it hits for US or UK English. Accent prompting and careful voice selection get most of the way there; budget time to audition voices.</p>
+      <p><strong>Indigenous languages.</strong> ElevenLabs' 70+ language coverage does not meaningfully include isiZulu or isiXhosa at production quality. For those, the landscape leaf's guidance holds &mdash; expect Qfrency or a custom solution, not ElevenLabs. Don't promise a client isiZulu TTS on the strength of the &ldquo;70+ languages&rdquo; headline.</p>
+      <p><strong>Pricing in ZAR.</strong> Credit plans are USD-denominated; at mid-2026 exchange rates, the Creator-tier plans land in the low-to-mid hundreds of rand per month, the Pro and Scale tiers materially higher. The free tier is genuinely useful for prototyping but is non-commercial &mdash; do not ship client work on it.</p>
+      <p><strong>Consent and POPIA.</strong> Voice cloning of real people &mdash; staff, clients, public figures &mdash; needs documented consent. ElevenLabs enforces consent on its professional voice cloning, which helps, but the legal responsibility sits with whoever commissions the clone. Treat a cloned voice as personal information under POPIA.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 07 · CONNECTIONS -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; Connections</div>
+      <h2 class="section-title">Where this leaf links into the tree.</h2>
+    </div>
+    <div class="cross-links fade-up" style="transition-delay: 0.03s">
+      <a href="index.html" class="cross-link">&rarr; Media domain hub</a>
+      <a href="landscape.html" class="cross-link">&rarr; The voice AI landscape</a>
+      <a href="../agents/" class="cross-link">&rarr; Agents</a>
+      <a href="../agents/gpt.html" class="cross-link">&rarr; GPT (gpt-realtime voice)</a>
+      <a href="../agents/ollama.html" class="cross-link">&rarr; Ollama (self-host open voice models)</a>
+      <a href="../tools/" class="cross-link">&rarr; Tools landscape</a>
+    </div>
+  </div>
+</section>
+
+<!-- 08 · RESOURCES -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 &middot; Resources</div>
+      <h2 class="section-title">Primary sources.</h2>
+      <p class="section-lede">ElevenLabs ships fast &mdash; verify model names and prices against the date on this leaf.</p>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.03s">
+      <a class="resource" href="https://elevenlabs.io/" target="_blank" rel="noopener"><span class="r-kind">Product</span><span class="r-title">ElevenLabs</span><span class="r-url">elevenlabs.io</span></a>
+      <a class="resource" href="https://elevenlabs.io/pricing" target="_blank" rel="noopener"><span class="r-kind">Pricing</span><span class="r-title">ElevenLabs pricing</span><span class="r-url">elevenlabs.io/pricing</span></a>
+      <a class="resource" href="https://elevenlabs.io/docs" target="_blank" rel="noopener"><span class="r-kind">Docs</span><span class="r-title">ElevenLabs developer docs</span><span class="r-url">elevenlabs.io/docs</span></a>
+      <a class="resource" href="https://elevenlabs.io/conversational-ai" target="_blank" rel="noopener"><span class="r-kind">Product</span><span class="r-title">ElevenAgents (Conversational AI)</span><span class="r-url">elevenlabs.io/conversational-ai</span></a>
+      <a class="resource" href="landscape.html"><span class="r-kind">know.2nth.ai</span><span class="r-title">The voice AI landscape</span><span class="r-url">/explainers/media/landscape</span></a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <div class="footer-tagline">The Knowledge Tree</div>
+    <div class="footer-links">
+      <a href="../../index.html">Tree</a>
+      <a href="index.html">Media</a>
+      <a href="landscape.html">Landscape</a>
+      <a href="../../about.html">About</a>
+      <a href="../../join.html">Join</a>
+      <a href="https://2nth.ai">2nth.ai</a>
+    </div>
+    <div class="footer-copy">&copy; 2026 imbila.ai &middot; All knowledge open</div>
+    <div class="footer-review">Last reviewed: 2026-05-21 &middot; Cadence: hot (quarterly)</div>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme() {
+    const cur = document.documentElement.getAttribute('data-theme');
+    const next = cur === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('2nth-theme', next);
+  }
+  const stored = localStorage.getItem('2nth-theme');
+  if (stored) document.documentElement.setAttribute('data-theme', stored);
+  const observer = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold: 0.05 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>

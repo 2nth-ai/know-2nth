@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Media &mdash; know.2nth.ai</title>
+<meta name="description" content="The Media domain on know.2nth.ai — generative media: AI speech and voice, with image, video, and music generation as future bands. Launches voice-first: the seven-category voice AI landscape (TTS, STT, voice cloning, conversational voice agents, dubbing, speech-to-speech, music), and a deep dive on ElevenLabs. Built around verified, current state and the South African languages context.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/media/">
+<meta property="og:title" content="Media &mdash; know.2nth.ai">
+<meta property="og:description" content="The Media domain — generative media, voice-first. The voice AI landscape and an ElevenLabs deep dive. Image, video, music generation to follow.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Media &mdash; know.2nth.ai">
+<meta name="twitter:description" content="The Media domain — generative media, voice-first. The voice AI landscape + an ElevenLabs deep dive.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12); --violet: #8B5CF6; --violet-soft: rgba(139, 92, 246, 0.12); --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-soft: rgba(99, 102, 241, 0.12); --media: #DB2777; --media-glow: #EC4899; --media-soft: rgba(219, 39, 119, 0.12); --bg: var(--ink); --bg-raised: var(--navy); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(37, 99, 235, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(236, 72, 153, 0.3); --max-w: 1200px; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-raised: #FFFFFF; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(219, 39, 119, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(219, 39, 119, 0.25); }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.1; pointer-events: none; z-index: 0; }
+  .glow-orb.media { width: 600px; height: 600px; background: var(--media); top: -200px; right: -100px; }
+  .glow-orb.violet { width: 500px; height: 500px; background: var(--violet); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.05; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--media-glow); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--media-glow); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--media-glow); }
+  .crumb-sep { opacity: 0.5; }
+  .crumb-current { color: var(--text-secondary); }
+  .hub-hero { padding: 48px 0 56px; }
+  .hub-hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--media); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hub-hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--media); box-shadow: 0 0 12px var(--media); }
+  .hub-hero h1 { font-size: clamp(44px, 7vw, 72px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 24px; max-width: 16ch; }
+  .hub-hero h1 .gradient { background: linear-gradient(135deg, var(--media), var(--media-glow), #F9A8D4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hub-hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 720px; line-height: 1.7; font-weight: 300; margin-bottom: 28px; }
+  .hub-stats { display: flex; gap: 32px; flex-wrap: wrap; }
+  .hub-stat { padding-right: 32px; border-right: 1px solid var(--border); }
+  .hub-stat:last-child { border-right: none; padding-right: 0; }
+  .hub-stat .num { font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 700; background: linear-gradient(135deg, var(--media), var(--media-glow)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1; margin-bottom: 6px; }
+  .hub-stat .label { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  section.hub-section { padding: 36px 0 48px; position: relative; }
+  .hub-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--media); margin-bottom: 14px; }
+  .hub-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 14px; line-height: 1.2; }
+  .hub-lede { font-size: 16px; color: var(--text-secondary); max-width: 720px; line-height: 1.7; font-weight: 300; margin-bottom: 32px; }
+  .hub-lede strong { color: var(--text-primary); font-weight: 600; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: 720px; margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .category-band { display: flex; align-items: center; gap: 16px; margin: 40px 0 18px; }
+  .category-band:first-of-type { margin-top: 0; }
+  .category-band .c-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 600; letter-spacing: 1.6px; text-transform: uppercase; color: var(--media); white-space: nowrap; }
+  .category-band .c-rule { flex: 1; height: 1px; background: linear-gradient(90deg, var(--border-hover), transparent); }
+  .svc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+  .svc-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 24px; text-decoration: none; color: inherit; display: block; transition: all 0.3s; position: relative; }
+  .svc-card:hover { border-color: var(--border-hover); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); }
+  .svc-card.soon { cursor: default; opacity: 0.72; }
+  .svc-card.soon:hover { transform: none; box-shadow: none; border-color: var(--border); }
+  .svc-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+  .svc-name { font-size: 16px; font-weight: 700; letter-spacing: -0.3px; }
+  .svc-state { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.1px; text-transform: uppercase; padding: 3px 9px; border-radius: var(--radius-pill); font-weight: 600; flex-shrink: 0; }
+  .svc-state.live { background: var(--media-soft); color: var(--media-glow); }
+  .svc-state.soon { background: transparent; border: 1px dashed var(--border); color: var(--text-muted); }
+  .svc-path { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: var(--text-muted); margin-bottom: 10px; display: block; }
+  .svc-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+  .svc-card code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; color: var(--media-glow); }
+  .future-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; max-width: 1040px; }
+  .future-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--text-muted); border-radius: var(--radius-md); padding: 18px 22px; opacity: 0.75; }
+  .future-cell .band { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .future-cell h4 { font-size: 15px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.3px; }
+  .future-cell p { font-size: 12.5px; color: var(--text-secondary); line-height: 1.55; }
+  .principles { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 14px; max-width: 1040px; }
+  .principle { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--media); border-radius: var(--radius-md); padding: 22px 26px; }
+  .principle h4 { font-size: 15px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.2px; }
+  .principle p { font-size: 13px; color: var(--text-secondary); line-height: 1.65; }
+  .cross-links { display: flex; gap: 10px; flex-wrap: wrap; }
+  .cross-link { font-family: 'JetBrains Mono', monospace; font-size: 12px; padding: 10px 20px; border-radius: var(--radius-pill); border: 1px solid var(--border); background: var(--bg-card); text-decoration: none; color: var(--text-secondary); transition: all 0.3s; letter-spacing: 0.5px; }
+  .cross-link:hover { border-color: var(--border-hover); color: var(--media-glow); transform: translateY(-1px); }
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 60px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--media-glow); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .footer-review { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); margin-top: 14px; letter-spacing: 0.4px; }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } .hub-stats { gap: 20px; } .hub-stat { padding-right: 20px; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+
+<div class="glow-orb media"></div>
+<div class="glow-orb violet"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand">
+      <span class="nav-brand-mark">know.2nth.ai</span>
+      <span class="nav-brand-sub">media</span>
+    </a>
+    <div class="nav-right">
+      <a href="../../index.html#domains" class="nav-link">&larr; Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x1F319;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">Media</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hub-hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> media &middot; Top-level domain hub</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      Generative media. <span class="gradient">Voice first.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      The Media domain covers <strong>generative media</strong> &mdash; the AI systems that synthesise speech, images, video, and music. It launches <strong>voice-first</strong>, because AI speech is the most production-ready of the four and the one most teams are wiring into products in 2026. Image, video, and music generation follow as later bands. Every leaf here is verified against current vendor state, with the South African languages context called out where it matters.
+    </p>
+    <div class="hub-stats fade-up" style="transition-delay: 0.15s">
+      <div class="hub-stat"><div class="num">1</div><div class="label">Band live</div></div>
+      <div class="hub-stat"><div class="num">2</div><div class="label">Live leaves</div></div>
+      <div class="hub-stat"><div class="num">7</div><div class="label">Voice categories</div></div>
+      <div class="hub-stat"><div class="num">3</div><div class="label">Bands to come</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 01 · WHAT THIS DOMAIN IS -->
+<section class="hub-section">
+  <div class="container">
+    <div class="fade-up">
+      <div class="hub-label">01 &middot; What this domain is</div>
+      <h2 class="hub-title">Four kinds of generative media. One opening band.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.04s">
+      <p>Generative media is the part of AI that produces things people watch, hear, and look at &mdash; as distinct from the Agents domain (systems that <em>do</em> work) and the Data domain (systems that turn events into decisions). It splits cleanly into four bands: <strong>voice &amp; speech</strong>, <strong>image generation</strong>, <strong>video generation</strong>, and <strong>music generation</strong>.</p>
+      <p>This domain opens with voice because, of the four, AI speech is the most mature in production as of 2026 &mdash; sub-100ms text-to-speech is commoditising, conversational voice agents are replacing chatbots, and the regulatory frame (consent, voice rights, disclosure) has started to settle. The other three bands will land as the content firms up; the structure below leaves room for them.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 · VOICE & SPEECH BAND -->
+<section class="hub-section">
+  <div class="container">
+    <div class="fade-up">
+      <div class="hub-label">02 &middot; The bands</div>
+      <h2 class="hub-title">Voice &amp; speech &mdash; the live band.</h2>
+      <p class="hub-lede">Start with the landscape leaf to orient across the seven categories of voice AI, then drill into a specific vendor. ElevenLabs is the first per-vendor deep dive; others follow.</p>
+    </div>
+
+    <div class="category-band fade-up">
+      <span class="c-label">Voice &amp; speech &middot; 2 Live</span>
+      <span class="c-rule"></span>
+    </div>
+    <div class="svc-grid fade-up" style="transition-delay: 0.03s">
+
+      <a href="landscape.html" class="svc-card">
+        <div class="svc-head"><span class="svc-name">The voice AI landscape</span><span class="svc-state live">Live</span></div>
+        <span class="svc-path">media/landscape</span>
+        <p>The seven categories of voice AI &mdash; TTS, STT, voice cloning, conversational voice agents, dubbing, speech-to-speech, music. Who leads where, latency reality, the regulation that arrived in 2026, and the South African languages gap.</p>
+      </a>
+
+      <a href="elevenlabs.html" class="svc-card">
+        <div class="svc-head"><span class="svc-name">ElevenLabs</span><span class="svc-state live">Live</span></div>
+        <span class="svc-path">media/elevenlabs</span>
+        <p>The deepest voice AI platform &mdash; ElevenCreative (TTS, cloning, music), ElevenAgents (conversational voice), ElevenAPI. Flagship models Flash, Multilingual v2, v3, Scribe v2. The default pick for creators and developers.</p>
+      </a>
+
+      <div class="svc-card soon">
+        <div class="svc-head"><span class="svc-name">Cartesia</span><span class="svc-state soon">Soon</span></div>
+        <span class="svc-path">media/cartesia</span>
+        <p>The latency king &mdash; Sonic-3 at ~90ms model latency, purpose-built for real-time voice agents.</p>
+      </div>
+
+      <div class="svc-card soon">
+        <div class="svc-head"><span class="svc-name">Hume AI</span><span class="svc-state soon">Soon</span></div>
+        <span class="svc-path">media/hume</span>
+        <p>The empathic voice interface &mdash; emotion detection and emotionally-responsive generation as a first-class feature.</p>
+      </div>
+
+      <div class="svc-card soon">
+        <div class="svc-head"><span class="svc-name">Big-lab voice</span><span class="svc-state soon">Soon</span></div>
+        <span class="svc-path">media/big-lab-voice</span>
+        <p>OpenAI <code>gpt-realtime</code>, Google Gemini TTS / Chirp 3, Anthropic Claude voice &mdash; voice as a first-class LLM feature.</p>
+      </div>
+
+      <div class="svc-card soon">
+        <div class="svc-head"><span class="svc-name">STT &middot; transcription</span><span class="svc-state soon">Soon</span></div>
+        <span class="svc-path">media/speech-to-text</span>
+        <p>Deepgram Nova, AssemblyAI, Speechmatics, OpenAI Whisper &mdash; the speech-to-text side of the arena.</p>
+      </div>
+
+      <div class="svc-card soon">
+        <div class="svc-head"><span class="svc-name">Voice agent platforms</span><span class="svc-state soon">Soon</span></div>
+        <span class="svc-path">media/voice-agents</span>
+        <p>Vapi, Retell, Bland, LiveKit Agents, Pipecat &mdash; the platforms that orchestrate STT + LLM + TTS into real-time conversation.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- 03 · FUTURE BANDS -->
+<section class="hub-section">
+  <div class="container">
+    <div class="fade-up">
+      <div class="hub-label">03 &middot; Bands to come</div>
+      <h2 class="hub-title">Three more generative-media bands, scoped not built.</h2>
+      <p class="hub-lede">The domain is structured for these from day one. They land as the content firms up &mdash; voice was first because it is furthest along in production.</p>
+    </div>
+
+    <div class="future-grid fade-up" style="transition-delay: 0.03s">
+      <div class="future-cell">
+        <span class="band">Band 2</span>
+        <h4>Image generation</h4>
+        <p>Diffusion and autoregressive image models &mdash; the text-to-image and image-editing arena.</p>
+      </div>
+      <div class="future-cell">
+        <span class="band">Band 3</span>
+        <h4>Video generation</h4>
+        <p>Text-to-video and video-editing models &mdash; the fastest-moving and least production-settled of the four.</p>
+      </div>
+      <div class="future-cell">
+        <span class="band">Band 4</span>
+        <h4>Music generation</h4>
+        <p>Generative music and sound design &mdash; licensed-data models, commercial-use clarity, the creator tooling.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 · PRINCIPLES -->
+<section class="hub-section">
+  <div class="container">
+    <div class="fade-up">
+      <div class="hub-label">04 &middot; Principles</div>
+      <h2 class="hub-title">What every Media leaf inherits.</h2>
+    </div>
+    <div class="principles fade-up" style="transition-delay: 0.03s">
+      <div class="principle">
+        <h4>Verified, not vendor copy</h4>
+        <p>Voice AI vendors over-claim &mdash; latency numbers, language counts, "most realistic ever." Every model name, price, and capability on a Media leaf is checked against current primary sources, and anything that can't be verified is marked as such.</p>
+      </div>
+      <div class="principle">
+        <h4>Consent and disclosure are load-bearing</h4>
+        <p>By 2026 voice cloning sits inside real law &mdash; the EU Digital Creativity Integrity Act, the US AI Transparency Act, Tennessee's ELVIS Act. Every leaf treats consent, voice rights, and AI-audio disclosure as part of the engineering decision, not an afterthought.</p>
+      </div>
+      <div class="principle">
+        <h4>The South African languages gap is named</h4>
+        <p>SA English is broadly supported; isiZulu and isiXhosa are severely under-resourced in commercial TTS. Media leaves call this out plainly rather than pretending the coverage is even.</p>
+      </div>
+      <div class="principle">
+        <h4>Latency is the 2026 UX battleground</h4>
+        <p>Sub-100ms text-to-speech is commoditising; the practical bottleneck is the STT + reasoning + TTS round trip. Leaves report latency honestly, with the human-conversation baseline (~200ms) as the reference.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 · CONNECTIONS -->
+<section class="hub-section">
+  <div class="container">
+    <div class="fade-up">
+      <div class="hub-label">05 &middot; Connections</div>
+      <h2 class="hub-title">Where Media touches the rest of the tree.</h2>
+    </div>
+    <div class="cross-links fade-up" style="transition-delay: 0.03s">
+      <a href="landscape.html" class="cross-link">&rarr; The voice AI landscape</a>
+      <a href="elevenlabs.html" class="cross-link">&rarr; ElevenLabs</a>
+      <a href="../agents/" class="cross-link">&rarr; Agents (voice agents orchestrate LLMs)</a>
+      <a href="../agents/coding-cli-agents.html" class="cross-link">&rarr; Coding CLI agents</a>
+      <a href="../tools/" class="cross-link">&rarr; Tools landscape</a>
+      <a href="../design/" class="cross-link">&rarr; Design</a>
+      <a href="../tech/google/" class="cross-link">&rarr; Google (Gemini, Vertex)</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <div class="footer-tagline">The Knowledge Tree</div>
+    <div class="footer-links">
+      <a href="../../index.html">Tree</a>
+      <a href="landscape.html">Landscape</a>
+      <a href="elevenlabs.html">ElevenLabs</a>
+      <a href="../../about.html">About</a>
+      <a href="../../join.html">Join</a>
+      <a href="https://2nth.ai">2nth.ai</a>
+    </div>
+    <div class="footer-copy">&copy; 2026 imbila.ai &middot; All knowledge open</div>
+    <div class="footer-review">Last reviewed: 2026-05-21 &middot; Cadence: hot (quarterly)</div>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme() {
+    const cur = document.documentElement.getAttribute('data-theme');
+    const next = cur === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('2nth-theme', next);
+  }
+  const stored = localStorage.getItem('2nth-theme');
+  if (stored) document.documentElement.setAttribute('data-theme', stored);
+  const observer = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold: 0.05 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
