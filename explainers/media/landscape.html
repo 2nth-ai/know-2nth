@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The voice AI landscape &mdash; know.2nth.ai</title>
+<meta name="description" content="The AI speech and voice generation landscape as of mid-2026 — the seven categories (text-to-speech, speech-to-text, voice cloning, conversational voice agents, dubbing, speech-to-speech, music generation), who leads where (ElevenLabs, Cartesia, Hume, OpenAI, Google, Deepgram, plus open-weights Whisper and Kokoro), the latency reality, the voice-rights regulation that arrived in 2026, and the South African languages gap.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/media/landscape">
+<meta property="og:title" content="The voice AI landscape &mdash; know.2nth.ai">
+<meta property="og:description" content="The seven categories of AI speech and voice, who leads where, the latency reality, the 2026 regulation, and the SA languages gap.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The voice AI landscape &mdash; know.2nth.ai">
+<meta name="twitter:description" content="The seven categories of AI speech and voice, who leads where, latency, regulation, the SA languages gap.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12); --violet: #8B5CF6; --violet-soft: rgba(139, 92, 246, 0.12); --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-soft: rgba(99, 102, 241, 0.12); --media: #DB2777; --media-glow: #EC4899; --media-soft: rgba(219, 39, 119, 0.12); --bg: var(--ink); --bg-raised: var(--navy); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(219, 39, 119, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(236, 72, 153, 0.3); --max-w: 1200px; --read-w: 760px; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-raised: #FFFFFF; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(219, 39, 119, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(219, 39, 119, 0.25); }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.1; pointer-events: none; z-index: 0; }
+  .glow-orb.media { width: 600px; height: 600px; background: var(--media); top: -200px; right: -100px; }
+  .glow-orb.violet { width: 500px; height: 500px; background: var(--violet); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.05; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--media-glow); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--media-glow); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--media-glow); }
+  .crumb-sep { opacity: 0.5; }
+  .crumb-current { color: var(--text-secondary); }
+  .hero { padding: 48px 0 56px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--media); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--media); box-shadow: 0 0 12px var(--media); }
+  .hero h1 { font-size: clamp(40px, 6vw, 64px); font-weight: 800; line-height: 1.05; letter-spacing: -2px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--media), var(--media-glow), #F9A8D4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 760px; line-height: 1.7; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.media { background: var(--media-soft); color: var(--media-glow); border-color: rgba(219, 39, 119, 0.3); }
+  .pill.warm { background: var(--warm-soft); color: var(--warm); border-color: rgba(245, 158, 11, 0.25); }
+  section { padding: 50px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--media); margin-bottom: 14px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .section-lede strong { color: var(--text-primary); font-weight: 600; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--media-glow); }
+  .cat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 12px; }
+  .cat-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--media); border-radius: var(--radius-md); padding: 20px 24px; }
+  .cat-cell .num { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 600; letter-spacing: 1.4px; color: var(--media); display: block; margin-bottom: 6px; }
+  .cat-cell h4 { font-size: 16px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.3px; }
+  .cat-cell p { font-size: 13.5px; color: var(--text-secondary); line-height: 1.65; margin-bottom: 8px; }
+  .cat-cell .leader { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--media-glow); display: block; padding-top: 8px; border-top: 1px dashed var(--border); }
+  .cat-cell .leader::before { content: 'Leads: '; color: var(--text-muted); }
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow-x: auto; max-width: 1100px; margin-bottom: 24px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 680px; }
+  .compare th, .compare td { padding: 11px 14px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--media-glow); background: rgba(219, 39, 119, 0.04); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); }
+  .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--media-glow); }
+  .compare td strong { color: var(--text-primary); }
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 26px 30px; max-width: var(--read-w); margin-bottom: 18px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.rose { border-left: 3px solid var(--rose); }
+  .info-card.media { border-left: 3px solid var(--media); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14.5px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .info-card code { font-family: 'JetBrains Mono', monospace; font-size: 0.86em; color: var(--media-glow); background: var(--media-soft); padding: 1px 5px; border-radius: 4px; }
+  .info-card strong { color: var(--text-primary); font-weight: 600; }
+  .cross-links { display: flex; gap: 10px; flex-wrap: wrap; }
+  .cross-link { font-family: 'JetBrains Mono', monospace; font-size: 12px; padding: 10px 20px; border-radius: var(--radius-pill); border: 1px solid var(--border); background: var(--bg-card); text-decoration: none; color: var(--text-secondary); transition: all 0.3s; letter-spacing: 0.5px; }
+  .cross-link:hover { border-color: var(--border-hover); color: var(--media-glow); transform: translateY(-1px); }
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 16px 20px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--media-glow); word-break: break-all; }
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--media-glow); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .footer-review { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); margin-top: 14px; letter-spacing: 0.4px; }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+
+<div class="glow-orb media"></div>
+<div class="glow-orb violet"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand">
+      <span class="nav-brand-mark">know.2nth.ai</span>
+      <span class="nav-brand-sub">media &middot; landscape</span>
+    </a>
+    <div class="nav-right">
+      <a href="index.html" class="nav-link">&larr; Media</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x1F319;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="index.html">Media</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">The voice AI landscape</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> media &middot; voice &amp; speech &middot; landscape map</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      The <span class="gradient">voice AI</span> landscape.
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      AI speech and voice generation is a real arena with <strong>seven distinct categories</strong>, each with its own leaders, latency norms, and pricing shape. This leaf maps the categories, says who leads where, reports the latency reality honestly, covers the voice-rights regulation that arrived in 2026, and names the South African languages gap. Reference knowledge &mdash; verified against current vendor state.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill media">7 categories</span>
+      <span class="pill">Reference knowledge</span>
+      <span class="pill warm">Hot &middot; quarterly review</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 · THE SEVEN CATEGORIES -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; The seven categories</div>
+      <h2 class="section-title">Voice AI is not one thing.</h2>
+      <p class="section-lede">&ldquo;Voice AI&rdquo; collapses seven distinct problems into one phrase. They have different leaders, different latency budgets, and different pricing models. Knowing which category you are actually buying is the first decision.</p>
+    </div>
+
+    <div class="cat-grid fade-up" style="transition-delay: 0.04s">
+      <div class="cat-cell">
+        <span class="num">01</span>
+        <h4>Text-to-speech (TTS)</h4>
+        <p>Converts written text into natural speech. Evaluated on naturalness, latency, language coverage, and prosody control. The most mature category &mdash; sub-100ms synthesis is commoditising.</p>
+        <span class="leader">ElevenLabs, Cartesia, Google</span>
+      </div>
+      <div class="cat-cell">
+        <span class="num">02</span>
+        <h4>Speech-to-text (STT)</h4>
+        <p>Transcription and translation of spoken audio. Measured on word error rate (WER), latency, accent robustness, and noise tolerance. Streaming vs batch are distinct use cases.</p>
+        <span class="leader">Deepgram, AssemblyAI, Whisper</span>
+      </div>
+      <div class="cat-cell">
+        <span class="num">03</span>
+        <h4>Voice cloning / voice design</h4>
+        <p>Capturing a speaker's voice from short samples and synthesising new speech in it. Instant clones (~30s of audio) through professional clones. Tightly coupled to consent and ethics.</p>
+        <span class="leader">ElevenLabs, Resemble, WellSaid</span>
+      </div>
+      <div class="cat-cell">
+        <span class="num">04</span>
+        <h4>Conversational voice agents</h4>
+        <p>End-to-end real-time systems &mdash; speech in, reasoning, speech out. Stack STT + LLM + TTS. The category replacing chatbots. Sub-500ms response is the bar.</p>
+        <span class="leader">ElevenLabs Agents, OpenAI, Hume</span>
+      </div>
+      <div class="cat-cell">
+        <span class="num">05</span>
+        <h4>Dubbing / speech translation</h4>
+        <p>Content in one language re-produced in another while preserving speaker identity, emotion, and (for video) lip sync. More than translation &mdash; audio-visual coordination.</p>
+        <span class="leader">ElevenLabs, OpenAI Realtime-Translate</span>
+      </div>
+      <div class="cat-cell">
+        <span class="num">06</span>
+        <h4>Speech-to-speech / voice changing</h4>
+        <p>Transforming one speaker's voice into another's while preserving content and emotional delivery. Used for voice conversion, accessibility, and creative work.</p>
+        <span class="leader">ElevenLabs, Resemble</span>
+      </div>
+      <div class="cat-cell">
+        <span class="num">07</span>
+        <h4>Music generation (adjacent)</h4>
+        <p>Generative music and sound design. Often bundled with voice vendors (ElevenLabs now ships music). Licensed-data models give commercial-use clarity.</p>
+        <span class="leader">ElevenLabs Music, Suno, Udio</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 · WHO LEADS WHERE -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; Who leads where</div>
+      <h2 class="section-title">The vendors that matter, mid-2026.</h2>
+      <p class="section-lede">Not exhaustive &mdash; the vendors that show up in production voice stacks. Model names and latency figures are vendor-stated; treat latency as best-case, not guaranteed.</p>
+    </div>
+
+    <div class="compare-wrap fade-up" style="transition-delay: 0.04s">
+      <table class="compare">
+        <thead><tr><th>Vendor</th><th>Flagship</th><th>Strength</th><th>Open / closed</th></tr></thead>
+        <tbody>
+          <tr><td><strong>ElevenLabs</strong></td><td>Flash (75ms), Multilingual v2, v3, Scribe v2</td><td>Deepest platform &mdash; TTS, cloning, dubbing, agents, music. The default for creators and developers.</td><td>Closed; open API</td></tr>
+          <tr><td><strong>Cartesia</strong></td><td>Sonic-3 (~90ms model latency)</td><td>The latency king. Purpose-built for real-time voice agents; 40+ languages.</td><td>Closed</td></tr>
+          <tr><td><strong>Hume AI</strong></td><td>EVI (empathic voice interface)</td><td>Emotion as a first-class feature &mdash; reads tone and responds with matching prosody.</td><td>Closed; open API</td></tr>
+          <tr><td><strong>OpenAI</strong></td><td><code>gpt-realtime</code>, Realtime-Translate, Realtime-Whisper</td><td>Voice-in-LLM &mdash; integrated listening, reasoning, speaking. Live translation across 70+ languages.</td><td>Closed; API</td></tr>
+          <tr><td><strong>Google</strong></td><td>Gemini TTS, Chirp 3 HD</td><td>Native audio inside Gemini; production TTS on Vertex AI. 100+ languages.</td><td>Closed; API</td></tr>
+          <tr><td><strong>Deepgram</strong></td><td>Nova (STT), Aura-2 (TTS)</td><td>STT accuracy leader; Aura-2 closes the TTS gap with enterprise pronunciation handling.</td><td>Closed; some on-prem</td></tr>
+          <tr><td><strong>AssemblyAI</strong></td><td>Universal-3 (streaming STT)</td><td>Audio analysis &mdash; transcription plus summarisation, entity detection, topic classification.</td><td>Closed; API</td></tr>
+          <tr><td><strong>Whisper</strong> (OpenAI)</td><td>large-v3</td><td>The open-weights STT standard. 99 languages, MIT-licensed, self-hostable or $0.006/min API.</td><td><strong>Open (MIT)</strong></td></tr>
+          <tr><td><strong>Kokoro</strong></td><td>Kokoro-82M</td><td>Lightweight open TTS &mdash; runs on consumer hardware, quality near larger models. No voice cloning.</td><td><strong>Open (Apache-2)</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="prose fade-up" style="transition-delay: 0.06s">
+      <p><strong>The shape of it.</strong> ElevenLabs is the breadth leader &mdash; it does every category competently and owns creator and developer mind-share. Cartesia owns latency, Hume owns emotion. The big labs (OpenAI, Google, Anthropic) are pulling voice <em>inside</em> the LLM, which over time favours them for conversational agents. Deepgram and AssemblyAI own the STT side. Whisper and Kokoro prove open-weights models are competitive on accuracy and cost &mdash; the commodity floor keeps rising.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 · LATENCY -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; The latency reality</div>
+      <h2 class="section-title">Sub-100ms TTS is commoditising. The round trip isn't.</h2>
+    </div>
+
+    <div class="info-card media fade-up" style="transition-delay: 0.04s">
+      <h4>What &ldquo;fast&rdquo; means in 2026</h4>
+      <p><strong>Human conversational baseline:</strong> ~200ms average response time. That is the target a voice agent is measured against.</p>
+      <p><strong>TTS alone:</strong> the fast tier is now 75&ndash;90ms (ElevenLabs Flash, Cartesia Sonic-3). This is close to a solved problem.</p>
+      <p><strong>End-to-end (STT + LLM reasoning + TTS):</strong> this is the real bottleneck. Sub-500ms is the bar for natural conversation; ~800ms is the practical ceiling before dialogue feels laggy. The LLM reasoning step, not the speech synthesis, is what eats the budget.</p>
+      <p><strong>Architecture matters.</strong> Most production voice agents in 2026 are still <em>turn-based</em> (STT then LLM then TTS, in sequence), not true streaming. Streaming architectures shave latency but are harder to build. When a vendor quotes a latency number, ask whether it is the model alone or the full round trip.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 · REGULATION -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; Consent, voice rights, regulation</div>
+      <h2 class="section-title">Voice cloning sits inside real law now.</h2>
+      <p class="section-lede">By mid-2026 the regulatory frame around synthetic voice has moved from "coming soon" to enforceable. Anyone cloning a voice or shipping AI audio needs to know this.</p>
+    </div>
+
+    <div class="info-card rose fade-up" style="transition-delay: 0.04s">
+      <h4>Three regulatory developments that have landed</h4>
+      <p><strong>EU Digital Creativity Integrity Act</strong> &mdash; voice rights are recognised as monetizable creative assets; vendors must track and compensate voice actors whose voices are used in cloning.</p>
+      <p><strong>US AI Transparency and Accountability Act</strong> &mdash; individuals have legal grounds to seek recurring compensation when AI companies use their voices without consent.</p>
+      <p><strong>Tennessee ELVIS Act</strong> &mdash; unauthorised use of a person's voice or likeness is a civil tort plus a Class A misdemeanour; the scope has expanded beyond music to all voice contexts.</p>
+    </div>
+
+    <div class="info-card amber fade-up" style="transition-delay: 0.05s">
+      <h4>Practical rules for anyone shipping voice</h4>
+      <p>&mdash; Get <strong>explicit, documented consent</strong> before cloning any real person's voice.</p>
+      <p>&mdash; <strong>Label AI-generated audio</strong> clearly. Disclosure is becoming a legal expectation, not a courtesy.</p>
+      <p>&mdash; Prefer vendors that <strong>enforce consent and actor compensation</strong> (ElevenLabs, WellSaid). The compliance posture is becoming a competitive moat.</p>
+      <p>&mdash; Expect rising <strong>voice-cloned fraud</strong> &mdash; mimicked executives, family members. Voice authentication alone is no longer trustworthy as a security factor.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 · SA CONTEXT -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; South African languages</div>
+      <h2 class="section-title">The coverage is uneven. Name it plainly.</h2>
+    </div>
+
+    <div class="prose fade-up" style="transition-delay: 0.04s">
+      <p><strong>South African English</strong> is broadly supported &mdash; ElevenLabs, Google Cloud TTS, Deepgram, and Whisper all handle it, though no major vendor has tuned a model specifically for the SA-English accent to the quality bar they hit for US or UK English. Accent prompting on ElevenLabs is the usual workaround.</p>
+      <p><strong>Afrikaans</strong> has moderate coverage &mdash; several cloud TTS providers offer <code>af-ZA</code> voices, with smaller but growing vendor support.</p>
+      <p><strong>isiZulu and isiXhosa</strong> are severely under-resourced in commercial TTS. <strong>Qfrency</strong> (South African Voices) is the notable exception that offers both. Whisper's large-v3 theoretically covers them via multilingual training, but with no region-specific optimisation. Open datasets exist for research &mdash; OpenSLR #32 covers Afrikaans, Sesotho, Setswana, and isiXhosa.</p>
+      <p><strong>The honest read.</strong> If you are building voice for South African English, default to ElevenLabs with accent prompting. For isiZulu, isiXhosa, and the other indigenous languages, expect a custom solution or an academic partnership &mdash; commercial TTS quality for these languages is likely 18+ months from parity, and pretending otherwise sets a project up to fail.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 · CONNECTIONS -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; Connections</div>
+      <h2 class="section-title">Where this leaf links into the tree.</h2>
+    </div>
+    <div class="cross-links fade-up" style="transition-delay: 0.03s">
+      <a href="index.html" class="cross-link">&rarr; Media domain hub</a>
+      <a href="elevenlabs.html" class="cross-link">&rarr; ElevenLabs (deep dive)</a>
+      <a href="../agents/" class="cross-link">&rarr; Agents (voice agents orchestrate LLMs)</a>
+      <a href="../agents/gpt.html" class="cross-link">&rarr; GPT</a>
+      <a href="../agents/gemini.html" class="cross-link">&rarr; Gemini</a>
+      <a href="../agents/ollama.html" class="cross-link">&rarr; Ollama (self-host Whisper / Kokoro)</a>
+      <a href="../tech/google/" class="cross-link">&rarr; Google (Vertex, Chirp)</a>
+    </div>
+  </div>
+</section>
+
+<!-- 07 · RESOURCES -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; Resources</div>
+      <h2 class="section-title">Primary sources.</h2>
+      <p class="section-lede">Voice AI vendors move fast and over-claim &mdash; verify versions and latency figures against the date on this leaf.</p>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.03s">
+      <a class="resource" href="https://elevenlabs.io/" target="_blank" rel="noopener"><span class="r-kind">Vendor</span><span class="r-title">ElevenLabs</span><span class="r-url">elevenlabs.io</span></a>
+      <a class="resource" href="https://cartesia.ai/sonic" target="_blank" rel="noopener"><span class="r-kind">Vendor</span><span class="r-title">Cartesia Sonic</span><span class="r-url">cartesia.ai/sonic</span></a>
+      <a class="resource" href="https://www.hume.ai/empathic-voice-interface" target="_blank" rel="noopener"><span class="r-kind">Vendor</span><span class="r-title">Hume EVI</span><span class="r-url">hume.ai/empathic-voice-interface</span></a>
+      <a class="resource" href="https://openai.com/index/introducing-gpt-realtime/" target="_blank" rel="noopener"><span class="r-kind">Vendor</span><span class="r-title">OpenAI gpt-realtime</span><span class="r-url">openai.com/index/introducing-gpt-realtime</span></a>
+      <a class="resource" href="https://deepgram.com/" target="_blank" rel="noopener"><span class="r-kind">Vendor</span><span class="r-title">Deepgram</span><span class="r-url">deepgram.com</span></a>
+      <a class="resource" href="https://huggingface.co/hexgrad/Kokoro-82M" target="_blank" rel="noopener"><span class="r-kind">Open model</span><span class="r-title">Kokoro-82M TTS</span><span class="r-url">huggingface.co/hexgrad/Kokoro-82M</span></a>
+      <a class="resource" href="https://www.openslr.org/32/" target="_blank" rel="noopener"><span class="r-kind">SA dataset</span><span class="r-title">OpenSLR #32 (SA languages)</span><span class="r-url">openslr.org/32</span></a>
+      <a class="resource" href="https://inworld.ai/resources/best-voice-ai-tts-apis-for-real-time-voice-agents-2026-benchmarks" target="_blank" rel="noopener"><span class="r-kind">Benchmark</span><span class="r-title">Voice AI TTS latency benchmarks 2026</span><span class="r-url">inworld.ai/resources/...2026-benchmarks</span></a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <div class="footer-tagline">The Knowledge Tree</div>
+    <div class="footer-links">
+      <a href="../../index.html">Tree</a>
+      <a href="index.html">Media</a>
+      <a href="elevenlabs.html">ElevenLabs</a>
+      <a href="../../about.html">About</a>
+      <a href="../../join.html">Join</a>
+      <a href="https://2nth.ai">2nth.ai</a>
+    </div>
+    <div class="footer-copy">&copy; 2026 imbila.ai &middot; All knowledge open</div>
+    <div class="footer-review">Last reviewed: 2026-05-21 &middot; Cadence: hot (quarterly)</div>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme() {
+    const cur = document.documentElement.getAttribute('data-theme');
+    const next = cur === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('2nth-theme', next);
+  }
+  const stored = localStorage.getItem('2nth-theme');
+  if (stored) document.documentElement.setAttribute('data-theme', stored);
+  const observer = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold: 0.05 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
