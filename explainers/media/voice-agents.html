@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Voice agents &amp; telephony &mdash; know.2nth.ai</title>
+<meta name="description" content="The deployment layer for voice AI — how a synthetic voice reaches a real phone line. Two distinct layers: voice-agent orchestration platforms (Vapi, Retell, Bland, LiveKit, Pipecat) that wire STT + LLM + TTS into a real-time conversation, and telephony / cloud contact-centre platforms (Amazon Connect, Twilio, Genesys) that connect calls, route them, and manage queues. The South African in-country picture: Amazon Connect in af-south-1, the SA-native incumbents Telviva and Euphoria, and the ICASA regulatory frame.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/media/voice-agents">
+<meta property="og:title" content="Voice agents &amp; telephony &mdash; know.2nth.ai">
+<meta property="og:description" content="The deployment layer for voice AI — orchestration platforms and telephony / CCaaS. The SA in-country picture: Amazon Connect af-south-1, Telviva, Euphoria, ICASA.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Voice agents &amp; telephony &mdash; know.2nth.ai">
+<meta name="twitter:description" content="The deployment layer for voice AI — orchestration platforms and telephony / CCaaS. The SA in-country picture.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12); --violet: #8B5CF6; --violet-soft: rgba(139, 92, 246, 0.12); --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-soft: rgba(99, 102, 241, 0.12); --media: #DB2777; --media-glow: #EC4899; --media-soft: rgba(219, 39, 119, 0.12); --bg: var(--ink); --bg-raised: var(--navy); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(219, 39, 119, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(236, 72, 153, 0.3); --max-w: 1200px; --read-w: 760px; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-raised: #FFFFFF; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(219, 39, 119, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(219, 39, 119, 0.25); }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.1; pointer-events: none; z-index: 0; }
+  .glow-orb.media { width: 600px; height: 600px; background: var(--media); top: -200px; right: -100px; }
+  .glow-orb.violet { width: 500px; height: 500px; background: var(--violet); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.05; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--media-glow); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--media-glow); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--media-glow); }
+  .crumb-sep { opacity: 0.5; }
+  .crumb-current { color: var(--text-secondary); }
+  .hero { padding: 48px 0 56px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--media); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--media); box-shadow: 0 0 12px var(--media); }
+  .hero h1 { font-size: clamp(40px, 6vw, 62px); font-weight: 800; line-height: 1.05; letter-spacing: -2px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--media), var(--media-glow), #F9A8D4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 760px; line-height: 1.7; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.media { background: var(--media-soft); color: var(--media-glow); border-color: rgba(219, 39, 119, 0.3); }
+  .pill.warm { background: var(--warm-soft); color: var(--warm); border-color: rgba(245, 158, 11, 0.25); }
+  section { padding: 50px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--media); margin-bottom: 14px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .section-lede strong { color: var(--text-primary); font-weight: 600; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--media-glow); }
+  pre.diagram { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 26px 30px; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.6; color: var(--text-secondary); max-width: 880px; margin: 0 0 24px; }
+  pre.diagram .l1 { color: var(--media-glow); font-weight: 600; }
+  pre.diagram .l2 { color: var(--sky); font-weight: 600; }
+  pre.diagram .l3 { color: var(--warm); font-weight: 600; }
+  pre.diagram .note { color: var(--text-muted); font-style: italic; }
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow-x: auto; max-width: 1100px; margin-bottom: 24px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 680px; }
+  .compare th, .compare td { padding: 11px 14px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--media-glow); background: rgba(219, 39, 119, 0.04); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); }
+  .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--media-glow); }
+  .compare td strong { color: var(--text-primary); }
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 26px 30px; max-width: var(--read-w); margin-bottom: 18px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.rose { border-left: 3px solid var(--rose); }
+  .info-card.media { border-left: 3px solid var(--media); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14.5px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .info-card code { font-family: 'JetBrains Mono', monospace; font-size: 0.86em; color: var(--media-glow); background: var(--media-soft); padding: 1px 5px; border-radius: 4px; }
+  .info-card strong { color: var(--text-primary); font-weight: 600; }
+  .cross-links { display: flex; gap: 10px; flex-wrap: wrap; }
+  .cross-link { font-family: 'JetBrains Mono', monospace; font-size: 12px; padding: 10px 20px; border-radius: var(--radius-pill); border: 1px solid var(--border); background: var(--bg-card); text-decoration: none; color: var(--text-secondary); transition: all 0.3s; letter-spacing: 0.5px; }
+  .cross-link:hover { border-color: var(--border-hover); color: var(--media-glow); transform: translateY(-1px); }
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 16px 20px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--media-glow); word-break: break-all; }
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--media-glow); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .footer-review { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); margin-top: 14px; letter-spacing: 0.4px; }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+
+<div class="glow-orb media"></div>
+<div class="glow-orb violet"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand">
+      <span class="nav-brand-mark">know.2nth.ai</span>
+      <span class="nav-brand-sub">media &middot; voice agents</span>
+    </a>
+    <div class="nav-right">
+      <a href="index.html" class="nav-link">&larr; Media</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x1F319;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="index.html">Media</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">Voice agents &amp; telephony</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> media &middot; voice &amp; speech &middot; deployment layer</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      Voice agents <span class="gradient">&amp; telephony.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      A synthesised voice is not a deployed product. Getting a voice agent onto a real phone line takes two more layers: an <strong>orchestration platform</strong> that wires speech-in, reasoning, and speech-out into a live conversation, and a <strong>telephony / contact-centre</strong> platform that connects the calls, routes them, and manages queues and human agents. This leaf maps both layers, names who leads each, and works the South African in-country picture &mdash; Amazon Connect in <code style="font-family:'JetBrains Mono',monospace;font-size:0.86em;color:var(--media-glow);background:var(--media-soft);padding:1px 5px;border-radius:4px;">af-south-1</code>, the SA-native incumbents, and the ICASA frame.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill media">Deployment layer</span>
+      <span class="pill">Reference knowledge</span>
+      <span class="pill warm">Hot &middot; quarterly review</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 · THE THREE LAYERS -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; The three layers</div>
+      <h2 class="section-title">Voice generation is one layer of three.</h2>
+      <p class="section-lede">A voice agent on a phone is a stack. Confusing the layers is the most common mistake when scoping a voice project &mdash; teams pick a voice vendor and discover they still have no way to take a call.</p>
+    </div>
+
+    <pre class="diagram fade-up" style="transition-delay: 0.04s"><span class="note"># A voice agent on a phone line = three layers, bottom to top</span>
+
+  <span class="l3">TELEPHONY / CCaaS</span>          the phone network, numbers, routing,
+                            queues, human-agent desks
+                            <span class="note">Amazon Connect &middot; Twilio &middot; Telviva &middot; Euphoria</span>
+       <span class="note">|</span>
+  <span class="l2">AGENT ORCHESTRATION</span>        wires STT + LLM + TTS into a
+                            real-time conversation; turns,
+                            interruptions, tools, hand-off
+                            <span class="note">Vapi &middot; Retell &middot; Bland &middot; LiveKit &middot; Pipecat</span>
+       <span class="note">|</span>
+  <span class="l1">VOICE GENERATION</span>           the synthetic voice itself (TTS),
+                            transcription (STT)
+                            <span class="note">ElevenLabs &middot; Cartesia &middot; Deepgram &mdash; see the landscape leaf</span></pre>
+
+    <div class="prose fade-up" style="transition-delay: 0.06s">
+      <p>The bottom layer &mdash; voice generation &mdash; is covered in <a href="landscape.html">the voice AI landscape</a> and the <a href="elevenlabs.html">ElevenLabs leaf</a>. This leaf covers the two layers above it. Some products span layers: ElevenAgents covers generation + orchestration; Amazon Connect covers telephony and, with Amazon Nova Sonic, orchestration too. But the layers are real, and a deployment needs all three &mdash; whether from one vendor or three.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 · ORCHESTRATION PLATFORMS -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; Agent orchestration platforms</div>
+      <h2 class="section-title">The layer that turns three APIs into a conversation.</h2>
+      <p class="section-lede">Orchestration platforms manage the hard real-time problem &mdash; streaming speech in, running the reasoning, streaming speech out, handling interruptions and turn-taking, calling tools, and handing off to a human. Pricing is per-minute of conversation. Latency figures are vendor-stated.</p>
+    </div>
+
+    <div class="compare-wrap fade-up" style="transition-delay: 0.04s">
+      <table class="compare">
+        <thead><tr><th>Platform</th><th>Shape</th><th>Pricing</th><th>Best for</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Vapi</strong></td><td>Middleware &mdash; bring your own LLM, TTS, STT, telephony</td><td>~$0.05/min platform fee + component costs</td><td>Maximum control; custom stacks where you pick every component.</td></tr>
+          <tr><td><strong>Retell AI</strong></td><td>Production-ready managed platform</td><td>~$0.07/min</td><td>Quality- and compliance-first teams &mdash; SOC 2, HIPAA, GDPR; ~600ms response.</td></tr>
+          <tr><td><strong>Bland AI</strong></td><td>API-first, outbound-optimised</td><td>~$499/mo + ~$0.11/min</td><td>Raw scale &mdash; high-volume outbound campaigns, 1M+ concurrent calls.</td></tr>
+          <tr><td><strong>LiveKit Agents</strong></td><td>Open-source WebRTC framework (Python, Node)</td><td>OSS framework + infra cost</td><td>Scalable low-latency real-time agents; adaptive interruption, native MCP tools.</td></tr>
+          <tr><td><strong>Pipecat</strong></td><td>Open-source Python framework</td><td>OSS &mdash; self-host</td><td>Rapid prototyping and full developer control; frame-based streaming.</td></tr>
+          <tr><td><strong>ElevenAgents</strong></td><td>Voice + orchestration bundled</td><td>ElevenLabs credits</td><td>Teams already on ElevenLabs voices who want generation and orchestration from one vendor.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="prose fade-up" style="transition-delay: 0.06s">
+      <p><strong>The split that matters:</strong> Vapi, LiveKit, and Pipecat give you control &mdash; you assemble the stack. Retell and Bland give you a managed path &mdash; faster to production, less to tune. ElevenAgents is the bundled option if voice quality is the priority and you have already chosen ElevenLabs. None of these <em>is</em> the telephony layer; they connect to it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 · TELEPHONY / CCaaS -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; Telephony / contact-centre platforms</div>
+      <h2 class="section-title">The layer that owns the phone number.</h2>
+      <p class="section-lede">Telephony platforms provide PSTN connectivity, phone numbers, call routing, IVR, queues, and &mdash; for full contact centres &mdash; human-agent desktops and analytics. This is a mature, separate industry that voice AI plugs into; it long predates it.</p>
+    </div>
+
+    <div class="compare-wrap fade-up" style="transition-delay: 0.04s">
+      <table class="compare">
+        <thead><tr><th>Platform</th><th>Type</th><th>SA availability</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Amazon Connect</strong></td><td>Cloud contact centre (CCaaS)</td><td><code>af-south-1</code> (Cape Town)</td><td>Native AI &mdash; Amazon Q in Connect, Nova Sonic speech-to-speech. Official ElevenLabs integration. Verified in af-south-1.</td></tr>
+          <tr><td><strong>Twilio</strong></td><td>Communications platform (CPaaS)</td><td>Widely used in SA</td><td>Programmable voice APIs; the general-purpose path. Build-it-yourself rather than a packaged contact centre.</td></tr>
+          <tr><td><strong>Genesys Cloud</strong></td><td>Enterprise CCaaS</td><td>Available; regional specifics unverified</td><td>Heavyweight enterprise contact centre. Strong workforce-management tooling.</td></tr>
+          <tr><td><strong>Vonage</strong></td><td>CPaaS</td><td>SA support; specifics unverified</td><td>Voice / messaging APIs. Comparable positioning to Twilio.</td></tr>
+          <tr><td><strong>Telviva</strong></td><td>SA-native UCaaS / CCaaS</td><td><strong>SA &mdash; Teraco data centres</strong></td><td>Market leader, ~17% SA share, ~95,000 users. Fully in-country; ICASA-licensed.</td></tr>
+          <tr><td><strong>Euphoria Telecom</strong></td><td>SA-native cloud PBX + contact centre</td><td><strong>SA &mdash; Cape Town + Joburg</strong></td><td>Predictive dialling, skills-based routing, CRM integration. SA-native.</td></tr>
+          <tr><td><strong>SureTel</strong></td><td>SA-native hosted VoIP</td><td><strong>SA data centres</strong></td><td>SMB-focused hosted VoIP with local failover. SA-native.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 04 · COMPOSITION -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; How the layers compose</div>
+      <h2 class="section-title">One vendor or three &mdash; the real choice.</h2>
+    </div>
+
+    <div class="info-card media fade-up" style="transition-delay: 0.04s">
+      <h4>Three ways to assemble a voice agent on a phone</h4>
+      <p><strong>Single-vendor.</strong> Amazon Connect alone &mdash; telephony plus its native Nova Sonic voice agents. Or a packaged platform that brokers everything. Simplest to operate; least control over the voice and the model.</p>
+      <p><strong>Telephony + bundled voice-agent.</strong> Amazon Connect (or Twilio) for the phone line, ElevenAgents for generation + orchestration. The official ElevenLabs&ndash;Amazon Connect integration is exactly this pattern. Best voice quality; two vendors to manage.</p>
+      <p><strong>Three-layer custom.</strong> Twilio or a SIP trunk for telephony, Vapi or LiveKit for orchestration, ElevenLabs or Cartesia for the voice. Maximum control; you own the integration and the latency budget.</p>
+    </div>
+
+    <div class="info-card amber fade-up" style="transition-delay: 0.05s">
+      <h4>You do not choose between ElevenLabs and Amazon Connect</h4>
+      <p>They are different layers. The question is never &ldquo;ElevenLabs <em>or</em> Amazon Connect&rdquo; &mdash; it is whether to use a voice-generation vendor <em>with</em> a telephony platform, and which of each. The only place they overlap is that Amazon Connect now has its own native voice agents (Nova Sonic), so Connect <em>can</em> be the orchestration layer too &mdash; competing there with Vapi and ElevenAgents, not with ElevenLabs the voice vendor.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 · SA IN-COUNTRY -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; The South African in-country picture</div>
+      <h2 class="section-title">What &ldquo;in-country&rdquo; actually buys you.</h2>
+      <p class="section-lede">For South African contact centres, data residency and local regulation are real constraints. Here is the honest picture, layer by layer.</p>
+    </div>
+
+    <div class="info-card green fade-up" style="transition-delay: 0.04s">
+      <h4>Amazon Connect in af-south-1</h4>
+      <p>Amazon Connect <strong>is available in the AWS Cape Town region</strong> (<code>af-south-1</code>, three availability zones). A Connect instance there can claim South African numbers &mdash; including 0860 / 0861 shared-cost numbers common in SA business &mdash; route SA PSTN, and keep contact-centre data (recordings, transcripts, contact records) resident in Cape Town. For a POPIA data-residency requirement on the <em>telephony and contact data</em>, this is a genuine in-country option.</p>
+      <p><strong>The caveat:</strong> if you plug a global voice-generation vendor (ElevenLabs, Cartesia) into that Connect instance, the voice-synthesis call leaves the country. &ldquo;In-country&rdquo; then covers the telephony layer, not the voice-gen layer. For fully in-country synthesis, that means a self-hosted open model or a local provider. Amazon Connect's own Nova Sonic voice runs within the AWS region &mdash; check its af-south-1 availability specifically if that matters.</p>
+    </div>
+
+    <div class="info-card media fade-up" style="transition-delay: 0.05s">
+      <h4>The SA-native incumbents</h4>
+      <p>If the whole telephony stack must be in-country and ICASA-licensed without the AWS shared-responsibility framing, South Africa has real local providers: <strong>Telviva</strong> (market leader, on Teraco data centres), <strong>Euphoria Telecom</strong> (Cape Town and Joburg), and <strong>SureTel</strong> (SMB-focused). These are full SA-native contact-centre and PBX platforms. They are less likely to ship cutting-edge native voice AI than Amazon Connect &mdash; but they compose with a voice-agent layer the same way, and the telephony is unambiguously local.</p>
+    </div>
+
+    <div class="info-card amber fade-up" style="transition-delay: 0.06s">
+      <h4>The ICASA frame</h4>
+      <p>VoIP is legal in South Africa. The distinction that matters: an organisation using VoIP for its <strong>own internal communication</strong> generally does not need a licence; a company <strong>providing VoIP / telephony as a service</strong> must be <strong>ICASA-licensed</strong>. The SA-native providers carry their own licensing. <strong>POPIA</strong> applies to all customer call data regardless of platform &mdash; and compliance is a shared responsibility: the platform provides the infrastructure, but the contact-centre operator is accountable for lawful processing, consent, and disclosure. Verify ICASA and POPIA posture for the specific deployment; do not assume the platform vendor carries it for you.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 · DECISION GUIDE -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; How to choose</div>
+      <h2 class="section-title">Four questions that narrow it fast.</h2>
+    </div>
+
+    <div class="prose fade-up" style="transition-delay: 0.04s">
+      <p><strong>1 &middot; Is data residency a hard requirement?</strong> If yes, the telephony layer is Amazon Connect in <code>af-south-1</code> or an SA-native incumbent (Telviva, Euphoria) &mdash; and accept that a global voice-gen vendor breaks strict residency. If no, the field is open.</p>
+      <p><strong>2 &middot; Build or buy the orchestration?</strong> Buy (Retell, Bland, ElevenAgents) for speed to production. Build (Vapi, LiveKit, Pipecat) for control over latency, model choice, and cost at scale.</p>
+      <p><strong>3 &middot; Inbound contact centre, or outbound campaigns?</strong> Inbound with human escalation points at a full CCaaS (Amazon Connect, Genesys, Telviva). Pure high-volume outbound points at Bland or a campaign-tuned stack.</p>
+      <p><strong>4 &middot; How much does voice quality matter?</strong> If the synthetic voice is the product's face, pair the telephony layer with ElevenLabs or Cartesia rather than relying on a platform's built-in voice. If the voice is functional, a platform-native voice (Amazon Polly, Nova Sonic) is fine and simpler.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 07 · CONNECTIONS -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; Connections</div>
+      <h2 class="section-title">Where this leaf links into the tree.</h2>
+    </div>
+    <div class="cross-links fade-up" style="transition-delay: 0.03s">
+      <a href="index.html" class="cross-link">&rarr; Media domain hub</a>
+      <a href="landscape.html" class="cross-link">&rarr; The voice AI landscape</a>
+      <a href="elevenlabs.html" class="cross-link">&rarr; ElevenLabs</a>
+      <a href="../agents/" class="cross-link">&rarr; Agents</a>
+      <a href="../tools/" class="cross-link">&rarr; Tools landscape</a>
+      <a href="../tech/" class="cross-link">&rarr; Technology (AWS, cloud infra)</a>
+    </div>
+  </div>
+</section>
+
+<!-- 08 · RESOURCES -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 &middot; Resources</div>
+      <h2 class="section-title">Primary sources.</h2>
+      <p class="section-lede">CCaaS and orchestration platforms move fast &mdash; verify pricing and regional availability against the date on this leaf.</p>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.03s">
+      <a class="resource" href="https://aws.amazon.com/connect/" target="_blank" rel="noopener"><span class="r-kind">Telephony</span><span class="r-title">Amazon Connect</span><span class="r-url">aws.amazon.com/connect</span></a>
+      <a class="resource" href="https://elevenlabs.io/agents/integrations/amazon-connect" target="_blank" rel="noopener"><span class="r-kind">Integration</span><span class="r-title">ElevenLabs + Amazon Connect</span><span class="r-url">elevenlabs.io/agents/integrations/amazon-connect</span></a>
+      <a class="resource" href="https://www.twilio.com/en-us/voice" target="_blank" rel="noopener"><span class="r-kind">Telephony</span><span class="r-title">Twilio Voice</span><span class="r-url">twilio.com/en-us/voice</span></a>
+      <a class="resource" href="https://vapi.ai/" target="_blank" rel="noopener"><span class="r-kind">Orchestration</span><span class="r-title">Vapi</span><span class="r-url">vapi.ai</span></a>
+      <a class="resource" href="https://www.retellai.com/" target="_blank" rel="noopener"><span class="r-kind">Orchestration</span><span class="r-title">Retell AI</span><span class="r-url">retellai.com</span></a>
+      <a class="resource" href="https://github.com/livekit/agents" target="_blank" rel="noopener"><span class="r-kind">Orchestration &middot; OSS</span><span class="r-title">LiveKit Agents</span><span class="r-url">github.com/livekit/agents</span></a>
+      <a class="resource" href="https://github.com/pipecat-ai/pipecat" target="_blank" rel="noopener"><span class="r-kind">Orchestration &middot; OSS</span><span class="r-title">Pipecat</span><span class="r-url">github.com/pipecat-ai/pipecat</span></a>
+      <a class="resource" href="https://telviva.co.za/" target="_blank" rel="noopener"><span class="r-kind">SA-native</span><span class="r-title">Telviva</span><span class="r-url">telviva.co.za</span></a>
+      <a class="resource" href="https://euphoria.co.za/" target="_blank" rel="noopener"><span class="r-kind">SA-native</span><span class="r-title">Euphoria Telecom</span><span class="r-url">euphoria.co.za</span></a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <div class="footer-tagline">The Knowledge Tree</div>
+    <div class="footer-links">
+      <a href="../../index.html">Tree</a>
+      <a href="index.html">Media</a>
+      <a href="landscape.html">Landscape</a>
+      <a href="elevenlabs.html">ElevenLabs</a>
+      <a href="../../join.html">Join</a>
+      <a href="https://2nth.ai">2nth.ai</a>
+    </div>
+    <div class="footer-copy">&copy; 2026 imbila.ai &middot; All knowledge open</div>
+    <div class="footer-review">Last reviewed: 2026-05-22 &middot; Cadence: hot (quarterly)</div>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme() {
+    const cur = document.documentElement.getAttribute('data-theme');
+    const next = cur === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('2nth-theme', next);
+  }
+  const stored = localStorage.getItem('2nth-theme');
+  if (stored) document.documentElement.setAttribute('data-theme', stored);
+  const observer = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold: 0.05 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
