@@ -245,11 +245,97 @@
   </div>
 </section>
 
-<!-- 04 · PRICING -->
+<!-- 04 · VOICE CLONING -->
 <section>
   <div class="container">
     <div class="fade-up">
-      <div class="section-label">04 &middot; Pricing reality</div>
+      <div class="section-label">04 &middot; Voice cloning in depth</div>
+      <h2 class="section-title">Two tiers, one consent obligation.</h2>
+      <p class="section-lede">Voice cloning is ElevenLabs' most powerful and most legally loaded feature. Two tiers, a shared voice library, and a consent requirement that is now law, not courtesy.</p>
+    </div>
+
+    <div class="feature-grid fade-up" style="transition-delay: 0.04s">
+      <div class="feature-cell">
+        <h4>Instant Voice Cloning (IVC)</h4>
+        <p>A clone from ~30 seconds to a few minutes of audio. Fast, available on lower tiers, good for prototyping and casual use. Lower fidelity than professional cloning &mdash; artefacts show on long-form or highly expressive delivery.</p>
+      </div>
+      <div class="feature-cell">
+        <h4>Professional Voice Cloning (PVC)</h4>
+        <p>A fine-tuned clone built from higher-quality, longer source material. Best fidelity &mdash; the tier for audiobooks, brand voices, and any clone that has to hold up under scrutiny. Requires a voice-verification step.</p>
+      </div>
+      <div class="feature-cell">
+        <h4>The Voice Library</h4>
+        <p>10,000+ licensed voices shared by their owners, with usage-based payouts. The pragmatic path when you need a good voice and do not need it to be a <em>specific</em> real person.</p>
+      </div>
+    </div>
+
+    <div class="info-card rose fade-up" style="transition-delay: 0.06s">
+      <h4>Consent is not optional</h4>
+      <p>Cloning a real person's voice &mdash; a staff member, a client, a public figure &mdash; needs <strong>documented, explicit consent</strong>. ElevenLabs enforces a voice-verification step on professional cloning, but the legal responsibility sits with whoever commissions the clone. By 2026 this sits inside real law &mdash; the EU Digital Creativity Integrity Act, the US AI Transparency Act, Tennessee's ELVIS Act (see the <a href="landscape.html">landscape leaf</a>). Treat a cloned voice as personal information under POPIA.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 · ELEVENAGENTS -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; ElevenAgents &mdash; conversational voice</div>
+      <h2 class="section-title">From a voice to an agent that holds a conversation.</h2>
+      <p class="section-lede">ElevenCreative makes a voice. ElevenAgents makes that voice <em>converse</em> &mdash; listen, reason, respond, take actions &mdash; in 70+ languages, across phone, chat, web widget, and WhatsApp.</p>
+    </div>
+
+    <div class="prose fade-up" style="transition-delay: 0.04s">
+      <p>A voice agent in ElevenAgents is assembled from four parts: a <strong>voice</strong> (one of the models &mdash; Flash for low latency), an <strong>LLM</strong> for reasoning (bring your own, or an ElevenLabs-managed option), a <strong>knowledge base</strong> the agent can retrieve from, and a set of <strong>tools / function calls</strong> that let it act &mdash; look up an order, book a slot, escalate to a human.</p>
+      <p>The platform side is what separates a demo from production: analytics on every conversation, a testing and simulation harness to catch regressions before they ship, guardrails to keep the agent in scope, and workflow management for multi-step interactions.</p>
+    </div>
+
+    <div class="info-card media fade-up" style="transition-delay: 0.06s">
+      <h4>The latency reality for agents</h4>
+      <p>The text-to-speech leg is fast &mdash; Flash at ~75ms. The bottleneck is the full round trip: speech-in (STT) plus LLM reasoning plus speech-out. Sub-500ms end-to-end is the bar for natural conversation, and the LLM step usually eats most of the budget. Most ElevenAgents deployments are turn-based (listen, then think, then speak) rather than true streaming. Pick the reasoning LLM with latency in mind, not just quality.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 · TELEPHONY -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; Telephony &amp; deployment</div>
+      <h2 class="section-title">ElevenLabs makes the voice. It does not run the phone line.</h2>
+      <p class="section-lede">This distinction matters and gets blurred constantly. Voice <em>generation</em> and <em>telephony</em> are separate layers. To put an ElevenLabs agent on a real phone number, you compose it with a telephony platform.</p>
+    </div>
+
+    <div class="prose fade-up" style="transition-delay: 0.04s">
+      <p>ElevenLabs is a voice-generation and conversational-AI company &mdash; it synthesises the voice and runs the agent logic. It does <strong>not</strong> provide the contact-centre layer: PSTN connectivity, phone numbers, call routing, queues, human-agent desktops. That layer is a cloud contact centre (CCaaS) or a communications platform (CPaaS), and it is a genuinely separate product space.</p>
+    </div>
+
+    <div class="info-card media fade-up" style="transition-delay: 0.05s">
+      <h4>How an ElevenLabs agent reaches a phone</h4>
+      <p>ElevenAgents composes with the telephony layer through published integrations:</p>
+      <p>&mdash; <strong>Amazon Connect</strong> &mdash; an official integration. Connect handles the calls, numbers, routing and queues; ElevenLabs supplies the voice and the conversational agent.</p>
+      <p>&mdash; <strong>Twilio</strong> and <strong>SIP trunking</strong> &mdash; the general-purpose path for wiring an agent to the phone network.</p>
+      <p>The mental model: the telephony platform is the pipe and the switchboard; ElevenLabs is the voice and the brain. They are complementary, not competitors &mdash; you do not choose <em>between</em> ElevenLabs and Amazon Connect, you choose whether to use them <em>together</em>.</p>
+    </div>
+
+    <div class="info-card amber fade-up" style="transition-delay: 0.06s">
+      <h4>The South African &ldquo;in-country&rdquo; picture &mdash; read this carefully</h4>
+      <p><strong>Amazon Connect is available in the AWS Cape Town region (<code>af-south-1</code>).</strong> A Connect instance in Cape Town can claim South African numbers (including 0860 / 0861 shared-cost), route SA PSTN, and keep contact-centre data resident in-country. For a South African contact centre with POPIA data-residency requirements, that is a real in-country telephony option.</p>
+      <p><strong>But be precise about what &ldquo;in-country&rdquo; covers.</strong> If you plug ElevenLabs voices into that Connect instance, the telephony, routing, numbers and call data are SA-resident &mdash; while the <em>voice-synthesis call still leaves the country</em> to ElevenLabs' global infrastructure. &ldquo;In-country&rdquo; applies to the telephony layer, not the voice-gen layer.</p>
+      <p>If full in-country voice synthesis is a hard requirement, the options are a self-hosted open model (Kokoro, Whisper) or a local provider &mdash; not ElevenLabs. And note that <strong>Amazon Connect now ships its own native voice agents</strong> (speech-to-speech via Amazon Nova Sonic), so Connect can run a voice agent without ElevenLabs at all. Connect is therefore both a telephony layer ElevenLabs plugs into <em>and</em> a voice-agent platform in its own right.</p>
+    </div>
+
+    <div class="prose fade-up" style="transition-delay: 0.07s">
+      <p>South Africa also has a credible <strong>local CCaaS ecosystem</strong> &mdash; Telviva and Euphoria Telecom both run SA-native contact-centre platforms on local data centres. For organisations that want the whole telephony stack in-country and ICASA-licensed without the AWS shared-responsibility framing, those are the in-country incumbents. Telephony and contact centre is a large enough space to deserve its own treatment on the tree; this leaf only covers the seam where it meets voice generation.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 07 · PRICING -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; Pricing reality</div>
       <h2 class="section-title">Credit-based, per character.</h2>
       <p class="section-lede">ElevenLabs prices in credits, consumed per character of generated speech. Faster models cost fewer credits per character; expressive long-form models cost more. Plans tier on monthly credit allotment.</p>
     </div>
@@ -269,11 +355,11 @@
   </div>
 </section>
 
-<!-- 05 · DECISION GUIDE -->
+<!-- 08 · DECISION GUIDE -->
 <section>
   <div class="container">
     <div class="fade-up">
-      <div class="section-label">05 &middot; Decision guide</div>
+      <div class="section-label">08 &middot; Decision guide</div>
       <h2 class="section-title">When to use ElevenLabs &mdash; and when to skip.</h2>
       <p class="section-lede">Breadth is the strength and the tell. ElevenLabs wins on &ldquo;does everything well&rdquo;; it loses to specialists on any single axis.</p>
     </div>
@@ -307,11 +393,11 @@
   </div>
 </section>
 
-<!-- 06 · SA CONTEXT -->
+<!-- 09 · SA CONTEXT -->
 <section>
   <div class="container">
     <div class="fade-up">
-      <div class="section-label">06 &middot; South African / production context</div>
+      <div class="section-label">09 &middot; South African / production context</div>
       <h2 class="section-title">What lands in SA.</h2>
     </div>
 
@@ -324,11 +410,11 @@
   </div>
 </section>
 
-<!-- 07 · CONNECTIONS -->
+<!-- 10 · CONNECTIONS -->
 <section>
   <div class="container">
     <div class="fade-up">
-      <div class="section-label">07 &middot; Connections</div>
+      <div class="section-label">10 &middot; Connections</div>
       <h2 class="section-title">Where this leaf links into the tree.</h2>
     </div>
     <div class="cross-links fade-up" style="transition-delay: 0.03s">
@@ -342,11 +428,11 @@
   </div>
 </section>
 
-<!-- 08 · RESOURCES -->
+<!-- 11 · RESOURCES -->
 <section>
   <div class="container">
     <div class="fade-up">
-      <div class="section-label">08 &middot; Resources</div>
+      <div class="section-label">11 &middot; Resources</div>
       <h2 class="section-title">Primary sources.</h2>
       <p class="section-lede">ElevenLabs ships fast &mdash; verify model names and prices against the date on this leaf.</p>
     </div>
@@ -355,6 +441,8 @@
       <a class="resource" href="https://elevenlabs.io/pricing" target="_blank" rel="noopener"><span class="r-kind">Pricing</span><span class="r-title">ElevenLabs pricing</span><span class="r-url">elevenlabs.io/pricing</span></a>
       <a class="resource" href="https://elevenlabs.io/docs" target="_blank" rel="noopener"><span class="r-kind">Docs</span><span class="r-title">ElevenLabs developer docs</span><span class="r-url">elevenlabs.io/docs</span></a>
       <a class="resource" href="https://elevenlabs.io/conversational-ai" target="_blank" rel="noopener"><span class="r-kind">Product</span><span class="r-title">ElevenAgents (Conversational AI)</span><span class="r-url">elevenlabs.io/conversational-ai</span></a>
+      <a class="resource" href="https://elevenlabs.io/agents/integrations/amazon-connect" target="_blank" rel="noopener"><span class="r-kind">Integration</span><span class="r-title">ElevenLabs + Amazon Connect</span><span class="r-url">elevenlabs.io/agents/integrations/amazon-connect</span></a>
+      <a class="resource" href="https://aws.amazon.com/connect/" target="_blank" rel="noopener"><span class="r-kind">Telephony</span><span class="r-title">Amazon Connect</span><span class="r-url">aws.amazon.com/connect</span></a>
       <a class="resource" href="landscape.html"><span class="r-kind">know.2nth.ai</span><span class="r-title">The voice AI landscape</span><span class="r-url">/explainers/media/landscape</span></a>
     </div>
   </div>
@@ -373,7 +461,7 @@
       <a href="https://2nth.ai">2nth.ai</a>
     </div>
     <div class="footer-copy">&copy; 2026 imbila.ai &middot; All knowledge open</div>
-    <div class="footer-review">Last reviewed: 2026-05-21 &middot; Cadence: hot (quarterly)</div>
+    <div class="footer-review">Last reviewed: 2026-05-22 &middot; Cadence: hot (quarterly)</div>
   </div>
 </footer>
 
