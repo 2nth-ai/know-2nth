@@ -204,4 +204,7 @@ Confirm latest commit is the one just merged, working tree is clean, on `main`. 
 ## What's NOT in this repo
 
 - Other 2nth-ai sites (`2nth.ai`, `dev.2nth.ai`, `agents.2nth.ai`, `clients.2nth.ai`) are separate repos with their own deploy flows. `skills.2nth.ai` and `dev.skills.2nth.ai` were retired 2026-05-17 — see "Related repos" above.
-- There is no agent-context API (`/api/context/…`) and no Workers in this repo. If a structured-export endpoint is added later, document it here.
+- **Agent-fetch API** (added 2026-05-25) at `/api/context/<domain>/<leaf>` returns a markdown rendering of the corresponding HTML leaf, with YAML frontmatter (title, description, source, reviewed). The HTML stays the canonical source — markdown is generated on the fly by a Cloudflare Pages Function at `functions/api/context/[[path]].ts`. No markdown is committed alongside the leaves. Typical example: `GET /api/context/media/elevenlabs` → markdown of `/explainers/media/elevenlabs.html`. The endpoint is the agent surface; humans continue to browse `/explainers/...` as before.
+  - Cached `public, max-age=3600`. CORS-open (`access-control-allow-origin: *`).
+  - The converter is regex-based and depends on the leaf-structure conventions in this file (sections, info-cards, compare tables). If a leaf drifts from the standard shape its markdown rendering degrades but stays readable.
+- The agent-fetch function is the only Function in the repo. It is built and deployed by Cloudflare Pages automatically when `functions/` is present — no extra build step is needed in the workflow.
