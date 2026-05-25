@@ -90,16 +90,20 @@ export const onRequestGet: PagesFunction<Env> = async ({ request, env, params })
   let html: string | null = null;
   let sourcePath = '';
 
+  // Cloudflare Pages serves the root index.html as a fallback for missing
+  // paths (status 200), so a naive `r.ok` check accepts the wrong page.
+  // We validate by reading the og:url meta on the fetched HTML and matching
+  // it against the path we asked for.
   for (const candidate of candidates) {
     const r = await env.ASSETS.fetch(new Request(new URL(candidate, url.origin).toString()));
-    if (r.ok) {
-      const ct = (r.headers.get('content-type') || '').toLowerCase();
-      if (ct.includes('text/html')) {
-        html = await r.text();
-        sourcePath = candidate;
-        break;
-      }
-    }
+    if (!r.ok) continue;
+    const ct = (r.headers.get('content-type') || '').toLowerCase();
+    if (!ct.includes('text/html')) continue;
+    const body = await r.text();
+    if (!htmlMatchesPath(body, path)) continue;
+    html = body;
+    sourcePath = candidate;
+    break;
   }
 
   if (!html) {
@@ -125,6 +129,26 @@ export const onRequestGet: PagesFunction<Env> = async ({ request, env, params })
     },
   });
 };
+
+// -----------------------------------------------------------------------------
+// Verify the fetched HTML actually corresponds to the requested path.
+// Pages returns the root index.html as a 200 fallback for missing files,
+// so we cross-check via the og:url meta tag.
+// -----------------------------------------------------------------------------
+
+function htmlMatchesPath(html: string, path: string): boolean {
+  const ogUrlMatch = html.match(/<meta\s+property="og:url"\s+content="([^"]+)"/);
+  if (!ogUrlMatch) return false;
+  const ogUrl = ogUrlMatch[1];
+  const stripped = path.replace(/^\/+|\/+$/g, '');
+  if (!stripped) return false;
+  // og:url for /explainers/media/elevenlabs.html is
+  //   https://know.2nth.ai/explainers/media/elevenlabs
+  // og:url for /explainers/media/index.html is
+  //   https://know.2nth.ai/explainers/media/
+  // both contain /<path> as a substring.
+  return ogUrl.includes(`/${stripped}`);
+}
 
 // -----------------------------------------------------------------------------
 // HTML → markdown conversion
