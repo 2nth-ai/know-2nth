@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Financial reporting on ERP data — know.2nth.ai</title>
+<meta name="description" content="Financial reporting on ERP data, generically across SYSPRO, ERPNext, Sage and Oracle — the costing/WIP/inventory-valuation feed, statutory vs management reporting, and using Evidence and the open BI stack to complement ERPNext.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/fin/reporting">
+<meta property="og:title" content="Financial reporting on ERP data — know.2nth.ai">
+<meta property="og:description" content="Financial reporting on ERP data, generically across SYSPRO, ERPNext, Sage and Oracle — the costing/WIP/inventory-valuation feed, statutory vs management reporting, and using Evidence and the open BI stack to complement ERPNext.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai — The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Financial reporting on ERP data — know.2nth.ai">
+<meta name="twitter:description" content="Financial reporting on ERP data, generically across SYSPRO, ERPNext, Sage and Oracle — the costing/WIP/inventory-valuation feed, statutory vs management reporting, and using Evidence and the open BI stack to complement ERPNext.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33;
+    --blue: #2563EB; --blue-glow: #3B82F6;
+    --sky: #38BDF8; --sky-muted: #7DD3FC;
+    --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8;
+    --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(16, 185, 129, 0.12);
+    --green: #10B981; --green-glow: #34D399; --green-soft: rgba(16, 185, 129, 0.12);
+    --violet: #8B5CF6; --violet-soft: rgba(139, 92, 246, 0.12);
+    --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12);
+    --bg: var(--ink); --bg-raised: var(--navy);
+    --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(16, 185, 129, 0.06);
+    --text-primary: var(--paper); --text-secondary: var(--slate);
+    --text-muted: #64748B;
+    --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(16, 185, 129, 0.3);
+    --max-w: 1200px; --read-w: 760px;
+    --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px;
+    --domain: var(--green); --domain-glow: var(--green-glow);
+  }
+  [data-theme="light"] {
+    --bg: #F1F5F9; --bg-raised: #FFFFFF;
+    --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(16, 185, 129, 0.04);
+    --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8;
+    --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(16, 185, 129, 0.25);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+    background: var(--bg); color: var(--text-primary);
+    line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased;
+  }
+  body::before {
+    content: ''; position: fixed; inset: 0; opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 9999;
+  }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.warm { width: 600px; height: 600px; background: var(--green); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+
+  nav {
+    position: sticky; top: 0; z-index: 100; padding: 0 24px;
+    backdrop-filter: blur(20px) saturate(1.4);
+    background: rgba(11, 17, 32, 0.75);
+    border-bottom: 1px solid var(--border);
+  }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner {
+    max-width: var(--max-w); margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 60px;
+  }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark {
+    font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px;
+    background: linear-gradient(135deg, var(--blue), var(--sky));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+  }
+  .nav-brand-sub {
+    font-size: 12px; color: var(--text-muted);
+    letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500;
+    padding-left: 10px; border-left: 1px solid var(--border);
+  }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--green-glow); }
+  .theme-toggle {
+    background: none; border: 1px solid var(--border); color: var(--text-secondary);
+    width: 36px; height: 36px; border-radius: 50%; cursor: pointer;
+    display: grid; place-items: center; font-size: 16px; transition: all 0.2s;
+  }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--green-glow); }
+
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .read { max-width: var(--read-w); }
+
+  .crumb {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted);
+    letter-spacing: 0.5px; padding: 28px 0 0;
+    display: flex; gap: 10px; flex-wrap: wrap;
+  }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--green-glow); }
+  .crumb-sep { opacity: 0.5; }
+  .crumb-current { color: var(--text-secondary); }
+
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500;
+    letter-spacing: 2px; text-transform: uppercase; color: var(--green-glow);
+    margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px;
+  }
+  .hero .eyebrow .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--green-glow); box-shadow: 0 0 12px var(--green-glow);
+  }
+  .hero h1 {
+    font-size: clamp(40px, 6vw, 66px); font-weight: 800;
+    line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 14ch;
+  }
+  .hero h1 .gradient {
+    background: linear-gradient(135deg, var(--green), var(--green-glow), #6EE7B7);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500;
+    padding: 6px 14px; border-radius: var(--radius-pill);
+    border: 1px solid var(--border); color: var(--text-secondary);
+    letter-spacing: 0.5px;
+  }
+  .pill.accent { background: var(--green-soft); color: var(--green-glow); border-color: rgba(16, 185, 129, 0.25); }
+
+  section { padding: 52px 0; position: relative; }
+  .section-label {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500;
+    letter-spacing: 2px; text-transform: uppercase; color: var(--green-glow);
+    margin-bottom: 14px;
+  }
+  .section-title {
+    font-size: clamp(26px, 3.4vw, 36px); font-weight: 700;
+    letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2;
+  }
+  .section-lede {
+    font-size: 16px; color: var(--text-secondary); max-width: var(--read-w);
+    line-height: 1.75; font-weight: 300; margin-bottom: 32px;
+  }
+  .prose p {
+    font-size: 16px; color: var(--text-secondary); line-height: 1.75;
+    max-width: var(--read-w); margin-bottom: 18px;
+  }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.88em;
+    background: var(--bg-card); border: 1px solid var(--border);
+    padding: 1px 6px; border-radius: 4px; color: var(--green-glow);
+  }
+
+  pre.code {
+    background: var(--ink-deep); border: 1px solid var(--border);
+    border-radius: var(--radius-md); padding: 20px 22px;
+    overflow-x: auto; font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px; line-height: 1.65; color: var(--mist);
+    margin: 0 0 20px; max-width: var(--read-w);
+  }
+  [data-theme="light"] pre.code { background: #0F172A; color: #E2E8F0; }
+  pre.code .k { color: var(--sky); }
+  pre.code .s { color: #A5F3B8; }
+  pre.code .c { color: var(--text-muted); font-style: italic; }
+  pre.code .n { color: #FCD34D; }
+
+  .info-card {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-lg);
+    padding: 28px 32px; max-width: var(--read-w);
+    margin-bottom: 20px;
+  }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+
+  /* Side note — visually distinct aside for the separate SYSPRO vs ERPNext comparison */
+  .sidenote {
+    background: var(--green-soft); backdrop-filter: blur(10px);
+    border: 1px solid rgba(16, 185, 129, 0.25); border-left: 3px solid var(--green);
+    border-radius: var(--radius-lg); padding: 18px 24px;
+    max-width: var(--read-w); margin-bottom: 28px;
+  }
+  .sidenote .tag {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600;
+    letter-spacing: 1.4px; text-transform: uppercase; color: var(--green-glow);
+    display: block; margin-bottom: 8px;
+  }
+  .sidenote p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin: 0; }
+  .sidenote p strong { color: var(--text-primary); font-weight: 600; }
+
+  .compare-wrap {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-lg);
+    overflow: hidden; max-width: var(--read-w);
+    margin-bottom: 20px;
+  }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td {
+    padding: 12px 16px; text-align: left;
+    border-bottom: 1px solid var(--border); vertical-align: top;
+  }
+  .compare thead th {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600;
+    letter-spacing: 1.2px; text-transform: uppercase; color: var(--green-glow);
+    background: rgba(16, 185, 129, 0.04);
+  }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); }
+  .compare td.name { color: var(--text-primary); font-weight: 600; }
+  .compare td code {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.9em;
+    color: var(--green-glow);
+  }
+
+  /* Integration loop diagram */
+  .mfg-flow {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-lg);
+    padding: 28px 24px; max-width: var(--read-w);
+    margin-bottom: 24px;
+  }
+  .mfg-step {
+    font-family: 'JetBrains Mono', monospace; font-size: 12.5px;
+    color: var(--text-secondary); line-height: 1.8;
+  }
+  .mfg-step .prod { color: var(--green-glow); font-weight: 600; }
+  .mfg-step .tab { padding-left: 20px; position: relative; }
+  .mfg-step .tab::before {
+    content: '→'; position: absolute; left: 0;
+    color: var(--green); opacity: 0.5;
+  }
+
+  .gotcha-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 12px;
+  }
+  .gotcha {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-left: 3px solid var(--rose);
+    border-radius: var(--radius-md);
+    padding: 18px 22px;
+  }
+  .gotcha strong { display: block; color: var(--text-primary); font-weight: 600; font-size: 14px; margin-bottom: 6px; }
+  .gotcha p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+  .connect-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 12px;
+  }
+  .connect-node {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    padding: 18px 22px; transition: all 0.3s;
+    text-decoration: none; color: inherit; display: block;
+  }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node.soon { cursor: default; opacity: 0.72; }
+  .connect-node.soon:hover { border-color: var(--border); background: var(--bg-card); }
+  .connect-node .tag {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    letter-spacing: 1px; text-transform: uppercase;
+    color: var(--text-muted); display: block; margin-bottom: 6px;
+  }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+
+  .resource-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 12px;
+  }
+  .resource {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    padding: 18px 22px; text-decoration: none; transition: all 0.3s;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--green-glow); word-break: break-all; }
+
+  footer {
+    padding: 60px 0 40px; border-top: 1px solid var(--border);
+    text-align: center; margin-top: 40px;
+  }
+  .footer-brand {
+    font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600;
+    background: linear-gradient(135deg, var(--blue), var(--sky));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+  }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--green-glow); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+
+  .fade-up {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 768px) {
+    .nav-brand-sub { display: none; }
+    .nav-link { display: none; }
+    pre.code { font-size: 11px; padding: 14px 16px; }
+    .compare { font-size: 12px; }
+    .compare th, .compare td { padding: 10px 12px; }
+  }
+
+  *, *::before, *::after {
+    transition-property: background-color, border-color, color, box-shadow;
+    transition-duration: 0.3s; transition-timing-function: ease;
+  }
+</style>
+</head>
+<body>
+<div class="glow-orb warm"></div>
+<div class="glow-orb sky"></div>
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand">
+      <span class="nav-brand-mark">know.2nth.ai</span>
+      <span class="nav-brand-sub">fin/reporting · Skill Leaf</span>
+    </a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">← Finance</a>
+      <a href="../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">🌙</button>
+    </div>
+  </div>
+</nav>
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">›</span>
+    <a href="../../index.html#domains">Finance</a>
+    <span class="crumb-sep">›</span>
+    <a href="./">fin</a>
+    <span class="crumb-sep">›</span>
+    <span class="crumb-current">reporting</span>
+  </div>
+</div>
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> fin/reporting · Reference leaf</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      Financial reporting,<br><span class="gradient">on ERP data.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      Every ERP is a transaction engine first and a reporting tool second. This leaf is about the second job — turning the general ledger, costing, work-in-progress and inventory valuation that already sit in SYSPRO, ERPNext, Sage or Oracle into statements people can act on. It stays deliberately ERP-agnostic, then shows where an open BI stack — Evidence and friends — earns its place alongside ERPNext.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill accent">Reference</span>
+      <span class="pill">ERP-agnostic</span>
+      <span class="pill">Statutory + management</span>
+      <span class="pill">Evidence / BI stack</span>
+      <span class="pill">Human signs off</span>
+    </div>
+  </div>
+</section>
+
+<!-- ── 01 WHAT IS ── -->
+<section id="what">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 · What it is</div>
+      <h2 class="section-title">Reporting is what you do after the ERP has the data.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Financial reporting is the discipline of turning raw accounting transactions into statements that answer a question: <strong>are we making money, where, and is it real?</strong> The general ledger, sub-ledgers, costing, work-in-progress and inventory valuation are the inputs. Income statement, balance sheet, cash flow, and the management pack are the outputs.</p>
+      <p>The ERP owns the inputs. It is the system of record for every journal, every costed transaction, every stock movement. What it is usually <em>weaker</em> at is the output layer — flexible, reproducible, multi-entity reporting that a finance team can shape without a consultant. That gap is the subject of this leaf, and it's the same gap whether the ERP underneath is SYSPRO, ERPNext, Sage X3 or Oracle.</p>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.1s">
+      <h4>The reporting leaf is reference, not a system of record</h4>
+      <p>2nth never re-keys financial truth. Reporting reads from the ERP (or a warehouse fed by it), assembles and narrates, and writes nothing back into the ledger. The double-entry and period-close semantics live in the ERP for good reasons — the reporting layer consumes them, it doesn't override them.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── 02 THE ERP DATA FEED ── -->
+<section id="feed">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 · The ERP data feed</div>
+      <h2 class="section-title">Same five inputs, whatever the badge on the ERP.</h2>
+      <p class="section-lede">Manufacturing and distribution ERPs differ in their APIs and their depth, but the reporting feed is remarkably consistent. These are the objects every financial report is assembled from — and costing, WIP and inventory valuation are exactly where an ERP like SYSPRO is strongest.</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead>
+          <tr>
+            <th>ERP input</th>
+            <th>What it holds</th>
+            <th>What it feeds</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="name">General ledger</td><td>Every posted journal, by account and period</td><td>Income statement, balance sheet, trial balance</td></tr>
+          <tr><td class="name">AR / AP sub-ledgers</td><td>Customer and supplier balances, ageing</td><td>Working capital, cash-flow forecasting, DSO/DPO</td></tr>
+          <tr><td class="name">Costing</td><td>Standard / actual cost, variances by job</td><td>Gross margin, cost-of-sales analysis, pricing</td></tr>
+          <tr><td class="name">Work in progress</td><td>Value of open production orders</td><td>Inventory on the balance sheet, margin timing</td></tr>
+          <tr><td class="name">Inventory valuation</td><td>Stock on hand at cost (FIFO / weighted / standard)</td><td>Balance-sheet stock, obsolescence, GP integrity</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.08s">
+      <p>Getting these out is an API exercise, and it's the part that varies. ERPNext exposes every doctype as REST. SYSPRO offers REST plus the deeper e.net layer. Sage X3 is GraphQL over Syracuse; Oracle Fusion is REST. The shape differs; the five inputs don't. Read the per-ERP leaves under <code>biz/erp</code> for the exact mechanics.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── 03 STATUTORY VS MANAGEMENT ── -->
+<section id="two-jobs">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 · Two reporting jobs</div>
+      <h2 class="section-title">Statutory and management reporting are not the same task.</h2>
+      <p class="section-lede">Most reporting failures come from treating these as one job. They have different consumers, cadences, and tolerances for being slightly wrong.</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead>
+          <tr><th>Dimension</th><th>Statutory</th><th>Management</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="name">Audience</td><td>SARS, CIPC, auditors, lenders, shareholders</td><td>Owners, exco, ops and finance leads</td></tr>
+          <tr><td class="name">Standard</td><td>IFRS / IFRS for SMEs, fixed format</td><td>Whatever drives the decision</td></tr>
+          <tr><td class="name">Cadence</td><td>Annual (plus tax filings)</td><td>Monthly, often weekly flash</td></tr>
+          <tr><td class="name">Tolerance</td><td>Must reconcile to the cent; audited</td><td>Directionally right and fast beats late and perfect</td></tr>
+          <tr><td class="name">Best tool</td><td>ERP close + accountant + audit</td><td>A flexible reporting layer on ERP data</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.08s">
+      <p>The ERP's native close handles statutory well. It's the <strong>management</strong> column — the monthly pack, the margin-by-product cut, the multi-entity roll-up — where teams hit the wall of canned ERP reports and start exporting to spreadsheets that nobody can reproduce next month. That's the opening for a proper BI layer.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── 04 EVIDENCE + BI STACK ── -->
+<section id="evidence">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 · The opportunity</div>
+      <h2 class="section-title">Evidence and the open BI stack, alongside ERPNext.</h2>
+      <p class="section-lede">ERPNext is the best-positioned ERP for this move: open-source, API-first, every doctype a REST resource, no licence wall around your own data. That makes it cheap to pull the reporting feed into a warehouse and build a code-first reporting layer on top — version-controlled, reproducible, and free of the spreadsheet graveyard.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p><strong>The stack is four small steps,</strong> each swappable and each open-source:</p>
+    </div>
+    <div class="mfg-flow fade-up" style="transition-delay: 0.08s">
+      <div class="mfg-step">
+        <span class="prod">Extract</span> <span style="color: var(--text-muted);">— pull GL, costing, stock from ERPNext REST (or any ERP API)</span><br>
+        <span class="tab">Warehouse <span style="color: var(--text-muted);">(Postgres or DuckDB / MotherDuck — cheap, columnar, SQL)</span></span><br>
+        <span class="tab" style="padding-left: 44px;">Transform <span style="color: var(--text-muted);">(dbt models: a clean income statement, margin marts)</span></span><br>
+        <span class="tab" style="padding-left: 68px;">Report <span style="color: var(--text-muted);">(Evidence: SQL + markdown to a versioned BI site)</span></span>
+      </div>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.1s">
+      <p><strong>Evidence is the part worth knowing.</strong> It's open-source <em>BI-as-code</em>: you write SQL queries and markdown, and it renders a fast, static reporting site with charts and tables. Reports live in Git, so a management pack is reviewable, diff-able, and reproducible — the same inputs always produce the same P&amp;L. No dragging pivot tables; no "which version is current?".</p>
+    </div>
+    <pre class="code fade-up" style="transition-delay: 0.12s"><span class="c">&lt;!-- pages/management.md — an Evidence report page --&gt;</span>
+<span class="c">/* Query the warehouse table built from ERPNext GL + costing */</span>
+```sql gross_margin
+<span class="k">select</span> month, revenue, cogs, revenue - cogs <span class="k">as</span> gross_profit,
+       round(<span class="n">100.0</span>*(revenue-cogs)/revenue, <span class="n">1</span>) <span class="k">as</span> gp_pct
+<span class="k">from</span> fct_income_statement
+<span class="k">order by</span> month
+```
+
+<span class="c"># Management accounts — gross margin</span>
+
+Gross profit is tracking at &#123;gross_margin[gross_margin.length-1].gp_pct&#125;% this month.
+
+&lt;LineChart data=&#123;gross_margin&#125; x=month y=gross_profit/&gt;
+&lt;DataTable data=&#123;gross_margin&#125;/&gt;</pre>
+    <div class="prose fade-up" style="transition-delay: 0.14s">
+      <p><strong>Where it fits next to dashboard tools.</strong> Metabase and Superset are great for self-serve dashboards finance staff click around in. Evidence is for the <em>narrative, repeatable</em> artefact — the board pack, the monthly management accounts, the lender report — where you want prose, version history, and a number that is always derived the same way. Many shops run both: dashboards for exploration, Evidence for the documents that get signed.</p>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.16s">
+      <h4>Why this pairs with ERPNext specifically</h4>
+      <p>A proprietary ERP makes you fight for clean data egress — SYSPRO is reachable but deployment-dependent; Oracle and Sage gate it behind their own tooling. ERPNext hands you every figure over REST with no per-seat reporting licence, which is what makes a self-owned warehouse-plus-Evidence layer cheap enough to be worth it for a mid-sized business. The open ERP and the open BI stack are the same bet: own your data and your reporting, end to end.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── 05 WHERE AI FITS ── -->
+<section id="ai">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 · Where the agent fits</div>
+      <h2 class="section-title">The agent drafts the pack. A human signs it.</h2>
+      <p class="section-lede">Reporting is high-leverage for AI assistance and high-stakes for AI autonomy. The useful pattern keeps the agent on the assembly and narrative, never on the sign-off.</p>
+    </div>
+    <div class="gotcha-list fade-up" style="transition-delay: 0.05s">
+      <div class="gotcha" style="border-left-color: var(--green);">
+        <strong>Month-end assembly</strong>
+        <p>Pull the period's GL, run the close checklist, flag accounts that didn't reconcile or moved more than a threshold versus prior month. The agent surfaces; the accountant resolves.</p>
+      </div>
+      <div class="gotcha" style="border-left-color: var(--green);">
+        <strong>Variance narrative</strong>
+        <p>Draft the commentary — "gross margin down 2.1pts on input-cost inflation in raw materials" — straight from the warehouse marts. Finance edits the words; the numbers come from SQL, not the model.</p>
+      </div>
+      <div class="gotcha" style="border-left-color: var(--green);">
+        <strong>Reconciliation flags</strong>
+        <p>Bank vs ledger, sub-ledger vs control account, inter-company mismatches. The agent is a tireless first-pass reviewer that never gets bored on line 4,000.</p>
+      </div>
+      <div class="gotcha" style="border-left-color: var(--green);">
+        <strong>Never the source of truth</strong>
+        <p>The model does not invent a number, post a journal, or approve a statement. Every figure traces to an ERP transaction or a SQL transform a human can re-run. Statutory output stays auditor-grade.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 06 DECISION GUIDE ── -->
+<section id="decide">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 · Decision guide</div>
+      <h2 class="section-title">When to build the BI layer — and when the ERP is enough.</h2>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead>
+          <tr><th>Reach for the warehouse + Evidence when</th><th>Stick with native ERP reports when</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Multiple entities or sources to consolidate</td><td>One company, one ledger, simple structure</td></tr>
+          <tr><td>You need reproducible, version-controlled packs</td><td>A monthly export to a spreadsheet genuinely suffices</td></tr>
+          <tr><td>Management reporting outgrew canned ERP reports</td><td>The ERP's standard reports already answer the questions</td></tr>
+          <tr><td>You're on ERPNext (clean, free data egress)</td><td>Data egress is hard or licensed and the ROI isn't there yet</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.08s">
+      <p>The honest line: <strong>don't stand up a warehouse to produce one P&amp;L.</strong> The stack pays off when reporting is multi-source, repeated monthly, and needs to be defensible. Below that, the ERP's own reports plus an accountant are the right amount of machinery.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── 07 SA CONTEXT ── -->
+<section id="sa">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 · South African context</div>
+      <h2 class="section-title">IFRS, SARS, and the rand make this concrete.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Statutory reporting here runs on <strong>IFRS</strong> or <strong>IFRS for SMEs</strong>, with annual financial statements and <strong>CIPC</strong> annual returns. Tax filing is its own rhythm — <strong>VAT201</strong>, <strong>EMP201</strong>, and provisional tax all pull from the same ledger and have to tie back to it. <strong>B-BBEE</strong> reporting adds spend and ownership cuts that the management layer can produce cheaply once the data is in a warehouse.</p>
+      <p>Two local realities shape the build: forex (multi-currency revaluation if you import inputs or export goods, priced in ZAR but exposed to the dollar), and the firm line that <strong>assurance stays human</strong> — an agent can assemble and narrate, but a registered auditor signs. None of that changes the architecture; it just sets the guardrails.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── 08 CONNECTIONS ── -->
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 · How this leaf connects</div>
+      <h2 class="section-title">What feeds reporting, and what reporting feeds.</h2>
+      <p class="section-lede">Reporting sits downstream of every ERP leaf and upstream of the data layer that does the heavy lifting.</p>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="../biz/erp/erpnext.html" class="connect-node">
+        <span class="tag">biz/erp/erpnext</span>
+        <div class="skill">ERPNext (the pairing)</div>
+        <div class="why">Open-source, REST-per-doctype, free data egress — the ERP this leaf recommends pairing with Evidence and a self-owned warehouse for management reporting.</div>
+      </a>
+      <a href="../biz/erp/syspro.html" class="connect-node">
+        <span class="tag">biz/erp/syspro</span>
+        <div class="skill">SYSPRO (the feed)</div>
+        <div class="why">Costing, WIP and inventory valuation are SYSPRO's strength — the natural feed into financial reporting once the data is in hand, over REST or e.net.</div>
+      </a>
+      <a href="../biz/erp/sage-x3.html" class="connect-node">
+        <span class="tag">biz/erp/sage-x3</span>
+        <div class="skill">Sage X3</div>
+        <div class="why">Mid-market GL and multi-site stock over GraphQL — another statutory-grade source feeding the same reporting layer.</div>
+      </a>
+      <a href="../biz/erp/oracle-scm.html" class="connect-node">
+        <span class="tag">biz/erp/oracle-scm</span>
+        <div class="skill">Oracle Fusion SCM</div>
+        <div class="why">Enterprise multi-entity, multi-currency source. Heavier egress, but the same five inputs land in the warehouse.</div>
+      </a>
+      <a href="../data/warehousing/" class="connect-node">
+        <span class="tag">data/warehousing</span>
+        <div class="skill">Warehousing</div>
+        <div class="why">Where the extracted ERP feed lands — Postgres or DuckDB as the columnar store the reporting layer queries.</div>
+      </a>
+      <div class="connect-node soon">
+        <span class="tag">data/engineering</span>
+        <div class="skill">Data engineering</div>
+        <div class="why">The dbt transforms that turn raw ERP tables into a clean income statement and margin marts Evidence can render.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 09 RESOURCES ── -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">09 · Resources</div>
+      <h2 class="section-title">Primary sources.</h2>
+      <p class="section-lede">The open BI tools named above, and the ERP accounting docs the feed comes from.</p>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://evidence.dev/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">BI-as-code</span>
+        <span class="r-title">Evidence — SQL + markdown BI</span>
+        <span class="r-url">evidence.dev</span>
+      </a>
+      <a href="https://docs.getdbt.com/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Transform</span>
+        <span class="r-title">dbt documentation</span>
+        <span class="r-url">docs.getdbt.com</span>
+      </a>
+      <a href="https://docs.frappe.io/erpnext/user/manual/en/accounts" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">ERP source</span>
+        <span class="r-title">ERPNext accounting manual</span>
+        <span class="r-url">docs.frappe.io/erpnext</span>
+      </a>
+      <a href="https://duckdb.org/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Warehouse</span>
+        <span class="r-title">DuckDB — in-process analytics</span>
+        <span class="r-url">duckdb.org</span>
+      </a>
+    </div>
+  </div>
+</section>
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../index.html">Skills tree</a>
+      <a href="./">Finance hub</a>
+      <a href="../biz/erp/">ERP sub-hub</a>
+    </div>
+    <p class="footer-copy">© 2026 2nth.ai · Built in Johannesburg, South Africa</p>
+  </div>
+</footer>
+<script>
+  function toggleTheme() {
+    const html = document.documentElement;
+    const current = html.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
+    localStorage.setItem('theme', next);
+  }
+  const saved = localStorage.getItem('theme');
+  if (saved) {
+    document.documentElement.setAttribute('data-theme', saved);
+    document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '☀️' : '🌙';
+  }
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>
