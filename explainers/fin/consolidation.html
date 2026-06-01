@@ -3,25 +3,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Finance — know.2nth.ai</title>
-<meta name="description" content="Financial reporting, planning and compliance on top of ERP data — the operational intelligence layer for finance teams and the agents that assist them.">
+<title>Consolidation — know.2nth.ai</title>
+<meta name="description" content="Group consolidation on ERP data — multi-entity roll-ups, inter-company elimination and currency translation, ERP-agnostic, using a warehouse and the open BI stack to consolidate across ERPNext, SYSPRO, Sage and Oracle.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="know.2nth.ai">
-<meta property="og:url" content="https://know.2nth.ai/explainers/fin/">
-<meta property="og:title" content="Finance — know.2nth.ai">
-<meta property="og:description" content="Financial reporting, planning and compliance on top of ERP data — the operational intelligence layer for finance teams and the agents that assist them.">
+<meta property="og:url" content="https://know.2nth.ai/explainers/fin/consolidation">
+<meta property="og:title" content="Consolidation — know.2nth.ai">
+<meta property="og:description" content="Group consolidation on ERP data — multi-entity roll-ups, inter-company elimination and currency translation, ERP-agnostic, using a warehouse and the open BI stack to consolidate across ERPNext, SYSPRO, Sage and Oracle.">
 <meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="know.2nth.ai — The Knowledge Tree">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Finance — know.2nth.ai">
-<meta name="twitter:description" content="Financial reporting, planning and compliance on top of ERP data — the operational intelligence layer for finance teams and the agents that assist them.">
+<meta name="twitter:title" content="Consolidation — know.2nth.ai">
+<meta name="twitter:description" content="Group consolidation on ERP data — multi-entity roll-ups, inter-company elimination and currency translation, ERP-agnostic, using a warehouse and the open BI stack to consolidate across ERPNext, SYSPRO, Sage and Oracle.">
 <meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3C/svg%3E">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3C/svg%3E">
 <style>
   :root {
     --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33;
@@ -337,10 +337,10 @@
   <div class="nav-inner">
     <a href="../../index.html" class="nav-brand">
       <span class="nav-brand-mark">know.2nth.ai</span>
-      <span class="nav-brand-sub">fin · Domain hub</span>
+      <span class="nav-brand-sub">fin/consolidation · Reference leaf</span>
     </a>
     <div class="nav-right">
-      
+      <a href="./" class="nav-link">← Finance</a>
       <a href="../../index.html#domains" class="nav-link">Tree</a>
       <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">🌙</button>
     </div>
@@ -352,84 +352,237 @@
     <span class="crumb-sep">›</span>
     <a href="../../index.html#domains">Finance</a>
     <span class="crumb-sep">›</span>
-    <span class="crumb-current">fin</span>
+    <a href="./">fin</a>
+    <span class="crumb-sep">›</span>
+    <span class="crumb-current">consolidation</span>
   </div>
 </div>
 <!-- ── HERO ── -->
 <section class="hero">
   <div class="container">
-    <div class="eyebrow fade-up"><span class="dot"></span> fin · Domain hub</div>
+    <div class="eyebrow fade-up"><span class="dot"></span> fin/consolidation · Reference leaf</div>
     <h1 class="fade-up" style="transition-delay: 0.05s">
-      Finance,<br><span class="gradient">on ERP data.</span>
+      Consolidation,<br><span class="gradient">across the group.</span>
     </h1>
     <p class="sub fade-up" style="transition-delay: 0.1s">
-      The finance domain of the knowledge tree. It sits downstream of every ERP — reading the ledger, costing and inventory valuation those systems own, and turning them into reporting, planning and compliance output. The opening leaf is financial reporting; the rest of the band follows the same rule: the ERP keeps the truth, finance shapes the view, a human signs the result.
+      One company is a report. A group is a consolidation problem: many entities, often many ERPs, different charts of accounts and currencies, all of which have to net into a single set of group accounts that survives an audit. This leaf is the ERP-agnostic shape of that problem — and where a warehouse makes it tractable.
     </p>
     <div class="hero-meta fade-up" style="transition-delay: 0.15s">
-      <span class="pill accent">4 Live leaves</span>
-      <span class="pill">ERP-agnostic</span>
-      <span class="pill">Evidence / BI stack</span>
-      <span class="pill">SA: IFRS · SARS · CIPC</span>
+      <span class="pill accent">Reference</span>
+      <span class="pill">Multi-entity</span>
+      <span class="pill">Inter-company elimination</span>
+      <span class="pill">FX translation</span>
     </div>
   </div>
 </section>
 
-<!-- ── 01 LEAVES ── -->
-<section id="leaves">
+<!-- ── 01 WHAT IS ── -->
+<section id="what">
   <div class="container">
     <div class="fade-up">
-      <div class="section-label">01 · Leaves</div>
-      <h2 class="section-title">What's in the finance branch</h2>
-      <p class="section-lede">The full close-to-compliance chain is live — reporting, planning, consolidation and compliance. Each reads from the ERP layer under <code>biz/erp</code>, shares one ERP-fed warehouse, and never writes financial truth back.</p>
+      <div class="section-label">01 · What it is</div>
+      <h2 class="section-title">Combining many sets of books into one.</h2>
     </div>
-    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
-      <a href="reporting.html" class="connect-node">
-        <span class="tag">fin/reporting · Live</span>
-        <div class="skill">Financial reporting</div>
-        <div class="why">Turning ERP ledger, costing, WIP and inventory valuation into statutory and management reporting — ERP-agnostic, with Evidence and the open BI stack as the layer that complements ERPNext.</div>
-      </a>
-      <a href="planning.html" class="connect-node">
-        <span class="tag">fin/planning · Live</span>
-        <div class="skill">Planning &amp; FP&amp;A</div>
-        <div class="why">Budgets, rolling forecasts and driver-based scenario models built on the same warehouse the reporting layer feeds from.</div>
-      </a>
-      <a href="consolidation.html" class="connect-node">
-        <span class="tag">fin/consolidation · Live</span>
-        <div class="skill">Consolidation</div>
-        <div class="why">Multi-entity roll-ups, inter-company elimination and currency translation across a group of companies, on a neutral warehouse layer.</div>
-      </a>
-      <a href="compliance.html" class="connect-node">
-        <span class="tag">fin/compliance · Live</span>
-        <div class="skill">Tax &amp; compliance</div>
-        <div class="why">VAT201, EMP201, provisional tax and CIPC filings that tie back to the ledger they came from — the agent assembles, a human submits via eFiling.</div>
-      </a>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Consolidation is the process of taking the individual financial statements of every company in a group and combining them into one — as if the group were a single entity. It's a reporting job with three complications a standalone company never faces: <strong>inter-company transactions</strong> that must be eliminated, <strong>different currencies</strong> that must be translated, and <strong>different charts of accounts</strong> that must be mapped to a common one.</p>
+      <p>Get it wrong and the group accounts double-count revenue, carry phantom debtors, or fail to tie out — which an auditor will find. The mechanics are the same whether the subsidiaries run ERPNext, SYSPRO, Sage or a mix; what changes is how hard it is to get clean data out of each.</p>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.1s">
+      <h4>The consolidation layer reads; it never re-posts</h4>
+      <p>Each subsidiary's ERP keeps its own books and stays the system of record. Consolidation reads those books into a separate layer, applies eliminations and translation there, and produces group output. It does not write adjusting journals back into the subsidiaries — those are statutory entities with their own filings.</p>
     </div>
   </div>
 </section>
 
-<!-- ── 02 CONNECTIONS ── -->
+<!-- ── 02 THE HARD PARTS ── -->
+<section id="hard">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 · The three hard parts</div>
+      <h2 class="section-title">Elimination, translation, mapping.</h2>
+      <p class="section-lede">Consolidation is conceptually simple — add up the entities — and operationally fiddly because of three adjustments that have to be exactly right.</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead>
+          <tr><th>Adjustment</th><th>Why</th><th>The trap</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="name">Inter-company elimination</td><td>Sales between group companies aren't group revenue</td><td>Both sides must net to zero — they rarely do on the first pass</td></tr>
+          <tr><td class="name">Currency translation</td><td>Subsidiaries report in their own currency (IAS 21)</td><td>Rate type matters: closing for balance sheet, average for P&amp;L</td></tr>
+          <tr><td class="name">Chart-of-accounts mapping</td><td>Each ERP has its own account structure</td><td>One company's "freight" is another's "logistics" — map once, carefully</td></tr>
+          <tr><td class="name">Minority interest</td><td>You may own less than 100% of a subsidiary</td><td>The slice you don't own is reported separately</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.08s">
+      <p>Inter-company elimination is the one that eats time. Company A books a sale to Company B; B books the purchase; in the group they cancel. When A's number and B's number don't match — timing, FX, a missed invoice — someone has to chase the difference. It's exactly the kind of tireless reconciliation an agent is good at flagging.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── 03 THE DATA CHALLENGE ── -->
+<section id="data">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 · The data challenge</div>
+      <h2 class="section-title">Many ERPs, one model.</h2>
+      <p class="section-lede">The real difficulty isn't the accounting — it's getting comparable data out of several systems that were never designed to agree with each other.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>A group acquired over time rarely runs one ERP. You'll find ERPNext in the company built recently, SYSPRO in the manufacturing subsidiary, Sage in the one bought from a founder, maybe a spreadsheet in the smallest. Each has its own API, its own chart of accounts, its own period-close timing.</p>
+      <p>ERPNext deserves a specific note: its native <strong>multi-company</strong> support handles inter-company accounts and a shared chart within one instance, which removes a chunk of this pain if the group standardises on it. But the moment a group spans systems, the only sane place to consolidate is a neutral layer that every ERP feeds into — a warehouse.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── 04 THE STACK ── -->
+<section id="stack">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 · The opportunity</div>
+      <h2 class="section-title">The warehouse is the consolidation engine.</h2>
+      <p class="section-lede">Consolidation is the strongest case for the warehouse-plus-code approach, because it's inherently multi-source. Each entity's trial balance lands in the warehouse; mapping, elimination and translation are dbt models; the group pack is Evidence. Reproducible, and the same every month-end.</p>
+    </div>
+    <div class="mfg-flow fade-up" style="transition-delay: 0.08s">
+      <div class="mfg-step">
+        <span class="prod">Extract</span> <span style="color: var(--text-muted);">— each entity's trial balance, from its own ERP API</span><br>
+        <span class="tab">Map <span style="color: var(--text-muted);">(dbt: each chart of accounts to the group chart)</span></span><br>
+        <span class="tab" style="padding-left: 44px;">Eliminate + translate <span style="color: var(--text-muted);">(inter-company nets to zero; FX at the right rate)</span></span><br>
+        <span class="tab" style="padding-left: 68px;">Group pack <span style="color: var(--text-muted);">(Evidence: consolidated statements, versioned)</span></span>
+      </div>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.1s">
+      <p>Because the mapping and elimination rules are code in Git, the consolidation is <strong>auditable and repeatable</strong>: an auditor can see exactly how each group figure was derived from the subsidiaries, and re-running last quarter produces the identical result. Dedicated tools (OneStream, Workiva, CCH Tagetik) own the enterprise end of this market; for a mid-sized group the open warehouse approach delivers the same defensibility at a fraction of the cost.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── 05 WHERE AI FITS ── -->
+<section id="ai">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 · Where the agent fits</div>
+      <h2 class="section-title">The agent chases the differences; finance approves the group.</h2>
+      <p class="section-lede">Consolidation is heavy on reconciliation and mapping — work the agent accelerates — and ends in a signed group statement that stays a human responsibility.</p>
+    </div>
+    <div class="gotcha-list fade-up" style="transition-delay: 0.05s">
+      <div class="gotcha" style="border-left-color: var(--green);">
+        <strong>Inter-company mismatch detection</strong>
+        <p>Surface every inter-company pair that doesn't net to zero, ranked by size, with the likely cause (timing, FX, missing invoice). The agent finds; finance resolves.</p>
+      </div>
+      <div class="gotcha" style="border-left-color: var(--green);">
+        <strong>Mapping suggestions</strong>
+        <p>When a subsidiary adds an account, propose where it maps in the group chart. A human confirms the mapping before it's committed to code.</p>
+      </div>
+      <div class="gotcha" style="border-left-color: var(--green);">
+        <strong>Translation checks</strong>
+        <p>Flag where the wrong rate type was applied, or where a translation reserve doesn't reconcile. Tedious, error-prone, perfect for a first-pass reviewer.</p>
+      </div>
+      <div class="gotcha" style="border-left-color: var(--green);">
+        <strong>The group statement stays human</strong>
+        <p>The agent assembles and reconciles; a person signs the consolidated accounts. Group statements are audited and filed — auditor-grade, every figure traceable.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 06 DECISION GUIDE ── -->
+<section id="decide">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 · Decision guide</div>
+      <h2 class="section-title">Native multi-company, or a warehouse?</h2>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead>
+          <tr><th>Consolidate in a warehouse when</th><th>Native ERP multi-company is enough when</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>The group spans multiple ERPs or instances</td><td>Every entity runs one ERPNext instance</td></tr>
+          <tr><td>Charts of accounts differ across entities</td><td>Entities share one chart already</td></tr>
+          <tr><td>You need an auditable, repeatable derivation</td><td>The ERP's own consolidation report satisfies the auditor</td></tr>
+          <tr><td>Foreign subsidiaries bring FX translation</td><td>Single currency across the group</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.08s">
+      <p>The honest line: if the whole group is on one ERPNext instance, use its multi-company features and don't build a warehouse to consolidate two companies. The warehouse wins the moment you're <strong>spanning systems or currencies</strong> — which is most groups that grew by acquisition.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── 07 SA CONTEXT ── -->
+<section id="sa">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 · South African context</div>
+      <h2 class="section-title">IFRS 10 and IAS 21 set the rules.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Group accounts here are governed by <strong>IFRS 10</strong> (consolidated financial statements — who and what you consolidate) and <strong>IAS 21</strong> (the effects of changes in foreign exchange rates — how you translate). Both are mainstream IFRS, so the architecture is standard; the discipline is applying the right rate type and consolidating the right entities.</p>
+      <p>The common local wrinkle is the group with <strong>offshore subsidiaries</strong> — a holding company in South Africa over operations elsewhere in Africa or abroad. That puts FX translation and exchange-control awareness squarely in the consolidation, and makes the rand's volatility a line item in the group result rather than a footnote. Assurance, as ever, stays with a registered auditor.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── 08 CONNECTIONS ── -->
 <section id="connect">
   <div class="container">
     <div class="fade-up">
-      <div class="section-label">02 · How finance connects</div>
-      <h2 class="section-title">Upstream of the ledger, downstream of the warehouse.</h2>
-      <p class="section-lede">Finance is a consumer domain: it pulls from the systems of record and the data layer, then produces the artefacts a business runs on.</p>
+      <div class="section-label">08 · How this leaf connects</div>
+      <h2 class="section-title">Consolidation sits on top of every entity's books.</h2>
+      <p class="section-lede">It's the most multi-source job in finance — pulling from every ERP in the group.</p>
     </div>
     <div class="connect-grid fade-up" style="transition-delay: 0.05s">
-      <a href="../biz/erp/" class="connect-node">
-        <span class="tag">biz/erp</span>
-        <div class="skill">ERP sub-hub</div>
-        <div class="why">The systems of record finance reads from — ERPNext, SYSPRO, Sage X3, Oracle. The five reporting inputs all originate here.</div>
+      <a href="reporting.html" class="connect-node">
+        <span class="tag">fin/reporting</span>
+        <div class="skill">Financial reporting</div>
+        <div class="why">Consolidation is reporting with eliminations and translation added. Same warehouse, same Evidence pack, scaled to a group.</div>
       </a>
-      <a href="../data/" class="connect-node">
-        <span class="tag">data</span>
-        <div class="skill">Data domain</div>
-        <div class="why">Warehousing and engineering — the columnar store and dbt transforms that make multi-source financial reporting reproducible.</div>
+      <a href="../biz/erp/erpnext.html" class="connect-node">
+        <span class="tag">biz/erp/erpnext</span>
+        <div class="skill">ERPNext (multi-company)</div>
+        <div class="why">Native multi-company support removes a chunk of consolidation pain when the whole group standardises on one instance.</div>
       </a>
-      <a href="../agents/" class="connect-node">
-        <span class="tag">agents</span>
-        <div class="skill">Agents domain</div>
-        <div class="why">The assistants that draft the pack and narrate variances — on the assembly, never on the sign-off.</div>
+      <a href="../biz/erp/syspro.html" class="connect-node">
+        <span class="tag">biz/erp/syspro</span>
+        <div class="skill">SYSPRO</div>
+        <div class="why">The manufacturing subsidiary's books — a common entity in a mixed-ERP group that has to feed the consolidation.</div>
+      </a>
+      <div class="connect-node soon">
+        <span class="tag">data/engineering</span>
+        <div class="skill">Data engineering</div>
+        <div class="why">The mapping, elimination and translation dbt models that turn many trial balances into one group set.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 09 RESOURCES ── -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">09 · Resources</div>
+      <h2 class="section-title">Primary sources.</h2>
+      <p class="section-lede">The standards that govern group accounts, and the open layer that produces them.</p>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://www.ifrs.org/issued-standards/list-of-standards/ifrs-10-consolidated-financial-statements/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Standard</span>
+        <span class="r-title">IFRS 10 — Consolidated statements</span>
+        <span class="r-url">ifrs.org ... ifrs-10</span>
+      </a>
+      <a href="https://www.ifrs.org/issued-standards/list-of-standards/ias-21-the-effects-of-changes-in-foreign-exchange-rates/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Standard</span>
+        <span class="r-title">IAS 21 — FX translation</span>
+        <span class="r-url">ifrs.org ... ias-21</span>
+      </a>
+      <a href="https://docs.getdbt.com/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Engine</span>
+        <span class="r-title">dbt documentation</span>
+        <span class="r-url">docs.getdbt.com</span>
       </a>
     </div>
   </div>
@@ -441,29 +594,16 @@
     <div class="footer-links">
       <a href="../../index.html">Skills tree</a>
       <a href="./">Finance hub</a>
-      <a href="../biz/erp/">ERP sub-hub</a>
+      <a href="reporting.html">Financial reporting</a>
     </div>
     <p class="footer-copy">© 2026 2nth.ai · Built in Johannesburg, South Africa</p>
   </div>
 </footer>
 <script>
-  function toggleTheme() {
-    const html = document.documentElement;
-    const current = html.getAttribute('data-theme');
-    const next = current === 'dark' ? 'light' : 'dark';
-    html.setAttribute('data-theme', next);
-    document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
-    localStorage.setItem('theme', next);
-  }
-  const saved = localStorage.getItem('theme');
-  if (saved) {
-    document.documentElement.setAttribute('data-theme', saved);
-    document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '☀️' : '🌙';
-  }
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
-  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+  function toggleTheme(){const h=document.documentElement;const n=h.getAttribute('data-theme')==='dark'?'light':'dark';h.setAttribute('data-theme',n);document.querySelector('.theme-toggle').textContent=n==='dark'?'☀️':'🌙';localStorage.setItem('theme',n);}
+  const s=localStorage.getItem('theme');if(s){document.documentElement.setAttribute('data-theme',s);document.querySelector('.theme-toggle').textContent=s==='dark'?'☀️':'🌙';}
+  const o=new IntersectionObserver((e)=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.fade-up').forEach(el=>o.observe(el));
 </script>
 <script src="/gate.js" defer></script>
 </body>
