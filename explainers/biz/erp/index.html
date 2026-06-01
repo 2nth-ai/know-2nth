@@ -4,12 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ERP — know.2nth.ai</title>
-<meta name="description" content="Enterprise resource planning integrations in the 2nth skill tree. Five production skills: Sage X3, ERPNext, Shopify, WooCommerce, Oracle Fusion Cloud SCM.">
+<meta name="description" content="Enterprise resource planning integrations in the 2nth skill tree. Six production skills — Sage X3, ERPNext, Odoo, Shopify, WooCommerce, Oracle Fusion Cloud SCM — plus SYSPRO as a context leaf.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="know.2nth.ai">
 <meta property="og:url" content="https://know.2nth.ai/explainers/biz/erp/">
 <meta property="og:title" content="ERP — know.2nth.ai">
-<meta property="og:description" content="Enterprise resource planning integrations in the 2nth skill tree. Five production skills: Sage X3, ERPNext, Shopify, WooCommerce, Oracle Fusion Cloud SCM.">
+<meta property="og:description" content="Enterprise resource planning integrations in the 2nth skill tree. Six production skills — Sage X3, ERPNext, Odoo, Shopify, WooCommerce, Oracle Fusion Cloud SCM — plus SYSPRO as a context leaf.">
 <meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
@@ -17,7 +17,7 @@
 <meta property="og:image:alt" content="know.2nth.ai — The Knowledge Tree">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="ERP — know.2nth.ai">
-<meta name="twitter:description" content="Enterprise resource planning integrations in the 2nth skill tree. Five production skills: Sage X3, ERPNext, Shopify, WooCommerce, Oracle Fusion Cloud SCM.">
+<meta name="twitter:description" content="Enterprise resource planning integrations in the 2nth skill tree. Six production skills — Sage X3, ERPNext, Odoo, Shopify, WooCommerce, Oracle Fusion Cloud SCM — plus SYSPRO as a context leaf.">
 <meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -323,13 +323,13 @@
   <div class="container">
     <div class="eyebrow fade-up"><span class="dot"></span> biz/erp · Sub-domain hub</div>
     <h1 class="fade-up" style="transition-delay: 0.05s">
-      Five ERPs.<br><span class="gradient">One pattern.</span>
+      Seven ERPs.<br><span class="gradient">One pattern.</span>
     </h1>
     <p class="sub fade-up" style="transition-delay: 0.1s">
-      Enterprise resource planning integrations. All six production skills in this sub-domain follow the same shape — authenticate, introspect, query, write, webhook — wired so AI agents can act on orders, invoices, and stock without a human in the loop. 2nth is middleware, not the system of record: read from the ERP, enrich with AI, write results back.
+      Enterprise resource planning integrations. The six production skills in this sub-domain follow the same shape — authenticate, introspect, query, write, webhook — wired so AI agents can act on orders, invoices, and stock without a human in the loop. 2nth is middleware, not the system of record: read from the ERP, enrich with AI, write results back. SYSPRO joins as a context leaf — the SA incumbent, mapped but not yet integrated.
     </p>
     <div class="hub-stats fade-up" style="transition-delay: 0.15s">
-      <div class="hub-stat"><div class="num">5</div><div class="label">Production leaves</div></div>
+      <div class="hub-stat"><div class="num">6</div><div class="label">Production leaves</div></div>
       <div class="hub-stat"><div class="num">3</div><div class="label">API styles</div></div>
       <div class="hub-stat"><div class="num">1</div><div class="label">Shared pattern</div></div>
     </div>
@@ -341,8 +341,8 @@
   <div class="container">
     <div class="fade-up">
       <div class="hub-label">01 · Skill leaves</div>
-      <h2 class="hub-title">The six ERPs, by API shape</h2>
-      <p class="hub-lede">Each card is a full production skill in the canonical 2nth-ai/skills repo — with working code, rate limits, and the gotchas that only show up in real deployments. Click any to drill in.</p>
+      <h2 class="hub-title">Seven ERPs, by API shape</h2>
+      <p class="hub-lede">Each card but one is a full production skill in the canonical 2nth-ai/skills repo — working code, rate limits, and the gotchas that only show up in real deployments. SYSPRO is the exception: a context leaf on the SA incumbent, not yet integrated. Click any to drill in.</p>
     </div>
     <div class="leaf-grid fade-up" style="transition-delay: 0.05s">
 
@@ -442,6 +442,22 @@
         </div>
       </a>
 
+      <a href="syspro.html" class="leaf-card" data-ish="hybrid">
+        <div class="leaf-head">
+          <div class="leaf-emoji">⚙️</div>
+          <span class="leaf-state" style="background: var(--warm-soft); color: var(--warm-glow);">Context</span>
+        </div>
+        <h3>SYSPRO</h3>
+        <span class="path">biz/erp/syspro</span>
+        <p>The SA-founded mid-market ERP for discrete manufacturing and distribution — the incumbent in much of the local install base. Microsoft stack, REST API plus the deeper e.net (COM/.NET) layer. No 2nth skill yet: a context leaf on its technology, MCP readiness, and where ERPNext competes for the smaller business.</p>
+        <div class="leaf-meta">
+          <span class="m">REST + e.net</span>
+          <span class="m">Microsoft stack</span>
+          <span class="m">MCP-ready surface</span>
+          <span class="m">SA incumbent</span>
+        </div>
+      </a>
+
     </div>
   </div>
 </section>
@@ -452,7 +468,7 @@
     <div class="fade-up">
       <div class="hub-label">02 · Side by side</div>
       <h2 class="hub-title">Pick the right leaf for the job</h2>
-      <p class="hub-lede">All six follow the same high-level pattern, but the shapes differ. Use this to match the workload to the integration that actually fits.</p>
+      <p class="hub-lede">The six production skills follow the same high-level pattern, and SYSPRO would slot into it too — but the shapes differ. Use this to match the workload to the integration that actually fits.</p>
     </div>
     <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
       <table class="compare">
@@ -481,6 +497,13 @@
             <td>~5 req/sec default</td>
           </tr>
           <tr>
+            <td class="name">Odoo</td>
+            <td>XML-RPC + JSON-RPC</td>
+            <td>API key or password (per-DB)</td>
+            <td>Modular ERP, e-commerce + accounting in one, Apps Store MCP modules</td>
+            <td>Self-hosted: yours · Odoo.sh: plan-bound</td>
+          </tr>
+          <tr>
             <td class="name">Shopify</td>
             <td>Admin REST + GraphQL, Storefront GraphQL</td>
             <td>Access tokens (Admin + Storefront)</td>
@@ -500,6 +523,13 @@
             <td>Basic / OAuth2 (IDCS)</td>
             <td>Enterprise supply chain — multi-site, multi-currency, 9-pillar coverage, SA compliance</td>
             <td>~20 rps sustained · BATCH preferred</td>
+          </tr>
+          <tr>
+            <td class="name">SYSPRO <span style="color: var(--text-muted); font-weight: 400;">(context)</span></td>
+            <td>REST + e.net (COM/.NET)</td>
+            <td>Token / Basic over HTTPS</td>
+            <td>SA mid-market manufacturing incumbents, deep costing &amp; WIP, dense local partner network</td>
+            <td>Deployment-dependent · introspect first</td>
           </tr>
         </tbody>
       </table>
