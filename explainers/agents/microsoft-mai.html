@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Microsoft MAI &amp; Humanist Superintelligence — know.2nth.ai</title>
+<meta name="description" content="Microsoft Build 2026: the seven in-house MAI frontier models and the &quot;humanist superintelligence&quot; strategy. What was actually announced, what it means for agent-OS architecture, the open-standard anchors (MCP, Agent Skills, Gymnasium, MRC), and the POPIA/SA data-residency note.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/agents/microsoft-mai">
+<meta property="og:title" content="Microsoft MAI &amp; Humanist Superintelligence — know.2nth.ai">
+<meta property="og:description" content="Microsoft Build 2026: the seven in-house MAI frontier models and the humanist-superintelligence strategy. What was announced, what it means for agent-OS architecture, and the open-standard anchors.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai — The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Microsoft MAI &amp; Humanist Superintelligence — know.2nth.ai">
+<meta name="twitter:description" content="Microsoft Build 2026: seven in-house MAI models, the humanist-superintelligence strategy, agent-OS implications, and the open-standard anchors.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33;
+    --blue: #2563EB; --blue-glow: #3B82F6;
+    --sky: #38BDF8; --sky-muted: #7DD3FC;
+    --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8;
+    --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(99, 102, 241, 0.12);
+    --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12); --indigo: #6366F1; --indigo-glow: #818CF8; --indigo-soft: rgba(99, 102, 241, 0.12);
+    --violet: #8B5CF6; --violet-soft: rgba(139, 92, 246, 0.12);
+    --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12);
+    --bg: var(--ink); --bg-raised: var(--navy);
+    --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(99, 102, 241, 0.06);
+    --text-primary: var(--paper); --text-secondary: var(--slate);
+    --text-muted: #64748B;
+    --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(99, 102, 241, 0.3);
+    --max-w: 1200px; --read-w: 760px;
+    --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px;
+    --domain: var(--indigo); --domain-glow: var(--indigo-glow);
+  }
+  [data-theme="light"] {
+    --bg: #F1F5F9; --bg-raised: #FFFFFF;
+    --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(99, 102, 241, 0.04);
+    --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8;
+    --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(99, 102, 241, 0.25);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+    background: var(--bg); color: var(--text-primary);
+    line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased;
+  }
+  body::before {
+    content: ''; position: fixed; inset: 0; opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 9999;
+  }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.warm { width: 600px; height: 600px; background: var(--indigo); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+
+  nav {
+    position: sticky; top: 0; z-index: 100; padding: 0 24px;
+    backdrop-filter: blur(20px) saturate(1.4);
+    background: rgba(11, 17, 32, 0.75);
+    border-bottom: 1px solid var(--border);
+  }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner {
+    max-width: var(--max-w); margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 60px;
+  }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark {
+    font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px;
+    background: linear-gradient(135deg, var(--blue), var(--sky));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+  }
+  .nav-brand-sub {
+    font-size: 12px; color: var(--text-muted);
+    letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500;
+    padding-left: 10px; border-left: 1px solid var(--border);
+  }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--indigo-glow); }
+  .theme-toggle {
+    background: none; border: 1px solid var(--border); color: var(--text-secondary);
+    width: 36px; height: 36px; border-radius: 50%; cursor: pointer;
+    display: grid; place-items: center; font-size: 16px; transition: all 0.2s;
+  }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--indigo-glow); }
+
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .read { max-width: var(--read-w); }
+
+  .crumb {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted);
+    letter-spacing: 0.5px; padding: 28px 0 0;
+    display: flex; gap: 10px; flex-wrap: wrap;
+  }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--indigo-glow); }
+  .crumb-sep { opacity: 0.5; }
+  .crumb-current { color: var(--text-secondary); }
+
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500;
+    letter-spacing: 2px; text-transform: uppercase; color: var(--indigo-glow);
+    margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px;
+  }
+  .hero .eyebrow .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--indigo-glow); box-shadow: 0 0 12px var(--indigo-glow);
+  }
+  .hero h1 {
+    font-size: clamp(40px, 6vw, 66px); font-weight: 800;
+    line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 14ch;
+  }
+  .hero h1 .gradient {
+    background: linear-gradient(135deg, var(--indigo), var(--indigo-glow), #A5B4FC);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500;
+    padding: 6px 14px; border-radius: var(--radius-pill);
+    border: 1px solid var(--border); color: var(--text-secondary);
+    letter-spacing: 0.5px;
+  }
+  .pill.accent { background: var(--indigo-soft); color: var(--indigo-glow); border-color: rgba(99, 102, 241, 0.25); }
+
+  section { padding: 52px 0; position: relative; }
+  .section-label {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500;
+    letter-spacing: 2px; text-transform: uppercase; color: var(--indigo-glow);
+    margin-bottom: 14px;
+  }
+  .section-title {
+    font-size: clamp(26px, 3.4vw, 36px); font-weight: 700;
+    letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2;
+  }
+  .section-lede {
+    font-size: 16px; color: var(--text-secondary); max-width: var(--read-w);
+    line-height: 1.75; font-weight: 300; margin-bottom: 32px;
+  }
+  .prose p {
+    font-size: 16px; color: var(--text-secondary); line-height: 1.75;
+    max-width: var(--read-w); margin-bottom: 18px;
+  }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.88em;
+    background: var(--bg-card); border: 1px solid var(--border);
+    padding: 1px 6px; border-radius: 4px; color: var(--indigo-glow);
+  }
+
+  pre.code {
+    background: var(--ink-deep); border: 1px solid var(--border);
+    border-radius: var(--radius-md); padding: 20px 22px;
+    overflow-x: auto; font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px; line-height: 1.65; color: var(--mist);
+    margin: 0 0 20px; max-width: var(--read-w);
+  }
+  [data-theme="light"] pre.code { background: #0F172A; color: #E2E8F0; }
+  pre.code .k { color: var(--sky); }
+  pre.code .s { color: #A5F3B8; }
+  pre.code .c { color: var(--text-muted); font-style: italic; }
+  pre.code .n { color: #FCD34D; }
+
+  .info-card {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-lg);
+    padding: 28px 32px; max-width: var(--read-w);
+    margin-bottom: 20px;
+  }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+
+  /* Side note — visually distinct aside for the separate SYSPRO vs ERPNext comparison */
+  .sidenote {
+    background: var(--indigo-soft); backdrop-filter: blur(10px);
+    border: 1px solid rgba(99, 102, 241, 0.25); border-left: 3px solid var(--indigo);
+    border-radius: var(--radius-lg); padding: 18px 24px;
+    max-width: var(--read-w); margin-bottom: 28px;
+  }
+  .sidenote .tag {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600;
+    letter-spacing: 1.4px; text-transform: uppercase; color: var(--indigo-glow);
+    display: block; margin-bottom: 8px;
+  }
+  .sidenote p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin: 0; }
+  .sidenote p strong { color: var(--text-primary); font-weight: 600; }
+
+  .compare-wrap {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-lg);
+    overflow: hidden; max-width: var(--read-w);
+    margin-bottom: 20px;
+  }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td {
+    padding: 12px 16px; text-align: left;
+    border-bottom: 1px solid var(--border); vertical-align: top;
+  }
+  .compare thead th {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600;
+    letter-spacing: 1.2px; text-transform: uppercase; color: var(--indigo-glow);
+    background: rgba(99, 102, 241, 0.04);
+  }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); }
+  .compare td.name { color: var(--text-primary); font-weight: 600; }
+  .compare td code {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.9em;
+    color: var(--indigo-glow);
+  }
+
+  /* Integration loop diagram */
+  .mfg-flow {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-lg);
+    padding: 28px 24px; max-width: var(--read-w);
+    margin-bottom: 24px;
+  }
+  .mfg-step {
+    font-family: 'JetBrains Mono', monospace; font-size: 12.5px;
+    color: var(--text-secondary); line-height: 1.8;
+  }
+  .mfg-step .prod { color: var(--indigo-glow); font-weight: 600; }
+  .mfg-step .tab { padding-left: 20px; position: relative; }
+  .mfg-step .tab::before {
+    content: '→'; position: absolute; left: 0;
+    color: var(--indigo); opacity: 0.5;
+  }
+
+  .gotcha-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 12px;
+  }
+  .gotcha {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-left: 3px solid var(--rose);
+    border-radius: var(--radius-md);
+    padding: 18px 22px;
+  }
+  .gotcha strong { display: block; color: var(--text-primary); font-weight: 600; font-size: 14px; margin-bottom: 6px; }
+  .gotcha p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+  .connect-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 12px;
+  }
+  .connect-node {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    padding: 18px 22px; transition: all 0.3s;
+    text-decoration: none; color: inherit; display: block;
+  }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node.soon { cursor: default; opacity: 0.72; }
+  .connect-node.soon:hover { border-color: var(--border); background: var(--bg-card); }
+  .connect-node .tag {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    letter-spacing: 1px; text-transform: uppercase;
+    color: var(--text-muted); display: block; margin-bottom: 6px;
+  }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+
+  .resource-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 12px;
+  }
+  .resource {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    padding: 18px 22px; text-decoration: none; transition: all 0.3s;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--indigo-glow); word-break: break-all; }
+
+  footer {
+    padding: 60px 0 40px; border-top: 1px solid var(--border);
+    text-align: center; margin-top: 40px;
+  }
+  .footer-brand {
+    font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600;
+    background: linear-gradient(135deg, var(--blue), var(--sky));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+  }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--indigo-glow); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+
+  .fade-up {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 768px) {
+    .nav-brand-sub { display: none; }
+    .nav-link { display: none; }
+    pre.code { font-size: 11px; padding: 14px 16px; }
+    .compare { font-size: 12px; }
+    .compare th, .compare td { padding: 10px 12px; }
+  }
+
+  *, *::before, *::after {
+    transition-property: background-color, border-color, color, box-shadow;
+    transition-duration: 0.3s; transition-timing-function: ease;
+  }
+</style>
+</head>
+<body>
+<div class="glow-orb warm"></div>
+<div class="glow-orb sky"></div>
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand">
+      <span class="nav-brand-mark">know.2nth.ai</span>
+      <span class="nav-brand-sub">agents/microsoft-mai</span>
+    </a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">← Agents</a>
+      <a href="../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">🌙</button>
+    </div>
+  </div>
+</nav>
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">›</span>
+    <a href="../../index.html#domains">Agents</a>
+    <span class="crumb-sep">›</span>
+    <a href="./">agents</a>
+    <span class="crumb-sep">›</span>
+    <span class="crumb-current">microsoft-mai</span>
+  </div>
+</div>
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> agents · Models · Reference leaf</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      MAI, and<br><span class="gradient">humanist superintelligence.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      At Build 2026, Microsoft AI — led by Mustafa Suleyman — unveiled seven in-house MAI frontier models and reframed its strategy around "humanist superintelligence": efficiency, specialisation, data sovereignty, and hardware-software co-design. This leaf tracks what was actually announced, what it means for agent-OS architecture, and where the open-standard anchors sit. The MAI models are proprietary; the anchors are not.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill accent">Microsoft Build 2026</span>
+      <span class="pill">7 MAI models</span>
+      <span class="pill">Proprietary · private preview</span>
+      <span class="pill">Open anchors: MCP · Skills</span>
+      <span class="pill">Validated 2026-06-04</span>
+    </div>
+  </div>
+</section>
+
+<!-- ── 01 WHAT WAS ANNOUNCED ── -->
+<section id="announced">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 · What was announced</div>
+      <h2 class="section-title">Seven frontier models, built in-house from scratch.</h2>
+      <p class="section-lede">San Francisco, 2 June 2026. The Microsoft AI (MAI) Superintelligence Team — formed November 2025, led by CEO Mustafa Suleyman — unveiled a family of seven frontier models spanning image, voice, transcription, reasoning and coding. A deliberate move away from Microsoft's posture as the enterprise delivery vehicle for OpenAI and Anthropic models inside Microsoft 365.</p>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.04s">
+      <h4>Source-validation note</h4>
+      <p>This leaf was rebuilt from a supplied draft; five claims were corrected against primary sources, marked <strong>[corrected]</strong> inline and listed in the Resources section. The MAI models are <strong>proprietary</strong> (private preview / rolling release on Microsoft Foundry), not open source — the open anchors below are the standards the agent-OS thesis rests on, not the MAI models themselves.</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.06s">
+      <table class="compare">
+        <thead>
+          <tr><th>Model</th><th>Type</th><th>Notable spec</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="name">MAI-Thinking-1</td><td>Reasoning</td><td>Trillion-parameter mixture-of-experts, <strong>35B active</strong>, 128k context. Trained with <strong>no distillation</strong> from other companies' models. Private preview on Foundry. <code>[corrected]</code></td></tr>
+          <tr><td class="name">MAI-Code-1-Flash</td><td>Coding</td><td>5B-parameter model, rolling out in VS Code and GitHub Copilot. <code>[corrected]</code></td></tr>
+          <tr><td class="name">MAI-Image-2.5 + Flash</td><td>Image</td><td>Microsoft says it ranks #2 on a leading image-editing leaderboard, ahead of Google's Nano Banana Pro.</td></tr>
+          <tr><td class="name">MAI-Voice-2</td><td>Voice</td><td>Natural-sounding output across ~15 languages.</td></tr>
+          <tr><td class="name">MAI-Transcribe-1.5</td><td>Transcription</td><td>Speech-to-text.</td></tr>
+          <tr><td class="name">Aion Instruct / Aion Plan</td><td>On-device SLMs</td><td>Small models for local reasoning/planning on Windows.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.08s">
+      <p>The unifying message from Suleyman: <em>"This is all about long-term self-sufficiency for Microsoft and our partners. It's about models you can trust."</em></p>
+    </div>
+  </div>
+</section>
+
+<!-- ── 02 WHY IT MATTERS ── -->
+<section id="why">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 · Why it matters</div>
+      <h2 class="section-title">The headline is cost-per-task and control, not size.</h2>
+      <p class="section-lede">The numbers Microsoft put on stage are all vendor-reported — treat as directional until independently reproduced — but they point the conversation away from "how large is the model?".</p>
+    </div>
+    <div class="gotcha-list fade-up" style="transition-delay: 0.05s">
+      <div class="gotcha" style="border-left-color: var(--indigo);">
+        <strong>10× cost efficiency</strong>
+        <p>Using RL environments tuned on McKinsey's tasks, a MAI model beat GPT-5.5 with 10× greater cost efficiency. A separate Excel-agent example matched GPT-5.4 at 10× lower cost. <code>[corrected — two distinct benchmarks]</code></p>
+      </div>
+      <div class="gotcha" style="border-left-color: var(--indigo);">
+        <strong>30% better perf-per-dollar</strong>
+        <p>The Maia 200 inference chip versus the leading GPU, on Microsoft's measurement.</p>
+      </div>
+      <div class="gotcha" style="border-left-color: var(--indigo);">
+        <strong>1.4× perf-per-watt</strong>
+        <p>Running MAI-Thinking-1 end-to-end on Microsoft's own silicon.</p>
+      </div>
+      <div class="gotcha" style="border-left-color: var(--indigo);">
+        <strong>1 trillion-fold</strong>
+        <p>Suleyman's framing of the increase in frontier-training compute over 15 years — the scaling backdrop.</p>
+      </div>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.08s">
+      <p>The strategic shift for buyers: the question moves from <strong>"how large is the model?"</strong> to <strong>"how efficient is the task execution, and who owns the resulting intelligence?"</strong></p>
+    </div>
+  </div>
+</section>
+
+<!-- ── 03 FOUR PILLARS ── -->
+<section id="pillars">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 · How it works — four pillars</div>
+      <h2 class="section-title">Four pillars, and the open anchors under them.</h2>
+      <p class="section-lede">The strategy rests on four ideas. Each proprietary pillar has an open-standard analog — the part you can reproduce without renting Microsoft's stack.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p><strong>Pillar 1 — Humanist superintelligence.</strong> State-of-the-art AI explicitly architected to augment, not replace, humans and organisations. Microsoft positions value as a function of what the system is <em>anchored to</em>, not raw capability alone.</p>
+      <p><strong>Pillar 2 — Frontier Tuning + Reinforcement Learning Environments (RLEs).</strong> Rather than renting shared intelligence, organisations build custom, task-specific agents inside private "training gyms" adapted to their own workflows, evals, tools and data. The tuned model becomes a proprietary operational moat.</p>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.07s">
+      <h4>Open anchor — Gymnasium</h4>
+      <p>RLEs are proprietary, but the working open standard for agent training environments is the <strong>Gymnasium API</strong> (Farama Foundation, the maintained successor to OpenAI Gym). To reproduce the <em>pattern</em> without renting Microsoft's gyms, that's where it lives: <code>github.com/Farama-Foundation/Gymnasium</code>.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.09s">
+      <p><strong>Pillar 3 — Hardware-software co-design.</strong> MAI-Thinking-1 was co-designed and optimised on the <strong>Maia 200</strong> inference chip (TSMC 3nm; ~10 PFLOPS FP4; 216GB HBM3e). Maia 200 was <strong>first revealed 26 January 2026</strong> and <strong>confirmed in production at Build</strong> (Iowa + Arizona, expanding to Italy, Australia, South Korea). <code>[corrected — not first announced at Build]</code></p>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.11s">
+      <h4>Open anchor — MRC</h4>
+      <p>The reliability layer for extreme-scale workloads, <strong>MRC (Multipath Reliable Connection)</strong>, was announced as an <strong>open network protocol</strong> co-developed with AMD, Broadcom, Intel, OpenAI and NVIDIA — a rare open artefact in an otherwise proprietary stack.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.13s">
+      <p><strong>Pillar 4 — Clean data lineage.</strong> MAI-Thinking-1's selling point to enterprises is no distillation and legally clean training data — a direct play for regulated, production-grade deployment.</p>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.15s">
+      <h4>Agent-OS open anchors — MCP &amp; Agent Skills</h4>
+      <p>The two standards that make the "personal agent &rarr; sub-tree of skill agents &rarr; elastic OS" model portable across vendors:</p>
+      <p><strong>Model Context Protocol (MCP)</strong> — open agent-to-tool standard: <code>github.com/modelcontextprotocol</code>. <strong>Agent Skills</strong> — open standard, Apache 2.0 + CC-BY-4.0: <code>agentskills.io</code>. Both are live leaves in this tree.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── 04 ECOSYSTEM ── -->
+<section id="ecosystem">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 · The ecosystem</div>
+      <h2 class="section-title">Build 2026 in context: proprietary layer, open analog.</h2>
+      <p class="section-lede">Where each Microsoft piece sits, and the open standard that keeps the equivalent layer vendor-portable.</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead>
+          <tr><th>Layer</th><th>Microsoft (proprietary)</th><th>Open analog</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="name">Frontier reasoning</td><td>MAI-Thinking-1 (Foundry preview)</td><td>— (no open frontier-reasoning peer)</td></tr>
+          <tr><td class="name">Coding agent</td><td>MAI-Code-1-Flash (VS Code, Copilot)</td><td>—</td></tr>
+          <tr><td class="name">On-device</td><td>Aion Instruct / Aion Plan (Windows)</td><td>Local SLM runtimes (llama.cpp ecosystem)</td></tr>
+          <tr><td class="name">Agent tooling</td><td>Foundry, Agent Mode, Microsoft Scout</td><td><strong>MCP</strong>, <strong>Agent Skills</strong></td></tr>
+          <tr><td class="name">Custom training</td><td>Frontier Tuning / RLEs</td><td><strong>Gymnasium</strong> API</td></tr>
+          <tr><td class="name">Silicon</td><td>Maia 200, Cobalt 200</td><td>—</td></tr>
+          <tr><td class="name">Networking</td><td>MRC</td><td><strong>MRC is itself the open protocol</strong></td></tr>
+          <tr><td class="name">Vertical model</td><td>Mayo Clinic healthcare model</td><td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.08s">
+      <p>Other Build 2026 announcements relevant to agent-OS work: <strong>Azure HorizonDB</strong> (managed PostgreSQL for agentic apps, vector + semantic search), <strong>Project Solara</strong> (chip-to-cloud platform for agent-first devices), <strong>Microsoft Discovery</strong> (GA — agentic scientific-research platform), and <strong>MDASH</strong> (multi-agent security system).</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── 05 USE CASES ── -->
+<section id="use-cases">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 · Use cases</div>
+      <h2 class="section-title">As demonstrated on stage.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p><strong>Enterprise reasoning at lower cost</strong> — MAI-Thinking-1 for medium-weight-class reasoning where GPT-class cost is hard to justify. <strong>Inference-efficient coding</strong> — MAI-Code-1-Flash inside existing GitHub Copilot / VS Code workflows. <strong>Company-specific agents</strong> — Frontier Tuning + RLEs to build a private "hill-climbing machine" around proprietary workflows (the McKinsey and Excel examples). <strong>Verticalised healthcare</strong> — the Mayo Clinic frontier model (below). <strong>On-device agents</strong> — Aion SLMs for local reasoning/planning without cloud round-trips. <strong>Agentic security</strong> — MDASH using teams of agents to find exploitable bugs.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── 06 MAYO CLINIC ── -->
+<section id="healthcare">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 · The healthcare frontier</div>
+      <h2 class="section-title">Mayo Clinic — a data-sovereignty story, not a Microsoft-owns-it story.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Microsoft and <strong>Mayo Clinic</strong> announced a strategic collaboration to develop a frontier AI model purpose-built for healthcare, pairing Mayo's de-identified clinical data and longitudinal insights with Microsoft's AI, cloud and engineering. Two corrections to the common framing:</p>
+    </div>
+    <div class="gotcha-list fade-up" style="transition-delay: 0.07s">
+      <div class="gotcha" style="border-left-color: var(--indigo);">
+        <strong>Mayo Clinic owns the model</strong>
+        <p>Consistent with its stewardship of clinical data. Microsoft plans to offer access via Azure AI Foundry APIs. A data-sovereignty story, not a Microsoft-owns-it story. <code>[corrected]</code></p>
+      </div>
+      <div class="gotcha" style="border-left-color: var(--indigo);">
+        <strong>Not yet a clinical team member</strong>
+        <p>Suleyman said it will take "many years" to train and refine the model to be trustworthy for high-stakes use. It is initially deployed inside Mayo's environment for testing and refinement. <code>[corrected — draft overstated maturity]</code></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 07 DECISION GUIDE ── -->
+<section id="decide">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 · Decision guide</div>
+      <h2 class="section-title">When to pay attention — and when to stay sceptical.</h2>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead>
+          <tr><th>Pay attention when</th><th>Stay sceptical when</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>You're cost-bound on inference and your tasks are narrow / repeatable</td><td>You need the absolute capability frontier — MAI-Thinking-1 is medium weight class by design</td></tr>
+          <tr><td>Data lineage and ownership are compliance requirements ("own it vs rent it")</td><td>You need it now — much is private preview, rolling release, or months out</td></tr>
+          <tr><td>You already live in Foundry / 365 and want first-party models</td><td>You need open weights — none of the MAI models are open source</td></tr>
+          <tr><td>The RLE / Frontier-Tuning economics fit your workflow</td><td>Vendor benchmarks are the only evidence — the 10× / 30% figures are Microsoft's own</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.08s">
+      <p>The strongest part of the announcement is the <strong>own-it-vs-rent-it</strong> argument for regulated workloads. If portability and openness are the requirement, build on the open anchors in section 03 — not on MAI.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── 08 2NTH READ ── -->
+<section id="read">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 · The 2nth.ai read</div>
+      <h2 class="section-title">It maps almost directly onto the agent-OS thesis.</h2>
+      <p class="section-lede">Humans operate a personal agent that fans out to a sub-tree of skill-specific agents, treating cloud and SaaS as an elastic operating system to be continuously reinforced and optimised. Build 2026 is the proprietary version of that picture.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p><strong>Human / Personal Agent</strong> — "humanist superintelligence" is the same augment-not-replace stance the 2nth.ai grid is built on. <strong>Skills</strong> — RLEs are Microsoft's proprietary version of the skill-agent training loop; the open, portable equivalent is the <strong>Agent Skills</strong> standard (already live in the <code>2nth-skills</code> registry) plus the <strong>Gymnasium</strong> API for the environments. <strong>Elastic OS</strong> — Maia 200 + Cobalt 200 + Foundry are Microsoft's elastic-OS substrate; <strong>MCP</strong> and <strong>MRC</strong> are the open protocols that keep the OS layer vendor-portable.</p>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.08s">
+      <h4>SA deployment note — data residency</h4>
+      <p>Maia 200's confirmed rollout regions (Iowa, Arizona &rarr; Italy, Australia, South Korea) <strong>do not yet include an African region.</strong> For POPIA / residency-sensitive workloads, MAI inference and the Mayo model would currently route out of country. Where in-country inference is an architectural requirement, validate against Azure <code>southafricanorth</code> model availability (deployment-type specific — Regional vs Global SKU matters) and the Vertex AI <code>africa-south1</code> / AWS <code>af-south-1</code> alternatives before committing.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.1s">
+      <p style="font-size: 14px; color: var(--text-muted);"><em>Educational node only. This section maps the announcement to the 2nth.ai model; it does not describe a 2nth.ai or Imbila service offering.</em></p>
+    </div>
+  </div>
+</section>
+
+<!-- ── 09 CONNECTIONS ── -->
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">09 · How this leaf connects</div>
+      <h2 class="section-title">The open anchors are live leaves in this tree.</h2>
+      <p class="section-lede">Where the portable equivalents of Microsoft's proprietary pillars actually live.</p>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="mcp.html" class="connect-node">
+        <span class="tag">agents/mcp</span>
+        <div class="skill">Model Context Protocol</div>
+        <div class="why">The open agent-to-tool standard — the portable equivalent of Microsoft's Foundry / Agent Mode tooling layer.</div>
+      </a>
+      <a href="skills.html" class="connect-node">
+        <span class="tag">agents/skills</span>
+        <div class="skill">Agent Skills</div>
+        <div class="why">The open skill standard (Apache 2.0 + CC-BY-4.0) — the portable equivalent of RLEs as a skill-agent loop.</div>
+      </a>
+      <a href="claude.html" class="connect-node">
+        <span class="tag">agents/claude</span>
+        <div class="skill">Claude (model sibling)</div>
+        <div class="why">A frontier model family in the same Models band — the kind of provider Microsoft was the delivery vehicle for before going in-house.</div>
+      </a>
+      <a href="gpt.html" class="connect-node">
+        <span class="tag">agents/gpt</span>
+        <div class="skill">GPT · OpenAI</div>
+        <div class="why">The models MAI benchmarks against (GPT-5.4 / 5.5) and the partnership Microsoft is diversifying away from.</div>
+      </a>
+      <a href="../tech/microsoft/" class="connect-node">
+        <span class="tag">tech/microsoft</span>
+        <div class="skill">Microsoft sub-hub</div>
+        <div class="why">The implementation side — Azure OpenAI from Workers, AI Gateway, Copilot in SA — where Foundry-hosted models actually get wired in.</div>
+      </a>
+      <a href="../media/" class="connect-node">
+        <span class="tag">media</span>
+        <div class="skill">Media domain</div>
+        <div class="why">MAI-Voice-2, MAI-Image-2.5 and MAI-Transcribe-1.5 are generative-media models — the domain that tracks that band.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── 10 RESOURCES ── -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">10 · Resources &amp; source validation</div>
+      <h2 class="section-title">Primary sources and the corrections applied.</h2>
+      <p class="section-lede">First-party and reputable secondary coverage, the open-standard anchors, and the five corrections made against the supplied draft.</p>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://news.microsoft.com/source/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Primary</span>
+        <span class="r-title">Microsoft Source — Mayo Clinic + Maia 200</span>
+        <span class="r-url">news.microsoft.com/source</span>
+      </a>
+      <a href="https://github.com/Farama-Foundation/Gymnasium" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Open anchor</span>
+        <span class="r-title">Gymnasium — RL environments</span>
+        <span class="r-url">github.com/Farama-Foundation/Gymnasium</span>
+      </a>
+      <a href="https://github.com/modelcontextprotocol" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Open anchor</span>
+        <span class="r-title">Model Context Protocol</span>
+        <span class="r-url">github.com/modelcontextprotocol</span>
+      </a>
+      <a href="https://agentskills.io" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Open anchor</span>
+        <span class="r-title">Agent Skills standard</span>
+        <span class="r-url">agentskills.io</span>
+      </a>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.08s">
+      <h4>Corrections applied to the supplied draft</h4>
+      <p>1. MAI-Thinking-1 is a trillion-param MoE with <strong>35B active</strong> params — not a flat "35B model". 2. The coding model is <strong>MAI-Code-1-Flash</strong> (5B), hyphenated. 3. <strong>Maia 200 was revealed 26 Jan 2026</strong>, confirmed in production at Build — not first announced at Build. 4. The <strong>10× cost-efficiency</strong> figure covers <strong>two</strong> distinct benchmarks (McKinsey vs GPT-5.5; Excel RLE vs GPT-5.4), not one. 5. The <strong>Mayo Clinic model is owned by Mayo</strong>, is early-stage ("many years" to maturity per Suleyman), and is <strong>not</strong> yet a real-time clinical team member.</p>
+      <p style="color: var(--text-muted);">Reputable secondary: GeekWire, CNBC, TechRadar, DataCenterDynamics, Fierce Healthcare / CNN / Euronews. Last validated 4 June 2026.</p>
+    </div>
+  </div>
+</section>
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../index.html">Skills tree</a>
+      <a href="./">Agents hub</a>
+      <a href="mcp.html">MCP</a>
+      <a href="skills.html">Agent Skills</a>
+    </div>
+    <p class="footer-copy">© 2026 2nth.ai · Built in Johannesburg, South Africa</p>
+  </div>
+</footer>
+<script>
+  function toggleTheme(){const h=document.documentElement;const n=h.getAttribute('data-theme')==='dark'?'light':'dark';h.setAttribute('data-theme',n);document.querySelector('.theme-toggle').textContent=n==='dark'?'☀️':'🌙';localStorage.setItem('theme',n);}
+  const s=localStorage.getItem('theme');if(s){document.documentElement.setAttribute('data-theme',s);document.querySelector('.theme-toggle').textContent=s==='dark'?'☀️':'🌙';}
+  const o=new IntersectionObserver((e)=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.fade-up').forEach(el=>o.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>
