@@ -3,21 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Diode — know.2nth.ai</title>
-<meta name="description" content="Diode is AI-native PCB design and manufacturing. The open-source pcb toolchain and the Zener language (a Starlark dialect) turn schematics into code you can diff, review, and compile to KiCad — the hardware-as-code surface Anthropic partnered with to make Claude a better electrical engineer.">
+<title>KiCad — know.2nth.ai</title>
+<meta name="description" content="KiCad is the open-source EDA suite — Eeschema for schematics, Pcbnew for layout, a 3D viewer, ngspice simulation, and a Python scripting API, all GPLv3 and free of per-seat licences. It's the floor the 2nth hardware branch stands on and the GUI engineers drop into after Diode compiles a design to .kicad_pcb.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="know.2nth.ai">
-<meta property="og:url" content="https://know.2nth.ai/explainers/tech/hardware/diode">
-<meta property="og:title" content="Diode — know.2nth.ai">
-<meta property="og:description" content="AI-native PCB design and manufacturing. The open-source pcb toolchain and the Zener language turn schematics into code you can diff, review, and compile to KiCad — the hardware-as-code surface Anthropic used to make Claude a better electrical engineer.">
+<meta property="og:url" content="https://know.2nth.ai/explainers/tech/hardware/kicad">
+<meta property="og:title" content="KiCad — know.2nth.ai">
+<meta property="og:description" content="The open-source EDA suite: Eeschema, Pcbnew, 3D viewer, ngspice, a Python API, and the s-expression .kicad_pcb format Diode compiles to. GPLv3, zero licence cost — the free idea-to-manufacturable-board path for SA hardware teams.">
 <meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="know.2nth.ai — The Knowledge Tree">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Diode — know.2nth.ai">
-<meta name="twitter:description" content="AI-native PCB design and manufacturing. Code-defined schematics in Zener, compiled to KiCad — the hardware-as-code surface behind making Claude a better electrical engineer.">
+<meta name="twitter:title" content="KiCad — know.2nth.ai">
+<meta name="twitter:description" content="The open-source EDA suite — Eeschema, Pcbnew, ngspice, a Python API, and the s-expression .kicad_pcb format Diode compiles to. GPLv3, zero licence cost.">
 <meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -177,7 +177,7 @@
   <div class="nav-inner">
     <a href="../../../index.html" class="nav-brand">
       <span class="nav-brand-mark">know.2nth.ai</span>
-      <span class="nav-brand-sub">tech/hardware/diode</span>
+      <span class="nav-brand-sub">tech/hardware/kicad</span>
     </a>
     <div class="nav-right">
       <a href="./" class="nav-link">&larr; Electronics &amp; Hardware</a>
@@ -197,25 +197,25 @@
     <span class="crumb-sep">&rsaquo;</span>
     <a href="./">hardware</a>
     <span class="crumb-sep">&rsaquo;</span>
-    <span class="crumb-current">diode</span>
+    <span class="crumb-current">kicad</span>
   </div>
 </div>
 
 <!-- ── HERO ── -->
 <section class="hero">
   <div class="container">
-    <div class="eyebrow fade-up"><span class="dot"></span> tech/hardware &middot; Diode &middot; Skill Leaf</div>
+    <div class="eyebrow fade-up"><span class="dot"></span> tech/hardware &middot; KiCad &middot; Skill Leaf</div>
     <h1 class="fade-up" style="transition-delay: 0.05s">
-      The schematic is <span class="gradient">source code.</span>
+      The free EDA suite the whole branch <span class="gradient">stands on.</span>
     </h1>
     <p class="sub fade-up" style="transition-delay: 0.1s">
-      Diode Computers builds AI-native circuit-board design and manufacturing. Its open-source <code>pcb</code> toolchain lets you describe a board in <strong>Zener</strong> &mdash; a Python-like language for electronics &mdash; instead of dragging symbols around a GUI. Nets, components, and reusable modules become text you can diff, review, and version; the compiler turns that text into a KiCad layout and a checked bill of materials. It's the surface Anthropic partnered on to make Claude genuinely useful at electrical engineering.
+      KiCad is the open-source Electronic Design Automation suite &mdash; schematic capture in <strong>Eeschema</strong>, board layout and routing in <strong>Pcbnew</strong>, a 3D viewer, ngspice simulation, and a Python scripting API, all under the GPLv3 with no per-seat licence to buy. It's a professional-grade tool that costs nothing to run, which is why it's the floor of the 2nth hardware stack: the GUI engineers open after Diode compiles a design to <code>.kicad_pcb</code>, and the zero-licence path from idea to a board you can send to a fab.
     </p>
     <div class="hero-meta fade-up" style="transition-delay: 0.15s">
-      <span class="pill accent">Live</span>
-      <span class="pill">Zener &middot; Starlark</span>
-      <span class="pill">MIT (pcb tool)</span>
-      <span class="pill">Compiles to KiCad 10.x</span>
+      <span class="pill accent">Free &amp; open</span>
+      <span class="pill">GPLv3</span>
+      <span class="pill">KiCad 10.x</span>
+      <span class="pill">Eeschema &middot; Pcbnew</span>
       <span class="pill">EDA / PCB</span>
     </div>
   </div>
@@ -226,15 +226,15 @@
   <div class="container">
     <div class="fade-up">
       <div class="section-label">01 &middot; What it is</div>
-      <h2 class="section-title">A company, a language, and a compiler for circuit boards.</h2>
+      <h2 class="section-title">A complete, free toolchain for designing circuit boards.</h2>
     </div>
     <div class="prose fade-up" style="transition-delay: 0.05s">
-      <p><strong>Diode Computers, Inc.</strong> is a hardware company with a software thesis: a printed circuit board is a design problem that should be solved the way software is &mdash; in code, under version control, with automated checks and reusable parts. The company offers an end-to-end service (spec &rarr; design &rarr; fabrication) for teams building robotics, aerospace, edge-compute, and IoT hardware, and it does the design work on top of its own open tooling.</p>
-      <p>That tooling is the part most engineers will meet first. <code>pcb</code> is an open-source, MIT-licensed command-line suite built in Rust. It introduces <strong>Zener</strong>, a domain-specific language that extends Starlark (the Python-like config language Google created for Bazel) with PCB primitives &mdash; nets, components, modules, and interfaces. You write a board in <code>.zen</code> files; <code>pcb</code> validates it, resolves the parts, and generates a KiCad-compatible layout you can open and refine by hand.</p>
+      <p><strong>KiCad</strong> is an open-source software suite for Electronic Design Automation &mdash; everything you need to take a circuit from a blank page to manufacturing files. It runs on Windows, macOS, and Linux, and it has been in development since 1992. The headline fact is the simplest one: it is professional-grade and it is free, released under the GNU GPL v3. There is no licence to buy, no seat to renew, and no feature tier locked behind a subscription.</p>
+      <p>Inside the suite are the tools an electronics engineer actually uses: <strong>Eeschema</strong> for schematic capture, <strong>Pcbnew</strong> for PCB layout and routing, a Gerber viewer for inspecting manufacturing output, an integrated 3D viewer, and a SPICE simulator built on ngspice. Behind those sit the symbol, footprint, and 3D-model libraries that supply the parts you place. It is the default answer to &ldquo;what should I design a board in&rdquo; for anyone who doesn't have an Altium budget &mdash; and increasingly for plenty who do.</p>
     </div>
     <div class="info-card fade-up" style="transition-delay: 0.08s">
       <h4>The one-line version</h4>
-      <p>KiCad and Altium are where you <em>draw</em> a board. Diode's Zener is where you <em>write</em> one &mdash; and then compile it down to KiCad. Same output format, a fundamentally different authoring model: hardware-as-code instead of hardware-as-drawing.</p>
+      <p>KiCad is the open-source EDA suite. It does what Altium does &mdash; draw the schematic, lay out the board, push out Gerbers &mdash; without the licence cost. In the 2nth tree it's the layout surface Diode's <code>pcb</code> compiler emits to, and the free path SA hardware teams can actually start on.</p>
     </div>
   </div>
 </section>
@@ -244,21 +244,21 @@
   <div class="container">
     <div class="fade-up">
       <div class="section-label">02 &middot; Why it matters</div>
-      <h2 class="section-title">EDA never had a git moment. This is it.</h2>
+      <h2 class="section-title">Free, capable EDA changed who gets to build hardware.</h2>
     </div>
     <div class="prose fade-up" style="transition-delay: 0.05s">
-      <p>Software got version control, code review, package managers, and CI &mdash; and productivity compounded. Hardware design largely didn't. A schematic lives in a tool-specific binary file. Two engineers can't meaningfully merge changes. A code review is a screenshot. Reusing a known-good power supply means copy-pasting symbols and hoping you caught every net. The design is locked inside the GUI that drew it.</p>
-      <p>Code-defined PCB design breaks that open. When the board <em>is</em> text, a pull request shows exactly which two nets changed. A continuous-integration job runs electrical-rule checks on every push. A vetted regulator becomes an <code>import</code>, not a copy. And &mdash; the part that's suddenly load-bearing &mdash; a language model can read the design, reason about it, and write the next revision, the same way coding agents already work on software.</p>
+      <p>For a long time, serious PCB design meant a serious licence. Altium and the other incumbents cost real money per seat per year &mdash; a fixed tax on the front door that priced out students, hobbyists, small teams, and anyone in a market where that bill lands in scarce foreign currency. KiCad removed the tax. A capable, fully featured EDA suite that costs nothing to install means the question shifts from &ldquo;can we afford to design hardware&rdquo; to &ldquo;is the design any good.&rdquo;</p>
+      <p>That floor is why KiCad matters to everything above it in this branch. <strong>Diode</strong> compiles Zener to <code>.kicad_pcb</code> rather than inventing its own layout format, because the open, free, well-documented target is the one anyone can open. The fab partners read KiCad's Gerbers without complaint. And because the suite is open source, the file formats are readable text rather than a vendor's secret &mdash; which is precisely what makes a code-defined design flow on top of it possible at all. KiCad isn't the flashy node in the tree; it's the one the others quietly depend on.</p>
     </div>
     <div class="compare-wrap fade-up" style="transition-delay: 0.08s">
       <table class="compare">
-        <thead><tr><th>GUI-drawn schematic</th><th>Code-defined (Zener)</th></tr></thead>
+        <thead><tr><th>Closed commercial EDA</th><th>KiCad</th></tr></thead>
         <tbody>
-          <tr><td>Binary file, no meaningful diff</td><td>Plain-text <code>.zen</code>, line-by-line diff</td></tr>
-          <tr><td>Review = a screenshot in a meeting</td><td>Review = a pull request</td></tr>
-          <tr><td>Reuse = copy-paste symbols</td><td>Reuse = <code>load()</code> a module</td></tr>
-          <tr><td>Rule checks run manually, sometimes</td><td><code>pcb build</code> in CI, every push</td></tr>
-          <tr><td>An LLM can't author it reliably</td><td>An LLM writes and edits it directly</td></tr>
+          <tr><td>Per-seat licence, annual renewal</td><td>Free &mdash; <code>GPLv3</code>, no seats</td></tr>
+          <tr><td>Proprietary, opaque file formats</td><td>Readable s-expression text files</td></tr>
+          <tr><td>Scripting locked or vendor-gated</td><td>Open <code>pcbnew</code> Python API + IPC API</td></tr>
+          <tr><td>Forex-heavy bill before you start</td><td>Zero cost to install and ship</td></tr>
+          <tr><td>You are a customer</td><td>You can read &amp; patch the source</td></tr>
         </tbody>
       </table>
     </div>
@@ -270,58 +270,46 @@
   <div class="container">
     <div class="fade-up">
       <div class="section-label">03 &middot; How it works</div>
-      <h2 class="section-title">Zener in, KiCad out.</h2>
-      <p class="section-lede">Zener gives you four primitives &mdash; <strong>nets</strong> (electrical connections), <strong>components</strong> (parts with footprints and pin maps), <strong>modules</strong> (hierarchical reusable subcircuits in <code>.zen</code> files), and <strong>interfaces</strong> (reusable connection patterns like SPI, I2C, or USB). You compose them in code; the compiler does the bookkeeping.</p>
+      <h2 class="section-title">Eeschema to Pcbnew to Gerbers.</h2>
+      <p class="section-lede">The flow is the classic two-stage EDA pipeline. You draw the circuit in <strong>Eeschema</strong>, assign each symbol a physical footprint, then move to <strong>Pcbnew</strong> to place the parts and route the copper. A <strong>3D viewer</strong> shows the assembled board, <strong>ngspice</strong> simulates the analog behaviour, and the symbol / footprint / 3D-model libraries supply the parts. When you're done, you plot Gerbers (or IPC-2581) for the fab.</p>
     </div>
-    <pre class="code fade-up" style="transition-delay: 0.05s"><span class="c"># blinky.zen — an MCU with a status LED</span>
-<span class="k">load</span>(<span class="s">"@stdlib/interfaces.zen"</span>, <span class="s">"Power"</span>, <span class="s">"Ground"</span>)
-<span class="k">load</span>(<span class="s">"//parts/regulator.zen"</span>, <span class="s">"Regulator3V3"</span>)
-
-vbus = Power(<span class="s">"VBUS"</span>)        <span class="c"># 5V in from USB</span>
-v3v3 = Power(<span class="s">"3V3"</span>)
-gnd  = Ground()
-
-<span class="c"># Reuse a vetted regulator block — one import, not a copy-paste</span>
-Regulator3V3(vin = vbus, vout = v3v3, gnd = gnd)
-
-Component(
-    name = <span class="s">"U2"</span>,
-    mpn  = <span class="s">"RP2040"</span>,
-    footprint = <span class="s">"QFN-56"</span>,
-    pins = {
-        <span class="s">"VDD"</span>: v3v3.NET,
-        <span class="s">"GND"</span>: gnd.NET,
-        <span class="s">"GPIO25"</span>: Net(<span class="s">"LED"</span>),
-    },
-)
-
-Component(name = <span class="s">"D1"</span>, mpn = <span class="s">"LED-0603"</span>, footprint = <span class="s">"0603"</span>,
-          pins = { <span class="s">"A"</span>: Net(<span class="s">"LED"</span>), <span class="s">"K"</span>: gnd.NET })</pre>
+    <pre class="code fade-up" style="transition-delay: 0.05s"><span class="c"># A KiCad board is plain text: nested s-expressions.</span>
+<span class="c"># Here's a single SMD footprint inside a .kicad_pcb file —</span>
+<span class="c"># readable, diffable, exactly what Diode's pcb tool emits.</span>
+(footprint <span class="s">"Resistor_SMD:R_0603_1608Metric"</span>
+  (layer <span class="s">"F.Cu"</span>)
+  (at <span class="n">128.5</span> <span class="n">96.2</span> <span class="n">90</span>)
+  (property <span class="s">"Reference"</span> <span class="s">"R1"</span>)
+  (property <span class="s">"Value"</span> <span class="s">"10k"</span>)
+  (pad <span class="s">"1"</span> smd roundrect (at <span class="n">-0.825</span> <span class="n">0</span>) (size <span class="n">0.8</span> <span class="n">0.95</span>)
+    (layers <span class="s">"F.Cu"</span> <span class="s">"F.Paste"</span> <span class="s">"F.Mask"</span>) (net <span class="n">3</span> <span class="s">"VCC"</span>))
+  (pad <span class="s">"2"</span> smd roundrect (at <span class="n">0.825</span> <span class="n">0</span>) (size <span class="n">0.8</span> <span class="n">0.95</span>)
+    (layers <span class="s">"F.Cu"</span> <span class="s">"F.Paste"</span> <span class="s">"F.Mask"</span>) (net <span class="n">5</span> <span class="s">"GPIO0"</span>)))</pre>
     <div class="prose fade-up" style="transition-delay: 0.08s">
-      <p>The workflow is a handful of commands. <code>pcb build</code> validates the design and checks the bill of materials. <code>pcb layout</code> generates a <code>.kicad_pcb</code> file and opens it in KiCad, where you place and route &mdash; manual refinement stays in the loop. <code>pcb fmt</code> formats your <code>.zen</code> files (it uses ruff), and <code>pcb sync</code> reconciles imports against the dependency manifest. Projects are configured with a <code>pcb.toml</code> manifest, and a repo is either a <em>board</em> (one board plus local modules) or a <em>registry</em> (reusable packages, no board) &mdash; the npm-style split between an app and a library.</p>
+      <p>The schematic (<code>.kicad_sch</code>) and the board (<code>.kicad_pcb</code>) are both stored in the same <strong>s-expression</strong> format &mdash; the Lisp-style nested-parentheses syntax shown above. That choice is load-bearing for the 2nth stack: because the format is open text rather than a binary blob, a compiler like Diode's can generate a valid board file directly, and a person can read the diff. It's exactly what Diode's <code>pcb</code> tool targets when it compiles a Zener design.</p>
     </div>
     <div class="info-card fade-up" style="transition-delay: 0.1s">
-      <h4>Under the hood</h4>
-      <p><code>pcb</code> is a Rust workspace of focused crates: <code>pcb-zen</code> runs the Starlark runtime and ships an LSP server and debugger support, <code>pcb-zen-core</code> is the language implementation, <code>pcb-kicad</code> parses and generates KiCad files, and <code>pcb-layout</code> drives layout generation. It targets <strong>KiCad 10.x</strong>, installs via a shell/PowerShell script or from source, and is MIT-licensed. Windows support is still flagged experimental &mdash; macOS and Linux are the well-trodden paths.</p>
+      <h4>Scripting &amp; automation</h4>
+      <p>KiCad exposes a <strong>Python scripting API</strong>. The long-standing <code>pcbnew</code> bindings (generated with SWIG) let you write <strong>action plugins</strong> &mdash; scripts that appear in the PCB editor's <em>Tools → External Plugins</em> menu and can automate placement, generate outputs, or build custom DRC checks. As of KiCad 9 those SWIG bindings are deprecated in favour of the newer <strong>IPC API</strong>, a language-agnostic interface that's the recommended path for new add-ons going forward; the plan is to remove SWIG in KiCad 11. Either way, the point holds: KiCad is automatable, which is what lets external toolchains drive it instead of treating it as a dead end.</p>
     </div>
   </div>
 </section>
 
-<!-- ── 04 THE CLAUDE ANGLE ── -->
-<section id="claude">
+<!-- ── 04 ECOSYSTEM / STEWARDSHIP ── -->
+<section id="stewardship">
   <div class="container">
     <div class="fade-up">
-      <div class="section-label">04 &middot; Why agents care</div>
-      <h2 class="section-title">The surface behind a better electrical-engineer Claude.</h2>
-      <p class="section-lede">Anthropic partnered with Diode to improve Claude on a specialised task: turning a chip's datasheet into a working reference schematic. The reason that's even tractable is the same reason this leaf sits in our tree &mdash; once a circuit is code, generating one is a code-generation problem.</p>
+      <div class="section-label">04 &middot; Ecosystem &amp; stewardship</div>
+      <h2 class="section-title">Who keeps it alive, and how.</h2>
+      <p class="section-lede">KiCad's longevity is the reason you can build a stack on it. It's not a one-person hobby project hanging by a thread &mdash; it's a governed open-source effort with institutional backing and a funded support layer around it.</p>
     </div>
     <div class="prose fade-up" style="transition-delay: 0.05s">
-      <p>The collaboration focused on auto-generating <strong>reference designs</strong>: read the datasheet, understand the recommended configuration, and emit a correct Zener design. Early on, Claude struggled in the ways you'd expect &mdash; missing nuances buried in datasheet tables, misreading reference-schematic images, and misunderstanding the Zener DSL itself. The work targeted exactly those gaps, and Anthropic notes the resulting improvements are <em>encoded in the publicly released models</em>, so every Claude user benefits, not just Diode.</p>
-      <p>Diode evaluated the results the honest way &mdash; blind, by their own engineers, scored against testbenches that encode higher-level <em>requirements</em> rather than a rigid list of components. In that head-to-head, their engineers preferred <strong>Claude Sonnet 4.5</strong>'s designs in 8 of 10 cases, ahead of both Claude Opus 4.1 and Claude Sonnet 4. The takeaway isn't a leaderboard number; it's that representing hardware as a structured language is what let a general model get measurably good at it.</p>
+      <p>The project is run by a technical committee of lead developers, with <strong>Wayne Stambaugh</strong> as project leader. Its single biggest inflection came when <strong>CERN</strong> &mdash; the particle-physics laboratory &mdash; began contributing seriously around 2013, funding development that turned KiCad from a capable-but-rough tool into a credible professional one. CERN's work brought the modern Pcbnew router (the push-and-shove interactive router), differential-pair routing, and a great deal of the polish that made KiCad viable for real boards.</p>
+      <p>Today the project is hosted under the <strong>Linux Foundation</strong>, which accepts tax-deductible donations on its behalf, and those donations are matched by <strong>KiCad Services Corporation</strong> &mdash; a company that also provides commercial support and in-kind sponsorship to the project. The whole suite is licensed <strong>GPLv3</strong>. Around the core sits the library ecosystem: the official schematic-symbol, footprint, and 3D-model libraries are community-contributed and maintained as separate repositories, kept independent of the application so they can move at their own pace.</p>
     </div>
     <div class="info-card accent fade-up" style="transition-delay: 0.08s">
-      <h4>The pattern worth stealing</h4>
-      <p>Diode didn't make Claude better at hardware by bolting on a hardware plugin. It made hardware look like software &mdash; a typed, composable, text-based language with a compiler that gives fast feedback &mdash; and a coding-capable model met it there. That's the transferable lesson for any domain hoping agents will help: give the work a structured, checkable representation first. The model follows.</p>
+      <h4>Why the backing matters</h4>
+      <p>Betting a hardware pipeline on a tool means betting it'll still be maintained in five years. KiCad clears that bar: institutional funding (CERN's history, the Linux Foundation's hosting), a named governance structure, a commercial support company, and a 30-plus-year track record. That stability is what lets Diode, the fabs, and your own team treat <code>.kicad_pcb</code> as a safe long-term target.</p>
     </div>
   </div>
 </section>
@@ -334,16 +322,16 @@ Component(name = <span class="s">"D1"</span>, mpn = <span class="s">"LED-0603"</
       <h2 class="section-title">Where this lands in the 2nth stack.</h2>
     </div>
     <div class="info-card fade-up" style="transition-delay: 0.05s">
-      <h4>The board under the firmware</h4>
-      <p>Our <code>tech/embedded/platformio</code> leaf covers the firmware for DroneScan's Hummingbird, Buffalo, and Meerkat units. That firmware runs on a physical board &mdash; an ESP32 or RP2040, a regulator, sensors, connectors. Diode is the layer below PlatformIO: it's where that board gets designed. Code-defined design means the hardware revision history lives in the same kind of git log as the firmware that runs on it.</p>
+      <h4>The layout GUI after Diode compiles</h4>
+      <p>When an engineer writes a board in Zener and runs <code>pcb layout</code>, Diode emits a <code>.kicad_pcb</code> file and hands off to KiCad. That's where the human work happens: place the parts, route the copper with Pcbnew's interactive router, run DRC, eyeball the assembly in the 3D viewer. Diode compiles the design; KiCad is the surface you drop into for place-and-route and final refinement. Compile a Zener design, open the board in Pcbnew, finish the layout.</p>
     </div>
     <div class="info-card fade-up" style="transition-delay: 0.08s">
-      <h4>Reusable blocks across a product line</h4>
-      <p>When the Hummingbird and the Meerkat share a power tree and a comms front-end, that shared circuitry should be one reviewed Zener module imported into both boards &mdash; not two diverging copies in two binary schematic files. One fix to the regulator module propagates to every product that loads it, the same way a shared library does in software.</p>
+      <h4>The zero-licence path for DroneScan &amp; ScanMan hardware</h4>
+      <p>The boards under DroneScan's Hummingbird, Buffalo, and Meerkat units &mdash; or a ScanMan sensor node &mdash; don't need an Altium licence to exist. KiCad designs them end to end at no licence cost, which for a lean SA hardware team means the entire EDA line item is zero. Spend the budget on prototype fab runs and components instead of seat licences.</p>
     </div>
     <div class="info-card fade-up" style="transition-delay: 0.11s">
-      <h4>Datasheet-to-prototype acceleration</h4>
-      <p>A new sensor or radio arrives with a 60-page datasheet and a recommended application circuit. The agent-assisted reference-design flow drafts a first-pass Zener schematic from that datasheet; an engineer reviews the pull request, fixes what's wrong, and runs <code>pcb build</code>. The slow part &mdash; transcribing a datasheet into a correct first schematic &mdash; gets compressed.</p>
+      <h4>Export Gerbers to JLCPCB or PCBWay</h4>
+      <p>KiCad plots standard Gerber (and IPC-2581) manufacturing files and drill files that JLCPCB and PCBWay ingest directly. The board goes from Pcbnew to a fab in Shenzhen as a zip of Gerbers and a BOM &mdash; no format wrangling, no re-keying. KiCad is the last onshore step before the design crosses an ocean to get built.</p>
     </div>
   </div>
 </section>
@@ -354,29 +342,28 @@ Component(name = <span class="s">"D1"</span>, mpn = <span class="s">"LED-0603"</
     <div class="fade-up">
       <div class="section-label">06 &middot; Decision guide</div>
       <h2 class="section-title">When to reach for it. When not to.</h2>
-      <p class="section-lede">Code-defined PCB design is early, and it's not the right tool for every board or every team. Be honest about where it pays off and where the GUI still wins.</p>
+      <p class="section-lede">KiCad is the right default for a large share of boards &mdash; but &ldquo;free and capable&rdquo; doesn't mean &ldquo;best for everything.&rdquo; Be honest about where the commercial tools still earn their licence.</p>
     </div>
     <div class="decision-grid fade-up" style="transition-delay: 0.05s">
       <div class="decision-card use">
         <h4>Use when</h4>
         <ul>
-          <li>You want hardware revisions in git with real diffs and pull-request review</li>
-          <li>You're shipping a product line that should share reviewed circuit modules</li>
-          <li>You want CI to run electrical-rule and BOM checks on every change</li>
-          <li>You want agent-assisted reference designs from datasheets</li>
-          <li>Your team already lives in KiCad and is happy to keep it as the layout tool</li>
-          <li>You're comfortable on macOS/Linux and reading a young, fast-moving toolchain</li>
+          <li>Cost matters &mdash; you want professional EDA with zero licence spend</li>
+          <li>You're building open hardware or want readable, version-controllable design files</li>
+          <li>You need scripting and automation via the Python / IPC API</li>
+          <li>You're the output target for Diode &mdash; it compiles straight to <code>.kicad_pcb</code></li>
+          <li>You're a small or solo team and want to start designing today</li>
+          <li>You want a tool that runs identically on Windows, macOS, and Linux</li>
         </ul>
       </div>
       <div class="decision-card skip">
         <h4>Skip when</h4>
         <ul>
-          <li>It's a one-off board and learning a DSL costs more than it saves</li>
-          <li>Your team is deep in Altium with high-speed/rigid-flex features Zener doesn't model yet</li>
-          <li>You need a mature, certified EDA flow for regulated hardware today</li>
-          <li>Windows is your only platform (support is still experimental)</li>
-          <li>Your designers think visually and won't adopt a text-first workflow</li>
-          <li>You need the design <em>service</em> but not the tooling — then it's a vendor call, not a stack choice</li>
+          <li>You need Altium's mature high-speed / signal-integrity and rigid-flex tooling</li>
+          <li>Your organisation depends on enterprise team data management and lifecycle control</li>
+          <li>You need deep enterprise supply-chain and component-lifecycle integration</li>
+          <li>Your team is already standardised on a commercial flow and retooling costs more than it saves</li>
+          <li>A vendor mandates a specific EDA tool for a regulated, certified deliverable</li>
         </ul>
       </div>
     </div>
@@ -388,11 +375,11 @@ Component(name = <span class="s">"D1"</span>, mpn = <span class="s">"LED-0603"</
   <div class="container">
     <div class="fade-up">
       <div class="section-label">07 &middot; South African context</div>
-      <h2 class="section-title">Design here, fab anywhere.</h2>
+      <h2 class="section-title">Zero licence cost, design onshore, fab abroad.</h2>
     </div>
     <div class="prose fade-up" style="transition-delay: 0.05s">
-      <p>Local hardware teams carry a structural disadvantage: limited domestic PCB fabrication, long import lead times on components, and forex exposure on every order. The work that <em>can</em> stay onshore is the design work &mdash; and that's exactly the part code-defined tooling makes more portable. A Zener repository is a few kilobytes of text. It reviews over a video call, version-controls on the same GitHub a Johannesburg team already uses, and ships its Gerbers to a fab in Shenzhen or a board house abroad without anyone re-keying a netlist.</p>
-      <p>The open-source, MIT-licensed core matters here too. There's no per-seat Altium licence in dollars to justify before a small SA team can start designing seriously &mdash; KiCad plus <code>pcb</code> is a zero-licence-cost path from idea to manufacturable board. And because the design is text an LLM can author, a small team punches above its headcount: the reference-design grunt work that would otherwise need a senior hardware engineer gets a capable first draft from an agent, with the human doing review instead of transcription.</p>
+      <p>For an SA hardware team, the licence line is the one that hurts most, because it's priced in dollars or euros and it recurs every year regardless of how many boards you ship. KiCad takes that line to zero. A small Johannesburg or Cape Town team can stand up a full professional EDA flow &mdash; schematic, layout, simulation, manufacturing output &mdash; without forex exposure on a single seat. That's not a compromise tool you settle for; it's the same suite CERN funds and used for real boards.</p>
+      <p>Pair it with <strong>Diode</strong> and you get a genuinely free idea&rarr;manufacturable-board path: write the circuit in Zener, compile to <code>.kicad_pcb</code>, finish the layout in KiCad, plot Gerbers, send them to JLCPCB or PCBWay. The design work stays onshore &mdash; it reviews over a video call, version-controls on the GitHub the team already uses &mdash; and only the fabrication crosses a border. For a country with limited local board fabrication, that split is the practical model: keep the high-value, low-weight design work here, and ship a few kilobytes of files to where the copper gets etched.</p>
     </div>
   </div>
 </section>
@@ -403,39 +390,39 @@ Component(name = <span class="s">"D1"</span>, mpn = <span class="s">"LED-0603"</
     <div class="fade-up">
       <div class="section-label">08 &middot; 2&#x207F; Perspective</div>
       <h2 class="section-title">How this node connects in the tree.</h2>
-      <p class="section-lede">Diode is the bottom of the hardware stack &mdash; the physical board. It connects upward to the firmware that runs on it, sideways to the AI models that now help design it, and outward to the fab partners that turn a <code>.zen</code> file into a panel of boards.</p>
+      <p class="section-lede">KiCad is the floor of the hardware branch &mdash; the free, open layout surface everything else routes through. Diode compiles down to it, the commercial alternatives sit beside it, the fabs read its output, and the firmware layer lives above the board it produces.</p>
     </div>
     <div class="connect-grid fade-up" style="transition-delay: 0.05s">
-      <a href="../embedded/platformio.html" class="connect-node">
-        <span class="tag">tech/embedded/platformio</span>
-        <div class="skill">PlatformIO</div>
-        <div class="why">The firmware layer directly above. Diode designs the board; PlatformIO builds the code that runs on its MCU. Two git histories &mdash; hardware and firmware &mdash; for one product.</div>
-      </a>
-      <a href="../../agents/claude.html" class="connect-node">
-        <span class="tag">agents/claude</span>
-        <div class="skill">Claude</div>
-        <div class="why">The model Diode partnered with on reference-design generation. The EE improvements ship in the public models &mdash; the clearest case study of "make the domain code-shaped and the agent follows."</div>
+      <a href="./diode.html" class="connect-node">
+        <span class="tag">tech/hardware/diode</span>
+        <div class="skill">Diode</div>
+        <div class="why">Diode compiles <em>to</em> KiCad &mdash; <code>.kicad_pcb</code> is its output target. Zener is where you write the board; KiCad is where you finish it. This leaf is Diode's hand-off surface.</div>
       </a>
       <a href="./" class="connect-node">
         <span class="tag">tech/hardware</span>
         <div class="skill">Electronics &amp; Hardware hub</div>
-        <div class="why">The sub-hub this leaf anchors. KiCad (Diode's output target), Altium, Flux, and the JLCPCB/PCBWay fab partners are the neighbouring nodes.</div>
+        <div class="why">The sub-hub this leaf anchors. KiCad is the free EDA floor the rest of the branch &mdash; Diode, Altium, Flux, the fab partners &mdash; is arranged around.</div>
       </a>
-      <a href="kicad.html" class="connect-node">
-        <span class="tag">tech/hardware/kicad</span>
-        <div class="skill">KiCad</div>
-        <div class="why">Diode compiles to KiCad 10.x and hands off layout to it. The open-source EDA suite is both the floor Diode stands on and the GUI engineers drop into for place-and-route.</div>
+      <a href="./altium.html" class="connect-node">
+        <span class="tag">tech/hardware/altium</span>
+        <div class="skill">Altium</div>
+        <div class="why">The commercial heavyweight. When you need high-speed tooling, rigid-flex, and enterprise data management that KiCad doesn't match, this is the alternative &mdash; at a per-seat price.</div>
       </a>
-      <a href="jlcpcb.html" class="connect-node">
+      <a href="./flux.html" class="connect-node">
+        <span class="tag">tech/hardware/flux</span>
+        <div class="skill">Flux</div>
+        <div class="why">The browser-based, AI-assisted alternative. A different bet on what modern EDA looks like &mdash; cloud-first and collaborative versus KiCad's free, local, open-source model.</div>
+      </a>
+      <a href="./jlcpcb.html" class="connect-node">
         <span class="tag">tech/hardware/jlcpcb</span>
         <div class="skill">JLCPCB / PCBWay</div>
-        <div class="why">The end of the pipeline. A validated Zener design exports the Gerbers and BOM these fabs turn into physical boards &mdash; prototype runs in days, assembly optional.</div>
+        <div class="why">The end of the pipeline. KiCad plots the Gerbers and drill files these fabs turn into physical boards &mdash; prototype runs in days, assembly optional.</div>
       </a>
-      <div class="connect-node soon">
-        <span class="tag">iot</span>
-        <div class="skill">IoT</div>
-        <div class="why">Custom IoT and edge devices are Diode's core market. The sensor board posting to a ScanMan Hive endpoint is the kind of hardware this design flow exists to produce.</div>
-      </div>
+      <a href="../embedded/platformio.html" class="connect-node">
+        <span class="tag">tech/embedded/platformio</span>
+        <div class="skill">PlatformIO</div>
+        <div class="why">The firmware layer above the board. KiCad designs the hardware; PlatformIO builds the code that runs on its MCU. One product, two git histories.</div>
+      </a>
     </div>
   </div>
 </section>
@@ -446,33 +433,33 @@ Component(name = <span class="s">"D1"</span>, mpn = <span class="s">"LED-0603"</
     <div class="fade-up">
       <div class="section-label">09 &middot; Resources</div>
       <h2 class="section-title">Go deeper.</h2>
-      <p class="section-lede">The <code>pcb</code> repository is the fastest way to see Zener in practice. Anthropic's write-up is the primary source on the Claude partnership and the evaluation.</p>
+      <p class="section-lede">Primary sources only. The project site and docs are the canonical references; the GitLab repositories hold the source and the official libraries.</p>
     </div>
     <div class="resource-grid fade-up" style="transition-delay: 0.05s">
-      <a href="https://www.diode.computer" class="resource" target="_blank" rel="noopener">
-        <span class="r-kind">Company</span>
-        <span class="r-title">diode.computer</span>
-        <span class="r-url">diode.computer</span>
-      </a>
-      <a href="https://github.com/diodeinc/pcb" class="resource" target="_blank" rel="noopener">
-        <span class="r-kind">Source</span>
-        <span class="r-title">diodeinc/pcb — the toolchain &amp; Zener</span>
-        <span class="r-url">github.com/diodeinc/pcb</span>
-      </a>
-      <a href="https://claude.com/blog/making-claude-a-better-electrical-engineer" class="resource" target="_blank" rel="noopener">
-        <span class="r-kind">Primary source</span>
-        <span class="r-title">Making Claude a better electrical engineer</span>
-        <span class="r-url">claude.com/blog/making-claude-a-better-electrical-engineer</span>
-      </a>
-      <a href="https://github.com/bazelbuild/starlark" class="resource" target="_blank" rel="noopener">
-        <span class="r-kind">Background</span>
-        <span class="r-title">Starlark — the language Zener extends</span>
-        <span class="r-url">github.com/bazelbuild/starlark</span>
-      </a>
       <a href="https://www.kicad.org" class="resource" target="_blank" rel="noopener">
-        <span class="r-kind">Output target</span>
-        <span class="r-title">KiCad — the EDA suite Diode compiles to</span>
+        <span class="r-kind">Project site</span>
+        <span class="r-title">KiCad EDA &mdash; home &amp; downloads</span>
         <span class="r-url">kicad.org</span>
+      </a>
+      <a href="https://docs.kicad.org" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Documentation</span>
+        <span class="r-title">Official KiCad documentation</span>
+        <span class="r-url">docs.kicad.org</span>
+      </a>
+      <a href="https://gitlab.com/kicad/code/kicad" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Source</span>
+        <span class="r-title">KiCad source code repository</span>
+        <span class="r-url">gitlab.com/kicad/code/kicad</span>
+      </a>
+      <a href="https://gitlab.com/kicad/libraries" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Libraries</span>
+        <span class="r-title">Official symbol / footprint / 3D-model repos</span>
+        <span class="r-url">gitlab.com/kicad/libraries</span>
+      </a>
+      <a href="https://dev-docs.kicad.org/en/apis-and-binding/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Developer docs</span>
+        <span class="r-title">APIs &amp; bindings &mdash; pcbnew Python &amp; IPC API</span>
+        <span class="r-url">dev-docs.kicad.org/en/apis-and-binding</span>
       </a>
     </div>
   </div>
@@ -485,7 +472,7 @@ Component(name = <span class="s">"D1"</span>, mpn = <span class="s">"LED-0603"</
     <div class="footer-links">
       <a href="../../../index.html">Skills tree</a>
       <a href="./">Electronics &amp; Hardware</a>
-      <a href="https://www.diode.computer" target="_blank" rel="noopener">diode.computer &nearr;</a>
+      <a href="https://www.kicad.org" target="_blank" rel="noopener">kicad.org &nearr;</a>
     </div>
     <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in Johannesburg, South Africa</p>
   </div>
