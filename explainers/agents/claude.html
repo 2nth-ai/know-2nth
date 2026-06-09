@@ -4,12 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Claude &mdash; know.2nth.ai</title>
-<meta name="description" content="Claude — Anthropic's flagship model family. Three production tiers: Opus 4.7 for hardest reasoning, Sonnet 4.6 for everyday agent work, Haiku 4.5 for high-volume routing. 200k standard context, 1M extended on premium tiers. Native extended thinking, MCP-first tool layer, vision and computer-use built in. The default for production agents that need long-context reasoning, reliable function-calling, and instruction-following beyond what open-weights models reach.">
+<meta name="description" content="Claude — Anthropic's flagship model family. Four tiers in 2026: Fable 5 (Mythos-class, the new top tier above Opus) for the hardest, longest-horizon work, Opus 4.8 for hard reasoning, Sonnet 4.6 for everyday agent work, Haiku 4.5 for high-volume routing. 1M context on Fable/Opus/Sonnet, 200k on Haiku. Adaptive thinking, MCP-first tool layer, vision and computer use built in. The default for production agents that need long-context reasoning, reliable function-calling, and instruction-following beyond what open-weights models reach.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="know.2nth.ai">
 <meta property="og:url" content="https://know.2nth.ai/explainers/agents/claude">
 <meta property="og:title" content="Claude &mdash; know.2nth.ai">
-<meta property="og:description" content="Claude — Anthropic's flagship family. Opus 4.7 / Sonnet 4.6 / Haiku 4.5. 200k–1M context, extended thinking, MCP-native, vision + computer use. The default for reasoning-heavy production agents.">
+<meta property="og:description" content="Claude — Anthropic's flagship family. Fable 5 (Mythos-class) / Opus 4.8 / Sonnet 4.6 / Haiku 4.5. Up to 1M context, adaptive thinking, MCP-native, vision + computer use. The default for reasoning-heavy production agents.">
 <meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
@@ -17,7 +17,7 @@
 <meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Claude &mdash; know.2nth.ai">
-<meta name="twitter:description" content="Claude — Opus 4.7 / Sonnet 4.6 / Haiku 4.5. Extended thinking, MCP-native, vision + computer use. The default for reasoning-heavy production agents.">
+<meta name="twitter:description" content="Claude — Fable 5 (Mythos-class) / Opus 4.8 / Sonnet 4.6 / Haiku 4.5. Adaptive thinking, MCP-native, vision + computer use. The default for reasoning-heavy production agents.">
 <meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -159,13 +159,13 @@
       Reasoning quality, <span class="gradient">priced and tiered.</span>
     </h1>
     <p class="sub fade-up" style="transition-delay: 0.1s">
-      Claude is Anthropic's flagship model family. Three production tiers in 2026: <strong>Opus 4.7</strong> for the hardest reasoning, <strong>Sonnet 4.6</strong> for everyday agent work, <strong>Haiku 4.5</strong> for high-volume routing and classification. 200k standard context window, 1M extended on premium tiers. Native extended thinking, MCP-first tool layer, vision and computer use built in. The default for production agents that need long-context reasoning, reliable function-calling, and instruction-following beyond what current open-weights models reach.
+      Claude is Anthropic's flagship model family. Four tiers in 2026: <strong>Fable 5</strong> &mdash; a Mythos-class model and the new top tier above Opus &mdash; for the hardest, longest-horizon work, <strong>Opus 4.8</strong> for hard reasoning, <strong>Sonnet 4.6</strong> for everyday agent work, <strong>Haiku 4.5</strong> for high-volume routing and classification. 1M context on Fable, Opus, and Sonnet; 200k on Haiku. Adaptive thinking, MCP-first tool layer, vision and computer use built in. The default for production agents that need long-context reasoning, reliable function-calling, and instruction-following beyond what current open-weights models reach.
     </p>
     <div class="hero-meta fade-up" style="transition-delay: 0.15s">
-      <span class="pill green">Claude 4.x family &middot; current</span>
-      <span class="pill indigo">Opus 4.7 &middot; Sonnet 4.6 &middot; Haiku 4.5</span>
-      <span class="pill accent">200k &rarr; 1M context</span>
-      <span class="pill warn">Extended thinking</span>
+      <span class="pill green">Fable 5 &middot; Claude 4.x &middot; current</span>
+      <span class="pill indigo">Fable 5 &middot; Opus 4.8 &middot; Sonnet 4.6 &middot; Haiku 4.5</span>
+      <span class="pill accent">up to 1M context</span>
+      <span class="pill warn">Adaptive thinking</span>
       <span class="pill">MCP-native</span>
     </div>
   </div>
@@ -185,7 +185,7 @@
     </div>
     <div class="info-card indigo fade-up" style="transition-delay: 0.08s">
       <h4>The family naming convention</h4>
-      <p>Claude versions follow <code>Claude {Tier} {Major.Minor}</code>. <strong>Tier</strong> is the size class (Opus / Sonnet / Haiku &mdash; large / medium / small). <strong>Major</strong> is the model generation; <strong>minor</strong> is the within-generation iteration. So <strong>Claude Opus 4.7</strong> is the seventh Opus 4.x release. The full model ID for API calls drops the "Claude" prefix and uses dashes: <code>claude-opus-4-7</code>, <code>claude-sonnet-4-6</code>, <code>claude-haiku-4-5</code>.</p>
+      <p>Most Claude versions follow <code>Claude {Tier} {Major.Minor}</code>. <strong>Tier</strong> is the size class (Opus / Sonnet / Haiku &mdash; large / medium / small). <strong>Major</strong> is the model generation; <strong>minor</strong> is the within-generation iteration. So <strong>Claude Opus 4.8</strong> is the eighth Opus 4.x release. The API model ID drops the "Claude" prefix and uses dashes: <code>claude-opus-4-8</code>, <code>claude-sonnet-4-6</code>, <code>claude-haiku-4-5</code>. <strong>Fable 5</strong> breaks the pattern: it's a <strong>Mythos-class</strong> model &mdash; a distinct top tier above Opus rather than a size within the 4.x line &mdash; with ID <code>claude-fable-5</code>. It shares the same request surface as Opus 4.7/4.8 (adaptive thinking only; no sampling params), with one wrinkle: an explicit <code>thinking: {type: "disabled"}</code> is rejected &mdash; omit the field to run without thinking.</p>
     </div>
   </div>
 </section>
@@ -194,37 +194,42 @@
 <section id="lineup">
   <div class="container">
     <div class="fade-up">
-      <div class="section-label">02 &middot; The Claude 4.x lineup</div>
-      <h2 class="section-title">Three tiers, one quality curve.</h2>
-      <p class="section-lede">The Claude family is deliberately tiered. Each tier is meaningfully cheaper than the one above and meaningfully less capable on the hardest tasks. The right production pattern is multi-tier routing: Haiku for the volume work, Sonnet for the default, Opus for the hard cases. The Anthropic Agent SDK supports this routing trivially &mdash; sub-agents can run on different tiers.</p>
+      <div class="section-label">02 &middot; The Claude lineup</div>
+      <h2 class="section-title">Four tiers, one quality curve.</h2>
+      <p class="section-lede">The Claude family is deliberately tiered. Each tier is meaningfully cheaper than the one above and meaningfully less capable on the hardest tasks. The right production pattern is multi-tier routing: Haiku for the volume work, Sonnet for the default, Opus for hard cases, Fable 5 for the genuinely hardest and longest-horizon ones. The Anthropic Agent SDK supports this routing trivially &mdash; sub-agents can run on different tiers.</p>
     </div>
 
     <div class="stack-grid fade-up" style="transition-delay: 0.05s">
       <div class="stack-cell">
+        <span class="layer">Tier &middot; Mythos-class</span>
+        <h4>Claude Fable 5</h4>
+        <p>The new top tier, above Opus. State-of-the-art on nearly all tested benchmarks, with its lead widening as tasks get longer and more complex &mdash; long-horizon agentic execution, deep software engineering, scientific research, and vision. The most capable (and most expensive) Claude model. 1M context, 128k max output. Reach for it when correctness on a hard, multi-step task outweighs cost.</p>
+      </div>
+      <div class="stack-cell">
         <span class="layer">Tier &middot; frontier</span>
-        <h4>Claude Opus 4.7</h4>
-        <p>The hardest-reasoning tier. Best for: deep research, complex code review, multi-step planning, agentic problem-solving. Frontier-level on reasoning benchmarks. Most expensive of the three. 200k standard / 1M extended context.</p>
+        <h4>Claude Opus 4.8</h4>
+        <p>The hardest-reasoning Opus tier. Best for: deep research, complex code review, multi-step planning, agentic problem-solving. Highly autonomous on long-horizon work. Half the price of Fable 5 and still frontier-class &mdash; the right pick when Fable would be overkill. 1M context, 128k max output.</p>
       </div>
       <div class="stack-cell">
         <span class="layer">Tier &middot; default</span>
         <h4>Claude Sonnet 4.6</h4>
-        <p>The "good for almost everything" tier. ~80% of Opus quality at meaningfully lower cost. The right default for most production agents. 200k context. Most teams' day-to-day workhorse.</p>
+        <p>The "good for almost everything" tier. Strong fraction of Opus quality at meaningfully lower cost. The right default for most production agents. 1M context. Most teams' day-to-day workhorse.</p>
       </div>
       <div class="stack-cell">
         <span class="layer">Tier &middot; volume</span>
         <h4>Claude Haiku 4.5</h4>
-        <p>The fastest, cheapest tier. Best for: classification, routing, summarisation, structured-extraction at high throughput. Lower reasoning depth but very fast and cheap. Good fit for "first-pass" agents that escalate to Sonnet/Opus when needed.</p>
+        <p>The fastest, cheapest tier. Best for: classification, routing, summarisation, structured-extraction at high throughput. Lower reasoning depth but very fast and cheap. Good fit for "first-pass" agents that escalate to Sonnet/Opus/Fable when needed. 200k context.</p>
       </div>
       <div class="stack-cell">
         <span class="layer">Capability &middot; cross-tier</span>
         <h4>All tiers ship</h4>
-        <p>Tool use / function calling, vision (image input), MCP-native integration, JSON mode for structured outputs, extended thinking on Opus and Sonnet, computer use on Sonnet (vision + UI control), 200k+ context, streaming.</p>
+        <p>Tool use / function calling, vision (image input), MCP-native integration, structured outputs (JSON-schema-constrained), adaptive thinking on Fable/Opus/Sonnet, computer use (vision + UI control), prompt caching, streaming.</p>
       </div>
     </div>
 
     <div class="info-card green fade-up" style="transition-delay: 0.08s">
-      <h4>Extended thinking &mdash; the Claude differentiator</h4>
-      <p>Claude Opus and Sonnet 4.x support <strong>extended thinking</strong>: when the prompt indicates complex reasoning is required, the model can allocate a separately-billed thinking-token budget to "think before answering" &mdash; producing internal reasoning traces that improve final answer quality on hard tasks. The Anthropic Agent SDK exposes this as <code>thinking={"budget_tokens": 16000}</code>. Most other model families either don't have this or expose it only via specialised "reasoning" SKUs (OpenAI's o-series, Gemini Thinking).</p>
+      <h4>Adaptive thinking &mdash; the Claude differentiator</h4>
+      <p>Claude Fable 5, Opus, and Sonnet support <strong>adaptive thinking</strong>: the model decides on its own when and how much to "think before answering," producing internal reasoning that lifts answer quality on hard tasks. You set <code>thinking={"type": "adaptive"}</code> and steer depth with the <code>effort</code> parameter (<code>low</code>&hellip;<code>max</code>) rather than a fixed token budget. The older fixed <code>budget_tokens</code> knob is removed on Fable 5 and Opus 4.7+ (it 400s) and deprecated elsewhere. Most other model families either don't have this or expose it only via specialised "reasoning" SKUs (OpenAI's o-series, Gemini Thinking).</p>
     </div>
   </div>
 </section>
@@ -264,18 +269,20 @@
     <div class="fade-up">
       <div class="section-label">04 &middot; Pricing reality</div>
       <h2 class="section-title">Frontier-tier pricing, with real production trade-offs.</h2>
-      <p class="section-lede">Claude is not cheap at the frontier tier. Sonnet 4.6 is meaningfully more affordable than Opus 4.7 and very close in quality &mdash; for most production work, Sonnet is the right default. Haiku 4.5 is cheap enough for high-volume tasks. Pricing is USD per million tokens, with separate input and output rates, and extended thinking tokens billed at output rate. Always check <a href="https://www.anthropic.com/pricing" target="_blank" rel="noopener" style="color:var(--sky)">anthropic.com/pricing</a> for current numbers &mdash; the rates here are accurate to mid-2026 but Anthropic adjusts pricing as model generations evolve.</p>
+      <p class="section-lede">Claude is not cheap at the top tier. Sonnet 4.6 is meaningfully more affordable than Opus and very close in quality &mdash; for most production work, Sonnet is the right default. Haiku 4.5 is cheap enough for high-volume tasks; Fable 5 is the premium you pay only when a hard, long-horizon task has to be right. Pricing is USD per million tokens, with separate input and output rates, and thinking tokens billed at the output rate. Always check <a href="https://www.anthropic.com/pricing" target="_blank" rel="noopener" style="color:var(--sky)">anthropic.com/pricing</a> for current numbers &mdash; the rates here are accurate to mid-2026 but Anthropic adjusts pricing as model generations evolve.</p>
     </div>
 
     <div class="prose fade-up" style="transition-delay: 0.05s">
-      <p><strong>The shape of the pricing curve</strong> (illustrative; check the official page for exact numbers):</p>
+      <p><strong>List rates, per million tokens (input / output):</strong></p>
       <ul>
-        <li><strong>Opus 4.7</strong> &mdash; frontier-tier rates. Output tokens billed roughly 5&times; input. Extended thinking tokens billed at output rate. The most expensive tier.</li>
-        <li><strong>Sonnet 4.6</strong> &mdash; meaningfully cheaper than Opus, similar 5&times; output multiplier. The right default for production volume.</li>
-        <li><strong>Haiku 4.5</strong> &mdash; cheapest of the three by an order of magnitude. The right tier for routing, classification, and structured extraction at scale.</li>
-        <li><strong>Prompt caching</strong> &mdash; 90% discount on cached input tokens for repeated context. Significant cost saver for RAG agents that share common prompts across calls.</li>
+        <li><strong>Fable 5</strong> &mdash; <code>$10 / $50</code>. The top tier; ~2&times; Opus on both input and output. Worth it when a hard, multi-step task's correctness outweighs cost &mdash; not for volume.</li>
+        <li><strong>Opus 4.8</strong> &mdash; <code>$5 / $25</code>. Frontier-class at half Fable's rate. The hard-reasoning default before you reach for Fable.</li>
+        <li><strong>Sonnet 4.6</strong> &mdash; <code>$3 / $15</code>. The right default for production volume &mdash; most of Opus's quality at a fraction of the cost.</li>
+        <li><strong>Haiku 4.5</strong> &mdash; <code>$1 / $5</code>. Cheapest by far. The tier for routing, classification, and structured extraction at scale.</li>
+        <li><strong>Prompt caching</strong> &mdash; up to 90% discount on cached input tokens for repeated context. Significant cost saver for RAG agents that share common prompts across calls.</li>
         <li><strong>Batch API</strong> &mdash; 50% discount on input + output for non-urgent batch workloads. Useful for nightly processing.</li>
       </ul>
+      <p style="color:var(--text-muted); font-size:0.92em">Output is billed ~5&times; input across all four tiers. The 1M context window on Fable, Opus, and Sonnet is at standard rates &mdash; no long-context premium.</p>
     </div>
 
     <div class="info-card green fade-up" style="transition-delay: 0.08s">
@@ -310,7 +317,7 @@
         <ul>
           <li>POPIA / data-residency forbids cross-border to US (mitigate via AWS Bedrock <code>af-south-1</code>)</li>
           <li>Cost-sensitive at extreme scale &mdash; open-weights via Ollama is cheaper</li>
-          <li>You need 1M+ context windows &mdash; Gemini Pro / Ultra leads</li>
+          <li>You need context beyond 1M tokens &mdash; Claude now ships 1M on Fable/Opus/Sonnet, but Gemini Pro / Ultra still leads past that</li>
           <li>Voice / video native &mdash; Gemini Live or specialised voice APIs</li>
           <li>DALL-E or specialised image-gen integration &mdash; OpenAI ecosystem fits</li>
           <li>You want a fully open / self-hostable model &mdash; Claude is closed</li>
@@ -329,7 +336,7 @@
     </div>
     <div class="info-card indigo fade-up" style="transition-delay: 0.05s">
       <h4>Enterprise &middot; AWS Bedrock <code>af-south-1</code> as the residency-clean path</h4>
-      <p>For SA enterprise (banks, insurers, telcos) with POPIA cross-border concerns, <strong>AWS Bedrock in Cape Town hosts Claude Sonnet and Haiku</strong> with full SA data residency. That's the structurally clean answer for PII-bearing workloads &mdash; data stays on-region, audit logs flow into CloudWatch, IAM controls integrate with existing AWS posture. Opus 4.7 availability on Bedrock <code>af-south-1</code> can lag the Anthropic API by weeks; if you need bleeding-edge Opus, plan for direct API access with documented Section 72 cross-border consent flows.</p>
+      <p>For SA enterprise (banks, insurers, telcos) with POPIA cross-border concerns, <strong>AWS Bedrock in Cape Town hosts Claude Sonnet and Haiku</strong> with full SA data residency. That's the structurally clean answer for PII-bearing workloads &mdash; data stays on-region, audit logs flow into CloudWatch, IAM controls integrate with existing AWS posture. Top-tier availability on Bedrock <code>af-south-1</code> can lag the Anthropic API by weeks &mdash; the newest Opus and Fable 5 land on the direct API first; if you need the bleeding edge, plan for direct API access with documented Section 72 cross-border consent flows.</p>
     </div>
     <div class="info-card fade-up" style="transition-delay: 0.07s">
       <h4>Studio &middot; the daily-driver tier</h4>
