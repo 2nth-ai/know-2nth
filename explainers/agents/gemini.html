@@ -4,12 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Gemini &mdash; know.2nth.ai</title>
-<meta name="description" content="Gemini — Google's flagship multimodal model family. Three production tiers in 2026: Gemini 2.5 Pro / Ultra for the hardest reasoning, Gemini 2.5 Flash for everyday work, Gemini Flash-Lite for high-volume routing. 1M+ token context window — the largest in the field by a meaningful margin. Native multimodal across text, image, video, and audio. Native search grounding. Hosted via Google AI Studio, Vertex AI (including africa-south1 in Johannesburg), and OpenRouter. The default for production agents that need extreme context length, Google search integration, or bidirectional voice via the Live API.">
+<meta name="description" content="Gemini — Google's flagship multimodal model family. Mid-2026: the Gemini 3.x line — Gemini 3.1 Pro for the hardest reasoning and agentic coding, Gemini 3.5 Flash for frontier agentic/coding work, Gemini 3.1 Flash-Lite for high-volume routing. 1M+ token context (reportedly to ~2M on Pro) — the largest in the field. Native multimodal across text, image, video, and audio. Native search grounding. Hosted via Google AI Studio, Vertex AI (including africa-south1 in Johannesburg), and OpenRouter. The default for production agents that need extreme context length, Google search integration, or bidirectional voice via the Live API.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="know.2nth.ai">
 <meta property="og:url" content="https://know.2nth.ai/explainers/agents/gemini">
 <meta property="og:title" content="Gemini &mdash; know.2nth.ai">
-<meta property="og:description" content="Gemini — Google's flagship family. 1M+ context, native multimodal, native search grounding, voice via Live API. Hosted via Vertex AI in africa-south1.">
+<meta property="og:description" content="Gemini — Google's flagship family. Gemini 3.x: 3.1 Pro / 3.5 Flash / 3.1 Flash-Lite. 1M+ context (to ~2M on Pro), native multimodal, native search grounding, voice via Live API. Hosted via Vertex AI in africa-south1.">
 <meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
@@ -17,7 +17,7 @@
 <meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Gemini &mdash; know.2nth.ai">
-<meta name="twitter:description" content="Gemini — Google's flagship family. 1M+ context, native multimodal, native search grounding, voice via Live. Vertex AI in JHB.">
+<meta name="twitter:description" content="Gemini — Google's flagship family. Gemini 3.x: 3.1 Pro / 3.5 Flash / 3.1 Flash-Lite. 1M+ context, native multimodal, search grounding, voice via Live. Vertex AI in JHB.">
 <meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -159,12 +159,12 @@
       One million tokens of context. <span class="gradient">Native voice. Native search.</span>
     </h1>
     <p class="sub fade-up" style="transition-delay: 0.1s">
-      Gemini is Google DeepMind's flagship model family. Three production tiers in 2026: <strong>Gemini 2.5 Pro / Ultra</strong> for the hardest reasoning, <strong>Gemini 2.5 Flash</strong> for everyday agent work, <strong>Gemini Flash-Lite</strong> for high-volume routing. The differentiators that matter: <strong>1M+ token context</strong> (the largest in the field by a meaningful margin), <strong>native multimodal across text, image, video, and audio</strong>, <strong>native Google Search grounding</strong>, and <strong>native bidirectional voice</strong> via the Live API. Hosted via Google AI Studio, Vertex AI (including <code>africa-south1</code> in Johannesburg), and OpenRouter. The default closed-frontier model when extreme context, search grounding, or voice is the load-bearing capability.
+      Gemini is Google DeepMind's flagship model family. The current line in mid-2026 is <strong>Gemini 3.x</strong>: <strong>Gemini 3.1 Pro</strong> for the hardest reasoning and agentic coding, <strong>Gemini 3.5 Flash</strong> for frontier-class agentic and coding work, <strong>Gemini 3.1 Flash-Lite</strong> for high-volume routing (the 2.5 line is now legacy). The differentiators that matter: <strong>1M+ token context</strong> (the largest in the field, reportedly up to ~2M on the Pro tier), <strong>native multimodal across text, image, video, and audio</strong>, <strong>native Google Search grounding</strong>, and <strong>native bidirectional voice</strong> via the Live API. Hosted via Google AI Studio, Vertex AI (including <code>africa-south1</code> in Johannesburg), and OpenRouter. The default closed-frontier model when extreme context, search grounding, or voice is the load-bearing capability.
     </p>
     <div class="hero-meta fade-up" style="transition-delay: 0.15s">
-      <span class="pill green">Gemini 2.5 family &middot; current</span>
-      <span class="pill indigo">Pro / Ultra &middot; Flash &middot; Flash-Lite</span>
-      <span class="pill accent">1M+ context</span>
+      <span class="pill green">Gemini 3.x family &middot; current</span>
+      <span class="pill indigo">3.1 Pro &middot; 3.5 Flash &middot; 3.1 Flash-Lite</span>
+      <span class="pill accent">1M+ context (to ~2M)</span>
       <span class="pill warn">Native search grounding</span>
       <span class="pill">Live API &middot; voice + video</span>
     </div>
@@ -179,13 +179,13 @@
       <h2 class="section-title">Google DeepMind's flagship multimodal family.</h2>
     </div>
     <div class="prose fade-up" style="transition-delay: 0.05s">
-      <p>Gemini is the model family from <strong>Google DeepMind</strong>, the merged Google research lab that combines DeepMind's frontier-AI work with the production model engineering that powers Google's products. The first Gemini family shipped in late 2023 (Gemini 1.0 Pro, Ultra, Nano); subsequent generations followed roughly annually, with Gemini 1.5 expanding context to 1M tokens, Gemini 2.0 adding native multimodal generation, and Gemini 2.5 (the current line) bringing the production-grade reasoning and live-API capabilities.</p>
+      <p>Gemini is the model family from <strong>Google DeepMind</strong>, the merged Google research lab that combines DeepMind's frontier-AI work with the production model engineering that powers Google's products. The first Gemini family shipped in late 2023 (Gemini 1.0 Pro, Ultra, Nano); subsequent generations followed roughly annually, with Gemini 1.5 expanding context to 1M tokens, Gemini 2.0 adding native multimodal generation, Gemini 2.5 bringing production-grade reasoning and the Live API, and the current <strong>Gemini 3.x</strong> line pushing frontier agentic and coding performance.</p>
       <p>Where Claude leads on instruction-following and GPT on function-calling reach, Gemini has historically led on three things: <strong>extreme context length</strong> (1M+ tokens reliably used, not just nominally supported), <strong>native multimodality</strong> (text, image, video, audio in a single model rather than bolted-together components), and <strong>native search grounding</strong> (the model can search Google and ground responses in current information without external RAG infrastructure). Those three properties make it the default choice for use cases where any of them is structurally needed.</p>
       <p>Distribution: Gemini is available via <strong>Google AI Studio</strong> (the developer-friendly direct path, also free up to a quota), <strong>Vertex AI</strong> (the enterprise GCP path, including the JHB <code>africa-south1</code> region for SA-resident calls), <strong>Gemini.google.com</strong> (the consumer product), and through every major aggregator (OpenRouter, LiteLLM). Inside Google's own products &mdash; Search AI Overviews, Workspace AI features, Pixel devices &mdash; Gemini is the model behind much of what users actually interact with daily, making it one of the most-deployed model families by raw query count.</p>
     </div>
     <div class="info-card indigo fade-up" style="transition-delay: 0.08s">
       <h4>Naming &middot; how the family lines up</h4>
-      <p>Gemini's naming pattern: <code>Gemini {version} {tier}</code>. <strong>Version</strong> is the generation (1.0, 1.5, 2.0, 2.5). <strong>Tier</strong> is the size class &mdash; Pro (everyday flagship), Ultra (the "hardest reasoning" SKU at the top), Flash (cheaper / faster), Flash-Lite (cheapest / fastest), and Nano (on-device, mobile-targeted). The full model ID for API calls uses dashes: <code>gemini-2.5-pro</code>, <code>gemini-2.5-flash</code>, <code>gemini-2.5-flash-lite</code>. Older 1.5 models (<code>gemini-1.5-pro</code>) are still supported but on a deprecation track &mdash; check the model availability matrix before pinning legacy versions.</p>
+      <p>Gemini's naming pattern: <code>Gemini {version} {tier}</code>. <strong>Version</strong> is the generation (1.0 &rarr; 1.5 &rarr; 2.0 &rarr; 2.5 &rarr; the current 3.x). <strong>Tier</strong> is the size class &mdash; Pro (the flagship reasoning SKU at the top), Flash (frontier-class, faster), Flash-Lite (cheapest / fastest), and Nano (on-device, mobile-targeted). The 3.x line dropped the separate "Ultra" SKU; Pro is now the top. API model IDs use dashes: <code>gemini-3.1-pro</code>, <code>gemini-3.5-flash</code>, <code>gemini-3.1-flash-lite</code>. The whole <strong>Gemini 2.5</strong> line (<code>gemini-2.5-pro</code>, <code>-flash</code>, <code>-flash-lite</code>) is still served but now legacy &mdash; check the model availability matrix before pinning anything older.</p>
     </div>
   </div>
 </section>
@@ -194,37 +194,37 @@
 <section id="lineup">
   <div class="container">
     <div class="fade-up">
-      <div class="section-label">02 &middot; The Gemini 2.5 lineup</div>
+      <div class="section-label">02 &middot; The Gemini 3.x lineup</div>
       <h2 class="section-title">Three tiers, one quality curve, one differentiating context window.</h2>
-      <p class="section-lede">The Gemini family is tiered like Claude and GPT: flagship at the top for hard reasoning, mid-tier for the everyday default, lighter tier for high-volume routine work. The difference: the entire family ships with the same 1M+ context window. Where Claude tops out at 200k and GPT at ~200k for most variants, Gemini Flash &mdash; the cheap, fast tier &mdash; gives you a million tokens.</p>
+      <p class="section-lede">The Gemini family is tiered like Claude and GPT: flagship at the top for hard reasoning, a frontier-class Flash for the everyday default, a Flash-Lite for high-volume routine work. The difference that's held across generations: the whole family ships a 1M+ context window. The 3.x line also collapsed the old "Ultra" tier &mdash; Pro is now the single top SKU.</p>
     </div>
 
     <div class="stack-grid fade-up" style="transition-delay: 0.05s">
       <div class="stack-cell">
-        <span class="layer">Tier &middot; frontier</span>
-        <h4>Gemini 2.5 Pro / Ultra</h4>
-        <p>The flagship. Best for: complex reasoning, deep research, code generation, long-context analysis. 1M+ token window. Native extended thinking on hard prompts.</p>
+        <span class="layer">Tier &middot; flagship</span>
+        <h4>Gemini 3.1 Pro</h4>
+        <p>The top reasoning SKU. Best for: complex problem-solving, deep research, code generation, agentic and "vibe" coding, long-context analysis. 1M+ token window (reportedly up to ~2M on Pro). Input pricing roughly doubles for prompts past 200k tokens.</p>
       </div>
       <div class="stack-cell">
         <span class="layer">Tier &middot; default</span>
-        <h4>Gemini 2.5 Flash</h4>
-        <p>The "good for almost everything" tier. Materially cheaper than Pro, very close in quality on most tasks. 1M context. The right default for production agent volume.</p>
+        <h4>Gemini 3.5 Flash</h4>
+        <p>Google's pitch is "most intelligent model for sustained frontier performance on agentic and coding tasks" &mdash; frontier-class quality at Flash pricing. The right default for production agent volume. (Gemini 3 Flash is the preview sibling at an even lower price point.)</p>
       </div>
       <div class="stack-cell">
         <span class="layer">Tier &middot; volume</span>
-        <h4>Gemini Flash-Lite</h4>
-        <p>The cheapest tier. Best for: routing, classification, summarisation, structured extraction at scale. Still supports the 1M context window &mdash; useful for "scan a long document, answer one question" patterns where a heavier tier would be overkill.</p>
+        <h4>Gemini 3.1 Flash-Lite</h4>
+        <p>The cheapest Gemini 3 tier. Best for: routing, classification, summarisation, structured extraction at scale. Still carries the large context window &mdash; ideal for "scan a long document, answer one question" patterns where a heavier tier would be overkill.</p>
       </div>
       <div class="stack-cell">
         <span class="layer">Capability &middot; cross-tier</span>
         <h4>All tiers ship</h4>
-        <p>1M+ context, native multimodal (text/image/video/audio in, text/image out), function-calling, JSON mode, structured outputs, native Google Search grounding (paid feature), the Live API for bidirectional streaming voice and video.</p>
+        <p>1M+ context, native multimodal (text/image/video/audio in, text/image out), function-calling, structured outputs, native Google Search grounding (paid feature), the Live API for bidirectional streaming voice and video.</p>
       </div>
     </div>
 
     <div class="info-card green fade-up" style="transition-delay: 0.08s">
       <h4>The 1M context isn't just a number</h4>
-      <p>Many models nominally support 200k+ context but degrade meaningfully past 32k or 64k. Gemini 2.5 Pro is the rare model that genuinely uses its full 1M window &mdash; you can pass an entire codebase, a 200-page document, or several hours of audio transcription and get coherent reasoning back. <strong>For "ask the company" agents over large internal corpora, Gemini's context advantage often beats the RAG-engineering complexity Claude or GPT would otherwise require</strong>. The trade-off: latency grows with context (multiple seconds for full 1M) and per-call cost rises with token count.</p>
+      <p>Many models nominally support large context but degrade meaningfully past 32k or 64k. Gemini Pro is the rare model that genuinely uses its full window &mdash; you can pass an entire codebase, a 200-page document, or several hours of audio transcription and get coherent reasoning back. <strong>For "ask the company" agents over large internal corpora, Gemini's context advantage often beats the RAG-engineering complexity Claude or GPT would otherwise require</strong>. The trade-offs: latency grows with context (multiple seconds at the top of the window), and on Gemini 3 Pro input pricing roughly doubles once a prompt crosses 200k tokens.</p>
     </div>
   </div>
 </section>
@@ -243,8 +243,8 @@
         <thead><tr><th>Family</th><th>Strengths</th><th>Watch out for</th></tr></thead>
         <tbody>
           <tr><td><strong>Gemini (Google)</strong></td><td>1M+ context (the largest), native multimodal across all media, native Google Search grounding, voice via Live API, JHB Vertex region for SA residency</td><td>Less consistent on instruction-following than Claude; smaller community / ecosystem than OpenAI; Live API still maturing on TS/JS support</td></tr>
-          <tr><td><strong>Claude (Anthropic)</strong></td><td>Best instruction-following, native extended thinking, MCP-native, Bedrock <code>af-south-1</code> for SA residency</td><td>Closed; 200k context cap; weaker multimodal range than Gemini</td></tr>
-          <tr><td><strong>GPT (OpenAI)</strong></td><td>Largest API ecosystem, best function-calling reliability, broadest multimodal (vision/audio/DALL-E)</td><td>"Confidently wrong" failure mode more than Claude; context tops at 200k for most variants</td></tr>
+          <tr><td><strong>Claude (Anthropic)</strong></td><td>Best instruction-following, adaptive thinking, MCP-native, top tier (Fable 5) leads on long-horizon agentic work, now 1M context, Bedrock <code>af-south-1</code> for SA residency</td><td>Closed; weaker multimodal range than Gemini; no native voice/video</td></tr>
+          <tr><td><strong>GPT (OpenAI)</strong></td><td>Largest API ecosystem, best function-calling reliability, broadest multimodal (vision/audio/image-gen), built-in reasoning, GPT-5.5 now ~1M context</td><td>"Confidently wrong" failure mode more than Claude; no SA-resident region as clean as Vertex JHB</td></tr>
           <tr><td><strong>Llama (Meta)</strong></td><td>Open weights, runs locally, largest community fine-tune ecosystem</td><td>Frontier gap; smaller context than Gemini Pro; Meta licence has commercial restrictions</td></tr>
           <tr><td><strong>Gemma (Google)</strong></td><td>Open weights, multimodal, frontier-lab safety tuning, runs locally via Ollama</td><td>Smaller fine-tune ecosystem than Llama; not as code-strong as Qwen-coder</td></tr>
         </tbody>
@@ -264,24 +264,24 @@
     <div class="fade-up">
       <div class="section-label">04 &middot; Pricing reality</div>
       <h2 class="section-title">Tiered, with a context-length cost asymmetry.</h2>
-      <p class="section-lede">Gemini is USD-billed at frontier-tier rates for Pro/Ultra and meaningfully cheaper for Flash and Flash-Lite. The unique cost lever: <strong>context length scales output cost linearly</strong> &mdash; passing 500k tokens of context costs roughly 5&times; what passing 100k tokens costs for the same model. Always check <a href="https://ai.google.dev/pricing" target="_blank" rel="noopener" style="color:var(--sky)">ai.google.dev/pricing</a> for current numbers.</p>
+      <p class="section-lede">Gemini stays the cheapest frontier family at the Flash tiers, and uniquely carries a <strong>context-length pricing step</strong>: on Gemini 3 Pro, input pricing roughly doubles once a prompt crosses 200k tokens. Always check <a href="https://ai.google.dev/pricing" target="_blank" rel="noopener" style="color:var(--sky)">ai.google.dev/pricing</a> for current numbers &mdash; rates below are mid-2026.</p>
     </div>
 
     <div class="prose fade-up" style="transition-delay: 0.05s">
-      <p><strong>The shape of the pricing curve</strong> (illustrative; check the official page):</p>
+      <p><strong>List rates, per million tokens (input / output):</strong></p>
       <ul>
-        <li><strong>Gemini 2.5 Pro / Ultra</strong> &mdash; frontier-tier rates. Output tokens billed roughly 4-5&times; input. Long context (above the standard 200k threshold) often billed at higher rates.</li>
-        <li><strong>Gemini 2.5 Flash</strong> &mdash; meaningfully cheaper than Pro; very competitive with Claude Haiku and GPT-4o for routine production work.</li>
-        <li><strong>Gemini Flash-Lite</strong> &mdash; cheapest of the three. Often the right tier for routing, classification, and structured extraction at high volume.</li>
-        <li><strong>Search grounding</strong> &mdash; billed per grounded query in addition to model tokens. Cheap per query but adds up for high-volume agents.</li>
-        <li><strong>Context caching</strong> &mdash; Google supports cached context for repeated long-context calls, materially cutting cost for RAG-style workloads with shared context.</li>
-        <li><strong>Batch API</strong> &mdash; ~50% discount on input + output for non-urgent batched workloads. Useful for nightly long-context processing.</li>
+        <li><strong>Gemini 3.1 Pro</strong> &mdash; <code>$2 / $12</code> for prompts up to 200k tokens; input roughly doubles above that. The flagship reasoning SKU &mdash; and notably cheaper than Claude Opus or GPT-5.5 at the top.</li>
+        <li><strong>Gemini 3.5 Flash</strong> &mdash; <code>$1.50 / $9</code>. Frontier-class agentic/coding quality at Flash pricing; the right production default.</li>
+        <li><strong>Gemini 3.1 Flash-Lite</strong> &mdash; <code>$0.25 / $1.50</code>. The most cost-effective Gemini 3 tier for routing and extraction at scale. (Legacy <strong>2.5 Flash-Lite</strong> goes lower still at <code>$0.10 / $0.40</code>.)</li>
+        <li><strong>Search grounding</strong> &mdash; billed per grounded query on top of model tokens. Cheap per query but adds up at volume.</li>
+        <li><strong>Context caching</strong> &mdash; cached context cuts cost materially for repeated long-context (RAG) workloads.</li>
+        <li><strong>Batch API</strong> &mdash; ~50% discount on input + output for non-urgent batched workloads.</li>
       </ul>
     </div>
 
     <div class="info-card green fade-up" style="transition-delay: 0.08s">
       <h4>The Flash-default routing pattern</h4>
-      <p>Same logic as the Claude and GPT leaves: don't run everything on Pro. Build a Flash-Lite-driven router that classifies incoming requests, dispatches the routine 60-80% to Flash, and escalates the genuinely hard 5-15% to Pro / Ultra. <strong>Combined with Google's context caching for any repeated-context workload (common with 1M-token RAG), this pattern cuts Gemini costs 60-80% versus running everything on Pro.</strong> Across closed-frontier models in 2026, Gemini Flash plus context caching is often the most cost-effective path for long-context-heavy agents.</p>
+      <p>Same logic as the Claude and GPT leaves: don't run everything on Pro. Build a Flash-Lite-driven router that classifies incoming requests, dispatches the routine 60-80% to 3.5 Flash, and escalates the genuinely hard 5-15% to 3.1 Pro. <strong>Combined with Google's context caching for any repeated-context workload (common with 1M-token RAG), this pattern cuts Gemini costs 60-80% versus running everything on Pro.</strong> Across closed-frontier models in 2026, Gemini Flash plus context caching is often the most cost-effective path for long-context-heavy agents.</p>
     </div>
   </div>
 </section>
@@ -330,7 +330,7 @@
     </div>
     <div class="info-card indigo fade-up" style="transition-delay: 0.05s">
       <h4>Enterprise &middot; Vertex AI in <code>africa-south1</code></h4>
-      <p>Vertex AI's <strong>Johannesburg region (<code>africa-south1</code>)</strong> hosts Gemini 2.5 Flash and (in most cases) Pro for SA-resident inference, with full POPIA compliance, IAM controls, and Cloud Logging audit trails. For SA banks, insurers, and telcos already on GCP &mdash; or evaluating it &mdash; this is the structurally cleanest path among closed frontier models. The honest constraint: not every Gemini variant lands in <code>africa-south1</code> at launch. Newest models (Ultra tier, latest preview models) sometimes lag the US regions by weeks or months. Plan for either a US-East fallback or accept the lag if residency is non-negotiable.</p>
+      <p>Vertex AI's <strong>Johannesburg region (<code>africa-south1</code>)</strong> hosts the Gemini Flash tiers and (in most cases) Pro for SA-resident inference, with full POPIA compliance, IAM controls, and Cloud Logging audit trails. For SA banks, insurers, and telcos already on GCP &mdash; or evaluating it &mdash; this is the structurally cleanest path among closed frontier models. The honest constraint: not every Gemini variant lands in <code>africa-south1</code> at launch. The newest flagship and preview models (e.g. the latest 3.x Pro) sometimes lag the US regions by weeks or months. Plan for either a US-East fallback or accept the lag if residency is non-negotiable.</p>
     </div>
     <div class="info-card fade-up" style="transition-delay: 0.07s">
       <h4>Studio &middot; Google AI Studio direct</h4>
