@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Gemini &mdash; know.2nth.ai</title>
-<meta name="description" content="Gemini — Google's flagship multimodal model family. Mid-2026: the Gemini 3.x line — Gemini 3.1 Pro for the hardest reasoning and agentic coding, Gemini 3.5 Flash for frontier agentic/coding work, Gemini 3.1 Flash-Lite for high-volume routing. 1M+ token context (reportedly to ~2M on Pro) — the largest in the field. Native multimodal across text, image, video, and audio. Native search grounding. Hosted via Google AI Studio, Vertex AI (including africa-south1 in Johannesburg), and OpenRouter. The default for production agents that need extreme context length, Google search integration, or bidirectional voice via the Live API.">
+<meta name="description" content="Gemini — Google's flagship multimodal model family. Mid-2026: the Gemini 3.x line — Gemini 3.1 Pro for the hardest reasoning and agentic coding, Gemini 3.5 Flash for frontier agentic/coding work, Gemini 3.1 Flash-Lite for high-volume routing. 1M+ token context (reportedly to ~2M on Pro) — the largest in the field. Native multimodal across text, image, video, and audio, native search grounding, and native media generation via Gemini Omni (conversational video + image creation). Hosted via Google AI Studio, Vertex AI (including africa-south1 in Johannesburg), and OpenRouter. The default for production agents that need extreme context length, Google search integration, voice via the Live API, or generative multimodal output.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="know.2nth.ai">
 <meta property="og:url" content="https://know.2nth.ai/explainers/agents/gemini">
@@ -159,7 +159,7 @@
       One million tokens of context. <span class="gradient">Native voice. Native search.</span>
     </h1>
     <p class="sub fade-up" style="transition-delay: 0.1s">
-      Gemini is Google DeepMind's flagship model family. The current line in mid-2026 is <strong>Gemini 3.x</strong>: <strong>Gemini 3.1 Pro</strong> for the hardest reasoning and agentic coding, <strong>Gemini 3.5 Flash</strong> for frontier-class agentic and coding work, <strong>Gemini 3.1 Flash-Lite</strong> for high-volume routing (the 2.5 line is now legacy). The differentiators that matter: <strong>1M+ token context</strong> (the largest in the field, reportedly up to ~2M on the Pro tier), <strong>native multimodal across text, image, video, and audio</strong>, <strong>native Google Search grounding</strong>, and <strong>native bidirectional voice</strong> via the Live API. Hosted via Google AI Studio, Vertex AI (including <code>africa-south1</code> in Johannesburg), and OpenRouter. The default closed-frontier model when extreme context, search grounding, or voice is the load-bearing capability.
+      Gemini is Google DeepMind's flagship model family. The current line in mid-2026 is <strong>Gemini 3.x</strong>: <strong>Gemini 3.1 Pro</strong> for the hardest reasoning and agentic coding, <strong>Gemini 3.5 Flash</strong> for frontier-class agentic and coding work, <strong>Gemini 3.1 Flash-Lite</strong> for high-volume routing (the 2.5 line is now legacy). The differentiators that matter: <strong>1M+ token context</strong> (the largest in the field, reportedly up to ~2M on the Pro tier), <strong>native multimodal across text, image, video, and audio</strong>, <strong>native Google Search grounding</strong>, <strong>native bidirectional voice</strong> via the Live API, and now <strong>native multimodal generation</strong> via <strong>Gemini Omni</strong> &mdash; conversational video and image creation from any input. Hosted via Google AI Studio, Vertex AI (including <code>africa-south1</code> in Johannesburg), and OpenRouter. The default closed-frontier model when extreme context, search grounding, voice, or media generation is the load-bearing capability.
     </p>
     <div class="hero-meta fade-up" style="transition-delay: 0.15s">
       <span class="pill green">Gemini 3.x family &middot; current</span>
@@ -167,6 +167,7 @@
       <span class="pill accent">1M+ context (to ~2M)</span>
       <span class="pill warn">Native search grounding</span>
       <span class="pill">Live API &middot; voice + video</span>
+      <span class="pill violet">Gemini Omni &middot; media generation</span>
     </div>
   </div>
 </section>
@@ -225,6 +226,11 @@
     <div class="info-card green fade-up" style="transition-delay: 0.08s">
       <h4>The 1M context isn't just a number</h4>
       <p>Many models nominally support large context but degrade meaningfully past 32k or 64k. Gemini Pro is the rare model that genuinely uses its full window &mdash; you can pass an entire codebase, a 200-page document, or several hours of audio transcription and get coherent reasoning back. <strong>For "ask the company" agents over large internal corpora, Gemini's context advantage often beats the RAG-engineering complexity Claude or GPT would otherwise require</strong>. The trade-offs: latency grows with context (multiple seconds at the top of the window), and on Gemini 3 Pro input pricing roughly doubles once a prompt crosses 200k tokens.</p>
+    </div>
+
+    <div class="info-card violet fade-up" style="transition-delay: 0.1s">
+      <h4>Gemini Omni &mdash; generation, not just understanding</h4>
+      <p>The reasoning tiers above <em>read</em> media; <strong>Gemini Omni</strong> <em>creates</em> it. Google's pitch is "create anything from any input &mdash; starting with video": conversational video and image generation and editing, with consistency held across iterative edits, physics-aware motion (gravity, kinetic energy, fluid dynamics), and world knowledge baked in. It takes video, image, text, and audio as input. This is Gemini moving from understanding multimodal input to <strong>generating</strong> multimodal output in the same family. <strong>Honest caveat for builders:</strong> at launch it's surfaced through consumer and creative products &mdash; the Gemini app, Google Flow, and YouTube Shorts &mdash; not a confirmed Vertex/AI Studio API SKU. Treat it as a capability signal for now; check the model availability matrix before designing an agent around a programmatic Omni endpoint.</p>
     </div>
   </div>
 </section>
@@ -300,7 +306,7 @@
           <li>You need genuine 1M+ context (codebase, multi-document, hours of transcription)</li>
           <li>Bidirectional voice + video native is load-bearing &mdash; the Live API leads</li>
           <li>You want native Google Search grounding without standing up RAG infra</li>
-          <li>Multimodal range matters &mdash; text + image + video + audio in one model</li>
+          <li>Multimodal range matters &mdash; text + image + video + audio in one model, now with generation via Gemini Omni</li>
           <li>You're already on GCP and want Vertex AI's managed integrations</li>
           <li>POPIA / data-residency requires SA-resident inference and you want JHB <code>africa-south1</code></li>
           <li>Cost-effective long-context agents &mdash; Flash + context caching is hard to beat</li>
