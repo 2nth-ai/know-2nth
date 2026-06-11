@@ -44,7 +44,9 @@
     --violet-soft: rgba(139, 92, 246, 0.12);
     --rose: #F43F5E;
     --rose-soft: rgba(244, 63, 94, 0.12);
-    
+    --code: #14B8A6;
+    --code-soft: rgba(20, 184, 166, 0.12);
+
     /* Surfaces */
     --bg: var(--ink);
     --bg-raised: var(--navy);
@@ -541,6 +543,8 @@
   .domain-card[data-domain="agents"] .domain-icon { background: rgba(99, 102, 241, 0.12); color: #6366F1; }
   .domain-card[data-domain="media"] { --card-accent: #DB2777; }
   .domain-card[data-domain="media"] .domain-icon { background: rgba(219, 39, 119, 0.12); color: #DB2777; }
+  .domain-card[data-domain="software"] { --card-accent: var(--code); }
+  .domain-card[data-domain="software"] .domain-icon { background: var(--code-soft); color: var(--code); }
 
   /* ── Dual value proposition ── */
   .dual-grid {
@@ -920,7 +924,7 @@
   <div class="container">
     <div class="section-header fade-up">
       <div class="section-label">01 · The tree</div>
-      <h2 class="section-title">Thirteen domains. One knowledge tree.</h2>
+      <h2 class="section-title">Fourteen domains. One knowledge tree.</h2>
       <p class="section-desc">Canonical 2nth skill domains — the structure every 2nth agent, partner, and build is grounded in. Each card is a branch of the tree, with production skills underneath and more landing every month.</p>
     </div>
 
@@ -949,6 +953,19 @@
           <span class="skill-tag">Microsoft</span>
           <span class="skill-tag">MuleSoft</span>
           <span class="skill-tag">Web stacks</span>
+        </div>
+      </a>
+      <a href="explainers/software/" class="domain-card fade-up" data-domain="software" style="transition-delay: 0.1s">
+        <span class="domain-count">New &middot; 3 Live</span>
+        <div class="domain-icon">💻</div>
+        <h3>Software</h3>
+        <p>The thesis the whole tree rests on: AI is just software, and LLMs are just brains. Version control, GitHub and code repositories, CI/CD, packages, languages &mdash; the engineering craft that turns a model into work and lets knowledge compound.</p>
+        <div class="skill-tags">
+          <span class="skill-tag">AI is software</span>
+          <span class="skill-tag">Git</span>
+          <span class="skill-tag">GitHub</span>
+          <span class="skill-tag">Version control</span>
+          <span class="skill-tag">Agent-ready</span>
         </div>
       </a>
       <a href="explainers/biz/" class="domain-card fade-up" data-domain="biz" style="transition-delay: 0.1s">

@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Software — know.2nth.ai</title>
+<meta name="description" content="The Software domain of the 2nth skill tree. The thesis the whole tree rests on: AI is just software, and LLMs are just brains — they need software, tools, and version control to do anything. Git, GitHub and code repositories, CI/CD, packages, and the craft that makes knowledge compound.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/software/">
+<meta property="og:title" content="Software — know.2nth.ai">
+<meta property="og:description" content="AI is just software; LLMs are just brains. Version control, GitHub and code repositories, and the engineering craft that turns a model into work — the foundational branch of the 2nth skill tree.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai — The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Software — know.2nth.ai">
+<meta name="twitter:description" content="AI is just software; LLMs are just brains. Version control, GitHub and code repositories, and the craft that turns a model into work.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3Cline x1='16' y1='3' x2='16' y2='7' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='16' y1='25' x2='16' y2='29' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='3' y1='16' x2='7' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='25' y1='16' x2='29' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --ink: #0B1120;
+    --ink-deep: #060A14;
+    --navy: #121D33;
+    --blue: #2563EB;
+    --blue-glow: #3B82F6;
+    --sky: #38BDF8;
+    --sky-muted: #7DD3FC;
+    --paper: #F8FAFC;
+    --slate: #94A3B8;
+    --warm: #F59E0B;
+    --warm-soft: rgba(245, 158, 11, 0.12);
+    --green: #10B981;
+    --green-soft: rgba(16, 185, 129, 0.12);
+    --violet: #8B5CF6;
+    --violet-soft: rgba(139, 92, 246, 0.12);
+    --rose: #F43F5E;
+    --rose-soft: rgba(244, 63, 94, 0.12);
+    --code: #14B8A6;
+    --code-soft: rgba(20, 184, 166, 0.12);
+
+    --bg: var(--ink);
+    --bg-raised: var(--navy);
+    --bg-card: rgba(18, 29, 51, 0.7);
+    --bg-card-hover: rgba(20, 184, 166, 0.08);
+    --text-primary: var(--paper);
+    --text-secondary: var(--slate);
+    --text-muted: #64748B;
+    --border: rgba(148, 163, 184, 0.1);
+    --border-hover: rgba(20, 184, 166, 0.3);
+
+    --max-w: 1200px;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+    --radius-pill: 100px;
+
+    --domain: var(--code);
+    --domain-glow: var(--code);
+  }
+
+  [data-theme="light"] {
+    --bg: #F1F5F9;
+    --bg-raised: #FFFFFF;
+    --bg-card: rgba(255, 255, 255, 0.85);
+    --bg-card-hover: rgba(20, 184, 166, 0.05);
+    --text-primary: var(--ink);
+    --text-secondary: #475569;
+    --text-muted: #94A3B8;
+    --border: rgba(15, 23, 42, 0.08);
+    --border-hover: rgba(20, 184, 166, 0.28);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  .glow-orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: 0.08;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .glow-orb.blue { width: 600px; height: 600px; background: var(--code); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: 0 24px;
+    backdrop-filter: blur(20px) saturate(1.4);
+    background: rgba(11, 17, 32, 0.75);
+    border-bottom: 1px solid var(--border);
+  }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+  }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    font-size: 15px;
+    background: linear-gradient(135deg, var(--code), var(--sky));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+  }
+  .nav-brand-sub {
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-weight: 500;
+    padding-left: 10px;
+    border-left: 1px solid var(--border);
+  }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--code); }
+  .theme-toggle {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    font-size: 16px;
+    transition: all 0.2s;
+  }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--code); }
+
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+
+  .crumb {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.5px;
+    padding: 28px 0 0;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--code); }
+  .crumb-sep { opacity: 0.5; }
+  .crumb-current { color: var(--text-secondary); }
+
+  .hub-hero { padding: 48px 0 64px; }
+  .hub-hero .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--code);
+    margin-bottom: 24px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .hub-hero .eyebrow .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--domain-glow);
+    box-shadow: 0 0 12px var(--domain-glow);
+  }
+  .hub-hero h1 {
+    font-size: clamp(44px, 7vw, 72px);
+    font-weight: 800;
+    line-height: 1.04;
+    letter-spacing: -2px;
+    margin-bottom: 24px;
+    max-width: 14ch;
+  }
+  .hub-hero h1 .gradient {
+    background: linear-gradient(135deg, var(--code), var(--sky), var(--sky-muted));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hub-hero .sub {
+    font-size: 18px;
+    color: var(--text-secondary);
+    max-width: 720px;
+    line-height: 1.7;
+    font-weight: 300;
+    margin-bottom: 32px;
+  }
+  .hub-hero .sub strong { color: var(--text-primary); font-weight: 600; }
+  .hub-stats { display: flex; gap: 32px; flex-wrap: wrap; }
+  .hub-stat { padding-right: 32px; border-right: 1px solid var(--border); }
+  .hub-stat:last-child { border-right: none; padding-right: 0; }
+  .hub-stat .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 28px;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--code), var(--sky));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .hub-stat .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  section.hub-section { padding: 48px 0 64px; position: relative; }
+  .hub-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--code);
+    margin-bottom: 14px;
+  }
+  .hub-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 14px; line-height: 1.2; }
+  .hub-lede { font-size: 16px; color: var(--text-secondary); max-width: 720px; line-height: 1.7; font-weight: 300; margin-bottom: 36px; }
+  .hub-lede strong { color: var(--text-primary); font-weight: 600; }
+  .hub-lede code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; color: var(--code); }
+
+  .hub-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px; }
+  .hub-card {
+    background: var(--bg-card);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 26px 28px;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.3s;
+    display: block;
+  }
+  .hub-card:hover { border-color: var(--border-hover); transform: translateY(-2px); box-shadow: 0 10px 36px rgba(0, 0, 0, 0.08); }
+  .hub-card .state {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    padding: 3px 12px;
+    border-radius: var(--radius-pill);
+    display: inline-block;
+    margin-bottom: 16px;
+    font-weight: 600;
+  }
+  .hub-card .state.live { background: var(--code-soft); color: var(--code); }
+  .hub-card .state.stub { background: transparent; border: 1px dashed var(--border); color: var(--text-muted); }
+  .hub-card h3 { font-size: 19px; font-weight: 700; letter-spacing: -0.3px; margin-bottom: 10px; }
+  .hub-card h3 .path { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; color: var(--text-muted); margin-left: 8px; }
+  .hub-card p { font-size: 13.5px; color: var(--text-secondary); line-height: 1.65; margin-bottom: 16px; }
+  .hub-card .tags { display: flex; flex-wrap: wrap; gap: 5px; }
+  .hub-card .tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; padding: 3px 10px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-muted); }
+  .hub-card.soon { cursor: default; opacity: 0.72; }
+  .hub-card.soon:hover { transform: none; border-color: var(--border); box-shadow: none; }
+
+  .cross-links { display: flex; gap: 10px; flex-wrap: wrap; }
+  .cross-link {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    padding: 10px 20px;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    text-decoration: none;
+    color: var(--text-secondary);
+    transition: all 0.3s;
+    letter-spacing: 0.5px;
+  }
+  .cross-link:hover { border-color: var(--border-hover); color: var(--code); transform: translateY(-1px); }
+  .cross-link.soon { opacity: 0.5; cursor: default; border-style: dashed; }
+  .cross-link.soon:hover { transform: none; color: var(--text-muted); border-color: var(--border); }
+
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 60px; }
+  .footer-brand {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 600;
+    background: linear-gradient(135deg, var(--code), var(--sky));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+  }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--code); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 768px) {
+    .nav-brand-sub { display: none; }
+    .nav-link { display: none; }
+    .hub-stats { gap: 20px; }
+    .hub-stat { padding-right: 20px; }
+  }
+
+  *, *::before, *::after {
+    transition-property: background-color, border-color, color, box-shadow;
+    transition-duration: 0.3s;
+    transition-timing-function: ease;
+  }
+</style>
+</head>
+<body>
+
+<div class="glow-orb blue"></div>
+<div class="glow-orb sky"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand">
+      <span class="nav-brand-mark">know.2nth.ai</span>
+      <span class="nav-brand-sub">Software</span>
+    </a>
+    <div class="nav-right">
+      <a href="../../index.html#domains" class="nav-link">← Back to tree</a>
+      <a href="../../index.html#access" class="nav-link">Access</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">🌙</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">›</span>
+    <span class="crumb-current">Software</span>
+  </div>
+</div>
+
+<!-- ── HUB HERO ── -->
+<section class="hub-hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> Software · Domain Hub</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      The <span class="gradient">software</span> branch.
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      The idea the whole tree rests on: <strong>AI is just software, and an LLM is just a brain.</strong> A brain with no hands, no memory, and no tools does nothing. Software, tools, and version control are what turn a model into work. This branch owns the craft — Git, GitHub and code repositories, CI/CD, packages, languages. Where <em>Technology</em> covers the platforms you run on, <em>Software</em> covers how you build, version, review, and ship the code itself.
+    </p>
+    <div class="hub-stats fade-up" style="transition-delay: 0.15s">
+      <div class="hub-stat">
+        <div class="num">3</div>
+        <div class="label">Live leaves</div>
+      </div>
+      <div class="hub-stat">
+        <div class="num">Git</div>
+        <div class="label">The ledger</div>
+      </div>
+      <div class="hub-stat">
+        <div class="num">14th</div>
+        <div class="label">Branch of the tree</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── THE THESIS ── -->
+<section class="hub-section">
+  <div class="container">
+    <div class="fade-up">
+      <div class="hub-label">01 · The thesis</div>
+      <h2 class="hub-title">AI is just software. LLMs are just brains.</h2>
+      <p class="hub-lede">Strip away the mystique and an LLM is a stateless function: text in, text out. It has no memory between calls, can't take an action, and can't check whether it was right. Everything useful an "AI" does — remembering, calling tools, reading a codebase, opening a pull request, staying correct — is <strong>software wrapped around the model</strong>. The agents domain says it plainly: <em>agents are software, not prompt soup</em>. This branch is where that bar gets defined: <code>version control</code>, repositories, review, and CI as the discipline that makes both human and agent work <strong>compound instead of drift</strong>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── SKILL NODES ── -->
+<section class="hub-section">
+  <div class="container">
+    <div class="fade-up">
+      <div class="hub-label">02 · Skill nodes</div>
+      <h2 class="hub-title">What's in this branch</h2>
+      <p class="hub-lede">Three leaves live at launch — the thesis, version control, and code repositories. The rest land as the branch grows. Each is written for two readers: the human learning the craft, and the agent that has to operate inside it.</p>
+    </div>
+    <div class="hub-grid fade-up" style="transition-delay: 0.05s">
+
+      <a href="ai-is-software.html" class="hub-card">
+        <span class="state live">Live · thesis</span>
+        <h3>AI is just software <span class="path">software/ai-is-software</span></h3>
+        <p>The manifesto. What an LLM actually is (a stateless next-token function), why a brain needs a harness, and why "buying AI" really means buying software discipline. The frame every other node hangs off.</p>
+        <div class="tags">
+          <span class="tag">LLM = brain</span>
+          <span class="tag">Harness</span>
+          <span class="tag">Tools + context</span>
+          <span class="tag">Compounding</span>
+        </div>
+      </a>
+
+      <a href="version-control.html" class="hub-card">
+        <span class="state live">Live</span>
+        <h3>Version control <span class="path">software/version-control</span></h3>
+        <p>Git as the ledger. Commits, branches, merges, and history as institutional memory — the substrate that makes software reproducible, reviewable, and auditable, for humans and agents alike.</p>
+        <div class="tags">
+          <span class="tag">Git</span>
+          <span class="tag">Commits</span>
+          <span class="tag">Branches</span>
+          <span class="tag">History</span>
+        </div>
+      </a>
+
+      <a href="github.html" class="hub-card">
+        <span class="state live">Live</span>
+        <h3>GitHub &amp; code repositories <span class="path">software/github</span></h3>
+        <p>The repository as system of record. GitHub, GitLab, Bitbucket, Codeberg; pull requests, code review, issues, Actions/CI, releases — and why repos are the layer agents read, write, and ship through.</p>
+        <div class="tags">
+          <span class="tag">GitHub</span>
+          <span class="tag">Pull requests</span>
+          <span class="tag">Actions / CI</span>
+          <span class="tag">Agent PRs</span>
+        </div>
+      </a>
+
+      <div class="hub-card soon">
+        <span class="state stub">Coming soon</span>
+        <h3>Repositories &amp; monorepos <span class="path">software/repositories</span></h3>
+        <p>How code is organised — monorepo vs polyrepo, README and docs-as-code, branching strategies, and the repo as a knowledge-management surface, not just a code dump.</p>
+        <div class="tags">
+          <span class="tag">Monorepo</span>
+          <span class="tag">Docs-as-code</span>
+          <span class="tag">Structure</span>
+        </div>
+      </div>
+
+      <div class="hub-card soon">
+        <span class="state stub">Coming soon</span>
+        <h3>CI/CD &amp; automation <span class="path">software/ci-cd</span></h3>
+        <p>Pipelines, tests as gates, and deploy-on-merge. The automation that turns "it works on my machine" into "main is always shippable" — including this site, which auto-deploys from <code>main</code>.</p>
+        <div class="tags">
+          <span class="tag">Pipelines</span>
+          <span class="tag">Tests as gates</span>
+          <span class="tag">Deploy-on-merge</span>
+        </div>
+      </div>
+
+      <div class="hub-card soon">
+        <span class="state stub">Coming soon</span>
+        <h3>Packages &amp; dependencies <span class="path">software/packages</span></h3>
+        <p>Registries (npm, PyPI, crates, Maven), semantic versioning, lockfiles, and supply-chain risk — the dependency graph every modern build (and every agent install) sits on top of.</p>
+        <div class="tags">
+          <span class="tag">npm / PyPI</span>
+          <span class="tag">SemVer</span>
+          <span class="tag">Supply chain</span>
+        </div>
+      </div>
+
+      <div class="hub-card soon">
+        <span class="state stub">Coming soon</span>
+        <h3>Programming languages <span class="path">software/languages</span></h3>
+        <p>How to choose one, and why it matters less than the discipline around it. Typed vs dynamic, ecosystem and runtime fit, and the languages agents write most reliably.</p>
+        <div class="tags">
+          <span class="tag">Typed vs dynamic</span>
+          <span class="tag">Ecosystem fit</span>
+          <span class="tag">Agent-friendly</span>
+        </div>
+      </div>
+
+      <div class="hub-card soon">
+        <span class="state stub">Coming soon</span>
+        <h3>Software for agents <span class="path">software/software-for-agents</span></h3>
+        <p>The repo as agent context, SKILL.md in version control, agent-authored pull requests, and CI as the agent's safety net. Where this branch meets the Agents domain head-on.</p>
+        <div class="tags">
+          <span class="tag">Repo-as-context</span>
+          <span class="tag">Agent PRs</span>
+          <span class="tag">CI safety net</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── CROSS-LINKS ── -->
+<section class="hub-section">
+  <div class="container">
+    <div class="fade-up">
+      <div class="hub-label">03 · Related domains</div>
+      <h2 class="hub-title">Where the software branch connects</h2>
+      <p class="hub-lede">Software is the craft underneath every other branch. It pulls hardest on Agents (agents are software) and Technology (the platforms that software runs on), and it shows up wherever a domain treats its rules as code in version control — Finance, Business, Design.</p>
+    </div>
+    <div class="cross-links fade-up" style="transition-delay: 0.05s">
+      <a href="../agents/" class="cross-link">Agents →</a>
+      <a href="../tech/" class="cross-link">Technology →</a>
+      <a href="../data/" class="cross-link">Data →</a>
+      <a href="../design/" class="cross-link">Design →</a>
+      <a href="../fin/" class="cross-link">Finance →</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../index.html">Skills tree</a>
+      <a href="../agents/">Agents hub</a>
+      <a href="https://2nth.ai" target="_blank" rel="noopener">2nth.ai</a>
+      <a href="https://imbila.ai" target="_blank" rel="noopener">Imbila.AI</a>
+    </div>
+    <p class="footer-copy">© 2026 2nth.ai · Built in Johannesburg, South Africa</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme() {
+    const html = document.documentElement;
+    const current = html.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
+    localStorage.setItem('theme', next);
+  }
+  const saved = localStorage.getItem('theme');
+  if (saved) {
+    document.documentElement.setAttribute('data-theme', saved);
+    document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '☀️' : '🌙';
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>

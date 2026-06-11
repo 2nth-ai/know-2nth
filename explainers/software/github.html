@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GitHub &amp; code repositories &mdash; know.2nth.ai</title>
+<meta name="description" content="A code repository is the system of record for software. GitHub, GitLab, Bitbucket, and Codeberg add collaboration on top of Git — pull requests, code review, issues, Actions/CI, releases. And the repo is the layer AI agents read, write, and ship through: GitHub MCP, Copilot CLI, and agent-authored pull requests gated by CI.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/software/github">
+<meta property="og:title" content="GitHub &amp; code repositories &mdash; know.2nth.ai">
+<meta property="og:description" content="The repository as system of record. GitHub / GitLab / Bitbucket / Codeberg, pull requests, CI — and why repos are the layer agents read, write, and ship through.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="GitHub &amp; code repositories &mdash; know.2nth.ai">
+<meta name="twitter:description" content="The repository as system of record. Pull requests, review, CI — and the layer AI agents read, write, and ship through.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3Cline x1='16' y1='3' x2='16' y2='7' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='16' y1='25' x2='16' y2='29' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='3' y1='16' x2='7' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='25' y1='16' x2='29' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3C/svg%3E">
+<style>
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12); --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-soft: rgba(99, 102, 241, 0.12); --code: #14B8A6; --code-soft: rgba(20, 184, 166, 0.12); --bg: var(--ink); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(20, 184, 166, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(20, 184, 166, 0.3); --max-w: 1200px; --read-w: 760px; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(20, 184, 166, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(20, 184, 166, 0.28); }
+  * { margin: 0; padding: 0; box-sizing: border-box; } html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.blue { width: 600px; height: 600px; background: var(--code); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--code), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--code); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--code); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--code); } .crumb-sep { opacity: 0.5; } .crumb-current { color: var(--text-secondary); }
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--code); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--code); box-shadow: 0 0 12px var(--code); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--code), var(--sky), var(--sky-muted)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.accent { background: rgba(37, 99, 235, 0.12); color: var(--blue-glow); border-color: rgba(37, 99, 235, 0.25); }
+  .pill.green { background: var(--green-soft); color: var(--green); border-color: rgba(16, 185, 129, 0.25); }
+  .pill.code { background: var(--code-soft); color: var(--code); border-color: rgba(20, 184, 166, 0.25); }
+  .pill.warn { background: var(--warm-soft); color: var(--warm-glow); border-color: rgba(245, 158, 11, 0.25); }
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--sky); margin-bottom: 14px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--code); }
+  .prose ul, .prose ol { padding-left: 24px; margin-bottom: 18px; max-width: var(--read-w); }
+  .prose li { font-size: 15px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 8px; }
+  .prose li strong { color: var(--text-primary); font-weight: 600; }
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); margin-bottom: 20px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.code { border-left: 3px solid var(--code); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .info-card code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--code); }
+  .info-card strong { color: var(--text-primary); }
+  .stack-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; max-width: var(--read-w); margin-bottom: 20px; }
+  .stack-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--code); border-radius: var(--radius-md); padding: 18px 22px; }
+  .stack-cell .layer { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .stack-cell h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.3px; }
+  .stack-cell p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: var(--read-w); margin-bottom: 20px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--sky); background: rgba(37, 99, 235, 0.04); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); } .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--code); }
+  .compare td strong { color: var(--text-primary); }
+  .decision-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: var(--read-w); }
+  @media (max-width: 720px) { .decision-grid { grid-template-columns: 1fr; } }
+  .decision-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 24px; }
+  .decision-card.use { border-left: 3px solid var(--green); } .decision-card.skip { border-left: 3px solid var(--rose); }
+  .decision-card h4 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 12px; }
+  .decision-card.use h4 { color: var(--green); } .decision-card.skip h4 { color: var(--rose); }
+  .decision-card ul { list-style: none; padding: 0; }
+  .decision-card li { font-size: 13px; color: var(--text-secondary); line-height: 1.6; padding: 6px 0; border-bottom: 1px solid var(--border); }
+  .decision-card li:last-child { border-bottom: none; }
+  .connect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .connect-node { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; transition: all 0.3s; text-decoration: none; color: inherit; display: block; }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node.soon { cursor: default; opacity: 0.72; }
+  .connect-node .tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--code); word-break: break-all; }
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--code), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--code); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+
+<div class="glow-orb blue"></div>
+<div class="glow-orb sky"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand"><span class="nav-brand-mark">know.2nth.ai</span><span class="nav-brand-sub">software/github</span></a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">&larr; Software</a>
+      <a href="../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x1F319;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="./">Software</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">GitHub &amp; code repositories</span>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> software &middot; Code repositories &middot; Skill Leaf</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      The repository is the <span class="gradient">system of record.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      A code repository is where a project's truth lives: the code, its full history, the discussion behind every change, and the automation that ships it. <strong>GitHub</strong> is the dominant home for it &mdash; with GitLab, Bitbucket, and Codeberg as the serious alternatives. They turn Git from a local tool into a collaboration platform: pull requests, code review, issues, CI. And increasingly, the repository is the surface <strong>AI agents</strong> read, write, and ship through.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill code">GitHub</span>
+      <span class="pill accent">Pull requests &middot; review</span>
+      <span class="pill green">Actions / CI</span>
+      <span class="pill warn">Agent-ready</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 WHAT IT IS -->
+<section id="what">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; What it is</div>
+      <h2 class="section-title">A repository, and the platform around it.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>A <strong>repository</strong> ("repo") is a project under version control: the files, the complete commit history, and the metadata around it. Git gives you the repo locally. A <strong>code-hosting platform</strong> &mdash; GitHub being the largest &mdash; hosts a shared copy everyone (and every CI system, and every agent) syncs against, then layers collaboration on top.</p>
+      <p>That collaboration layer is the actual product. Pull requests turn "I changed something" into "here's a reviewable proposal." Issues track what needs doing. Actions run tests and deployments automatically. Releases tag shippable versions. Permissions control who can do what. None of that is Git &mdash; it's the platform &mdash; and it's why "where's the repo?" is the first question on any software project.</p>
+    </div>
+    <div class="info-card code fade-up" style="transition-delay: 0.07s">
+      <h4>The repo is more than code</h4>
+      <p>A well-run repo is the project's <strong>system of record</strong>: the source, yes, but also the docs (a <code>README</code>, an <code>architecture</code> note), the automation (CI config), the issue history, and the decision trail in pull requests. For an AI-era team it's also where prompts, agent definitions, and <code>SKILL.md</code> files live. Treat the repo as the single source of truth and everything else — the deployed site, the report, the running agent — is generated from it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 THE PLATFORMS -->
+<section id="platforms">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; The platforms</div>
+      <h2 class="section-title">GitHub won; the alternatives still matter.</h2>
+      <p class="section-lede">All four run on Git, so your repo is portable. They differ on ecosystem, hosting model, and politics. Honest positioning:</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead><tr><th>Platform</th><th>Strengths</th><th>Watch out for</th></tr></thead>
+        <tbody>
+          <tr><td><strong>GitHub</strong> (Microsoft)</td><td>Largest ecosystem by far, best Actions/CI marketplace, Copilot + native agent tooling, where open source lives</td><td>Microsoft-owned; the default to the point of lock-in by gravity, not features</td></tr>
+          <tr><td><strong>GitLab</strong></td><td>All-in-one DevOps (CI/CD, registry, security baked in), strong self-hosting, enterprise-friendly</td><td>Heavier; smaller open-source community than GitHub</td></tr>
+          <tr><td><strong>Bitbucket</strong> (Atlassian)</td><td>Tight Jira/Confluence integration; fits teams already deep in the Atlassian stack</td><td>Smaller ecosystem; momentum has faded vs GitHub/GitLab</td></tr>
+          <tr><td><strong>Codeberg</strong> / Forgejo</td><td>Non-profit, open-source platform (Forgejo); no vendor lock-in, privacy-first, self-hostable</td><td>No first-party CI marketplace or agent tooling at GitHub's scale; smaller network</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.08s">
+      <p>For most teams in 2026 the pragmatic answer is GitHub — the ecosystem and agent tooling are simply ahead. Reach for GitLab when you want one integrated DevOps platform or strict self-hosting; reach for Codeberg/Forgejo when independence from a big vendor is a principle. Because it's all Git underneath, migrating later is annoying but never a trap.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 HOW A REPO WORKS -->
+<section id="how">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; How a repo works</div>
+      <h2 class="section-title">The collaboration loop.</h2>
+      <p class="section-lede">The platform features map onto one workflow that every contributor — human or agent — follows.</p>
+    </div>
+    <div class="stack-grid fade-up" style="transition-delay: 0.05s">
+      <div class="stack-cell">
+        <span class="layer">Pull request</span>
+        <h4>A reviewable proposal</h4>
+        <p>A branch packaged for review: the diff, a description, and a discussion thread. Nothing reaches <code>main</code> without going through one.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Code review</span>
+        <h4>A second set of eyes</h4>
+        <p>Approvals, inline comments, and required reviewers. The human (or agent) gate before a change ships — and the record of why it was accepted.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Issues</span>
+        <h4>The work backlog</h4>
+        <p>Bugs, features, and tasks — linked to the commits and PRs that resolve them, so intent and implementation stay connected.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Actions / CI</span>
+        <h4>Automation on every change</h4>
+        <p>Tests, linters, builds, and deploys that run automatically on a push or PR. The gate that keeps <code>main</code> shippable.</p>
+      </div>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.08s">
+      <p>This site runs exactly this loop: changes land on a branch, open as a pull request, CI builds a preview, and a merge to <code>main</code> auto-deploys to production via GitHub Actions. No manual upload step, every change reviewable, every deploy traceable to a commit. That's the whole point of the platform.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 AUTOMATION + SOCIAL -->
+<section id="layer">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; The automation + social layer</div>
+      <h2 class="section-title">Why GitHub is also where open source lives.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Beyond your own code, GitHub is the public commons of software. Almost every open-source library, framework, and tool you depend on is developed there in the open — issues, PRs, releases, and all. That makes the platform two things at once: your private system of record <em>and</em> the place you read the source of your dependencies, file bugs upstream, and judge whether a project is healthy (recent commits, responsive maintainers, open-issue ratio).</p>
+      <p>The automation layer — GitHub Actions and its marketplace — turns the repo into an execution surface. A push can run a test suite, build a container, publish a package, deploy a site, or kick off an agent. The repo stops being a passive store and becomes the trigger point for everything downstream.</p>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.07s">
+      <h4>One operational gotcha worth knowing</h4>
+      <p>CI that deploys is load-bearing infrastructure, and it has sharp edges. A real example from this very tree: Cloudflare's deployment API rejects non-ASCII commit messages (em-dashes, curly quotes, arrows) with an opaque error — so the deploy workflows pass an explicit ASCII <code>--commit-message</code>. The lesson: treat your CI config as production code, version it, and don't assume it'll keep working just because it worked yesterday.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 CRITICAL FOR AGENTS -->
+<section id="agents">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; Critical for agents</div>
+      <h2 class="section-title">The surface agents read, write, and ship through.</h2>
+      <p class="section-lede">If AI is just software, the repository is where AI <em>does</em> software. By 2026 the repo is the primary interface between coding agents and real systems.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Agents meet repositories in three ways. They <strong>read</strong> them — a coding agent clones the repo as its context, the way Claude Code or Copilot CLI reason over a whole codebase before proposing a change. They <strong>act</strong> on them through tools — the GitHub MCP server exposes repos, issues, PRs, and code search as callable operations, so an agent can open an issue or a pull request as a first-class action. And they <strong>ship</strong> through them — an agent's work lands as a branch and a pull request, runs the same CI, and waits for the same review as any human's.</p>
+    </div>
+    <div class="info-card code fade-up" style="transition-delay: 0.07s">
+      <h4>CI is the agent's safety net</h4>
+      <p>This is the whole reason you can trust an agent with real code. Its changes don't touch <code>main</code> directly — they arrive as a reviewable pull request, the test suite runs against them automatically, and a human (or a second agent) approves before merge. Get it wrong and <code>git revert</code> undoes it cleanly. The repository's workflow is precisely the harness that turns "an AI edited our code" from a nightmare into a controlled, auditable, reversible operation. Without it, agent autonomy is reckless; with it, it's leverage.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.09s">
+      <p>The practical implication: getting an organisation "AI-ready" is mostly getting it <em>repo-ready</em>. Code in version control, a sane branch-and-PR workflow, tests in CI, reviewable changes. Teams with that discipline can hand agents real work tomorrow. Teams without it have to build the foundation first — which is the software work this whole branch is about.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 SA CONTEXT -->
+<section id="sa-context">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; South African context</div>
+      <h2 class="section-title">Repo-readiness as AI-readiness.</h2>
+    </div>
+    <div class="info-card code fade-up" style="transition-delay: 0.05s">
+      <h4>The cheapest AI investment most SA teams can make</h4>
+      <p>For South African businesses weighing "how do we start with AI," the highest-leverage first step usually isn't a model or a vendor — it's getting work into a properly run repository. Code, configs, and process rules in Git; changes through pull requests; CI running checks. It's unglamorous, it's affordable, and it's the precondition for safely deploying agents later. It also produces the change-control audit trail POPIA and FSCA reviewers ask for, as a free side effect.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.07s">
+      <p>On data residency: the repo platform (GitHub/GitLab) hosts code and history, not necessarily your production data — but for regulated workloads, check where the platform stores repos, keep secrets out of them (use a secrets manager, never commit keys), and consider self-hosted GitLab or Forgejo where source residency itself is in scope.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 07 CONNECTIONS -->
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; Connections</div>
+      <h2 class="section-title">Where repositories link in the tree.</h2>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="version-control.html" class="connect-node">
+        <span class="tag">software/version-control</span>
+        <div class="skill">Version control</div>
+        <div class="why">The engine underneath. Git is the VCS; GitHub is the platform built on it. Read this first if commits and branches are new.</div>
+      </a>
+      <a href="ai-is-software.html" class="connect-node">
+        <span class="tag">software/ai-is-software</span>
+        <div class="skill">AI is just software</div>
+        <div class="why">Why the repo workflow is the harness that makes agent autonomy safe rather than reckless.</div>
+      </a>
+      <a href="../agents/github-copilot-cli.html" class="connect-node">
+        <span class="tag">agents/github-copilot-cli</span>
+        <div class="skill">GitHub Copilot CLI</div>
+        <div class="why">GitHub's own coding agent — reads the repo, runs in worktrees, opens PRs. The platform meeting the agent.</div>
+      </a>
+      <a href="../agents/coding-cli-agents.html" class="connect-node">
+        <span class="tag">agents/coding-cli-agents</span>
+        <div class="skill">Coding CLI agents</div>
+        <div class="why">Claude Code vs Codex CLI vs Copilot CLI — the agents that operate inside repositories, compared.</div>
+      </a>
+      <a href="../tech/" class="connect-node">
+        <span class="tag">tech</span>
+        <div class="skill">Technology</div>
+        <div class="why">Where CI deploys to — Cloudflare Pages, Workers, and the platforms a merge ships your repo into.</div>
+      </a>
+      <a href="../design/design-md.html" class="connect-node">
+        <span class="tag">design/design-md</span>
+        <div class="skill">DESIGN.md</div>
+        <div class="why">A design system as a markdown file committed to the repo and linted in CI — docs-as-code in practice.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 08 RESOURCES -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 &middot; Resources</div>
+      <h2 class="section-title">Primary sources only.</h2>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://docs.github.com" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs</span>
+        <span class="r-title">GitHub Docs</span>
+        <span class="r-url">docs.github.com</span>
+      </a>
+      <a href="https://github.com/github/github-mcp-server" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Repo</span>
+        <span class="r-title">GitHub MCP server — repos/issues/PRs as agent tools</span>
+        <span class="r-url">github.com/github/github-mcp-server</span>
+      </a>
+      <a href="https://docs.gitlab.com" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs</span>
+        <span class="r-title">GitLab Docs</span>
+        <span class="r-url">docs.gitlab.com</span>
+      </a>
+      <a href="https://forgejo.org" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Site</span>
+        <span class="r-title">Forgejo — the engine behind Codeberg</span>
+        <span class="r-url">forgejo.org</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../index.html">Skills tree</a>
+      <a href="./">Software hub</a>
+      <a href="version-control.html">Version control</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in Johannesburg, South Africa</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme() {
+    const html = document.documentElement;
+    const current = html.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
+    localStorage.setItem('theme', next);
+  }
+  const saved = localStorage.getItem('theme');
+  if (saved) {
+    document.documentElement.setAttribute('data-theme', saved);
+    document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '☀️' : '🌙';
+  }
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI is just software &mdash; know.2nth.ai</title>
+<meta name="description" content="The thesis the whole 2nth tree rests on: AI is just software, and an LLM is just a brain. A model is a stateless text-in/text-out function — no memory, no actions, no way to check itself. Software, tools, context, and version control are what turn a brain into work. Buying AI means buying software discipline, not magic.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/software/ai-is-software">
+<meta property="og:title" content="AI is just software &mdash; know.2nth.ai">
+<meta property="og:description" content="An LLM is just a brain — a stateless text-in/text-out function. Software, tools, context, and version control are what turn it into work. The frame the whole knowledge tree hangs off.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AI is just software &mdash; know.2nth.ai">
+<meta name="twitter:description" content="An LLM is just a brain. Software, tools, and version control are what turn it into work. The thesis behind the 2nth tree.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3Cline x1='16' y1='3' x2='16' y2='7' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='16' y1='25' x2='16' y2='29' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='3' y1='16' x2='7' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='25' y1='16' x2='29' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3C/svg%3E">
+<style>
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12); --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-soft: rgba(99, 102, 241, 0.12); --code: #14B8A6; --code-soft: rgba(20, 184, 166, 0.12); --bg: var(--ink); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(20, 184, 166, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(20, 184, 166, 0.3); --max-w: 1200px; --read-w: 760px; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(20, 184, 166, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(20, 184, 166, 0.28); }
+  * { margin: 0; padding: 0; box-sizing: border-box; } html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.blue { width: 600px; height: 600px; background: var(--code); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--code), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--code); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--code); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--code); } .crumb-sep { opacity: 0.5; } .crumb-current { color: var(--text-secondary); }
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--code); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--code); box-shadow: 0 0 12px var(--code); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--code), var(--sky), var(--sky-muted)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.accent { background: rgba(37, 99, 235, 0.12); color: var(--blue-glow); border-color: rgba(37, 99, 235, 0.25); }
+  .pill.green { background: var(--green-soft); color: var(--green); border-color: rgba(16, 185, 129, 0.25); }
+  .pill.code { background: var(--code-soft); color: var(--code); border-color: rgba(20, 184, 166, 0.25); }
+  .pill.warn { background: var(--warm-soft); color: var(--warm-glow); border-color: rgba(245, 158, 11, 0.25); }
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--sky); margin-bottom: 14px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--code); }
+  .prose ul, .prose ol { padding-left: 24px; margin-bottom: 18px; max-width: var(--read-w); }
+  .prose li { font-size: 15px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 8px; }
+  .prose li strong { color: var(--text-primary); font-weight: 600; }
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); margin-bottom: 20px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.code { border-left: 3px solid var(--code); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .info-card code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--code); }
+  .info-card strong { color: var(--text-primary); }
+  .stack-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; max-width: var(--read-w); margin-bottom: 20px; }
+  .stack-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--code); border-radius: var(--radius-md); padding: 18px 22px; }
+  .stack-cell .layer { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .stack-cell h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.3px; }
+  .stack-cell p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+  .decision-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: var(--read-w); }
+  @media (max-width: 720px) { .decision-grid { grid-template-columns: 1fr; } }
+  .decision-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 24px; }
+  .decision-card.use { border-left: 3px solid var(--green); } .decision-card.skip { border-left: 3px solid var(--rose); }
+  .decision-card h4 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 12px; }
+  .decision-card.use h4 { color: var(--green); } .decision-card.skip h4 { color: var(--rose); }
+  .decision-card ul { list-style: none; padding: 0; }
+  .decision-card li { font-size: 13px; color: var(--text-secondary); line-height: 1.6; padding: 6px 0; border-bottom: 1px solid var(--border); }
+  .decision-card li:last-child { border-bottom: none; }
+  .connect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .connect-node { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; transition: all 0.3s; text-decoration: none; color: inherit; display: block; }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node.soon { cursor: default; opacity: 0.72; }
+  .connect-node .tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--code); word-break: break-all; }
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--code), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--code); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+
+<div class="glow-orb blue"></div>
+<div class="glow-orb sky"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand"><span class="nav-brand-mark">know.2nth.ai</span><span class="nav-brand-sub">software/ai-is-software</span></a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">&larr; Software</a>
+      <a href="../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x1F319;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="./">Software</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">AI is just software</span>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> software &middot; The thesis &middot; Skill Leaf</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      AI is just <span class="gradient">software.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      And a large language model is just a brain. A brain in a jar &mdash; no hands, no memory, no eyes, no way to check whether it was right. Everything useful an "AI" does is <strong>software wrapped around the model</strong>: the tools it can call, the context it's given, the loop that runs it, and the version control that lets its work compound. Get the software right and the model earns its keep. Get it wrong and the smartest model on the market produces an expensive demo.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill code">The thesis</span>
+      <span class="pill accent">LLM = brain</span>
+      <span class="pill green">Software = the body</span>
+      <span class="pill warn">Buy discipline, not magic</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 THE CLAIM -->
+<section id="claim">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; The claim</div>
+      <h2 class="section-title">Take the magic out and you're left with software.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>There's a story that AI is a new kind of thing &mdash; a colleague, an oracle, an autonomous worker you hire. It sells well and it's wrong in the way that matters. An AI product is <strong>software that calls a model</strong>. The model is one component: a remarkable one, but a component. The reliability, the safety, the usefulness, the cost &mdash; all of those live in the software around it, the part teams have been building and disciplining for fifty years.</p>
+      <p>This isn't a downgrade of AI; it's a clarification of where the work is. The same engineering practices that make any software trustworthy &mdash; version control, code review, tests, deployment gates, observability &mdash; are exactly what make AI trustworthy. There is no separate "AI track" that gets to skip them. The teams who treat agents as software ship things that work; the teams who treat them as prompt-tweaking ship things that demo.</p>
+      <p>So this branch of the tree is the foundation under all the others. Before <code>agents</code>, before <code>data</code>, before any domain turns a model into work, there's the craft: how you write code, how you version it, how you review it, and how you ship it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 WHAT AN LLM ACTUALLY IS -->
+<section id="brain">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; What an LLM actually is</div>
+      <h2 class="section-title">A brain in a jar.</h2>
+      <p class="section-lede">Mechanically, a large language model is a <strong>stateless function</strong>: you pass in text, it returns the most probable next text, and then it forgets everything. That's the whole interface. Everything it appears to "do" beyond producing text is something the surrounding software arranged.</p>
+    </div>
+    <div class="stack-grid fade-up" style="transition-delay: 0.05s">
+      <div class="stack-cell">
+        <span class="layer">No memory</span>
+        <h4>It forgets every call</h4>
+        <p>Nothing persists between requests. "Memory" is software re-sending the history, or writing notes to a file or database and reading them back.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">No actions</span>
+        <h4>It can't do anything</h4>
+        <p>A model can't send an email, query a database, or edit a file. It can only emit text. Tools (and the code that executes them) are what turn that text into action.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">No senses</span>
+        <h4>It only sees what you pass</h4>
+        <p>It has no access to your codebase, your CRM, or today's date unless software fetches that context and puts it in the prompt.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">No ground truth</span>
+        <h4>It can't check itself</h4>
+        <p>It predicts plausible text, not verified fact. Tests, types, schemas, and human review are the software that decides whether the output was actually right.</p>
+      </div>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.08s">
+      <p>None of this diminishes the model. A brain is the hard part to build, and modern models are extraordinary at the thing they do. But a brain on its own doesn't file a tax return or fix a bug &mdash; it needs a body, senses, memory, and a way to learn from what worked. In software terms: tools, context, state, and version control.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 THE HARNESS -->
+<section id="harness">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; The harness</div>
+      <h2 class="section-title">Software is the body the brain runs in.</h2>
+      <p class="section-lede">The industry word for the software around the model is the <strong>harness</strong>: the loop, the tools, the context management, the guardrails. It's the difference between a chatbot and an agent that does work.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>A useful agent is a fairly ordinary piece of software with a model in the middle of the loop. It gathers context, asks the model what to do next, executes a tool the model chose, feeds the result back, and repeats until the job is done or a guardrail stops it. Every one of those steps &mdash; the tool definitions, the permission checks, the retries, the logging &mdash; is code you write and version like any other.</p>
+    </div>
+    <div class="info-card code fade-up" style="transition-delay: 0.07s">
+      <h4>The same idea, three layers up the tree</h4>
+      <p>The <strong>Agents</strong> domain states the bar directly: <em>"agents are software, not prompt soup &mdash; code-first definitions, version control, unit tests, evaluation harnesses, CI/CD."</em> <strong>Tools</strong> (function calling, MCP) are how the brain acts on the world. <strong>Agent Skills</strong> are reusable instructions shipped as version-controlled files the agent reads when relevant. All three are software constructs. None of them is the model.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.09s">
+      <p>This is why "which model?" is rarely the question that decides whether a project works. Swap a good model for a slightly better one and a well-built harness gets a little better. Put the best model on the market inside a harness with no tests, no version control, and no observability, and you get something impressive that nobody can trust in production.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 VERSION CONTROL -->
+<section id="vcs">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; Version control</div>
+      <h2 class="section-title">Git is the nervous system.</h2>
+      <p class="section-lede">If software is the body, <strong>version control is its nervous system and memory</strong> &mdash; the record of every change, who made it, and why. It's also what lets work <em>compound</em> instead of drift, which is the principle the entire 2nth tree is built on.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Every change to code &mdash; or to a prompt, a skill, an agent definition, a finance model's rules &mdash; lands as a commit: a small, attributable, reversible unit of change. Branches let you try things without breaking what works. Pull requests put a human (or another agent) in the loop before a change ships. History means you can answer "what changed, and why?" months later. That audit trail is the difference between a system you can operate and one you just hope keeps working.</p>
+      <p>It matters doubly for AI. An agent that can write code is only safe if its work goes through the same gate everyone else's does: a branch, a diff a human can read, tests in CI, a reviewable pull request. Version control is what makes an autonomous change <strong>auditable and reversible</strong> &mdash; the safety net that lets you give an agent real leverage without giving it the keys.</p>
+    </div>
+    <div class="info-card green fade-up" style="transition-delay: 0.07s">
+      <h4>Knowledge that compounds</h4>
+      <p>The rest of the tree already lives this: finance consolidation rules are <em>code in Git</em> so a close is repeatable; business process models are <em>reviewed in PRs and tested in CI</em>; design decisions are a <code>DESIGN.md</code> committed to a repo. When knowledge is in version control, every node builds on the last instead of starting over. That's the 2&#8319; effect &mdash; capability that accumulates, not pilots that reset.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 FOR BUSINESSES -->
+<section id="business">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; What this means for businesses</div>
+      <h2 class="section-title">You're buying software discipline, not magic.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>If AI is software, then deploying AI is a software project, and it succeeds or fails on software fundamentals. The uncomfortable, useful consequence: most of what separates an AI pilot that stalls from one that compounds has nothing to do with the model. It's whether the work is in version control, whether there are tests, whether changes are reviewed, whether you can see what the system did and roll it back.</p>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.07s">
+      <h4>Questions that predict success better than "which model?"</h4>
+      <p>Is the agent's behaviour defined in code and committed to a repo, or living in a chat window? Can you reproduce a result from last week? Is there a test that fails when the agent regresses? Does a change reach production through a reviewable pull request? Can you see what it did and undo it? A vendor who can answer these is selling engineering. A vendor who waves them away is selling a demo.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.09s">
+      <p>This is the honest pitch, and it's 2nth's: we don't sell magic. We bring the software discipline &mdash; version control, repositories, review, CI &mdash; that turns a capable model into a system you can actually run, audit, and improve.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 SA CONTEXT -->
+<section id="sa-context">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; South African context</div>
+      <h2 class="section-title">Why this framing matters here.</h2>
+    </div>
+    <div class="info-card code fade-up" style="transition-delay: 0.05s">
+      <h4>Auditability is a regulatory asset, not overhead</h4>
+      <p>For SA banks, insurers, and the public sector, "AI is just software" is the framing that survives a compliance review. POPIA, FSCA, and internal audit all ask the same thing of any system touching regulated data: <strong>what did it do, who authorised it, and can you prove it?</strong> Version control answers that natively &mdash; every change attributable, every deployment reviewable, every result reproducible. An AI system built as disciplined software clears that bar; one built as a prompt in a chat window does not.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.07s">
+      <p>It also right-sizes the conversation. South African teams don't need to wait for a frontier breakthrough to get value from AI &mdash; they need the same software engineering they'd apply to any production system, pointed at a model. That's a capability most teams already have or can build, not a moonshot.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 07 CONNECTIONS -->
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; Connections</div>
+      <h2 class="section-title">Where this idea runs through the tree.</h2>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="version-control.html" class="connect-node">
+        <span class="tag">software/version-control</span>
+        <div class="skill">Version control</div>
+        <div class="why">Git as the ledger — the mechanics behind the "nervous system" claim. Commits, branches, history, and why it's the substrate for AI work.</div>
+      </a>
+      <a href="github.html" class="connect-node">
+        <span class="tag">software/github</span>
+        <div class="skill">GitHub &amp; code repositories</div>
+        <div class="why">Where the code and the agents' work actually live. Pull requests, review, CI, and agent-authored changes through the same gate as everyone else.</div>
+      </a>
+      <a href="../agents/" class="connect-node">
+        <span class="tag">agents</span>
+        <div class="skill">Agents hub</div>
+        <div class="why">"Agents are software, not prompt soup." The harness, the loop, and the frameworks that wrap the model into work.</div>
+      </a>
+      <a href="../agents/mcp.html" class="connect-node">
+        <span class="tag">agents/mcp</span>
+        <div class="skill">Model Context Protocol</div>
+        <div class="why">The tool layer — how a brain reaches out and acts on the world. The protocol that gives the model hands.</div>
+      </a>
+      <a href="../agents/skills.html" class="connect-node">
+        <span class="tag">agents/skills</span>
+        <div class="skill">Agent Skills</div>
+        <div class="why">Reusable instructions shipped as version-controlled files. Software the agent reads, not a model capability.</div>
+      </a>
+      <a href="../tech/" class="connect-node">
+        <span class="tag">tech</span>
+        <div class="skill">Technology</div>
+        <div class="why">The platforms software runs on — Cloudflare, AWS, Google, Microsoft. Software is the craft; tech is the ground it executes on.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 08 RESOURCES -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 &middot; Resources</div>
+      <h2 class="section-title">Primary sources only.</h2>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://www.anthropic.com/engineering/building-effective-agents" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Engineering</span>
+        <span class="r-title">Anthropic — Building effective agents</span>
+        <span class="r-url">anthropic.com/engineering/building-effective-agents</span>
+      </a>
+      <a href="https://modelcontextprotocol.io" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Spec</span>
+        <span class="r-title">Model Context Protocol — the tool layer</span>
+        <span class="r-url">modelcontextprotocol.io</span>
+      </a>
+      <a href="https://git-scm.com/book/en/v2" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Book</span>
+        <span class="r-title">Pro Git — version control, free &amp; canonical</span>
+        <span class="r-url">git-scm.com/book</span>
+      </a>
+      <a href="https://agentskills.io" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Standard</span>
+        <span class="r-title">Agent Skills — reusable instructions as files</span>
+        <span class="r-url">agentskills.io</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../index.html">Skills tree</a>
+      <a href="./">Software hub</a>
+      <a href="../agents/">Agents hub</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in Johannesburg, South Africa</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme() {
+    const html = document.documentElement;
+    const current = html.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
+    localStorage.setItem('theme', next);
+  }
+  const saved = localStorage.getItem('theme');
+  if (saved) {
+    document.documentElement.setAttribute('data-theme', saved);
+    document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '☀️' : '🌙';
+  }
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>
