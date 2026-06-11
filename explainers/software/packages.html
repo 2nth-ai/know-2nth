@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Packages &amp; dependencies &mdash; know.2nth.ai</title>
+<meta name="description" content="The dependency graph every modern build sits on. Package registries (npm, PyPI, crates, Maven), semantic versioning, lockfiles for reproducible installs, and supply-chain risk — the part of software you didn't write but still ship and own. Including the risk surface when agents install packages.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/software/packages">
+<meta property="og:title" content="Packages &amp; dependencies &mdash; know.2nth.ai">
+<meta property="og:description" content="Registries, semantic versioning, lockfiles, and supply-chain risk — the dependency graph every modern build (and every agent install) sits on top of.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Packages &amp; dependencies &mdash; know.2nth.ai">
+<meta name="twitter:description" content="Registries, semantic versioning, lockfiles, and supply-chain risk — the dependency graph every build and every agent install sits on.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3Cline x1='16' y1='3' x2='16' y2='7' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='16' y1='25' x2='16' y2='29' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='3' y1='16' x2='7' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='25' y1='16' x2='29' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3C/svg%3E">
+<style>
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12); --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-soft: rgba(99, 102, 241, 0.12); --code: #14B8A6; --code-soft: rgba(20, 184, 166, 0.12); --bg: var(--ink); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(20, 184, 166, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(20, 184, 166, 0.3); --max-w: 1200px; --read-w: 760px; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(20, 184, 166, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(20, 184, 166, 0.28); }
+  * { margin: 0; padding: 0; box-sizing: border-box; } html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.blue { width: 600px; height: 600px; background: var(--code); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--code), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--code); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--code); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--code); } .crumb-sep { opacity: 0.5; } .crumb-current { color: var(--text-secondary); }
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--code); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--code); box-shadow: 0 0 12px var(--code); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--code), var(--sky), var(--sky-muted)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.accent { background: rgba(37, 99, 235, 0.12); color: var(--blue-glow); border-color: rgba(37, 99, 235, 0.25); }
+  .pill.green { background: var(--green-soft); color: var(--green); border-color: rgba(16, 185, 129, 0.25); }
+  .pill.code { background: var(--code-soft); color: var(--code); border-color: rgba(20, 184, 166, 0.25); }
+  .pill.warn { background: var(--warm-soft); color: var(--warm-glow); border-color: rgba(245, 158, 11, 0.25); }
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--sky); margin-bottom: 14px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--code); }
+  .prose ul, .prose ol { padding-left: 24px; margin-bottom: 18px; max-width: var(--read-w); }
+  .prose li { font-size: 15px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 8px; }
+  .prose li strong { color: var(--text-primary); font-weight: 600; }
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); margin-bottom: 20px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.code { border-left: 3px solid var(--code); }
+  .info-card.rose { border-left: 3px solid var(--rose); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .info-card code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--code); }
+  .info-card strong { color: var(--text-primary); }
+  .stack-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; max-width: var(--read-w); margin-bottom: 20px; }
+  .stack-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--code); border-radius: var(--radius-md); padding: 18px 22px; }
+  .stack-cell .layer { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .stack-cell h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.3px; }
+  .stack-cell p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: var(--read-w); margin-bottom: 20px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--sky); background: rgba(37, 99, 235, 0.04); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); } .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--code); }
+  .compare td strong { color: var(--text-primary); }
+  .connect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .connect-node { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; transition: all 0.3s; text-decoration: none; color: inherit; display: block; }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node.soon { cursor: default; opacity: 0.72; }
+  .connect-node .tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--code); word-break: break-all; }
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--code), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--code); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+
+<div class="glow-orb blue"></div>
+<div class="glow-orb sky"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand"><span class="nav-brand-mark">know.2nth.ai</span><span class="nav-brand-sub">software/packages</span></a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">&larr; Software</a>
+      <a href="../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x1F319;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="./">Software</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">Packages &amp; dependencies</span>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> software &middot; Packages &middot; Skill Leaf</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      You write a little. You <span class="gradient">ship a lot.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      Almost no modern software is written from scratch. You write a thin layer of your own code on top of hundreds of <strong>packages</strong> other people wrote &mdash; pulled from a registry, pinned by a lockfile, and shipped as part of your product. That dependency graph is enormous leverage and a real risk surface at the same time, and it's one an AI agent now reaches into every time it runs <code>install</code>.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill code">Registries</span>
+      <span class="pill accent">SemVer &amp; lockfiles</span>
+      <span class="pill warn">Supply chain</span>
+      <span class="pill green">Reproducible installs</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 WHAT IT IS -->
+<section id="what">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; What it is</div>
+      <h2 class="section-title">The dependency graph.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>A <strong>package</strong> is a reusable chunk of code someone published so others don't have to rewrite it — a date library, an HTTP client, a UI framework. A <strong>registry</strong> is the public warehouse those packages live in. A <strong>package manager</strong> (npm, pip, cargo) is the tool that downloads the ones you ask for, plus everything <em>they</em> depend on, and so on down the tree.</p>
+      <p>That last part is the whole story. You add one dependency; it pulls in five; each of those pulls in more. The result is a <strong>dependency graph</strong> that can run to hundreds or thousands of packages from people you've never heard of — and all of it ships inside your product and runs with your product's permissions. You wrote maybe 5% of the code your users run. The other 95% is the graph.</p>
+    </div>
+    <div class="info-card code fade-up" style="transition-delay: 0.07s">
+      <h4>The manifest and the lockfile</h4>
+      <p>Two files describe your dependencies. The <strong>manifest</strong> (<code>package.json</code>, <code>pyproject.toml</code>, <code>Cargo.toml</code>) lists what you asked for, usually as version <em>ranges</em>. The <strong>lockfile</strong> (<code>package-lock.json</code>, <code>poetry.lock</code>, <code>Cargo.lock</code>) records the exact version of every package — direct and transitive — that was actually installed. Commit both. The manifest is intent; the lockfile is the reproducible reality.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 REGISTRIES -->
+<section id="registries">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; The registries</div>
+      <h2 class="section-title">One per ecosystem.</h2>
+      <p class="section-lede">Each language has its dominant registry and manager. They differ in size and culture, but the model is the same everywhere.</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead><tr><th>Ecosystem</th><th>Registry · manager</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td><strong>JavaScript / TS</strong></td><td>npm · <code>npm</code> / <code>pnpm</code> / <code>bun</code></td><td>The largest registry on earth (millions of packages). Huge leverage, huge surface — tiny packages and deep trees are the norm.</td></tr>
+          <tr><td><strong>Python</strong></td><td>PyPI · <code>pip</code> / <code>uv</code> / <code>poetry</code></td><td>The default for data, ML, and scripting. <code>uv</code> is the fast modern installer; lockfiles via poetry/uv.</td></tr>
+          <tr><td><strong>Rust</strong></td><td>crates.io · <code>cargo</code></td><td>Best-in-class tooling — cargo handles build, test, and deps as one. Strong culture of small, well-audited crates.</td></tr>
+          <tr><td><strong>Java / JVM</strong></td><td>Maven Central · <code>Maven</code> / <code>Gradle</code></td><td>Enterprise mainstay. Heavier, but mature security and provenance tooling.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.08s">
+      <p>The pattern repeats for every language (Go modules, RubyGems, NuGet, Packagist). The skill isn't memorising commands — it's understanding that <em>every</em> ecosystem gives you the same deal: enormous reuse in exchange for trusting a lot of strangers' code, mediated by versioning and lockfiles.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 SEMVER + LOCKFILES -->
+<section id="semver">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; Versioning &amp; reproducibility</div>
+      <h2 class="section-title">SemVer is the contract; the lockfile is the proof.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p><strong>Semantic versioning (SemVer)</strong> is the convention that makes the whole system tractable. A version is <code>MAJOR.MINOR.PATCH</code> — bump <em>patch</em> for a bug fix, <em>minor</em> for a backwards-compatible feature, <em>major</em> for a breaking change. It's a promise from the author to you: "upgrading within the same major version won't break you." Your manifest leans on that promise by allowing ranges (e.g. "any 4.x").</p>
+      <p>Promises get broken, which is why the <strong>lockfile</strong> exists. It pins the exact resolved versions so that <code>install</code> produces an identical dependency tree on your machine, your colleague's, CI, and production — today and in six months. Without a committed lockfile, "it worked yesterday" and "it works on my machine" become genuine, unanswerable mysteries. With one, an install is reproducible, and reproducibility is the foundation everything else (debugging, audit, rollback) stands on.</p>
+    </div>
+    <div class="info-card green fade-up" style="transition-delay: 0.07s">
+      <h4>Pin, then update deliberately</h4>
+      <p>The healthy rhythm: commit the lockfile so installs are reproducible, then update dependencies on purpose — on a branch, through CI, reviewed in a PR — rather than letting them drift. Tools like Dependabot/Renovate open those update PRs automatically, so upgrades become small, tested, reviewable changes instead of a scary big-bang. Same discipline as everything else in this branch: change deliberately, gate it, keep it reversible.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 SUPPLY CHAIN -->
+<section id="supply">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; Supply-chain risk</div>
+      <h2 class="section-title">You own code you didn't write.</h2>
+      <p class="section-lede">The flip side of all that reuse: every package in your graph is code running with your product's trust. If one is malicious or compromised, so is your product. This is the software supply chain, and it's a live attack surface.</p>
+    </div>
+    <div class="stack-grid fade-up" style="transition-delay: 0.05s">
+      <div class="stack-cell">
+        <span class="layer">Typosquatting</span>
+        <h4>A name one letter off</h4>
+        <p>A malicious package named to look like a popular one (<code>reqests</code> for <code>requests</code>). Install the wrong name and you've run someone's payload.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Account takeover</span>
+        <h4>A maintainer compromised</h4>
+        <p>A legitimate, widely-used package gets a malicious release after its maintainer's account is hijacked. Your auto-update pulls it in.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Transitive risk</span>
+        <h4>Deep in the tree</h4>
+        <p>The dangerous package is rarely the one you chose — it's five levels down, a dependency of a dependency you never evaluated.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Abandonment</span>
+        <h4>Unmaintained &amp; unpatched</h4>
+        <p>A package that's no longer maintained accumulates known vulnerabilities with no fixes coming. Stale is its own risk.</p>
+      </div>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.08s">
+      <p>The defences are practical and mostly free: commit lockfiles (so a surprise version can't sneak in); run automated vulnerability scanning (<code>npm audit</code>, GitHub Dependabot alerts, <code>pip-audit</code>); prefer fewer, well-maintained dependencies over many obscure ones; review what an update actually changes before merging it; and for regulated work, generate an <strong>SBOM</strong> (software bill of materials) so you can answer "what's actually in our product?" when — not if — the next big vulnerability lands.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 AGENTS + DEPS -->
+<section id="agents">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; Packages &amp; agents</div>
+      <h2 class="section-title">Agents install dependencies too.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>A coding agent building a feature does what a developer does: it reaches for packages and runs <code>install</code>. That's a real expansion of the supply-chain surface — an agent can pull in a dependency no human explicitly chose, and it can be fooled by a plausible-but-wrong package name just as a human can (arguably more so, since it's optimising for "something that works" at speed).</p>
+      <p>The mitigations are the ones this whole branch keeps returning to. The agent's work lands as a <strong>pull request</strong>, so a human sees exactly which dependencies it added before anything ships. <strong>CI runs the audit</strong> on every change, flagging known-vulnerable packages automatically. The <strong>lockfile diff</strong> in the PR makes new dependencies visible and reviewable. And for untrusted execution, the agent runs in a <strong>sandbox</strong> with restricted network and filesystem access, so a malicious install can't reach your secrets or your network. Agent autonomy over dependencies is safe for exactly the same reason agent autonomy over code is: the gate, not the trust.</p>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.07s">
+      <h4>Review the lockfile diff — every time</h4>
+      <p>The single highest-value habit when an agent (or anyone) adds a dependency: actually look at the lockfile diff in the PR. It shows every package — direct and transitive — that the change brings in. A feature that should need one small library but adds forty packages is a signal worth pausing on, whether a human or an agent wrote it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 SA CONTEXT -->
+<section id="sa-context">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; South African context</div>
+      <h2 class="section-title">Reproducibility beats bandwidth anxiety.</h2>
+    </div>
+    <div class="info-card code fade-up" style="transition-delay: 0.05s">
+      <h4>Lockfiles, caching, and a known-good build</h4>
+      <p>On bandwidth that's expensive or intermittent, reproducible installs matter twice over: a committed lockfile plus a CI cache means builds don't re-download the world on every run, and a clean checkout produces an identical, known-good dependency tree even months later. For regulated SA work, the lockfile and an SBOM are also the evidence base for "what third-party code is in the system touching this data?" — the question POPIA and security reviews eventually ask. Pinned, scanned dependencies turn that from a scramble into a lookup.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 07 CONNECTIONS -->
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; Connections</div>
+      <h2 class="section-title">Where this links in the tree.</h2>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="version-control.html" class="connect-node">
+        <span class="tag">software/version-control</span>
+        <div class="skill">Version control</div>
+        <div class="why">Commit the lockfile — dependency state is part of the reproducible, reviewable history.</div>
+      </a>
+      <a href="ci-cd.html" class="connect-node">
+        <span class="tag">software/ci-cd</span>
+        <div class="skill">CI/CD &amp; automation</div>
+        <div class="why">Where the vulnerability audit runs automatically and dependency-update PRs get tested.</div>
+      </a>
+      <a href="software-for-agents.html" class="connect-node">
+        <span class="tag">software/software-for-agents</span>
+        <div class="skill">Software for agents</div>
+        <div class="why">Agents install packages — sandboxing and the PR gate are how that stays safe.</div>
+      </a>
+      <a href="../tech/runtime/" class="connect-node">
+        <span class="tag">tech/runtime</span>
+        <div class="skill">Runtime</div>
+        <div class="why">Node, Bun, Deno — the runtimes whose package managers (npm and friends) resolve these graphs.</div>
+      </a>
+      <a href="../tech/frameworks/drizzle.html" class="connect-node">
+        <span class="tag">tech/frameworks/drizzle</span>
+        <div class="skill">Drizzle ORM</div>
+        <div class="why">A deliberately tiny dependency (~7 kB, zero runtime deps) — the kind of low-surface package to prefer.</div>
+      </a>
+      <a href="../agents/" class="connect-node">
+        <span class="tag">agents</span>
+        <div class="skill">Agents</div>
+        <div class="why">Agent frameworks are themselves packages you pull from a registry — the same trust model applies.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 08 RESOURCES -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 &middot; Resources</div>
+      <h2 class="section-title">Primary sources only.</h2>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://semver.org" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Spec</span>
+        <span class="r-title">Semantic Versioning</span>
+        <span class="r-url">semver.org</span>
+      </a>
+      <a href="https://docs.npmjs.com" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs</span>
+        <span class="r-title">npm documentation</span>
+        <span class="r-url">docs.npmjs.com</span>
+      </a>
+      <a href="https://slsa.dev" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Framework</span>
+        <span class="r-title">SLSA — supply-chain integrity levels</span>
+        <span class="r-url">slsa.dev</span>
+      </a>
+      <a href="https://github.com/ossf/scorecard" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Tool</span>
+        <span class="r-title">OpenSSF Scorecard — package health checks</span>
+        <span class="r-url">github.com/ossf/scorecard</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../index.html">Skills tree</a>
+      <a href="./">Software hub</a>
+      <a href="ci-cd.html">CI/CD</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in Johannesburg, South Africa</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme() {
+    const html = document.documentElement;
+    const current = html.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
+    localStorage.setItem('theme', next);
+  }
+  const saved = localStorage.getItem('theme');
+  if (saved) {
+    document.documentElement.setAttribute('data-theme', saved);
+    document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '☀️' : '🌙';
+  }
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>

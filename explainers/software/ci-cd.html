@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CI/CD &amp; automation &mdash; know.2nth.ai</title>
+<meta name="description" content="Continuous integration and delivery. Pipelines, tests as gates, and deploy-on-merge — the automation that turns 'it works on my machine' into 'main is always shippable'. The platforms (GitHub Actions, GitLab CI), and why CI is the safety net that makes agent-authored change safe.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/software/ci-cd">
+<meta property="og:title" content="CI/CD &amp; automation &mdash; know.2nth.ai">
+<meta property="og:description" content="Pipelines, tests as gates, deploy-on-merge. The automation that keeps main always shippable — and the safety net that makes agent PRs trustworthy.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="CI/CD &amp; automation &mdash; know.2nth.ai">
+<meta name="twitter:description" content="Pipelines, tests as gates, deploy-on-merge — and why CI is the safety net for agent-authored change.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3Cline x1='16' y1='3' x2='16' y2='7' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='16' y1='25' x2='16' y2='29' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='3' y1='16' x2='7' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='25' y1='16' x2='29' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3C/svg%3E">
+<style>
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12); --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-soft: rgba(99, 102, 241, 0.12); --code: #14B8A6; --code-soft: rgba(20, 184, 166, 0.12); --bg: var(--ink); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(20, 184, 166, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(20, 184, 166, 0.3); --max-w: 1200px; --read-w: 760px; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(20, 184, 166, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(20, 184, 166, 0.28); }
+  * { margin: 0; padding: 0; box-sizing: border-box; } html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.blue { width: 600px; height: 600px; background: var(--code); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--code), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--code); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--code); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--code); } .crumb-sep { opacity: 0.5; } .crumb-current { color: var(--text-secondary); }
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--code); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--code); box-shadow: 0 0 12px var(--code); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--code), var(--sky), var(--sky-muted)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.accent { background: rgba(37, 99, 235, 0.12); color: var(--blue-glow); border-color: rgba(37, 99, 235, 0.25); }
+  .pill.green { background: var(--green-soft); color: var(--green); border-color: rgba(16, 185, 129, 0.25); }
+  .pill.code { background: var(--code-soft); color: var(--code); border-color: rgba(20, 184, 166, 0.25); }
+  .pill.warn { background: var(--warm-soft); color: var(--warm-glow); border-color: rgba(245, 158, 11, 0.25); }
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--sky); margin-bottom: 14px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--code); }
+  .prose ul, .prose ol { padding-left: 24px; margin-bottom: 18px; max-width: var(--read-w); }
+  .prose li { font-size: 15px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 8px; }
+  .prose li strong { color: var(--text-primary); font-weight: 600; }
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); margin-bottom: 20px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.code { border-left: 3px solid var(--code); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .info-card code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--code); }
+  .info-card strong { color: var(--text-primary); }
+  .stack-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; max-width: var(--read-w); margin-bottom: 20px; }
+  .stack-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--code); border-radius: var(--radius-md); padding: 18px 22px; }
+  .stack-cell .layer { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .stack-cell h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.3px; }
+  .stack-cell p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: var(--read-w); margin-bottom: 20px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--sky); background: rgba(37, 99, 235, 0.04); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); } .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--code); }
+  .compare td strong { color: var(--text-primary); }
+  .decision-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: var(--read-w); }
+  @media (max-width: 720px) { .decision-grid { grid-template-columns: 1fr; } }
+  .decision-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 24px; }
+  .decision-card.use { border-left: 3px solid var(--green); } .decision-card.skip { border-left: 3px solid var(--rose); }
+  .decision-card h4 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 12px; }
+  .decision-card.use h4 { color: var(--green); } .decision-card.skip h4 { color: var(--rose); }
+  .decision-card ul { list-style: none; padding: 0; }
+  .decision-card li { font-size: 13px; color: var(--text-secondary); line-height: 1.6; padding: 6px 0; border-bottom: 1px solid var(--border); }
+  .decision-card li:last-child { border-bottom: none; }
+  .connect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .connect-node { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; transition: all 0.3s; text-decoration: none; color: inherit; display: block; }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node.soon { cursor: default; opacity: 0.72; }
+  .connect-node .tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--code); word-break: break-all; }
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--code), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--code); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+
+<div class="glow-orb blue"></div>
+<div class="glow-orb sky"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand"><span class="nav-brand-mark">know.2nth.ai</span><span class="nav-brand-sub">software/ci-cd</span></a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">&larr; Software</a>
+      <a href="../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x1F319;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="./">Software</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">CI/CD &amp; automation</span>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> software &middot; CI/CD &middot; Skill Leaf</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      Tests as gates. <span class="gradient">Deploy on merge.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      Continuous integration and delivery is the automation that runs on every change &mdash; lint, test, build, deploy &mdash; so that <strong>"main is always shippable"</strong> is a fact, not a hope. It's what turns "it works on my machine" into a system anyone (or any agent) can change safely, because the pipeline catches the mistake before it reaches production.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill code">Pipelines</span>
+      <span class="pill accent">Tests as gates</span>
+      <span class="pill green">Deploy-on-merge</span>
+      <span class="pill warn">Agent safety net</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 WHAT IT IS -->
+<section id="what">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; What it is</div>
+      <h2 class="section-title">CI and CD, separated.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p><strong>Continuous integration (CI)</strong> means every change is merged into the shared codebase often and verified automatically — the build runs, the tests run, the linters run — so problems surface within minutes of being introduced, not weeks later in a big-bang merge. <strong>Continuous delivery / deployment (CD)</strong> takes the verified change the rest of the way: delivery keeps it always <em>ready</em> to ship; deployment actually ships it, automatically, on merge.</p>
+      <p>Both are reactions to the same old pain. Before CI, code from different people sat unintegrated until a dreaded "merge week". Before CD, shipping was a manual, error-prone ritual someone did late on a Friday. Automating both removes the fear from changing software — which is the precondition for changing it <em>often</em>, which is the precondition for moving fast without breaking things.</p>
+    </div>
+    <div class="info-card code fade-up" style="transition-delay: 0.07s">
+      <h4>The pipeline is just code that runs on a trigger</h4>
+      <p>A "pipeline" is a script — usually a YAML file committed to the repo — that says "when something happens (a push, a PR, a merge), run these steps". It's version-controlled like everything else, reviewed like everything else, and it's production infrastructure: when the pipeline breaks, nothing ships. Treat it accordingly.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 THE PIPELINE -->
+<section id="pipeline">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; How a pipeline works</div>
+      <h2 class="section-title">Four stages, run in order.</h2>
+      <p class="section-lede">Most pipelines are a variation on the same sequence. Each stage is a gate: fail one, and the change stops there instead of reaching production.</p>
+    </div>
+    <div class="stack-grid fade-up" style="transition-delay: 0.05s">
+      <div class="stack-cell">
+        <span class="layer">01 &middot; Lint</span>
+        <h4>Style &amp; static checks</h4>
+        <p>Formatting, linting, type-checking. Cheap, fast, and catches the trivial mistakes before spending time on anything heavier.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">02 &middot; Test</span>
+        <h4>Does it still work?</h4>
+        <p>Unit and integration tests run against the change. The core gate — this is where a regression gets caught before a human (or customer) sees it.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">03 &middot; Build</span>
+        <h4>Produce the artifact</h4>
+        <p>Compile, bundle, containerise — turn source into the thing that actually runs. A build failure here means it would never have run in production.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">04 &middot; Deploy</span>
+        <h4>Ship it</h4>
+        <p>Push the artifact to a preview environment (on a PR) or to production (on merge to <code>main</code>). Often with a rollback path if health checks fail.</p>
+      </div>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.08s">
+      <p>A powerful pattern layered on top: <strong>preview deploys</strong>. Every pull request gets its own throwaway deployment at a unique URL, so reviewers see the change running before it merges. This site does exactly that — open a PR and CI builds a preview on a <code>*.pages.dev</code> URL; merge to <code>main</code> and it deploys to production. Review the real thing, not a diff.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 PLATFORMS -->
+<section id="platforms">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; The platforms</div>
+      <h2 class="section-title">Where pipelines run.</h2>
+      <p class="section-lede">The CI/CD platform is usually whatever's closest to your repo. Honest positioning:</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead><tr><th>Platform</th><th>Strengths</th><th>Watch out for</th></tr></thead>
+        <tbody>
+          <tr><td><strong>GitHub Actions</strong></td><td>Built into GitHub, huge marketplace of pre-built actions, generous free tier, the default for most teams</td><td>YAML sprawl on complex pipelines; minutes cost adds up on private repos at scale</td></tr>
+          <tr><td><strong>GitLab CI</strong></td><td>Built into GitLab, one integrated DevOps platform, strong self-hosted runners</td><td>Tied to GitLab; the all-in-one nature is heavier than some teams want</td></tr>
+          <tr><td><strong>CircleCI / Buildkite</strong></td><td>Fast, mature, good for complex matrix builds and large orgs that outgrow the built-ins</td><td>A separate vendor to manage and pay; overkill for small projects</td></tr>
+          <tr><td><strong>Jenkins</strong></td><td>Endlessly flexible, self-hosted, plugin for everything; still common in enterprise</td><td>Heavy to operate and secure; the legacy choice — new projects rarely start here</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.08s">
+      <p>For almost everyone in 2026 the answer is "the one built into your repo host" — GitHub Actions or GitLab CI. They're good enough, they're free or cheap to start, and keeping CI next to the code removes a moving part. Reach for a dedicated vendor only when build complexity or scale genuinely outgrows the built-in.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 ALWAYS SHIPPABLE -->
+<section id="shippable">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; "Main is always shippable"</div>
+      <h2 class="section-title">The gate that makes speed safe.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>The phrase that captures the whole point: <strong>main is always shippable</strong>. Because every change passes the pipeline before it merges, the main branch is, at every moment, in a known-good, deployable state. That single property is what lets a team move quickly without fear — you can ship at any time because main is never half-broken.</p>
+      <p>Making it real takes a small amount of discipline, all of it enforceable: branch protection so nothing merges to <code>main</code> without passing CI; required reviews; and tests that are trustworthy enough that a green pipeline genuinely means "this is fine". The tests <em>are</em> the gate — a pipeline with no tests is just an expensive way to deploy bugs faster.</p>
+    </div>
+    <div class="info-card green fade-up" style="transition-delay: 0.07s">
+      <h4>Deploy frequency is a health metric</h4>
+      <p>Teams with good CI/CD deploy many times a day, in small increments, with low failure rates and fast recovery — the DORA metrics that correlate with high-performing engineering orgs. Small, frequent, automated deploys are <em>safer</em> than big, rare, manual ones: less changes at once, so when something breaks the cause is obvious and the rollback is clean. Counter-intuitive, but consistently borne out.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 AGENT SAFETY NET -->
+<section id="agents">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; CI as the agent safety net</div>
+      <h2 class="section-title">The reason you can trust an agent's PR.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>When a coding agent proposes a change, it lands as a pull request — and then the exact same pipeline runs against it. Linters, tests, build, preview deploy: the agent's work clears the identical gate a human's does, automatically, before anyone merges it. CI is what makes the difference between "an AI edited our production code" being a sentence that ends a career and one that describes a Tuesday.</p>
+      <p>This is the practical mechanism behind the whole "AI is just software" thesis. You don't make agents safe by trusting the model more; you make them safe by putting their output through the software discipline you already have. A strong test suite is the highest-leverage AI-safety investment a team can make — it's the automated reviewer that checks every agent change, tirelessly, and refuses to let a regression through.</p>
+    </div>
+    <div class="info-card code fade-up" style="transition-delay: 0.07s">
+      <h4>Agents can run the pipeline too</h4>
+      <p>It goes both ways: agents don't just get checked <em>by</em> CI, they increasingly read its output. An agent that opens a PR can watch the pipeline, see which test failed, and fix its own change before a human ever looks — the test failure becomes feedback the agent acts on. CI is both the gate and the conversation.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 SA CONTEXT -->
+<section id="sa-context">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; South African context</div>
+      <h2 class="section-title">Reliable deploys when the power isn't.</h2>
+    </div>
+    <div class="info-card code fade-up" style="transition-delay: 0.05s">
+      <h4>Automation removes the human single point of failure</h4>
+      <p>When deploys are manual, they depend on a specific person being online with power and connectivity — a fragile assumption during load-shedding. Automated CI/CD runs in the cloud on a merge, so a change reviewed and merged before the lights go out still ships. It also produces the deployment audit trail (what shipped, when, from which commit, who approved) that POPIA and FSCA change-management reviews expect — for free, as a by-product of normal work.</p>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.07s">
+      <h4>A real gotcha from this very site</h4>
+      <p>CI is production code with sharp edges. A concrete example from know.2nth.ai's own pipeline: Cloudflare's deployment API rejects non-ASCII commit messages (em-dashes, curly quotes, arrows) with the opaque error <code>8000111</code> — so the deploy workflow passes an explicit ASCII <code>--commit-message</code>. The lesson generalises: version your pipeline, test it, and don't assume it keeps working just because it worked yesterday.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 07 CONNECTIONS -->
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; Connections</div>
+      <h2 class="section-title">Where CI/CD links in the tree.</h2>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="github.html" class="connect-node">
+        <span class="tag">software/github</span>
+        <div class="skill">GitHub &amp; code repositories</div>
+        <div class="why">GitHub Actions is where most pipelines run; branch protection is what enforces the gate.</div>
+      </a>
+      <a href="version-control.html" class="connect-node">
+        <span class="tag">software/version-control</span>
+        <div class="skill">Version control</div>
+        <div class="why">CI triggers off commits and merges; "main is always shippable" is a property of the branch.</div>
+      </a>
+      <a href="repositories.html" class="connect-node">
+        <span class="tag">software/repositories</span>
+        <div class="skill">Repositories &amp; monorepos</div>
+        <div class="why">Trunk-based branching exists to feed CI — small branches, fast merges.</div>
+      </a>
+      <a href="software-for-agents.html" class="connect-node">
+        <span class="tag">software/software-for-agents</span>
+        <div class="skill">Software for agents</div>
+        <div class="why">CI as the agent's safety net — the gate that makes agent-authored PRs trustworthy.</div>
+      </a>
+      <a href="../tech/" class="connect-node">
+        <span class="tag">tech</span>
+        <div class="skill">Technology</div>
+        <div class="why">Where pipelines deploy to — Cloudflare Pages/Workers and the platforms a merge ships into.</div>
+      </a>
+      <a href="../tech/embedded/platformio.html" class="connect-node">
+        <span class="tag">tech/embedded/platformio</span>
+        <div class="skill">PlatformIO</div>
+        <div class="why">CI/CD reaches firmware too — building and testing embedded targets in the pipeline.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 08 RESOURCES -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 &middot; Resources</div>
+      <h2 class="section-title">Primary sources only.</h2>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://docs.github.com/actions" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs</span>
+        <span class="r-title">GitHub Actions documentation</span>
+        <span class="r-url">docs.github.com/actions</span>
+      </a>
+      <a href="https://docs.gitlab.com/ee/ci/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs</span>
+        <span class="r-title">GitLab CI/CD documentation</span>
+        <span class="r-url">docs.gitlab.com/ee/ci</span>
+      </a>
+      <a href="https://dora.dev" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Research</span>
+        <span class="r-title">DORA — DevOps research &amp; metrics</span>
+        <span class="r-url">dora.dev</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../index.html">Skills tree</a>
+      <a href="./">Software hub</a>
+      <a href="github.html">GitHub &amp; repos</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in Johannesburg, South Africa</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme() {
+    const html = document.documentElement;
+    const current = html.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
+    localStorage.setItem('theme', next);
+  }
+  const saved = localStorage.getItem('theme');
+  if (saved) {
+    document.documentElement.setAttribute('data-theme', saved);
+    document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '☀️' : '🌙';
+  }
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>

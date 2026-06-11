@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Repositories &amp; monorepos &mdash; know.2nth.ai</title>
+<meta name="description" content="How code is organised. The anatomy of a repository, monorepo vs polyrepo, branching strategies, and the repo as a knowledge-management surface — README, docs-as-code, and a structure both humans and agents can navigate.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/software/repositories">
+<meta property="og:title" content="Repositories &amp; monorepos &mdash; know.2nth.ai">
+<meta property="og:description" content="Monorepo vs polyrepo, branching strategies, docs-as-code, and the repo as a knowledge-management surface — structure both humans and agents can navigate.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Repositories &amp; monorepos &mdash; know.2nth.ai">
+<meta name="twitter:description" content="Monorepo vs polyrepo, branching strategies, docs-as-code, and the repo as a knowledge surface for humans and agents.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3Cline x1='16' y1='3' x2='16' y2='7' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='16' y1='25' x2='16' y2='29' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='3' y1='16' x2='7' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='25' y1='16' x2='29' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3C/svg%3E">
+<style>
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12); --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-soft: rgba(99, 102, 241, 0.12); --code: #14B8A6; --code-soft: rgba(20, 184, 166, 0.12); --bg: var(--ink); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(20, 184, 166, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(20, 184, 166, 0.3); --max-w: 1200px; --read-w: 760px; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(20, 184, 166, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(20, 184, 166, 0.28); }
+  * { margin: 0; padding: 0; box-sizing: border-box; } html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.blue { width: 600px; height: 600px; background: var(--code); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--code), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--code); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--code); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--code); } .crumb-sep { opacity: 0.5; } .crumb-current { color: var(--text-secondary); }
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--code); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--code); box-shadow: 0 0 12px var(--code); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--code), var(--sky), var(--sky-muted)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.accent { background: rgba(37, 99, 235, 0.12); color: var(--blue-glow); border-color: rgba(37, 99, 235, 0.25); }
+  .pill.green { background: var(--green-soft); color: var(--green); border-color: rgba(16, 185, 129, 0.25); }
+  .pill.code { background: var(--code-soft); color: var(--code); border-color: rgba(20, 184, 166, 0.25); }
+  .pill.warn { background: var(--warm-soft); color: var(--warm-glow); border-color: rgba(245, 158, 11, 0.25); }
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--sky); margin-bottom: 14px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--code); }
+  .prose ul, .prose ol { padding-left: 24px; margin-bottom: 18px; max-width: var(--read-w); }
+  .prose li { font-size: 15px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 8px; }
+  .prose li strong { color: var(--text-primary); font-weight: 600; }
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); margin-bottom: 20px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.code { border-left: 3px solid var(--code); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .info-card code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--code); }
+  .info-card strong { color: var(--text-primary); }
+  .stack-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; max-width: var(--read-w); margin-bottom: 20px; }
+  .stack-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--code); border-radius: var(--radius-md); padding: 18px 22px; }
+  .stack-cell .layer { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .stack-cell h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.3px; }
+  .stack-cell p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: var(--read-w); margin-bottom: 20px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--sky); background: rgba(37, 99, 235, 0.04); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); } .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--code); }
+  .compare td strong { color: var(--text-primary); }
+  .decision-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: var(--read-w); }
+  @media (max-width: 720px) { .decision-grid { grid-template-columns: 1fr; } }
+  .decision-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 24px; }
+  .decision-card.use { border-left: 3px solid var(--green); } .decision-card.skip { border-left: 3px solid var(--rose); }
+  .decision-card h4 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 12px; }
+  .decision-card.use h4 { color: var(--green); } .decision-card.skip h4 { color: var(--rose); }
+  .decision-card ul { list-style: none; padding: 0; }
+  .decision-card li { font-size: 13px; color: var(--text-secondary); line-height: 1.6; padding: 6px 0; border-bottom: 1px solid var(--border); }
+  .decision-card li:last-child { border-bottom: none; }
+  .connect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .connect-node { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; transition: all 0.3s; text-decoration: none; color: inherit; display: block; }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node.soon { cursor: default; opacity: 0.72; }
+  .connect-node .tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--code); word-break: break-all; }
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--code), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--code); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+
+<div class="glow-orb blue"></div>
+<div class="glow-orb sky"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand"><span class="nav-brand-mark">know.2nth.ai</span><span class="nav-brand-sub">software/repositories</span></a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">&larr; Software</a>
+      <a href="../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x1F319;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="./">Software</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">Repositories &amp; monorepos</span>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> software &middot; Repositories &middot; Skill Leaf</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      How code is <span class="gradient">organised.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      A repository isn't a folder of files &mdash; it's a project's structure, history, and decisions in one place. How you organise it (one repo or many), how you branch, and how you document it decides whether the project stays navigable as it grows, and whether a newcomer &mdash; human or <strong>agent</strong> &mdash; can find their way in.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill code">Monorepo vs polyrepo</span>
+      <span class="pill accent">Branching</span>
+      <span class="pill green">Docs-as-code</span>
+      <span class="pill warn">Repo-as-knowledge</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 WHAT IT IS -->
+<section id="what">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; What it is</div>
+      <h2 class="section-title">The anatomy of a repo.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Open any healthy repository and a few things are always there: the source code, a <code>README</code> that explains what it is and how to run it, configuration (dependencies, build, CI), and the full version history. The good ones add more &mdash; an architecture note, a <code>CONTRIBUTING</code> guide, an agent-instructions file &mdash; because the repo is doing a second job beyond holding code: it's the <strong>onboarding surface</strong> for everyone who arrives later.</p>
+      <p>How those files are arranged is the repository's structure, and structure is a design decision, not an accident. A well-organised repo answers "where does X live?" without anyone having to ask. A badly-organised one forces every newcomer to reverse-engineer the layout — and "newcomer" now includes the coding agent you point at it.</p>
+    </div>
+    <div class="info-card code fade-up" style="transition-delay: 0.07s">
+      <h4>Structure is a feature, not housekeeping</h4>
+      <p>Predictable layout, clear names, and a real <code>README</code> aren't tidiness for its own sake — they're what let a project scale past the person who started it. The test: could a competent stranger clone this repo and ship a small change today, using only what's in the repo? If yes, the structure is doing its job. If they'd need to ask someone, the knowledge is trapped in heads, not in the repo.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 MONOREPO VS POLYREPO -->
+<section id="mono">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; Monorepo vs polyrepo</div>
+      <h2 class="section-title">One repo, or many?</h2>
+      <p class="section-lede">The biggest structural decision. A <strong>monorepo</strong> holds many projects (apps, services, libraries) in one repository; a <strong>polyrepo</strong> gives each its own. Both work; the trade-off is about coordination vs isolation.</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead><tr><th>Approach</th><th>Strengths</th><th>Watch out for</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Monorepo</strong></td><td>One place for everything; atomic cross-project changes; shared tooling and CI; easy code reuse; one source of truth</td><td>Tooling has to scale (large checkouts, selective builds); access control is coarser; CI must be smart about what to rebuild</td></tr>
+          <tr><td><strong>Polyrepo</strong></td><td>Strong isolation; independent release cadence; per-repo permissions; simple, small checkouts</td><td>Cross-cutting changes span many PRs; version drift between repos; shared code needs publishing; harder to see the whole system</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.08s">
+      <p>The honest default for most teams: <strong>start with one repo</strong> (or a small number organised by clear boundary) and split only when a real pressure forces it — independent release cycles, separate security boundaries, or a team that genuinely owns a piece end-to-end. Splitting early buys isolation you don't need yet and pays for it in coordination overhead forever. The giants (Google, Meta) run enormous monorepos with custom tooling; most SA teams are better served by a sensible monorepo on stock GitHub.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 BRANCHING -->
+<section id="branching">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; Branching strategies</div>
+      <h2 class="section-title">How work flows back to main.</h2>
+      <p class="section-lede">A branching strategy is the agreed answer to "how does a change get from an idea to <code>main</code>?". Three patterns dominate; the trend is decisively toward the simplest.</p>
+    </div>
+    <div class="stack-grid fade-up" style="transition-delay: 0.05s">
+      <div class="stack-cell">
+        <span class="layer">Recommended</span>
+        <h4>Trunk-based / GitHub Flow</h4>
+        <p>Short-lived branches off <code>main</code>, merged via PR within a day or two. <code>main</code> is always shippable. Simple, fast, and what CI/CD assumes. The default for almost everyone.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Heavyweight</span>
+        <h4>GitFlow</h4>
+        <p>Long-lived <code>develop</code>, <code>release</code>, and <code>hotfix</code> branches. Designed for versioned, scheduled releases. Mostly overkill now — adds ceremony most teams don't need.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Anti-pattern</span>
+        <h4>Long-lived feature branches</h4>
+        <p>Branches that live for weeks drift far from <code>main</code> and turn merges into archaeology. The thing every modern strategy is trying to avoid.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Hygiene</span>
+        <h4>Protect <code>main</code></h4>
+        <p>Require PRs, passing CI, and review before merge. Branch protection is what makes the strategy real instead of aspirational.</p>
+      </div>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.08s">
+      <p>The principle underneath all of them: <strong>keep branches small and short-lived</strong>. Small changes are easy to review, easy to test, and easy to revert. It's also exactly how agents work best — a focused branch, one reviewable PR, merged quickly. The branching strategy that's good for humans is the one that's good for agents.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 DOCS-AS-CODE -->
+<section id="docs">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; Docs-as-code</div>
+      <h2 class="section-title">The repo is a knowledge surface, not a code dump.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Documentation that lives <em>in</em> the repo, in plain text, versioned alongside the code, is "docs-as-code". The <code>README</code> is the front door. An architecture note (or ADR &mdash; architecture decision record) captures <em>why</em> things are the way they are. A <code>CONTRIBUTING</code> guide tells a newcomer how to work. Because these are committed text, they get reviewed in PRs, they move in lockstep with the code they describe, and they never rot in a wiki nobody updates.</p>
+      <p>This is the same compounding principle that runs through the 2nth tree: capture knowledge as committed, reviewed text and it accumulates; leave it in someone's head or a Slack thread and it evaporates. A repo with good docs-as-code is an organisation's memory, queryable months later by anyone who shows up.</p>
+    </div>
+    <div class="info-card green fade-up" style="transition-delay: 0.07s">
+      <h4>The agent-instructions file</h4>
+      <p>The newest member of the docs-as-code family is the agent-instructions file &mdash; <code>CLAUDE.md</code>, <code>AGENTS.md</code>, or similar &mdash; committed at the repo root. It tells a coding agent how the project is laid out, how to build and test, and what conventions to follow. It's docs-as-code aimed at a non-human reader, and it's fast becoming as standard as the <code>README</code>. A repo with a good agent-instructions file is one an agent can be productive in immediately; one without leaves the agent guessing.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 REPO-READY FOR AGENTS -->
+<section id="agents">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; Repo-readiness for agents</div>
+      <h2 class="section-title">A structure an agent can navigate.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>An agent reads a repository the way a new hire does &mdash; it explores the layout, reads the docs, infers the conventions. Everything that helps a human onboard helps an agent onboard, and the effect is amplified because the agent does it on every task. Predictable structure, clear names, a real <code>README</code>, an agent-instructions file, and tests that document expected behaviour: these turn an agent from "guessing in an unfamiliar codebase" into "operating in a well-signposted one".</p>
+      <p>The pragmatic takeaway echoes the GitHub leaf: <strong>repo-ready is agent-ready</strong>. The work to make a codebase legible to a new engineer is the same work that makes it legible to an agent. You don't do a separate "AI enablement" project — you do good repository hygiene, and the agents come along for free.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 SA CONTEXT -->
+<section id="sa-context">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; South African context</div>
+      <h2 class="section-title">Structure survives staff turnover.</h2>
+    </div>
+    <div class="info-card code fade-up" style="transition-delay: 0.05s">
+      <h4>The bus-factor problem, solved by layout</h4>
+      <p>SA teams are often small, and key-person risk is real &mdash; a great deal of how a system works lives in one or two people's heads. A well-structured repo with honest docs-as-code is the cheapest insurance against that: when someone leaves (or is unreachable during a load-shedding week), the knowledge is in the repo, not gone with them. For client work especially, a repo a new developer can pick up cold is the difference between a maintainable handover and a rewrite.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 07 CONNECTIONS -->
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; Connections</div>
+      <h2 class="section-title">Where this links in the tree.</h2>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="version-control.html" class="connect-node">
+        <span class="tag">software/version-control</span>
+        <div class="skill">Version control</div>
+        <div class="why">Branches and history are the mechanics a branching strategy is built on.</div>
+      </a>
+      <a href="github.html" class="connect-node">
+        <span class="tag">software/github</span>
+        <div class="skill">GitHub &amp; code repositories</div>
+        <div class="why">Where repos are hosted, branches are protected, and PRs enforce the workflow.</div>
+      </a>
+      <a href="ci-cd.html" class="connect-node">
+        <span class="tag">software/ci-cd</span>
+        <div class="skill">CI/CD &amp; automation</div>
+        <div class="why">Trunk-based branching exists to feed CI — small branches, fast merges, always-shippable main.</div>
+      </a>
+      <a href="software-for-agents.html" class="connect-node">
+        <span class="tag">software/software-for-agents</span>
+        <div class="skill">Software for agents</div>
+        <div class="why">The repo as the agent's context window — why structure and the agent-instructions file matter.</div>
+      </a>
+      <a href="../design/design-md.html" class="connect-node">
+        <span class="tag">design/design-md</span>
+        <div class="skill">DESIGN.md</div>
+        <div class="why">Docs-as-code in practice — a design system as a committed, linted markdown file.</div>
+      </a>
+      <a href="../tech/" class="connect-node">
+        <span class="tag">tech</span>
+        <div class="skill">Technology</div>
+        <div class="why">Infrastructure-as-code lives in the repo too — the same structure principles apply to infra.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 08 RESOURCES -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 &middot; Resources</div>
+      <h2 class="section-title">Primary sources only.</h2>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://trunkbaseddevelopment.com" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Site</span>
+        <span class="r-title">Trunk-Based Development</span>
+        <span class="r-url">trunkbaseddevelopment.com</span>
+      </a>
+      <a href="https://docs.github.com/get-started/quickstart/github-flow" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs</span>
+        <span class="r-title">GitHub Flow</span>
+        <span class="r-url">docs.github.com/.../github-flow</span>
+      </a>
+      <a href="https://monorepo.tools" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Reference</span>
+        <span class="r-title">monorepo.tools — the case &amp; the tooling</span>
+        <span class="r-url">monorepo.tools</span>
+      </a>
+      <a href="https://adr.github.io" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Reference</span>
+        <span class="r-title">Architecture Decision Records</span>
+        <span class="r-url">adr.github.io</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../index.html">Skills tree</a>
+      <a href="./">Software hub</a>
+      <a href="github.html">GitHub &amp; repos</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in Johannesburg, South Africa</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme() {
+    const html = document.documentElement;
+    const current = html.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
+    localStorage.setItem('theme', next);
+  }
+  const saved = localStorage.getItem('theme');
+  if (saved) {
+    document.documentElement.setAttribute('data-theme', saved);
+    document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '☀️' : '🌙';
+  }
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>

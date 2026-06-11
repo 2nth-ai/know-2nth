@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Programming languages &mdash; know.2nth.ai</title>
+<meta name="description" content="How to choose a programming language — and why it matters less than the discipline around it. Typed vs dynamic, ecosystem and runtime fit, the languages that matter in 2026, and the ones AI agents write most reliably.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/software/languages">
+<meta property="og:title" content="Programming languages &mdash; know.2nth.ai">
+<meta property="og:description" content="Typed vs dynamic, ecosystem and runtime fit, and why the language matters less than the discipline around it — plus the languages agents write most reliably.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Programming languages &mdash; know.2nth.ai">
+<meta name="twitter:description" content="Typed vs dynamic, ecosystem fit, and why the language matters less than the discipline — plus the languages agents write most reliably.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3Cline x1='16' y1='3' x2='16' y2='7' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='16' y1='25' x2='16' y2='29' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='3' y1='16' x2='7' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='25' y1='16' x2='29' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3C/svg%3E">
+<style>
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12); --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-soft: rgba(99, 102, 241, 0.12); --code: #14B8A6; --code-soft: rgba(20, 184, 166, 0.12); --bg: var(--ink); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(20, 184, 166, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(20, 184, 166, 0.3); --max-w: 1200px; --read-w: 760px; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(20, 184, 166, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(20, 184, 166, 0.28); }
+  * { margin: 0; padding: 0; box-sizing: border-box; } html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.blue { width: 600px; height: 600px; background: var(--code); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--code), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--code); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--code); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--code); } .crumb-sep { opacity: 0.5; } .crumb-current { color: var(--text-secondary); }
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--code); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--code); box-shadow: 0 0 12px var(--code); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--code), var(--sky), var(--sky-muted)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.accent { background: rgba(37, 99, 235, 0.12); color: var(--blue-glow); border-color: rgba(37, 99, 235, 0.25); }
+  .pill.green { background: var(--green-soft); color: var(--green); border-color: rgba(16, 185, 129, 0.25); }
+  .pill.code { background: var(--code-soft); color: var(--code); border-color: rgba(20, 184, 166, 0.25); }
+  .pill.warn { background: var(--warm-soft); color: var(--warm-glow); border-color: rgba(245, 158, 11, 0.25); }
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--sky); margin-bottom: 14px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--code); }
+  .prose ul, .prose ol { padding-left: 24px; margin-bottom: 18px; max-width: var(--read-w); }
+  .prose li { font-size: 15px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 8px; }
+  .prose li strong { color: var(--text-primary); font-weight: 600; }
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); margin-bottom: 20px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.code { border-left: 3px solid var(--code); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .info-card code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--code); }
+  .info-card strong { color: var(--text-primary); }
+  .stack-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; max-width: var(--read-w); margin-bottom: 20px; }
+  .stack-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--code); border-radius: var(--radius-md); padding: 18px 22px; }
+  .stack-cell .layer { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .stack-cell h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.3px; }
+  .stack-cell p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: var(--read-w); margin-bottom: 20px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--sky); background: rgba(37, 99, 235, 0.04); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); } .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--code); }
+  .compare td strong { color: var(--text-primary); }
+  .decision-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: var(--read-w); }
+  @media (max-width: 720px) { .decision-grid { grid-template-columns: 1fr; } }
+  .decision-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 24px; }
+  .decision-card.use { border-left: 3px solid var(--green); } .decision-card.skip { border-left: 3px solid var(--rose); }
+  .decision-card h4 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 12px; }
+  .decision-card.use h4 { color: var(--green); } .decision-card.skip h4 { color: var(--rose); }
+  .decision-card ul { list-style: none; padding: 0; }
+  .decision-card li { font-size: 13px; color: var(--text-secondary); line-height: 1.6; padding: 6px 0; border-bottom: 1px solid var(--border); }
+  .decision-card li:last-child { border-bottom: none; }
+  .connect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .connect-node { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; transition: all 0.3s; text-decoration: none; color: inherit; display: block; }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node.soon { cursor: default; opacity: 0.72; }
+  .connect-node .tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--code); word-break: break-all; }
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--code), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--code); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+
+<div class="glow-orb blue"></div>
+<div class="glow-orb sky"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand"><span class="nav-brand-mark">know.2nth.ai</span><span class="nav-brand-sub">software/languages</span></a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">&larr; Software</a>
+      <a href="../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x1F319;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="./">Software</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">Programming languages</span>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> software &middot; Languages &middot; Skill Leaf</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      Pick one. Then stop <span class="gradient">worrying about it.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      Teams burn enormous energy on "which language?" when the honest answer is: it matters far less than the <strong>discipline around it</strong> &mdash; tests, version control, review, CI. A well-engineered project in a boring language beats a sloppy one in a fashionable language every time. That said, the choice isn't arbitrary; a few real factors should drive it.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill code">Typed vs dynamic</span>
+      <span class="pill accent">Ecosystem fit</span>
+      <span class="pill green">Runtime fit</span>
+      <span class="pill warn">Agent-friendly</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 THE CLAIM -->
+<section id="claim">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; The claim</div>
+      <h2 class="section-title">The discipline matters more than the language.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>It's the most over-debated decision in software. The truth most senior engineers settle on: within the set of mainstream, well-supported languages, the choice is a second-order factor. What actually determines whether a project succeeds is everything this branch is about — is it in version control, are there tests, is there review, does CI gate the changes? A disciplined team ships reliable software in Python, TypeScript, Go, or Java. An undisciplined team ships fragile software in all of them.</p>
+      <p>So the goal of choosing a language isn't to find the "best" one — there isn't one. It's to pick a <strong>good-enough, well-supported language that fits the job and the team</strong>, then spend your real energy on the engineering practices that compound. The rest of this leaf is the small number of factors that genuinely should tip the choice.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 TYPED VS DYNAMIC -->
+<section id="typed">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; The axis that matters</div>
+      <h2 class="section-title">Typed vs dynamic.</h2>
+      <p class="section-lede">If one distinction is worth understanding, it's this. A <strong>statically typed</strong> language checks the shape of your data at compile time; a <strong>dynamically typed</strong> one checks it at runtime, if at all.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Types are a safety net the compiler holds for free. They catch a whole class of mistakes before the code ever runs, they document what a function expects, and they make large codebases navigable — your editor knows what everything is. The cost is a little ceremony and a compile step. Dynamic languages trade that away for speed of writing and flexibility, at the price of more bugs surfacing only at runtime.</p>
+      <p>The decisive trend of the last decade: <strong>gradual typing</strong> won. TypeScript added types to JavaScript; Python added type hints (checked by mypy/pyright). The mainstream answer in 2026 is "a dynamic language with types bolted on, used seriously" — you get the flexibility when prototyping and the safety net when the codebase grows. For anything that will live longer than a weekend, lean typed.</p>
+    </div>
+    <div class="info-card code fade-up" style="transition-delay: 0.07s">
+      <h4>Types help agents most of all</h4>
+      <p>Static types are a tight feedback loop, and feedback loops are what make agents reliable. When a coding agent writes typed code, the type-checker immediately tells it (and you) when something doesn't fit — wrong shape, missing field, bad call. That's an automated reviewer catching the agent's mistakes the instant they're made. Typed languages don't just help humans navigate a codebase; they give agents a fast, objective signal for whether their change is even coherent.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 THE LANGUAGES -->
+<section id="which">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; The languages that matter in 2026</div>
+      <h2 class="section-title">Pick by the job.</h2>
+      <p class="section-lede">Not a ranking — a map of which language fits which job. For most 2nth work the answer is one of the top two.</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead><tr><th>Language</th><th>Best at</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td><strong>TypeScript</strong></td><td>Web front &amp; back ends, edge/serverless, anything on Node/Bun/Workers, agent tooling</td><td>JavaScript with types. The default for web and edge. Huge ecosystem; runs everywhere; agents write it very reliably.</td></tr>
+          <tr><td><strong>Python</strong></td><td>Data, ML/AI, scripting, automation, backends, glue</td><td>The lingua franca of data and AI. Gentle to read, vast libraries. Add type hints for anything that lasts.</td></tr>
+          <tr><td><strong>Go</strong></td><td>Network services, CLIs, infrastructure tooling, high-concurrency backends</td><td>Simple, fast, statically typed, compiles to a single binary. Built for services and ops tooling.</td></tr>
+          <tr><td><strong>Rust</strong></td><td>Performance-critical systems, WASM, where memory safety + speed both matter</td><td>Best-in-class safety and performance, steeper learning curve. Reach for it when the constraints are real, not for fashion.</td></tr>
+          <tr><td><strong>Java / C#</strong></td><td>Large enterprise systems, Android (Kotlin), Microsoft stacks</td><td>Mature, typed, enormous ecosystems. The pragmatic choice where the org and talent already live there.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.08s">
+      <p>For most 2nth builds the working default is <strong>TypeScript on the edge</strong> (Cloudflare Workers, Bun, Node) and <strong>Python for data and AI</strong>. Both are typed-capable, agent-friendly, and have the deepest ecosystems for the work we do. Reach past them only when a real constraint — raw performance, a specific platform, an existing team's expertise — points elsewhere.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 HOW TO CHOOSE -->
+<section id="choose">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; How to actually choose</div>
+      <h2 class="section-title">Four factors, in order.</h2>
+    </div>
+    <div class="stack-grid fade-up" style="transition-delay: 0.05s">
+      <div class="stack-cell">
+        <span class="layer">01 &middot; Ecosystem fit</span>
+        <h4>Do the libraries exist?</h4>
+        <p>The biggest lever. ML lives in Python; the web lives in TypeScript. Pick the language where the libraries for <em>your</em> problem already exist — you'll write less and ship sooner.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">02 &middot; Runtime fit</span>
+        <h4>Where does it run?</h4>
+        <p>Cloudflare Workers wants JS/TS or WASM. A data pipeline wants Python. An embedded board wants C/Rust. The deploy target constrains the language as much as the problem does.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">03 &middot; Team fit</span>
+        <h4>What can the team maintain?</h4>
+        <p>The best language is the one your team (and the next hire, and the agent) can read and maintain. A clever choice nobody else knows is a liability, not an asset.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">04 &middot; Boring is good</span>
+        <h4>Prefer proven over novel</h4>
+        <p>For production, a mature language with a deep ecosystem and a big talent pool beats an exciting new one. Save novelty for problems that genuinely need it.</p>
+      </div>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.08s">
+      <p>Notice what's <em>not</em> on the list: benchmarks, syntax preferences, and what's trending. Those dominate the arguments and decide almost nothing. Ecosystem, runtime, and team are what actually determine whether the project goes well.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 AGENT-FRIENDLY -->
+<section id="agents">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; What agents write most reliably</div>
+      <h2 class="section-title">A new factor in the choice.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>There's now a real consideration that didn't exist a few years ago: <strong>how reliably can an agent write this language?</strong> Coding agents are dramatically better in some languages than others, and it's not random — it tracks the things that have always made languages good for humans, amplified.</p>
+      <p>Agents are strongest in <strong>Python and TypeScript</strong>. Two reasons. First, training data: these are the two most-written languages on the open web, so models have seen the most examples and idioms. Second, the feedback loop: a typed language with fast tooling (TypeScript's compiler, Python with pyright) gives the agent an immediate, objective signal when it's wrong, which it can act on before a human ever sees the code. Languages that are both widely-written <em>and</em> typed are the ones agents operate in most reliably.</p>
+    </div>
+    <div class="info-card green fade-up" style="transition-delay: 0.07s">
+      <h4>The practical upshot</h4>
+      <p>If you expect agents to do meaningful work in a codebase — and increasingly you should — that's a genuine point in favour of TypeScript and typed Python, on top of all the human reasons to choose them. It's the same principle as the rest of this branch: the practices and tools that make a codebase good for people (types, tests, fast feedback) are the same ones that make it good for agents. You don't optimise separately for AI; you do good engineering and the agents benefit.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 SA CONTEXT -->
+<section id="sa-context">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; South African context</div>
+      <h2 class="section-title">Hire for the pool, not the fashion.</h2>
+    </div>
+    <div class="info-card code fade-up" style="transition-delay: 0.05s">
+      <h4>Talent availability is a first-class factor here</h4>
+      <p>In the SA market, the language you choose shapes who you can hire and how fast. Python and JavaScript/TypeScript have the deepest local talent pools and the most active communities and bootcamps; Java and C# are strong in enterprise and banking. Choosing a niche language for a client project can quietly become a hiring and maintenance problem two years on. The pragmatic SA default — typed Python and TypeScript — is also the one that's easiest to staff, easiest to hand over, and (now) easiest for agents to extend.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 07 CONNECTIONS -->
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; Connections</div>
+      <h2 class="section-title">Where this links in the tree.</h2>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="ai-is-software.html" class="connect-node">
+        <span class="tag">software/ai-is-software</span>
+        <div class="skill">AI is just software</div>
+        <div class="why">The thesis behind "discipline &gt; language" — the engineering around the code is what makes it trustworthy.</div>
+      </a>
+      <a href="packages.html" class="connect-node">
+        <span class="tag">software/packages</span>
+        <div class="skill">Packages &amp; dependencies</div>
+        <div class="why">Each language's ecosystem is its registry — npm for TS, PyPI for Python. Ecosystem fit is largely package fit.</div>
+      </a>
+      <a href="software-for-agents.html" class="connect-node">
+        <span class="tag">software/software-for-agents</span>
+        <div class="skill">Software for agents</div>
+        <div class="why">Why typed, widely-written languages give agents the feedback loop they need to be reliable.</div>
+      </a>
+      <a href="../tech/runtime/" class="connect-node">
+        <span class="tag">tech/runtime</span>
+        <div class="skill">Runtime</div>
+        <div class="why">Node, Bun, Deno — the JavaScript/TypeScript runtimes. Runtime fit constrains the language choice.</div>
+      </a>
+      <a href="../tech/frameworks/drizzle.html" class="connect-node">
+        <span class="tag">tech/frameworks/drizzle</span>
+        <div class="skill">Drizzle ORM</div>
+        <div class="why">Schema-in-TypeScript — types flowing all the way to the database, a typed-language payoff.</div>
+      </a>
+      <a href="../data/" class="connect-node">
+        <span class="tag">data</span>
+        <div class="skill">Data</div>
+        <div class="why">Where Python earns its place — analytics, engineering, and the ML ecosystem.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 08 RESOURCES -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 &middot; Resources</div>
+      <h2 class="section-title">Primary sources only.</h2>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://www.typescriptlang.org/docs/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs</span>
+        <span class="r-title">TypeScript Handbook</span>
+        <span class="r-url">typescriptlang.org/docs</span>
+      </a>
+      <a href="https://docs.python.org/3/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs</span>
+        <span class="r-title">Python documentation</span>
+        <span class="r-url">docs.python.org/3</span>
+      </a>
+      <a href="https://go.dev/doc/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs</span>
+        <span class="r-title">Go documentation</span>
+        <span class="r-url">go.dev/doc</span>
+      </a>
+      <a href="https://survey.stackoverflow.co" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Survey</span>
+        <span class="r-title">Stack Overflow Developer Survey — usage trends</span>
+        <span class="r-url">survey.stackoverflow.co</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../index.html">Skills tree</a>
+      <a href="./">Software hub</a>
+      <a href="ai-is-software.html">AI is just software</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in Johannesburg, South Africa</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme() {
+    const html = document.documentElement;
+    const current = html.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
+    localStorage.setItem('theme', next);
+  }
+  const saved = localStorage.getItem('theme');
+  if (saved) {
+    document.documentElement.setAttribute('data-theme', saved);
+    document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '☀️' : '🌙';
+  }
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>
