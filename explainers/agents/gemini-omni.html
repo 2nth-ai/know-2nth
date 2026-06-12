@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gemini Omni &mdash; know.2nth.ai</title>
+<meta name="description" content="Gemini Omni — Google DeepMind's native multimodal generation model. 'Create anything from any input — starting with video.' Conversational, multi-turn video and image generation and editing where every edit builds on the last and the scene stays coherent. Turns image, text, video, or audio reference into one cohesive output, with physics-aware motion (gravity, kinetic energy, fluid dynamics) and Gemini's world knowledge. Ships as Gemini Omni Flash, surfaced through the Gemini app, Google Flow, and YouTube Shorts; benchmarks lead on MovieGenBench and VBench. SynthID + C2PA provenance baked in. The generation half of the Gemini family — the reasoning tiers read media, Omni creates it.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/agents/gemini-omni">
+<meta property="og:title" content="Gemini Omni &mdash; know.2nth.ai">
+<meta property="og:description" content="Gemini Omni — 'create anything from any input, starting with video.' Conversational multi-turn video + image generation and editing with physics-aware motion and Gemini's world knowledge. Ships as Omni Flash via the Gemini app, Flow, and YouTube Shorts.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Gemini Omni &mdash; know.2nth.ai">
+<meta name="twitter:description" content="Gemini Omni — native multimodal generation. Conversational, multi-turn video + image creation and editing with physics-aware motion. Ships as Omni Flash via the Gemini app, Flow, and YouTube Shorts.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%238B5CF6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%236366F1' stroke-width='1.3'/%3E%3Cline x1='16' y1='3' x2='16' y2='7' stroke='%236366F1' stroke-width='1.2'/%3E%3Cline x1='16' y1='25' x2='16' y2='29' stroke='%236366F1' stroke-width='1.2'/%3E%3Cline x1='3' y1='16' x2='7' y2='16' stroke='%236366F1' stroke-width='1.2'/%3E%3Cline x1='25' y1='16' x2='29' y2='16' stroke='%236366F1' stroke-width='1.2'/%3E%3C/svg%3E">
+<style>
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12); --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-soft: rgba(99, 102, 241, 0.12); --violet: #8B5CF6; --violet-glow: #A78BFA; --violet-soft: rgba(139, 92, 246, 0.12); --bg: var(--ink); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(139, 92, 246, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(139, 92, 246, 0.35); --max-w: 1200px; --read-w: 760px; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(139, 92, 246, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(139, 92, 246, 0.3); }
+  * { margin: 0; padding: 0; box-sizing: border-box; } html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.09; pointer-events: none; z-index: 0; }
+  .glow-orb.violet { width: 600px; height: 600px; background: var(--violet); top: -200px; right: -100px; }
+  .glow-orb.indigo { width: 500px; height: 500px; background: var(--indigo); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.05; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--indigo), var(--violet)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--violet-glow); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--violet-glow); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--violet-glow); } .crumb-sep { opacity: 0.5; } .crumb-current { color: var(--text-secondary); }
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--violet); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--violet); box-shadow: 0 0 12px var(--violet); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--violet-glow), var(--indigo), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.accent { background: var(--violet-soft); color: var(--violet-glow); border-color: rgba(139, 92, 246, 0.25); }
+  .pill.green { background: var(--green-soft); color: var(--green); border-color: rgba(16, 185, 129, 0.25); }
+  .pill.indigo { background: var(--indigo-soft); color: var(--indigo); border-color: rgba(99, 102, 241, 0.25); }
+  .pill.warn { background: var(--warm-soft); color: var(--warm-glow); border-color: rgba(245, 158, 11, 0.25); }
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--violet-glow); margin-bottom: 14px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--violet-glow); }
+  .prose ul, .prose ol { padding-left: 24px; margin-bottom: 18px; max-width: var(--read-w); }
+  .prose li { font-size: 15px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 8px; }
+  .prose li strong { color: var(--text-primary); font-weight: 600; }
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); margin-bottom: 20px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.indigo { border-left: 3px solid var(--indigo); }
+  .info-card.violet { border-left: 3px solid var(--violet); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: var(--read-w); margin-bottom: 20px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--violet-glow); background: rgba(139, 92, 246, 0.05); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); } .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--violet-glow); }
+  .compare td strong { color: var(--text-primary); }
+  .stack-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; max-width: var(--read-w); margin-bottom: 20px; }
+  .stack-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--violet); border-radius: var(--radius-md); padding: 18px 22px; }
+  .stack-cell .layer { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .stack-cell h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.3px; }
+  .stack-cell p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+  /* Demo gallery */
+  .demo-note { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.3px; max-width: var(--read-w); margin-bottom: 24px; line-height: 1.6; }
+  .demo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 24px; }
+  .demo-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; transition: all 0.3s; }
+  .demo-card:hover { border-color: var(--border-hover); transform: translateY(-2px); box-shadow: 0 12px 34px rgba(0,0,0,0.12); }
+  .demo-frame { position: relative; aspect-ratio: 16 / 10; display: grid; place-items: center; overflow: hidden; border-bottom: 1px solid var(--border); }
+  .demo-frame .ix { font-size: 40px; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4)); z-index: 2; }
+  .demo-frame::after { content: ''; position: absolute; inset: 0; background-image: linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px); background-size: 14px 100%; opacity: 0.4; z-index: 1; }
+  .demo-frame .badge { position: absolute; top: 10px; left: 10px; z-index: 3; font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; padding: 4px 9px; border-radius: var(--radius-pill); background: rgba(6,10,20,0.66); color: var(--violet-glow); border: 1px solid rgba(139,92,246,0.4); backdrop-filter: blur(6px); }
+  .df-a { background: radial-gradient(circle at 30% 30%, #8B5CF6, #312E81 70%, #0B1120); }
+  .df-b { background: radial-gradient(circle at 70% 40%, #38BDF8, #1E3A8A 70%, #0B1120); }
+  .df-c { background: radial-gradient(circle at 40% 60%, #F59E0B, #7C2D12 70%, #0B1120); }
+  .df-d { background: radial-gradient(circle at 60% 30%, #10B981, #064E3B 70%, #0B1120); }
+  .df-e { background: radial-gradient(circle at 50% 50%, #F43F5E, #4C1D95 72%, #0B1120); }
+  .df-f { background: radial-gradient(circle at 35% 45%, #A78BFA, #1E293B 70%, #0B1120); }
+  .demo-body { padding: 16px 18px 18px; }
+  .demo-body .d-kind { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.3px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 8px; }
+  .demo-prompt { font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: var(--text-primary); line-height: 1.55; background: var(--ink-deep); border: 1px solid var(--border); border-left: 2px solid var(--violet); border-radius: var(--radius-sm); padding: 10px 12px; margin-bottom: 10px; }
+  [data-theme="light"] .demo-prompt { background: #0F172A; color: #E2E8F0; }
+  .demo-prompt::before { content: '> '; color: var(--violet-glow); }
+  .demo-caption { font-size: 12.5px; color: var(--text-secondary); line-height: 1.6; }
+
+  /* Multi-turn conversational flow */
+  .turn-flow { max-width: var(--read-w); margin-bottom: 20px; display: flex; flex-direction: column; gap: 0; }
+  .turn { display: grid; grid-template-columns: 34px 1fr; gap: 14px; padding-bottom: 22px; position: relative; }
+  .turn:not(:last-child)::before { content: ''; position: absolute; left: 16px; top: 30px; bottom: -4px; width: 2px; background: linear-gradient(var(--violet), rgba(139,92,246,0.15)); }
+  .turn-num { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600; background: var(--violet-soft); color: var(--violet-glow); border: 1px solid rgba(139,92,246,0.35); z-index: 1; }
+  .turn-body { padding-top: 4px; }
+  .turn-body .t-prompt { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--text-primary); margin-bottom: 4px; }
+  .turn-body .t-prompt::before { content: '"'; } .turn-body .t-prompt::after { content: '"'; }
+  .turn-body .t-result { font-size: 13.5px; color: var(--text-secondary); line-height: 1.6; }
+
+  .decision-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: var(--read-w); }
+  @media (max-width: 720px) { .decision-grid { grid-template-columns: 1fr; } }
+  .decision-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 24px; }
+  .decision-card.use { border-left: 3px solid var(--green); } .decision-card.skip { border-left: 3px solid var(--rose); }
+  .decision-card h4 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 12px; }
+  .decision-card.use h4 { color: var(--green); } .decision-card.skip h4 { color: var(--rose); }
+  .decision-card ul { list-style: none; padding: 0; }
+  .decision-card li { font-size: 13px; color: var(--text-secondary); line-height: 1.6; padding: 6px 0; border-bottom: 1px solid var(--border); }
+  .decision-card li:last-child { border-bottom: none; }
+  .connect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .connect-node { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; transition: all 0.3s; text-decoration: none; color: inherit; display: block; }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node.soon { cursor: default; opacity: 0.72; }
+  .connect-node .tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--violet-glow); word-break: break-all; }
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--indigo), var(--violet)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--violet-glow); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+
+<div class="glow-orb violet"></div>
+<div class="glow-orb indigo"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand"><span class="nav-brand-mark">know.2nth.ai</span><span class="nav-brand-sub">agents/gemini-omni</span></a>
+    <div class="nav-right">
+      <a href="gemini.html" class="nav-link">&larr; Gemini</a>
+      <a href="./" class="nav-link">Agents</a>
+      <a href="../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x1F319;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="./">Agents</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="gemini.html">Gemini</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">Omni</span>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> agents &middot; Gemini Omni &middot; Skill Leaf</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      Create anything from any input. <span class="gradient">Starting with video.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      <strong>Gemini Omni</strong> is the generation half of the Gemini family. Where the reasoning tiers <em>read</em> media, Omni <em>creates</em> it &mdash; conversational, multi-turn <strong>video and image generation and editing</strong> where every edit builds on the last and the scene stays coherent. Hand it any reference &mdash; <strong>image, text, video, or audio</strong> &mdash; and it returns one cohesive output, with <strong>physics-aware motion</strong> (gravity, kinetic energy, fluid dynamics) and Gemini's world knowledge baked in. It ships as <strong>Gemini Omni Flash</strong> and is surfaced today through the <strong>Gemini app</strong>, <strong>Google Flow</strong>, and <strong>YouTube Shorts</strong>. Think of it as Nano Banana &mdash; but for video.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill accent">Native multimodal generation</span>
+      <span class="pill indigo">Gemini Omni Flash</span>
+      <span class="pill green">Conversational &middot; multi-turn editing</span>
+      <span class="pill warn">Physics-aware motion</span>
+      <span class="pill">SynthID + C2PA provenance</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 WHAT IT IS -->
+<section id="what">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; What it is</div>
+      <h2 class="section-title">The model that generates media instead of just reading it.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Every other tier in the Gemini line is an <em>understanding</em> model: you feed it text, images, video, or audio and it reasons about them. <strong>Gemini Omni inverts that.</strong> It's Google DeepMind's native multimodal <em>generation</em> model &mdash; the same family lineage, the same world knowledge, but pointed at producing video and images rather than analysing them. Google's one-line pitch is literally "<strong>create anything from any input &mdash; starting with video</strong>."</p>
+      <p>The defining property isn't raw generation &mdash; plenty of models can turn a prompt into a clip. It's <strong>conversational, multi-turn editing that stays coherent</strong>. "Every edit you make builds on the one before, maintaining a consistent, coherent scene." You don't re-roll the whole video each time you want a change; you direct it the way you'd direct an editor &mdash; swap this character, move the camera over the shoulder, sync the lights to the music &mdash; and the model preserves what already worked while applying the new instruction.</p>
+      <p>The other half is <strong>input fusion</strong>: "turn any reference &mdash; image, text, video, or audio &mdash; into a single, cohesive output." A reference photo for a character, a sketch for the motion path, an audio track for the beat, a sentence for the style &mdash; Omni resolves all of them into one result rather than treating them as separate, bolted-together steps. Underneath, it "combines an intuitive understanding of physics with Gemini's knowledge of history, science, and cultural context &mdash; bridging the gap from photorealism to meaningful storytelling."</p>
+    </div>
+    <div class="info-card violet fade-up" style="transition-delay: 0.08s">
+      <h4>The Nano Banana analogy</h4>
+      <p>Google frames Omni as "<strong>Nano Banana, but for video</strong>." Nano Banana is the Gemini-family <em>image</em> generation-and-editing model that made conversational, reference-driven image edits feel native. Omni extends that exact interaction model &mdash; iterative, prompt-driven, consistency-preserving &mdash; into the temporal dimension, where keeping a subject, a style, and a physics model stable <em>across frames and across edits</em> is the genuinely hard part. If you've used Nano Banana for stills, Omni is the same muscle memory for motion.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 WHAT IT DOES -->
+<section id="capabilities">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; What it does</div>
+      <h2 class="section-title">Six capabilities that define the model.</h2>
+      <p class="section-lede">Omni isn't one trick. The demonstrated capability surface spans transformation, simulation, replacement, and synchronisation &mdash; all reachable through the same conversational interface, all preserving the rest of the scene while one thing changes.</p>
+    </div>
+    <div class="stack-grid fade-up" style="transition-delay: 0.05s">
+      <div class="stack-cell">
+        <span class="layer">Transform</span>
+        <h4>Aesthetic restyle</h4>
+        <p>Change the visual style &mdash; line art, stuffed puppet, hologram, voxel, claymation &mdash; while the underlying motion and scene structure stay intact.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Simulate</span>
+        <h4>Physics-aware motion</h4>
+        <p>Gravity, kinetic energy, and fluid dynamics are modelled, not faked &mdash; so ripples, falls, and flows behave the way the eye expects them to.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Replace</span>
+        <h4>Object &amp; character swap</h4>
+        <p>Swap any element by natural language or reference image &mdash; "change the butterfly to a bee" &mdash; without disturbing the rest of the frame.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Direct</span>
+        <h4>Camera &amp; motion transfer</h4>
+        <p>Re-frame the shot ("over the violinist's shoulder") or transfer a movement pattern from one video onto another subject.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Synchronise</span>
+        <h4>Action &amp; text sync</h4>
+        <p>Coordinate on-screen events to a beat &mdash; "lights turn on in sync with the music" &mdash; and align overlaid text with the action.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Originate</span>
+        <h4>Drawing-to-video</h4>
+        <p>Hand it a sketch as a movement guide and it renders realistic footage that follows your drawn path. Storyboard beats in, structured sequence out.</p>
+      </div>
+    </div>
+    <div class="info-card green fade-up" style="transition-delay: 0.08s">
+      <h4>Why "coherent across edits" is the whole game</h4>
+      <p>Single-shot text-to-video is a solved-enough problem. The thing that makes Omni a <em>tool</em> rather than a slot machine is that the seventh edit doesn't throw away the first six. A creator can land a scene, then refine it the way they'd refine a draft &mdash; lighting, then a character swap, then a camera move, then a style pass &mdash; and each step inherits the last. That turns generation from "regenerate and pray" into something closer to a non-destructive editing timeline.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 DEMOS -->
+<section id="demos">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; Omni in action</div>
+      <h2 class="section-title">Demos &mdash; the prompts that drive each edit.</h2>
+      <p class="section-lede">A walk through the kinds of edit Google demonstrates, each one a single conversational instruction. The interface is the prompt: you describe the change, Omni applies it to the existing scene and hands the result back to edit again.</p>
+    </div>
+    <p class="demo-note fade-up">// Illustrative — prompt text and edit types are from Google's Gemini Omni gallery and prompt guide. The tiles below stand in for the rendered clips; watch the live examples on the source page linked in Resources.</p>
+
+    <div class="demo-grid fade-up" style="transition-delay: 0.05s">
+      <div class="demo-card">
+        <div class="demo-frame df-a"><span class="badge">Object swap</span><span class="ix">&#x1F41D;</span></div>
+        <div class="demo-body">
+          <span class="d-kind">Replace &middot; language-driven</span>
+          <div class="demo-prompt">Change the butterfly to a bee</div>
+          <p class="demo-caption">Swap one subject for another by name. The flight path, lighting, and background carry through untouched &mdash; only the creature changes.</p>
+        </div>
+      </div>
+
+      <div class="demo-card">
+        <div class="demo-frame df-b"><span class="badge">Camera</span><span class="ix">&#x1F3BB;</span></div>
+        <div class="demo-body">
+          <span class="d-kind">Direct &middot; re-frame</span>
+          <div class="demo-prompt">Change the camera angle to be over the violinist's shoulder</div>
+          <p class="demo-caption">Re-stage the shot without re-rendering the performer. Omni recomputes the viewpoint while holding the subject and motion stable.</p>
+        </div>
+      </div>
+
+      <div class="demo-card">
+        <div class="demo-frame df-c"><span class="badge">Sync</span><span class="ix">&#x1F3B5;</span></div>
+        <div class="demo-body">
+          <span class="d-kind">Synchronise &middot; to audio</span>
+          <div class="demo-prompt">The lights of the apartments start turning on in sync with the music</div>
+          <p class="demo-caption">Tie an on-screen event to a beat. Action synchronisation lets the visual respond to the audio track frame-for-frame.</p>
+        </div>
+      </div>
+
+      <div class="demo-card">
+        <div class="demo-frame df-e"><span class="badge">Restyle</span><span class="ix">&#x1F9F8;</span></div>
+        <div class="demo-body">
+          <span class="d-kind">Transform &middot; aesthetic</span>
+          <div class="demo-prompt">Change the astronaut to a sea anemone</div>
+          <p class="demo-caption">Metamorphose a subject &mdash; line art, stuffed puppet, hologram, voxel &mdash; while the original motion and timing are preserved.</p>
+        </div>
+      </div>
+
+      <div class="demo-card">
+        <div class="demo-frame df-d"><span class="badge">Drawing-to-video</span><span class="ix">&#x270F;&#xFE0F;</span></div>
+        <div class="demo-body">
+          <span class="d-kind">Originate &middot; sketch guide</span>
+          <div class="demo-prompt">Use this drawing as the movement path; render it as realistic footage</div>
+          <p class="demo-caption">A rough sketch becomes the motion guide for a photoreal clip &mdash; your hand-drawn path drives the camera or subject.</p>
+        </div>
+      </div>
+
+      <div class="demo-card">
+        <div class="demo-frame df-f"><span class="badge">Physics</span><span class="ix">&#x1F4A7;</span></div>
+        <div class="demo-body">
+          <span class="d-kind">Simulate &middot; material + motion</span>
+          <div class="demo-prompt">The mirror surface ripples like water as she steps through it</div>
+          <p class="demo-caption">Fluid dynamics and material transformation in one instruction &mdash; the kind of edit that only holds together when physics is modelled, not painted on.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="fade-up" style="transition-delay: 0.08s">
+      <h3 style="font-size:18px; font-weight:700; margin: 14px 0 6px; letter-spacing:-0.3px;">One scene, four turns &mdash; the conversational loop</h3>
+      <p class="section-lede" style="margin-bottom:22px;">The point of Omni is the chain, not any single prompt. Here's the violinist scene refined the way you'd actually work &mdash; each turn inherits the last.</p>
+    </div>
+    <div class="turn-flow fade-up" style="transition-delay: 0.1s">
+      <div class="turn">
+        <div class="turn-num">1</div>
+        <div class="turn-body">
+          <div class="t-prompt">A violinist plays alone in a sunlit stone hall</div>
+          <div class="t-result">Base scene generated from a text prompt &mdash; subject, setting, lighting established.</div>
+        </div>
+      </div>
+      <div class="turn">
+        <div class="turn-num">2</div>
+        <div class="turn-body">
+          <div class="t-prompt">Change the camera angle to be over the violinist's shoulder</div>
+          <div class="t-result">Re-framed to the new viewpoint. The performer, bowing motion, and hall are preserved exactly &mdash; only the camera moved.</div>
+        </div>
+      </div>
+      <div class="turn">
+        <div class="turn-num">3</div>
+        <div class="turn-body">
+          <div class="t-prompt">Restyle the whole scene as a hand-painted watercolour</div>
+          <div class="t-result">Aesthetic transfer applied on top of the new angle. Motion and composition from turn 2 carry through; only the look changes.</div>
+        </div>
+      </div>
+      <div class="turn">
+        <div class="turn-num">4</div>
+        <div class="turn-body">
+          <div class="t-prompt">As the music swells, light blooms through the windows in time with the melody</div>
+          <div class="t-result">Action synchronised to the audio &mdash; layered on the watercolour, the over-shoulder angle, the original performance. Four edits, one coherent scene.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 HOW TO PROMPT IT -->
+<section id="prompting">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; How to prompt it</div>
+      <h2 class="section-title">Five elements, then iterate.</h2>
+      <p class="section-lede">Google's prompt guide breaks an effective Omni prompt into five components. The headline rule: <strong>the more detail you add, the more control you'll have over the final output</strong> &mdash; but you don't have to be exhaustive, because the model's reasoning and world knowledge fill the gaps.</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead><tr><th>Element</th><th>What to specify</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Shot framing &amp; motion</strong></td><td>How the shot is framed &mdash; wide-angle, medium, or close-up &mdash; and how the camera moves.</td></tr>
+          <tr><td><strong>Style</strong></td><td>The aesthetic register: "realistic, or cinematic? Grounded, or majestic?"</td></tr>
+          <tr><td><strong>Lighting</strong></td><td>Source and quality: "where does the light come from &mdash; the sun, a streetlamp?"</td></tr>
+          <tr><td><strong>Location</strong></td><td>The landscape you imagine &mdash; e.g. "an alien landscape with clear, azure water."</td></tr>
+          <tr><td><strong>Action</strong></td><td>Who the characters and objects are, and how they're moving.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="info-card violet fade-up" style="transition-delay: 0.08s">
+      <h4>Iterate, don't regenerate</h4>
+      <p>The guide is explicit: edit through conversation rather than starting over. The model "will preserve your video across multiple amends &mdash; keeping what works." And lean on its world knowledge for complex actions &mdash; "when you refer to a complex action, Gemini Omni understands your intention, and how this action should be applied across your video." You name the action; Omni works out how it should play out across the frames.</p>
+    </div>
+    <div class="info-card indigo fade-up" style="transition-delay: 0.1s">
+      <h4>Edit categories worth knowing by name</h4>
+      <p><strong>Object / subject swap</strong> ("change the butterfly to a bee") &middot; <strong>camera direction</strong> ("over the violinist's shoulder") &middot; <strong>style transfer</strong> (new aesthetic, original motion preserved) &middot; <strong>action synchronisation</strong> ("lights turn on in sync with the music") &middot; <strong>storyboard-based generation</strong> (share visual narrative beats for a structured sequence). Naming the category you want tends to land the edit more cleanly than describing it from scratch.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 OMNI FLASH + BENCHMARKS -->
+<section id="benchmarks">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; Omni Flash &amp; benchmarks</div>
+      <h2 class="section-title">The deployable variant, and how it scores.</h2>
+      <p class="section-lede">The version Google actually ships is <strong>Gemini Omni Flash</strong> &mdash; positioned for "exceptional results in Video Editing, Text to Video, Image to Video, and Reference to Video." Google's reported human-rater and benchmark results across those four tasks:</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead><tr><th>Task</th><th>Benchmark / method</th><th>Reported result</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Video editing</strong></td><td>Head-to-head, human raters</td><td>Leads on Overall Preference &amp; Instruction Following</td></tr>
+          <tr><td><strong>Text-to-video</strong></td><td>MovieGenBench (Meta &middot; 1,003 prompts)</td><td>Leads on Overall Preference &amp; Instruction Following</td></tr>
+          <tr><td><strong>Image-to-video</strong></td><td>VBench I2V (355 image-text pairs)</td><td>Tied performance</td></tr>
+          <tr><td><strong>Reference-to-video</strong></td><td>Human raters</td><td>Leads on Overall Preference &amp; Speech Adherence</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.08s">
+      <h4>Read these as vendor benchmarks</h4>
+      <p>These are Google's own reported figures &mdash; internal head-to-head ratings plus two public benchmarks (Meta's MovieGenBench, VBench I2V). They're a credible capability signal, not an independent leaderboard. The honest read: Omni Flash is competitive-to-leading across the four video tasks Google chose to report, with the strongest claims on <em>instruction following</em> and <em>preference</em> &mdash; which is exactly what the conversational-editing pitch needs to be true. Treat "tied" on image-to-video as the honest weak spot. The model card (linked in Resources) carries the fuller methodology.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 AVAILABILITY + PROVENANCE -->
+<section id="availability">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; Where to use it &amp; provenance</div>
+      <h2 class="section-title">Consumer surfaces today, provenance built in.</h2>
+      <p class="section-lede">At launch Omni is surfaced through Google's creative and consumer products rather than as a standalone developer endpoint. Every output it produces carries provenance signals.</p>
+    </div>
+    <div class="stack-grid fade-up" style="transition-delay: 0.05s">
+      <div class="stack-cell">
+        <span class="layer">Surface</span>
+        <h4>Gemini app</h4>
+        <p>The main consumer interface at <code>gemini.google.com</code> &mdash; the simplest way to drive Omni conversationally.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Surface</span>
+        <h4>Google Flow</h4>
+        <p>Google's AI creative studio, with Omni integrated for longer-form, multi-shot creative work.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Surface</span>
+        <h4>YouTube Shorts</h4>
+        <p>Omni-powered video creation wired directly into the Shorts creation flow.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Access &middot; the catch</span>
+        <h4>Subscription-gated</h4>
+        <p>"Google AI subscription required. Features vary by tier and geography." Availability is not uniform &mdash; check your tier and region.</p>
+      </div>
+    </div>
+    <div class="info-card green fade-up" style="transition-delay: 0.08s">
+      <h4>Provenance is not optional</h4>
+      <p>Every Omni output ships with two provenance layers: <strong>SynthID</strong> &mdash; Google DeepMind's imperceptible digital watermark embedded in the pixels &mdash; and <strong>C2PA Content Credentials</strong>, the cross-industry metadata standard for authenticity. Google also states the model went through both human and automated <strong>red-teaming</strong>, and that outputs adhere to its AI Principles and Generative AI Prohibited Use Policy. For anyone publishing Omni media, the practical upshot: assume it's detectable as AI-generated by design, and don't strip the credentials if your platform or jurisdiction expects disclosure.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 07 BUILDER'S REALITY / DECISION -->
+<section id="decision">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; Builder's reality</div>
+      <h2 class="section-title">Reach for Omni when. Don't, when.</h2>
+      <p class="section-lede">The single most important thing for a builder to internalise: at launch Omni is a <strong>product capability</strong>, not a confirmed Vertex / AI Studio API SKU. It's reachable through the Gemini app, Flow, and Shorts &mdash; not (yet, publicly) as a programmatic endpoint you can wire into an agent. Plan accordingly.</p>
+    </div>
+    <div class="decision-grid fade-up" style="transition-delay: 0.05s">
+      <div class="decision-card use">
+        <h4>Reach for Omni when</h4>
+        <ul>
+          <li>You're producing video / image creative and want conversational, iterative editing</li>
+          <li>Scene coherence across many edits matters &mdash; it's the model's core strength</li>
+          <li>You're fusing mixed references (image + audio + text + sketch) into one output</li>
+          <li>Physics-realistic motion (fluids, falls, ripples) is part of the brief</li>
+          <li>You're working inside the Gemini app, Google Flow, or YouTube Shorts</li>
+          <li>You need provenance (SynthID + C2PA) on generated media by default</li>
+        </ul>
+      </div>
+      <div class="decision-card skip">
+        <h4>Don't design around Omni when</h4>
+        <ul>
+          <li>You need a programmatic API today &mdash; treat it as a capability signal, verify the model matrix first</li>
+          <li>You're building an autonomous agent that must generate video unattended</li>
+          <li>Your users are outside the supported subscription tiers or geographies</li>
+          <li>You need on-prem / SA-resident generation &mdash; no regional hosting story yet</li>
+          <li>You need understanding, not generation &mdash; use the Gemini reasoning tiers instead</li>
+          <li>Deterministic, repeatable output is a hard requirement &mdash; generative media isn't that</li>
+        </ul>
+      </div>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.08s">
+      <h4>The one-line risk to write into any plan</h4>
+      <p>If a proposal depends on calling Omni from code, flag it as <strong>unconfirmed</strong> until the Gemini model availability matrix lists a programmatic Omni / Omni Flash endpoint. The capability is real and shipping &mdash; through products. The API surface is the open question. Building a client deliverable around a programmatic Omni call today is a planning risk, not a feature.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 08 SA CONTEXT -->
+<section id="sa-context">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 &middot; South African context</div>
+      <h2 class="section-title">Where Omni lands in SA creative &amp; delivery work.</h2>
+    </div>
+    <div class="info-card violet fade-up" style="transition-delay: 0.05s">
+      <h4>Creative studios &middot; the realistic entry point</h4>
+      <p>For SA agencies and content studios, Omni's value is immediate and the access path is simple: a Google AI subscription and the Gemini app or Flow. Short-form social, pitch animatics, explainer sequences, ad concepting &mdash; the conversational edit loop is a genuine production accelerant where the alternative is a full motion-graphics pass. The constraint is the one in the box: <strong>"features vary by tier and geography"</strong> &mdash; confirm the specific Omni features are live for SA accounts before you quote a client a turnaround that depends on them.</p>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.07s">
+      <h4>Enterprise &middot; no residency story yet</h4>
+      <p>Unlike the Gemini reasoning tiers &mdash; which run SA-resident from Vertex AI's <code>africa-south1</code> in Johannesburg &mdash; Omni has <strong>no regional hosting or POPIA-clean inference path</strong> at launch. For regulated SA clients (banks, insurers, government) who need generated media produced under data-residency controls, Omni isn't the answer today. Keep generative-video work for those clients in the "watch this space" column and revisit when (if) a Vertex SKU lands in <code>africa-south1</code>.</p>
+    </div>
+    <div class="info-card green fade-up" style="transition-delay: 0.09s">
+      <h4>Provenance is an asset, not a tax</h4>
+      <p>SynthID + C2PA on every output is a selling point in the SA market, not a limitation. For brand-safety-conscious clients and any public-sector work, "every clip is watermarked and carries content credentials" is exactly the disclosure posture procurement increasingly asks for. Lead with it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 09 CONNECTIONS -->
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">09 &middot; Connections</div>
+      <h2 class="section-title">Where Omni links in the tree.</h2>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="gemini.html" class="connect-node">
+        <span class="tag">agents/gemini</span>
+        <div class="skill">Gemini</div>
+        <div class="why">The parent leaf. The reasoning tiers (3.1 Pro / 3.5 Flash / Flash-Lite) read media; Omni is the generation half of the same family. Start there for the full lineup.</div>
+      </a>
+      <a href="gpt.html" class="connect-node">
+        <span class="tag">agents/gpt</span>
+        <div class="skill">GPT &middot; OpenAI</div>
+        <div class="why">The closed-frontier alternative with its own image/video generation stack. The natural comparison point for native multimodal output.</div>
+      </a>
+      <a href="claude.html" class="connect-node">
+        <span class="tag">agents/claude</span>
+        <div class="skill">Claude</div>
+        <div class="why">The instruction-following leader on the understanding side &mdash; no native media generation, so Omni is complementary, not competitive, in a multi-model stack.</div>
+      </a>
+      <a href="google-adk.html" class="connect-node">
+        <span class="tag">agents/google-adk</span>
+        <div class="skill">Google ADK</div>
+        <div class="why">The first-party agent framework for Gemini. If a programmatic Omni endpoint lands, ADK is where you'd orchestrate generation alongside reasoning.</div>
+      </a>
+      <a href="gemma.html" class="connect-node">
+        <span class="tag">agents/gemma</span>
+        <div class="skill">Gemma</div>
+        <div class="why">The open-weights side of the Google model lineage &mdash; understanding only. The contrast that frames what "native generation" adds.</div>
+      </a>
+      <a href="../tech/google/" class="connect-node">
+        <span class="tag">tech/google</span>
+        <div class="skill">Google Cloud</div>
+        <div class="why">Where a future Vertex AI Omni SKU &mdash; and any <code>africa-south1</code> residency story &mdash; would live. The hosting question is a GCP question.</div>
+      </a>
+      <a href="../design/" class="connect-node">
+        <span class="tag">design</span>
+        <div class="skill">Design domain</div>
+        <div class="why">Omni is a production tool for motion, video, and creative output &mdash; the design domain is its natural home for craft-side guidance.</div>
+      </a>
+      <a href="./" class="connect-node">
+        <span class="tag">agents</span>
+        <div class="skill">Agents hub</div>
+        <div class="why">The sub-tree landing. Omni sits in the Models band as the generation companion to the Gemini reasoning leaf.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 10 RESOURCES -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">10 &middot; Resources</div>
+      <h2 class="section-title">Primary sources only.</h2>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://deepmind.google/models/gemini-omni/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Model</span>
+        <span class="r-title">Gemini Omni &middot; model page</span>
+        <span class="r-url">deepmind.google/models/gemini-omni</span>
+      </a>
+      <a href="https://deepmind.google/models/gemini-omni/prompt-guide/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Guide</span>
+        <span class="r-title">Gemini Omni prompt guide</span>
+        <span class="r-url">deepmind.google/models/gemini-omni/prompt-guide</span>
+      </a>
+      <a href="https://gemini.google.com" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Surface</span>
+        <span class="r-title">Gemini app</span>
+        <span class="r-url">gemini.google.com</span>
+      </a>
+      <a href="https://deepmind.google/models/gemini/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Family</span>
+        <span class="r-title">Gemini model family</span>
+        <span class="r-url">deepmind.google/models/gemini</span>
+      </a>
+      <a href="https://ai.google.dev/gemini-api/docs/models" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Matrix</span>
+        <span class="r-title">Gemini model availability &amp; capabilities</span>
+        <span class="r-url">ai.google.dev/gemini-api/docs/models</span>
+      </a>
+      <a href="https://deepmind.google/science/synthid/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Provenance</span>
+        <span class="r-title">SynthID &middot; content watermarking</span>
+        <span class="r-url">deepmind.google/science/synthid</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../index.html">Skills tree</a>
+      <a href="./">Agents hub</a>
+      <a href="gemini.html">Gemini</a>
+      <a href="https://deepmind.google/models/gemini-omni/" target="_blank" rel="noopener">Gemini Omni &nearr;</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in Johannesburg, South Africa</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme(){const html=document.documentElement;const current=html.getAttribute('data-theme');const next=current==='dark'?'light':'dark';html.setAttribute('data-theme',next);document.querySelector('.theme-toggle').textContent=next==='dark'?'☀️':'🌙';localStorage.setItem('theme',next);}
+  const saved=localStorage.getItem('theme');if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.theme-toggle').textContent=saved==='dark'?'☀️':'🌙';}
+  const observer=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting)entry.target.classList.add('visible');});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>
