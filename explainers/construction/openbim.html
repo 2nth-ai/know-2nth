@@ -281,7 +281,7 @@
 <span class="h">import</span> ifcopenshell
 <span class="h">import</span> ifcopenshell.util.element <span class="h">as</span> util
 
-model = ifcopenshell.<span class="k">open</span>(<span class="s">"silvercroft.ifc"</span>)
+model = ifcopenshell.<span class="k">open</span>(<span class="s">"project.ifc"</span>)
 
 <span class="h">for</span> wall <span class="h">in</span> model.by_type(<span class="s">"IfcWall"</span>):
     psets = util.get_psets(wall)
@@ -385,8 +385,8 @@ model = ifcopenshell.<span class="k">open</span>(<span class="s">"silvercroft.if
     </div>
 
     <div class="info-card clay fade-up" style="transition-delay: 0.08s">
-      <h4>The Gridline Properties / openBUILD AI lens</h4>
-      <p>The flagship SA case for openBIM-as-AI-substrate is the work with <a href="https://gridlineprop.co.za" target="_blank" rel="noopener" style="color:var(--sky)">Gridline Properties</a> and Grant Kneale &mdash; a developer building openBUILD AI as the open smart-building platform. AI takeoff from IFC, 4D programme tied to the model, material tracking, quality capture linked to IFC GUIDs, safety intelligence from site photos, automated SA compliance checking. <strong>Silvercroft</strong> is the pilot. The full pitch is at <a href="https://dev.2nth.ai/preview/gridlineprop/construction-ai.html" target="_blank" rel="noopener" style="color:var(--sky)">dev.2nth.ai/preview/gridlineprop/construction-ai</a>.</p>
+      <h4>openBIM as the AI substrate</h4>
+      <p>The flagship SA pattern for openBIM-as-AI-substrate is a developer building an open smart-building platform directly on it: AI takeoff from IFC, a 4D programme tied to the model, material tracking, quality capture linked to IFC GUIDs, safety intelligence from site photos, and automated SA compliance checking &mdash; all reading one open IFC model instead of a proprietary silo.</p>
     </div>
   </div>
 </section>
@@ -416,9 +416,9 @@ model = ifcopenshell.<span class="k">open</span>(<span class="s">"silvercroft.if
         <div class="why">NHBRC, OHSA CR 2014, SANS 10400, JBCC and NEC4 BIM provisions, DPSA / NDPW handover requirements &mdash; queried from IFC property sets.</div>
       </div>
       <div class="connect-node soon">
-        <span class="tag">construction/silvercroft</span>
-        <div class="skill">Silvercroft case study</div>
-        <div class="why">Gridline Properties' pilot site for openBUILD AI. From IFC takeoff to material tracking to handover.</div>
+        <span class="tag">construction/pilot</span>
+        <div class="skill">IFC-driven pilot</div>
+        <div class="why">A live SA developer pilot — from IFC takeoff through material tracking to handover, all on one open model.</div>
       </div>
       <a href="../data/engineering/liteparse.html" class="connect-node">
         <span class="tag">data/engineering/liteparse</span>
@@ -472,16 +472,6 @@ model = ifcopenshell.<span class="k">open</span>(<span class="s">"silvercroft.if
         <span class="r-kind">Coordination</span>
         <span class="r-title">BCF API spec</span>
         <span class="r-url">github.com/buildingSMART/BCF-API</span>
-      </a>
-      <a href="https://dev.2nth.ai/preview/gridlineprop/construction-ai.html" class="resource" target="_blank" rel="noopener">
-        <span class="r-kind">Pitch</span>
-        <span class="r-title">openBUILD AI &middot; Gridline Properties &times; 2nth.ai</span>
-        <span class="r-url">dev.2nth.ai/preview/gridlineprop/construction-ai</span>
-      </a>
-      <a href="https://gridlineprop.co.za" class="resource" target="_blank" rel="noopener">
-        <span class="r-kind">Partner</span>
-        <span class="r-title">Gridline Properties</span>
-        <span class="r-url">gridlineprop.co.za</span>
       </a>
     </div>
   </div>
