@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HR Onboarding (South Africa) — know.2nth.ai</title>
+<meta name="description" content="Onboarding — the stage from signed offer to a productive day-one and through the first 90 days, and the handoff from the ATS (recruiting) into the HRMS employee record. The offer-accepted seam, the SA statutory starting line (BCEA section 29 written particulars, the National Minimum Wage floor, UIF/COIDA/SDL registrations, PAYE), POPIA on the onboarding data burst, and an honest guide to what to automate and what to keep human.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/biz/hr/onboarding">
+<meta property="og:title" content="HR Onboarding (South Africa) — know.2nth.ai">
+<meta property="og:description" content="From signed offer to a productive first 90 days — and the ATS-to-HRMS handoff. The SA statutory starting line (BCEA s29, NMWA, UIF/COIDA/SDL, PAYE), POPIA on the onboarding data burst, and what to automate vs keep human.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai — The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="HR Onboarding (South Africa) — know.2nth.ai">
+<meta name="twitter:description" content="From signed offer to a productive first 90 days — the ATS-to-HRMS handoff, the SA statutory starting line (BCEA s29, NMWA, UIF/COIDA/SDL, PAYE), POPIA, and what to automate vs keep human.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%23F59E0B' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%23FBBF24' stroke-width='1.3'/%3E%3Cline x1='16' y1='3' x2='16' y2='7' stroke='%23FBBF24' stroke-width='1.2'/%3E%3Cline x1='16' y1='25' x2='16' y2='29' stroke='%23FBBF24' stroke-width='1.2'/%3E%3Cline x1='3' y1='16' x2='7' y2='16' stroke='%23FBBF24' stroke-width='1.2'/%3E%3Cline x1='25' y1='16' x2='29' y2='16' stroke='%23FBBF24' stroke-width='1.2'/%3E%3C/svg%3E">
+<style>
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12); --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-soft: rgba(99, 102, 241, 0.12); --violet: #8B5CF6; --violet-soft: rgba(139, 92, 246, 0.12); --bg: var(--ink); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(245, 158, 11, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(245, 158, 11, 0.32); --max-w: 1200px; --read-w: 760px; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(245, 158, 11, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(245, 158, 11, 0.28); }
+  * { margin: 0; padding: 0; box-sizing: border-box; } html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.warm { width: 600px; height: 600px; background: var(--warm); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--warm), var(--warm-glow)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--warm-glow); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--warm-glow); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--warm-glow); } .crumb-sep { opacity: 0.5; } .crumb-current { color: var(--text-secondary); }
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--warm-glow); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--warm-glow); box-shadow: 0 0 12px var(--warm-glow); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--warm), var(--warm-glow), #FDE047); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.accent { background: var(--warm-soft); color: var(--warm-glow); border-color: rgba(245, 158, 11, 0.25); }
+  .pill.green { background: var(--green-soft); color: var(--green); border-color: rgba(16, 185, 129, 0.25); }
+  .pill.violet { background: var(--violet-soft); color: var(--violet); border-color: rgba(139, 92, 246, 0.25); }
+  .pill.rose { background: var(--rose-soft); color: var(--rose); border-color: rgba(244, 63, 94, 0.25); }
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--warm-glow); margin-bottom: 14px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--warm-glow); }
+  .prose ul, .prose ol { padding-left: 24px; margin-bottom: 18px; max-width: var(--read-w); }
+  .prose li { font-size: 15px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 8px; }
+  .prose li strong { color: var(--text-primary); font-weight: 600; }
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); margin-bottom: 20px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.violet { border-left: 3px solid var(--violet); }
+  .info-card.rose { border-left: 3px solid var(--rose); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: var(--read-w); margin-bottom: 20px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--warm-glow); background: rgba(245, 158, 11, 0.05); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); } .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--warm-glow); }
+  .compare td strong { color: var(--text-primary); }
+  .stack-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; max-width: var(--read-w); margin-bottom: 20px; }
+  .stack-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--warm); border-radius: var(--radius-md); padding: 18px 22px; }
+  .stack-cell .layer { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .stack-cell h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.3px; }
+  .stack-cell p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+  .decision-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: var(--read-w); }
+  @media (max-width: 720px) { .decision-grid { grid-template-columns: 1fr; } }
+  .decision-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 24px; }
+  .decision-card.use { border-left: 3px solid var(--green); } .decision-card.skip { border-left: 3px solid var(--rose); }
+  .decision-card h4 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 12px; }
+  .decision-card.use h4 { color: var(--green); } .decision-card.skip h4 { color: var(--rose); }
+  .decision-card ul { list-style: none; padding: 0; }
+  .decision-card li { font-size: 13px; color: var(--text-secondary); line-height: 1.6; padding: 6px 0; border-bottom: 1px solid var(--border); }
+  .decision-card li:last-child { border-bottom: none; }
+  .connect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .connect-node { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; transition: all 0.3s; text-decoration: none; color: inherit; display: block; }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node .tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--warm-glow); word-break: break-all; }
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--warm), var(--warm-glow)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--warm-glow); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+
+<div class="glow-orb warm"></div>
+<div class="glow-orb sky"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../../index.html" class="nav-brand"><span class="nav-brand-mark">know.2nth.ai</span><span class="nav-brand-sub">biz/hr/onboarding</span></a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">← HR</a>
+      <a href="../../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">🌙</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">›</span>
+    <a href="../">biz</a>
+    <span class="crumb-sep">›</span>
+    <a href="./">HR</a>
+    <span class="crumb-sep">›</span>
+    <span class="crumb-current">Onboarding</span>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> biz · HR · Skill Leaf</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      From signed offer <span class="gradient">to an employee on the record.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      Onboarding is the bridge between two systems and two states: a <strong>hired candidate</strong> in the recruiting tool, and an <strong>employee on the record</strong> in the HRMS. It runs from the moment an offer is accepted, through a productive day-one, and across the first 90 days. The key seam is the <strong>offer-accepted handoff</strong> — where the ATS lets go and the employee record begins. In South Africa it's also where the statutory clock starts: written particulars, registrations, and a tax record all become due the day someone walks in.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill accent">ATS → HRMS handoff</span>
+      <span class="pill">Pre-boarding → 90 days</span>
+      <span class="pill">BCEA s29 · NMWA</span>
+      <span class="pill violet">POPIA</span>
+      <span class="pill rose">Not legal advice</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 WHAT IT IS -->
+<section id="what">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 · What it is</div>
+      <h2 class="section-title">The bridge from "hired" to "on the record".</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Recruiting ends with a decision: <strong>this person, this role, at this offer</strong>. Onboarding begins the moment they say yes. Its job is to turn an accepted offer into a real employee — provisioned, paid, paperwork done, and ramping toward useful work — without dropping anything in the gap between the two systems that hold the data.</p>
+      <p>That gap is the load-bearing detail. The candidate's record lives in an <strong>ATS</strong> (the applicant-tracking system used to recruit them). The employee's record lives in the <strong>HRMS</strong>. The <strong>offer-accepted handoff</strong> is the seam where one hands to the other — and it's where things go wrong: data re-keyed by hand, a contract that never matched the offer, a start date nobody told IT about. Get the seam right and the rest of onboarding is a checklist. Get it wrong and you spend the first 90 days firefighting.</p>
+      <p>This leaf treats onboarding as that handoff plus the sequence that follows — and, because this is South Africa, the statutory starting line that fires the day someone begins. It sits between <a href="recruitment.html" style="color:var(--warm-glow); text-decoration:none;">recruitment</a> (the prior stage) and <a href="performance.html" style="color:var(--warm-glow); text-decoration:none;">performance</a> (the next), over the <a href="compliance.html" style="color:var(--warm-glow); text-decoration:none;">compliance</a> backbone.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 THE SEQUENCE -->
+<section id="sequence">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 · The onboarding sequence</div>
+      <h2 class="section-title">Pre-boarding, day-one, the first 90 days.</h2>
+      <p class="section-lede">Onboarding is a sequence, not an event. Each phase has a job; each one is where a different thing gets dropped if nobody owns it. The phases below are the spine — provisioning, paperwork, policy sign-off, and role ramp threaded through all three.</p>
+    </div>
+    <div class="stack-grid fade-up" style="transition-delay: 0.05s">
+      <div class="stack-cell">
+        <span class="layer">Offer accepted → start</span>
+        <h4>Pre-boarding</h4>
+        <p>The handoff lands. Create the employee record, kick off provisioning (laptop, accounts, access), collect the documents the contract and payroll need, and send a welcome pack so day-one isn't a cold start.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Day-one</span>
+        <h4>Arrival</h4>
+        <p>Written particulars and the signed contract in hand, accounts working, a desk and a person to find. Policy sign-off begins. The statutory record must exist by now — not "soon".</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">First 90 days</span>
+        <h4>Ramp</h4>
+        <p>Role ramp: context, goals, the people and systems the job touches. Probation review cadence. The handoff to <a href="performance.html" style="color:var(--warm); text-decoration:none;">performance</a> happens here — onboarding ends when the person is simply an employee.</p>
+      </div>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.08s">
+      <table class="compare">
+        <thead><tr><th>Thread</th><th>What it covers</th><th>Owned by</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Provisioning</strong></td><td>Hardware, accounts, system and building access — scoped to the role</td><td>IT + manager</td></tr>
+          <tr><td><strong>Paperwork</strong></td><td>Contract, written particulars, banking, tax and statutory-registration data</td><td>HR + payroll</td></tr>
+          <tr><td><strong>Policy sign-off</strong></td><td>Acknowledgement of policies — code of conduct, IT/acceptable use, POPIA notice</td><td>HR</td></tr>
+          <tr><td><strong>Role ramp</strong></td><td>Context, first goals, introductions, probation review cadence</td><td>Manager</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 03 STATUTORY STARTING LINE -->
+<section id="statutory">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 · The statutory starting line (South Africa)</div>
+      <h2 class="section-title">What the law requires the moment someone starts.</h2>
+      <p class="section-lede">In South Africa, onboarding isn't just culture and kit — it's the point where a stack of statutory duties becomes live. These fire on day-one, not at month-end. Miss them and you're non-compliant before the new hire has finished their first coffee.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <ul>
+        <li><strong>Written particulars of employment.</strong> Section 29 of the <strong>BCEA (Basic Conditions of Employment Act 75 of 1997)</strong> requires the employer to supply the employee with written particulars of employment when they start work. This is an employer duty, not a courtesy — and it's distinct from, though usually carried by, the employment contract itself.</li>
+        <li><strong>The employment contract.</strong> The binding agreement on role, remuneration, hours and notice. It must sit at or above the BCEA minimum floor (ordinary hours capped at 45 per week, annual leave of 21 consecutive days per cycle, notice of one week up to six months' service, two weeks from six to twelve months, four weeks beyond a year).</li>
+        <li><strong>The minimum-wage floor.</strong> Pay must meet the <strong>National Minimum Wage</strong> under the NMWA (Act 9 of 2018) — <strong>R30.23 per ordinary hour from 1 March 2026</strong>. This is a floor, not a target; the contract can sit above it but never below.</li>
+        <li><strong>UIF registration.</strong> Register the employee for the Unemployment Insurance Fund (Acts 63 of 2001 and 4 of 2002). Contributions are <strong>1% employee + 1% employer (2% total)</strong>, on remuneration up to the earnings ceiling.</li>
+        <li><strong>COIDA cover.</strong> The Compensation for Occupational Injuries and Diseases Act 130 of 1993 requires employer registration for workplace-injury cover — so an injury-on-duty is covered from the start.</li>
+        <li><strong>SDL, where it applies.</strong> The Skills Development Levy (SDLA Act 9 of 1999) — 1% of payroll — is payable where the annual payroll bill <strong>exceeds R500,000</strong>.</li>
+        <li><strong>Onto PAYE.</strong> Get the employee onto Pay-As-You-Earn under the Fourth Schedule to the Income Tax Act 58 of 1962, so their tax is deducted and declared to SARS (monthly, via the EMP201).</li>
+      </ul>
+    </div>
+    <div class="info-card rose fade-up" style="transition-delay: 0.08s">
+      <h4>Not legal advice — validate with a specialist</h4>
+      <p>The Acts, figures and thresholds above are orientation, current as at mid-2026, and application is fact-specific. <strong>Validate every contract, written-particulars pack, registration and payroll set-up with a qualified SA labour-law practitioner or registered payroll specialist before you rely on it.</strong> The deeper statutory map lives on the <a href="compliance.html" style="color:var(--rose); text-decoration:none;">compliance</a> leaf — onboarding is where it first bites.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 POPIA -->
+<section id="popia">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 · Data &amp; POPIA</div>
+      <h2 class="section-title">Onboarding is a burst of personal information.</h2>
+      <p class="section-lede">No stage collects more personal data faster than onboarding. In one sitting you take an ID number, banking details, a tax number, next-of-kin, and sometimes health or biometric information. POPIA governs all of it — and the Information Regulator enforces.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Apply <strong>POPIA</strong> (Protection of Personal Information Act 4 of 2013) from the first form. The two conditions that bite hardest here are <strong>minimality</strong> — collect only what the purpose actually needs, not everything the form template happens to ask — and <strong>purpose limitation</strong> — onboarding data is gathered to employ and pay the person, not to be silently repurposed later.</p>
+      <p>The lawful basis for most onboarding data is the <strong>employment contract</strong> itself — the processing is necessary to perform it — <em>not</em> a blanket consent tick-box. Reaching for consent where the contract already grounds the processing is a common mistake; consent can be withdrawn, the contractual basis is sturdier. Secure what you collect under <strong>section 19</strong> (appropriate technical and organisational safeguards) and keep it in-country on an SA-resident store.</p>
+      <p>Health data and biometrics (a fingerprint clock-in) are <strong>special personal information</strong> with extra protection — don't collect them as a default, and justify each one against a specific purpose.</p>
+    </div>
+    <div class="info-card violet fade-up" style="transition-delay: 0.08s">
+      <h4>The minimality test for the onboarding form</h4>
+      <p>Before a field goes on the new-hire form, ask: which statutory or contractual purpose needs it? UIF and PAYE need an ID and tax number; payroll needs banking; emergency contact is a safety purpose. A field that fails the test shouldn't be there. Same discipline the <a href="../../tech/frappe/hr.html" style="color:var(--violet); text-decoration:none;">Frappe HR</a> leaf sets for the employee record — minimality, then security, then in-country.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 TOOLING & THE AGENT -->
+<section id="tooling">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 · Tooling &amp; the agent</div>
+      <h2 class="section-title">Where the record is born — and what the agent does.</h2>
+      <p class="section-lede">Onboarding is where the employee record comes into existence and where the recruiting tool finally lets go. The agent threads through the busywork — but stays well clear of anything binding.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>The HRMS <strong>employee record is created here</strong>. In this tree that's <a href="../../tech/frappe/hr.html" style="color:var(--warm-glow); text-decoration:none;">Frappe HR</a>'s Employee DocType — the canonical store of who someone is, what they're paid, and the statutory data the registrations need. The recruiting side hands over: <a href="huly.html" style="color:var(--warm-glow); text-decoration:none;">Huly</a> carries the hired candidate to the seam, and onboarding picks them up. The whole game at the handoff is to move the data once, cleanly, rather than re-key it by hand.</p>
+      <p>The <strong>agent assists</strong> with the repeatable scaffolding: generating onboarding checklists from the role, assembling document packs and welcome material, building provisioning task lists, and firing reminders before deadlines slip. What it <strong>does not</strong> touch: the <strong>contract terms</strong> and the <strong>right-to-work verification</strong>. Those are human decisions with legal weight — the agent drafts around them and chases the admin, but a person owns what's binding.</p>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.08s">
+      <h4>Move the data once</h4>
+      <p>The offer-accepted handoff is the one place to get integration right. Map the candidate fields the ATS holds to the Employee record the HRMS needs, and carry them across in one operation rather than typing them twice. Re-keying is where errors enter the statutory record — the wrong ID on a UIF registration, a banking typo on the first payslip. Treat the handoff as a build item, scoped tightly, with the agent assisting and a human confirming.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 DECISION -->
+<section id="decision">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 · Decision guide</div>
+      <h2 class="section-title">What to automate. What to keep human.</h2>
+    </div>
+    <div class="decision-grid fade-up" style="transition-delay: 0.05s">
+      <div class="decision-card use">
+        <h4>Safe to automate</h4>
+        <ul>
+          <li>Generating onboarding checklists from the role</li>
+          <li>Assembling welcome packs &amp; document bundles</li>
+          <li>Building provisioning task lists for IT and the manager</li>
+          <li>Deadline reminders so day-one items don't slip</li>
+          <li>Policy-acknowledgement tracking &amp; chasing sign-offs</li>
+          <li>Mapping ATS fields to the new Employee record (human-confirmed)</li>
+        </ul>
+      </div>
+      <div class="decision-card skip">
+        <h4>Keep human (+ advisor)</h4>
+        <ul>
+          <li>The contract terms — role, remuneration, notice, conditions</li>
+          <li>Identity &amp; right-to-work verification</li>
+          <li>Anything binding the employer to a legal obligation</li>
+          <li>The written-particulars content, validated against the BCEA</li>
+          <li>Deciding what special personal information to collect at all</li>
+          <li>Final statutory registrations &amp; the first payroll sign-off</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 07 CONNECTIONS -->
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 · Connections</div>
+      <h2 class="section-title">Where onboarding links in the tree.</h2>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="./" class="connect-node">
+        <span class="tag">biz/hr</span>
+        <div class="skill">HR &amp; People hub</div>
+        <div class="why">The value-chain landing. Onboarding is the stage between hiring someone and managing them — the bridge across the middle.</div>
+      </a>
+      <a href="recruitment.html" class="connect-node">
+        <span class="tag">biz/hr/recruitment</span>
+        <div class="skill">Recruitment</div>
+        <div class="why">The prior stage. It ends at an accepted offer; onboarding begins there, picking up the candidate at the handoff seam.</div>
+      </a>
+      <a href="../../tech/frappe/hr.html" class="connect-node">
+        <span class="tag">tech/frappe/hr</span>
+        <div class="skill">Frappe HR</div>
+        <div class="why">Where the Employee record is created. Onboarding is the moment a hired candidate becomes a row in the HRMS.</div>
+      </a>
+      <a href="performance.html" class="connect-node">
+        <span class="tag">biz/hr/performance</span>
+        <div class="skill">Performance</div>
+        <div class="why">The next stage. Onboarding hands over at the end of the first 90 days, where probation closes and ongoing performance begins.</div>
+      </a>
+      <a href="compliance.html" class="connect-node">
+        <span class="tag">biz/hr/compliance</span>
+        <div class="skill">Compliance</div>
+        <div class="why">The statutory backbone. BCEA s29, NMWA, UIF/COIDA/SDL and PAYE all become live the day someone starts — mapped in full here.</div>
+      </a>
+      <a href="huly.html" class="connect-node">
+        <span class="tag">biz/hr/huly</span>
+        <div class="skill">Huly</div>
+        <div class="why">The recruiting side of the seam — it carries the hired candidate to the handoff that onboarding picks up.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 08 RESOURCES -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 · Resources</div>
+      <h2 class="section-title">Primary sources only.</h2>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://www.labour.gov.za" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Regulator</span>
+        <span class="r-title">Dept. of Employment &amp; Labour — BCEA</span>
+        <span class="r-url">labour.gov.za</span>
+      </a>
+      <a href="https://www.sars.gov.za" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Tax</span>
+        <span class="r-title">SARS — employer / PAYE registration</span>
+        <span class="r-url">sars.gov.za</span>
+      </a>
+      <a href="https://inforegulator.org.za" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Privacy</span>
+        <span class="r-title">Information Regulator (POPIA)</span>
+        <span class="r-url">inforegulator.org.za</span>
+      </a>
+      <a href="./" class="resource">
+        <span class="r-kind">Hub</span>
+        <span class="r-title">HR &amp; People hub</span>
+        <span class="r-url">biz/hr</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../../index.html">Skills tree</a>
+      <a href="./">HR hub</a>
+      <a href="../../tech/frappe/hr.html">Frappe HR</a>
+    </div>
+    <p class="footer-copy">© 2026 2nth.ai · Built in Johannesburg, South Africa · Orientation only, not legal advice</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme(){const html=document.documentElement;const current=html.getAttribute('data-theme');const next=current==='dark'?'light':'dark';html.setAttribute('data-theme',next);document.querySelector('.theme-toggle').textContent=next==='dark'?'☀️':'🌙';localStorage.setItem('theme',next);}
+  const saved=localStorage.getItem('theme');if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.theme-toggle').textContent=saved==='dark'?'☀️':'🌙';}
+  const observer=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting)entry.target.classList.add('visible');});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>
