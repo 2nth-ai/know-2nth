@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Huly — know.2nth.ai</title>
+<meta name="description" content="Huly (hcengineering/platform) — an open-source all-in-one work platform and a Linear/Jira/Slack/Notion alternative, whose ATS covers recruiting and HRM covers the team, alongside project management, CRM, and chat. EPL-2.0, TypeScript + Svelte, self-hostable via huly-selfhost. Filed under biz/hr for its HR modules; honestly a horizontal platform. POPIA-aware when self-hosted in South Africa; not a payroll system.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/biz/hr/huly">
+<meta property="og:title" content="Huly — know.2nth.ai">
+<meta property="og:description" content="Huly — open-source all-in-one work platform (Linear/Jira/Slack/Notion alternative) with ATS + HRM for recruiting and the team. EPL-2.0, TypeScript + Svelte, self-hostable. POPIA-aware in SA; not a payroll system.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai — The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Huly — know.2nth.ai">
+<meta name="twitter:description" content="Huly — open-source all-in-one work platform with ATS + HRM. EPL-2.0, TypeScript + Svelte, self-hostable. POPIA-aware in SA; not a payroll system.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%23F59E0B' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%23FBBF24' stroke-width='1.3'/%3E%3Cline x1='16' y1='3' x2='16' y2='7' stroke='%23FBBF24' stroke-width='1.2'/%3E%3Cline x1='16' y1='25' x2='16' y2='29' stroke='%23FBBF24' stroke-width='1.2'/%3E%3Cline x1='3' y1='16' x2='7' y2='16' stroke='%23FBBF24' stroke-width='1.2'/%3E%3Cline x1='25' y1='16' x2='29' y2='16' stroke='%23FBBF24' stroke-width='1.2'/%3E%3C/svg%3E">
+<style>
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12); --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-soft: rgba(99, 102, 241, 0.12); --violet: #8B5CF6; --violet-soft: rgba(139, 92, 246, 0.12); --bg: var(--ink); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(245, 158, 11, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(245, 158, 11, 0.32); --max-w: 1200px; --read-w: 760px; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(245, 158, 11, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(245, 158, 11, 0.28); }
+  * { margin: 0; padding: 0; box-sizing: border-box; } html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.warm { width: 600px; height: 600px; background: var(--warm); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--warm), var(--warm-glow)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--warm-glow); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--warm-glow); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--warm-glow); } .crumb-sep { opacity: 0.5; } .crumb-current { color: var(--text-secondary); }
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--warm-glow); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--warm-glow); box-shadow: 0 0 12px var(--warm-glow); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--warm), var(--warm-glow), #FDE047); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.accent { background: var(--warm-soft); color: var(--warm-glow); border-color: rgba(245, 158, 11, 0.25); }
+  .pill.green { background: var(--green-soft); color: var(--green); border-color: rgba(16, 185, 129, 0.25); }
+  .pill.violet { background: var(--violet-soft); color: var(--violet); border-color: rgba(139, 92, 246, 0.25); }
+  .pill.warn { background: var(--warm-soft); color: var(--warm-glow); border-color: rgba(245, 158, 11, 0.25); }
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--warm-glow); margin-bottom: 14px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--warm-glow); }
+  .prose ul, .prose ol { padding-left: 24px; margin-bottom: 18px; max-width: var(--read-w); }
+  .prose li { font-size: 15px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 8px; }
+  .prose li strong { color: var(--text-primary); font-weight: 600; }
+  pre.code { background: var(--ink-deep); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px 22px; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.65; color: var(--mist); margin: 0 0 20px; max-width: var(--read-w); }
+  [data-theme="light"] pre.code { background: #0F172A; color: #E2E8F0; }
+  pre.code .k { color: var(--warm-glow); } pre.code .s { color: #A5F3B8; } pre.code .c { color: var(--text-muted); font-style: italic; }
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); margin-bottom: 20px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.violet { border-left: 3px solid var(--violet); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: var(--read-w); margin-bottom: 20px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--warm-glow); background: rgba(245, 158, 11, 0.05); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); } .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--warm-glow); }
+  .compare td strong { color: var(--text-primary); }
+  .stack-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; max-width: var(--read-w); margin-bottom: 20px; }
+  .stack-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--warm); border-radius: var(--radius-md); padding: 18px 22px; }
+  .stack-cell.hr { border-left-color: var(--violet); }
+  .stack-cell .layer { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .stack-cell h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.3px; }
+  .stack-cell p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+  .decision-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: var(--read-w); }
+  @media (max-width: 720px) { .decision-grid { grid-template-columns: 1fr; } }
+  .decision-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 24px; }
+  .decision-card.use { border-left: 3px solid var(--green); } .decision-card.skip { border-left: 3px solid var(--rose); }
+  .decision-card h4 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 12px; }
+  .decision-card.use h4 { color: var(--green); } .decision-card.skip h4 { color: var(--rose); }
+  .decision-card ul { list-style: none; padding: 0; }
+  .decision-card li { font-size: 13px; color: var(--text-secondary); line-height: 1.6; padding: 6px 0; border-bottom: 1px solid var(--border); }
+  .decision-card li:last-child { border-bottom: none; }
+  .connect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .connect-node { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; transition: all 0.3s; text-decoration: none; color: inherit; display: block; }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node .tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--warm-glow); word-break: break-all; }
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--warm), var(--warm-glow)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--warm-glow); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } pre.code { font-size: 11px; padding: 14px 16px; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+
+<div class="glow-orb warm"></div>
+<div class="glow-orb sky"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../../index.html" class="nav-brand"><span class="nav-brand-mark">know.2nth.ai</span><span class="nav-brand-sub">biz/hr/huly</span></a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">← HR</a>
+      <a href="../../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">🌙</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">›</span>
+    <a href="../">biz</a>
+    <span class="crumb-sep">›</span>
+    <a href="./">HR</a>
+    <span class="crumb-sep">›</span>
+    <span class="crumb-current">Huly</span>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> biz · HR · Skill Leaf</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      One open-source platform. <span class="gradient">Recruiting included.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      <strong>Huly</strong> (<code>hcengineering/platform</code>) is an open-source all-in-one work platform — a single self-hostable alternative to Linear, Jira, Slack, Notion, and Motion. It bundles project management, CRM, and chat with two modules that put it in the HR value chain: an <strong>ATS</strong> (applicant tracking) for recruiting and an <strong>HRM</strong> module for the team. EPL-2.0, TypeScript + Svelte, deployable in minutes with <code>huly-selfhost</code>. It's filed here for those HR modules — but be honest with yourself: Huly is a <em>horizontal</em> platform first, not an HR-first product.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill accent">Open-source · EPL-2.0</span>
+      <span class="pill violet">ATS + HRM</span>
+      <span class="pill green">Self-hostable</span>
+      <span class="pill">TypeScript + Svelte</span>
+      <span class="pill warn">Horizontal platform</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 WHAT IT IS -->
+<section id="what">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 · What it is</div>
+      <h2 class="section-title">An all-in-one platform that happens to include HR.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Huly describes itself as "a robust framework designed to accelerate the development of business applications" — and ships a polished suite of those applications on top. The pitch is consolidation: instead of Jira for tickets, Slack for chat, Notion for docs, and a separate ATS for hiring, you run <strong>one platform</strong>, self-hosted, with one identity model and one data store. The headline framing is a <strong>Linear / Jira / Slack / Notion / Motion alternative</strong>.</p>
+      <p>It's built by <strong>Huly / hcengineering</strong> as the open-source <code>hcengineering/platform</code> repo, licensed <strong>EPL-2.0</strong> (Eclipse Public License). The codebase is predominantly <strong>TypeScript (~61%)</strong> and <strong>Svelte (~34%)</strong>, with JavaScript, SCSS, Rust, and Go for supporting services. Development and deployment expect <strong>Node.js 20.11+</strong>, Docker, and Docker Compose. A hosted SaaS exists at <code>huly.io</code>, but the 2nth angle is the self-hostable open-source build — the version you can keep on SA infrastructure.</p>
+      <p>The reason it earns a place in <code>biz/hr</code> is narrow and specific: of its built-in applications, two are HR. The <strong>ATS</strong> handles the recruiting front of the value chain — candidates, applications, pipelines. The <strong>HRM</strong> module handles the team side — people records and management. Everything else Huly does (project management, CRM, chat, virtual office) is adjacent, not HR. We surface it here because, for a small team that wants an open-source surface for <em>both</em> their delivery work and their hiring, Huly answers both with one deployment.</p>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.08s">
+      <h4>Honest framing — this is not an HRMS</h4>
+      <p>Huly's ATS + HRM are <em>team-and-hiring</em> tools, not a payroll-and-statutory HRMS. There is no payroll engine, no leave-accrual ledger, no tax-slab machinery. If you need to actually <em>run</em> South African payroll — PAYE, UIF, SDL, payslips — that's <a href="../../tech/frappe/hr.html" style="color:var(--warm-glow); text-decoration:none;">Frappe HR's</a> job, not Huly's. Think of Huly as the <strong>front of the chain</strong> (attract, track, hire, manage the team) and Frappe HR as the <strong>system-of-record spine</strong> behind it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 THE MODULES -->
+<section id="modules">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 · The modules</div>
+      <h2 class="section-title">Six applications, two of them HR.</h2>
+      <p class="section-lede">Huly's value is the bundle. Each module replaces a category-leading SaaS tool; together they share one workspace, one search, one notification stream. The two highlighted below are the reason this leaf lives under <code>biz/hr</code>.</p>
+    </div>
+    <div class="stack-grid fade-up" style="transition-delay: 0.05s">
+      <div class="stack-cell hr">
+        <span class="layer">HR · recruiting</span>
+        <h4>ATS</h4>
+        <p>Applicant tracking — candidates, applications, vacancies, pipeline stages. The recruiting front of the HR value chain, in the same workspace as the work.</p>
+      </div>
+      <div class="stack-cell hr">
+        <span class="layer">HR · team</span>
+        <h4>HRM</h4>
+        <p>Human-resource management — team members, departments, the people side of the org. Lightweight people management, not payroll.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Delivery</span>
+        <h4>Project Management</h4>
+        <p>Issues, sprints, roadmaps — the Linear/Jira replacement. The core of Huly and its strongest module.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Revenue</span>
+        <h4>CRM</h4>
+        <p>Leads, contacts, deals — a built-in customer graph. Where a candidate who's also a customer can be reasoned about in one place.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Comms</span>
+        <h4>Chat</h4>
+        <p>Team messaging — the Slack replacement, threaded against projects, issues, and documents rather than a separate silo.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Knowledge / time</span>
+        <h4>Docs · Virtual Office</h4>
+        <p>Documents (the Notion side) plus virtual-office / team-planning surfaces (the Motion side) — the connective tissue of the suite.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 THE HR LENS -->
+<section id="hr-lens">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 · The HR lens</div>
+      <h2 class="section-title">How the ATS feeds the value chain.</h2>
+      <p class="section-lede">Read through the HR value chain, Huly covers the first stage cleanly and the second lightly. The hand-off — from a hired candidate in the ATS to an employee record in a real HRMS — is the integration seam to design for.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <ul>
+        <li><strong>Stage 1 — Talent in (strong fit).</strong> The ATS tracks vacancies, candidates, and applications through pipeline stages. For a team already running its delivery work in Huly, hiring lives in the same tool — no separate Greenhouse/Lever subscription, no context-switch, and the data stays on your infrastructure.</li>
+        <li><strong>Stage 2 — Lifecycle (partial fit).</strong> The HRM module holds team members and structure, but it is not a payroll or leave engine. Onboarding can start here (the hired candidate becomes a team member), but the authoritative employee record — salary, leave balance, statutory deductions — belongs in an HRMS like Frappe HR.</li>
+        <li><strong>Stage 3 — Development (out of scope).</strong> Coaching, performance craft, and growth are people work, not Huly's domain. That half of the chain lives in <code>people/</code>.</li>
+      </ul>
+      <p>The clean architecture: <strong>Huly for attract-track-hire-collaborate, Frappe HR for the payroll-bearing employee record</strong>, wired at the offer-accepted boundary. The candidate's identity flows from the ATS into the HRMS; payroll and statutory reporting never touch Huly.</p>
+    </div>
+    <div class="info-card violet fade-up" style="transition-delay: 0.08s">
+      <h4>Where the CRM module earns its keep in HR</h4>
+      <p>Because Huly bundles a CRM next to the ATS, it's unusually good at the case the CHRO agent (Grace) cares about: <strong>when a candidate is also a customer</strong>. Same workspace, same contact graph — you can see that the person you're interviewing is also an account you sell to, without stitching two systems together. That overlap is exactly the <code>biz/hr</code> ↔ <code>biz/crm</code> cross-cut the tree calls out.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 VS -->
+<section id="vs">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 · vs Frappe HR &amp; the incumbents</div>
+      <h2 class="section-title">Where Huly fits — and where it doesn't.</h2>
+      <p class="section-lede">Huly is not competing with Frappe HR; they cover different ends of the chain. It <em>is</em> competing with the proprietary PM/collab incumbents — and there it has no HRM/ATS rival, because those tools don't ship hiring at all.</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead><tr><th>System</th><th>Strongest for</th><th>HR coverage</th><th>Watch out for</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Huly</strong></td><td>One OSS surface for PM + chat + docs + CRM + hiring; small teams consolidating tools</td><td>ATS (strong) + HRM (light); no payroll</td><td>Horizontal, not HR-first; younger project; self-host ops on you</td></tr>
+          <tr><td><strong>Frappe HR</strong></td><td>The HRMS spine — payroll, leave, the employee system-of-record; pairs with ERPNext</td><td>Full HRMS incl. payroll; recruitment module too</td><td>No first-party SA statutory pack; needs Frappe skills</td></tr>
+          <tr><td><strong>Linear / Jira</strong></td><td>Project management at scale; mature ecosystems</td><td>None — no ATS, no HRM</td><td>Proprietary; per-seat pricing; no hiring story</td></tr>
+          <tr><td><strong>Notion / Slack</strong></td><td>Docs + knowledge; team chat</td><td>None natively (templates only)</td><td>Proprietary; data leaves your infrastructure</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="info-card green fade-up" style="transition-delay: 0.08s">
+      <h4>The one-sentence positioning</h4>
+      <p>If you'd otherwise pay for Linear <em>and</em> Slack <em>and</em> Notion <em>and</em> an ATS, Huly collapses all four into one self-hostable platform — and the hiring module comes free with the consolidation. If you need to <em>run payroll</em>, that's a separate system, every time.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 SELF-HOST + LICENSING -->
+<section id="self-host">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 · Self-hosting &amp; licensing</div>
+      <h2 class="section-title">Docker up in minutes; EPL-2.0 underneath.</h2>
+      <p class="section-lede">Huly is built to self-host. For deployments without modification intent, the project ships <code>huly-selfhost</code> — "a convenient method to host Huly using Docker, designed for ease of use and quick setup."</p>
+    </div>
+    <pre class="code fade-up" style="transition-delay: 0.05s"><span class="c"># Self-host via the official compose setup</span>
+git clone https://github.com/hcengineering/huly-selfhost
+<span class="k">cd</span> huly-selfhost
+<span class="c"># configure HOST_ADDRESS, then bring it up</span>
+docker compose up -d
+<span class="c"># → Huly workspace on your own infrastructure</span></pre>
+    <div class="info-card amber fade-up" style="transition-delay: 0.08s">
+      <h4>EPL-2.0 vs Frappe HR's GPL-3.0 — the licence difference matters</h4>
+      <p>Huly is <strong>EPL-2.0</strong> (Eclipse Public License); Frappe HR is <strong>GPL-3.0</strong>. Both are OSI-approved open source, but the copyleft reach differs. <strong>GPL-3.0</strong> is strong copyleft: distribute a modified version and you must release your source under GPL. <strong>EPL-2.0</strong> is weak/file-level copyleft: you must share changes to EPL-licensed files, but you can combine them with proprietary modules more freely, and there's an explicit patent grant. For most SA studios self-hosting internally (not <em>distributing</em> a modified binary), neither obligation bites day-to-day — but if you plan to ship a modified fork to clients, the EPL's lighter touch is the easier of the two to live with.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 AGENT-READINESS -->
+<section id="agent">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 · Agent-readiness</div>
+      <h2 class="section-title">Does it give an agent something to drive?</h2>
+      <p class="section-lede">The 2nth selection filter for any system: can an agent read and write its data model? Huly's answer is a qualified yes — there's a real API, but the first-party agent surface is less settled than Frappe's REST-per-DocType story.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Huly is API-driven internally — the Svelte front end talks to platform services, and those services are reachable programmatically. What it does <strong>not</strong> ship today is a first-party <strong>MCP server</strong> presenting the ATS/HRM/CRM as agent tools. Treat MCP support as <em>unconfirmed</em> — verify against the repo before designing an agent around it; the project moves quickly and this may change.</p>
+      <p>The honest builder's read, same discipline as the Frappe HR leaf: <strong>treat Huly's API as the integration surface and gate any agent access narrowly</strong>. The ATS holds candidate personal information; the HRM holds employee data. Both are POPIA-relevant. An agent that drafts job descriptions, screens applications, or summarises a pipeline is high-value and low-risk; an agent with blanket write access to people records is neither. Scope it, audit it, keep mutations human-approved.</p>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.08s">
+      <h4>Capability signal, not a turnkey agent endpoint</h4>
+      <p>As with several fast-moving open-source platforms in the tree, read Huly's agent story as a <strong>capability signal</strong>: the data is addressable, the platform is self-hostable, and the modules an agent would want to drive (ATS, CRM) exist. What's not yet a settled, documented, first-party contract is the MCP/tool surface. Don't write a client deliverable that assumes a programmatic Huly agent endpoint without checking the repo first.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 07 DECISION -->
+<section id="decision">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 · Decision guide</div>
+      <h2 class="section-title">Use Huly when. Skip it when.</h2>
+    </div>
+    <div class="decision-grid fade-up" style="transition-delay: 0.05s">
+      <div class="decision-card use">
+        <h4>Use Huly when</h4>
+        <ul>
+          <li>You want one open-source surface for PM + chat + docs + CRM + hiring</li>
+          <li>You're a small/mid team consolidating away from 4+ SaaS subscriptions</li>
+          <li>Self-hosting on SA infrastructure for POPIA / data-residency matters</li>
+          <li>Your hiring needs are tracking-and-pipeline, not deep compliance workflow</li>
+          <li>You value the candidate-is-also-a-customer overlap (ATS next to CRM)</li>
+          <li>EPL-2.0's lighter copyleft suits how you'll modify and distribute</li>
+        </ul>
+      </div>
+      <div class="decision-card skip">
+        <h4>Skip Huly when</h4>
+        <ul>
+          <li>You need to run payroll — that's an HRMS (Frappe HR), not Huly</li>
+          <li>You need SA statutory HR — EMP201/EMP501/IRP5, EE/B-BBEE reporting</li>
+          <li>You want a mature, vendor-supported ATS (Greenhouse/Lever-class depth)</li>
+          <li>You need a documented first-party agent/MCP contract today</li>
+          <li>You have no appetite to run and patch a self-hosted platform</li>
+          <li>Your team is already standardised on Linear/Jira and won't migrate</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 08 SA CONTEXT -->
+<section id="sa-context">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 · South African context</div>
+      <h2 class="section-title">Where Huly lands in SA delivery work.</h2>
+    </div>
+    <div class="info-card green fade-up" style="transition-delay: 0.05s">
+      <h4>Self-host in-country for POPIA residency</h4>
+      <p>Because Huly is self-hostable, an SA team can keep candidate and employee data <strong>in-country</strong> — on a VM in <code>africa-south1</code> / <code>af-south-1</code>, or on-prem — rather than in a foreign SaaS region. For POPIA-conscious clients, "the hiring and people data never leaves South Africa" is a real, demonstrable posture, not a contractual promise about someone else's cloud. The ATS and HRM both hold personal information; document the lawful basis and keep access scoped.</p>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.07s">
+      <h4>It is not your payroll-compliance answer</h4>
+      <p>Huly has no SA statutory layer — no PAYE/UIF/SDL, no EMP201/EMP501/IRP5, no payslips. That's not a gap in Huly; it's out of scope by design. For SA payroll you pair it with Frappe HR (build the statutory layer yourself) or a commercial SA payroll product (SimplePay, PaySpace, Sage) that ships SARS compliance turnkey. Huly's job stops at the offer.</p>
+    </div>
+    <div class="info-card violet fade-up" style="transition-delay: 0.09s">
+      <h4>The SA-startup sweet spot</h4>
+      <p>For an early-stage SA software studio, Huly is a genuinely attractive default: one self-hosted platform for the delivery work <em>and</em> the hiring, no per-seat SaaS bill stacking up across Linear + Slack + Notion + an ATS, and data that stays on your infrastructure. Bring in a dedicated HRMS only when payroll and statutory reporting become real — which is exactly the point at which Frappe HR (or a commercial SA payroll tool) enters the stack.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 09 CONNECTIONS -->
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">09 · Connections</div>
+      <h2 class="section-title">Where Huly links in the tree.</h2>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="./" class="connect-node">
+        <span class="tag">biz/hr</span>
+        <div class="skill">HR &amp; People hub</div>
+        <div class="why">The value-chain landing. Huly covers the recruiting front (ATS) and the team (HRM); the hub places it next to the HRMS spine and the people-development half.</div>
+      </a>
+      <a href="../../tech/frappe/hr.html" class="connect-node">
+        <span class="tag">tech/frappe/hr</span>
+        <div class="skill">Frappe HR</div>
+        <div class="why">The HRMS spine Huly is not. Pair them at the offer-accepted boundary: Huly attracts and tracks, Frappe HR runs the payroll-bearing employee record.</div>
+      </a>
+      <a href="../crm/" class="connect-node">
+        <span class="tag">biz/crm</span>
+        <div class="skill">CRM</div>
+        <div class="why">Huly bundles a CRM next to its ATS — the candidate-is-also-a-customer overlap the CHRO cross-cut depends on.</div>
+      </a>
+      <a href="../bpm/process-orchestration.html" class="connect-node">
+        <span class="tag">biz/bpm</span>
+        <div class="skill">Process orchestration</div>
+        <div class="why">The hiring pipeline is a workflow. When approvals and SLAs get serious, the orchestration layer is where that logic graduates to.</div>
+      </a>
+      <a href="../../agents/" class="connect-node">
+        <span class="tag">agents</span>
+        <div class="skill">Agents hub</div>
+        <div class="why">Where the agent that drives the ATS — JD drafting, screening, pipeline summaries — would be built. Scope it narrowly; this is POPIA data.</div>
+      </a>
+      <a href="../../people/" class="connect-node">
+        <span class="tag">people</span>
+        <div class="skill">People domain</div>
+        <div class="why">Stage 3 of the chain — coaching, leadership, growth. The human-development half that no platform replaces.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 10 RESOURCES -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">10 · Resources</div>
+      <h2 class="section-title">Primary sources only.</h2>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://github.com/hcengineering/platform" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Repo</span>
+        <span class="r-title">hcengineering/platform · the source</span>
+        <span class="r-url">github.com/hcengineering/platform</span>
+      </a>
+      <a href="https://huly.io" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Site</span>
+        <span class="r-title">Huly · product &amp; hosted SaaS</span>
+        <span class="r-url">huly.io</span>
+      </a>
+      <a href="https://github.com/hcengineering/huly-selfhost" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Self-host</span>
+        <span class="r-title">huly-selfhost · Docker deployment</span>
+        <span class="r-url">github.com/hcengineering/huly-selfhost</span>
+      </a>
+      <a href="https://www.eclipse.org/legal/epl-2.0/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Licence</span>
+        <span class="r-title">Eclipse Public License 2.0</span>
+        <span class="r-url">eclipse.org/legal/epl-2.0</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../../index.html">Skills tree</a>
+      <a href="./">HR hub</a>
+      <a href="https://github.com/hcengineering/platform" target="_blank" rel="noopener">Huly ↗</a>
+    </div>
+    <p class="footer-copy">© 2026 2nth.ai · Built in Johannesburg, South Africa</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme(){const html=document.documentElement;const current=html.getAttribute('data-theme');const next=current==='dark'?'light':'dark';html.setAttribute('data-theme',next);document.querySelector('.theme-toggle').textContent=next==='dark'?'☀️':'🌙';localStorage.setItem('theme',next);}
+  const saved=localStorage.getItem('theme');if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.theme-toggle').textContent=saved==='dark'?'☀️':'🌙';}
+  const observer=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting)entry.target.classList.add('visible');});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>

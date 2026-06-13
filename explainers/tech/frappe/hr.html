@@ -367,8 +367,10 @@
     <div class="hero-meta fade-up" style="transition-delay: 0.15s">
       <span class="pill accent">Live</span>
       <span class="pill">Frappe Framework app</span>
-      <span class="pill">AGPL v3</span>
-      <span class="pill">Spun out 2023</span>
+      <span class="pill">GPL-3.0</span>
+      <span class="pill">Split from ERPNext · v14</span>
+      <span class="pill">v16.8.0 · Jun 2026</span>
+      <span class="pill">SA · POPIA-relevant</span>
     </div>
   </div>
 </section>
@@ -469,11 +471,44 @@ POST /api/method/hrms.hr.doctype.attendance.attendance.mark_attendance
   </div>
 </section>
 
-<!-- 04 GOTCHAS -->
+<!-- 04 AGENT-READINESS -->
+<section id="agent">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 · Agent-readiness &amp; MCP surface</div>
+      <h2 class="section-title">Does it give an agent something to drive?</h2>
+      <p class="section-lede">The primary 2nth selection filter. Frappe HR scores a <strong>conditional yes</strong> — the REST API is a genuine, first-party, agent-addressable surface; the MCP story is community-only and needs care, because this is a payroll-bearing, POPIA-relevant data store.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p><strong>REST API — the stable, first-party surface.</strong> Every doctype (Employee, Leave Application, Salary Slip, Attendance) is exposed via the Frappe REST API with an API key/secret — no bespoke endpoints, no custom integration layer. This is the contract to build an agent against: it's versioned with the framework, documented, and the same surface every other Frappe app uses. Prefer it.</p>
+      <p><strong>MCP — community only, no first-party server.</strong> Neither <code>frappe/hrms</code> nor <code>frappe/frappe</code> ships an official MCP server. Several community servers wrap the Frappe/ERPNext REST API (and therefore cover HR doctypes), at varying maturity:</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.08s">
+      <table class="compare">
+        <thead>
+          <tr><th>Community MCP server</th><th>Shape</th><th>Caution</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>buildswithpaul/Frappe_Assistant_Core</code></td><td>Frappe app; OAuth 2.0 + PKCE, per-user permission scoping, audit log</td><td>Most production-shaped; verify licence + maintenance</td></tr>
+          <tr><td><code>mascor/frappe-mcp-server</code></td><td>Frappe app; DocType/operation allowlist, field-level control, audit logging</td><td>Security-conscious; small project — verify maintenance</td></tr>
+          <tr><td><code>rakeshgangwar/erpnext-mcp-server</code></td><td>TypeScript; <code>erpnext://{doctype}/{name}</code> resource URIs</td><td>Generic ERPNext wrapper</td></tr>
+          <tr><td><code>Casys-AI/mcp-erpnext</code></td><td>npm package; ~120 tools across 14 categories</td><td>Broad surface — evaluate against least-privilege</td></tr>
+          <tr><td><code>vyogotech/frappe-mcp-server</code></td><td>Go; generic any-DocType, any OpenAI-compatible LLM</td><td>Generic</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.1s">
+      <h4>The rule for a payroll-bearing store</h4>
+      <p>Treat the REST API as the stable agent contract. Use a community MCP server <strong>only</strong> with explicit DocType allowlisting, per-user permission scoping, and audit logging — the <code>Frappe_Assistant_Core</code> and <code>mascor</code> designs are the right shape. <strong>Never grant an agent blanket DocType access to a system that holds salaries, banking details, and performance records.</strong> This is POPIA-relevant personal information; the agent surface must be scoped, audited, and lawful-basis-documented. Evaluate any community server's licence and maintenance before factory adoption.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 GOTCHAS -->
 <section id="gotchas">
   <div class="container">
     <div class="fade-up">
-      <div class="section-label">04 · Gotchas</div>
+      <div class="section-label">05 · Gotchas</div>
       <h2 class="section-title">Things that bite in production.</h2>
     </div>
     <div class="gotcha-list fade-up" style="transition-delay: 0.05s">
@@ -501,11 +536,30 @@ POST /api/method/hrms.hr.doctype.attendance.attendance.mark_attendance
   </div>
 </section>
 
-<!-- 05 DECISION -->
+<!-- 06 SA CONTEXT -->
+<section id="sa-context">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 · South African context</div>
+      <h2 class="section-title">Usable for SA payroll — but you build the statutory layer.</h2>
+      <p class="section-lede">The honest verdict: Frappe HR is usable for South African payroll, but there is <strong>no first-party SA statutory pack</strong>. The framework gives you the mechanisms; the SARS-specific outputs are build work, not configuration.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p><strong>What the framework gives you natively:</strong> configurable <strong>income-tax slabs</strong> via the Payroll Period doctype — the mechanism for SARS PAYE, which is progressive/slab-based. Salary components can model <strong>UIF</strong> (1% employee + 1% employer), <strong>SDL</strong> (1% where annual payroll exceeds R500,000), and other statutory deductions. ZAR is supported as a base currency.</p>
+      <p><strong>What it does not ship</strong> (treat as a gap, not a feature): SARS statutory reports — <strong>EMP201</strong> (monthly), <strong>EMP501</strong> (annual reconciliation), <strong>IRP5 / IT3(a)</strong> tax certificates — and the SARS e@syFile / eFiling export formats. There is no maintained SA localisation app equivalent to the India localisation. These are achievable via salary components, custom reports, and the REST API / hooks — but budget a <strong>SA payroll specialist</strong> to validate PAYE/UIF/SDL math and produce EMP201/EMP501/IRP5 outputs before any production payroll run.</p>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.08s">
+      <h4>POPIA · employee personal information</h4>
+      <p>Frappe HR holds IDs, salary, banking, and performance data — squarely POPIA-relevant. Self-hosting on an SA region (<code>africa-south1</code> / <code>southafricanorth</code> / <code>af-south-1</code>) keeps data in-country. The Cloud Run + Cloud SQL + Memorystore pattern defined for the Frappe/ERPNext deployment applies unchanged — HR is just another installed app on the same bench. Any agent or MCP access path must be scoped, audited, and lawful-basis-documented. The full SA statutory layer is tracked as a discrete build item in the <a href="../../biz/hr/" style="color:var(--sky); text-decoration:none;">biz/hr</a> value chain, not a config toggle here.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 07 DECISION -->
 <section id="decision">
   <div class="container">
     <div class="fade-up">
-      <div class="section-label">05 · Decision guide</div>
+      <div class="section-label">07 · Decision guide</div>
       <h2 class="section-title">Use it for, skip it for.</h2>
     </div>
     <div class="decision-grid fade-up" style="transition-delay: 0.05s">
@@ -524,6 +578,7 @@ POST /api/method/hrms.hr.doctype.attendance.attendance.mark_attendance
         <ul>
           <li>You need a polished, consumer-grade employee self-service experience out of the box — the desk UI is functional, not beautiful.</li>
           <li>Your payroll is complex (multi-country, multi-currency, statutory compliance across jurisdictions) and you can't invest in custom salary components.</li>
+          <li>You need turnkey SARS-compliant SA payroll today with zero build — a commercial product (SimplePay, PaySpace, Sage) ships EMP201/EMP501/IRP5 out of the box; Frappe HR does not.</li>
           <li>You need advanced recruitment (ATS with pipeline analytics, candidate scoring, job board integrations) — the recruitment module is basic.</li>
           <li>The team has no one who can administer a Frappe site. This is not a zero-admin SaaS.</li>
           <li>You need it standalone with proper accounting — without ERPNext, payroll doesn't post to the general ledger.</li>
@@ -533,14 +588,24 @@ POST /api/method/hrms.hr.doctype.attendance.attendance.mark_attendance
   </div>
 </section>
 
-<!-- 06 CONNECTIONS -->
+<!-- 08 CONNECTIONS -->
 <section id="connect">
   <div class="container">
     <div class="fade-up">
-      <div class="section-label">06 · Connections</div>
+      <div class="section-label">08 · Connections</div>
       <h2 class="section-title">Where this leaf links.</h2>
     </div>
     <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="../../biz/hr/" class="connect-node">
+        <span class="tag">biz/hr</span>
+        <div class="skill">HR &amp; People value chain</div>
+        <div class="why">The business-side home. Frappe HR is the HRMS spine of the value chain — this is where it sits next to recruiting, onboarding, performance, and the SA compliance layer.</div>
+      </a>
+      <a href="../../biz/hr/huly.html" class="connect-node">
+        <span class="tag">biz/hr/huly</span>
+        <div class="skill">Huly · ATS + HRM</div>
+        <div class="why">The recruiting front Frappe HR is light on. Pair them at the offer-accepted boundary: Huly attracts and tracks, Frappe HR runs the payroll-bearing employee record.</div>
+      </a>
       <a href="framework.html" class="connect-node">
         <span class="tag">tech/frappe/framework</span>
         <div class="skill">Frappe Framework</div>
@@ -565,11 +630,11 @@ POST /api/method/hrms.hr.doctype.attendance.attendance.mark_attendance
   </div>
 </section>
 
-<!-- 07 RESOURCES -->
+<!-- 09 RESOURCES -->
 <section id="resources">
   <div class="container">
     <div class="fade-up">
-      <div class="section-label">07 · Resources</div>
+      <div class="section-label">09 · Resources</div>
       <h2 class="section-title">Go deeper.</h2>
     </div>
     <div class="resource-grid fade-up" style="transition-delay: 0.05s">
