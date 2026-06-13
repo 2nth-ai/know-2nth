@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HR &amp; People — know.2nth.ai</title>
+<meta name="description" content="The HR & people value chain in the 2nth skill tree — talent in (recruiting/ATS), through the employee lifecycle (HRMS: payroll, leave, performance), to people development. Open-source, agent-addressable, POPIA-aware, self-hostable in South Africa. Frappe HR and Huly are the two Live leaves.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/biz/hr/">
+<meta property="og:title" content="HR &amp; People — know.2nth.ai">
+<meta property="og:description" content="The HR & people value chain — talent in (ATS), employee lifecycle (HRMS), people development. Open-source, agent-addressable, POPIA-aware, self-hostable in SA. Frappe HR + Huly, Live.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai — The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="HR &amp; People — know.2nth.ai">
+<meta name="twitter:description" content="The HR & people value chain — talent in (ATS), employee lifecycle (HRMS), people development. Open-source, POPIA-aware, self-hostable in SA. Frappe HR + Huly, Live.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3Cline x1='16' y1='3' x2='16' y2='7' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='16' y1='25' x2='16' y2='29' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='3' y1='16' x2='7' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='25' y1='16' x2='29' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33;
+    --blue: #2563EB; --blue-glow: #3B82F6;
+    --sky: #38BDF8; --sky-muted: #7DD3FC;
+    --paper: #F8FAFC; --slate: #94A3B8;
+    --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12);
+    --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12);
+    --violet: #8B5CF6; --violet-soft: rgba(139, 92, 246, 0.12);
+    --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12);
+    --bg: var(--ink); --bg-raised: var(--navy);
+    --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(245, 158, 11, 0.06);
+    --text-primary: var(--paper); --text-secondary: var(--slate);
+    --text-muted: #64748B;
+    --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(245, 158, 11, 0.3);
+    --max-w: 1200px;
+    --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px;
+  }
+  [data-theme="light"] {
+    --bg: #F1F5F9; --bg-raised: #FFFFFF;
+    --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(245, 158, 11, 0.04);
+    --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8;
+    --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(245, 158, 11, 0.25);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+    background: var(--bg); color: var(--text-primary);
+    line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased;
+  }
+  body::before {
+    content: ''; position: fixed; inset: 0; opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 9999;
+  }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.warm { width: 600px; height: 600px; background: var(--warm); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+
+  nav {
+    position: sticky; top: 0; z-index: 100; padding: 0 24px;
+    backdrop-filter: blur(20px) saturate(1.4);
+    background: rgba(11, 17, 32, 0.75);
+    border-bottom: 1px solid var(--border);
+  }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner {
+    max-width: var(--max-w); margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 60px;
+  }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark {
+    font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px;
+    background: linear-gradient(135deg, var(--blue), var(--sky));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+  }
+  .nav-brand-sub {
+    font-size: 12px; color: var(--text-muted);
+    letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500;
+    padding-left: 10px; border-left: 1px solid var(--border);
+  }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--warm-glow); }
+  .theme-toggle {
+    background: none; border: 1px solid var(--border); color: var(--text-secondary);
+    width: 36px; height: 36px; border-radius: 50%; cursor: pointer;
+    display: grid; place-items: center; font-size: 16px; transition: all 0.2s;
+  }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--warm-glow); }
+
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+
+  .crumb {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted);
+    letter-spacing: 0.5px; padding: 28px 0 0;
+    display: flex; gap: 10px; flex-wrap: wrap;
+  }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--warm-glow); }
+  .crumb-sep { opacity: 0.5; }
+  .crumb-current { color: var(--text-secondary); }
+
+  .hub-hero { padding: 48px 0 64px; }
+  .hub-hero .eyebrow {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500;
+    letter-spacing: 2px; text-transform: uppercase; color: var(--warm-glow);
+    margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px;
+  }
+  .hub-hero .eyebrow .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--warm-glow); box-shadow: 0 0 12px var(--warm-glow);
+  }
+  .hub-hero h1 {
+    font-size: clamp(44px, 7vw, 72px); font-weight: 800;
+    line-height: 1.04; letter-spacing: -2px; margin-bottom: 24px; max-width: 16ch;
+  }
+  .hub-hero h1 .gradient {
+    background: linear-gradient(135deg, var(--warm), var(--warm-glow), #FDE047);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hub-hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 720px; line-height: 1.7; font-weight: 300; margin-bottom: 32px; }
+  .hub-stats { display: flex; gap: 32px; flex-wrap: wrap; }
+  .hub-stat { padding-right: 32px; border-right: 1px solid var(--border); }
+  .hub-stat:last-child { border-right: none; padding-right: 0; }
+  .hub-stat .num {
+    font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 700;
+    background: linear-gradient(135deg, var(--warm), var(--warm-glow));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    line-height: 1; margin-bottom: 6px;
+  }
+  .hub-stat .label { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+
+  section.hub-section { padding: 40px 0 64px; position: relative; }
+  .hub-label {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500;
+    letter-spacing: 2px; text-transform: uppercase; color: var(--warm-glow);
+    margin-bottom: 14px;
+  }
+  .hub-title {
+    font-size: clamp(26px, 3.4vw, 36px); font-weight: 700;
+    letter-spacing: -0.8px; margin-bottom: 14px; line-height: 1.2;
+  }
+  .hub-lede {
+    font-size: 16px; color: var(--text-secondary); max-width: 720px;
+    line-height: 1.7; font-weight: 300; margin-bottom: 36px;
+  }
+  .hub-lede code, .stage-flow code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; color: var(--warm-glow); }
+
+  .leaf-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 16px;
+  }
+  .leaf-card {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-lg);
+    padding: 32px; transition: all 0.3s;
+    text-decoration: none; color: inherit; display: block;
+    position: relative; overflow: hidden;
+  }
+  .leaf-card::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, transparent 60%, var(--card-accent, transparent));
+    opacity: 0.06; transition: opacity 0.3s; pointer-events: none;
+  }
+  .leaf-card:hover::after { opacity: 0.12; }
+  .leaf-card:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-3px);
+    box-shadow: 0 14px 42px rgba(0, 0, 0, 0.08);
+  }
+  .leaf-card.soon { cursor: default; opacity: 0.75; }
+  .leaf-card.soon:hover { transform: none; border-color: var(--border); box-shadow: none; }
+  .leaf-card[data-ish="frappe"] { --card-accent: var(--warm); }
+  .leaf-card[data-ish="huly"] { --card-accent: var(--violet); }
+  .leaf-head {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 16px; margin-bottom: 14px;
+  }
+  .leaf-emoji {
+    width: 52px; height: 52px; border-radius: var(--radius-md);
+    display: grid; place-items: center; font-size: 26px;
+    background: var(--warm-soft); color: var(--warm);
+    flex-shrink: 0;
+  }
+  .leaf-card[data-ish="huly"] .leaf-emoji { background: var(--violet-soft); color: var(--violet); }
+  .leaf-state {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    letter-spacing: 1.2px; text-transform: uppercase;
+    padding: 4px 12px; border-radius: var(--radius-pill);
+    background: var(--green-soft); color: var(--green);
+    font-weight: 600; align-self: flex-start;
+  }
+  .leaf-state.stub {
+    background: rgba(148, 163, 184, 0.1); color: var(--text-muted);
+  }
+  .leaf-card h3 {
+    font-size: 22px; font-weight: 700; letter-spacing: -0.4px;
+    margin-bottom: 4px;
+  }
+  .leaf-card .path {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    color: var(--text-muted); margin-bottom: 14px; display: block;
+  }
+  .leaf-card p {
+    font-size: 14px; color: var(--text-secondary);
+    line-height: 1.65; margin-bottom: 18px;
+  }
+  .leaf-meta {
+    display: flex; gap: 6px; flex-wrap: wrap;
+  }
+  .leaf-meta .m {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    padding: 4px 10px; border-radius: var(--radius-pill);
+    border: 1px solid var(--border); color: var(--text-muted);
+  }
+
+  .stage-flow {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+  }
+  .stage {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-left: 3px solid var(--warm);
+    border-radius: var(--radius-md); padding: 20px 22px;
+  }
+  .stage .s-num { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 8px; }
+  .stage h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.3px; }
+  .stage p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+  .compare-wrap {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td {
+    padding: 14px 18px; text-align: left;
+    border-bottom: 1px solid var(--border); vertical-align: top;
+  }
+  .compare thead th {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600;
+    letter-spacing: 1.2px; text-transform: uppercase; color: var(--warm-glow);
+    background: rgba(245, 158, 11, 0.04);
+  }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare tbody tr:hover { background: var(--bg-card-hover); }
+  .compare td.name { font-weight: 600; color: var(--text-primary); white-space: nowrap; }
+  .compare td { color: var(--text-secondary); }
+  .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--warm-glow); }
+
+  .agent-card {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-left: 3px solid var(--rose);
+    border-radius: var(--radius-lg); padding: 26px 30px; max-width: 760px;
+  }
+  .agent-card .role { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--rose); margin-bottom: 10px; }
+  .agent-card h4 { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+  .agent-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; }
+  .agent-card code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--warm-glow); }
+
+  .cross-links { display: flex; gap: 10px; flex-wrap: wrap; }
+  .cross-link {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    padding: 10px 20px; border-radius: var(--radius-pill);
+    border: 1px solid var(--border); background: var(--bg-card);
+    text-decoration: none; color: var(--text-secondary);
+    transition: all 0.3s; letter-spacing: 0.5px;
+  }
+  .cross-link:hover { border-color: var(--border-hover); color: var(--warm-glow); transform: translateY(-1px); }
+  .cross-link.soon { opacity: 0.5; cursor: default; border-style: dashed; }
+
+  footer {
+    padding: 60px 0 40px; border-top: 1px solid var(--border);
+    text-align: center; margin-top: 60px;
+  }
+  .footer-brand {
+    font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600;
+    background: linear-gradient(135deg, var(--blue), var(--sky));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+  }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--warm-glow); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+
+  .fade-up {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 768px) {
+    .nav-brand-sub { display: none; }
+    .nav-link { display: none; }
+    .compare { font-size: 12px; }
+    .compare th, .compare td { padding: 10px 12px; }
+  }
+
+  *, *::before, *::after {
+    transition-property: background-color, border-color, color, box-shadow;
+    transition-duration: 0.3s; transition-timing-function: ease;
+  }
+</style>
+</head>
+<body>
+
+<div class="glow-orb warm"></div>
+<div class="glow-orb sky"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../../index.html" class="nav-brand">
+      <span class="nav-brand-mark">know.2nth.ai</span>
+      <span class="nav-brand-sub">Business · HR</span>
+    </a>
+    <div class="nav-right">
+      <a href="../" class="nav-link">← Business</a>
+      <a href="../../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">🌙</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">›</span>
+    <a href="../../../index.html#domains">Business</a>
+    <span class="crumb-sep">›</span>
+    <a href="../">biz</a>
+    <span class="crumb-sep">›</span>
+    <span class="crumb-current">HR</span>
+  </div>
+</div>
+
+<!-- ── HERO ── -->
+<section class="hub-hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> biz/hr · Sub-domain hub</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      Talent in.<br><span class="gradient">People grown.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      The HR &amp; people value chain runs from <strong>talent in</strong> — sourcing, applicant tracking, hiring — through the <strong>employee lifecycle</strong> — onboarding, payroll, leave, performance — to <strong>people development</strong> — coaching, leadership, growth. The 2nth posture: prefer systems that are <strong>open-source</strong>, <strong>agent-addressable</strong>, <strong>POPIA-aware</strong>, and <strong>self-hostable in South Africa</strong>. Two platforms anchor the chain today — Frappe HR for the HRMS spine, Huly for an open-source ATS + HRM — with the people-development half living next door in <code>people/</code>.
+    </p>
+    <div class="hub-stats fade-up" style="transition-delay: 0.15s">
+      <div class="hub-stat"><div class="num">2</div><div class="label">Live leaves</div></div>
+      <div class="hub-stat"><div class="num">4</div><div class="label">Stubs</div></div>
+      <div class="hub-stat"><div class="num">3</div><div class="label">Value-chain stages</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── THE VALUE CHAIN ── -->
+<section class="hub-section">
+  <div class="container">
+    <div class="fade-up">
+      <div class="hub-label">01 · The value chain</div>
+      <h2 class="hub-title">Three stages, one employee record</h2>
+      <p class="hub-lede">HR is not one system — it's a chain. A candidate becomes an applicant, an applicant becomes a hire, a hire becomes an employee with a payslip and a performance review, and an employee becomes someone you're trying to grow. The 2nth value is keeping that chain on systems an agent can read and a human stays accountable for.</p>
+    </div>
+    <div class="stage-flow fade-up" style="transition-delay: 0.05s">
+      <div class="stage">
+        <span class="s-num">Stage 1 · Talent in</span>
+        <h4>Recruiting &amp; ATS</h4>
+        <p>JD → sourcing → screening → interview → assessment → offer. The applicant-tracking surface where Huly's ATS and the recruitment value chain live.</p>
+      </div>
+      <div class="stage">
+        <span class="s-num">Stage 2 · Lifecycle</span>
+        <h4>HRMS</h4>
+        <p>Onboarding, payroll, leave, attendance, expense, performance — the system-of-record spine. Frappe HR is the open-source HRMS anchor.</p>
+      </div>
+      <div class="stage">
+        <span class="s-num">Stage 3 · Development</span>
+        <h4>People &amp; growth</h4>
+        <p>Coaching, leadership, feedback, org design. The human-development half — its own domain at <code>people/</code>, cross-cut here by the CHRO.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── LEAVES ── -->
+<section class="hub-section">
+  <div class="container">
+    <div class="fade-up">
+      <div class="hub-label">02 · Skill leaves</div>
+      <h2 class="hub-title">The systems that run the chain</h2>
+      <p class="hub-lede">Two Live leaves today, both open-source and self-hostable. Frappe HR is the HRMS spine — payroll, leave, the employee record. Huly is the horizontal work platform whose ATS + HRM modules cover the recruiting front of the chain. The recruitment value chain, onboarding, performance, and compliance follow as their own leaves.</p>
+    </div>
+    <div class="leaf-grid fade-up" style="transition-delay: 0.05s">
+
+      <a href="../../tech/frappe/hr.html" class="leaf-card" data-ish="frappe">
+        <div class="leaf-head">
+          <div class="leaf-emoji">🗂️</div>
+          <span class="leaf-state">Live</span>
+        </div>
+        <h3>Frappe HR (HRMS)</h3>
+        <span class="path">tech/frappe/hr</span>
+        <p>The open-source HRMS spine — employees, payroll, leave, attendance, expense claims, performance. GPL-3.0, built on the Frappe Framework, every DocType reachable over REST so an agent can drive it. Latest v16.8.0. Canonical leaf lives in the Frappe sub-hub; covers agent-readiness, the SA statutory gap, and POPIA.</p>
+        <div class="leaf-meta">
+          <span class="m">GPL-3.0</span>
+          <span class="m">REST DocTypes</span>
+          <span class="m">Payroll · Leave</span>
+          <span class="m">v16.8.0</span>
+          <span class="m">SA · POPIA</span>
+        </div>
+      </a>
+
+      <a href="huly.html" class="leaf-card" data-ish="huly">
+        <div class="leaf-head">
+          <div class="leaf-emoji">🛰️</div>
+          <span class="leaf-state">Live</span>
+        </div>
+        <h3>Huly · HRM + ATS</h3>
+        <span class="path">biz/hr/huly</span>
+        <p>Open-source all-in-one work platform — a Linear/Jira/Slack/Notion alternative whose <strong>ATS</strong> covers recruiting and <strong>HRM</strong> covers the team, alongside project management, CRM, and chat. EPL-2.0, TypeScript + Svelte, self-hostable via <code>huly-selfhost</code>. Filed here for its HR modules; honestly horizontal.</p>
+        <div class="leaf-meta">
+          <span class="m">EPL-2.0</span>
+          <span class="m">ATS · HRM</span>
+          <span class="m">PM · CRM · Chat</span>
+          <span class="m">Self-host</span>
+        </div>
+      </a>
+
+      <div class="leaf-card soon">
+        <div class="leaf-head">
+          <div class="leaf-emoji">🎯</div>
+          <span class="leaf-state stub">Stub</span>
+        </div>
+        <h3>Recruitment value chain</h3>
+        <span class="path">biz/hr/recruitment</span>
+        <p>The six-stage hiring chain — JD → sourcing → screening → interview → assessment → offer — each stage producing a structured output an agent can act on. The recruiting-front deep-dive; coming as its own leaf.</p>
+        <div class="leaf-meta">
+          <span class="m">JD → offer</span>
+          <span class="m">6 stages</span>
+          <span class="m">Structured outputs</span>
+        </div>
+      </div>
+
+      <div class="leaf-card soon">
+        <div class="leaf-head">
+          <div class="leaf-emoji">🚪</div>
+          <span class="leaf-state stub">Stub</span>
+        </div>
+        <h3>Onboarding</h3>
+        <span class="path">biz/hr/onboarding</span>
+        <p>From signed offer to productive day-one — provisioning, paperwork, policy, the first 90 days. The handoff from ATS into the HRMS employee record.</p>
+        <div class="leaf-meta">
+          <span class="m">Day-one</span>
+          <span class="m">Provisioning</span>
+          <span class="m">First 90 days</span>
+        </div>
+      </div>
+
+      <div class="leaf-card soon">
+        <div class="leaf-head">
+          <div class="leaf-emoji">📈</div>
+          <span class="leaf-state stub">Stub</span>
+        </div>
+        <h3>Performance</h3>
+        <span class="path">biz/hr/performance</span>
+        <p>Goals, KRAs, appraisal cycles, feedback. The HRMS mechanics live in Frappe HR; the human craft of feedback and growth lives in <code>people/performance</code>. This leaf joins the two.</p>
+        <div class="leaf-meta">
+          <span class="m">Goals · KRAs</span>
+          <span class="m">Appraisals</span>
+          <span class="m">↔ people/</span>
+        </div>
+      </div>
+
+      <div class="leaf-card soon">
+        <div class="leaf-head">
+          <div class="leaf-emoji">⚖️</div>
+          <span class="leaf-state stub">Stub</span>
+        </div>
+        <h3>Compliance</h3>
+        <span class="path">biz/hr/compliance</span>
+        <p>The SA statutory layer — POPIA for employee data, PAYE/UIF/SDL payroll obligations, EMP201/EMP501/IRP5, Employment Equity and B-BBEE reporting. The gap Frappe HR leaves you to fill.</p>
+        <div class="leaf-meta">
+          <span class="m">POPIA</span>
+          <span class="m">PAYE · UIF · SDL</span>
+          <span class="m">EE · B-BBEE</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── OPEN-SOURCE POSTURE ── -->
+<section class="hub-section">
+  <div class="container">
+    <div class="fade-up">
+      <div class="hub-label">03 · Why open-source HR</div>
+      <h2 class="hub-title">The two anchors, side by side</h2>
+      <p class="hub-lede">Both anchors are OSI-licensed and self-hostable — the property that lets SA businesses keep employee data in-country under POPIA and gives an agent a real data model to drive. They solve different ends of the chain.</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead>
+          <tr>
+            <th>System</th>
+            <th>Licence</th>
+            <th>Stack</th>
+            <th>Strongest for</th>
+            <th>Agent surface</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="name">Frappe HR</td>
+            <td>GPL-3.0</td>
+            <td>Frappe Framework (Python + Vue)</td>
+            <td>HRMS spine — payroll, leave, the employee record; pairs with ERPNext</td>
+            <td>REST DocTypes (first-party); MCP via community servers</td>
+          </tr>
+          <tr>
+            <td class="name">Huly</td>
+            <td>EPL-2.0</td>
+            <td>TypeScript + Svelte</td>
+            <td>ATS + HRM on a horizontal PM/CRM/chat platform; recruiting front</td>
+            <td>API surface; no first-party MCP (verify before building)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ── AGENT ── -->
+<section class="hub-section">
+  <div class="container">
+    <div class="fade-up">
+      <div class="hub-label">04 · Who operates here</div>
+      <h2 class="hub-title">The Fractional CHRO</h2>
+      <p class="hub-lede">The canonical 2nth tree assigns a fractional-C-level agent to people work. HR is where the customer graph and the people graph touch — a candidate is also, often, a customer.</p>
+    </div>
+    <div class="agent-card fade-up" style="transition-delay: 0.05s">
+      <div class="role">Fractional CHRO</div>
+      <h4>Grace</h4>
+      <p>People ops across the chain — recruiting, onboarding, the employee record, performance. Grace is the cross-cut between <code>biz/hr</code> and <code>biz/crm</code> for when the customer is also a candidate, and reaches into <code>people/</code> for the development half. Every mutation on payroll or employee personal information stays human-approved — this is POPIA-relevant data, never a blanket-access surface for an agent.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── CROSS ── -->
+<section class="hub-section">
+  <div class="container">
+    <div class="fade-up">
+      <div class="hub-label">05 · Related branches</div>
+      <h2 class="hub-title">Where HR connects in the tree</h2>
+      <p class="hub-lede">HR sits between the systems-of-record and the humans who use them. It runs on a <code>tech</code> platform (Frappe), shares the customer graph with <code>biz/crm</code>, and hands the development half to <code>people/</code>.</p>
+    </div>
+    <div class="cross-links fade-up" style="transition-delay: 0.05s">
+      <a href="../../people/" class="cross-link">people →</a>
+      <a href="../../tech/frappe/" class="cross-link">tech/frappe →</a>
+      <a href="../../tech/frappe/hr.html" class="cross-link">tech/frappe/hr →</a>
+      <a href="huly.html" class="cross-link">biz/hr/huly →</a>
+      <a href="../crm/" class="cross-link">biz/crm →</a>
+      <a href="../" class="cross-link">← biz</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../../index.html">Skills tree</a>
+      <a href="../">Business hub</a>
+      <a href="../../people/">People</a>
+    </div>
+    <p class="footer-copy">© 2026 2nth.ai · Built in Johannesburg, South Africa</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme() {
+    const html = document.documentElement;
+    const current = html.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
+    localStorage.setItem('theme', next);
+  }
+  const saved = localStorage.getItem('theme');
+  if (saved) {
+    document.documentElement.setAttribute('data-theme', saved);
+    document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '☀️' : '🌙';
+  }
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>
