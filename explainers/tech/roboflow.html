@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roboflow &middot; computer vision &amp; edge AI &mdash; know.2nth.ai</title>
+<meta name="description" content="Roboflow — the agent-drivable computer-vision platform and open-source CV toolchain. An official hosted MCP server (30 tools), a self-hostable OpenAPI inference server that runs on Jetson and Raspberry Pi, composable Workflows, and a permissive Apache-2.0 / MIT core (supervision, inference, rf-detr, trackers, maestro). What's genuinely open source vs. metered cloud, the POPIA data-residency story for biometric CV, and when to reach for it.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/tech/roboflow">
+<meta property="og:title" content="Roboflow &middot; computer vision &amp; edge AI &mdash; know.2nth.ai">
+<meta property="og:description" content="The agent-drivable CV platform — official hosted MCP server, self-hostable inference on Jetson/Pi, composable Workflows, Apache-2.0/MIT core. The honest licence split and the POPIA story for biometric vision.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Roboflow &middot; computer vision &amp; edge AI">
+<meta name="twitter:description" content="Agent-drivable CV — hosted MCP server, self-hostable inference on Jetson/Pi, Apache-2.0/MIT core. The honest open-source-vs-metered split and the POPIA story.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12); --violet: #8B5CF6; --violet-soft: rgba(139, 92, 246, 0.12); --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-soft: rgba(99, 102, 241, 0.12); --sky-soft: rgba(56, 189, 248, 0.12); --bg: var(--ink); --bg-raised: var(--navy); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(37, 99, 235, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(56, 189, 248, 0.3); --max-w: 1200px; --read-w: 760px; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-raised: #FFFFFF; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(37, 99, 235, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(37, 99, 235, 0.25); }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.blue { width: 600px; height: 600px; background: var(--blue); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--blue-glow); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--blue-glow); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .read { max-width: var(--read-w); }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--blue-glow); }
+  .crumb-sep { opacity: 0.5; }
+  .crumb-current { color: var(--text-secondary); }
+  .hero { padding: 48px 0 56px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--blue-glow); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--blue-glow); box-shadow: 0 0 12px var(--blue-glow); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--blue), var(--blue-glow), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 720px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.accent { background: rgba(37, 99, 235, 0.12); color: var(--blue-glow); border-color: rgba(37, 99, 235, 0.25); }
+  .pill.rose { background: var(--rose-soft); color: var(--rose); border-color: rgba(244, 63, 94, 0.25); }
+  .pill.sky { background: var(--sky-soft); color: var(--sky); border-color: rgba(56, 189, 248, 0.25); }
+  .pill.green { background: var(--green-soft); color: var(--green); border-color: rgba(16, 185, 129, 0.25); }
+  section { padding: 48px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--blue-glow); margin-bottom: 14px; }
+  .section-title { font-size: clamp(24px, 3vw, 32px); font-weight: 700; letter-spacing: -0.6px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 28px; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--sky); }
+  .prose ul, .prose ol { padding-left: 24px; margin-bottom: 18px; max-width: var(--read-w); }
+  .prose li { font-size: 15px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 8px; }
+  .prose li strong { color: var(--text-primary); font-weight: 600; }
+  .prose li code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--sky); }
+  pre.code { background: var(--ink-deep); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px 22px; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.65; color: var(--mist); margin: 0 0 20px; max-width: var(--read-w); }
+  [data-theme="light"] pre.code { background: #0F172A; color: #E2E8F0; }
+  pre.code .k { color: var(--sky); }
+  pre.code .s { color: #A5F3B8; }
+  pre.code .c { color: var(--text-muted); font-style: italic; }
+  pre.code .h { color: var(--blue-glow); font-weight: 600; }
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px 28px; max-width: var(--read-w); margin-bottom: 20px; }
+  .info-card.rose { border-left: 3px solid var(--rose); }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.indigo { border-left: 3px solid var(--indigo); }
+  .info-card.blue { border-left: 3px solid var(--blue-glow); }
+  .info-card h4 { font-size: 15px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .info-card code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--ink-deep); border: 1px solid var(--border); padding: 1px 5px; border-radius: 4px; color: var(--sky); }
+  [data-theme="light"] .info-card code { background: rgba(15, 23, 42, 0.06); }
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: var(--read-w); margin-bottom: 20px; }
+  .compare-wrap.wide { max-width: none; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--blue-glow); background: rgba(37, 99, 235, 0.04); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); }
+  .compare td.name { font-weight: 600; color: var(--text-primary); white-space: nowrap; }
+  .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--blue-glow); }
+  .compare td strong { color: var(--text-primary); }
+  .compare .yes { color: var(--green); font-weight: 600; }
+  .compare .no { color: var(--rose); font-weight: 600; }
+  .stack-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; max-width: var(--read-w); margin-bottom: 20px; }
+  .stack-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--blue-glow); border-radius: var(--radius-md); padding: 18px 22px; }
+  .stack-cell .layer { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .stack-cell h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.3px; }
+  .stack-cell p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+  .stack-cell code { font-family: 'JetBrains Mono', monospace; font-size: 0.85em; color: var(--sky); }
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; max-width: var(--read-w); margin-bottom: 20px; }
+  .stat-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 20px; }
+  .stat-cell .num { font-family: 'JetBrains Mono', monospace; font-size: 24px; font-weight: 700; background: linear-gradient(135deg, var(--blue-glow), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1; margin-bottom: 6px; }
+  .stat-cell .label { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+  .stat-cell .label code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--sky); }
+  .twocol { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: var(--read-w); margin-bottom: 20px; }
+  @media (max-width: 640px) { .twocol { grid-template-columns: 1fr; } }
+  .connect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .connect-node { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; transition: all 0.3s; text-decoration: none; color: inherit; display: block; }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node.soon { cursor: default; opacity: 0.72; }
+  .connect-node .tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--sky); word-break: break-all; }
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--blue-glow); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } pre.code { font-size: 11px; padding: 14px 16px; } .compare { font-size: 12px; } .compare th, .compare td { padding: 10px 12px; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+
+<div class="glow-orb blue"></div>
+<div class="glow-orb sky"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand"><span class="nav-brand-mark">know.2nth.ai</span><span class="nav-brand-sub">tech/roboflow</span></a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">&larr; Tech</a>
+      <a href="../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x1F319;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="./">Tech</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">Roboflow</span>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> tech &middot; Computer Vision &middot; Skill Leaf</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      Computer vision, <span class="gradient">agent-drivable.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      Roboflow is a computer-vision platform <em>and</em> a family of open-source CV tools. The commercial side handles dataset management, annotation, training, hosted inference, and deployment; the open-source repos give an agent or developer the building blocks to self-host and drive directly. The reason it earns a leaf here is the one most CV vendors miss: a genuine <strong>agent-drivable surface</strong> &mdash; an official hosted MCP server, an OpenAPI inference server that runs on a Raspberry Pi, composable Workflows, and a published Skills repo &mdash; not just a SaaS UI. This leaf maps what's genuinely open source, what's metered, and where it fits a POPIA-sensitive edge deployment.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill accent">Computer vision</span>
+      <span class="pill green">MCP-native</span>
+      <span class="pill sky">Edge AI</span>
+      <span class="pill">Apache-2.0 / MIT core</span>
+      <span class="pill rose">Metered cloud</span>
+    </div>
+  </div>
+</section>
+
+<section id="what">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; What it is</div>
+      <h2 class="section-title">A platform and a toolchain, sold as one but separable.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Roboflow is maintained by a US-based, GitHub-verified organisation that controls the <code>roboflow.com</code> domain. Two things ship under the name, and keeping them apart is the whole game:</p>
+      <ul>
+        <li><strong>The commercial platform</strong> &mdash; a hosted cloud for managing datasets, annotating images, training models, serving inference, and deploying. Account-bound, API-key-gated, metered.</li>
+        <li><strong>The open-source toolchain</strong> &mdash; a set of permissively-licensed repos (<code>supervision</code>, <code>inference</code>, <code>rf-detr</code>, <code>trackers</code>, <code>maestro</code>) that a developer or agent can install, self-host, and run offline.</li>
+      </ul>
+      <p>You can use the open-source core without ever touching the cloud, and you can use the cloud without ever reading the source. Most real deployments mix the two, which is exactly why the licence boundary (&sect;05) matters more than the marketing line "Roboflow is open source."</p>
+    </div>
+    <div class="info-card blue fade-up" style="transition-delay: 0.08s">
+      <h4>Why it sits in the tree as an agent surface, not a labelling tool</h4>
+      <p>The selection criterion for this node is agent-drivability. Roboflow exposes its capabilities through an official hosted MCP server and an OpenAPI inference server &mdash; a sub-tree agent can build, train, and deploy a vision pipeline from a prompt, or call a self-hosted inference server as a standard REST tool. That is a sharper reason to track it than "it annotates images well," which a dozen tools do.</p>
+    </div>
+  </div>
+</section>
+
+<section id="signals">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; Why it matters</div>
+      <h2 class="section-title">The validated signals.</h2>
+      <p class="section-lede">Adoption numbers from the GitHub org, fetched 2026-06-14. Star counts are point-in-time and drift &mdash; treat them as order-of-magnitude, not a live leaderboard.</p>
+    </div>
+    <div class="stat-grid fade-up" style="transition-delay: 0.05s">
+      <div class="stat-cell"><div class="num">36.8k</div><div class="label"><code>supervision</code> stars &mdash; the most depended-on piece</div></div>
+      <div class="stat-cell"><div class="num">9.3k</div><div class="label"><code>notebooks</code> stars &mdash; tutorials, ResNet&rarr;RF-DETR</div></div>
+      <div class="stat-cell"><div class="num">6.0k</div><div class="label"><code>rf-detr</code> stars &mdash; the detection model</div></div>
+      <div class="stat-cell"><div class="num">3.1k</div><div class="label"><code>trackers</code> stars &mdash; multi-object tracking</div></div>
+      <div class="stat-cell"><div class="num">2.7k</div><div class="label"><code>maestro</code> stars &mdash; multimodal fine-tuning</div></div>
+      <div class="stat-cell"><div class="num">2.2k</div><div class="label"><code>inference</code> stars &mdash; the server</div></div>
+      <div class="stat-cell"><div class="num">155</div><div class="label">public repos in the org</div></div>
+      <div class="stat-cell"><div class="num">4.6k</div><div class="label">org followers</div></div>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.08s">
+      <h4>RF-DETR &mdash; the headline model claim</h4>
+      <p>RF-DETR is published by Roboflow as an <strong>ICLR 2026</strong> real-time object-detection / segmentation architecture, stated SOTA on COCO and designed for fine-tuning. The "SOTA on COCO" line is the vendor's framing &mdash; reported here as Roboflow's claim, not an independently re-run benchmark. The architecture being Apache-2.0 and fine-tunable is the part that matters for a self-host story.</p>
+    </div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; How it works</div>
+      <h2 class="section-title">The core building blocks.</h2>
+      <p class="section-lede">Five repos do the heavy lifting. Each carries its own licence (see &sect;05) &mdash; the self-hostable core is the permissive subset.</p>
+    </div>
+
+    <div class="stack-grid fade-up" style="transition-delay: 0.05s">
+      <div class="stack-cell">
+        <span class="layer">MIT &middot; utilities</span>
+        <h4>supervision</h4>
+        <p>Reusable CV glue: detection post-processing, annotation, tracking glue, zone / line counting. The most depended-on piece in the ecosystem.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Apache-2.0 core &middot; serving</span>
+        <h4>inference</h4>
+        <p>Turns any machine or edge device into an inference server. REST API with OpenAPI (<code>/docs</code>) + Redoc, a Workflows engine, RTSP / webcam pipelines. Runs on Linux, Windows, Mac, Jetson, Raspberry Pi.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Apache-2.0 &middot; model</span>
+        <h4>rf-detr</h4>
+        <p>The detection / segmentation architecture. Real-time, fine-tunable, ICLR 2026.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Apache-2.0 &middot; tracking</span>
+        <h4>trackers</h4>
+        <p>Modular re-implementations of leading multi-object tracking algorithms. Combine with any detection model.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Apache-2.0 &middot; fine-tuning</span>
+        <h4>maestro</h4>
+        <p>Fine-tuning toolkit for multimodal models &mdash; PaliGemma 2, Florence-2, Qwen2.5-VL.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Apache-2.0 &middot; SDK</span>
+        <h4>roboflow-python</h4>
+        <p>Official SDK for datasets, models, and deployments. The cloud-connected control surface in code.</p>
+      </div>
+    </div>
+
+    <div class="prose fade-up" style="transition-delay: 0.06s">
+      <p><strong>Workflows</strong> are the composable unit on top. Each block gives models a common interface for chaining, swapping, and adding business logic &mdash; the thing an agent assembles into a CV micro-service or a self-contained visual agent running on a video stream (detect &rarr; track &rarr; count &rarr; notify).</p>
+    </div>
+
+    <pre class="code fade-up" style="transition-delay: 0.08s"><span class="c"># self-host the inference server (validated quickstart)</span>
+<span class="k">pip</span> install inference-cli && inference server start --dev
+<span class="c"># Jupyter quickstart then runs at http://localhost:9001/notebook/start</span></pre>
+  </div>
+</section>
+
+<section id="mcp">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; MCP surface</div>
+      <h2 class="section-title">The decisive criterion &mdash; and it passes.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Roboflow runs an <strong>official hosted MCP server</strong> at <code>https://mcp.roboflow.com/mcp</code>, exposing <strong>30 tools</strong> across projects, datasets, training, Workflows, and Universe. The server, the Skills, and the plugin are <strong>free and open source under Apache-2.0</strong>, in the repo <code>roboflow/computer-vision-skills</code>.</p>
+      <p>A single hosted URL means any MCP client &mdash; Claude Code, Codex, Cursor &mdash; picks up new capabilities on connect, with no SDK pin and no version drift. Through it an agent can create projects, upload and auto-label images, pull Universe datasets, generate dataset versions, trigger training (e.g. RF-DETR), and build or deploy Workflows.</p>
+    </div>
+
+    <pre class="code fade-up" style="transition-delay: 0.08s"><span class="c"># validated install (Claude Code)</span>
+<span class="k">claude</span> mcp add -s user roboflow \
+  --transport http https://mcp.roboflow.com/mcp \
+  --header <span class="s">"x-api-key: YOUR_ROBOFLOW_API_KEY"</span> \
+  --header <span class="s">"Accept: application/json, text/event-stream"</span></pre>
+
+    <div class="info-card green fade-up" style="transition-delay: 0.1s">
+      <h4>Prefer the first-party server</h4>
+      <p>Several <strong>third-party</strong> Roboflow MCP servers also exist (eusef, nickedridge-wq, Composio, viaSocket). For production use prefer the official <code>mcp.roboflow.com</code> server &mdash; it is first-party, Apache-2.0, and capability-tracked at one URL. Supporting signal that the codebase is authored for agents: <code>roboflow/inference</code> ships an <code>AGENTS.md</code> and a <code>.claude/skills/add-inference-model</code> directory.</p>
+    </div>
+  </div>
+</section>
+
+<section id="licence">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; Licence map</div>
+      <h2 class="section-title">"Open source" is imprecise &mdash; here's the split.</h2>
+      <p class="section-lede">True OSI open source vs. metered / source-available divides cleanly. Do not flatten it into a single claim &mdash; the difference is the difference between "an agent can run this offline" and "production needs a contract."</p>
+    </div>
+
+    <div class="compare-wrap wide fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead><tr><th>Component</th><th>Licence</th><th>OSI open source?</th></tr></thead>
+        <tbody>
+          <tr><td class="name">supervision</td><td>MIT</td><td class="yes">Yes</td></tr>
+          <tr><td class="name">rf-detr, trackers, maestro, roboflow-python</td><td>Apache-2.0</td><td class="yes">Yes</td></tr>
+          <tr><td class="name">inference (core)</td><td>Apache-2.0 (<code>LICENSE.core</code>)</td><td class="yes">Yes</td></tr>
+          <tr><td class="name">inference (enterprise dir)</td><td>Enterprise, source-available</td><td class="no">No &mdash; production needs a contract</td></tr>
+          <tr><td class="name">computer-vision-skills / MCP server</td><td>Apache-2.0</td><td class="yes">Yes</td></tr>
+          <tr><td class="name">Hosted cloud (registries, training, deploy)</td><td>Proprietary, metered</td><td class="no">No</td></tr>
+          <tr><td class="name">Some pre-trained / foundation models</td><td>Architecture-dependent; paid commercial licence</td><td class="no">Varies</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="info-card indigo fade-up" style="transition-delay: 0.08s">
+      <h4>The practical read</h4>
+      <p>The self-hostable core &mdash; <code>inference</code> core + <code>supervision</code> + <code>rf-detr</code> + <code>trackers</code> &mdash; is genuinely permissive and agent-drivable offline. Cloud-connected functionality (model / Workflow registries, dataset management, monitoring, managed infra) requires a Roboflow account + API key and is metered. Assume nothing is free until you've checked which side of this line a feature sits on.</p>
+    </div>
+  </div>
+</section>
+
+<section id="use-cases">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; Use cases</div>
+      <h2 class="section-title">Where it earns its place.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <ul>
+        <li><strong>Edge / on-prem CV on Jetson or Raspberry Pi</strong> with no cloud dependency &mdash; relevant to load-shedding-resilient deployments that must keep running locally.</li>
+        <li><strong>Agent-built vision pipelines</strong> &mdash; an agent assembles a Workflow (detect &rarr; track &rarr; count &rarr; notify) from a prompt via the MCP server.</li>
+        <li><strong>Self-hosted inference behind a private network</strong> &mdash; the OpenAPI surface lets other agents in the sub-tree call it as a standard REST tool.</li>
+        <li><strong>Multimodal fine-tuning</strong> &mdash; Florence-2, Qwen2.5-VL, PaliGemma 2 via <code>maestro</code>.</li>
+        <li><strong>Shipped example Workflows</strong> &mdash; licence-plate OCR, zone / dwell-time analytics, multi-model consensus, SAHI small-object detection.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="decision">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; Decision guide</div>
+      <h2 class="section-title">Use when / skip when.</h2>
+    </div>
+    <div class="twocol fade-up" style="transition-delay: 0.05s">
+      <div class="info-card green">
+        <h4>Use when</h4>
+        <p>&bull; You need agent-drivable CV with a real MCP surface, not just a labelling UI.</p>
+        <p>&bull; You want a permissive self-hostable core (MIT / Apache-2.0) for edge / on-prem.</p>
+        <p>&bull; You need fast dataset &rarr; train &rarr; deploy loops and can accept metered cloud for the managed parts.</p>
+        <p>&bull; RF-DETR or multimodal fine-tuning is on the roadmap.</p>
+      </div>
+      <div class="info-card rose">
+        <h4>Skip / caution when</h4>
+        <p>&bull; The workload is privacy-critical and you cannot self-host &mdash; hosted cloud is US, metered, and phones home with an API key.</p>
+        <p>&bull; You only need a single static model with no pipeline &mdash; <code>supervision</code> + a raw model may be lighter.</p>
+        <p>&bull; You need production use of <code>inference/enterprise</code> &mdash; that requires an active Enterprise contract, not the open-source path.</p>
+        <p>&bull; You assumed "open source" means everything is free &mdash; registries, training, monitoring, and dedicated deploy are proprietary and metered.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="sa-context">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 &middot; South African context</div>
+      <h2 class="section-title">POPIA, residency, and the phone-home caveat.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p><strong>Data residency is the whole POPIA story.</strong> Self-hosting <code>inference</code> keeps image / video frames and the inference itself on-prem or in a chosen SA cloud region. That matters where CV data includes biometric or identifiable persons &mdash; faces, plates. The hosted Roboflow cloud is US-centred with no stated SA region, so sensitive workloads should route through self-host.</p>
+      <p><strong>Biometric CV is special-personal-information processing</strong> under POPIA &mdash; high-sensitivity. Prefer on-device inference; keep training data and predictions inside the SA boundary.</p>
+      <p><strong>Cloud-region fit for a self-host target:</strong> GCP <code>africa-south1</code>, Azure <code>southafricanorth</code>, AWS <code>af-south-1</code> &mdash; <code>inference</code> runs in any of them as a container. For where Workers-fronted services actually serve from in-region, see <a href="cloudflare/edge-africa-me.html" style="color: var(--sky); text-decoration: none; border-bottom: 1px dotted rgba(56, 189, 248, 0.4);">tech/cloudflare/edge-africa-me</a>.</p>
+      <p><strong>The metering caveat is the trap.</strong> API-key features phone home to Roboflow cloud (US). For data that must not leave the boundary, run open-access mode (no key) or fully self-hosted &mdash; accepting the loss of registries and monitoring. Document this boundary so an agent never silently routes a sensitive frame to US cloud.</p>
+    </div>
+  </div>
+</section>
+
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">09 &middot; Connections</div>
+      <h2 class="section-title">Where Roboflow links in the tree.</h2>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="../agents/mcp.html" class="connect-node">
+        <span class="tag">agents/mcp</span>
+        <div class="skill">Model Context Protocol</div>
+        <div class="why">The protocol behind the hosted server. One URL, 30 tools, capability-tracked &mdash; the surface that makes Roboflow agent-drivable rather than a SaaS UI.</div>
+      </a>
+      <a href="../agents/skills.html" class="connect-node">
+        <span class="tag">agents/skills</span>
+        <div class="skill">Agent Skills</div>
+        <div class="why">Roboflow ships its MCP capabilities as <code>computer-vision-skills</code> &mdash; the same folder-plus-SKILL.md packaging standard, applied to vision.</div>
+      </a>
+      <a href="embedded/platformio.html" class="connect-node">
+        <span class="tag">tech/embedded/platformio</span>
+        <div class="skill">PlatformIO</div>
+        <div class="why">The firmware layer on the edge devices Roboflow inference targets &mdash; Jetson, Raspberry Pi, ESP32-class boards running CV locally.</div>
+      </a>
+      <a href="cloudflare/edge-africa-me.html" class="connect-node">
+        <span class="tag">tech/cloudflare/edge-africa-me</span>
+        <div class="skill">Cloudflare African edge</div>
+        <div class="why">Where a self-hosted inference container's API is fronted for SA-resident callers. The latency / POPIA story benefits from in-region edge.</div>
+      </a>
+      <a href="../agents/claude-code.html" class="connect-node">
+        <span class="tag">agents/claude-code</span>
+        <div class="skill">Claude Code</div>
+        <div class="why">The MCP client in the validated install command. The agent that assembles a Workflow or triggers RF-DETR training from a prompt.</div>
+      </a>
+      <a href="../agents/" class="connect-node">
+        <span class="tag">agents</span>
+        <div class="skill">Agents domain</div>
+        <div class="why">The orchestration layer that drives Roboflow. CV becomes a tool an agent calls &mdash; one modality alongside the LLM stack.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">10 &middot; Resources</div>
+      <h2 class="section-title">Primary sources only.</h2>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://github.com/roboflow" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Org</span>
+        <span class="r-title">Roboflow &middot; GitHub organisation</span>
+        <span class="r-url">github.com/roboflow</span>
+      </a>
+      <a href="https://github.com/roboflow/supervision" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Repo &middot; MIT</span>
+        <span class="r-title">supervision &middot; reusable CV utilities</span>
+        <span class="r-url">github.com/roboflow/supervision</span>
+      </a>
+      <a href="https://github.com/roboflow/inference" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Repo &middot; Apache-2.0 core</span>
+        <span class="r-title">inference &middot; the self-hostable server</span>
+        <span class="r-url">github.com/roboflow/inference</span>
+      </a>
+      <a href="https://github.com/roboflow/rf-detr" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Repo &middot; Apache-2.0</span>
+        <span class="r-title">rf-detr &middot; real-time detection / segmentation</span>
+        <span class="r-url">github.com/roboflow/rf-detr</span>
+      </a>
+      <a href="https://github.com/roboflow/trackers" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Repo &middot; Apache-2.0</span>
+        <span class="r-title">trackers &middot; multi-object tracking</span>
+        <span class="r-url">github.com/roboflow/trackers</span>
+      </a>
+      <a href="https://github.com/roboflow/maestro" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Repo &middot; Apache-2.0</span>
+        <span class="r-title">maestro &middot; multimodal fine-tuning</span>
+        <span class="r-url">github.com/roboflow/maestro</span>
+      </a>
+      <a href="https://github.com/roboflow/computer-vision-skills" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Repo &middot; Apache-2.0</span>
+        <span class="r-title">computer-vision-skills &middot; MCP server + Skills</span>
+        <span class="r-url">github.com/roboflow/computer-vision-skills</span>
+      </a>
+      <a href="https://roboflow.com/mcp" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">MCP</span>
+        <span class="r-title">Official hosted MCP server &middot; 30 tools</span>
+        <span class="r-url">roboflow.com/mcp &middot; mcp.roboflow.com</span>
+      </a>
+      <a href="https://inference.roboflow.com" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs</span>
+        <span class="r-title">Inference documentation</span>
+        <span class="r-url">inference.roboflow.com</span>
+      </a>
+      <a href="https://github.com/roboflow/notebooks" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Repo</span>
+        <span class="r-title">notebooks &middot; tutorials, ResNet&rarr;RF-DETR</span>
+        <span class="r-url">github.com/roboflow/notebooks</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../index.html">Skills tree</a>
+      <a href="./">Tech hub</a>
+      <a href="https://github.com/roboflow" target="_blank" rel="noopener">Roboflow &nearr;</a>
+      <a href="https://roboflow.com/mcp" target="_blank" rel="noopener">MCP server &nearr;</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in Johannesburg, South Africa</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme(){const html=document.documentElement;const current=html.getAttribute('data-theme');const next=current==='dark'?'light':'dark';html.setAttribute('data-theme',next);document.querySelector('.theme-toggle').textContent=next==='dark'?'☀️':'🌙';localStorage.setItem('theme',next);}
+  const saved=localStorage.getItem('theme');if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.theme-toggle').textContent=saved==='dark'?'☀️':'🌙';}
+  const observer=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting)entry.target.classList.add('visible');});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>
