@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenID Connect &middot; the identity layer on OAuth 2.0 &mdash; know.2nth.ai</title>
+<meta name="description" content="OpenID Connect (OIDC) — the interoperable authentication protocol built on OAuth 2.0. What it is, how it differs from plain OAuth (authentication vs authorization), the three actors (relying party, OpenID provider, end user), the authorization-code-with-PKCE flow, the ID Token as a signed JWT, scopes and claims, the UserInfo and discovery endpoints, which flow to use in 2026, and the POPIA angle on delegating identity.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/tech/openid-connect">
+<meta property="og:title" content="OpenID Connect &middot; the identity layer on OAuth 2.0 &mdash; know.2nth.ai">
+<meta property="og:description" content="OIDC — authentication built on OAuth 2.0. Authn vs authz, the three actors, the auth-code-with-PKCE flow, the ID Token (JWT), scopes/claims, discovery, and which flow to use in 2026.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="OpenID Connect &middot; the identity layer on OAuth 2.0">
+<meta name="twitter:description" content="OIDC — authentication built on OAuth 2.0. Authn vs authz, the auth-code-with-PKCE flow, the ID Token (JWT), scopes/claims, discovery, and which flow to use in 2026.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12); --violet: #8B5CF6; --violet-soft: rgba(139, 92, 246, 0.12); --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-soft: rgba(99, 102, 241, 0.12); --sky-soft: rgba(56, 189, 248, 0.12); --bg: var(--ink); --bg-raised: var(--navy); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(37, 99, 235, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(56, 189, 248, 0.3); --max-w: 1200px; --read-w: 760px; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-raised: #FFFFFF; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(37, 99, 235, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(37, 99, 235, 0.25); }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.blue { width: 600px; height: 600px; background: var(--blue); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--blue-glow); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--blue-glow); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .read { max-width: var(--read-w); }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--blue-glow); }
+  .crumb-sep { opacity: 0.5; }
+  .crumb-current { color: var(--text-secondary); }
+  .hero { padding: 48px 0 56px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--blue-glow); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--blue-glow); box-shadow: 0 0 12px var(--blue-glow); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--blue), var(--blue-glow), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 720px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.accent { background: rgba(37, 99, 235, 0.12); color: var(--blue-glow); border-color: rgba(37, 99, 235, 0.25); }
+  .pill.rose { background: var(--rose-soft); color: var(--rose); border-color: rgba(244, 63, 94, 0.25); }
+  .pill.sky { background: var(--sky-soft); color: var(--sky); border-color: rgba(56, 189, 248, 0.25); }
+  .pill.green { background: var(--green-soft); color: var(--green); border-color: rgba(16, 185, 129, 0.25); }
+  section { padding: 48px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--blue-glow); margin-bottom: 14px; }
+  .section-title { font-size: clamp(24px, 3vw, 32px); font-weight: 700; letter-spacing: -0.6px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 28px; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--sky); }
+  .prose ul, .prose ol { padding-left: 24px; margin-bottom: 18px; max-width: var(--read-w); }
+  .prose li { font-size: 15px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 8px; }
+  .prose li strong { color: var(--text-primary); font-weight: 600; }
+  .prose li code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--sky); }
+  pre.code { background: var(--ink-deep); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px 22px; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.65; color: var(--mist); margin: 0 0 20px; max-width: var(--read-w); }
+  [data-theme="light"] pre.code { background: #0F172A; color: #E2E8F0; }
+  pre.code .k { color: var(--sky); }
+  pre.code .s { color: #A5F3B8; }
+  pre.code .c { color: var(--text-muted); font-style: italic; }
+  pre.code .h { color: var(--blue-glow); font-weight: 600; }
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px 28px; max-width: var(--read-w); margin-bottom: 20px; }
+  .info-card.rose { border-left: 3px solid var(--rose); }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.indigo { border-left: 3px solid var(--indigo); }
+  .info-card.blue { border-left: 3px solid var(--blue-glow); }
+  .info-card h4 { font-size: 15px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .info-card code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--ink-deep); border: 1px solid var(--border); padding: 1px 5px; border-radius: 4px; color: var(--sky); }
+  [data-theme="light"] .info-card code { background: rgba(15, 23, 42, 0.06); }
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: var(--read-w); margin-bottom: 20px; }
+  .compare-wrap.wide { max-width: none; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--blue-glow); background: rgba(37, 99, 235, 0.04); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); }
+  .compare td.name { font-weight: 600; color: var(--text-primary); white-space: nowrap; }
+  .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--blue-glow); }
+  .compare td strong { color: var(--text-primary); }
+  .compare .yes { color: var(--green); font-weight: 600; }
+  .compare .no { color: var(--rose); font-weight: 600; }
+  .stack-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; max-width: var(--read-w); margin-bottom: 20px; }
+  .stack-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--blue-glow); border-radius: var(--radius-md); padding: 18px 22px; }
+  .stack-cell .layer { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .stack-cell h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.3px; }
+  .stack-cell p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+  .stack-cell code { font-family: 'JetBrains Mono', monospace; font-size: 0.85em; color: var(--sky); }
+  .step-list { counter-reset: step; max-width: var(--read-w); margin-bottom: 20px; }
+  .step { position: relative; padding: 0 0 18px 48px; }
+  .step:not(:last-child)::after { content: ''; position: absolute; left: 15px; top: 32px; bottom: 0; width: 1px; background: var(--border); }
+  .step .marker { counter-increment: step; position: absolute; left: 0; top: 0; width: 32px; height: 32px; border-radius: 50%; background: var(--bg-card); border: 1px solid var(--border-hover); display: grid; place-items: center; font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 600; color: var(--blue-glow); }
+  .step .marker::before { content: counter(step); }
+  .step h4 { font-size: 15px; font-weight: 700; margin-bottom: 4px; letter-spacing: -0.2px; padding-top: 5px; }
+  .step p { font-size: 14px; color: var(--text-secondary); line-height: 1.65; }
+  .step p code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; color: var(--sky); }
+  .twocol { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: var(--read-w); margin-bottom: 20px; }
+  @media (max-width: 640px) { .twocol { grid-template-columns: 1fr; } }
+  .connect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .connect-node { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; transition: all 0.3s; text-decoration: none; color: inherit; display: block; }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node.soon { cursor: default; opacity: 0.72; }
+  .connect-node .tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--sky); word-break: break-all; }
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--blue-glow); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } pre.code { font-size: 11px; padding: 14px 16px; } .compare { font-size: 12px; } .compare th, .compare td { padding: 10px 12px; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+
+<div class="glow-orb blue"></div>
+<div class="glow-orb sky"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand"><span class="nav-brand-mark">know.2nth.ai</span><span class="nav-brand-sub">tech/openid-connect</span></a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">&larr; Tech</a>
+      <a href="../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x1F319;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="./">Tech</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">OpenID Connect</span>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> tech &middot; Identity &amp; Auth &middot; Skill Leaf</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      Authentication, <span class="gradient">standardised.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      OpenID Connect (OIDC) is the interoperable authentication protocol layered on top of OAuth 2.0. It is the machinery behind every "Sign in with Google / Microsoft / Apple" button &mdash; a standardised, JSON-and-HTTP way for an application to verify <em>who a user is</em> and pull basic profile information, without ever handling their password. OAuth 2.0 answers "what can this client access?"; OpenID Connect adds the missing question, "who is this user?", and answers it with a signed token any service can verify. This leaf maps the actors, the flow, the ID Token, and which flow to actually use in 2026.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill accent">Identity protocol</span>
+      <span class="pill sky">Built on OAuth 2.0</span>
+      <span class="pill green">ID Token = JWT</span>
+      <span class="pill">Open standard</span>
+      <span class="pill rose">Auth-code + PKCE</span>
+    </div>
+  </div>
+</section>
+
+<section id="what">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; What it is</div>
+      <h2 class="section-title">An identity layer on top of OAuth 2.0.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>In the words of the spec authors, OpenID Connect is <em>"an interoperable authentication protocol based on the OAuth 2.0 framework"</em> (IETF <strong>RFC 6749</strong> and <strong>RFC 6750</strong>). OAuth 2.0 by itself is an <em>authorization</em> framework &mdash; it issues access tokens that let a client call an API on a user's behalf. It deliberately says nothing about <em>who the user is</em>. Teams kept bolting their own identity semantics onto OAuth, every one slightly different and several insecure. OIDC standardises that missing layer.</p>
+      <p>OIDC reuses OAuth's message flows &mdash; the same authorization and token endpoints, the same redirect dance &mdash; and adds three things on top:</p>
+      <ul>
+        <li>An <strong>ID Token</strong>: a signed JSON Web Token (JWT) that proves an authentication event happened and identifies the user.</li>
+        <li>A <strong>UserInfo endpoint</strong>: a standard REST endpoint that returns claims (profile attributes) about the authenticated user.</li>
+        <li>A set of <strong>standard scopes and claims</strong> (<code>openid</code>, <code>profile</code>, <code>email</code>, &hellip;) and a <strong>discovery</strong> mechanism so any client can configure itself against any provider.</li>
+      </ul>
+      <p>The payoff the spec leads with: it <em>"removes the responsibility of setting, storing, and managing passwords"</em> from your application. The identity provider holds the credentials; your app holds a verifiable token. That is a smaller breach surface and one less thing to get wrong.</p>
+    </div>
+    <div class="info-card blue fade-up" style="transition-delay: 0.08s">
+      <h4>OIDC is not the same as SAML or plain OAuth</h4>
+      <p><strong>SAML</strong> is the older XML-based SSO standard &mdash; still everywhere in enterprise, but heavier and browser-POST-bound. <strong>OAuth 2.0</strong> is authorization only. <strong>OpenID Connect</strong> is the modern, JSON/JWT, mobile- and SPA-friendly authentication standard that most new builds reach for. If someone says "we do OAuth login," they almost always mean OIDC &mdash; or they have re-invented it badly.</p>
+    </div>
+  </div>
+</section>
+
+<section id="vs-oauth">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; OIDC vs OAuth 2.0</div>
+      <h2 class="section-title">Authentication vs authorization &mdash; the distinction that matters.</h2>
+      <p class="section-lede">The single most common security mistake in this space is using an OAuth <em>access token</em> as proof of identity. It isn't one. This table is the mental model.</p>
+    </div>
+
+    <div class="compare-wrap wide fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead><tr><th>&nbsp;</th><th>OAuth 2.0</th><th>OpenID Connect</th></tr></thead>
+        <tbody>
+          <tr><td class="name">Question answered</td><td>What can this client <em>access</em>? (authorization)</td><td>Who is this <em>user</em>? (authentication)</td></tr>
+          <tr><td class="name">Primary token</td><td>Access Token (opaque or JWT, for the API)</td><td>ID Token (always a signed JWT, for the client)</td></tr>
+          <tr><td class="name">Token audience</td><td>The resource server / API</td><td>The relying party (your app)</td></tr>
+          <tr><td class="name">Triggered by</td><td>Any scope</td><td>The <code>openid</code> scope specifically</td></tr>
+          <tr><td class="name">User identity</td><td class="no">Out of scope</td><td class="yes">The <code>sub</code> claim + UserInfo</td></tr>
+          <tr><td class="name">Standardises</td><td>Token issuance &amp; API access</td><td>Identity, claims, discovery on top of OAuth</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.08s">
+      <h4>The "openid" scope is the switch</h4>
+      <p>A request is a plain OAuth request until the client asks for the <code>openid</code> scope. That scope is what tells the provider "also run authentication and return an ID Token." Everything OIDC adds hangs off that one keyword in the <code>scope</code> parameter.</p>
+    </div>
+  </div>
+</section>
+
+<section id="actors">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; The three actors</div>
+      <h2 class="section-title">Who's who in the flow.</h2>
+    </div>
+    <div class="stack-grid fade-up" style="transition-delay: 0.05s">
+      <div class="stack-cell">
+        <span class="layer">RP &middot; the client</span>
+        <h4>Relying Party</h4>
+        <p>"A piece of software that requests tokens either for authenticating a user or for accessing a resource." Your application &mdash; the thing the user is trying to sign in to.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">OP &middot; the IdP</span>
+        <h4>OpenID Provider</h4>
+        <p>"An entity that has implemented the OpenID Connect and OAuth 2.0 protocols." Google, Microsoft Entra ID, Auth0, Okta, Keycloak. It holds the credentials and issues tokens.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">The human</span>
+        <h4>End User</h4>
+        <p>The person authenticating through their browser or mobile app. They prove who they are to the OP &mdash; never to your app directly.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="flow">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; How the flow works</div>
+      <h2 class="section-title">The seven-step round trip.</h2>
+      <p class="section-lede">The OpenID Foundation's own framing of the protocol, step by step &mdash; the canonical authorization-code path most builds use.</p>
+    </div>
+
+    <div class="step-list fade-up" style="transition-delay: 0.05s">
+      <div class="step"><div class="marker"></div><h4>User arrives</h4><p>The end user navigates to your site in a browser (or opens your mobile app).</p></div>
+      <div class="step"><div class="marker"></div><h4>User initiates sign-in</h4><p>They click "sign in." Your app (the RP) redirects the browser to the OP's <strong>authorization endpoint</strong>.</p></div>
+      <div class="step"><div class="marker"></div><h4>RP requests authentication</h4><p>The redirect carries <code>response_type=code</code>, the <code>client_id</code>, the <code>redirect_uri</code>, the requested <code>scope</code> (including <code>openid</code>), a <code>state</code> value, and a PKCE <code>code_challenge</code>.</p></div>
+      <div class="step"><div class="marker"></div><h4>OP authenticates the user</h4><p>The OP collects credentials (password, passkey, MFA&hellip;) and obtains the user's consent. Your app never sees the password.</p></div>
+      <div class="step"><div class="marker"></div><h4>OP returns tokens</h4><p>The OP redirects back with an authorization code; the RP exchanges it at the <strong>token endpoint</strong> for an <strong>ID Token</strong> and an <strong>Access Token</strong>.</p></div>
+      <div class="step"><div class="marker"></div><h4>RP calls UserInfo</h4><p>Using the Access Token, the RP calls the OP's <strong>UserInfo endpoint</strong> to fetch additional claims.</p></div>
+      <div class="step"><div class="marker"></div><h4>Claims returned</h4><p>The UserInfo endpoint returns the user's claims &mdash; name, email, and any other granted attributes. The user is now signed in.</p></div>
+    </div>
+
+    <pre class="code fade-up" style="transition-delay: 0.08s"><span class="c"># 1 · RP redirects the browser to the OP authorization endpoint</span>
+<span class="h">GET</span> https://op.example.com/authorize?
+    response_type=code
+    &client_id=s6BhdRkqt3
+    &redirect_uri=https://rp.example.co.za/callback
+    &scope=<span class="k">openid</span> profile email
+    &state=af0ifjsldkj
+    &code_challenge=E9Melhoa...aQzKfYg&code_challenge_method=<span class="k">S256</span>
+
+<span class="c"># 2 · OP authenticates the user, redirects back with a one-time code</span>
+<span class="h">GET</span> https://rp.example.co.za/callback?code=SplxlOBeZQ&state=af0ifjsldkj
+
+<span class="c"># 3 · RP exchanges the code at the token endpoint (server-to-server)</span>
+<span class="h">POST</span> https://op.example.com/token
+    grant_type=authorization_code&code=SplxlOBeZQ
+    &redirect_uri=https://rp.example.co.za/callback&code_verifier=dBjftJeZ...
+<span class="c"># → { "access_token": "...", "token_type": "Bearer",</span>
+<span class="c">#     "id_token": "&lt;signed JWT&gt;", "expires_in": 3600 }</span></pre>
+  </div>
+</section>
+
+<section id="id-token">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; The ID Token</div>
+      <h2 class="section-title">A signed JWT that proves an authentication happened.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>The ID Token is the heart of OIDC. Per the spec, it <em>"represents the outcome of an authentication process. It contains at a bare minimum an identifier for the user (the <code>sub</code> &mdash; subject &mdash; claim) and information about how and when the user authenticated."</em> OpenID Connect <em>"uses standard JSON Web Token (JWT) data structures when signatures are required"</em> &mdash; so the ID Token is a JWT the RP can verify cryptographically against the OP's published keys, with no callback needed.</p>
+    </div>
+
+    <pre class="code fade-up" style="transition-delay: 0.06s"><span class="c">// ID Token — the decoded JWT payload</span>
+{
+  <span class="k">"iss"</span>: <span class="s">"https://op.example.com"</span>,   <span class="c">// issuer — who minted it</span>
+  <span class="k">"sub"</span>: <span class="s">"248289761001"</span>,             <span class="c">// subject — the stable user id</span>
+  <span class="k">"aud"</span>: <span class="s">"s6BhdRkqt3"</span>,               <span class="c">// audience — your client_id</span>
+  <span class="k">"exp"</span>: 1718445600,                  <span class="c">// expiry (unix seconds)</span>
+  <span class="k">"iat"</span>: 1718442000,                  <span class="c">// issued-at</span>
+  <span class="k">"auth_time"</span>: 1718441990,           <span class="c">// when the user actually authenticated</span>
+  <span class="k">"nonce"</span>: <span class="s">"n-0S6_WzA2Mj"</span>,           <span class="c">// replay protection, echoed from the request</span>
+  <span class="k">"email"</span>: <span class="s">"thandi@example.co.za"</span>
+}</span></pre>
+
+    <div class="prose fade-up" style="transition-delay: 0.07s">
+      <p><strong>Scopes request, claims return.</strong> The RP asks for scopes (<code>openid</code> is mandatory; <code>profile</code>, <code>email</code>, <code>address</code>, <code>phone</code> are the standard add-ons); the OP returns the corresponding <strong>claims</strong> &mdash; either in the ID Token or from the UserInfo endpoint. Request only the scopes you need: every extra claim is more personal data you now hold.</p>
+    </div>
+
+    <div class="info-card indigo fade-up" style="transition-delay: 0.08s">
+      <h4>Discovery: zero-config against any provider</h4>
+      <p>Every compliant OP publishes its metadata at <code>/.well-known/openid-configuration</code> &mdash; the authorization, token, UserInfo, and JWKS (signing-key) endpoints, supported scopes, and signing algorithms. A client library reads that one URL and configures itself. This is why swapping Google for Entra ID for Keycloak is a config change, not a rewrite &mdash; the interoperability OIDC is named for.</p>
+    </div>
+  </div>
+</section>
+
+<section id="flows">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; Which flow to use</div>
+      <h2 class="section-title">Authorization Code with PKCE &mdash; for everything.</h2>
+      <p class="section-lede">OIDC inherited three flows from OAuth. In 2026 the guidance has converged: use one of them, almost always.</p>
+    </div>
+
+    <div class="compare-wrap wide fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead><tr><th>Flow</th><th>How it returns tokens</th><th>Use it?</th></tr></thead>
+        <tbody>
+          <tr><td class="name">Authorization Code + PKCE</td><td>Code via browser redirect, exchanged for tokens server-/back-channel; PKCE binds the code to the client.</td><td class="yes">Yes &mdash; the default for web apps, SPAs, mobile, and native.</td></tr>
+          <tr><td class="name">Implicit</td><td>Tokens returned directly in the redirect URL fragment.</td><td class="no">No &mdash; deprecated; tokens leak via URLs / history.</td></tr>
+          <tr><td class="name">Hybrid</td><td>Some tokens from the authorization endpoint, some from the token endpoint.</td><td>Niche &mdash; specific OP/RP needs only.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="info-card rose fade-up" style="transition-delay: 0.08s">
+      <h4>PKCE is no longer optional</h4>
+      <p><strong>PKCE</strong> (Proof Key for Code Exchange, RFC 7636) stops an intercepted authorization code from being redeemed by an attacker &mdash; the client proves it's the same party that started the flow. Once a mobile-only mitigation, the OAuth 2.0 Security Best Current Practice (RFC 9700) and the emerging OAuth 2.1 consolidation now call for PKCE on <em>all</em> authorization-code flows, including server-side web apps, and they retire the implicit flow entirely. If a tutorial still teaches implicit, it's out of date.</p>
+    </div>
+  </div>
+</section>
+
+<section id="decision">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; Decision guide</div>
+      <h2 class="section-title">When OIDC, and when not to roll it yourself.</h2>
+    </div>
+    <div class="twocol fade-up" style="transition-delay: 0.05s">
+      <div class="info-card green">
+        <h4>Use OIDC when</h4>
+        <p>&bull; You need to authenticate users and want to delegate password handling to a provider.</p>
+        <p>&bull; You want "Sign in with Google / Microsoft / Apple" or enterprise SSO without bespoke integrations per provider.</p>
+        <p>&bull; You're building an API plus first-party web / mobile / SPA clients and want one identity model across them.</p>
+        <p>&bull; You need verifiable, stateless proof of identity (a JWT) that downstream services can check independently.</p>
+      </div>
+      <div class="info-card rose">
+        <h4>Caution / skip when</h4>
+        <p>&bull; You only need <em>authorization</em> for machine-to-machine API access &mdash; plain OAuth 2.0 client-credentials, no ID Token, is enough.</p>
+        <p>&bull; The enterprise counterpart only speaks <strong>SAML</strong> &mdash; you may need both, or a broker that bridges them.</p>
+        <p>&bull; You're tempted to implement the OP yourself &mdash; don't. Use a battle-tested OP (Entra ID, Google, Auth0, Okta, Keycloak). Identity is the wrong place to be original.</p>
+        <p>&bull; You're treating an Access Token as an identity assertion &mdash; that's the bug OIDC exists to prevent. Verify the ID Token instead.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="sa-context">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 &middot; South African context</div>
+      <h2 class="section-title">POPIA, residency, and delegating the credential.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p><strong>Delegating identity shrinks your POPIA surface.</strong> POPIA holds you to "reasonable technical and organisational measures" (s19) over personal information. When the OpenID Provider holds the credentials and your app holds only a verifiable token, you are no longer storing passwords &mdash; one of the highest-value targets simply isn't in your database. That is a genuine, defensible reduction in risk.</p>
+      <p><strong>Minimise the claims you request.</strong> POPIA's minimality principle maps cleanly onto OIDC scopes: ask only for <code>openid</code> plus the specific claims the feature needs. Don't request <code>profile</code>, <code>email</code>, <code>address</code>, and <code>phone</code> by reflex &mdash; every claim you pull is personal data you must now justify, secure, and account for.</p>
+      <p><strong>Residency lives at the provider, not the protocol.</strong> OIDC is just the handshake; where identity data sits depends on the OP. For SA-resident workloads, the common OPs are Microsoft <strong>Entra ID</strong> (Azure has a South Africa North region &mdash; see <a href="microsoft/" style="color: var(--sky); text-decoration: none; border-bottom: 1px dotted rgba(56, 189, 248, 0.4);">tech/microsoft</a>) and <strong>Google Identity</strong> (Workspace / Cloud Identity &mdash; see <a href="google/" style="color: var(--sky); text-decoration: none; border-bottom: 1px dotted rgba(56, 189, 248, 0.4);">tech/google</a>). Self-hosted <strong>Keycloak</strong> in <code>africa-south1</code> / <code>af-south-1</code> keeps the whole identity plane in-region when that's the requirement.</p>
+      <p><strong>Verify at the edge.</strong> A common SA-friendly pattern is to terminate OIDC / JWT verification in a Cloudflare Worker in front of the app (<a href="cloudflare/workers.html" style="color: var(--sky); text-decoration: none; border-bottom: 1px dotted rgba(56, 189, 248, 0.4);">tech/cloudflare/workers</a>) &mdash; the token is checked against the OP's JWKS at a PoP close to the user, and only authenticated requests reach the origin.</p>
+    </div>
+  </div>
+</section>
+
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">09 &middot; Connections</div>
+      <h2 class="section-title">Where OpenID Connect links in the tree.</h2>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="microsoft/" class="connect-node">
+        <span class="tag">tech/microsoft</span>
+        <div class="skill">Microsoft Entra ID</div>
+        <div class="why">The most common enterprise OpenID Provider in SA stacks. Azure has a South Africa North region, so the identity plane can stay in-country.</div>
+      </a>
+      <a href="google/" class="connect-node">
+        <span class="tag">tech/google</span>
+        <div class="skill">Google Identity</div>
+        <div class="why">Google as OP — "Sign in with Google", Workspace / Cloud Identity, and the Google-OIDC ID-token signing pattern used from Cloudflare Workers.</div>
+      </a>
+      <a href="cloudflare/workers.html" class="connect-node">
+        <span class="tag">tech/cloudflare/workers</span>
+        <div class="skill">Cloudflare Workers</div>
+        <div class="why">Where "OIDC / JWT at the door" runs — verifying the ID / access token against the OP's JWKS at the edge before requests hit the origin.</div>
+      </a>
+      <a href="../agents/mcp.html" class="connect-node">
+        <span class="tag">agents/mcp</span>
+        <div class="skill">Model Context Protocol</div>
+        <div class="why">MCP's authorization layer builds on the same OAuth 2.0 / OIDC machinery — discovery, scopes, bearer tokens — to gate which agent can call which server.</div>
+      </a>
+      <a href="../biz/crm/salesforce.html" class="connect-node">
+        <span class="tag">biz/crm/salesforce</span>
+        <div class="skill">Salesforce auth</div>
+        <div class="why">OAuth 2.0, Connected Apps, and the JWT bearer flow in practice — the same token machinery applied to a system-of-record integration.</div>
+      </a>
+      <a href="./" class="connect-node">
+        <span class="tag">tech</span>
+        <div class="skill">Tech domain</div>
+        <div class="why">Identity &amp; Auth sits alongside runtime, cloud, and protocol leaves — the cross-cutting layer every other tech branch leans on.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">10 &middot; Resources</div>
+      <h2 class="section-title">Primary sources only.</h2>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://openid.net/developers/how-connect-works/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">OpenID Foundation</span>
+        <span class="r-title">How OpenID Connect works</span>
+        <span class="r-url">openid.net/developers/how-connect-works</span>
+      </a>
+      <a href="https://openid.net/specs/openid-connect-core-1_0.html" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Spec</span>
+        <span class="r-title">OpenID Connect Core 1.0</span>
+        <span class="r-url">openid.net/specs/openid-connect-core-1_0.html</span>
+      </a>
+      <a href="https://openid.net/specs/openid-connect-discovery-1_0.html" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Spec</span>
+        <span class="r-title">OpenID Connect Discovery 1.0</span>
+        <span class="r-url">openid.net/specs/openid-connect-discovery-1_0.html</span>
+      </a>
+      <a href="https://openid.net/developers/specs/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Index</span>
+        <span class="r-title">OpenID Connect spec map &amp; index</span>
+        <span class="r-url">openid.net/developers/specs</span>
+      </a>
+      <a href="https://datatracker.ietf.org/doc/html/rfc6749" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">RFC</span>
+        <span class="r-title">RFC 6749 &middot; The OAuth 2.0 Authorization Framework</span>
+        <span class="r-url">datatracker.ietf.org/doc/html/rfc6749</span>
+      </a>
+      <a href="https://datatracker.ietf.org/doc/html/rfc6750" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">RFC</span>
+        <span class="r-title">RFC 6750 &middot; OAuth 2.0 Bearer Token Usage</span>
+        <span class="r-url">datatracker.ietf.org/doc/html/rfc6750</span>
+      </a>
+      <a href="https://datatracker.ietf.org/doc/html/rfc7519" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">RFC</span>
+        <span class="r-title">RFC 7519 &middot; JSON Web Token (JWT)</span>
+        <span class="r-url">datatracker.ietf.org/doc/html/rfc7519</span>
+      </a>
+      <a href="https://datatracker.ietf.org/doc/html/rfc7636" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">RFC</span>
+        <span class="r-title">RFC 7636 &middot; PKCE for OAuth Public Clients</span>
+        <span class="r-url">datatracker.ietf.org/doc/html/rfc7636</span>
+      </a>
+      <a href="https://datatracker.ietf.org/doc/html/rfc9700" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">RFC</span>
+        <span class="r-title">RFC 9700 &middot; OAuth 2.0 Security Best Current Practice</span>
+        <span class="r-url">datatracker.ietf.org/doc/html/rfc9700</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../index.html">Skills tree</a>
+      <a href="./">Tech hub</a>
+      <a href="https://openid.net/developers/how-connect-works/" target="_blank" rel="noopener">OpenID Connect &nearr;</a>
+      <a href="https://openid.net/specs/openid-connect-core-1_0.html" target="_blank" rel="noopener">Core spec &nearr;</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in Johannesburg, South Africa</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme(){const html=document.documentElement;const current=html.getAttribute('data-theme');const next=current==='dark'?'light':'dark';html.setAttribute('data-theme',next);document.querySelector('.theme-toggle').textContent=next==='dark'?'☀️':'🌙';localStorage.setItem('theme',next);}
+  const saved=localStorage.getItem('theme');if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.theme-toggle').textContent=saved==='dark'?'☀️':'🌙';}
+  const observer=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting)entry.target.classList.add('visible');});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>
