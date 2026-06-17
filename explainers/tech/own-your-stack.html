@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Own Your Stack &mdash; know.2nth.ai</title>
+<meta name="description" content="Own your stack — why source code, vendor specs, configs, customisations and real data belong in Git/GitHub, not locked inside M365/SharePoint. When to use SharePoint vs Git, how ERPNext gives you an in-house system of record, how Postgres + Apache Superset deliver affordable BI, and why an owned, reachable stack is the foundation for AI agents, workflows, tools and MCP servers.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/tech/own-your-stack">
+<meta property="og:title" content="Own Your Stack &mdash; know.2nth.ai">
+<meta property="og:description" content="Why code, configs and data belong in Git/GitHub not SharePoint, how ERPNext + Postgres + Superset build an owned record-and-BI layer, and why an owned stack is the foundation for AI agents and MCP servers.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Own Your Stack &mdash; know.2nth.ai">
+<meta name="twitter:description" content="Code, configs and data in Git — not trapped in SharePoint. ERPNext + Postgres + Superset for owned records and BI. The foundation for AI agents and MCP.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3Cline x1='16' y1='3' x2='16' y2='7' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='16' y1='25' x2='16' y2='29' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='3' y1='16' x2='7' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='25' y1='16' x2='29' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3C/svg%3E">
+<style>
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-glow: #34D399; --green-soft: rgba(16, 185, 129, 0.12); --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-glow: #818CF8; --indigo-soft: rgba(99, 102, 241, 0.12); --cyan: #22D3EE; --cyan-soft: rgba(34, 211, 238, 0.12); --bg: var(--ink); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(37, 99, 235, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(56, 189, 248, 0.3); --max-w: 1200px; --read-w: 760px; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(37, 99, 235, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(37, 99, 235, 0.25); }
+  * { margin: 0; padding: 0; box-sizing: border-box; } html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.indigo { width: 600px; height: 600px; background: var(--indigo); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--sky); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--sky); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--sky); } .crumb-sep { opacity: 0.5; } .crumb-current { color: var(--text-secondary); }
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--indigo); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--indigo); box-shadow: 0 0 12px var(--indigo); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--indigo-glow), var(--sky), var(--cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.accent { background: rgba(37, 99, 235, 0.12); color: var(--blue-glow); border-color: rgba(37, 99, 235, 0.25); }
+  .pill.green { background: var(--green-soft); color: var(--green); border-color: rgba(16, 185, 129, 0.25); }
+  .pill.indigo { background: var(--indigo-soft); color: var(--indigo-glow); border-color: rgba(99, 102, 241, 0.25); }
+  .pill.cyan { background: var(--cyan-soft); color: var(--cyan); border-color: rgba(34, 211, 238, 0.25); }
+  .pill.warn { background: var(--warm-soft); color: var(--warm-glow); border-color: rgba(245, 158, 11, 0.25); }
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--sky); margin-bottom: 14px; }
+  .section-label.indigo { color: var(--indigo-glow); }
+  .section-label.cyan { color: var(--cyan); }
+  .section-label.green { color: var(--green-glow); }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--sky); }
+  .prose ul, .prose ol { padding-left: 24px; margin-bottom: 18px; max-width: var(--read-w); }
+  .prose li { font-size: 15px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 8px; }
+  .prose li strong { color: var(--text-primary); font-weight: 600; }
+  pre.code { background: var(--ink-deep); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px 22px; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.65; color: var(--mist); margin: 0 0 20px; max-width: var(--read-w); }
+  [data-theme="light"] pre.code { background: #0F172A; color: #E2E8F0; }
+  pre.code .k { color: var(--sky); } pre.code .s { color: #A5F3B8; } pre.code .c { color: var(--text-muted); font-style: italic; } pre.code .h { color: var(--blue-glow); font-weight: 600; }
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); margin-bottom: 20px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.indigo { border-left: 3px solid var(--indigo); }
+  .info-card.cyan { border-left: 3px solid var(--cyan); }
+  .info-card.rose { border-left: 3px solid var(--rose); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .info-card ul { padding-left: 20px; margin: 0; }
+  .info-card li { font-size: 14px; color: var(--text-secondary); line-height: 1.65; margin-bottom: 6px; }
+  .info-card li strong { color: var(--text-primary); }
+  /* Lock-in flow diagram */
+  .flow { display: grid; grid-template-columns: 1fr auto 1fr; gap: 16px; align-items: stretch; max-width: var(--read-w); margin-bottom: 20px; }
+  @media (max-width: 640px) { .flow { grid-template-columns: 1fr; } .flow .flow-mid { transform: rotate(90deg); padding: 8px 0; } }
+  .flow-col { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 22px 24px; }
+  .flow-col.trapped { border-left: 3px solid var(--rose); }
+  .flow-col.owned { border-left: 3px solid var(--green); }
+  .flow-col .flow-head { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1.4px; text-transform: uppercase; margin-bottom: 14px; }
+  .flow-col.trapped .flow-head { color: var(--rose); }
+  .flow-col.owned .flow-head { color: var(--green); }
+  .flow-col ul { list-style: none; padding: 0; margin: 0; }
+  .flow-col li { font-size: 13px; color: var(--text-secondary); line-height: 1.5; padding: 6px 0; border-bottom: 1px solid var(--border); display: flex; gap: 8px; }
+  .flow-col li:last-child { border-bottom: none; }
+  .flow-col li .mk { font-family: 'JetBrains Mono', monospace; flex-shrink: 0; }
+  .flow-col.trapped li .mk { color: var(--rose); }
+  .flow-col.owned li .mk { color: var(--green); }
+  .flow-mid { display: grid; place-items: center; font-family: 'JetBrains Mono', monospace; font-size: 22px; color: var(--text-muted); }
+  /* Stack layers */
+  .stack-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; max-width: var(--read-w); margin-bottom: 20px; }
+  .stack-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--indigo); border-radius: var(--radius-md); padding: 18px 22px; }
+  .stack-cell.sky { border-left-color: var(--sky); }
+  .stack-cell.cyan { border-left-color: var(--cyan); }
+  .stack-cell.green { border-left-color: var(--green); }
+  .stack-cell .layer { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .stack-cell h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.3px; }
+  .stack-cell p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+  /* Vertical stack diagram for AI foundation */
+  .pyramid { max-width: var(--read-w); margin-bottom: 20px; display: flex; flex-direction: column; gap: 10px; }
+  .pyramid-row { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 16px 22px; display: flex; align-items: center; gap: 16px; }
+  .pyramid-row .p-tier { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-muted); width: 88px; flex-shrink: 0; }
+  .pyramid-row .p-body { font-size: 14px; color: var(--text-secondary); line-height: 1.55; }
+  .pyramid-row .p-body strong { color: var(--text-primary); }
+  .pyramid-row.top { border-left: 3px solid var(--green); }
+  .pyramid-row.mid { border-left: 3px solid var(--cyan); }
+  .pyramid-row.base { border-left: 3px solid var(--indigo); }
+  .pyramid-arrow { text-align: center; color: var(--text-muted); font-size: 14px; font-family: 'JetBrains Mono', monospace; }
+  /* Compare table */
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: var(--read-w); margin-bottom: 20px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--sky); background: rgba(37, 99, 235, 0.04); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); } .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--sky); }
+  .compare td strong { color: var(--text-primary); }
+  /* Decision */
+  .decision-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: var(--read-w); }
+  @media (max-width: 720px) { .decision-grid { grid-template-columns: 1fr; } }
+  .decision-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 24px; }
+  .decision-card.use { border-left: 3px solid var(--indigo); } .decision-card.skip { border-left: 3px solid var(--sky); }
+  .decision-card h4 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 12px; }
+  .decision-card.use h4 { color: var(--indigo-glow); } .decision-card.skip h4 { color: var(--sky); }
+  .decision-card ul { list-style: none; padding: 0; }
+  .decision-card li { font-size: 13px; color: var(--text-secondary); line-height: 1.6; padding: 6px 0; border-bottom: 1px solid var(--border); }
+  .decision-card li:last-child { border-bottom: none; }
+  /* Connections */
+  .connect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .connect-node { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; transition: all 0.3s; text-decoration: none; color: inherit; display: block; }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node.soon { cursor: default; opacity: 0.72; }
+  .connect-node .tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+  /* Resources */
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--sky); word-break: break-all; }
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--sky); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } pre.code { font-size: 11px; padding: 14px 16px; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+
+<div class="glow-orb indigo"></div>
+<div class="glow-orb sky"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand"><span class="nav-brand-mark">know.2nth.ai</span><span class="nav-brand-sub">tech/own-your-stack</span></a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">&larr; Tech</a>
+      <a href="../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x2600;&#xFE0F;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="./">Tech</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">Own Your Stack</span>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> tech &middot; IP &amp; Open-Source Foundation</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      Own your stack. <span class="gradient">Or rent it from someone else.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      Your source code, vendor specs, configs, customisations and real data are intellectual property. When they live inside another vendor's system, you don't own them &mdash; you lease access to them, and the price of leaving goes up every year. This is the case for holding what evolves in <strong>Git/GitHub</strong>, knowing when Microsoft 365 / SharePoint is still the right home, and how an owned record-and-data layer (<strong>ERPNext</strong>, <strong>Postgres</strong>, <strong>Apache Superset</strong>) becomes the foundation that makes <strong>AI agents and MCP servers</strong> actually possible.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill indigo">Git &middot; GitHub</span>
+      <span class="pill accent">ERPNext v16</span>
+      <span class="pill cyan">Postgres</span>
+      <span class="pill cyan">Superset</span>
+      <span class="pill green">MCP</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 LOCK-IN PROBLEM -->
+<section id="lock-in">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label indigo">01 &middot; The lock-in problem</div>
+      <h2 class="section-title">If you can't leave, you don't own it.</h2>
+      <p class="section-lede">Most organisations never decide to lock themselves in. It happens by default. A vendor builds your customisations inside their platform, your configs live in their admin console, your specs sit in a SharePoint folder, and your data is exportable only on their terms. Each choice is reasonable on its own. Together they mean the cost of switching &mdash; or just auditing what you actually have &mdash; quietly becomes prohibitive.</p>
+    </div>
+
+    <div class="flow fade-up" style="transition-delay: 0.05s">
+      <div class="flow-col trapped">
+        <div class="flow-head">Trapped in vendor silos</div>
+        <ul>
+          <li><span class="mk">&times;</span> Customisations only exist in the vendor's console</li>
+          <li><span class="mk">&times;</span> Configs live in someone else's admin panel</li>
+          <li><span class="mk">&times;</span> Specs &amp; docs scattered across SharePoint folders</li>
+          <li><span class="mk">&times;</span> Data exportable only on the vendor's terms</li>
+          <li><span class="mk">&times;</span> No diff, no history, no "who changed this and why"</li>
+          <li><span class="mk">&times;</span> Switching cost rises every year you stay</li>
+        </ul>
+      </div>
+      <div class="flow-mid">&rarr;</div>
+      <div class="flow-col owned">
+        <div class="flow-head">Held in your own Git remote</div>
+        <ul>
+          <li><span class="mk">&check;</span> Source, specs &amp; configs versioned in one place</li>
+          <li><span class="mk">&check;</span> Full history &mdash; every change attributable</li>
+          <li><span class="mk">&check;</span> Portable: clone it, move it, mirror it</li>
+          <li><span class="mk">&check;</span> Infra-as-code, so the environment is reproducible</li>
+          <li><span class="mk">&check;</span> Review before anything ships</li>
+          <li><span class="mk">&check;</span> Leaving a vendor is a migration, not a hostage release</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="info-card rose fade-up" style="transition-delay: 0.08s">
+      <h4>The failure mode in one sentence</h4>
+      <p>The day you want to change vendors, re-tender a contract, or simply prove to an auditor what your system does, you discover the answer lives inside a platform you don't control &mdash; and the only person who can extract it is the vendor you're trying to leave. <strong>Ownership isn't a feeling; it's whether you can walk away with everything that matters.</strong></p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 WHAT GIT GIVES YOU -->
+<section id="git">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label indigo">02 &middot; What Git/GitHub actually gives you</div>
+      <h2 class="section-title">Versioned source-of-truth for everything that evolves.</h2>
+      <p class="section-lede">Git is not a backup, and GitHub is not just "where developers put code". Git is a system for owning anything that changes over time and needs to be diffable, reviewable, attributable and portable &mdash; source code, yes, but equally your vendor specs, environment configs, customisation scripts, infra definitions and the HTML deliverables you paid to have built.</p>
+    </div>
+
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Six things you get the moment an asset lives in a Git repository you control:</p>
+      <ul>
+        <li><strong>Ownership of the keys.</strong> The repo is yours. You hold the remote, the access list, the right to mirror it anywhere. No vendor can revoke your copy.</li>
+        <li><strong>Full, attributable history.</strong> Every change is a commit: who, what, when, and the message saying why. That's an audit trail you didn't have to build.</li>
+        <li><strong>Portability.</strong> <code>git clone</code> and the entire history moves &mdash; to a new host, a new vendor, an offline mirror. Switching becomes a migration with a plan, not a crisis.</li>
+        <li><strong>Branching &amp; review.</strong> Changes are proposed, reviewed, and merged deliberately. Nothing reaches production because one person clicked "save" in an admin panel.</li>
+        <li><strong>Diffability.</strong> You can see exactly what changed between any two points in time. "What did the vendor alter last quarter?" stops being a guess.</li>
+        <li><strong>Reproducibility.</strong> Configs and infra-as-code mean the environment can be rebuilt from the repo &mdash; not reconstructed from memory and a support ticket.</li>
+      </ul>
+    </div>
+
+    <div class="info-card indigo fade-up" style="transition-delay: 0.08s">
+      <h4>"But GitHub is owned by Microsoft too"</h4>
+      <p>True &mdash; and it doesn't undercut the point. The thing that makes Git different from a vendor silo is that GitHub is a <em>host</em> for a format you fully control, not a proprietary container. Your repository is a complete, self-contained copy that lives on every machine that clones it. If GitHub vanished tomorrow you'd <code>git push</code> to GitLab, Gitea, Bitbucket, or a box in your own server room and lose nothing but a URL. <strong>That portability is the ownership.</strong> The host is replaceable; the asset is yours.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 SHAREPOINT VS GIT -->
+<section id="sharepoint">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; M365/SharePoint &ne; Git</div>
+      <h2 class="section-title">Both are right. The skill is knowing the boundary.</h2>
+      <p class="section-lede">This is not Microsoft-bashing. SharePoint and M365 are genuinely excellent at what they're for: documents, collaboration, finished-artefact storage, the day-to-day office work of a real organisation. The failure isn't using SharePoint &mdash; it's putting IP-bearing <em>source and config</em> there, where it can't be diffed, reviewed, branched or cleanly ported. Git and SharePoint solve different problems. Use each for its job.</p>
+    </div>
+
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead><tr><th>Dimension</th><th>M365 / SharePoint</th><th>Git / GitHub</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Built for</strong></td><td>Documents, collaboration, office files</td><td>Versioned source-of-truth that evolves</td></tr>
+          <tr><td><strong>Sweet spot</strong></td><td>Proposals, contracts, slides, finished artefacts</td><td>Code, specs, configs, customisations, infra-as-code</td></tr>
+          <tr><td><strong>Change tracking</strong></td><td>Version history per file, informal</td><td>Commit-level diffs across the whole repo</td></tr>
+          <tr><td><strong>Review model</strong></td><td>Co-authoring, comments, approvals</td><td>Branches &amp; pull requests before merge</td></tr>
+          <tr><td><strong>"Why did this change?"</strong></td><td>Usually unanswerable</td><td>The commit message, attributed to a person</td></tr>
+          <tr><td><strong>Portability</strong></td><td>Export per file; structure &amp; logic stay behind</td><td>Clone the whole thing, history included</td></tr>
+          <tr><td><strong>Machine-reachable</strong></td><td>Through Graph API, document-shaped</td><td>Plain files an agent or pipeline can read directly</td></tr>
+          <tr><td><strong>Wrong tool when</strong></td><td>It holds source code or system config</td><td>It holds a one-off Word doc nobody will diff</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="info-card amber fade-up" style="transition-delay: 0.08s">
+      <h4>A simple test</h4>
+      <p>Ask: <em>"Will anyone ever need to see exactly what changed in this, line by line, and know who changed it?"</em> If yes &mdash; a config file, a customisation, a spec that drives a build, infrastructure definitions &mdash; it belongs in <strong>Git</strong>. If it's a finished artefact people read, comment on, and store (a signed contract, a board pack, a brochure), <strong>SharePoint</strong> is the right and easier home. Most organisations need both; the cost is paid when IP ends up on the wrong side of that line.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 ERPNEXT RECORD SYSTEM -->
+<section id="erpnext">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label cyan">04 &middot; Build your own record system</div>
+      <h2 class="section-title">ERPNext: an in-house system of record you actually own.</h2>
+      <p class="section-lede">Once you accept that owning what matters is the goal, the same logic reaches your operational data. ERPNext is a 100% open-source ERP built on the Frappe Framework &mdash; accounting, inventory, sales, purchasing, manufacturing, HR and more &mdash; that you can self-host, customise without forking, and keep your data inside. No per-user licence, no vendor holding the keys to your own records.</p>
+    </div>
+
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>ERPNext was created by Frappe Technologies (Rushabh Mehta) and open-sourced in 2010. It ships 30+ modules, is used by organisations across roughly 150 countries, and is licensed <strong>GPLv3</strong> &mdash; genuinely free to self-host with no per-seat fee. The current line is <strong>ERPNext v16, released January 2026</strong>, built on the Frappe "Caffeine" performance release, with a redesigned UI, Phantom BOMs and reworked payroll.</p>
+      <p>The architectural detail that makes it ownable is the <strong>DocType</strong>. Every entity in ERPNext &mdash; an invoice, a customer, a custom workflow &mdash; is a metadata-defined DocType. You customise by adding fields, DocTypes and scripts as <em>metadata</em>, not by editing core. That means you can shape the system to your business and still take clean upgrades, and your customisations are exportable artefacts you can hold in Git.</p>
+    </div>
+
+    <div class="stack-grid fade-up" style="transition-delay: 0.07s">
+      <div class="stack-cell cyan">
+        <span class="layer">Licence</span>
+        <h4>GPLv3, self-host</h4>
+        <p>100% open source. No per-user licensing. Run it on your own infrastructure and the data stays yours.</p>
+      </div>
+      <div class="stack-cell cyan">
+        <span class="layer">Customisation</span>
+        <h4>DocTypes, not forks</h4>
+        <p>Metadata-driven. Extend with custom fields and scripts without touching core &mdash; upgrades stay clean.</p>
+      </div>
+      <div class="stack-cell cyan">
+        <span class="layer">Coverage</span>
+        <h4>30+ modules</h4>
+        <p>Accounting, inventory, sales, buying, manufacturing, projects, HR &amp; payroll. One system of record.</p>
+      </div>
+      <div class="stack-cell cyan">
+        <span class="layer">Hosting</span>
+        <h4>Self or cloud</h4>
+        <p>Self-host for full control, or Frappe Cloud from roughly $50/month if you'd rather not run the box.</p>
+      </div>
+    </div>
+
+    <div class="info-card cyan fade-up" style="transition-delay: 0.1s">
+      <h4>TCO vs proprietary ERP</h4>
+      <p>SAP, Oracle and NetSuite charge per named user, per module, and often per integration &mdash; costs that scale with your headcount and your success. ERPNext removes the licence line entirely; your spend is infrastructure plus the implementation effort. For a growing SA mid-market organisation, that's frequently the difference between an ERP being affordable and being a permanent six-figure tax. <strong>Be honest about the trade:</strong> you take on hosting and maintenance responsibility. Owned doesn't mean free of effort &mdash; it means free of the licence lock and the data hostage.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 BI / WAREHOUSE -->
+<section id="bi">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label cyan">05 &middot; Affordable BI &amp; data warehouse</div>
+      <h2 class="section-title">Postgres as the warehouse. Superset for the dashboards.</h2>
+      <p class="section-lede">Business intelligence used to require six-figure licences and a specialist team. That floor has collapsed. <strong>PostgreSQL</strong> &mdash; the most capable open-source database in production &mdash; is a perfectly good analytics warehouse for most organisations, and <strong>Apache Superset</strong> gives you the dashboard, chart and SQL-exploration layer on top, open source, on cheap infrastructure.</p>
+    </div>
+
+    <div class="stack-grid fade-up" style="transition-delay: 0.05s">
+      <div class="stack-cell cyan">
+        <span class="layer">Warehouse</span>
+        <h4>PostgreSQL</h4>
+        <p>Open-source, battle-tested, SQL-standard. Holds your consolidated operational and analytical data on infrastructure you control.</p>
+      </div>
+      <div class="stack-cell cyan">
+        <span class="layer">BI layer</span>
+        <h4>Apache Superset</h4>
+        <p>Open-source exploration and dashboarding. Connects straight to Postgres; charts, dashboards and a SQL Lab for analysts.</p>
+      </div>
+      <div class="stack-cell green">
+        <span class="layer">Outcome</span>
+        <h4>Owned analytics</h4>
+        <p>Capability that once needed Tableau/Power BI seats and a warehouse appliance &mdash; now open source, on a modest VM.</p>
+      </div>
+    </div>
+
+    <div class="prose fade-up" style="transition-delay: 0.08s">
+      <p>The pattern is straightforward: operational data lands in or replicates to Postgres, Superset points at it, and analysts build dashboards without anyone buying a per-seat BI licence. Because both layers are open source and self-hosted, the data never leaves systems you own &mdash; which matters for cost, and matters more when AI agents need to read that data later.</p>
+    </div>
+
+    <div class="info-card amber fade-up" style="transition-delay: 0.1s">
+      <h4>Where the honesty lives</h4>
+      <p>Postgres-as-warehouse is right for the small-to-mid analytical volumes most organisations actually have. It is not a petabyte-scale columnar engine &mdash; if you genuinely reach that scale, a dedicated warehouse (or a columnar extension) earns its place. And "free software" still costs operational effort: someone runs the database, manages backups, and keeps Superset patched. The win isn't zero cost; it's <strong>owned capability at a fraction of the proprietary licence floor</strong>. Note: ERPNext's own stack runs on MariaDB/Postgres; the brief here is the dedicated analytical warehouse beside it, not a replacement for the transactional DB.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 AI FOUNDATION -->
+<section id="ai">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label green">06 &middot; The AI foundation</div>
+      <h2 class="section-title">You can't point an agent at a black box.</h2>
+      <p class="section-lede">This is the payoff. Everything above &mdash; code in Git, records in ERPNext, data in Postgres &mdash; shares one property: it lives in systems you own and can reach programmatically. That is precisely the precondition for useful, safe AI. Agents, agent workflows, internal tools and <strong>MCP servers</strong> all need to read and act on your systems through clean, governed interfaces. An owned, reachable stack gives them that surface; a vendor silo does not.</p>
+    </div>
+
+    <div class="pyramid fade-up" style="transition-delay: 0.05s">
+      <div class="pyramid-row top">
+        <span class="p-tier">Top &middot; agents</span>
+        <span class="p-body"><strong>Agents &amp; workflows.</strong> Internal copilots, automations and multi-step workflows that read context and take action &mdash; built and maintained with AI coding tools like GitHub Copilot and Claude / Claude Code.</span>
+      </div>
+      <div class="pyramid-arrow">&uarr; calls through</div>
+      <div class="pyramid-row mid">
+        <span class="p-tier">Middle &middot; MCP</span>
+        <span class="p-body"><strong>MCP server layer.</strong> The Model Context Protocol exposes your owned systems to agents through a standard, governed interface &mdash; tools and data with explicit boundaries, not screen-scraping a vendor portal.</span>
+      </div>
+      <div class="pyramid-arrow">&uarr; reaches into</div>
+      <div class="pyramid-row base">
+        <span class="p-tier">Base &middot; owned</span>
+        <span class="p-body"><strong>Git + ERPNext + Postgres.</strong> Source, records and data in systems you control and can reach programmatically. The foundation the whole pyramid stands on.</span>
+      </div>
+    </div>
+
+    <div class="info-card green fade-up" style="transition-delay: 0.08s">
+      <h4>Why ownership is the safety story, not just the cost story</h4>
+      <p>An MCP server in front of your own Postgres and ERPNext can enforce exactly which data an agent reads and which actions it may take &mdash; with the audit trail living in systems you control. You cannot wrap that governance around a vendor's black-box silo whose only interface is a UI and a throttled export. <strong>The open, owned stack is what makes agentic AI both possible and safe.</strong> AI coding tools (Copilot, Claude Code) then build and maintain the harness on top &mdash; which is itself code, which itself lives in Git. The loop closes.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 07 DECISION GUIDE -->
+<section id="decision">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; Decision guide</div>
+      <h2 class="section-title">Put it in Git when. Keep it in SharePoint when.</h2>
+      <p class="section-lede">Honest, not dogmatic. The point was never "everything into Git". It's that IP-bearing source and config belong in version control, and finished office artefacts belong where collaboration is easy. Here's the two-sided rule of thumb.</p>
+    </div>
+    <div class="decision-grid fade-up" style="transition-delay: 0.05s">
+      <div class="decision-card use">
+        <h4>Put it in Git when&hellip;</h4>
+        <ul>
+          <li>It's source code, scripts, or anything that runs</li>
+          <li>It's a config, setting or customisation that changes behaviour</li>
+          <li>It's a spec that drives a build or a deliverable</li>
+          <li>It's infrastructure defined as code</li>
+          <li>It must be diffable &mdash; "what changed and why" matters</li>
+          <li>It must be portable across vendors or hosts</li>
+          <li>An agent or pipeline needs to read it directly</li>
+        </ul>
+      </div>
+      <div class="decision-card skip">
+        <h4>Keep it in SharePoint / M365 when&hellip;</h4>
+        <ul>
+          <li>It's a finished document people read and store</li>
+          <li>It's contracts, proposals, board packs, slide decks</li>
+          <li>Live co-authoring and comments are the point</li>
+          <li>It's day-to-day office files and shared drives</li>
+          <li>Approval workflows and permissions are the value</li>
+          <li>Nobody will ever need a line-by-line diff of it</li>
+          <li>It's correspondence, not configuration</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="info-card indigo fade-up" style="transition-delay: 0.08s">
+      <h4>A light SA note</h4>
+      <p>For SA organisations, owning the stack also eases <strong>POPIA</strong> and data-residency conversations: when records sit in your own Postgres and ERPNext on infrastructure you choose, "where does our data live and who can reach it?" has a concrete answer instead of a vendor's terms-of-service. Keep it proportionate &mdash; this is a benefit of the approach, not the reason for it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 08 CONNECTIONS -->
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 &middot; Connections</div>
+      <h2 class="section-title">Where this links in the tree.</h2>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="frappe/framework.html" class="connect-node">
+        <span class="tag">tech/frappe</span>
+        <div class="skill">Frappe Framework</div>
+        <div class="why">The metadata-driven platform ERPNext is built on. DocTypes, the framework that makes customise-without-forking possible.</div>
+      </a>
+      <a href="../data/warehousing/postgresql.html" class="connect-node">
+        <span class="tag">data/warehousing</span>
+        <div class="skill">PostgreSQL</div>
+        <div class="why">The owned warehouse layer. Holds consolidated data on infrastructure you control, ready for Superset and for agents to read.</div>
+      </a>
+      <a href="../agents/mcp.html" class="connect-node">
+        <span class="tag">agents/mcp</span>
+        <div class="skill">Model Context Protocol</div>
+        <div class="why">The governed interface that exposes your owned systems to agents &mdash; tools and data with explicit boundaries, not screen-scraping.</div>
+      </a>
+      <a href="../agents/claude-code.html" class="connect-node">
+        <span class="tag">agents/claude-code</span>
+        <div class="skill">Claude Code</div>
+        <div class="why">AI coding tool that builds and maintains the harness on top of the owned stack &mdash; itself producing code that lives in Git.</div>
+      </a>
+      <a href="../agents/github-copilot-cli.html" class="connect-node">
+        <span class="tag">agents/github-copilot-cli</span>
+        <div class="skill">GitHub Copilot CLI</div>
+        <div class="why">The other half of the AI coding-tool story, native to the GitHub surface where your owned source already lives.</div>
+      </a>
+      <a href="microsoft/index.html" class="connect-node">
+        <span class="tag">tech/microsoft</span>
+        <div class="skill">Microsoft hub</div>
+        <div class="why">The M365 / Azure side of the boundary. SharePoint is the right home for finished artefacts &mdash; the question is where the line falls.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 09 RESOURCES -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">09 &middot; Resources</div>
+      <h2 class="section-title">Primary sources.</h2>
+      <p class="section-lede">Official project sites and documentation only. Content validated June 2026 &mdash; ERPNext v16 (released January 2026), Frappe Framework, PostgreSQL, Apache Superset, and the Model Context Protocol.</p>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://github.com" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Platform</span>
+        <span class="r-title">GitHub</span>
+        <span class="r-url">github.com</span>
+      </a>
+      <a href="https://git-scm.com" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs</span>
+        <span class="r-title">Git &mdash; official site &amp; docs</span>
+        <span class="r-url">git-scm.com</span>
+      </a>
+      <a href="https://github.com/frappe/erpnext" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Source</span>
+        <span class="r-title">frappe/erpnext</span>
+        <span class="r-url">github.com/frappe/erpnext</span>
+      </a>
+      <a href="https://frappeframework.com" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs</span>
+        <span class="r-title">Frappe Framework</span>
+        <span class="r-url">frappeframework.com</span>
+      </a>
+      <a href="https://www.postgresql.org" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Database</span>
+        <span class="r-title">PostgreSQL</span>
+        <span class="r-url">postgresql.org</span>
+      </a>
+      <a href="https://superset.apache.org" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">BI</span>
+        <span class="r-title">Apache Superset</span>
+        <span class="r-url">superset.apache.org</span>
+      </a>
+      <a href="https://modelcontextprotocol.io" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Protocol</span>
+        <span class="r-title">Model Context Protocol</span>
+        <span class="r-url">modelcontextprotocol.io</span>
+      </a>
+      <a href="https://github.com/features/copilot" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">AI tool</span>
+        <span class="r-title">GitHub Copilot</span>
+        <span class="r-url">github.com/features/copilot</span>
+      </a>
+      <a href="https://claude.com/claude-code" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">AI tool</span>
+        <span class="r-title">Claude Code</span>
+        <span class="r-url">claude.com/claude-code</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../index.html">Knowledge tree</a>
+      <a href="./">Tech hub</a>
+      <a href="https://github.com/frappe/erpnext" target="_blank" rel="noopener">ERPNext source &nearr;</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in Johannesburg, South Africa</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme(){const html=document.documentElement;const current=html.getAttribute('data-theme');const next=current==='dark'?'light':'dark';html.setAttribute('data-theme',next);document.querySelector('.theme-toggle').textContent=next==='dark'?'☀️':'🌙';localStorage.setItem('theme',next);}
+  const saved=localStorage.getItem('theme');if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.theme-toggle').textContent=saved==='dark'?'☀️':'🌙';}
+  const observer=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting)entry.target.classList.add('visible');});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>
