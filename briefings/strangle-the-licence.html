@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Strangle the Licence &mdash; Replacing Expensive Software Without a Big-Bang Rewrite</title>
+<meta name="description" content="A non-technical board briefing on the strangler-fig strategy: how to replace an expensive ERP, big-ticket licence or SaaS subscription gradually — one function at a time, behind a façade, with the old system as a safety net — using open source, Git ownership and AI coding tools to build the replacement faster and cheaper than ever.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/briefings/strangle-the-licence">
+<meta property="og:title" content="Strangle the Licence — Replace Expensive Software Without a Big-Bang Rewrite">
+<meta property="og:description" content="Replace an expensive ERP or SaaS gradually — one function at a time, behind a façade, old system as safety net — using open source, Git and AI. A non-technical board briefing.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai — The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Strangle the Licence — Board Briefing">
+<meta name="twitter:description" content="Replace an expensive ERP or SaaS gradually, function by function, with the old system as a safety net. Open source + Git + AI. A non-technical board briefing.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%2310B981' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --ink: #0B1120; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6;
+    --sky: #38BDF8; --paper: #F8FAFC; --slate: #94A3B8;
+    --warm: #F59E0B; --warm-soft: rgba(245,158,11,0.12);
+    --green: #10B981; --green-soft: rgba(16,185,129,0.12);
+    --rose: #F43F5E; --rose-soft: rgba(244,63,94,0.12);
+    --indigo: #6366F1; --indigo-soft: rgba(99,102,241,0.12);
+    --max-w: 1080px; --read-w: 820px;
+    --radius-md: 14px; --radius-lg: 22px; --radius-pill: 100px;
+    --bg: #F4F6FB; --bg-soft: #EAEEF6; --card: #FFFFFF; --card-2: #FBFCFE;
+    --text: #0B1120; --text-2: #475569; --text-3: #8A97AB;
+    --border: rgba(15,23,42,0.10); --border-strong: rgba(15,23,42,0.16);
+    --shadow: 0 14px 40px rgba(15,23,42,0.08);
+  }
+  [data-theme="dark"] {
+    --bg: #0B1120; --bg-soft: #0E1626; --card: #121D33; --card-2: #0F1929;
+    --text: #F8FAFC; --text-2: #B6C2D6; --text-3: #6B7A92;
+    --border: rgba(148,163,184,0.14); --border-strong: rgba(148,163,184,0.24);
+    --shadow: 0 16px 48px rgba(0,0,0,0.4);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+    background: radial-gradient(1200px 600px at 80% -100px, var(--bg-soft), var(--bg)) fixed;
+    color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  }
+  .wrap { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+
+  .topbar { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(14px);
+    background: color-mix(in srgb, var(--bg) 80%, transparent); border-bottom: 1px solid var(--border); }
+  .topbar-inner { max-width: var(--max-w); margin: 0 auto; padding: 12px 24px;
+    display: flex; align-items: center; justify-content: space-between; }
+  .brand { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 14px;
+    background: linear-gradient(135deg, var(--green), var(--sky));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .brand-sub { font-size: 11px; color: var(--text-3); letter-spacing: 1.5px; text-transform: uppercase;
+    margin-left: 10px; padding-left: 10px; border-left: 1px solid var(--border); font-weight: 500; }
+  .toggle { background: none; border: 1px solid var(--border); color: var(--text-2);
+    width: 34px; height: 34px; border-radius: 50%; cursor: pointer; display: grid; place-items: center;
+    font-size: 15px; transition: all 0.2s; }
+  .toggle:hover { border-color: var(--border-strong); }
+
+  .hero { padding: 64px 0 36px; }
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500;
+    letter-spacing: 2.5px; text-transform: uppercase; color: var(--green);
+    display: inline-flex; align-items: center; gap: 10px; margin-bottom: 22px; }
+  .eyebrow .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 12px var(--green); }
+  .hero h1 { font-size: clamp(36px, 6vw, 60px); font-weight: 800; line-height: 1.05;
+    letter-spacing: -1.8px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .hl { background: linear-gradient(135deg, var(--green), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .lede { font-size: 19px; color: var(--text-2); max-width: 680px; line-height: 1.6; font-weight: 300; margin-bottom: 26px; }
+  .chips { display: flex; gap: 8px; flex-wrap: wrap; }
+  .chip { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 7px 14px;
+    border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-2); background: var(--card); }
+
+  .bluf { background: linear-gradient(135deg, var(--green-soft), transparent);
+    border: 1px solid var(--border); border-left: 4px solid var(--green);
+    border-radius: var(--radius-lg); padding: 28px 32px; box-shadow: var(--shadow); margin: 12px 0 8px; }
+  .bluf .tag { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.6px; text-transform: uppercase; color: var(--green); font-weight: 600; margin-bottom: 10px; }
+  .bluf p { font-size: 18px; line-height: 1.6; color: var(--text); font-weight: 400; }
+  .bluf p strong { font-weight: 700; }
+
+  section { padding: 46px 0; }
+  .s-num { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--sky); font-weight: 600; margin-bottom: 12px; }
+  .s-title { font-size: clamp(26px, 4vw, 38px); font-weight: 700; letter-spacing: -0.8px; line-height: 1.15; margin-bottom: 16px; max-width: 20ch; }
+  .s-lede { font-size: 17px; color: var(--text-2); max-width: var(--read-w); line-height: 1.65; font-weight: 300; margin-bottom: 30px; }
+
+  /* three options */
+  .opts { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+  @media (max-width: 760px){ .opts { grid-template-columns: 1fr; } }
+  .opt { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 26px 26px; box-shadow: var(--shadow); }
+  .opt.bad { border-top: 4px solid var(--rose); }
+  .opt.meh { border-top: 4px solid var(--warm); }
+  .opt.good { border-top: 4px solid var(--green); }
+  .opt .ot { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; font-weight: 600; margin-bottom: 10px; }
+  .opt.bad .ot { color: var(--rose); } .opt.meh .ot { color: var(--warm); } .opt.good .ot { color: var(--green); }
+  .opt h4 { font-size: 19px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.3px; }
+  .opt p { font-size: 14px; color: var(--text-2); line-height: 1.6; }
+  .opt .verdict { font-size: 13px; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border); font-weight: 600; }
+  .opt.bad .verdict { color: var(--rose); } .opt.meh .verdict { color: var(--warm); } .opt.good .verdict { color: var(--green); }
+
+  /* phase bars */
+  .phases { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 30px 32px; box-shadow: var(--shadow); max-width: var(--read-w); }
+  .phase { margin-bottom: 20px; }
+  .phase:last-child { margin-bottom: 0; }
+  .phase .pl { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 7px; }
+  .phase .pname { font-size: 14.5px; font-weight: 600; color: var(--text); }
+  .phase .pstep { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-3); letter-spacing: 1px; text-transform: uppercase; }
+  .phase .ptrack { display: flex; height: 30px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); }
+  .phase .old { background: linear-gradient(90deg, #F43F5E, #FB7185); display: grid; place-items: center; }
+  .phase .new { background: linear-gradient(90deg, #10B981, #34D399); display: grid; place-items: center; }
+  .phase .seg-lbl { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; color: #fff; letter-spacing: 0.5px; white-space: nowrap; padding: 0 6px; }
+  .phlegend { display: flex; gap: 18px; margin-top: 22px; font-size: 13px; color: var(--text-2); flex-wrap: wrap; }
+  .phlegend span { display: inline-flex; align-items: center; gap: 7px; }
+  .phlegend .sw { width: 13px; height: 13px; border-radius: 3px; }
+  .phlegend .sw.r { background: var(--rose); } .phlegend .sw.g { background: var(--green); }
+
+  /* generic cards */
+  .panel { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 26px 30px; box-shadow: var(--shadow); max-width: var(--read-w); }
+  .callout { background: var(--card-2); border: 1px solid var(--border); border-left: 4px solid var(--sky); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); box-shadow: var(--shadow); }
+  .callout.warn { border-left-color: var(--warm); }
+  .callout.good { border-left-color: var(--green); }
+  .callout h4 { font-size: 19px; font-weight: 700; margin-bottom: 10px; }
+  .callout p { font-size: 15.5px; color: var(--text-2); line-height: 1.7; }
+  .callout p strong { color: var(--text); }
+  .callout p + p { margin-top: 12px; }
+
+  /* ordered move list */
+  .moves { display: grid; gap: 12px; max-width: var(--read-w); }
+  .move { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px 24px; box-shadow: var(--shadow); display: flex; gap: 18px; align-items: flex-start; }
+  .move .mn { font-family: 'JetBrains Mono', monospace; font-size: 22px; font-weight: 700;
+    background: linear-gradient(135deg, var(--green), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1; flex-shrink: 0; width: 30px; }
+  .move .mb h4 { font-size: 16.5px; font-weight: 700; margin-bottom: 5px; }
+  .move .mb p { font-size: 14px; color: var(--text-2); line-height: 1.6; }
+
+  /* money chart */
+  .chartcard { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 30px 32px; box-shadow: var(--shadow); max-width: var(--read-w); }
+  .chartcard h3 { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+  .chartcard .csub { font-size: 14px; color: var(--text-3); margin-bottom: 22px; }
+  svg.curve { width: 100%; height: auto; display: block; }
+  .chart-note { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 14px; margin-top: 24px; }
+  .chart-note div { font-size: 14px; color: var(--text-2); line-height: 1.5; padding-left: 14px; border-left: 3px solid var(--green); }
+  .chart-note div.r { border-left-color: var(--rose); }
+  .chart-note div strong { color: var(--text); display: block; margin-bottom: 2px; }
+
+  /* enablers */
+  .enablers { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; max-width: var(--read-w); }
+  @media (max-width: 760px){ .enablers { grid-template-columns: 1fr; } }
+  .enabler { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px 24px; box-shadow: var(--shadow); border-top: 4px solid var(--indigo); }
+  .enabler .et { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--indigo); margin-bottom: 10px; }
+  .enabler h4 { font-size: 17px; font-weight: 700; margin-bottom: 8px; }
+  .enabler p { font-size: 13.5px; color: var(--text-2); line-height: 1.6; }
+
+  /* risk cards */
+  .risks { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px,1fr)); gap: 14px; }
+  .risk { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 24px; box-shadow: var(--shadow); border-left: 4px solid var(--warm); }
+  .risk .rq { font-size: 16px; font-weight: 700; margin-bottom: 8px; line-height: 1.3; }
+  .risk p { font-size: 13.5px; color: var(--text-2); line-height: 1.6; }
+
+  /* steps */
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  @media (max-width: 720px){ .steps { grid-template-columns: 1fr; } }
+  .step { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 26px 26px; box-shadow: var(--shadow); }
+  .step .n { font-family: 'JetBrains Mono', monospace; font-size: 30px; font-weight: 700;
+    background: linear-gradient(135deg, var(--green), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1; margin-bottom: 14px; display: block; }
+  .step h4 { font-size: 17px; font-weight: 700; margin-bottom: 8px; }
+  .step p { font-size: 14px; color: var(--text-2); line-height: 1.6; }
+
+  .aside { background: var(--bg-soft); border: 1px dashed var(--border-strong); border-radius: var(--radius-md); padding: 22px 26px; max-width: var(--read-w); margin-top: 8px; }
+  .aside h5 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-3); margin-bottom: 14px; }
+  .aside .row { display: grid; grid-template-columns: 1fr auto 1fr; gap: 12px; align-items: center; font-size: 14px; padding: 7px 0; border-bottom: 1px solid var(--border); }
+  .aside .row:last-child { border-bottom: none; }
+  .aside .row .plain { font-weight: 600; color: var(--text); }
+  .aside .row .arr { color: var(--text-3); font-family: 'JetBrains Mono', monospace; }
+  .aside .row .tech { color: var(--text-2); font-family: 'JetBrains Mono', monospace; font-size: 13px; }
+
+  .finalbox { background: linear-gradient(135deg, #0F766E, var(--green)); color: #fff; border-radius: var(--radius-lg); padding: 40px 40px; box-shadow: 0 20px 60px rgba(16,185,129,0.28); }
+  .finalbox .tag { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.85; margin-bottom: 14px; }
+  .finalbox p { font-size: clamp(20px, 3vw, 26px); font-weight: 600; line-height: 1.45; max-width: 26ch; }
+
+  footer { padding: 56px 0 48px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600;
+    background: linear-gradient(135deg, var(--green), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tag { font-size: 13px; color: var(--text-3); margin-bottom: 18px; }
+  .footer-links { display: flex; justify-content: center; gap: 22px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-2); text-decoration: none; }
+  .footer-links a:hover { color: var(--sky); }
+  .footer-copy { font-size: 12px; color: var(--text-3); margin-top: 18px; }
+
+  .fade { opacity: 0; transform: translateY(22px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade.vis { opacity: 1; transform: translateY(0); }
+
+  @media print {
+    .topbar, .toggle { position: static; }
+    .fade { opacity: 1 !important; transform: none !important; }
+    body { background: #fff; }
+    section { padding: 22px 0; page-break-inside: avoid; }
+    .panel, .risk, .step, .chartcard, .callout, .opt, .phases, .enabler, .move, .bluf, .finalbox { box-shadow: none; }
+    .finalbox { color: #064e3b; background: #ECFDF5; border: 1px solid #A7F3D0; }
+  }
+  *, *::before, *::after { transition-property: background-color, border-color, color; transition-duration: 0.3s; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div><span class="brand">know.2nth.ai</span><span class="brand-sub">CEO Briefing</span></div>
+    <button class="toggle" onclick="toggleTheme()" aria-label="Toggle light/dark">🌙</button>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div class="eyebrow fade"><span class="dot"></span> CEO Briefing &middot; Escaping expensive software</div>
+    <h1 class="fade" style="transition-delay:.05s">Strangle the licence. <span class="hl">Don't bet the company on a rewrite.</span></h1>
+    <p class="lede fade" style="transition-delay:.1s">
+      The strangler fig is a tree that grows around its host, branch by branch, until the original withers away and the fig stands on its own. It's also the safest known way to take back control of an expensive ERP, a big-ticket licence, or a runaway SaaS bill: <strong>not all at once, but one function at a time</strong> &mdash; with the old system still running underneath as your safety net, until the day its contract covers nothing and you cancel it. This briefing is the strategic case &mdash; what it means for your cost base, your risk, and your freedom to move &mdash; in plain terms, for the person who has to make the call.
+    </p>
+    <div class="chips fade" style="transition-delay:.15s">
+      <span class="chip">6-minute read</span>
+      <span class="chip">Written for the CEO</span>
+      <span class="chip">Strategy, not plumbing</span>
+    </div>
+  </div>
+</section>
+
+<!-- BLUF -->
+<div class="wrap">
+  <div class="bluf fade">
+    <div class="tag">The bottom line, up front</div>
+    <p>You don't have to choose between paying a vendor forever and a terrifying all-at-once replacement. There's a third path: put a thin layer in front of the expensive system, then <strong>replace it piece by piece with open-source software you own</strong> &mdash; each piece proven in real use before you move to the next, the old system always there to fall back on. Modern AI coding tools build those pieces in a fraction of the old time. You shrink the licence steadily until it's covering nothing, then you cancel it.</p>
+  </div>
+</div>
+
+<!-- 01 THREE OPTIONS -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">01 &middot; The choice</div>
+      <h2 class="s-title">Three ways out of expensive software. Two are bad.</h2>
+      <p class="s-lede">When a licence renewal lands and the number has gone up again, most boards believe they have two options. They actually have three &mdash; and the third is the one with the best track record by a distance.</p>
+    </div>
+    <div class="opts fade" style="transition-delay:.05s">
+      <div class="opt meh">
+        <div class="ot">Option A</div>
+        <h4>Keep paying</h4>
+        <p>Renew, absorb the increase, stay locked in. Easy this year; the bill and the dependency only grow, and your negotiating position weakens every cycle.</p>
+        <div class="verdict">Comfortable, until it isn't</div>
+      </div>
+      <div class="opt bad">
+        <div class="ot">Option B</div>
+        <h4>Rip &amp; replace</h4>
+        <p>Buy or build a whole new system and switch over in one big cutover. The classic "ERP project." Famous for blown budgets, slipped dates and the occasional company-threatening failure.</p>
+        <div class="verdict">High stakes, high failure rate</div>
+      </div>
+      <div class="opt good">
+        <div class="ot">Option C</div>
+        <h4>Strangle it</h4>
+        <p>Replace the system gradually, one function at a time, behind a façade &mdash; old system live as a safety net the whole way. Small, reversible steps instead of one giant leap.</p>
+        <div class="verdict">Low risk, steady payoff</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 WHAT IT IS -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">02 &middot; The picture</div>
+      <h2 class="s-title">How the strangle actually unfolds</h2>
+      <p class="s-lede">A thin layer &mdash; think of it as a switchboard &mdash; sits in front of the old system. Every request goes through it. At first it sends everything to the old system. As each new piece is built and proven, the switchboard quietly redirects that one function to the new system. The old one keeps shrinking until it's doing nothing.</p>
+    </div>
+    <div class="phases fade" style="transition-delay:.05s">
+      <div class="phase">
+        <div class="pl"><span class="pname">Today</span><span class="pstep">Phase 0</span></div>
+        <div class="ptrack"><div class="old" style="width:100%"><span class="seg-lbl">100% expensive vendor system</span></div></div>
+      </div>
+      <div class="phase">
+        <div class="pl"><span class="pname">Switchboard in, reporting moved off first</span><span class="pstep">Phase 1</span></div>
+        <div class="ptrack"><div class="old" style="width:82%"><span class="seg-lbl">82% vendor</span></div><div class="new" style="width:18%"><span class="seg-lbl">18%</span></div></div>
+      </div>
+      <div class="phase">
+        <div class="pl"><span class="pname">Peripheral modules migrated</span><span class="pstep">Phase 2</span></div>
+        <div class="ptrack"><div class="old" style="width:52%"><span class="seg-lbl">52% vendor</span></div><div class="new" style="width:48%"><span class="seg-lbl">48% owned</span></div></div>
+      </div>
+      <div class="phase">
+        <div class="pl"><span class="pname">Core moved last, once everything else is proven</span><span class="pstep">Phase 3</span></div>
+        <div class="ptrack"><div class="old" style="width:20%"><span class="seg-lbl">20%</span></div><div class="new" style="width:80%"><span class="seg-lbl">80% owned &amp; open-source</span></div></div>
+      </div>
+      <div class="phase">
+        <div class="pl"><span class="pname">Cancel the licence</span><span class="pstep">Phase 4</span></div>
+        <div class="ptrack"><div class="new" style="width:100%"><span class="seg-lbl">100% owned &amp; open-source &mdash; licence gone</span></div></div>
+      </div>
+      <div class="phlegend">
+        <span><span class="sw r"></span> Still on the expensive vendor</span>
+        <span><span class="sw g"></span> Moved to open source you own</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 HOW -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">03 &middot; The method</div>
+      <h2 class="s-title">Five moves, repeated until done</h2>
+      <p class="s-lede">There's no magic to it. It's the same loop, run once per function, each lap small enough to undo if it misbehaves.</p>
+    </div>
+    <div class="moves fade" style="transition-delay:.05s">
+      <div class="move"><span class="mn">1</span><div class="mb"><h4>Put a switchboard in front</h4><p>A thin layer routes every request. For now it sends everything to the old system &mdash; nothing changes for users yet. This is what makes every later step reversible.</p></div></div>
+      <div class="move"><span class="mn">2</span><div class="mb"><h4>Pick one function &mdash; high pain, low risk</h4><p>Start where the vendor hurts most and the danger is least. Reporting and dashboards are the classic first target: read-only, so you can't break anything live.</p></div></div>
+      <div class="move"><span class="mn">3</span><div class="mb"><h4>Build the replacement in open source</h4><p>Build that one piece on open-source foundations you own &mdash; and use AI coding tools to do it in a fraction of the usual time. It runs alongside the old system, not instead of it yet.</p></div></div>
+      <div class="move"><span class="mn">4</span><div class="mb"><h4>Flip the switch for that one function</h4><p>Point the switchboard at the new piece for that function only. Everything else still runs on the old system. If anything's wrong, you flip it straight back.</p></div></div>
+      <div class="move"><span class="mn">5</span><div class="mb"><h4>Prove it, then repeat</h4><p>Let it run in real use until you trust it. Then pick the next function and go again. The expensive system quietly shrinks with every lap until it's covering nothing.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 WHY NOW -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">04 &middot; Why now</div>
+      <h2 class="s-title">The economics just flipped</h2>
+      <p class="s-lede">Strangling a big system used to be a luxury only large engineering teams could afford. Three things changed that &mdash; and together they put it within reach of an ordinary organisation.</p>
+    </div>
+    <div class="enablers fade" style="transition-delay:.05s">
+      <div class="enabler">
+        <div class="et">Enabler 1</div>
+        <h4>Open source caught up</h4>
+        <p>Mature, free, self-hostable systems now exist for the things you used to pay six figures for &mdash; ERP, databases, business intelligence. No per-user licence, and the data stays yours.</p>
+      </div>
+      <div class="enabler">
+        <div class="et">Enabler 2</div>
+        <h4>You can own the build</h4>
+        <p>Every replacement piece &mdash; its code, settings and customisations &mdash; lives in a vault your organisation controls, with a full history. You're building an asset, not renting another one.</p>
+      </div>
+      <div class="enabler">
+        <div class="et">Enabler 3</div>
+        <h4>AI builds the pieces fast</h4>
+        <p>AI coding tools turn weeks of bespoke development into days. The per-function cost that made strangling uneconomic has collapsed &mdash; which is exactly what the method needs.</p>
+      </div>
+    </div>
+    <div class="callout good fade" style="transition-delay:.08s; margin-top:18px">
+      <h4>Why these three matter together</h4>
+      <p>Strangler fig only works if each small piece is <strong>cheap and fast to build</strong> &mdash; otherwise the gradual path takes forever and stalls. Open source removes the licence cost of the replacement, ownership turns every piece into a durable asset, and AI collapses the build time. None is new on its own; together they're what makes replacing an expensive system one function at a time genuinely affordable in 2026.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 MONEY -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">05 &middot; The money picture</div>
+      <h2 class="s-title">A short overlap, then the line drops</h2>
+      <p class="s-lede">There's an honest cost to be clear about: for a while you pay the vendor <em>and</em> invest in the replacement. That overlap is the investment. On the other side of it, the licence falls away and you're left running something you own at a fraction of the old cost.</p>
+    </div>
+    <div class="chartcard fade" style="transition-delay:.05s">
+      <h3>What you pay, as the strangle proceeds</h3>
+      <p class="csub">Illustrative &mdash; the shape is the point, not the scale</p>
+      <svg class="curve" viewBox="0 0 760 330" role="img" aria-label="A chart showing vendor licence cost stepping down to zero as functions migrate, while the cost of running the owned open-source replacement rises modestly to a plateau far below the original licence. A short overlap in the middle is the investment period.">
+        <defs>
+          <linearGradient id="saveFill" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#10B981" stop-opacity="0.20"/>
+            <stop offset="100%" stop-color="#10B981" stop-opacity="0.02"/>
+          </linearGradient>
+        </defs>
+        <line x1="64" y1="20" x2="64" y2="276" stroke="currentColor" stroke-opacity="0.18" stroke-width="1.5"/>
+        <line x1="64" y1="276" x2="724" y2="276" stroke="currentColor" stroke-opacity="0.18" stroke-width="1.5"/>
+        <text x="64" y="14" fill="currentColor" fill-opacity="0.55" font-size="12" font-family="JetBrains Mono, monospace">ANNUAL COST</text>
+        <text x="60"  y="296" fill="currentColor" fill-opacity="0.5" font-size="11" font-family="JetBrains Mono, monospace" text-anchor="middle">Phase 0</text>
+        <text x="225" y="296" fill="currentColor" fill-opacity="0.5" font-size="11" font-family="JetBrains Mono, monospace" text-anchor="middle">Phase 1</text>
+        <text x="390" y="296" fill="currentColor" fill-opacity="0.5" font-size="11" font-family="JetBrains Mono, monospace" text-anchor="middle">Phase 2</text>
+        <text x="555" y="296" fill="currentColor" fill-opacity="0.5" font-size="11" font-family="JetBrains Mono, monospace" text-anchor="middle">Phase 3</text>
+        <text x="705" y="296" fill="currentColor" fill-opacity="0.5" font-size="11" font-family="JetBrains Mono, monospace" text-anchor="middle">Phase 4</text>
+        <!-- savings shading between owned plateau and original licence baseline, after crossover -->
+        <path d="M555 232 L724 232 L724 196 L555 196 Z" fill="url(#saveFill)"/>
+        <!-- vendor licence: stepped down to zero -->
+        <path d="M64 70 L150 70 L150 110 L315 110 L315 158 L480 158 L480 214 L630 214 L630 270 L724 270"
+              fill="none" stroke="#F43F5E" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="724" cy="270" r="5" fill="#F43F5E"/>
+        <text x="74" y="60" fill="#F43F5E" font-size="13" font-weight="600" font-family="Outfit, sans-serif">Vendor licence</text>
+        <!-- owned run cost: rises modestly to a plateau well below original licence -->
+        <path d="M64 268 C 180 262, 300 240, 430 224 C 520 214, 600 210, 724 208"
+              fill="none" stroke="#10B981" stroke-width="3.5" stroke-linecap="round"/>
+        <circle cx="724" cy="208" r="5" fill="#10B981"/>
+        <text x="540" y="200" fill="#10B981" font-size="13" font-weight="600" font-family="Outfit, sans-serif">What you own</text>
+        <!-- overlap marker -->
+        <line x1="300" y1="40" x2="300" y2="276" stroke="currentColor" stroke-opacity="0.12" stroke-width="1" stroke-dasharray="4 4"/>
+        <text x="300" y="36" fill="currentColor" fill-opacity="0.5" font-size="11" font-family="JetBrains Mono, monospace" text-anchor="middle">you pay both here</text>
+      </svg>
+      <div class="chart-note">
+        <div class="r"><strong>Vendor licence (red)</strong> Steps down as each function leaves the old system, and hits zero the day you cancel.</div>
+        <div><strong>What you own (green)</strong> Rises modestly as you take on running your own systems, then flattens &mdash; far below where the licence started.</div>
+      </div>
+    </div>
+    <div class="callout warn fade" style="transition-delay:.08s; margin-top:18px">
+      <h4>The honest catch</h4>
+      <p>Two real costs. First, the <strong>overlap</strong>: for a stretch you carry both bills at once. Second, owning means <strong>someone has to run it</strong> &mdash; in-house or via a partner &mdash; so this is predictable cost, not free cost. The case for doing it is that the green line ends far below the red one, you stop the annual increases, and you can never be held hostage at renewal again.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 WHY SAFE -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">06 &middot; Why it's safe</div>
+      <h2 class="s-title">The risk is small because every step is small</h2>
+      <p class="s-lede">The reason boards fear replacing core systems is the big-bang cutover &mdash; the weekend where everything changes and something breaks. Strangler fig simply doesn't have that weekend.</p>
+    </div>
+    <div class="risks fade" style="transition-delay:.05s">
+      <div class="risk"><div class="rq">There's no big cutover</div><p>Nothing flips all at once. You move one function at a time, so the worst-case failure is one function &mdash; not the whole business.</p></div>
+      <div class="risk"><div class="rq">The old system is your safety net</div><p>It stays live underneath until the very end. If a new piece misbehaves, you switch that one function straight back and carry on.</p></div>
+      <div class="risk"><div class="rq">You start where it's safe</div><p>First targets are read-only, like reporting. You prove the approach on something that can't break a live transaction before you touch anything that can.</p></div>
+      <div class="risk"><div class="rq">You can stop any time</div><p>If a phase shows the replacement isn't ready, you pause. You've still cut some cost and you've lost nothing &mdash; the old system is still there.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 07 WHAT TO WATCH -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">07 &middot; What to watch</div>
+      <h2 class="s-title">Three honest pitfalls</h2>
+    </div>
+    <div class="callout warn fade" style="transition-delay:.05s">
+      <h4>Where strangles go wrong &mdash; and how to avoid it</h4>
+      <p><strong>1. The never-ending strangle.</strong> The biggest failure mode isn't a broken step &mdash; it's stopping halfway and running two systems forever, paying for both. The fix is a board-level commitment to a finish line: set the date you intend to cancel the licence, and treat it as a target.</p>
+      <p><strong>2. Keeping data in step.</strong> While both systems are live, the same information has to stay consistent across them. That coordination is the real engineering work of a strangle &mdash; budget for it, and lean on owned, open data systems that make it tractable.</p>
+      <p><strong>3. Save the core for last.</strong> Don't start with the crown-jewel finance ledger. Strangle the periphery first, build trust and capability, and move the core only once everything around it is already proven on the new stack.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 08 WHAT TO DO -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">08 &middot; What to do</div>
+      <h2 class="s-title">Three moves before the next renewal</h2>
+      <p class="s-lede">You don't commit to the whole journey on day one. You take the first safe step and let the results make the case.</p>
+    </div>
+    <div class="steps fade" style="transition-delay:.05s">
+      <div class="step"><span class="n">1</span><h4>Name the target</h4><p>Pick the one expensive system that hurts most &mdash; the ERP, the big licence, the runaway SaaS bill &mdash; and the one low-risk function you'd move off it first. Usually: reporting.</p></div>
+      <div class="step"><span class="n">2</span><h4>Run one lap</h4><p>Fund a small, time-boxed first move: switchboard in, that one function rebuilt in open source with AI, proven in real use. Cheap enough to be a pilot, real enough to prove the model.</p></div>
+      <div class="step"><span class="n">3</span><h4>Set the finish line</h4><p>If the pilot lands, commit at board level to a date for cancelling the licence, and strangle toward it function by function. Make ownership the destination, not a someday.</p></div>
+    </div>
+
+    <div class="aside fade" style="transition-delay:.08s">
+      <h5>If your tech team uses the technical terms &mdash; here's the translation</h5>
+      <div class="row"><span class="plain">Strangle it gradually</span><span class="arr">=</span><span class="tech">Strangler Fig pattern</span></div>
+      <div class="row"><span class="plain">The switchboard in front</span><span class="arr">=</span><span class="tech">façade / routing &amp; anti-corruption layer</span></div>
+      <div class="row"><span class="plain">A vault you own, with full history</span><span class="arr">=</span><span class="tech">Git / GitHub</span></div>
+      <div class="row"><span class="plain">Open-source replacements</span><span class="arr">=</span><span class="tech">ERPNext · PostgreSQL · Superset</span></div>
+      <div class="row"><span class="plain">AI builds the pieces</span><span class="arr">=</span><span class="tech">GitHub Copilot · Claude Code</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL -->
+<section>
+  <div class="wrap">
+    <div class="finalbox fade">
+      <div class="tag">The decision</div>
+      <p>You don't have to keep paying, and you don't have to gamble on a rewrite. Wrap the expensive system, replace it a function at a time, and let the licence wither. Start before the next renewal.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tag">A 2nth.ai CEO briefing &middot; plain-language by design</p>
+    <div class="footer-links">
+      <a href="/briefings/own-your-stack">Companion briefing: Who Holds the Keys? &rarr;</a>
+      <a href="/explainers/tech/architecture">The pattern, for your tech team &rarr;</a>
+      <a href="https://2nth.ai" target="_blank" rel="noopener">2nth.ai</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in Johannesburg, South Africa</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme(){
+    const h=document.documentElement, cur=h.getAttribute('data-theme'), nxt=cur==='dark'?'light':'dark';
+    h.setAttribute('data-theme',nxt);
+    document.querySelector('.toggle').textContent = nxt==='dark' ? '☀️' : '🌙';
+    localStorage.setItem('brief-theme',nxt);
+  }
+  const saved=localStorage.getItem('brief-theme');
+  if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.toggle').textContent=saved==='dark'?'☀️':'🌙';}
+  const ob=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');});},{threshold:0.08,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.fade').forEach(el=>ob.observe(el));
+</script>
+</body>
+</html>
