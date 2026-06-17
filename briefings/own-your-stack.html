@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Who Holds the Keys? &mdash; A Board Briefing on Owning Your Stack</title>
+<meta name="description" content="A five-minute, non-technical board briefing for CEOs and CFOs: do you own the systems your business runs on, or do you rent them back from your vendors? The lock-in risk, the switching-cost trap, the money picture, and what to do about it — in plain business language.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/briefings/own-your-stack">
+<meta property="og:title" content="Who Holds the Keys? — A Board Briefing on Owning Your Stack">
+<meta property="og:description" content="Do you own the systems your business runs on, or rent them back from your vendors? A five-minute, non-technical briefing for CEO & CFO on lock-in risk, switching cost, and control.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai — The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Who Holds the Keys? — Board Briefing">
+<meta name="twitter:description" content="Do you own your business systems, or rent them back from vendors? A non-technical briefing for CEO & CFO.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --ink: #0B1120; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6;
+    --sky: #38BDF8; --paper: #F8FAFC; --slate: #94A3B8;
+    --warm: #F59E0B; --warm-soft: rgba(245,158,11,0.12);
+    --green: #10B981; --green-soft: rgba(16,185,129,0.12);
+    --rose: #F43F5E; --rose-soft: rgba(244,63,94,0.12);
+    --indigo: #6366F1; --indigo-soft: rgba(99,102,241,0.12);
+    --max-w: 1080px; --read-w: 820px;
+    --radius-md: 14px; --radius-lg: 22px; --radius-pill: 100px;
+    /* light default */
+    --bg: #F4F6FB; --bg-soft: #EAEEF6; --card: #FFFFFF; --card-2: #FBFCFE;
+    --text: #0B1120; --text-2: #475569; --text-3: #8A97AB;
+    --border: rgba(15,23,42,0.10); --border-strong: rgba(15,23,42,0.16);
+    --shadow: 0 14px 40px rgba(15,23,42,0.08);
+  }
+  [data-theme="dark"] {
+    --bg: #0B1120; --bg-soft: #0E1626; --card: #121D33; --card-2: #0F1929;
+    --text: #F8FAFC; --text-2: #B6C2D6; --text-3: #6B7A92;
+    --border: rgba(148,163,184,0.14); --border-strong: rgba(148,163,184,0.24);
+    --shadow: 0 16px 48px rgba(0,0,0,0.4);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+    background: radial-gradient(1200px 600px at 80% -100px, var(--bg-soft), var(--bg)) fixed;
+    color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  .wrap { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+
+  /* Top bar */
+  .topbar { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(14px);
+    background: color-mix(in srgb, var(--bg) 80%, transparent); border-bottom: 1px solid var(--border); }
+  .topbar-inner { max-width: var(--max-w); margin: 0 auto; padding: 12px 24px;
+    display: flex; align-items: center; justify-content: space-between; }
+  .brand { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 14px;
+    background: linear-gradient(135deg, var(--blue), var(--sky));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .brand-sub { font-size: 11px; color: var(--text-3); letter-spacing: 1.5px; text-transform: uppercase;
+    margin-left: 10px; padding-left: 10px; border-left: 1px solid var(--border); font-weight: 500; }
+  .toggle { background: none; border: 1px solid var(--border); color: var(--text-2);
+    width: 34px; height: 34px; border-radius: 50%; cursor: pointer; display: grid; place-items: center;
+    font-size: 15px; transition: all 0.2s; }
+  .toggle:hover { border-color: var(--border-strong); }
+
+  /* Hero */
+  .hero { padding: 64px 0 36px; }
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500;
+    letter-spacing: 2.5px; text-transform: uppercase; color: var(--indigo);
+    display: inline-flex; align-items: center; gap: 10px; margin-bottom: 22px; }
+  .eyebrow .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--indigo); box-shadow: 0 0 12px var(--indigo); }
+  .hero h1 { font-size: clamp(36px, 6vw, 60px); font-weight: 800; line-height: 1.05;
+    letter-spacing: -1.8px; margin-bottom: 22px; max-width: 18ch; }
+  .hero h1 .hl { background: linear-gradient(135deg, var(--blue-glow), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .lede { font-size: 19px; color: var(--text-2); max-width: 680px; line-height: 1.6; font-weight: 300; margin-bottom: 26px; }
+  .chips { display: flex; gap: 8px; flex-wrap: wrap; }
+  .chip { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 7px 14px;
+    border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-2); background: var(--card); }
+
+  /* BLUF box */
+  .bluf { background: linear-gradient(135deg, var(--indigo-soft), transparent);
+    border: 1px solid var(--border); border-left: 4px solid var(--indigo);
+    border-radius: var(--radius-lg); padding: 28px 32px; box-shadow: var(--shadow); margin: 12px 0 8px; }
+  .bluf .tag { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.6px; text-transform: uppercase; color: var(--indigo); font-weight: 600; margin-bottom: 10px; }
+  .bluf p { font-size: 18px; line-height: 1.6; color: var(--text); font-weight: 400; }
+  .bluf p strong { font-weight: 700; }
+
+  /* Section scaffolding */
+  section { padding: 46px 0; }
+  .s-num { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--sky); font-weight: 600; margin-bottom: 12px; }
+  .s-title { font-size: clamp(26px, 4vw, 38px); font-weight: 700; letter-spacing: -0.8px; line-height: 1.15; margin-bottom: 16px; max-width: 20ch; }
+  .s-lede { font-size: 17px; color: var(--text-2); max-width: var(--read-w); line-height: 1.65; font-weight: 300; margin-bottom: 30px; }
+
+  /* Yours vs theirs */
+  .split { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 720px){ .split { grid-template-columns: 1fr; } }
+  .panel { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg);
+    padding: 26px 28px; box-shadow: var(--shadow); }
+  .panel.bad { border-top: 4px solid var(--rose); }
+  .panel.good { border-top: 4px solid var(--green); }
+  .panel .ph { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 1.4px; text-transform: uppercase; font-weight: 600; margin-bottom: 6px; }
+  .panel.bad .ph { color: var(--rose); }
+  .panel.good .ph { color: var(--green); }
+  .panel .psub { font-size: 13px; color: var(--text-3); margin-bottom: 18px; }
+  .panel ul { list-style: none; }
+  .panel li { font-size: 15px; color: var(--text-2); padding: 11px 0; border-bottom: 1px solid var(--border); display: flex; gap: 11px; align-items: flex-start; }
+  .panel li:last-child { border-bottom: none; }
+  .panel li .ic { flex-shrink: 0; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+  .panel.bad li .ic { color: var(--rose); }
+  .panel.good li .ic { color: var(--green); }
+
+  /* Switching cost chart */
+  .chartcard { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 30px 32px; box-shadow: var(--shadow); max-width: var(--read-w); }
+  .chartcard h3 { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+  .chartcard .csub { font-size: 14px; color: var(--text-3); margin-bottom: 22px; }
+  svg.curve { width: 100%; height: auto; display: block; }
+  .chart-note { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px,1fr)); gap: 14px; margin-top: 24px; }
+  .chart-note div { font-size: 14px; color: var(--text-2); line-height: 1.5; padding-left: 14px; border-left: 3px solid var(--warm); }
+  .chart-note div strong { color: var(--text); display: block; margin-bottom: 2px; font-size: 14px; }
+
+  /* Scorecard */
+  .score { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow); max-width: var(--read-w); }
+  .score-row { display: grid; grid-template-columns: 1.3fr 1fr 1fr; border-bottom: 1px solid var(--border); }
+  .score-row:last-child { border-bottom: none; }
+  .score-row > div { padding: 16px 18px; font-size: 14.5px; }
+  .score-row .dim { font-weight: 600; color: var(--text); border-right: 1px solid var(--border); }
+  .score-row .rented { color: var(--text-2); background: var(--rose-soft); border-right: 1px solid var(--border); }
+  .score-row .owned { color: var(--text-2); background: var(--green-soft); }
+  .score-head > div { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.2px; text-transform: uppercase; font-weight: 600; }
+  .score-head .rented { color: var(--rose); }
+  .score-head .owned { color: var(--green); }
+  .score-head .dim { color: var(--text-3); }
+  @media (max-width: 680px){ .score-row { grid-template-columns: 1fr; } .score-row .dim, .score-row .rented { border-right: none; } .score-row > div { border-bottom: 1px solid var(--border); } }
+
+  /* Money bars */
+  .money { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: var(--read-w); }
+  @media (max-width: 680px){ .money { grid-template-columns: 1fr; } }
+  .mcol { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px 26px; box-shadow: var(--shadow); }
+  .mcol h4 { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 1.4px; text-transform: uppercase; margin-bottom: 16px; }
+  .mcol.rented h4 { color: var(--rose); } .mcol.owned h4 { color: var(--green); }
+  .bar { margin-bottom: 14px; }
+  .bar .bl { display: flex; justify-content: space-between; font-size: 13px; color: var(--text-2); margin-bottom: 5px; }
+  .bar .track { height: 10px; background: var(--bg-soft); border-radius: 6px; overflow: hidden; }
+  .bar .fill { height: 100%; border-radius: 6px; }
+  .mcol.rented .fill { background: linear-gradient(90deg, var(--rose), #FB7185); }
+  .mcol.owned .fill { background: linear-gradient(90deg, var(--green), #34D399); }
+  .mcol .mfoot { font-size: 13px; color: var(--text-3); margin-top: 10px; line-height: 1.5; }
+
+  /* Risk cards */
+  .risks { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px,1fr)); gap: 14px; }
+  .risk { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 24px; box-shadow: var(--shadow); border-left: 4px solid var(--warm); }
+  .risk .rq { font-size: 16px; font-weight: 700; margin-bottom: 12px; line-height: 1.3; }
+  .risk .rline { font-size: 13.5px; line-height: 1.55; padding: 7px 0; }
+  .risk .rline .lbl { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; display: block; margin-bottom: 2px; }
+  .risk .rented-l .lbl { color: var(--rose); } .risk .rented-l { color: var(--text-2); }
+  .risk .owned-l .lbl { color: var(--green); } .risk .owned-l { color: var(--text-2); border-top: 1px solid var(--border); margin-top: 6px; padding-top: 10px; }
+
+  /* Honesty / callout */
+  .callout { background: var(--card-2); border: 1px solid var(--border); border-left: 4px solid var(--sky); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); box-shadow: var(--shadow); }
+  .callout h4 { font-size: 19px; font-weight: 700; margin-bottom: 10px; }
+  .callout p { font-size: 15.5px; color: var(--text-2); line-height: 1.7; }
+  .callout p strong { color: var(--text); }
+  .callout p + p { margin-top: 12px; }
+
+  /* Steps */
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  @media (max-width: 720px){ .steps { grid-template-columns: 1fr; } }
+  .step { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 26px 26px; box-shadow: var(--shadow); position: relative; }
+  .step .n { font-family: 'JetBrains Mono', monospace; font-size: 30px; font-weight: 700;
+    background: linear-gradient(135deg, var(--indigo), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1; margin-bottom: 14px; display: block; }
+  .step h4 { font-size: 17px; font-weight: 700; margin-bottom: 8px; }
+  .step p { font-size: 14px; color: var(--text-2); line-height: 1.6; }
+
+  /* Plain-terms aside */
+  .aside { background: var(--bg-soft); border: 1px dashed var(--border-strong); border-radius: var(--radius-md); padding: 22px 26px; max-width: var(--read-w); margin-top: 8px; }
+  .aside h5 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-3); margin-bottom: 14px; }
+  .aside .row { display: grid; grid-template-columns: 1fr auto 1fr; gap: 12px; align-items: center; font-size: 14px; padding: 7px 0; border-bottom: 1px solid var(--border); }
+  .aside .row:last-child { border-bottom: none; }
+  .aside .row .plain { font-weight: 600; color: var(--text); }
+  .aside .row .arr { color: var(--text-3); font-family: 'JetBrains Mono', monospace; }
+  .aside .row .tech { color: var(--text-2); font-family: 'JetBrains Mono', monospace; font-size: 13px; }
+
+  /* Bottom line */
+  .finalbox { background: linear-gradient(135deg, var(--indigo), #4F46E5); color: #fff; border-radius: var(--radius-lg); padding: 40px 40px; box-shadow: 0 20px 60px rgba(79,70,229,0.28); }
+  .finalbox .tag { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.85; margin-bottom: 14px; }
+  .finalbox p { font-size: clamp(20px, 3vw, 26px); font-weight: 600; line-height: 1.45; max-width: 24ch; }
+
+  footer { padding: 56px 0 48px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600;
+    background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tag { font-size: 13px; color: var(--text-3); margin-bottom: 18px; }
+  .footer-links { display: flex; justify-content: center; gap: 22px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-2); text-decoration: none; }
+  .footer-links a:hover { color: var(--sky); }
+  .footer-copy { font-size: 12px; color: var(--text-3); margin-top: 18px; }
+
+  .fade { opacity: 0; transform: translateY(22px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade.vis { opacity: 1; transform: translateY(0); }
+
+  @media print {
+    .topbar, .toggle, .fade { position: static; }
+    .fade { opacity: 1 !important; transform: none !important; }
+    body { background: #fff; }
+    section { padding: 22px 0; page-break-inside: avoid; }
+    .panel, .risk, .step, .chartcard, .score, .callout, .mcol, .bluf, .finalbox { box-shadow: none; }
+    .finalbox { color: #1e1b4b; background: #EEF2FF; border: 1px solid #C7D2FE; }
+  }
+  *, *::before, *::after { transition-property: background-color, border-color, color; transition-duration: 0.3s; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div><span class="brand">know.2nth.ai</span><span class="brand-sub">Board Briefing</span></div>
+    <button class="toggle" onclick="toggleTheme()" aria-label="Toggle light/dark">🌙</button>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div class="eyebrow fade"><span class="dot"></span> Board Briefing &middot; Who owns what you run on</div>
+    <h1 class="fade" style="transition-delay:.05s">Do you own your business &mdash; or <span class="hl">rent it back</span> from your vendors?</h1>
+    <p class="lede fade" style="transition-delay:.1s">
+      The software, settings, customisations and data your organisation runs on are valuable assets &mdash; as real as a building or a brand. The question most boards never ask is a simple one: <strong>if you walked away from a vendor tomorrow, what could you actually take with you?</strong> This is a five-minute, jargon-free look at the answer, and why it matters to the bottom line.
+    </p>
+    <div class="chips fade" style="transition-delay:.15s">
+      <span class="chip">5-minute read</span>
+      <span class="chip">For CEO &amp; CFO</span>
+      <span class="chip">No technical knowledge needed</span>
+    </div>
+  </div>
+</section>
+
+<!-- BLUF -->
+<div class="wrap">
+  <div class="bluf fade">
+    <div class="tag">The bottom line, up front</div>
+    <p>Right now, the things that make your business <em>yours</em> &mdash; your configurations, customisations, specifications and data &mdash; may be living inside systems you don't control. That isn't a technology problem; it's an <strong>ownership and risk problem</strong>. The fix is straightforward and inexpensive: keep the assets that matter in a vault <strong>you</strong> hold the keys to, so changing vendors is a decision you make &mdash; not a hostage situation you're trapped in.</p>
+  </div>
+</div>
+
+<!-- 01 THE ONE QUESTION -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">01 &middot; The one question that matters</div>
+      <h2 class="s-title">If you left every vendor tomorrow, what could you take?</h2>
+      <p class="s-lede">Most assets fall cleanly into one of two columns. The trouble is that the most valuable, hardest-to-rebuild ones &mdash; the bespoke configurations and the data &mdash; quietly end up on the wrong side.</p>
+    </div>
+    <div class="split fade" style="transition-delay:.05s">
+      <div class="panel bad">
+        <div class="ph">Theirs &mdash; you'd lose it</div>
+        <div class="psub">Locked inside a vendor's system, on their terms</div>
+        <ul>
+          <li><span class="ic">&times;</span> The customisations you paid to have built</li>
+          <li><span class="ic">&times;</span> The settings that make the system fit your business</li>
+          <li><span class="ic">&times;</span> Specifications and know-how held in a vendor's tool</li>
+          <li><span class="ic">&times;</span> Data you can only export the way they allow</li>
+          <li><span class="ic">&times;</span> The record of who changed what, and why</li>
+        </ul>
+      </div>
+      <div class="panel good">
+        <div class="ph">Yours &mdash; you'd keep it</div>
+        <div class="psub">In a vault your organisation controls</div>
+        <ul>
+          <li><span class="ic">&check;</span> A complete master copy you can move anywhere</li>
+          <li><span class="ic">&check;</span> Every change recorded, dated and attributable</li>
+          <li><span class="ic">&check;</span> Settings and customisations you can take with you</li>
+          <li><span class="ic">&check;</span> Your data, in your hands, on your timeline</li>
+          <li><span class="ic">&check;</span> The freedom to switch suppliers without starting over</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 HOW LOCK-IN HAPPENS -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">02 &middot; How it happens</div>
+      <h2 class="s-title">Nobody decides to get locked in. It just gets more expensive to leave.</h2>
+      <p class="s-lede">Lock-in is never a single decision. Each convenient choice &mdash; let the vendor hold the configs, keep the specs in their portal, accept their export format &mdash; is reasonable on its own. Together they raise the cost and risk of ever leaving, a little more every year, until "let's switch" becomes "we can't afford to."</p>
+    </div>
+    <div class="chartcard fade" style="transition-delay:.05s">
+      <h3>The cost of leaving, over time</h3>
+      <p class="csub">Illustrative &mdash; the shape is what matters, not the scale</p>
+      <svg class="curve" viewBox="0 0 760 320" role="img" aria-label="A curve showing the cost of leaving a vendor rising steeply over five years when assets are rented, versus staying low and flat when assets are owned.">
+        <defs>
+          <linearGradient id="rentFill" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#F43F5E" stop-opacity="0.28"/>
+            <stop offset="100%" stop-color="#F43F5E" stop-opacity="0.02"/>
+          </linearGradient>
+        </defs>
+        <!-- axes -->
+        <line x1="64" y1="20" x2="64" y2="268" stroke="currentColor" stroke-opacity="0.18" stroke-width="1.5"/>
+        <line x1="64" y1="268" x2="724" y2="268" stroke="currentColor" stroke-opacity="0.18" stroke-width="1.5"/>
+        <!-- y label -->
+        <text x="64" y="14" fill="currentColor" fill-opacity="0.55" font-size="12" font-family="JetBrains Mono, monospace">COST &amp; RISK OF LEAVING</text>
+        <!-- x ticks -->
+        <text x="64"  y="288" fill="currentColor" fill-opacity="0.5" font-size="12" font-family="JetBrains Mono, monospace">Year 1</text>
+        <text x="225" y="288" fill="currentColor" fill-opacity="0.5" font-size="12" font-family="JetBrains Mono, monospace">Year 2</text>
+        <text x="386" y="288" fill="currentColor" fill-opacity="0.5" font-size="12" font-family="JetBrains Mono, monospace">Year 3</text>
+        <text x="547" y="288" fill="currentColor" fill-opacity="0.5" font-size="12" font-family="JetBrains Mono, monospace">Year 4</text>
+        <text x="690" y="288" fill="currentColor" fill-opacity="0.5" font-size="12" font-family="JetBrains Mono, monospace">Year 5</text>
+        <!-- rented area -->
+        <path d="M64 250 C 200 244, 320 210, 430 150 C 520 100, 600 56, 700 34 L700 268 L64 268 Z" fill="url(#rentFill)"/>
+        <path d="M64 250 C 200 244, 320 210, 430 150 C 520 100, 600 56, 700 34" fill="none" stroke="#F43F5E" stroke-width="3.5" stroke-linecap="round"/>
+        <circle cx="700" cy="34" r="5.5" fill="#F43F5E"/>
+        <text x="612" y="26" fill="#F43F5E" font-size="13" font-weight="600" font-family="Outfit, sans-serif">Rented assets</text>
+        <!-- owned line -->
+        <path d="M64 252 C 250 250, 480 248, 700 244" fill="none" stroke="#10B981" stroke-width="3.5" stroke-linecap="round"/>
+        <circle cx="700" cy="244" r="5.5" fill="#10B981"/>
+        <text x="600" y="236" fill="#10B981" font-size="13" font-weight="600" font-family="Outfit, sans-serif">Owned assets</text>
+      </svg>
+      <div class="chart-note">
+        <div><strong>Rented</strong> The longer you stay, the more is buried in the vendor's system &mdash; and the harder, riskier and pricier leaving becomes.</div>
+        <div><strong>Owned</strong> Because you always hold a complete copy, switching stays a planned move at roughly the same modest cost, year after year.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 SCORECARD -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">03 &middot; The comparison</div>
+      <h2 class="s-title">Owned vs rented, on the things a board cares about</h2>
+      <p class="s-lede">Same six lenses you'd apply to any major asset decision &mdash; control, exit cost, compliance, spend, continuity, and leverage.</p>
+    </div>
+    <div class="score fade" style="transition-delay:.05s">
+      <div class="score-row score-head">
+        <div class="dim">What you're weighing</div>
+        <div class="rented">Rented from vendor</div>
+        <div class="owned">Owned by you</div>
+      </div>
+      <div class="score-row">
+        <div class="dim">Control</div>
+        <div class="rented">The vendor holds the keys</div>
+        <div class="owned">You hold the keys</div>
+      </div>
+      <div class="score-row">
+        <div class="dim">Cost of switching</div>
+        <div class="rented">Rises every year &mdash; can become prohibitive</div>
+        <div class="owned">Stays low &mdash; a planned migration</div>
+      </div>
+      <div class="score-row">
+        <div class="dim">Audit &amp; compliance</div>
+        <div class="rented">"Prove what your system does" depends on them</div>
+        <div class="owned">A complete, dated record you can show</div>
+      </div>
+      <div class="score-row">
+        <div class="dim">Cost model</div>
+        <div class="rented">Fees that grow with headcount &amp; usage</div>
+        <div class="owned">Largely fixed running cost you control</div>
+      </div>
+      <div class="score-row">
+        <div class="dim">If the vendor fails</div>
+        <div class="rented">Your operations are exposed</div>
+        <div class="owned">You still hold everything that matters</div>
+      </div>
+      <div class="score-row">
+        <div class="dim">Negotiating leverage</div>
+        <div class="rented">Weak &mdash; they know you can't easily leave</div>
+        <div class="owned">Strong &mdash; a credible ability to walk away</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 MONEY -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">04 &middot; The money picture</div>
+      <h2 class="s-title">What you're really paying for</h2>
+      <p class="s-lede">The headline price isn't the whole cost. Rented systems tend to charge in ways that scale with your success &mdash; more people, more usage, more fees &mdash; and the largest cost of all only appears the day you try to leave.</p>
+    </div>
+    <div class="money fade" style="transition-delay:.05s">
+      <div class="mcol rented">
+        <h4>Rented &mdash; cost grows with you</h4>
+        <div class="bar"><div class="bl"><span>Per-person licence fees</span><span>grows</span></div><div class="track"><div class="fill" style="width:82%"></div></div></div>
+        <div class="bar"><div class="bl"><span>Add-on modules &amp; usage</span><span>grows</span></div><div class="track"><div class="fill" style="width:64%"></div></div></div>
+        <div class="bar"><div class="bl"><span>Exit cost (the day you leave)</span><span>large &amp; hidden</span></div><div class="track"><div class="fill" style="width:95%"></div></div></div>
+        <p class="mfoot">Every new hire and every busy quarter raises the bill &mdash; and the exit cost sits off the books until you need it most.</p>
+      </div>
+      <div class="mcol owned">
+        <h4>Owned &mdash; cost stays predictable</h4>
+        <div class="bar"><div class="bl"><span>Running the systems</span><span>steady</span></div><div class="track"><div class="fill" style="width:40%"></div></div></div>
+        <div class="bar"><div class="bl"><span>Setup &amp; support effort</span><span>upfront, then flat</span></div><div class="track"><div class="fill" style="width:52%"></div></div></div>
+        <div class="bar"><div class="bl"><span>Exit cost (the day you leave)</span><span>minimal</span></div><div class="track"><div class="fill" style="width:14%"></div></div></div>
+        <p class="mfoot">No per-person licence to multiply, and leaving is cheap because you already hold a full copy. Honest trade-off: you take on running it.</p>
+      </div>
+    </div>
+    <div class="callout fade" style="transition-delay:.08s; margin-top:18px">
+      <h4>The honest catch</h4>
+      <p>Owning is not free of effort. Someone has to look after the systems &mdash; in-house or through a partner. The win is not "no cost"; it's <strong>predictable cost, kept control, and no exit penalty</strong>. For most organisations the maths favours ownership the moment headcount grows or a vendor relationship sours.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 RISK -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">05 &middot; The cost of being wrong</div>
+      <h2 class="s-title">Five things that go differently when you own the keys</h2>
+      <p class="s-lede">None of these are exotic. They are the ordinary ways a vendor relationship turns into a liability &mdash; and how the same event plays out depending on who holds the assets.</p>
+    </div>
+    <div class="risks fade" style="transition-delay:.05s">
+      <div class="risk">
+        <div class="rq">The vendor raises the price</div>
+        <div class="rline rented-l"><span class="lbl">If rented</span>You pay, because leaving costs more than the hike.</div>
+        <div class="rline owned-l"><span class="lbl">If owned</span>You negotiate, or you go. Real leverage.</div>
+      </div>
+      <div class="risk">
+        <div class="rq">The vendor goes out of business</div>
+        <div class="rline rented-l"><span class="lbl">If rented</span>Your operations are suddenly at risk.</div>
+        <div class="rline owned-l"><span class="lbl">If owned</span>You still hold everything; you migrate calmly.</div>
+      </div>
+      <div class="risk">
+        <div class="rq">You want to switch suppliers</div>
+        <div class="rline rented-l"><span class="lbl">If rented</span>A painful, costly rebuild from scratch.</div>
+        <div class="rline owned-l"><span class="lbl">If owned</span>A planned move &mdash; you take your assets along.</div>
+      </div>
+      <div class="risk">
+        <div class="rq">There's a data breach or dispute</div>
+        <div class="rline rented-l"><span class="lbl">If rented</span>You depend on the vendor for answers.</div>
+        <div class="rline owned-l"><span class="lbl">If owned</span>You have your own complete, dated record.</div>
+      </div>
+      <div class="risk">
+        <div class="rq">An auditor asks you to prove it</div>
+        <div class="rline rented-l"><span class="lbl">If rented</span>"What does the system do?" lives in their hands.</div>
+        <div class="rline owned-l"><span class="lbl">If owned</span>Every change is on the record, attributable.</div>
+      </div>
+      <div class="risk">
+        <div class="rq">A key person leaves</div>
+        <div class="rline rented-l"><span class="lbl">If rented</span>Knowledge walks out the door with them.</div>
+        <div class="rline owned-l"><span class="lbl">If owned</span>The history stays &mdash; it's written down and kept.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 NOT ANTI-MICROSOFT -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">06 &middot; To be clear</div>
+      <h2 class="s-title">This isn't "ditch your vendors"</h2>
+    </div>
+    <div class="callout fade" style="transition-delay:.05s">
+      <h4>Familiar office tools are still the right home for most things</h4>
+      <p>Your everyday platforms &mdash; the place you store documents, share files and collaborate &mdash; are excellent at exactly that, and there's no reason to move it. Finished documents, contracts, proposals and presentations belong where they are easy to work on together.</p>
+      <p>The danger is narrower and specific: when the <strong>IP-bearing assets</strong> &mdash; the customisations, the settings, the specifications and the live data that the business actually depends on &mdash; live <em>only</em> inside a system you don't control. That's the line. Keep the office files where they're convenient; keep the crown jewels in a vault you own.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 07 WHAT TO DO -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">07 &middot; What to do</div>
+      <h2 class="s-title">Three moves, none of them dramatic</h2>
+      <p class="s-lede">You don't need to rip anything out. You need to make ownership a standing rule and quietly bring the important assets home.</p>
+    </div>
+    <div class="steps fade" style="transition-delay:.05s">
+      <div class="step">
+        <span class="n">1</span>
+        <h4>Take stock</h4>
+        <p>Ask one question across the business: for each system we rely on, what could we take with us if we left &mdash; and what would we lose? The list is usually shorter and scarier than expected.</p>
+      </div>
+      <div class="step">
+        <span class="n">2</span>
+        <h4>Bring the keys home</h4>
+        <p>Move the assets that matter &mdash; configurations, customisations, specs and data &mdash; into a vault your organisation owns, with a full history. Low cost, mostly a one-time setup.</p>
+      </div>
+      <div class="step">
+        <span class="n">3</span>
+        <h4>Make it a standing rule</h4>
+        <p>From now on, "can we walk away with everything?" is a standard question in every vendor contract and renewal. Ownership becomes the default, not an afterthought.</p>
+      </div>
+    </div>
+
+    <div class="aside fade" style="transition-delay:.08s">
+      <h5>If your tech team mentions the technical terms &mdash; here's the translation</h5>
+      <div class="row"><span class="plain">A vault you own, with full history</span><span class="arr">=</span><span class="tech">Git / GitHub</span></div>
+      <div class="row"><span class="plain">Your complete master copy</span><span class="arr">=</span><span class="tech">a repository</span></div>
+      <div class="row"><span class="plain">The dated record of every change</span><span class="arr">=</span><span class="tech">commit history</span></div>
+      <div class="row"><span class="plain">Nothing changes without review</span><span class="arr">=</span><span class="tech">pull requests</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL -->
+<section>
+  <div class="wrap">
+    <div class="finalbox fade">
+      <div class="tag">The decision</div>
+      <p>Either your business owns the things that make it yours &mdash; or it rents them back, at a price that only goes up. The cheap moment to fix that is now, before the next renewal.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tag">A 2nth.ai board briefing &middot; plain-language by design</p>
+    <div class="footer-links">
+      <a href="/explainers/tech/own-your-stack">For your tech team: the detailed version &rarr;</a>
+      <a href="https://2nth.ai" target="_blank" rel="noopener">2nth.ai</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in Johannesburg, South Africa</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme(){
+    const h=document.documentElement, cur=h.getAttribute('data-theme'), nxt=cur==='dark'?'light':'dark';
+    h.setAttribute('data-theme',nxt);
+    document.querySelector('.toggle').textContent = nxt==='dark' ? '☀️' : '🌙';
+    localStorage.setItem('brief-theme',nxt);
+  }
+  const saved=localStorage.getItem('brief-theme');
+  if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.toggle').textContent=saved==='dark'?'☀️':'🌙';}
+  const ob=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');});},{threshold:0.08,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.fade').forEach(el=>ob.observe(el));
+</script>
+</body>
+</html>
