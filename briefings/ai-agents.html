@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Agents, Plainly &mdash; What They Can Safely Do for Your Business</title>
+<meta name="description" content="A non-technical CEO/CFO briefing on AI agents: the difference between a chatbot that talks and an agent that acts, the ladder of autonomy, which tasks are safe (green) versus dangerous (red), the guardrails that move a task from red to green, what agents can safely do today by function, where they go wrong, and why an agent is only as safe as the systems you let it touch.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/briefings/ai-agents">
+<meta property="og:title" content="AI Agents, Plainly — What They Can Safely Do for Your Business">
+<meta property="og:description" content="A chatbot talks; an agent acts. What that means for your business — the ladder of autonomy, the safe zone vs the danger zone, the guardrails, and where agents go wrong. A non-technical CEO/CFO briefing.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai — The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AI Agents, Plainly — What They Can Safely Do">
+<meta name="twitter:description" content="A chatbot talks; an agent acts. The ladder of autonomy, the safe zone vs the danger zone, the guardrails, and where agents go wrong. A non-technical CEO/CFO briefing.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%236366F1' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --ink: #0B1120; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6;
+    --sky: #38BDF8; --cyan: #22D3EE; --paper: #F8FAFC; --slate: #94A3B8;
+    --warm: #F59E0B; --warm-soft: rgba(245,158,11,0.12);
+    --green: #10B981; --green-soft: rgba(16,185,129,0.12);
+    --rose: #F43F5E; --rose-soft: rgba(244,63,94,0.12);
+    --indigo: #6366F1; --indigo-glow: #818CF8; --indigo-soft: rgba(99,102,241,0.12);
+    --max-w: 1080px; --read-w: 820px;
+    --radius-md: 14px; --radius-lg: 22px; --radius-pill: 100px;
+    --bg: #F4F6FB; --bg-soft: #EAEEF6; --card: #FFFFFF; --card-2: #FBFCFE;
+    --text: #0B1120; --text-2: #475569; --text-3: #8A97AB;
+    --border: rgba(15,23,42,0.10); --border-strong: rgba(15,23,42,0.16);
+    --shadow: 0 14px 40px rgba(15,23,42,0.08);
+  }
+  [data-theme="dark"] {
+    --bg: #0B1120; --bg-soft: #0E1626; --card: #121D33; --card-2: #0F1929;
+    --text: #F8FAFC; --text-2: #B6C2D6; --text-3: #6B7A92;
+    --border: rgba(148,163,184,0.14); --border-strong: rgba(148,163,184,0.24);
+    --shadow: 0 16px 48px rgba(0,0,0,0.4);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+    background: radial-gradient(1200px 600px at 80% -100px, var(--bg-soft), var(--bg)) fixed;
+    color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  }
+  .wrap { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+
+  .topbar { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(14px);
+    background: color-mix(in srgb, var(--bg) 80%, transparent); border-bottom: 1px solid var(--border); }
+  .topbar-inner { max-width: var(--max-w); margin: 0 auto; padding: 12px 24px;
+    display: flex; align-items: center; justify-content: space-between; }
+  .brand { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 14px;
+    background: linear-gradient(135deg, var(--indigo), var(--sky));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .brand-sub { font-size: 11px; color: var(--text-3); letter-spacing: 1.5px; text-transform: uppercase;
+    margin-left: 10px; padding-left: 10px; border-left: 1px solid var(--border); font-weight: 500; }
+  .toggle { background: none; border: 1px solid var(--border); color: var(--text-2);
+    width: 34px; height: 34px; border-radius: 50%; cursor: pointer; display: grid; place-items: center;
+    font-size: 15px; transition: all 0.2s; }
+  .toggle:hover { border-color: var(--border-strong); }
+
+  .hero { padding: 64px 0 36px; }
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500;
+    letter-spacing: 2.5px; text-transform: uppercase; color: var(--indigo);
+    display: inline-flex; align-items: center; gap: 10px; margin-bottom: 22px; }
+  .eyebrow .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--indigo); box-shadow: 0 0 12px var(--indigo); }
+  .hero h1 { font-size: clamp(36px, 6vw, 60px); font-weight: 800; line-height: 1.05;
+    letter-spacing: -1.8px; margin-bottom: 22px; max-width: 17ch; }
+  .hero h1 .hl { background: linear-gradient(135deg, var(--indigo-glow), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .lede { font-size: 19px; color: var(--text-2); max-width: 690px; line-height: 1.6; font-weight: 300; margin-bottom: 26px; }
+  .chips { display: flex; gap: 8px; flex-wrap: wrap; }
+  .chip { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 7px 14px;
+    border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-2); background: var(--card); }
+
+  .bluf { background: linear-gradient(135deg, var(--indigo-soft), transparent);
+    border: 1px solid var(--border); border-left: 4px solid var(--indigo);
+    border-radius: var(--radius-lg); padding: 28px 32px; box-shadow: var(--shadow); margin: 12px 0 8px; }
+  .bluf .tag { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.6px; text-transform: uppercase; color: var(--indigo); font-weight: 600; margin-bottom: 10px; }
+  .bluf p { font-size: 18px; line-height: 1.6; color: var(--text); font-weight: 400; }
+  .bluf p strong { font-weight: 700; }
+
+  section { padding: 46px 0; }
+  .s-num { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--sky); font-weight: 600; margin-bottom: 12px; }
+  .s-title { font-size: clamp(26px, 4vw, 38px); font-weight: 700; letter-spacing: -0.8px; line-height: 1.15; margin-bottom: 16px; max-width: 21ch; }
+  .s-lede { font-size: 17px; color: var(--text-2); max-width: var(--read-w); line-height: 1.65; font-weight: 300; margin-bottom: 30px; }
+
+  /* chatbot vs agent */
+  .vs { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 720px){ .vs { grid-template-columns: 1fr; } }
+  .vs-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 26px 28px; box-shadow: var(--shadow); }
+  .vs-card.a { border-top: 4px solid var(--slate); }
+  .vs-card.b { border-top: 4px solid var(--indigo); }
+  .vs-card .vt { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; font-weight: 600; margin-bottom: 6px; }
+  .vs-card.a .vt { color: var(--text-3); } .vs-card.b .vt { color: var(--indigo); }
+  .vs-card h4 { font-size: 21px; font-weight: 800; letter-spacing: -0.4px; margin-bottom: 10px; }
+  .vs-card p { font-size: 14.5px; color: var(--text-2); line-height: 1.6; }
+  .vs-card p strong { color: var(--text); }
+  .vs-card .ex { font-size: 13px; color: var(--text-3); margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); font-style: italic; }
+
+  /* autonomy ladder */
+  .ladder { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 30px 32px; box-shadow: var(--shadow); max-width: var(--read-w); }
+  .rung { display: grid; grid-template-columns: 36px 1fr; gap: 16px; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--border); }
+  .rung:last-child { border-bottom: none; }
+  .rung .lvl { font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: 700; color: var(--indigo); text-align: center; }
+  .rung .rb h4 { font-size: 16px; font-weight: 700; margin-bottom: 3px; }
+  .rung .rb p { font-size: 13.5px; color: var(--text-2); line-height: 1.5; }
+  .safeline { display: flex; align-items: center; gap: 12px; margin: 6px 0; }
+  .safeline .ll { flex: 1; height: 0; border-top: 2px dashed var(--green); }
+  .safeline .lt { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--green); white-space: nowrap; }
+
+  /* green/amber/red zones */
+  .zones { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+  @media (max-width: 820px){ .zones { grid-template-columns: 1fr; } }
+  .zone { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px 24px; box-shadow: var(--shadow); }
+  .zone.g { border-top: 4px solid var(--green); }
+  .zone.a { border-top: 4px solid var(--warm); }
+  .zone.r { border-top: 4px solid var(--rose); }
+  .zone .zh { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 1.2px; text-transform: uppercase; font-weight: 700; margin-bottom: 4px; }
+  .zone.g .zh { color: var(--green); } .zone.a .zh { color: var(--warm); } .zone.r .zh { color: var(--rose); }
+  .zone .zs { font-size: 13px; color: var(--text-3); margin-bottom: 14px; }
+  .zone ul { list-style: none; padding: 0; }
+  .zone li { font-size: 13.5px; color: var(--text-2); line-height: 1.5; padding: 7px 0; border-bottom: 1px solid var(--border); display: flex; gap: 9px; }
+  .zone li:last-child { border-bottom: none; }
+  .zone li .ic { flex-shrink: 0; font-family: 'JetBrains Mono', monospace; font-weight: 700; }
+  .zone.g li .ic { color: var(--green); } .zone.a li .ic { color: var(--warm); } .zone.r li .ic { color: var(--rose); }
+
+  /* guardrails */
+  .guards { display: grid; grid-template-columns: repeat(2,1fr); gap: 14px; max-width: var(--read-w); }
+  @media (max-width: 680px){ .guards { grid-template-columns: 1fr; } }
+  .guard { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 24px; box-shadow: var(--shadow); border-left: 4px solid var(--indigo); }
+  .guard .gi { font-size: 20px; margin-bottom: 8px; }
+  .guard h4 { font-size: 16.5px; font-weight: 700; margin-bottom: 6px; }
+  .guard p { font-size: 13.5px; color: var(--text-2); line-height: 1.6; }
+
+  /* by-function */
+  .funcs { display: grid; gap: 12px; max-width: var(--read-w); }
+  .func { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 24px; box-shadow: var(--shadow); display: grid; grid-template-columns: 140px 1fr; gap: 18px; align-items: baseline; }
+  @media (max-width: 600px){ .func { grid-template-columns: 1fr; gap: 4px; } }
+  .func .fl { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--indigo); font-weight: 600; }
+  .func .ft { font-size: 14.5px; color: var(--text-2); line-height: 1.55; }
+  .func .ft strong { color: var(--text); }
+
+  .panel { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 26px 30px; box-shadow: var(--shadow); max-width: var(--read-w); }
+  .callout { background: var(--card-2); border: 1px solid var(--border); border-left: 4px solid var(--sky); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); box-shadow: var(--shadow); }
+  .callout.warn { border-left-color: var(--warm); }
+  .callout.good { border-left-color: var(--green); }
+  .callout.indigo { border-left-color: var(--indigo); }
+  .callout h4 { font-size: 19px; font-weight: 700; margin-bottom: 10px; }
+  .callout p { font-size: 15.5px; color: var(--text-2); line-height: 1.7; }
+  .callout p strong { color: var(--text); }
+  .callout p + p { margin-top: 12px; }
+
+  /* risk cards with mitigation */
+  .risks { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px,1fr)); gap: 14px; }
+  .risk { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 24px; box-shadow: var(--shadow); border-left: 4px solid var(--rose); }
+  .risk .rq { font-size: 16px; font-weight: 700; margin-bottom: 8px; line-height: 1.3; }
+  .risk p { font-size: 13.5px; color: var(--text-2); line-height: 1.55; }
+  .risk .fix { font-size: 13px; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); color: var(--text-2); }
+  .risk .fix b { color: var(--green); font-weight: 600; }
+
+  /* steps */
+  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  @media (max-width: 860px){ .steps { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 520px){ .steps { grid-template-columns: 1fr; } }
+  .step { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px 22px; box-shadow: var(--shadow); }
+  .step .n { font-family: 'JetBrains Mono', monospace; font-size: 26px; font-weight: 700;
+    background: linear-gradient(135deg, var(--indigo), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1; margin-bottom: 12px; display: block; }
+  .step h4 { font-size: 16px; font-weight: 700; margin-bottom: 7px; }
+  .step p { font-size: 13.5px; color: var(--text-2); line-height: 1.55; }
+
+  .aside { background: var(--bg-soft); border: 1px dashed var(--border-strong); border-radius: var(--radius-md); padding: 22px 26px; max-width: var(--read-w); margin-top: 8px; }
+  .aside h5 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-3); margin-bottom: 14px; }
+  .aside .row { display: grid; grid-template-columns: 1fr auto 1fr; gap: 12px; align-items: center; font-size: 14px; padding: 7px 0; border-bottom: 1px solid var(--border); }
+  .aside .row:last-child { border-bottom: none; }
+  .aside .row .plain { font-weight: 600; color: var(--text); }
+  .aside .row .arr { color: var(--text-3); font-family: 'JetBrains Mono', monospace; }
+  .aside .row .tech { color: var(--text-2); font-family: 'JetBrains Mono', monospace; font-size: 13px; }
+
+  .finalbox { background: linear-gradient(135deg, #4F46E5, var(--indigo)); color: #fff; border-radius: var(--radius-lg); padding: 40px 40px; box-shadow: 0 20px 60px rgba(99,102,241,0.28); }
+  .finalbox .tag { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.82; margin-bottom: 14px; }
+  .finalbox p { font-size: clamp(20px, 3vw, 26px); font-weight: 600; line-height: 1.45; max-width: 26ch; }
+
+  footer { padding: 56px 0 48px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600;
+    background: linear-gradient(135deg, var(--indigo), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tag { font-size: 13px; color: var(--text-3); margin-bottom: 18px; }
+  .footer-links { display: flex; justify-content: center; gap: 22px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-2); text-decoration: none; }
+  .footer-links a:hover { color: var(--sky); }
+  .footer-copy { font-size: 12px; color: var(--text-3); margin-top: 18px; }
+
+  .fade { opacity: 0; transform: translateY(22px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade.vis { opacity: 1; transform: translateY(0); }
+
+  @media print {
+    .topbar, .toggle { position: static; }
+    .fade { opacity: 1 !important; transform: none !important; }
+    body { background: #fff; }
+    section { padding: 22px 0; page-break-inside: avoid; }
+    .panel, .risk, .step, .ladder, .callout, .vs-card, .zone, .guard, .func, .bluf, .finalbox { box-shadow: none; }
+    .finalbox { color: #312e81; background: #EEF2FF; border: 1px solid #C7D2FE; }
+  }
+  *, *::before, *::after { transition-property: background-color, border-color, color; transition-duration: 0.3s; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div><span class="brand">know.2nth.ai</span><span class="brand-sub">CEO Briefing</span></div>
+    <div style="display:flex;align-items:center;gap:16px;">
+      <a href="/briefings/" style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-2);text-decoration:none;letter-spacing:0.5px;">&larr; All briefings</a>
+      <button class="toggle" onclick="toggleTheme()" aria-label="Toggle light/dark">🌙</button>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div class="eyebrow fade"><span class="dot"></span> CEO &amp; CFO Briefing &middot; AI agents, without the hype</div>
+    <h1 class="fade" style="transition-delay:.05s">A brilliant new hire <span class="hl">with zero common sense.</span></h1>
+    <p class="lede fade" style="transition-delay:.1s">
+      An AI agent is the most capable, fastest, most tireless worker you'll ever hire &mdash; and it has no instinct for when something is about to go wrong. That single fact tells you exactly how to use one safely: give it clear tasks, limited access, and your sign-off on anything that matters. This briefing is what agents actually are, what they can <strong>safely</strong> do for your business today, and where the guardrails have to be.
+    </p>
+    <div class="chips fade" style="transition-delay:.15s">
+      <span class="chip">7-minute read</span>
+      <span class="chip">For CEO &amp; CFO</span>
+      <span class="chip">Honest about the risk</span>
+    </div>
+  </div>
+</section>
+
+<!-- BLUF -->
+<div class="wrap">
+  <div class="bluf fade">
+    <div class="tag">The bottom line, up front</div>
+    <p>The difference between an agent that's an asset and one that's a liability isn't the technology &mdash; it's the <strong>permissions and the sign-off</strong>. An agent that drafts, summarises, researches and triages inside walls you set is almost pure upside. An agent left to spend money, message customers, or change records on its own is a serious risk. Keep humans approving anything consequential, give each agent only the access it needs, and log everything &mdash; and you get most of the value with little of the danger.</p>
+  </div>
+</div>
+
+<!-- 01 WHAT IT IS -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">01 &middot; What it is</div>
+      <h2 class="s-title">A chatbot talks. An agent acts.</h2>
+      <p class="s-lede">Everyone has used a chatbot &mdash; you ask, it answers, and that's the end of it. An agent is the next step: it can take actions to finish a job. Give it a goal and it'll work through the steps, use the tools it's allowed to use, and come back when it's done. That's the whole leap &mdash; from <em>answering</em> to <em>doing</em>.</p>
+    </div>
+    <div class="vs fade" style="transition-delay:.05s">
+      <div class="vs-card a">
+        <div class="vt">Chatbot</div>
+        <h4>Answers a question</h4>
+        <p>You ask, it replies. It knows things and explains them, but it can't reach into your systems or change anything. The work is still yours to do.</p>
+        <div class="ex">"Draft me an email to this late-paying customer."</div>
+      </div>
+      <div class="vs-card b">
+        <div class="vt">Agent</div>
+        <h4>Completes a task</h4>
+        <p>You give it a goal. It works the steps, <strong>uses tools</strong> &mdash; reads a record, looks something up, prepares an action &mdash; and finishes the job, ideally pausing for your approval where it counts.</p>
+        <div class="ex">"Find every customer 30+ days overdue, draft each a reminder, and queue them for my approval."</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 LADDER -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">02 &middot; The ladder of autonomy</div>
+      <h2 class="s-title">How much rope you give it is the whole decision</h2>
+      <p class="s-lede">"Should we use AI agents?" is the wrong question. The right one is "how much autonomy, for which task?" Agents sit on a ladder from helpful-but-harmless to acting-on-its-own. Where you place each task &mdash; relative to the safe line &mdash; is the decision that matters.</p>
+    </div>
+    <div class="ladder fade" style="transition-delay:.05s">
+      <div class="rung">
+        <div class="lvl">1</div>
+        <div class="rb"><h4>Assist</h4><p>Answers questions, explains, advises. Touches nothing. Pure upside.</p></div>
+      </div>
+      <div class="rung">
+        <div class="lvl">2</div>
+        <div class="rb"><h4>Draft</h4><p>Prepares the work &mdash; an email, a report, a plan &mdash; for a human to review and use. Still touches nothing live.</p></div>
+      </div>
+      <div class="safeline">
+        <span class="lt">&darr; The safe line: above it, a human still approves &darr;</span>
+        <span class="ll"></span>
+      </div>
+      <div class="rung">
+        <div class="lvl">3</div>
+        <div class="rb"><h4>Act with approval</h4><p>Does the thing &mdash; sends, books, files &mdash; but only after a person says yes. The workhorse setting for real value.</p></div>
+      </div>
+      <div class="rung">
+        <div class="lvl">4</div>
+        <div class="rb"><h4>Act on its own</h4><p>Takes consequential action with no human in the loop. Powerful, and where the real danger lives. Reserve for narrow, reversible, low-stakes tasks only.</p></div>
+      </div>
+    </div>
+    <div class="callout indigo fade" style="transition-delay:.08s; margin-top:18px">
+      <h4>The rule of thumb</h4>
+      <p>Keep agents <strong>at or above the safe line for anything that touches money, customers, or records you can't easily undo.</strong> Level 4 &mdash; fully autonomous action &mdash; is fine for "re-tag these support tickets" and reckless for "issue these refunds." Same technology; the difference is entirely in what you let it do without a human nod.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 ZONES -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">03 &middot; Safe zone, danger zone</div>
+      <h2 class="s-title">Sort the task before you point an agent at it</h2>
+      <p class="s-lede">Two questions sort almost any task: <em>can it be undone?</em> and <em>does it touch money, customers or sensitive data?</em> That gives you three buckets.</p>
+    </div>
+    <div class="zones fade" style="transition-delay:.05s">
+      <div class="zone g">
+        <div class="zh">Green &middot; go</div>
+        <div class="zs">Reversible, internal, no real-world consequence</div>
+        <ul>
+          <li><span class="ic">&check;</span> Summarising documents &amp; meetings</li>
+          <li><span class="ic">&check;</span> Drafting emails, reports, proposals</li>
+          <li><span class="ic">&check;</span> Research &amp; first-pass analysis</li>
+          <li><span class="ic">&check;</span> Answering staff questions from your own docs</li>
+          <li><span class="ic">&check;</span> Sorting &amp; tagging tickets or leads</li>
+        </ul>
+      </div>
+      <div class="zone a">
+        <div class="zh">Amber &middot; with approval</div>
+        <div class="zs">Real action, but a human signs off first</div>
+        <ul>
+          <li><span class="ic">&sim;</span> Sending customer emails</li>
+          <li><span class="ic">&sim;</span> Raising a purchase order or invoice</li>
+          <li><span class="ic">&sim;</span> Updating a customer record</li>
+          <li><span class="ic">&sim;</span> Scheduling or booking on your behalf</li>
+          <li><span class="ic">&sim;</span> Posting to a channel or website</li>
+        </ul>
+      </div>
+      <div class="zone r">
+        <div class="zh">Red &middot; not unsupervised</div>
+        <div class="zs">Money, irreversible, legal, or high-trust</div>
+        <ul>
+          <li><span class="ic">&times;</span> Moving money or issuing refunds</li>
+          <li><span class="ic">&times;</span> Signing or agreeing to contracts</li>
+          <li><span class="ic">&times;</span> Deleting data or records</li>
+          <li><span class="ic">&times;</span> Final hiring / firing / pricing calls</li>
+          <li><span class="ic">&times;</span> Anything regulated without a human owner</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout good fade" style="transition-delay:.08s; margin-top:18px">
+      <h4>Red doesn't mean "never" &mdash; it means "not alone"</h4>
+      <p>A red task can still be agent-assisted: the agent does all the legwork and prepares the action, and a human makes the final call. The line you must never cross is letting an agent take a red action <strong>without a person owning the decision</strong>. Guardrails &mdash; next &mdash; are how you safely pull tasks from red toward amber and green.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 GUARDRAILS -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">04 &middot; The guardrails</div>
+      <h2 class="s-title">Five things that make an agent safe</h2>
+      <p class="s-lede">These aren't exotic. They're the same controls you'd put around a capable new employee with access to your systems &mdash; made explicit.</p>
+    </div>
+    <div class="guards fade" style="transition-delay:.05s">
+      <div class="guard">
+        <div class="gi">🔑</div>
+        <h4>Least access</h4>
+        <p>The agent can only reach the specific systems and data its job needs &mdash; nothing more. A support agent never touches payroll. Scope is the first and strongest control.</p>
+      </div>
+      <div class="guard">
+        <div class="gi">✋</div>
+        <h4>Human in the loop</h4>
+        <p>Anything consequential pauses for a person to approve. This single setting is what turns most red tasks amber and lets you sleep at night.</p>
+      </div>
+      <div class="guard">
+        <div class="gi">📒</div>
+        <h4>A full log</h4>
+        <p>Every action the agent takes is recorded &mdash; what it did, when, and why. You can review, audit, and answer "what happened?" after the fact.</p>
+      </div>
+      <div class="guard">
+        <div class="gi">↩️</div>
+        <h4>Reversible &amp; bounded</h4>
+        <p>Prefer tasks you can undo, and put hard limits on the rest &mdash; a spend cap, a rate limit, a sandbox. The blast radius is capped before anything runs.</p>
+      </div>
+      <div class="guard">
+        <div class="gi">🛂</div>
+        <h4>Clean tool boundaries</h4>
+        <p>Agents reach your systems through a defined, governed connector &mdash; not a back door. You decide exactly which actions are even on the menu.</p>
+      </div>
+      <div class="guard">
+        <div class="gi">🇿🇦</div>
+        <h4>Mind the data border</h4>
+        <p>Personal data shouldn't leave the country by accident on its way to an AI model. Keep it in-country or strip it first &mdash; the POPIA point from the residency briefing.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 SAFE TODAY -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">05 &middot; What's safe today</div>
+      <h2 class="s-title">Where agents earn their keep right now</h2>
+      <p class="s-lede">Concrete, green-and-amber examples by function &mdash; real value, with a human owning anything that matters.</p>
+    </div>
+    <div class="funcs fade" style="transition-delay:.05s">
+      <div class="func"><div class="fl">Finance</div><div class="ft"><strong>Chase, don't pay.</strong> Find overdue accounts, draft the reminders, reconcile and flag oddities &mdash; you approve every send and every payment.</div></div>
+      <div class="func"><div class="fl">Sales &amp; support</div><div class="ft"><strong>Triage and draft.</strong> Sort and route incoming queries, draft replies from your own knowledge base, summarise long threads &mdash; a person sends anything customer-facing.</div></div>
+      <div class="func"><div class="fl">Operations</div><div class="ft"><strong>The tireless coordinator.</strong> Watch for exceptions, prepare orders and updates, keep records in sync &mdash; queued for sign-off where it touches the real world.</div></div>
+      <div class="func"><div class="fl">Knowledge / admin</div><div class="ft"><strong>Instant institutional memory.</strong> Answer staff questions from your own policies and documents, summarise meetings, draft first versions of reports.</div></div>
+      <div class="func"><div class="fl">HR / recruiting</div><div class="ft"><strong>Screen and prepare, don't decide.</strong> Summarise applications, draft job specs, answer policy questions &mdash; humans own every hiring and firing call.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 WHERE THEY GO WRONG -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">06 &middot; Where they go wrong</div>
+      <h2 class="s-title">The failure modes &mdash; and the fix for each</h2>
+      <p class="s-lede">Agents fail in a few predictable ways. None is a reason to avoid them; each has a known guardrail.</p>
+    </div>
+    <div class="risks fade" style="transition-delay:.05s">
+      <div class="risk">
+        <div class="rq">Confidently wrong</div>
+        <p>An agent can state something false as if it's certain &mdash; an invented figure, a wrong fact.</p>
+        <div class="fix"><b>Fix:</b> keep it on draft duty for anything that matters; a human checks before it's used.</div>
+      </div>
+      <div class="risk">
+        <div class="rq">Tricked by bad input</div>
+        <p>A malicious email or web page can carry hidden instructions that try to hijack the agent.</p>
+        <div class="fix"><b>Fix:</b> least access and approvals &mdash; even if tricked, it can't reach or do much.</div>
+      </div>
+      <div class="risk">
+        <div class="rq">Given too much access</div>
+        <p>An over-permissioned agent turns a small mistake into a big one across systems it never needed.</p>
+        <div class="fix"><b>Fix:</b> scope tightly from day one; grant access per task, not in bulk.</div>
+      </div>
+      <div class="risk">
+        <div class="rq">No judgment on edge cases</div>
+        <p>It follows the goal literally and misses the obvious "a human would never do that here."</p>
+        <div class="fix"><b>Fix:</b> the human-in-the-loop catches exactly these before they land.</div>
+      </div>
+      <div class="risk">
+        <div class="rq">Runaway cost</div>
+        <p>An agent in a loop can rack up usage &mdash; and a bill &mdash; faster than anyone notices.</p>
+        <div class="fix"><b>Fix:</b> hard spend and rate caps, plus alerts, set before it runs.</div>
+      </div>
+      <div class="risk">
+        <div class="rq">Leaks data offshore</div>
+        <p>Personal data can end up sent to an overseas model without anyone intending it.</p>
+        <div class="fix"><b>Fix:</b> keep personal data in-country or strip it first &mdash; the residency guardrail.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 07 OWNERSHIP -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">07 &middot; The foundation</div>
+      <h2 class="s-title">An agent is only as safe as what you let it touch</h2>
+    </div>
+    <div class="callout indigo fade" style="transition-delay:.05s">
+      <h4>You can't safely point an agent at a black box</h4>
+      <p>Every guardrail above &mdash; least access, approvals, a full log, clean tool boundaries &mdash; assumes you <strong>control the systems the agent is acting on</strong>. If your data and processes live inside a vendor's closed platform you can't set fine-grained permissions on or audit properly, you can't make an agent genuinely safe there.</p>
+      <p>That's why this connects to the rest of the series: agents are the payoff of an <strong>owned, reachable stack</strong>. Systems you own, with clear permission boundaries and a proper audit trail, are exactly what let you hand an agent real work without handing it real risk. The agent is the last mile &mdash; the owned foundation is what makes the last mile safe.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 08 WHAT TO DO -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">08 &middot; What to do</div>
+      <h2 class="s-title">Four moves to start safely</h2>
+    </div>
+    <div class="steps fade" style="transition-delay:.05s">
+      <div class="step"><span class="n">1</span><h4>Pick a green task</h4><p>Start where it can't break anything &mdash; summarising, drafting, internal Q&amp;A. Prove the value with zero downside.</p></div>
+      <div class="step"><span class="n">2</span><h4>Approvals on everything real</h4><p>The moment an agent touches money, customers or records, a human signs off. Make that the default, not the exception.</p></div>
+      <div class="step"><span class="n">3</span><h4>Least access + a log</h4><p>Give each agent only what its job needs, and record everything it does. Scope and audit before scale.</p></div>
+      <div class="step"><span class="n">4</span><h4>Expand on evidence</h4><p>Move a task from approval toward autonomy only once the log shows it's earned your trust. Let results, not hype, set the pace.</p></div>
+    </div>
+
+    <div class="aside fade" style="transition-delay:.08s">
+      <h5>If your tech team uses the technical terms &mdash; here's the translation</h5>
+      <div class="row"><span class="plain">A worker that acts, not just answers</span><span class="arr">=</span><span class="tech">AI agent</span></div>
+      <div class="row"><span class="plain">The tools it's allowed to use</span><span class="arr">=</span><span class="tech">tool use / function calling</span></div>
+      <div class="row"><span class="plain">The governed connector to your systems</span><span class="arr">=</span><span class="tech">MCP (Model Context Protocol)</span></div>
+      <div class="row"><span class="plain">A person approves before it acts</span><span class="arr">=</span><span class="tech">human-in-the-loop</span></div>
+      <div class="row"><span class="plain">Only the access it needs</span><span class="arr">=</span><span class="tech">least-privilege / scoped permissions</span></div>
+      <div class="row"><span class="plain">Tricked by hidden instructions</span><span class="arr">=</span><span class="tech">prompt injection</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL -->
+<section>
+  <div class="wrap">
+    <div class="finalbox fade">
+      <div class="tag">The decision</div>
+      <p>Hire the agent the way you'd hire a brilliant stranger: clear tasks, limited keys, and your sign-off on anything that matters. Do that, and it's almost all upside.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tag">A 2nth.ai CEO briefing &middot; plain-language by design</p>
+    <div class="footer-links">
+      <a href="/briefings/">All briefings</a>
+      <a href="/briefings/edge-first">Companion: Keep the Data Home &rarr;</a>
+      <a href="/explainers/agents/mcp.html">Technical: MCP &nearr;</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in Johannesburg, South Africa</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme(){
+    const h=document.documentElement, cur=h.getAttribute('data-theme'), nxt=cur==='dark'?'light':'dark';
+    h.setAttribute('data-theme',nxt);
+    document.querySelector('.toggle').textContent = nxt==='dark' ? '☀️' : '🌙';
+    localStorage.setItem('brief-theme',nxt);
+  }
+  const saved=localStorage.getItem('brief-theme');
+  if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.toggle').textContent=saved==='dark'?'☀️':'🌙';}
+  const ob=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');});},{threshold:0.08,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.fade').forEach(el=>ob.observe(el));
+</script>
+</body>
+</html>
