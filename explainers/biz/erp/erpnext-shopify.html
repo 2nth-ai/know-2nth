@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ERPNext &times; Shopify — know.2nth.ai</title>
+<meta name="description" content="The ERPNext ↔ Shopify integration for light manufacturing and multi-supplier e-commerce. The sync map, the order-to-cash flow, BOM-driven make-to-order, multi-supplier procurement and reorder, true costing and margin, setup gotchas, and the decision guide. Own the back office, rent the storefront.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/biz/erp/erpnext-shopify">
+<meta property="og:title" content="ERPNext × Shopify — know.2nth.ai">
+<meta property="og:description" content="The ERPNext ↔ Shopify integration for light manufacturing and multi-supplier e-commerce — sync map, order-to-cash, BOM-driven make-to-order, supplier reorder, true costing, gotchas. Own the back office, rent the storefront.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai — The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ERPNext × Shopify — know.2nth.ai">
+<meta name="twitter:description" content="ERPNext ↔ Shopify for makers and multi-supplier e-commerce — sync map, order-to-cash, make-to-order, supplier reorder, true costing, gotchas.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33;
+    --blue: #2563EB; --blue-glow: #3B82F6;
+    --sky: #38BDF8; --sky-muted: #7DD3FC;
+    --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8;
+    --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12);
+    --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12);
+    --violet: #8B5CF6; --violet-soft: rgba(139, 92, 246, 0.12);
+    --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12);
+    --bg: var(--ink); --bg-raised: var(--navy);
+    --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(245, 158, 11, 0.06);
+    --text-primary: var(--paper); --text-secondary: var(--slate);
+    --text-muted: #64748B;
+    --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(245, 158, 11, 0.3);
+    --max-w: 1200px; --read-w: 760px;
+    --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px;
+    --domain: var(--warm); --domain-glow: var(--warm-glow);
+  }
+  [data-theme="light"] {
+    --bg: #F1F5F9; --bg-raised: #FFFFFF;
+    --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(245, 158, 11, 0.04);
+    --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8;
+    --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(245, 158, 11, 0.25);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+    background: var(--bg); color: var(--text-primary);
+    line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased;
+  }
+  body::before {
+    content: ''; position: fixed; inset: 0; opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 9999;
+  }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.warm { width: 600px; height: 600px; background: var(--warm); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--warm-glow); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--warm-glow); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--warm-glow); }
+  .crumb-sep { opacity: 0.5; } .crumb-current { color: var(--text-secondary); }
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--warm-glow); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--warm-glow); box-shadow: 0 0 12px var(--warm-glow); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 15ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--warm), var(--warm-glow), #FDE047); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.accent { background: var(--warm-soft); color: var(--warm-glow); border-color: rgba(245, 158, 11, 0.25); }
+  .pill.green { background: var(--green-soft); color: var(--green); border-color: rgba(16, 185, 129, 0.25); }
+  .pill.sky { background: rgba(56,189,248,0.12); color: var(--sky); border-color: rgba(56,189,248,0.25); }
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--warm-glow); margin-bottom: 14px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--warm-glow); }
+  .prose ul, .prose ol { padding-left: 24px; margin-bottom: 18px; max-width: var(--read-w); }
+  .prose li { font-size: 15px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 8px; }
+  .prose li strong { color: var(--text-primary); font-weight: 600; }
+  pre.code { background: var(--ink-deep); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px 22px; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.65; color: var(--mist); margin: 0 0 20px; max-width: var(--read-w); }
+  [data-theme="light"] pre.code { background: #0F172A; color: #E2E8F0; }
+  pre.code .k { color: var(--sky); } pre.code .s { color: #A5F3B8; } pre.code .c { color: var(--text-muted); font-style: italic; } pre.code .n { color: #FCD34D; }
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); margin-bottom: 20px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.sky { border-left: 3px solid var(--sky); }
+  .info-card.rose { border-left: 3px solid var(--rose); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .info-card ul { padding-left: 20px; margin: 0; }
+  .info-card li { font-size: 14px; color: var(--text-secondary); line-height: 1.65; margin-bottom: 6px; }
+  .info-card li strong { color: var(--text-primary); }
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: var(--read-w); margin-bottom: 20px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--warm-glow); background: rgba(245, 158, 11, 0.04); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); }
+  .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--warm-glow); }
+  .compare td strong { color: var(--text-primary); }
+  .compare td .dir { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 600; }
+  .compare td .dir.to { color: var(--sky); } .compare td .dir.from { color: var(--warm-glow); } .compare td .dir.both { color: var(--green); }
+  /* flow chain */
+  .mfg-flow { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 26px 26px; max-width: var(--read-w); margin-bottom: 24px; }
+  .chain { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .chain .box { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 600; padding: 9px 13px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: rgba(245,158,11,0.06); color: var(--text-primary); }
+  .chain .box.shop { background: rgba(56,189,248,0.1); border-color: rgba(56,189,248,0.3); color: var(--sky); }
+  .chain .box.erp { background: rgba(245,158,11,0.1); border-color: rgba(245,158,11,0.3); color: var(--warm-glow); }
+  .chain .arr { color: var(--warm); opacity: 0.6; font-family: 'JetBrains Mono', monospace; }
+  .chain-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 12px; display: block; }
+  .chain + .chain-label { margin-top: 22px; }
+  .gotcha-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 12px; }
+  .gotcha { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--rose); border-radius: var(--radius-md); padding: 18px 22px; }
+  .gotcha strong { display: block; color: var(--text-primary); font-weight: 600; font-size: 14px; margin-bottom: 6px; }
+  .gotcha p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+  .val-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; max-width: var(--read-w); margin-bottom: 20px; }
+  .val { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-top: 3px solid var(--warm); border-radius: var(--radius-md); padding: 18px 20px; }
+  .val .vn { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 7px; }
+  .val h4 { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+  .val p { font-size: 12.5px; color: var(--text-secondary); line-height: 1.55; }
+  .decision-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: var(--read-w); }
+  @media (max-width: 720px) { .decision-grid { grid-template-columns: 1fr; } }
+  .decision-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 24px; }
+  .decision-card.use { border-left: 3px solid var(--green); } .decision-card.skip { border-left: 3px solid var(--rose); }
+  .decision-card h4 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 12px; }
+  .decision-card.use h4 { color: var(--green); } .decision-card.skip h4 { color: var(--rose); }
+  .decision-card ul { list-style: none; padding: 0; }
+  .decision-card li { font-size: 13px; color: var(--text-secondary); line-height: 1.6; padding: 6px 0; border-bottom: 1px solid var(--border); }
+  .decision-card li:last-child { border-bottom: none; }
+  .connect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .connect-node { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; transition: all 0.3s; text-decoration: none; color: inherit; display: block; }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node.soon { cursor: default; opacity: 0.72; }
+  .connect-node .tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--warm-glow); word-break: break-all; }
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--warm-glow); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } pre.code { font-size: 11px; padding: 14px 16px; } .compare { font-size: 12px; } .compare th, .compare td { padding: 10px 12px; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+
+<div class="glow-orb warm"></div>
+<div class="glow-orb sky"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../../index.html" class="nav-brand">
+      <span class="nav-brand-mark">know.2nth.ai</span>
+      <span class="nav-brand-sub">biz/erp/erpnext-shopify</span>
+    </a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">&larr; ERP</a>
+      <a href="../../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x1F319;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="../../../index.html#domains">Business</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="./">ERP</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">ERPNext &times; Shopify</span>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> biz &middot; ERP &middot; Integration Playbook</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      Own the back office. <span class="gradient">Rent the storefront.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      A business that makes things and sells them online runs two worlds: the <strong>storefront</strong> (Shopify &mdash; orders, customers, payments) and the <strong>back office</strong> (making, buying from many suppliers, stock, costing, the books). Wiring <strong>ERPNext</strong> to Shopify makes the back office a single source of truth with the storefront as one of its channels &mdash; which is exactly what brings true stock, true cost, and supplier-driven purchasing to light for a maker. This is the integration in practice: the sync map, the flows, the gotchas, and when it's worth it.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill accent">ERPNext v16</span>
+      <span class="pill sky">Shopify connector</span>
+      <span class="pill">BOM &middot; Work Order</span>
+      <span class="pill green">Multi-supplier</span>
+      <span class="pill">Real costing</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 WHAT IT IS -->
+<section id="what">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; What it is</div>
+      <h2 class="section-title">One source of truth, two systems.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Shopify is an excellent rented storefront &mdash; payments, checkout, marketing, themes. It is not a manufacturing, procurement or accounting system, and it was never meant to be. ERPNext is the opposite: an open-source ERP (manufacturing, inventory, buying, accounting) that you self-host and own, but with no storefront worth selling from. <strong>The integration lets each do its job and keeps them in lockstep.</strong></p>
+      <p>The connection runs through the official <code>ecommerce_integrations</code> Frappe app (the ERPNext Shopify Connector). It talks to Shopify's Admin API and subscribes to Shopify <strong>webhooks</strong>, so events flow automatically: a sale on Shopify lands as a document in ERPNext within seconds, and stock and product changes in ERPNext push back out to the storefront. No re-keying, no nightly CSV export, no spreadsheet in the middle.</p>
+      <p>For a maker, the point isn't tidiness &mdash; it's <strong>visibility you can't get any other way</strong>. Because ERPNext holds the bill of materials and your real purchase prices, the moment a Shopify order arrives the system already knows what it consumes, what it truly cost to make, and whether you need to buy more from a supplier. That's the value: the storefront generates demand, and the owned back office turns that demand into accurate stock, cost and purchasing.</p>
+    </div>
+    <div class="val-grid fade-up" style="transition-delay: 0.08s">
+      <div class="val"><span class="vn">Shopify owns</span><h4>The sell side</h4><p>Storefront, checkout, payments, marketing, customer experience.</p></div>
+      <div class="val"><span class="vn">ERPNext owns</span><h4>The make &amp; buy side</h4><p>BOMs, work orders, stock, suppliers, purchasing, costing.</p></div>
+      <div class="val"><span class="vn">ERPNext owns</span><h4>The books</h4><p>Sales, COGS, inventory valuation, supplier bills &mdash; one ledger.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 SYNC MAP -->
+<section id="sync">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; The sync map</div>
+      <h2 class="section-title">What moves, and which way.</h2>
+      <p class="section-lede">The integration is bidirectional, but each kind of data has an owner. Get the direction right and the two systems never argue. The rule of thumb: <strong>Shopify owns the order and the customer; ERPNext owns the product, the stock and the money.</strong></p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead><tr><th>Data</th><th>Direction</th><th>What happens</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Products / SKUs</strong></td><td><span class="dir from">ERP &rarr; Shopify</span></td><td>Items defined in ERPNext publish to the storefront (or map to existing Shopify products)</td></tr>
+          <tr><td><strong>Inventory levels</strong></td><td><span class="dir from">ERP &rarr; Shopify</span></td><td>Stock from the mapped ERPNext warehouse syncs out, so you stop overselling</td></tr>
+          <tr><td><strong>Orders</strong></td><td><span class="dir to">Shopify &rarr; ERP</span></td><td>Each order becomes a Sales Order (then Delivery Note + Sales Invoice)</td></tr>
+          <tr><td><strong>Customers</strong></td><td><span class="dir to">Shopify &rarr; ERP</span></td><td>New buyers create / match a Customer record</td></tr>
+          <tr><td><strong>Payments</strong></td><td><span class="dir to">Shopify &rarr; ERP</span></td><td>Paid orders can auto-create a Payment Entry for reconciliation</td></tr>
+          <tr><td><strong>Fulfilment / tracking</strong></td><td><span class="dir from">ERP &rarr; Shopify</span></td><td>Shipping a Delivery Note marks the Shopify order fulfilled, with tracking</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.08s">
+      <h4>The golden rule: one item, one SKU, everywhere</h4>
+      <p>Every mapping above hangs on the SKU. The finished good in ERPNext, the variant in Shopify, and the line on the supplier's invoice must agree on what an item <em>is</em>. Disciplined SKUs are the single biggest predictor of whether this integration is smooth or a daily reconciliation chore. Decide your SKU scheme before you connect anything.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 ORDER TO CASH -->
+<section id="otc">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; Order to cash</div>
+      <h2 class="section-title">From checkout to the ledger, automatically.</h2>
+      <p class="section-lede">When a Shopify order fires its webhook, the connector walks it through the standard ERPNext order-to-cash chain &mdash; each step a real document you can audit, not a black-box sync.</p>
+    </div>
+    <div class="mfg-flow fade-up" style="transition-delay: 0.05s">
+      <span class="chain-label">The automatic path</span>
+      <div class="chain">
+        <span class="box shop">Shopify order</span>
+        <span class="arr">&rarr;</span>
+        <span class="box erp">Sales Order</span>
+        <span class="arr">&rarr;</span>
+        <span class="box erp">Delivery Note</span>
+        <span class="arr">&rarr;</span>
+        <span class="box erp">Sales Invoice</span>
+        <span class="arr">&rarr;</span>
+        <span class="box erp">Payment Entry</span>
+      </div>
+      <span class="chain-label">What each step does for the books</span>
+      <div class="prose" style="margin-top:6px;">
+        <ul style="margin-bottom:0;">
+          <li><strong>Sales Order</strong> &mdash; the demand is now in ERPNext; stock is committed against it.</li>
+          <li><strong>Delivery Note</strong> &mdash; on shipping, stock leaves inventory and COGS is recognised at real cost.</li>
+          <li><strong>Sales Invoice</strong> &mdash; revenue posts to the ledger; tax is handled per your rules.</li>
+          <li><strong>Payment Entry</strong> &mdash; the Shopify payment is matched, ready for bank reconciliation.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="info-card sky fade-up" style="transition-delay: 0.08s">
+      <h4>You choose how far it auto-runs</h4>
+      <p>Most teams auto-create the Sales Order and let a human confirm Delivery and Invoice &mdash; the human-in-the-loop pattern. High-volume, low-variance shops automate the whole chain. The connector lets you set where the automation stops, so control scales with how much you trust the flow.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 MAKE TO ORDER -->
+<section id="make">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; Light manufacturing</div>
+      <h2 class="section-title">Demand on the storefront drives the workshop.</h2>
+      <p class="section-lede">This is where the integration stops being "sync" and starts being an operating system for a maker. ERPNext's manufacturing module knows what each product is made of, so a Shopify sale doesn't just decrement a number &mdash; it can trigger making the next one.</p>
+    </div>
+    <div class="mfg-flow fade-up" style="transition-delay: 0.05s">
+      <span class="chain-label">From recipe to finished stock</span>
+      <div class="chain">
+        <span class="box erp">BOM</span>
+        <span class="arr">&rarr;</span>
+        <span class="box erp">Work Order</span>
+        <span class="arr">&rarr;</span>
+        <span class="box erp">Job Card</span>
+        <span class="arr">&rarr;</span>
+        <span class="box erp">Stock Entry</span>
+        <span class="arr">&rarr;</span>
+        <span class="box shop">Stock synced to Shopify</span>
+      </div>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.07s">
+      <p>The <strong>Bill of Materials</strong> lists every component and quantity that goes into a finished good. From it, ERPNext supports two postures, and you can mix them per product:</p>
+      <ul>
+        <li><strong>Make-to-stock</strong> &mdash; you build ahead, Shopify sells from finished inventory, and falling stock triggers the next production run. Best for steady sellers.</li>
+        <li><strong>Make-to-order</strong> &mdash; a Shopify sale raises a Work Order to build that item from components. Best for bespoke or slow-moving lines where you don't want cash sitting in finished stock.</li>
+      </ul>
+      <p>Either way, the BOM is what connects a sale to <em>raw material consumption</em> &mdash; and therefore to purchasing and to true cost, the next two sections.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 MULTI-SUPPLIER -->
+<section id="suppliers">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; Multi-supplier procurement</div>
+      <h2 class="section-title">Many suppliers, one reorder brain.</h2>
+      <p class="section-lede">Makers rarely buy a component from one place. ERPNext is built for exactly that: multiple suppliers per item, each with its own price and lead time, and a procurement flow that turns Shopify-driven demand into the right purchase order to the right supplier at the right time.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Each raw material can carry a list of approved suppliers. When stock of that component drops to its <strong>reorder level</strong> &mdash; pulled down by the sales the storefront is generating &mdash; ERPNext raises a Material Request, which walks the standard buying chain:</p>
+    </div>
+    <div class="mfg-flow fade-up" style="transition-delay: 0.07s">
+      <span class="chain-label">Demand to delivered material</span>
+      <div class="chain">
+        <span class="box erp">Reorder level hit</span>
+        <span class="arr">&rarr;</span>
+        <span class="box erp">Material Request</span>
+        <span class="arr">&rarr;</span>
+        <span class="box erp">RFQ</span>
+        <span class="arr">&rarr;</span>
+        <span class="box erp">Supplier Quotation</span>
+        <span class="arr">&rarr;</span>
+        <span class="box erp">Purchase Order</span>
+        <span class="arr">&rarr;</span>
+        <span class="box erp">Purchase Receipt</span>
+      </div>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.09s">
+      <p>The <strong>Request for Quotation</strong> step is the multi-supplier payoff: send the same request to several suppliers, capture their quotes side by side, and order from the best on price or lead time for that run. Over time ERPNext accumulates the price and delivery history that tells you which supplier is actually cheapest and most reliable &mdash; not which one you happen to remember.</p>
+    </div>
+    <div class="info-card green fade-up" style="transition-delay: 0.11s">
+      <h4>Why this matters more for makers than for resellers</h4>
+      <p>A reseller buys finished goods. A maker buys <em>inputs</em> &mdash; often the same input from different suppliers at different prices, in different currencies, with different lead times. That variability is invisible in a spreadsheet and ruinous to margin if mismanaged. Putting it in ERPNext, fed by real Shopify demand, is what turns purchasing from a guess into a plan.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 COSTING -->
+<section id="costing">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; True costing &amp; margin</div>
+      <h2 class="section-title">Finally know what each sale actually made you.</h2>
+      <p class="section-lede">This is the number most makers can't answer: <em>what did that product really cost to make, and what was the margin on that Shopify sale?</em> The integration answers it, because ERPNext rolls real purchase costs up through the BOM into the finished good.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>ERPNext values stock with a real method &mdash; <strong>Moving Average</strong> or <strong>FIFO</strong> &mdash; so the cost of each component reflects what you <em>actually paid</em>, blended across your different suppliers. The BOM rolls those component costs (plus optional labour and overhead via operations) into the finished good's cost. When the storefront sale ships, COGS is recognised at that real cost, and margin per SKU falls out of the ledger automatically.</p>
+    </div>
+    <div class="mfg-flow fade-up" style="transition-delay: 0.07s">
+      <span class="chain-label">How a true margin gets built</span>
+      <div class="chain">
+        <span class="box erp">Real supplier prices</span>
+        <span class="arr">&rarr;</span>
+        <span class="box erp">BOM rollup</span>
+        <span class="arr">&rarr;</span>
+        <span class="box erp">Finished-good cost</span>
+        <span class="arr">&rarr;</span>
+        <span class="box shop">Shopify price</span>
+        <span class="arr">&rarr;</span>
+        <span class="box erp">Margin per sale</span>
+      </div>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.09s">
+      <h4>The decisions this unlocks</h4>
+      <p>Once margin per SKU is real, the business questions get answerable: which products to promote, which to discontinue, where a supplier price rise just quietly killed your margin, whether a discount code is still profitable. That feedback loop &mdash; storefront price against true, supplier-driven cost &mdash; is the whole reason to connect the two systems rather than run them apart.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 07 SETUP & GOTCHAS -->
+<section id="gotchas">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; Setup &amp; gotchas</div>
+      <h2 class="section-title">Where these integrations bite.</h2>
+      <p class="section-lede">The connector is solid, but a two-system sync has sharp edges. None is fatal; all are cheaper to plan for than to debug live.</p>
+    </div>
+    <div class="gotcha-list fade-up" style="transition-delay: 0.05s">
+      <div class="gotcha"><strong>SKU drift</strong><p>If the same item has different SKUs in Shopify and ERPNext, mappings silently break and stock desyncs. One SKU scheme, enforced, is non-negotiable.</p></div>
+      <div class="gotcha"><strong>Inventory-sync timing</strong><p>Sync is near-real-time, not instant. On flash sales of low-stock items, a brief race can oversell. Buffer stock or a small safety margin handles it.</p></div>
+      <div class="gotcha"><strong>Webhook reliability</strong><p>If ERPNext is unreachable (downtime, load-shedding) a webhook can be missed. The connector retries and supports backfill &mdash; but monitor for gaps.</p></div>
+      <div class="gotcha"><strong>Multi-location stock</strong><p>Map the right ERPNext warehouse to the right Shopify location, or stock figures won't reconcile. Get this explicit before go-live.</p></div>
+      <div class="gotcha"><strong>Tax &amp; rounding</strong><p>Shopify tax settings and ERPNext tax templates must agree, or invoices won't tie out to the order to the cent. Align them up front.</p></div>
+      <div class="gotcha"><strong>Variants &amp; bundles</strong><p>Shopify variants and ERPNext item attributes (and any sold-as-a-kit BOMs) need a clear mapping, especially for made-to-order configurable products.</p></div>
+    </div>
+    <div class="info-card sky fade-up" style="transition-delay: 0.08s">
+      <h4>Hosting reality</h4>
+      <p>Run ERPNext on <strong>Frappe Cloud</strong> (from ~$50/mo, the connector is a managed marketplace app) or self-host for full control. Either way someone owns updates, backups and webhook monitoring. Owned doesn't mean unmanaged &mdash; budget for a maintainer or a partner.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 08 DECISION -->
+<section id="decision">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 &middot; Decision guide</div>
+      <h2 class="section-title">When it's worth it &mdash; and when it isn't.</h2>
+      <p class="section-lede">The value scales with manufacturing complexity &times; supplier count &times; order volume. High on any axis and this is the unlock. Low on all three and you're carrying an ERP you didn't need yet.</p>
+    </div>
+    <div class="decision-grid fade-up" style="transition-delay: 0.05s">
+      <div class="decision-card use">
+        <h4>Connect them when</h4>
+        <ul>
+          <li>You make or assemble products, not just resell</li>
+          <li>You source inputs from several suppliers</li>
+          <li>You can't currently state true margin per product</li>
+          <li>Manual order re-keying is eating hours or causing errors</li>
+          <li>You sell on Shopify <em>and</em> other channels</li>
+          <li>You want costing, stock and books in one owned system</li>
+        </ul>
+      </div>
+      <div class="decision-card skip">
+        <h4>Hold off when</h4>
+        <ul>
+          <li>You're a pure dropshipper &mdash; no making, no stock</li>
+          <li>One supplier, a handful of SKUs, low volume</li>
+          <li>Shopify + a simple accounting link already copes</li>
+          <li>Nobody can own running ERPNext yet</li>
+          <li>You're pre-product-market-fit and still pivoting weekly</li>
+          <li>A spreadsheet genuinely still answers your questions</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 09 SA CONTEXT -->
+<section id="sa-context">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">09 &middot; South African context</div>
+      <h2 class="section-title">Why this stacks up for SA makers.</h2>
+      <p class="section-lede">For a South African maker-and-seller, the economics and the residency story both favour an owned ERP behind a rented storefront.</p>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.05s">
+      <h4>Cost &middot; no FX-heavy per-seat ERP</h4>
+      <p>The enterprise path &mdash; NetSuite or SAP behind Shopify Plus &mdash; is USD-billed per seat and out of reach for most local makers. ERPNext removes the licence line entirely; your spend is hosting plus implementation. That's frequently the difference between a real operating system and another spreadsheet.</p>
+    </div>
+    <div class="info-card green fade-up" style="transition-delay: 0.07s">
+      <h4>Residency &middot; your costing &amp; supplier data stays home</h4>
+      <p>Shopify holds storefront and payment data on its own infrastructure, but your <strong>system of record</strong> &mdash; costing, suppliers, financials, the BOMs that are your IP &mdash; can sit in an ERPNext you host in South Africa. For POPIA and for protecting trade secrets, owning where that data lives is a real advantage over keeping everything in offshore SaaS.</p>
+    </div>
+    <div class="info-card sky fade-up" style="transition-delay: 0.09s">
+      <h4>Resilience &middot; designed for the local reality</h4>
+      <p>Because the connector retries and backfills missed webhooks, a load-shedding outage delays sync rather than losing orders &mdash; provided you monitor for gaps. Self-hosting with a sensible backup and UPS posture keeps the back office trustworthy through the conditions SA businesses actually operate in.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 10 CONNECTIONS -->
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">10 &middot; Connections</div>
+      <h2 class="section-title">Where this links in the tree.</h2>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="erpnext.html" class="connect-node">
+        <span class="tag">biz/erp/erpnext</span>
+        <div class="skill">ERPNext</div>
+        <div class="why">The back-office system of record itself &mdash; the manufacturing flow (BOM → Work Order → Stock Entry) this integration is built on.</div>
+      </a>
+      <a href="shopify.html" class="connect-node">
+        <span class="tag">biz/erp/shopify</span>
+        <div class="skill">Shopify</div>
+        <div class="why">The storefront half &mdash; the Admin API and webhooks the connector subscribes to. The sell side of the pairing.</div>
+      </a>
+      <a href="../../tech/frappe/framework.html" class="connect-node">
+        <span class="tag">tech/frappe/framework</span>
+        <div class="skill">Frappe Framework</div>
+        <div class="why">The platform ERPNext and the ecommerce_integrations connector are built on. DocTypes are why customising the sync without forking is possible.</div>
+      </a>
+      <a href="woocommerce.html" class="connect-node">
+        <span class="tag">biz/erp/woocommerce</span>
+        <div class="skill">WooCommerce</div>
+        <div class="why">The open-source storefront alternative. Same ERPNext-as-back-office pattern if you'd rather own the shopfront too.</div>
+      </a>
+      <a href="../../tech/own-your-stack.html" class="connect-node">
+        <span class="tag">tech/own-your-stack</span>
+        <div class="skill">Own Your Stack</div>
+        <div class="why">The strategy this is an instance of &mdash; rent the commodity storefront, own the IP-bearing back office and books.</div>
+      </a>
+      <a href="../../../briefings/" class="connect-node">
+        <span class="tag">briefings</span>
+        <div class="skill">CEO Briefing</div>
+        <div class="why">The plain-language version of this for a business owner &mdash; "Make it, sell it, see the margin."</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 11 RESOURCES -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">11 &middot; Resources</div>
+      <h2 class="section-title">Primary sources.</h2>
+      <p class="section-lede">The connector app, the ERPNext manufacturing and buying docs, and the Shopify developer reference. Connector capabilities evolve &mdash; confirm against the live app docs before designing around a specific behaviour. Last reviewed 2026-06-17.</p>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://github.com/frappe/ecommerce_integrations" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Connector</span>
+        <span class="r-title">frappe/ecommerce_integrations</span>
+        <span class="r-url">github.com/frappe/ecommerce_integrations</span>
+      </a>
+      <a href="https://docs.frappe.io/erpnext/user/manual/en/manufacturing" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs</span>
+        <span class="r-title">ERPNext Manufacturing</span>
+        <span class="r-url">docs.frappe.io/erpnext &middot; manufacturing</span>
+      </a>
+      <a href="https://docs.frappe.io/erpnext/user/manual/en/buying" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs</span>
+        <span class="r-title">ERPNext Buying &amp; Suppliers</span>
+        <span class="r-url">docs.frappe.io/erpnext &middot; buying</span>
+      </a>
+      <a href="https://docs.frappe.io/erpnext/user/manual/en/stock" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs</span>
+        <span class="r-title">ERPNext Stock &amp; Valuation</span>
+        <span class="r-url">docs.frappe.io/erpnext &middot; stock</span>
+      </a>
+      <a href="https://shopify.dev/docs/api/admin" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">API</span>
+        <span class="r-title">Shopify Admin API &amp; webhooks</span>
+        <span class="r-url">shopify.dev/docs/api/admin</span>
+      </a>
+      <a href="https://frappecloud.com/marketplace/apps/ecommerce_integrations" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Hosting</span>
+        <span class="r-title">Connector on Frappe Cloud</span>
+        <span class="r-url">frappecloud.com/marketplace</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../../index.html">Knowledge tree</a>
+      <a href="./">ERP hub</a>
+      <a href="../../../briefings/">CEO briefing version</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in Johannesburg, South Africa</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme(){const html=document.documentElement;const current=html.getAttribute('data-theme');const next=current==='dark'?'light':'dark';html.setAttribute('data-theme',next);document.querySelector('.theme-toggle').textContent=next==='dark'?'☀️':'🌙';localStorage.setItem('theme',next);}
+  const saved=localStorage.getItem('theme');if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.theme-toggle').textContent=saved==='dark'?'☀️':'🌙';}
+  const observer=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting)entry.target.classList.add('visible');});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Make It, Sell It, See the Margin &mdash; ERPNext + Shopify for Makers</title>
+<meta name="description" content="A non-technical CEO briefing for makers and e-commerce shops: why connecting your online storefront (Shopify) to an owned back office (ERPNext) finally gives you real stock, real cost, real margin, and purchasing that follows your sales — especially when you make products and source from different suppliers.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/briefings/make-it-sell-it">
+<meta property="og:title" content="Make It, Sell It, See the Margin — ERPNext + Shopify for Makers">
+<meta property="og:description" content="Connect your Shopify storefront to an owned back office and finally see real stock, real cost, real margin, and supplier-driven purchasing. A non-technical CEO briefing for makers.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai — The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Make It, Sell It, See the Margin">
+<meta name="twitter:description" content="Connect Shopify to an owned back office and finally see real stock, cost, margin and supplier-driven buying. A non-technical CEO briefing for makers.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%23F59E0B' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --ink: #0B1120; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6;
+    --sky: #38BDF8; --paper: #F8FAFC; --slate: #94A3B8;
+    --warm: #F59E0B; --warm-deep: #D97706; --warm-soft: rgba(245,158,11,0.12);
+    --green: #10B981; --green-soft: rgba(16,185,129,0.12);
+    --rose: #F43F5E; --rose-soft: rgba(244,63,94,0.12);
+    --indigo: #6366F1; --indigo-soft: rgba(99,102,241,0.12);
+    --max-w: 1080px; --read-w: 820px;
+    --radius-md: 14px; --radius-lg: 22px; --radius-pill: 100px;
+    --bg: #F6F4EF; --bg-soft: #EFEBE2; --card: #FFFFFF; --card-2: #FCFBF8;
+    --text: #1A1407; --text-2: #5B5240; --text-3: #9A9079;
+    --border: rgba(40,30,10,0.10); --border-strong: rgba(40,30,10,0.16);
+    --shadow: 0 14px 40px rgba(40,30,10,0.07);
+  }
+  [data-theme="dark"] {
+    --bg: #0F0C06; --bg-soft: #15110A; --card: #1C170D; --card-2: #16120A;
+    --text: #FAF6EE; --text-2: #CDBF9F; --text-3: #8A7E63;
+    --border: rgba(245,200,120,0.14); --border-strong: rgba(245,200,120,0.24);
+    --shadow: 0 16px 48px rgba(0,0,0,0.5);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+    background: radial-gradient(1200px 600px at 80% -100px, var(--bg-soft), var(--bg)) fixed;
+    color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  }
+  .wrap { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+
+  .topbar { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(14px);
+    background: color-mix(in srgb, var(--bg) 80%, transparent); border-bottom: 1px solid var(--border); }
+  .topbar-inner { max-width: var(--max-w); margin: 0 auto; padding: 12px 24px;
+    display: flex; align-items: center; justify-content: space-between; }
+  .brand { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 14px;
+    background: linear-gradient(135deg, var(--warm-deep), var(--warm));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .brand-sub { font-size: 11px; color: var(--text-3); letter-spacing: 1.5px; text-transform: uppercase;
+    margin-left: 10px; padding-left: 10px; border-left: 1px solid var(--border); font-weight: 500; }
+  .toggle { background: none; border: 1px solid var(--border); color: var(--text-2);
+    width: 34px; height: 34px; border-radius: 50%; cursor: pointer; display: grid; place-items: center;
+    font-size: 15px; transition: all 0.2s; }
+  .toggle:hover { border-color: var(--border-strong); }
+
+  .hero { padding: 64px 0 36px; }
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500;
+    letter-spacing: 2.5px; text-transform: uppercase; color: var(--warm-deep);
+    display: inline-flex; align-items: center; gap: 10px; margin-bottom: 22px; }
+  .eyebrow .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--warm); box-shadow: 0 0 12px var(--warm); }
+  .hero h1 { font-size: clamp(36px, 6vw, 60px); font-weight: 800; line-height: 1.05;
+    letter-spacing: -1.8px; margin-bottom: 22px; max-width: 15ch; }
+  .hero h1 .hl { background: linear-gradient(135deg, var(--warm-deep), var(--warm)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .lede { font-size: 19px; color: var(--text-2); max-width: 690px; line-height: 1.6; font-weight: 300; margin-bottom: 26px; }
+  .chips { display: flex; gap: 8px; flex-wrap: wrap; }
+  .chip { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 7px 14px;
+    border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-2); background: var(--card); }
+
+  .bluf { background: linear-gradient(135deg, var(--warm-soft), transparent);
+    border: 1px solid var(--border); border-left: 4px solid var(--warm);
+    border-radius: var(--radius-lg); padding: 28px 32px; box-shadow: var(--shadow); margin: 12px 0 8px; }
+  .bluf .tag { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.6px; text-transform: uppercase; color: var(--warm-deep); font-weight: 600; margin-bottom: 10px; }
+  .bluf p { font-size: 18px; line-height: 1.6; color: var(--text); font-weight: 400; }
+  .bluf p strong { font-weight: 700; }
+
+  section { padding: 46px 0; }
+  .s-num { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--warm-deep); font-weight: 600; margin-bottom: 12px; }
+  .s-title { font-size: clamp(26px, 4vw, 38px); font-weight: 700; letter-spacing: -0.8px; line-height: 1.15; margin-bottom: 16px; max-width: 20ch; }
+  .s-lede { font-size: 17px; color: var(--text-2); max-width: var(--read-w); line-height: 1.65; font-weight: 300; margin-bottom: 30px; }
+
+  /* two worlds */
+  .vs { display: grid; grid-template-columns: 1fr auto 1fr; gap: 16px; align-items: stretch; }
+  @media (max-width: 720px){ .vs { grid-template-columns: 1fr; } .vs .vmid { transform: rotate(90deg); } }
+  .vcol { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px 26px; box-shadow: var(--shadow); }
+  .vcol.bad { border-top: 4px solid var(--rose); }
+  .vcol.good { border-top: 4px solid var(--green); }
+  .vcol .vt { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; font-weight: 600; margin-bottom: 14px; }
+  .vcol.bad .vt { color: var(--rose); } .vcol.good .vt { color: var(--green); }
+  .vcol ul { list-style: none; padding: 0; }
+  .vcol li { font-size: 14px; color: var(--text-2); line-height: 1.5; padding: 9px 0; border-bottom: 1px solid var(--border); display: flex; gap: 10px; }
+  .vcol li:last-child { border-bottom: none; }
+  .vcol li .ic { flex-shrink: 0; font-family: 'JetBrains Mono', monospace; font-weight: 700; }
+  .vcol.bad li .ic { color: var(--rose); } .vcol.good li .ic { color: var(--green); }
+  .vmid { display: grid; place-items: center; font-family: 'JetBrains Mono', monospace; font-size: 22px; color: var(--text-3); }
+
+  /* value cards */
+  .vals { display: grid; grid-template-columns: repeat(2,1fr); gap: 14px; max-width: var(--read-w); }
+  @media (max-width: 680px){ .vals { grid-template-columns: 1fr; } }
+  .val { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px 26px; box-shadow: var(--shadow); border-left: 4px solid var(--warm); }
+  .val .vi { font-size: 22px; margin-bottom: 10px; }
+  .val h4 { font-size: 17.5px; font-weight: 700; margin-bottom: 7px; }
+  .val p { font-size: 14px; color: var(--text-2); line-height: 1.6; }
+
+  /* margin spotlight */
+  .spotlight { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 30px 32px; box-shadow: var(--shadow); max-width: var(--read-w); }
+  .spotlight h3 { font-size: 18px; font-weight: 700; margin-bottom: 18px; }
+  .flow { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .flow .box { font-family: 'JetBrains Mono', monospace; font-size: 11.5px; font-weight: 600; padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border); }
+  .flow .box.in { background: var(--warm-soft); color: var(--warm-deep); border-color: rgba(245,158,11,0.3); }
+  .flow .box.out { background: var(--green-soft); color: var(--green); border-color: rgba(16,185,129,0.3); }
+  .flow .arr { color: var(--warm); opacity: 0.6; font-family: 'JetBrains Mono', monospace; }
+
+  .panel { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 26px 30px; box-shadow: var(--shadow); max-width: var(--read-w); }
+  .callout { background: var(--card-2); border: 1px solid var(--border); border-left: 4px solid var(--warm); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); box-shadow: var(--shadow); }
+  .callout.good { border-left-color: var(--green); }
+  .callout.indigo { border-left-color: var(--indigo); }
+  .callout h4 { font-size: 19px; font-weight: 700; margin-bottom: 10px; }
+  .callout p { font-size: 15.5px; color: var(--text-2); line-height: 1.7; }
+  .callout p strong { color: var(--text); }
+  .callout p + p { margin-top: 12px; }
+
+  /* limits */
+  .limits { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px,1fr)); gap: 14px; }
+  .limit { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 24px; box-shadow: var(--shadow); border-left: 4px solid var(--text-3); }
+  .limit .lq { font-size: 16px; font-weight: 700; margin-bottom: 8px; line-height: 1.3; }
+  .limit p { font-size: 13.5px; color: var(--text-2); line-height: 1.6; }
+
+  /* steps */
+  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  @media (max-width: 860px){ .steps { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 520px){ .steps { grid-template-columns: 1fr; } }
+  .step { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px 22px; box-shadow: var(--shadow); }
+  .step .n { font-family: 'JetBrains Mono', monospace; font-size: 26px; font-weight: 700;
+    background: linear-gradient(135deg, var(--warm-deep), var(--warm)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1; margin-bottom: 12px; display: block; }
+  .step h4 { font-size: 16px; font-weight: 700; margin-bottom: 7px; }
+  .step p { font-size: 13.5px; color: var(--text-2); line-height: 1.55; }
+
+  .aside { background: var(--bg-soft); border: 1px dashed var(--border-strong); border-radius: var(--radius-md); padding: 22px 26px; max-width: var(--read-w); margin-top: 8px; }
+  .aside h5 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-3); margin-bottom: 14px; }
+  .aside .row { display: grid; grid-template-columns: 1fr auto 1fr; gap: 12px; align-items: center; font-size: 14px; padding: 7px 0; border-bottom: 1px solid var(--border); }
+  .aside .row:last-child { border-bottom: none; }
+  .aside .row .plain { font-weight: 600; color: var(--text); }
+  .aside .row .arr { color: var(--text-3); font-family: 'JetBrains Mono', monospace; }
+  .aside .row .tech { color: var(--text-2); font-family: 'JetBrains Mono', monospace; font-size: 13px; }
+
+  .finalbox { background: linear-gradient(135deg, var(--warm-deep), var(--warm)); color: #2a1c02; border-radius: var(--radius-lg); padding: 40px 40px; box-shadow: 0 20px 60px rgba(245,158,11,0.3); }
+  .finalbox .tag { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.7; margin-bottom: 14px; }
+  .finalbox p { font-size: clamp(20px, 3vw, 26px); font-weight: 700; line-height: 1.45; max-width: 26ch; }
+
+  footer { padding: 56px 0 48px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600;
+    background: linear-gradient(135deg, var(--warm-deep), var(--warm)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tag { font-size: 13px; color: var(--text-3); margin-bottom: 18px; }
+  .footer-links { display: flex; justify-content: center; gap: 22px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-2); text-decoration: none; }
+  .footer-links a:hover { color: var(--warm-deep); }
+  .footer-copy { font-size: 12px; color: var(--text-3); margin-top: 18px; }
+
+  .fade { opacity: 0; transform: translateY(22px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade.vis { opacity: 1; transform: translateY(0); }
+
+  @media print {
+    .topbar, .toggle { position: static; }
+    .fade { opacity: 1 !important; transform: none !important; }
+    body { background: #fff; }
+    section { padding: 22px 0; page-break-inside: avoid; }
+    .panel, .limit, .step, .spotlight, .callout, .vcol, .val, .bluf, .finalbox { box-shadow: none; }
+    .finalbox { color: #7c4a02; background: #FEF3C7; border: 1px solid #FDE68A; }
+  }
+  *, *::before, *::after { transition-property: background-color, border-color, color; transition-duration: 0.3s; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div><span class="brand">know.2nth.ai</span><span class="brand-sub">CEO Briefing</span></div>
+    <div style="display:flex;align-items:center;gap:16px;">
+      <a href="/briefings/" style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-2);text-decoration:none;letter-spacing:0.5px;">&larr; All briefings</a>
+      <button class="toggle" onclick="toggleTheme()" aria-label="Toggle light/dark">🌙</button>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div class="eyebrow fade"><span class="dot"></span> CEO Briefing &middot; For makers &amp; e-commerce shops</div>
+    <h1 class="fade" style="transition-delay:.05s">Make it, sell it, <span class="hl">see the margin.</span></h1>
+    <p class="lede fade" style="transition-delay:.1s">
+      If you make products and sell them online &mdash; sourcing your materials from a handful of different suppliers &mdash; you're almost certainly running two disconnected worlds: the <strong>storefront</strong> and the <strong>workshop</strong>. They don't talk, so you're guessing at stock, guessing at what things really cost, and guessing at what to buy. Connecting them is how you stop guessing. This is what that gets you, in plain terms.
+    </p>
+    <div class="chips fade" style="transition-delay:.15s">
+      <span class="chip">6-minute read</span>
+      <span class="chip">For the owner</span>
+      <span class="chip">Make &amp; sell, many suppliers</span>
+    </div>
+  </div>
+</section>
+
+<!-- BLUF -->
+<div class="wrap">
+  <div class="bluf fade">
+    <div class="tag">The bottom line, up front</div>
+    <p>Your online shop (Shopify) is brilliant at selling. It knows nothing about making your product, buying your materials, or what any of it costs. Connect it to an <strong>owned back-office system</strong> that does &mdash; and for the first time you get one honest view: real stock, the <strong>true cost and margin of every product</strong>, and a buying plan driven by what's actually selling. You keep renting the shopfront. You finally own the engine behind it.</p>
+  </div>
+</div>
+
+<!-- 01 TWO WORLDS -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">01 &middot; The problem</div>
+      <h2 class="s-title">Two worlds that don't talk</h2>
+      <p class="s-lede">Almost every maker-and-seller has the same split: the storefront takes the orders, and the workshop makes and ships them &mdash; with a person, a spreadsheet, and a lot of re-typing in between. That gap is where the money quietly leaks.</p>
+    </div>
+    <div class="vs fade" style="transition-delay:.05s">
+      <div class="vcol bad">
+        <div class="vt">Disconnected &middot; today</div>
+        <ul>
+          <li><span class="ic">&times;</span> Orders re-typed by hand into the back office</li>
+          <li><span class="ic">&times;</span> Stock figures that are never quite right &mdash; you oversell</li>
+          <li><span class="ic">&times;</span> No real idea what each product costs to make</li>
+          <li><span class="ic">&times;</span> Buying materials on gut feel and panic</li>
+          <li><span class="ic">&times;</span> Books that are weeks behind reality</li>
+        </ul>
+      </div>
+      <div class="vmid">&rarr;</div>
+      <div class="vcol good">
+        <div class="vt">Connected</div>
+        <ul>
+          <li><span class="ic">&check;</span> A sale flows into the back office on its own</li>
+          <li><span class="ic">&check;</span> One honest stock figure, both sides in step</li>
+          <li><span class="ic">&check;</span> True cost and margin on every product</li>
+          <li><span class="ic">&check;</span> Buying that follows what's actually selling</li>
+          <li><span class="ic">&check;</span> Sales, costs and stock land in the books automatically</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 WHAT YOU GET -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">02 &middot; What you get</div>
+      <h2 class="s-title">One source of truth, four wins</h2>
+      <p class="s-lede">When the storefront and the back office share one set of numbers, four things you've been doing by feel become things you can actually see.</p>
+    </div>
+    <div class="vals fade" style="transition-delay:.05s">
+      <div class="val"><div class="vi">📦</div><h4>Stock you can trust</h4><p>A sale online instantly lowers the stock figure in the back office &mdash; and that figure feeds back to the shop, so you stop selling things you don't have.</p></div>
+      <div class="val"><div class="vi">🎯</div><h4>Margin you can see</h4><p>Because the system knows your recipe and what you really paid for materials, you finally see what each product costs to make &mdash; and what you made on every sale.</p></div>
+      <div class="val"><div class="vi">🛒</div><h4>Smarter buying</h4><p>As sales draw materials down, the system flags what to reorder, from which supplier, and when &mdash; so you're neither out of stock nor sitting on dead cash.</p></div>
+      <div class="val"><div class="vi">📚</div><h4>Books that keep up</h4><p>Sales, cost of goods and supplier bills post themselves. Month-end stops being archaeology; you know where you stand more or less in real time.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 MARGIN -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">03 &middot; The big one</div>
+      <h2 class="s-title">The margin you've never actually seen</h2>
+      <p class="s-lede">Ask most makers "what's your margin on this product?" and the honest answer is a shrug and a guess. That's not carelessness &mdash; it's genuinely hard to know when you buy the same material from different suppliers at different prices. The connected system works it out for you.</p>
+    </div>
+    <div class="spotlight fade" style="transition-delay:.05s">
+      <h3>How a true margin gets built</h3>
+      <div class="flow">
+        <span class="box in">What you really paid suppliers</span>
+        <span class="arr">&rarr;</span>
+        <span class="box in">Your product's recipe</span>
+        <span class="arr">&rarr;</span>
+        <span class="box in">True cost to make</span>
+        <span class="arr">&rarr;</span>
+        <span class="box out">Your selling price</span>
+        <span class="arr">&rarr;</span>
+        <span class="box out">Real margin</span>
+      </div>
+    </div>
+    <div class="callout good fade" style="transition-delay:.08s; margin-top:18px">
+      <h4>What knowing your real margin lets you decide</h4>
+      <p>Once it's real, the questions that used to be guesses get answers: <strong>which products to push, which to drop, where a supplier's price rise just quietly ate your profit, and whether that discount code is still making you money.</strong> This single number &mdash; true margin per product &mdash; is the whole reason to connect the two systems instead of running them apart.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 BUYING -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">04 &middot; Buying</div>
+      <h2 class="s-title">Purchasing that follows your sales</h2>
+      <p class="s-lede">This is the part that matters most when you source from several suppliers. The back office tracks every supplier for a material &mdash; their price, their lead time, their reliability &mdash; and turns your actual sales into the right order, to the right supplier, at the right moment.</p>
+    </div>
+    <div class="vals fade" style="transition-delay:.05s">
+      <div class="val"><div class="vi">🔔</div><h4>Reorder before you run out</h4><p>When a material runs low &mdash; because the shop is selling &mdash; the system flags it for reorder. No more discovering you're out of a key part mid-build.</p></div>
+      <div class="val"><div class="vi">⚖️</div><h4>Compare suppliers honestly</h4><p>Ask several suppliers for a price on the same thing and see them side by side. Order from the best on price or speed for that run &mdash; not whoever you phoned last time.</p></div>
+      <div class="val"><div class="vi">💰</div><h4>Stop tying up cash</h4><p>Buy to match real demand instead of over-ordering "to be safe." Less money frozen in a storeroom, fewer stockouts &mdash; the balance you could never strike on a spreadsheet.</p></div>
+      <div class="val"><div class="vi">🗂️</div><h4>Build supplier history</h4><p>Over time you learn which supplier is actually cheapest and most reliable, from real records &mdash; leverage at your next price negotiation.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 OWNERSHIP -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">05 &middot; The smart structure</div>
+      <h2 class="s-title">Own the engine, rent the shopfront</h2>
+    </div>
+    <div class="callout indigo fade" style="transition-delay:.05s">
+      <h4>Keep Shopify. Own what's behind it.</h4>
+      <p>There's no need to leave Shopify &mdash; it's genuinely excellent at being a storefront, and that's a commodity worth renting. The move is to put an <strong>open-source back office you own</strong> (ERPNext) behind it for the parts that are your actual business: your recipes, your supplier relationships, your costs, your books. No per-user software licence, and your most valuable data &mdash; how you make things and what they cost &mdash; stays yours.</p>
+      <p>That's the same principle as every briefing in this series: <strong>rent the commodity, own the thing that's your edge.</strong> For a maker, the edge isn't the checkout page &mdash; it's the making and the buying. So that's the part to own.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 HONEST -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">06 &middot; Honest about the work</div>
+      <h2 class="s-title">When this is worth it &mdash; and when it isn't</h2>
+      <p class="s-lede">This is a real system, not a plugin you flip on. The value scales with how much you make, how many suppliers you juggle, and how much you sell. Worth being straight about the cost.</p>
+    </div>
+    <div class="limits fade" style="transition-delay:.05s">
+      <div class="limit"><div class="lq">It needs tidy product codes</div><p>The shop and the back office have to agree on what each item is. Getting your product codes straight first is the single biggest thing that makes it smooth.</p></div>
+      <div class="limit"><div class="lq">Someone has to run it</div><p>Owned doesn't mean unmanaged. You'll either host it cheaply yourself or pay a small monthly fee, and have someone (in-house or a partner) look after it.</p></div>
+      <div class="limit"><div class="lq">Overkill for a pure reseller</div><p>If you don't make anything, have one supplier and a few products, a spreadsheet is genuinely fine. The payoff comes from making and from supplier complexity.</p></div>
+      <div class="limit"><div class="lq">Near-real-time, not magic</div><p>Sync is quick but not instant. On a flash sale of a nearly-sold-out item, keep a small buffer so you don't briefly oversell.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 07 WHAT TO DO -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">07 &middot; What to do</div>
+      <h2 class="s-title">Four steps to start</h2>
+    </div>
+    <div class="steps fade" style="transition-delay:.05s">
+      <div class="step"><span class="n">1</span><h4>Tidy your product codes</h4><p>Agree one code per item across the shop and the workshop. Boring, and the highest-leverage thing you'll do.</p></div>
+      <div class="step"><span class="n">2</span><h4>Put the recipes in</h4><p>List what goes into each product and what you pay suppliers. This is what unlocks true cost and margin.</p></div>
+      <div class="step"><span class="n">3</span><h4>Connect the shop</h4><p>Link Shopify to the back office so orders flow in and stock flows out, automatically. No more re-typing.</p></div>
+      <div class="step"><span class="n">4</span><h4>Watch the margin</h4><p>Now you can see what really makes money. Push the winners, fix or drop the losers, and let buying follow sales.</p></div>
+    </div>
+
+    <div class="aside fade" style="transition-delay:.08s">
+      <h5>If your tech or accounting team uses the technical terms &mdash; here's the translation</h5>
+      <div class="row"><span class="plain">The owned back office</span><span class="arr">=</span><span class="tech">ERPNext (open-source ERP)</span></div>
+      <div class="row"><span class="plain">The online storefront</span><span class="arr">=</span><span class="tech">Shopify</span></div>
+      <div class="row"><span class="plain">Your product's recipe</span><span class="arr">=</span><span class="tech">Bill of Materials (BOM)</span></div>
+      <div class="row"><span class="plain">Make a batch / make on order</span><span class="arr">=</span><span class="tech">Work Order (make-to-stock / make-to-order)</span></div>
+      <div class="row"><span class="plain">The link between them</span><span class="arr">=</span><span class="tech">ERPNext Shopify connector</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL -->
+<section>
+  <div class="wrap">
+    <div class="finalbox fade">
+      <div class="tag">The decision</div>
+      <p>Stop running the shop and the workshop as two worlds. Connect them, own the engine, and finally see the margin on everything you make.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tag">A 2nth.ai CEO briefing &middot; plain-language by design</p>
+    <div class="footer-links">
+      <a href="/briefings/">All briefings</a>
+      <a href="/briefings/own-your-stack">Companion: Who Holds the Keys? &rarr;</a>
+      <a href="/explainers/biz/erp/erpnext-shopify">Technical: ERPNext × Shopify &nearr;</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in Johannesburg, South Africa</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme(){
+    const h=document.documentElement, cur=h.getAttribute('data-theme'), nxt=cur==='dark'?'light':'dark';
+    h.setAttribute('data-theme',nxt);
+    document.querySelector('.toggle').textContent = nxt==='dark' ? '☀️' : '🌙';
+    localStorage.setItem('brief-theme',nxt);
+  }
+  const saved=localStorage.getItem('brief-theme');
+  if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.toggle').textContent=saved==='dark'?'☀️':'🌙';}
+  const ob=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');});},{threshold:0.08,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.fade').forEach(el=>ob.observe(el));
+</script>
+</body>
+</html>
