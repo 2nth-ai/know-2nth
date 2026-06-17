@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWS &mdash; know.2nth.ai</title>
+<meta name="description" content="Amazon Web Services for the 2nth stack — the IAM-centred identity model that gates everything, the core service map (Lambda, ECS/Fargate, API Gateway, S3, RDS, DynamoDB, VPC, Bedrock, Connect), the af-south-1 Cape Town region and what it does and doesn't run, and the Cloudflare + AWS hybrid pattern where egress cost is the deciding economic factor.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/tech/aws">
+<meta property="og:title" content="AWS &mdash; know.2nth.ai">
+<meta property="og:description" content="AWS for the 2nth stack — the IAM identity model, the core service map, the af-south-1 Cape Town region and its gaps, and the Cloudflare + AWS hybrid pattern where egress cost decides the design.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AWS &mdash; know.2nth.ai">
+<meta name="twitter:description" content="AWS for the 2nth stack — IAM identity model, core service map, af-south-1 Cape Town region and its gaps, and the Cloudflare + AWS hybrid where egress decides the design.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3Cline x1='16' y1='3' x2='16' y2='7' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='16' y1='25' x2='16' y2='29' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='3' y1='16' x2='7' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='25' y1='16' x2='29' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3C/svg%3E">
+<style>
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12); --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-soft: rgba(99, 102, 241, 0.12); --bg: var(--ink); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(37, 99, 235, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(56, 189, 248, 0.3); --max-w: 1200px; --read-w: 760px; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(37, 99, 235, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(37, 99, 235, 0.25); }
+  * { margin: 0; padding: 0; box-sizing: border-box; } html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.blue { width: 600px; height: 600px; background: var(--blue); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--sky); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--sky); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--sky); } .crumb-sep { opacity: 0.5; } .crumb-current { color: var(--text-secondary); }
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--warm-glow); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--warm-glow); box-shadow: 0 0 12px var(--warm-glow); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--warm-glow), #FB923C, var(--warm)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.accent { background: rgba(37, 99, 235, 0.12); color: var(--blue-glow); border-color: rgba(37, 99, 235, 0.25); }
+  .pill.green { background: var(--green-soft); color: var(--green); border-color: rgba(16, 185, 129, 0.25); }
+  .pill.indigo { background: var(--indigo-soft); color: var(--indigo); border-color: rgba(99, 102, 241, 0.25); }
+  .pill.warn { background: var(--warm-soft); color: var(--warm-glow); border-color: rgba(245, 158, 11, 0.25); }
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--sky); margin-bottom: 14px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--sky); }
+  .prose ul, .prose ol { padding-left: 24px; margin-bottom: 18px; max-width: var(--read-w); }
+  .prose li { font-size: 15px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 8px; }
+  .prose li strong { color: var(--text-primary); font-weight: 600; }
+  pre.code { background: var(--ink-deep); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px 22px; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.65; color: var(--mist); margin: 0 0 20px; max-width: var(--read-w); }
+  [data-theme="light"] pre.code { background: #0F172A; color: #E2E8F0; }
+  pre.code .k { color: var(--sky); } pre.code .s { color: #A5F3B8; } pre.code .c { color: var(--text-muted); font-style: italic; } pre.code .h { color: var(--blue-glow); font-weight: 600; }
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); margin-bottom: 20px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.indigo { border-left: 3px solid var(--indigo); }
+  .info-card.rose { border-left: 3px solid var(--rose); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .info-card ul { padding-left: 20px; margin: 0; }
+  .info-card li { font-size: 14px; color: var(--text-secondary); line-height: 1.65; margin-bottom: 6px; }
+  .info-card li strong { color: var(--text-primary); }
+  .stack-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; max-width: var(--read-w); margin-bottom: 20px; }
+  .stack-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--warm); border-radius: var(--radius-md); padding: 18px 22px; }
+  .stack-cell .layer { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .stack-cell h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.3px; }
+  .stack-cell p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+  .stack-cell .svc { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--warm-glow); margin-top: 8px; display: block; }
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: var(--read-w); margin-bottom: 20px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--sky); background: rgba(37, 99, 235, 0.04); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); } .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--sky); }
+  .compare td strong { color: var(--text-primary); }
+  .decision-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: var(--read-w); }
+  @media (max-width: 720px) { .decision-grid { grid-template-columns: 1fr; } }
+  .decision-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 24px; }
+  .decision-card.use { border-left: 3px solid var(--green); } .decision-card.skip { border-left: 3px solid var(--rose); }
+  .decision-card h4 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 12px; }
+  .decision-card.use h4 { color: var(--green); } .decision-card.skip h4 { color: var(--rose); }
+  .decision-card ul { list-style: none; padding: 0; }
+  .decision-card li { font-size: 13px; color: var(--text-secondary); line-height: 1.6; padding: 6px 0; border-bottom: 1px solid var(--border); }
+  .decision-card li:last-child { border-bottom: none; }
+  .connect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .connect-node { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; transition: all 0.3s; text-decoration: none; color: inherit; display: block; }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node.soon { cursor: default; opacity: 0.72; }
+  .connect-node .tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--sky); word-break: break-all; }
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--sky); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } pre.code { font-size: 11px; padding: 14px 16px; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+
+<div class="glow-orb blue"></div>
+<div class="glow-orb sky"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand"><span class="nav-brand-mark">know.2nth.ai</span><span class="nav-brand-sub">tech/aws</span></a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">&larr; Tech</a>
+      <a href="../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x2600;&#xFE0F;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="./">Tech</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">AWS</span>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> tech &middot; Amazon Web Services &middot; Skill Leaf</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      The biggest cloud, <span class="gradient">gated by one idea.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      AWS has 200-plus services, but you don't learn it service by service &mdash; you learn it through the one idea that runs underneath all of them: <strong>identity</strong>. Nothing happens on AWS until IAM says it can. Master that, then a small core of services &mdash; Lambda, ECS, API Gateway, S3, RDS, DynamoDB, VPC &mdash; covers most real builds. This leaf is the practical map for the 2nth stack: the identity model, the core services, the <code>af-south-1</code> Cape Town region and what it actually runs, and the Cloudflare + AWS hybrid where egress cost decides the design.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill warn">IAM-gated</span>
+      <span class="pill accent">af-south-1 &middot; Cape Town</span>
+      <span class="pill indigo">Lambda &middot; ECS &middot; S3 &middot; RDS</span>
+      <span class="pill green">Bedrock</span>
+      <span class="pill">Amazon Connect</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 WHAT IT IS -->
+<section id="what">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; What it is</div>
+      <h2 class="section-title">The default cloud &mdash; broad, deep, and pay-per-use.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Amazon Web Services is the largest public cloud by revenue and breadth: compute, storage, databases, networking, machine learning, analytics and contact-centre software, all rented by the second or the request, in data centres grouped into <strong>regions</strong> (geographic) and <strong>availability zones</strong> (isolated facilities within a region). You provision through a console, a CLI, an SDK, or infrastructure-as-code &mdash; never by buying a box.</p>
+      <p>Its strength is also its trap. The breadth means there's a service for almost everything, and the temptation is to use all of them. In practice a disciplined build touches a dozen services, wires them together with least-privilege identity, and treats the other 190 as available-if-needed rather than as a shopping list. <strong>The skill on AWS isn't knowing every service &mdash; it's restraint, and getting the identity boundaries right.</strong></p>
+      <p>AWS competes with Microsoft Azure and Google Cloud. The honest summary for SA work: AWS has the deepest service catalogue and the Cape Town region; Azure has the only major in-country <em>LLM inference</em> region (<code>South Africa North</code>); GCP leads on data and certain AI surfaces. Most serious estates end up multi-cloud, and the architecture question becomes which workload lands where &mdash; and what the traffic between them costs.</p>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.08s">
+      <h4>Region vs availability zone &mdash; the distinction that matters</h4>
+      <p>A <strong>region</strong> (e.g. <code>af-south-1</code>, Cape Town) is a geographic location and the unit of data residency &mdash; data you put there stays there unless you move it. An <strong>availability zone</strong> is one of several isolated data centres inside that region; spreading across AZs is how you survive a single-facility failure. <code>af-south-1</code> has three AZs. Residency is a region decision; resilience is an AZ decision.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 IAM -->
+<section id="iam">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; The identity model</div>
+      <h2 class="section-title">Nothing happens until IAM says yes.</h2>
+      <p class="section-lede">IAM &mdash; Identity and Access Management &mdash; is the part of AWS you must understand first, because every other service routes through it. Every request is an identity asking to take an action on a resource, and IAM evaluates a policy to allow or deny it. Get this right and the rest is detail; get it wrong and you have either an outage or a breach.</p>
+    </div>
+
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Four concepts carry it:</p>
+      <ul>
+        <li><strong>Principals</strong> &mdash; who's asking. A user, but far more often a <em>role</em> assumed by a service (a Lambda function, an ECS task) or a federated identity from your SSO provider.</li>
+        <li><strong>Policies</strong> &mdash; JSON documents that grant or deny specific actions on specific resources, optionally under conditions. The unit of permission.</li>
+        <li><strong>Roles</strong> &mdash; a set of permissions a principal can <em>assume</em> temporarily, getting short-lived credentials. Roles are how you avoid long-lived secrets.</li>
+        <li><strong>Least privilege</strong> &mdash; grant only what's needed, scoped as tightly as possible. The default deny means you build permissions up, not pare them down.</li>
+      </ul>
+    </div>
+
+    <pre class="code fade-up" style="transition-delay: 0.07s"><span class="c">// A least-privilege policy: read one S3 bucket, nothing else</span>
+{
+  <span class="s">"Version"</span>: <span class="s">"2012-10-17"</span>,
+  <span class="s">"Statement"</span>: [{
+    <span class="s">"Effect"</span>: <span class="s">"Allow"</span>,
+    <span class="s">"Action"</span>: [<span class="s">"s3:GetObject"</span>, <span class="s">"s3:ListBucket"</span>],
+    <span class="s">"Resource"</span>: [
+      <span class="s">"arn:aws:s3:::reports-af-south-1"</span>,
+      <span class="s">"arn:aws:s3:::reports-af-south-1/*"</span>
+    ]
+  }]
+}</pre>
+
+    <div class="info-card green fade-up" style="transition-delay: 0.1s">
+      <h4>The 2026 rule: roles and SSO, never long-lived keys</h4>
+      <p>The single biggest AWS security improvement is to stop minting long-lived access keys. Human access goes through <strong>IAM Identity Center</strong> (AWS SSO) federated to your identity provider, issuing temporary credentials. Service access uses <strong>assumed roles</strong> &mdash; a Lambda gets its permissions from an execution role, not a secret in an env var. CI/CD authenticates via <strong>OIDC federation</strong> (e.g. GitHub Actions assuming a role), so there are no AWS keys in your pipeline at all. A leaked temporary credential expires; a leaked permanent key is a standing liability.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 SERVICE MAP -->
+<section id="services">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; The service map</div>
+      <h2 class="section-title">The dozen services most builds actually use.</h2>
+      <p class="section-lede">Grouped by what they're for. You can build the large majority of production systems from this core; everything else is reached for when a specific pressure demands it.</p>
+    </div>
+
+    <div class="stack-grid fade-up" style="transition-delay: 0.05s">
+      <div class="stack-cell">
+        <span class="layer">Compute</span>
+        <h4>Run your code</h4>
+        <p>Functions, containers and VMs, plus the HTTP front door that fronts them.</p>
+        <span class="svc">Lambda &middot; ECS/Fargate &middot; EC2 &middot; API Gateway</span>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Storage</span>
+        <h4>Hold your objects &amp; files</h4>
+        <p>Object storage for everything, block storage for VMs, shared file systems where needed.</p>
+        <span class="svc">S3 &middot; EBS &middot; EFS</span>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Database</span>
+        <h4>Hold your records</h4>
+        <p>Managed relational (Postgres/MySQL), AWS-native Aurora, key-value at scale, and a cache.</p>
+        <span class="svc">RDS &middot; Aurora &middot; DynamoDB &middot; ElastiCache</span>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Networking</span>
+        <h4>Connect &amp; isolate</h4>
+        <p>Your private network, DNS, load balancing, and AWS's own CDN.</p>
+        <span class="svc">VPC &middot; Route 53 &middot; ELB &middot; CloudFront</span>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">AI / ML</span>
+        <h4>Models, managed</h4>
+        <p>Foundation models (including Claude) via one API, plus full ML tooling.</p>
+        <span class="svc">Bedrock &middot; SageMaker</span>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Contact centre</span>
+        <h4>Voice &amp; omnichannel</h4>
+        <p>Cloud contact-centre as a service &mdash; telephony, routing, agent desktop, analytics.</p>
+        <span class="svc">Amazon Connect</span>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Messaging</span>
+        <h4>Decouple the parts</h4>
+        <p>Queues, pub/sub topics and an event bus &mdash; the backbone of event-driven designs.</p>
+        <span class="svc">SQS &middot; SNS &middot; EventBridge</span>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Observability</span>
+        <h4>See what's happening</h4>
+        <p>Logs, metrics, alarms and the API-call audit trail every compliance review asks for.</p>
+        <span class="svc">CloudWatch &middot; CloudTrail</span>
+      </div>
+    </div>
+
+    <div class="info-card indigo fade-up" style="transition-delay: 0.08s">
+      <h4>Bedrock &amp; Claude, with the honest caveat</h4>
+      <p>Amazon Bedrock is the managed way to call foundation models &mdash; including Anthropic's <strong>Claude</strong> family &mdash; behind one IAM-gated API, with no infrastructure to run. It's the natural AI surface if your data and apps already live on AWS. The caveat is regional: Bedrock's model availability is concentrated in larger regions (US, EU, parts of APAC) and <strong>has historically lagged in <code>af-south-1</code></strong>. For SA workloads that means either calling Bedrock cross-region (accept the latency and the data-leaves-the-country question), or using Azure <code>South Africa North</code> for in-country LLM inference. Verify current region support before you design around it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 AF-SOUTH-1 -->
+<section id="region">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; af-south-1</div>
+      <h2 class="section-title">Cape Town: real, useful, and not complete.</h2>
+      <p class="section-lede">AWS opened the <code>af-south-1</code> region in Cape Town in April 2020 &mdash; the first hyperscale AWS region in Africa, with three availability zones. For SA delivery it's a genuine advantage: low-latency local compute and, crucially, a place to keep data in-country. But it is not a full mirror of the big US and EU regions, and pretending otherwise causes late-stage surprises.</p>
+    </div>
+
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead><tr><th>In af-south-1</th><th>What you get</th><th>Watch for</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Core compute &amp; storage</strong></td><td>EC2, Lambda, ECS/Fargate, S3, EBS</td><td>Solid &mdash; the foundation is all here</td></tr>
+          <tr><td><strong>Databases</strong></td><td>RDS, Aurora, DynamoDB</td><td>Well supported for transactional work</td></tr>
+          <tr><td><strong>Networking</strong></td><td>VPC, Route 53, CloudFront edge presence</td><td>Cape Town &amp; Johannesburg edge locations</td></tr>
+          <tr><td><strong>Newest AI services</strong></td><td>Limited &mdash; Bedrock model coverage lags</td><td>Plan cross-region or Azure SA North</td></tr>
+          <tr><td><strong>Amazon Connect</strong></td><td>Not a launch region historically</td><td>Confirm availability; may need another region</td></tr>
+          <tr><td><strong>Pricing</strong></td><td>Generally higher than us-east-1</td><td>Newer/smaller regions cost more per unit</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="info-card amber fade-up" style="transition-delay: 0.08s">
+      <h4>The residency win, stated precisely</h4>
+      <p>The reason <code>af-south-1</code> matters for POPIA isn't that AWS is "compliant" &mdash; it's that you can <strong>pin residency-sensitive data to South African soil</strong> and prove it. Keep personal and regulated data in <code>af-south-1</code>; let stateless compute and non-sensitive workloads run wherever's cheapest or has the service you need. The architecture deliverable is a data map that shows, per data store, which region holds it and why &mdash; the document a regulator actually wants to see.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 HYBRID -->
+<section id="hybrid">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; Cloudflare + AWS</div>
+      <h2 class="section-title">Edge in front, AWS behind &mdash; and mind the egress.</h2>
+      <p class="section-lede">The 2nth house pattern isn't AWS-only. It's Cloudflare at the edge &mdash; DNS, CDN, WAF, and Workers for latency-sensitive logic &mdash; in front of AWS for the heavy, stateful, long-running work that the edge isn't built for. The two halves play to their strengths; the one number that governs the design is data egress.</p>
+    </div>
+
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>The division of labour, in practice:</p>
+      <ul>
+        <li><strong>Cloudflare handles the front:</strong> global DNS and CDN, DDoS and WAF protection, TLS, and edge compute (Workers) for auth, routing, personalisation and caching &mdash; close to the user, fast everywhere.</li>
+        <li><strong>AWS handles the back:</strong> relational databases (RDS/Aurora), large or regulated datasets, long-running and GPU compute, batch jobs, and anything that needs to sit in <code>af-south-1</code> for residency.</li>
+        <li><strong>The seam is the cost centre.</strong> AWS charges for data leaving its network (egress); Cloudflare doesn't charge for egress. Traffic flowing out of S3 to users, or chattily between Cloudflare and an AWS origin, is where surprise bills come from.</li>
+      </ul>
+    </div>
+
+    <div class="info-card green fade-up" style="transition-delay: 0.08s">
+      <h4>The egress lever &mdash; and where R2 fits</h4>
+      <p>If you serve large files or media, putting them in AWS S3 and streaming them to users means paying AWS egress on every download. Cloudflare <strong>R2</strong> is S3-compatible storage with <em>zero</em> egress fees &mdash; so the common optimisation is to keep transactional data in AWS (where the database and residency are) but serve bulk objects from R2 at the edge. Decide what lives where by asking "how often does this data leave the cloud, and to whom?" The answer, not service preference, should draw the line. For FX-exposed SA budgets, a runaway egress bill is one of the most common and avoidable cloud-cost mistakes.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 DECISION -->
+<section id="decision">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; Decision guide</div>
+      <h2 class="section-title">Reach for AWS when. Look elsewhere when.</h2>
+      <p class="section-lede">AWS is the safe default for stateful, heavy, or breadth-demanding work. It is not always the right or cheapest answer &mdash; especially for edge-shaped or purely AI-inference workloads in an SA context.</p>
+    </div>
+    <div class="decision-grid fade-up" style="transition-delay: 0.05s">
+      <div class="decision-card use">
+        <h4>Reach for AWS when</h4>
+        <ul>
+          <li>You need a managed relational database (RDS / Aurora) at scale</li>
+          <li>Workloads are stateful, long-running, or GPU-heavy</li>
+          <li>You need data pinned in-country via <code>af-south-1</code></li>
+          <li>The service catalogue breadth itself is the requirement</li>
+          <li>A contact centre (Amazon Connect) is in scope</li>
+          <li>The team already has AWS depth and tooling</li>
+        </ul>
+      </div>
+      <div class="decision-card skip">
+        <h4>Look elsewhere when</h4>
+        <ul>
+          <li>The workload is edge-shaped &mdash; Cloudflare Workers fit better</li>
+          <li>You serve heavy media &mdash; R2 avoids the egress tax</li>
+          <li>You need in-country LLM inference &mdash; Azure SA North</li>
+          <li>It's a small static or JAMstack site &mdash; Pages is simpler &amp; cheaper</li>
+          <li>Per-region AWS pricing makes a smaller workload uneconomic</li>
+          <li>You want to avoid the ops surface area entirely</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="info-card rose fade-up" style="transition-delay: 0.08s">
+      <h4>The honest cost warning</h4>
+      <p>AWS bills are rarely surprising on compute &mdash; they're surprising on <strong>egress, NAT Gateway, and idle provisioned capacity</strong>. Set budgets and alarms on day one, prefer scale-to-zero (Lambda/Fargate) over always-on EC2 for spiky work, and watch cross-AZ and cross-region data transfer. For rand-denominated budgets against USD billing, a cost anomaly alert is not optional &mdash; it's the difference between a managed line item and a month-end shock.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 07 SA CONTEXT -->
+<section id="sa-context">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; South African context</div>
+      <h2 class="section-title">AWS in an SA delivery reality.</h2>
+      <p class="section-lede">The Cape Town region changed what's possible for SA cloud delivery &mdash; but the gaps, the FX exposure and the multi-cloud reality all shape how AWS actually gets used here.</p>
+    </div>
+    <div class="info-card indigo fade-up" style="transition-delay: 0.05s">
+      <h4>Residency &middot; POPIA-aligned data placement</h4>
+      <p><code>af-south-1</code> lets you keep personal and regulated data in South Africa and demonstrate it &mdash; the practical core of a POPIA data-residency posture. Pair it with CloudTrail for the audit log of who-did-what, and IAM Identity Center so access is named, temporary and revocable. The combination &mdash; local region, audit trail, least-privilege identity &mdash; is most of what an SA compliance review is looking for.</p>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.07s">
+      <h4>Multi-cloud &middot; AWS + Azure + Cloudflare</h4>
+      <p>The common SA enterprise shape in 2026: AWS for stateful compute and databases in <code>af-south-1</code>, <strong>Azure <code>South Africa North</code></strong> for in-country LLM inference (the one thing AWS can't yet do locally at the frontier), and <strong>Cloudflare</strong> at the edge for delivery and egress savings. Architecture's job is to draw which workload sits where and to keep the inter-cloud traffic &mdash; and its cost &mdash; deliberate rather than accidental.</p>
+    </div>
+    <div class="info-card green fade-up" style="transition-delay: 0.09s">
+      <h4>Contact centres &middot; Amazon Connect</h4>
+      <p>Amazon Connect is a credible cloud contact-centre for SA operations &mdash; pay-per-use telephony, omnichannel routing, and a natural path to AI agents (Bedrock-backed bots, real-time transcription). Confirm regional availability and number-porting for South African telephony before committing; Connect's launch regions have not always included <code>af-south-1</code>, which can mean running it from another region with the latency and residency implications that brings.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 08 CONNECTIONS -->
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 &middot; Connections</div>
+      <h2 class="section-title">Where AWS links in the tree.</h2>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="./" class="connect-node">
+        <span class="tag">tech</span>
+        <div class="skill">Tech hub</div>
+        <div class="why">The branch this sits in, alongside the other cloud platforms &mdash; Cloudflare, Google, Microsoft &mdash; that AWS is usually combined with, not chosen against.</div>
+      </a>
+      <a href="cloudflare/workers.html" class="connect-node">
+        <span class="tag">tech/cloudflare/workers</span>
+        <div class="skill">Cloudflare Workers</div>
+        <div class="why">The edge half of the hybrid pattern. Workers in front, AWS behind &mdash; and R2 to avoid S3 egress on bulk objects.</div>
+      </a>
+      <a href="microsoft/index.html" class="connect-node">
+        <span class="tag">tech/microsoft</span>
+        <div class="skill">Microsoft / Azure</div>
+        <div class="why">The other SA-region cloud. Azure <code>South Africa North</code> covers the in-country LLM inference that af-south-1 doesn't.</div>
+      </a>
+      <a href="architecture.html" class="connect-node">
+        <span class="tag">tech/architecture</span>
+        <div class="skill">Architecture</div>
+        <div class="why">Where the which-workload-lands-where decision gets made and recorded. The hybrid split is an ADR, not an accident.</div>
+      </a>
+      <a href="../agents/claude.html" class="connect-node">
+        <span class="tag">agents/claude</span>
+        <div class="skill">Claude</div>
+        <div class="why">Available on AWS via Bedrock &mdash; the managed, IAM-gated way to call Claude if your stack already lives on AWS.</div>
+      </a>
+      <a href="../data/warehousing/postgresql.html" class="connect-node">
+        <span class="tag">data/warehousing</span>
+        <div class="skill">PostgreSQL</div>
+        <div class="why">RDS and Aurora are the managed Postgres most AWS builds run on &mdash; the database half of nearly every stateful design.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 09 RESOURCES -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">09 &middot; Resources</div>
+      <h2 class="section-title">Primary sources.</h2>
+      <p class="section-lede">Official AWS documentation and the canonical references behind this leaf. Regional service support changes &mdash; always confirm <code>af-south-1</code> availability against the live region table before designing around a service. Last reviewed 2026-06-17.</p>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://docs.aws.amazon.com/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs</span>
+        <span class="r-title">AWS Documentation</span>
+        <span class="r-url">docs.aws.amazon.com</span>
+      </a>
+      <a href="https://aws.amazon.com/about-aws/global-infrastructure/regional-product-services/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Region table</span>
+        <span class="r-title">Services by Region (check af-south-1)</span>
+        <span class="r-url">aws.amazon.com &middot; regional-product-services</span>
+      </a>
+      <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Guide</span>
+        <span class="r-title">IAM User Guide</span>
+        <span class="r-url">docs.aws.amazon.com/IAM</span>
+      </a>
+      <a href="https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Framework</span>
+        <span class="r-title">AWS Well-Architected Framework</span>
+        <span class="r-url">docs.aws.amazon.com/wellarchitected</span>
+      </a>
+      <a href="https://aws.amazon.com/bedrock/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Service</span>
+        <span class="r-title">Amazon Bedrock</span>
+        <span class="r-url">aws.amazon.com/bedrock</span>
+      </a>
+      <a href="https://aws.amazon.com/local/africa/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Region</span>
+        <span class="r-title">AWS in Africa (Cape Town region)</span>
+        <span class="r-url">aws.amazon.com/local/africa</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../index.html">Knowledge tree</a>
+      <a href="./">Tech hub</a>
+      <a href="https://aws.amazon.com/local/africa/" target="_blank" rel="noopener">AWS in Africa &nearr;</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in Johannesburg, South Africa</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme(){const html=document.documentElement;const current=html.getAttribute('data-theme');const next=current==='dark'?'light':'dark';html.setAttribute('data-theme',next);document.querySelector('.theme-toggle').textContent=next==='dark'?'☀️':'🌙';localStorage.setItem('theme',next);}
+  const saved=localStorage.getItem('theme');if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.theme-toggle').textContent=saved==='dark'?'☀️':'🌙';}
+  const observer=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting)entry.target.classList.add('visible');});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>
