@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CEO Briefings &mdash; know.2nth.ai</title>
+<meta name="description" content="The plain-language layer over the know.2nth.ai knowledge tree. Short, visual, jargon-free briefings that translate the deep technical content into the decisions a CEO actually has to make — ownership, lock-in, cost, and risk. Each links to the full technical version for your team.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/briefings/">
+<meta property="og:title" content="CEO Briefings — know.2nth.ai">
+<meta property="og:description" content="The plain-language layer over the technical knowledge tree. Short, visual, jargon-free briefings that translate deep tech into the decisions a CEO has to make.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai — The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="CEO Briefings — know.2nth.ai">
+<meta name="twitter:description" content="The plain-language layer over the technical knowledge tree — short, visual briefings of the decisions a CEO has to make.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --ink: #0B1120; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6;
+    --sky: #38BDF8; --paper: #F8FAFC; --slate: #94A3B8;
+    --warm: #F59E0B; --warm-soft: rgba(245,158,11,0.12);
+    --green: #10B981; --green-soft: rgba(16,185,129,0.12);
+    --rose: #F43F5E; --rose-soft: rgba(244,63,94,0.12);
+    --indigo: #6366F1; --indigo-soft: rgba(99,102,241,0.12);
+    --max-w: 1080px; --read-w: 760px;
+    --radius-md: 14px; --radius-lg: 22px; --radius-pill: 100px;
+    --bg: #F4F6FB; --bg-soft: #EAEEF6; --card: #FFFFFF; --card-2: #FBFCFE;
+    --text: #0B1120; --text-2: #475569; --text-3: #8A97AB;
+    --border: rgba(15,23,42,0.10); --border-strong: rgba(15,23,42,0.16);
+    --shadow: 0 14px 40px rgba(15,23,42,0.08);
+  }
+  [data-theme="dark"] {
+    --bg: #0B1120; --bg-soft: #0E1626; --card: #121D33; --card-2: #0F1929;
+    --text: #F8FAFC; --text-2: #B6C2D6; --text-3: #6B7A92;
+    --border: rgba(148,163,184,0.14); --border-strong: rgba(148,163,184,0.24);
+    --shadow: 0 16px 48px rgba(0,0,0,0.4);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+    background: radial-gradient(1200px 600px at 80% -100px, var(--bg-soft), var(--bg)) fixed;
+    color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  }
+  .wrap { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+
+  .topbar { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(14px);
+    background: color-mix(in srgb, var(--bg) 80%, transparent); border-bottom: 1px solid var(--border); }
+  .topbar-inner { max-width: var(--max-w); margin: 0 auto; padding: 12px 24px;
+    display: flex; align-items: center; justify-content: space-between; }
+  .brand-wrap { display: flex; align-items: center; }
+  .brand { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 14px;
+    background: linear-gradient(135deg, var(--blue), var(--sky));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; text-decoration: none; }
+  .brand-sub { font-size: 11px; color: var(--text-3); letter-spacing: 1.5px; text-transform: uppercase;
+    margin-left: 10px; padding-left: 10px; border-left: 1px solid var(--border); font-weight: 500; }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-2); text-decoration: none; font-weight: 500; }
+  .nav-link:hover { color: var(--sky); }
+  .toggle { background: none; border: 1px solid var(--border); color: var(--text-2);
+    width: 34px; height: 34px; border-radius: 50%; cursor: pointer; display: grid; place-items: center;
+    font-size: 15px; transition: all 0.2s; }
+  .toggle:hover { border-color: var(--border-strong); }
+
+  .hero { padding: 68px 0 30px; }
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500;
+    letter-spacing: 2.5px; text-transform: uppercase; color: var(--indigo);
+    display: inline-flex; align-items: center; gap: 10px; margin-bottom: 22px; }
+  .eyebrow .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--indigo); box-shadow: 0 0 12px var(--indigo); }
+  .hero h1 { font-size: clamp(38px, 6vw, 62px); font-weight: 800; line-height: 1.05;
+    letter-spacing: -1.8px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .hl { background: linear-gradient(135deg, var(--blue-glow), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .lede { font-size: 19px; color: var(--text-2); max-width: 700px; line-height: 1.6; font-weight: 300; }
+
+  /* how-it-works strip */
+  .strip { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin: 36px 0 8px; }
+  @media (max-width: 760px){ .strip { grid-template-columns: 1fr; } }
+  .strip-item { background: var(--card-2); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px 22px; }
+  .strip-item .si-ic { font-size: 20px; margin-bottom: 8px; }
+  .strip-item h4 { font-size: 15px; font-weight: 700; margin-bottom: 5px; }
+  .strip-item p { font-size: 13.5px; color: var(--text-2); line-height: 1.55; }
+
+  section { padding: 40px 0; }
+  .sec-label { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--sky); font-weight: 600; margin-bottom: 12px; }
+  .sec-title { font-size: clamp(24px, 3.4vw, 32px); font-weight: 700; letter-spacing: -0.6px; margin-bottom: 28px; }
+
+  /* briefing cards */
+  .cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+  @media (max-width: 820px){ .cards { grid-template-columns: 1fr; } }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg);
+    padding: 30px 32px; box-shadow: var(--shadow); display: flex; flex-direction: column; transition: transform 0.25s, border-color 0.25s; position: relative; overflow: hidden; }
+  .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--accent, var(--indigo)); }
+  .card.acc-indigo { --accent: var(--indigo); }
+  .card.acc-green { --accent: var(--green); }
+  .card.acc-sky { --accent: var(--sky); }
+  .card:hover { transform: translateY(-3px); border-color: var(--border-strong); }
+  .card .meta-row { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .badge { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; padding: 4px 11px; border-radius: var(--radius-pill); }
+  .badge.topic { color: #fff; background: var(--accent, var(--indigo)); }
+  .badge.muted { color: var(--text-3); border: 1px solid var(--border); }
+  .card .num { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--text-3); letter-spacing: 1px; margin-bottom: 8px; }
+  .card h3 { font-size: 24px; font-weight: 800; letter-spacing: -0.6px; line-height: 1.12; margin-bottom: 10px; }
+  .card .q { font-size: 15.5px; color: var(--text-2); line-height: 1.55; font-weight: 400; margin-bottom: 16px; font-style: italic; }
+  .card p { font-size: 14px; color: var(--text-2); line-height: 1.6; margin-bottom: 20px; }
+  .card .foot { margin-top: auto; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .card .read { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 600; color: var(--accent, var(--indigo)); text-decoration: none; }
+  .card .read:hover { text-decoration: underline; }
+  .card .tech { font-size: 12px; color: var(--text-3); text-decoration: none; font-family: 'JetBrains Mono', monospace; }
+  .card .tech:hover { color: var(--sky); }
+  .card.full { display: block; }
+  .card-link { position: absolute; inset: 0; z-index: 1; }
+  .card .foot a { position: relative; z-index: 2; }
+
+  /* soon card */
+  .card.soon { background: var(--card-2); border-style: dashed; box-shadow: none; }
+  .card.soon::before { opacity: 0.4; }
+  .card.soon h3 { color: var(--text-2); }
+  .card.soon .pipeline { list-style: none; padding: 0; margin: 6px 0 0; }
+  .card.soon .pipeline li { font-size: 13.5px; color: var(--text-2); padding: 7px 0; border-bottom: 1px solid var(--border); display: flex; gap: 9px; }
+  .card.soon .pipeline li:last-child { border-bottom: none; }
+  .card.soon .pipeline li .pd { font-family: 'JetBrains Mono', monospace; color: var(--text-3); }
+
+  /* callout */
+  .callout { background: var(--card-2); border: 1px solid var(--border); border-left: 4px solid var(--sky); border-radius: var(--radius-lg); padding: 26px 30px; box-shadow: var(--shadow); }
+  .callout h4 { font-size: 18px; font-weight: 700; margin-bottom: 10px; }
+  .callout p { font-size: 15px; color: var(--text-2); line-height: 1.7; }
+  .callout p strong { color: var(--text); }
+
+  footer { padding: 54px 0 48px; border-top: 1px solid var(--border); text-align: center; margin-top: 36px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600;
+    background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tag { font-size: 13px; color: var(--text-3); margin-bottom: 18px; }
+  .footer-links { display: flex; justify-content: center; gap: 22px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-2); text-decoration: none; }
+  .footer-links a:hover { color: var(--sky); }
+  .footer-copy { font-size: 12px; color: var(--text-3); margin-top: 18px; }
+
+  .fade { opacity: 0; transform: translateY(22px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade.vis { opacity: 1; transform: translateY(0); }
+  *, *::before, *::after { transition-property: background-color, border-color, color, transform; transition-duration: 0.3s; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand-wrap"><a href="/index.html" class="brand">know.2nth.ai</a><span class="brand-sub">CEO Briefings</span></div>
+    <div class="nav-right">
+      <a href="/index.html#domains" class="nav-link">Knowledge tree</a>
+      <button class="toggle" onclick="toggleTheme()" aria-label="Toggle light/dark">🌙</button>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div class="eyebrow fade"><span class="dot"></span> know.2nth.ai &middot; The plain-language layer</div>
+    <h1 class="fade" style="transition-delay:.05s">The tech, <span class="hl">translated for the corner office.</span></h1>
+    <p class="lede fade" style="transition-delay:.1s">
+      know.2nth.ai is a deep technical knowledge tree &mdash; built for engineers and the agents that read it. These briefings are its other half: the same subjects, stripped of jargon and told as the decisions a leader actually has to make. Short, visual, honest about the trade-offs &mdash; and each one links to the full technical version for the people who'll build it.
+    </p>
+
+    <div class="strip fade" style="transition-delay:.15s">
+      <div class="strip-item">
+        <div class="si-ic">⏱️</div>
+        <h4>Five minutes, no jargon</h4>
+        <p>Each briefing is a quick read. Every technical term is translated to a business one, with the original noted for your team.</p>
+      </div>
+      <div class="strip-item">
+        <div class="si-ic">⚖️</div>
+        <h4>The decision, not the demo</h4>
+        <p>Framed around cost, risk, ownership and leverage &mdash; the things a CEO weighs &mdash; not feature lists or architecture diagrams.</p>
+      </div>
+      <div class="strip-item">
+        <div class="si-ic">🔗</div>
+        <h4>Backed by the real thing</h4>
+        <p>Every claim sits on a full technical leaf in the knowledge tree. Hand the deep version to whoever has to make it true.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BRIEFINGS -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="sec-label">The briefings</div>
+      <h2 class="sec-title">Available now</h2>
+    </div>
+
+    <!-- To add a briefing: copy a card below, set acc-* accent, number, topic badge,
+         title, the italic question, the one-line summary, the read link and the
+         technical deep-dive link. -->
+    <div class="cards fade" style="transition-delay:.05s">
+
+      <div class="card acc-indigo">
+        <a href="/briefings/own-your-stack" class="card-link" aria-label="Read: Who Holds the Keys?"></a>
+        <div class="num">Briefing 01</div>
+        <div class="meta-row">
+          <span class="badge topic">Ownership &amp; IP</span>
+          <span class="badge muted">5-min read</span>
+        </div>
+        <h3>Who Holds the Keys?</h3>
+        <div class="q">Do you own your business &mdash; or rent it back from your vendors?</div>
+        <p>The software, settings, customisations and data you run on are real assets. This is what it means to actually own them &mdash; and the lock-in risk when you don't.</p>
+        <div class="foot">
+          <a href="/briefings/own-your-stack" class="read">Read briefing &rarr;</a>
+          <a href="/explainers/tech/own-your-stack" class="tech">technical version &nearr;</a>
+        </div>
+      </div>
+
+      <div class="card acc-green">
+        <a href="/briefings/strangle-the-licence" class="card-link" aria-label="Read: Strangle the Licence"></a>
+        <div class="num">Briefing 02</div>
+        <div class="meta-row">
+          <span class="badge topic">Cost &amp; lock-in</span>
+          <span class="badge muted">6-min read</span>
+        </div>
+        <h3>Strangle the Licence</h3>
+        <div class="q">How do you escape an expensive ERP or SaaS without a risky rewrite?</div>
+        <p>Replace expensive software gradually &mdash; one function at a time, behind a façade, with the old system as a safety net &mdash; using open source, owned code and AI.</p>
+        <div class="foot">
+          <a href="/briefings/strangle-the-licence" class="read">Read briefing &rarr;</a>
+          <a href="/explainers/tech/architecture" class="tech">technical version &nearr;</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- IN PROGRESS -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="sec-label">In the pipeline</div>
+      <h2 class="sec-title">More on the way</h2>
+    </div>
+    <div class="cards fade" style="transition-delay:.05s">
+      <div class="card soon acc-sky full">
+        <div class="num">Coming next</div>
+        <h3>The series is growing</h3>
+        <p>We're turning the heaviest, most technical corners of the knowledge tree into briefings a leader can read in one coffee. Candidates on the list:</p>
+        <ul class="pipeline">
+          <li><span class="pd">&rsaquo;</span> Build vs buy vs strangle &mdash; choosing the path for a new system</li>
+          <li><span class="pd">&rsaquo;</span> AI agents, plainly &mdash; what they can safely do for your business</li>
+          <li><span class="pd">&rsaquo;</span> Your data, your warehouse &mdash; affordable BI without six-figure licences</li>
+          <li><span class="pd">&rsaquo;</span> Where your data lives &mdash; POPIA, residency, and the cloud, decoded</li>
+        </ul>
+      </div>
+      <div class="callout fade" style="transition-delay:.08s">
+        <h4>Want one on a specific decision?</h4>
+        <p>If there's a technology call your board is wrestling with &mdash; a renewal, a migration, an AI question &mdash; it can become the next briefing. The knowledge tree almost certainly already has the technical depth; a briefing just turns it into the version you can put in front of the people who decide.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tag">CEO briefings &middot; the plain-language layer over the knowledge tree</p>
+    <div class="footer-links">
+      <a href="/index.html">Knowledge tree</a>
+      <a href="/about.html">About</a>
+      <a href="https://2nth.ai" target="_blank" rel="noopener">2nth.ai</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in Johannesburg, South Africa</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme(){
+    const h=document.documentElement, cur=h.getAttribute('data-theme'), nxt=cur==='dark'?'light':'dark';
+    h.setAttribute('data-theme',nxt);
+    document.querySelector('.toggle').textContent = nxt==='dark' ? '☀️' : '🌙';
+    localStorage.setItem('brief-theme',nxt);
+  }
+  const saved=localStorage.getItem('brief-theme');
+  if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.toggle').textContent=saved==='dark'?'☀️':'🌙';}
+  const ob=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');});},{threshold:0.08,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.fade').forEach(el=>ob.observe(el));
+</script>
+</body>
+</html>
