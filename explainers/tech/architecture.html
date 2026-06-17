@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Software Architecture &mdash; know.2nth.ai</title>
+<meta name="description" content="Software architecture as a practised skill — the decisions that are expensive to reverse, recorded honestly. ADRs, the C4 model, trade-off matrices, twelve named patterns from monolith to event-driven to edge-first, anti-pattern detection, and the discipline of knowing when to break the rules. The skill every 2nth build draws on.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/tech/architecture">
+<meta property="og:title" content="Software Architecture &mdash; know.2nth.ai">
+<meta property="og:description" content="Architecture as the decisions that are expensive to reverse. ADRs, the C4 model, trade-off matrices, twelve named patterns, anti-pattern detection, and when to break the rules.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Software Architecture &mdash; know.2nth.ai">
+<meta name="twitter:description" content="Architecture as the decisions that are expensive to reverse. ADRs, C4, trade-off matrices, twelve patterns, anti-patterns, and when to break the rules.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3Cline x1='16' y1='3' x2='16' y2='7' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='16' y1='25' x2='16' y2='29' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='3' y1='16' x2='7' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='25' y1='16' x2='29' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3C/svg%3E">
+<style>
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12); --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-soft: rgba(99, 102, 241, 0.12); --bg: var(--ink); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(37, 99, 235, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(56, 189, 248, 0.3); --max-w: 1200px; --read-w: 760px; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(37, 99, 235, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(37, 99, 235, 0.25); }
+  * { margin: 0; padding: 0; box-sizing: border-box; } html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.blue { width: 600px; height: 600px; background: var(--blue); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--sky); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--sky); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--sky); } .crumb-sep { opacity: 0.5; } .crumb-current { color: var(--text-secondary); }
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--blue-glow); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--blue-glow); box-shadow: 0 0 12px var(--blue-glow); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--blue-glow), var(--sky), var(--sky-muted)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.accent { background: rgba(37, 99, 235, 0.12); color: var(--blue-glow); border-color: rgba(37, 99, 235, 0.25); }
+  .pill.green { background: var(--green-soft); color: var(--green); border-color: rgba(16, 185, 129, 0.25); }
+  .pill.indigo { background: var(--indigo-soft); color: var(--indigo); border-color: rgba(99, 102, 241, 0.25); }
+  .pill.warn { background: var(--warm-soft); color: var(--warm-glow); border-color: rgba(245, 158, 11, 0.25); }
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--sky); margin-bottom: 14px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--sky); }
+  .prose ul, .prose ol { padding-left: 24px; margin-bottom: 18px; max-width: var(--read-w); }
+  .prose li { font-size: 15px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 8px; }
+  .prose li strong { color: var(--text-primary); font-weight: 600; }
+  pre.code { background: var(--ink-deep); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px 22px; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.65; color: var(--mist); margin: 0 0 20px; max-width: var(--read-w); }
+  [data-theme="light"] pre.code { background: #0F172A; color: #E2E8F0; }
+  pre.code .k { color: var(--sky); } pre.code .s { color: #A5F3B8; } pre.code .c { color: var(--text-muted); font-style: italic; } pre.code .h { color: var(--blue-glow); font-weight: 600; }
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); margin-bottom: 20px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.indigo { border-left: 3px solid var(--indigo); }
+  .info-card.rose { border-left: 3px solid var(--rose); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .info-card ul { padding-left: 20px; margin: 0; }
+  .info-card li { font-size: 14px; color: var(--text-secondary); line-height: 1.65; margin-bottom: 6px; }
+  .info-card li strong { color: var(--text-primary); }
+  .stack-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; max-width: var(--read-w); margin-bottom: 20px; }
+  .stack-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--blue); border-radius: var(--radius-md); padding: 18px 22px; }
+  .stack-cell .layer { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .stack-cell h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.3px; }
+  .stack-cell p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+  /* pattern catalog */
+  .pat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(232px, 1fr)); gap: 12px; max-width: var(--read-w); margin-bottom: 20px; }
+  .pat { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 20px; border-top: 3px solid var(--blue); }
+  .pat .pn { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.2px; color: var(--text-muted); display: block; margin-bottom: 7px; }
+  .pat h4 { font-size: 15px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.2px; }
+  .pat p { font-size: 12.5px; color: var(--text-secondary); line-height: 1.55; margin-bottom: 8px; }
+  .pat .use { font-size: 11.5px; color: var(--green); font-weight: 500; }
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: var(--read-w); margin-bottom: 20px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--sky); background: rgba(37, 99, 235, 0.04); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); } .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--sky); }
+  .compare td strong { color: var(--text-primary); }
+  .decision-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: var(--read-w); }
+  @media (max-width: 720px) { .decision-grid { grid-template-columns: 1fr; } }
+  .decision-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 24px; }
+  .decision-card.use { border-left: 3px solid var(--green); } .decision-card.skip { border-left: 3px solid var(--rose); }
+  .decision-card h4 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 12px; }
+  .decision-card.use h4 { color: var(--green); } .decision-card.skip h4 { color: var(--rose); }
+  .decision-card ul { list-style: none; padding: 0; }
+  .decision-card li { font-size: 13px; color: var(--text-secondary); line-height: 1.6; padding: 6px 0; border-bottom: 1px solid var(--border); }
+  .decision-card li:last-child { border-bottom: none; }
+  .connect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .connect-node { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; transition: all 0.3s; text-decoration: none; color: inherit; display: block; }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node.soon { cursor: default; opacity: 0.72; }
+  .connect-node .tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--sky); word-break: break-all; }
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--sky); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } pre.code { font-size: 11px; padding: 14px 16px; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+
+<div class="glow-orb blue"></div>
+<div class="glow-orb sky"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand"><span class="nav-brand-mark">know.2nth.ai</span><span class="nav-brand-sub">tech/architecture</span></a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">&larr; Tech</a>
+      <a href="../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x2600;&#xFE0F;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="./">Tech</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">Architecture</span>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> tech &middot; Software Architecture &middot; Skill Leaf</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      The decisions that are <span class="gradient">expensive to reverse.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      Architecture isn't diagrams for their own sake. It's the small set of decisions &mdash; how the system is split, where state lives, what talks to what &mdash; that are cheap to make on day one and ruinous to undo a year in. The skill is making those decisions deliberately, recording <em>why</em>, and being honest about the trade-offs. This is the discipline every 2nth build draws on: <strong>ADRs</strong>, the <strong>C4 model</strong>, trade-off matrices, a working catalogue of patterns, and the judgement to know when to break them.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill accent">ADRs</span>
+      <span class="pill accent">C4 model</span>
+      <span class="pill indigo">12 patterns</span>
+      <span class="pill warn">Anti-patterns</span>
+      <span class="pill green">Trade-off matrices</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 WHAT IT IS -->
+<section id="what">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; What it is</div>
+      <h2 class="section-title">Architecture is the set of decisions that resist change.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>A useful working definition, after Ralph Johnson and Martin Fowler: <strong>architecture is the things that are hard to change &mdash; and the shared understanding of why they are the way they are.</strong> Renaming a function is not architecture. Choosing a single database that every service shares, or splitting a system into twelve deployable pieces, is. The first you can undo in an afternoon; the second you live with for years.</p>
+      <p>That framing does real work. It tells you where to spend care: not on every line, but on the handful of decisions whose cost of being wrong is high and whose cost of reversal is higher. It also tells you the deliverable. Architecture's output isn't a pretty diagram &mdash; it's <strong>a decision, its alternatives, and the reasoning</strong>, written down where the next person (or the next agent) can find it.</p>
+      <p>The most common failure isn't picking the wrong pattern. It's making the decision implicitly &mdash; nobody chose the distributed monolith; it accreted &mdash; and leaving no record of why, so every future change re-litigates settled ground or breaks an invariant no one remembered was load-bearing.</p>
+    </div>
+    <div class="info-card indigo fade-up" style="transition-delay: 0.08s">
+      <h4>Three questions that define a system's architecture</h4>
+      <ul>
+        <li><strong>How is it split?</strong> One deployable or many; by layer, by feature, by domain.</li>
+        <li><strong>Where does state live?</strong> One database or many; who owns which data; how consistency is handled across boundaries.</li>
+        <li><strong>How do the parts talk?</strong> In-process calls, synchronous HTTP, asynchronous events &mdash; and what happens when a dependency is slow or down.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 02 HOW IT WORKS -->
+<section id="how">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; The artefacts</div>
+      <h2 class="section-title">Three tools carry most of the work.</h2>
+      <p class="section-lede">You don't need a heavyweight framework. Three lightweight artefacts &mdash; a decision record, a model that draws the system at the right zoom level, and a matrix that makes a trade-off explicit &mdash; cover the vast majority of real architectural work and travel well between humans and agents.</p>
+    </div>
+
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p><strong>ADRs &mdash; Architecture Decision Records.</strong> A short markdown file per significant decision, in the repo next to the code. Michael Nygard's original template is four headings: <em>Context</em> (the forces at play), <em>Decision</em> (what we chose), <em>Status</em> (proposed / accepted / superseded), <em>Consequences</em> (what becomes easier and harder). Numbered, append-only, never deleted &mdash; a superseded ADR stays as the record of what we believed at the time.</p>
+    </div>
+
+    <pre class="code fade-up" style="transition-delay: 0.07s"><span class="c"># ADR-014: Use a modular monolith, not microservices</span>
+
+<span class="h">Status:</span> Accepted
+<span class="h">Context:</span> 4-person team, one product, deploys daily. Microservices
+  would add network failure modes and ops overhead we can't staff.
+<span class="h">Decision:</span> One deployable, enforced module boundaries, one database
+  with per-module schemas. Revisit if a module needs independent scaling.
+<span class="h">Consequences:</span>
+  + Simple deploys, in-process calls, easy local dev
+  + Boundaries already drawn if we ever split out a service
+  &minus; Shared database is a coupling risk &mdash; needs discipline</pre>
+
+    <div class="prose fade-up" style="transition-delay: 0.1s">
+      <p><strong>The C4 model</strong> (Simon Brown) draws the system at four zoom levels, so a diagram answers exactly one question instead of becoming an everything-map nobody trusts:</p>
+    </div>
+
+    <div class="stack-grid fade-up" style="transition-delay: 0.12s">
+      <div class="stack-cell">
+        <span class="layer">Level 1</span>
+        <h4>Context</h4>
+        <p>The system as one box, and the people and external systems around it. The diagram for non-technical stakeholders.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Level 2</span>
+        <h4>Containers</h4>
+        <p>The deployable units &mdash; web app, API, database, queue. The single most useful level for most conversations.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Level 3</span>
+        <h4>Components</h4>
+        <p>The major building blocks inside one container and their responsibilities. Drawn only where it earns its keep.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Level 4</span>
+        <h4>Code</h4>
+        <p>Classes / functions. Usually best left to the IDE &mdash; rarely worth hand-drawing or maintaining.</p>
+      </div>
+    </div>
+
+    <div class="prose fade-up" style="transition-delay: 0.14s">
+      <p><strong>Trade-off matrices</strong> turn an argument into a table. List the options down the side, the qualities that matter across the top (operability, cost, latency, team fit, blast radius), and fill the cells honestly &mdash; including the boxes where your preferred option loses. A decision that survives its own trade-off matrix is defensible; one that can't be written as a matrix usually isn't a decision yet, it's a preference.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 PATTERNS -->
+<section id="patterns">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; The catalogue</div>
+      <h2 class="section-title">Twelve patterns worth knowing by name.</h2>
+      <p class="section-lede">A pattern is a named, reusable shape with a known set of trade-offs. Knowing them by name is leverage: it turns a vague debate into "we're choosing between a modular monolith and event-driven services, and here's why." None is universally right &mdash; each is the answer to a specific pressure.</p>
+    </div>
+
+    <div class="pat-grid fade-up" style="transition-delay: 0.05s">
+      <div class="pat"><span class="pn">01 &middot; structure</span><h4>Monolith</h4><p>One deployable, one codebase. Simplest to build, test and reason about.</p><span class="use">Use: most new products, small teams.</span></div>
+      <div class="pat"><span class="pn">02 &middot; structure</span><h4>Modular monolith</h4><p>A monolith with enforced internal boundaries. Simplicity now, clean seams for later.</p><span class="use">Use: the default first move in 2026.</span></div>
+      <div class="pat"><span class="pn">03 &middot; structure</span><h4>Microservices</h4><p>Many small independently-deployable services. Independent scaling &amp; teams &mdash; at real ops cost.</p><span class="use">Use: many teams, proven scale need.</span></div>
+      <div class="pat"><span class="pn">04 &middot; messaging</span><h4>Event-driven</h4><p>Components react to events on a bus rather than calling each other directly. Loose coupling, async resilience.</p><span class="use">Use: workflows, fan-out, decoupling.</span></div>
+      <div class="pat"><span class="pn">05 &middot; data</span><h4>CQRS</h4><p>Separate the write model from the read model. Optimise each independently.</p><span class="use">Use: heavy reads, complex reporting.</span></div>
+      <div class="pat"><span class="pn">06 &middot; data</span><h4>Event sourcing</h4><p>Store the sequence of changes, not just current state. Full audit, time-travel &mdash; and complexity.</p><span class="use">Use: audit-critical, finance, ledgers.</span></div>
+      <div class="pat"><span class="pn">07 &middot; structure</span><h4>Hexagonal</h4><p>Ports &amp; adapters: domain logic at the centre, I/O at the edges behind interfaces.</p><span class="use">Use: long-lived, testable cores.</span></div>
+      <div class="pat"><span class="pn">08 &middot; structure</span><h4>Layered</h4><p>Presentation &rarr; application &rarr; domain &rarr; data. The familiar default; risks anaemic domains.</p><span class="use">Use: CRUD-heavy line-of-business apps.</span></div>
+      <div class="pat"><span class="pn">09 &middot; compute</span><h4>Serverless</h4><p>Functions that scale to zero; no servers to manage. Pay-per-use, cold-start trade-offs.</p><span class="use">Use: spiky, event-shaped workloads.</span></div>
+      <div class="pat"><span class="pn">10 &middot; compute</span><h4>Edge-first</h4><p>Run compute close to the user (Workers, CDN edge). Low latency, constrained runtime.</p><span class="use">Use: global latency-sensitive apps.</span></div>
+      <div class="pat"><span class="pn">11 &middot; migration</span><h4>Strangler fig</h4><p>Wrap a legacy system and replace it route-by-route until the old one withers.</p><span class="use">Use: replacing a system you can't stop.</span></div>
+      <div class="pat"><span class="pn">12 &middot; integration</span><h4>BFF + Saga</h4><p>Backend-for-frontend per client; sagas coordinate multi-service transactions without a global lock.</p><span class="use">Use: multi-client UIs, distributed writes.</span></div>
+    </div>
+
+    <div class="info-card green fade-up" style="transition-delay: 0.08s">
+      <h4>The 2026 default, stated plainly</h4>
+      <p>For most new products with a small team, start with a <strong>modular monolith</strong> and reach for an <strong>edge-first</strong> or <strong>serverless</strong> deployment surface. You get simplicity now and clean module boundaries that make extracting a service later a refactor, not a rewrite. Microservices are a response to <em>organisational</em> scale (many teams shipping independently) far more often than technical scale &mdash; adopting them before you have that problem buys you distributed-systems pain with none of the payoff.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 ANTI-PATTERNS -->
+<section id="anti">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; Anti-pattern detection</div>
+      <h2 class="section-title">The shapes that look fine until they don't.</h2>
+      <p class="section-lede">An anti-pattern is a recurring "solution" that creates more problems than it solves. They're worth naming because they're rarely chosen &mdash; they accrete &mdash; and a name is what lets a team say "that's a distributed monolith" before it's load-bearing.</p>
+    </div>
+
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead><tr><th>Anti-pattern</th><th>How you spot it</th><th>The fix direction</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Distributed monolith</strong></td><td>Microservices that must deploy together and share a database</td><td>Merge back, or sever the shared data and the lock-step releases</td></tr>
+          <tr><td><strong>Big ball of mud</strong></td><td>No discernible structure; everything reaches into everything</td><td>Introduce boundaries incrementally; strangler-fig the worst parts</td></tr>
+          <tr><td><strong>Golden hammer</strong></td><td>One tech (k8s, GraphQL, microservices) applied to every problem</td><td>Match the tool to the pressure; matrix the alternatives</td></tr>
+          <tr><td><strong>Premature microservices</strong></td><td>Twelve services, one team, weekly cross-service changes</td><td>Collapse to a modular monolith until scale forces a split</td></tr>
+          <tr><td><strong>Anaemic domain</strong></td><td>Objects with data but no behaviour; all logic in "services"</td><td>Move invariants onto the domain; thin the service layer</td></tr>
+          <tr><td><strong>Chatty integration</strong></td><td>N+1 network calls to render one screen</td><td>Batch, a BFF aggregation layer, or denormalise the read model</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="info-card rose fade-up" style="transition-delay: 0.08s">
+      <h4>The tell they share</h4>
+      <p>Almost every anti-pattern is a <strong>coupling problem wearing a decoupling costume</strong>. The distributed monolith bought network calls and got tighter coupling. Premature microservices bought independence and got lock-step deploys. When something feels harder than it should, look for the place two things that should move independently are quietly chained together &mdash; that's usually the root, and the diagram rarely shows it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 DECISION -->
+<section id="decision">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; Decision guide</div>
+      <h2 class="section-title">When to invest in architecture &mdash; and when to break the rules.</h2>
+      <p class="section-lede">Architecture is a cost, paid in time and constraint. Like any cost it's worth paying only where the return is real. The skill includes knowing when <em>not</em> to architect &mdash; and when a clean rule should be broken on purpose, with the reason written down.</p>
+    </div>
+    <div class="decision-grid fade-up" style="transition-delay: 0.05s">
+      <div class="decision-card use">
+        <h4>Invest deliberately when</h4>
+        <ul>
+          <li>The decision is expensive to reverse (data model, system split)</li>
+          <li>Multiple teams must agree on a contract or boundary</li>
+          <li>Compliance or audit needs a defensible record of why</li>
+          <li>The blast radius of getting it wrong is large</li>
+          <li>You're replacing something you can't switch off</li>
+          <li>The system will outlive the people building it now</li>
+        </ul>
+      </div>
+      <div class="decision-card skip">
+        <h4>Don't over-architect when</h4>
+        <ul>
+          <li>It's a prototype or a bet you might throw away</li>
+          <li>The decision is cheap to reverse later</li>
+          <li>You're guessing at scale you don't have and can't predict</li>
+          <li>Adding a layer "for flexibility" no requirement asked for</li>
+          <li>The diagram has more boxes than the team has people</li>
+          <li>You're solving Google's problem on a four-person team</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="info-card amber fade-up" style="transition-delay: 0.08s">
+      <h4>Breaking a rule honestly</h4>
+      <p>Good architecture isn't dogma &mdash; it's owning the trade-off out loud. Shipping a shared database across two services to hit a deadline can be the right call. The discipline is to <strong>write the ADR that says you did it, why, and what would trigger undoing it</strong>. A documented, deliberate violation is engineering. The same shortcut taken silently is the first plank of the next big ball of mud. The rule isn't "never break the rule"; it's "never break it without leaving a note."</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 SA CONTEXT -->
+<section id="sa-context">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; South African context</div>
+      <h2 class="section-title">Architecture under real constraints.</h2>
+      <p class="section-lede">SA delivery sharpens the trade-offs. Intermittent power and connectivity, a weak currency against USD-billed cloud, POPIA data-residency questions, and small teams all push architecture toward resilience, frugality and clear ownership &mdash; not theoretical purity.</p>
+    </div>
+    <div class="info-card indigo fade-up" style="transition-delay: 0.05s">
+      <h4>Resilience &middot; power &amp; connectivity</h4>
+      <p>Designs that assume always-on infrastructure fail badly during load-shedding and flaky links. Favour <strong>queue-and-retry over synchronous chains</strong>, offline-tolerant clients, and edge-first deployment that keeps working when the origin is unreachable. Event-driven shapes aren't an academic preference here &mdash; they're how the system survives a 2-hour outage without losing work.</p>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.07s">
+      <h4>Frugality &middot; FX-exposed cloud spend</h4>
+      <p>Every USD-billed service is a rand risk. Architecture is where you control it: scale-to-zero serverless for spiky workloads, ruthless attention to egress (the hidden tax of multi-cloud), and a bias toward owned, fixed-cost infrastructure where volume justifies it. The cheapest architecture is often the one with the fewest moving parts billed by the hour.</p>
+    </div>
+    <div class="info-card green fade-up" style="transition-delay: 0.09s">
+      <h4>Residency &middot; POPIA &amp; the data map</h4>
+      <p>POPIA makes "where does each piece of data live, and who can reach it?" an architectural question, not a legal afterthought. A clear container diagram that marks data stores by region &mdash; <code>af-south-1</code> / <code>South Africa North</code> for residency-sensitive data, elsewhere for the rest &mdash; is half of a compliance conversation done. Draw the boundary before the auditor asks you to.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 07 CONNECTIONS -->
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; Connections</div>
+      <h2 class="section-title">Where architecture meets the rest of the tree.</h2>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="./" class="connect-node">
+        <span class="tag">tech</span>
+        <div class="skill">Tech hub</div>
+        <div class="why">The branch this sits in. Architecture is the skill every other tech leaf is an instance of &mdash; a concrete decision under the general discipline.</div>
+      </a>
+      <a href="own-your-stack.html" class="connect-node">
+        <span class="tag">tech/own-your-stack</span>
+        <div class="skill">Own Your Stack</div>
+        <div class="why">Ownership is an architectural decision. Where state and source live, and whether you can leave a vendor, is drawn on the container diagram.</div>
+      </a>
+      <a href="cloudflare/workers.html" class="connect-node">
+        <span class="tag">tech/cloudflare/workers</span>
+        <div class="skill">Cloudflare Workers</div>
+        <div class="why">The edge-first deployment surface. Pattern 10 made concrete &mdash; compute close to the user, with the constraints that implies.</div>
+      </a>
+      <a href="aws.html" class="connect-node">
+        <span class="tag">tech/aws</span>
+        <div class="skill">AWS</div>
+        <div class="why">The stateful, heavyweight half of most hybrid architectures. Where the database, queues and long-running compute usually land.</div>
+      </a>
+      <a href="runtime/" class="connect-node">
+        <span class="tag">tech/runtime</span>
+        <div class="skill">Runtime</div>
+        <div class="why">A foundational architectural choice &mdash; Node, Bun or Deno shapes the deployment surface and the libraries available to every component.</div>
+      </a>
+      <a href="../agents/mcp.html" class="connect-node">
+        <span class="tag">agents/mcp</span>
+        <div class="skill">Model Context Protocol</div>
+        <div class="why">The integration boundary for agentic systems. An ADR-worthy decision: which systems get exposed as tools, and where the line is drawn.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 08 RESOURCES -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 &middot; Resources</div>
+      <h2 class="section-title">Primary sources.</h2>
+      <p class="section-lede">The canonical references behind this leaf &mdash; the C4 model, the ADR pattern, and the standard texts on architectural trade-offs. Last reviewed 2026-06-17.</p>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://c4model.com" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Model</span>
+        <span class="r-title">The C4 model (Simon Brown)</span>
+        <span class="r-url">c4model.com</span>
+      </a>
+      <a href="https://github.com/joelparkerhenderson/architecture-decision-record" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Pattern</span>
+        <span class="r-title">Architecture Decision Records</span>
+        <span class="r-url">github.com/joelparkerhenderson/architecture-decision-record</span>
+      </a>
+      <a href="https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Origin</span>
+        <span class="r-title">Documenting Architecture Decisions (Nygard)</span>
+        <span class="r-url">cognitect.com/blog &middot; 2011</span>
+      </a>
+      <a href="https://martinfowler.com/architecture/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Reference</span>
+        <span class="r-title">martinfowler.com &middot; Architecture</span>
+        <span class="r-url">martinfowler.com/architecture</span>
+      </a>
+      <a href="https://www.oreilly.com/library/view/fundamentals-of-software/9781492043447/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Book</span>
+        <span class="r-title">Fundamentals of Software Architecture</span>
+        <span class="r-url">oreilly.com &middot; Richards &amp; Ford</span>
+      </a>
+      <a href="https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Framework</span>
+        <span class="r-title">AWS Well-Architected Framework</span>
+        <span class="r-url">docs.aws.amazon.com/wellarchitected</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../index.html">Knowledge tree</a>
+      <a href="./">Tech hub</a>
+      <a href="https://c4model.com" target="_blank" rel="noopener">C4 model &nearr;</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in Johannesburg, South Africa</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme(){const html=document.documentElement;const current=html.getAttribute('data-theme');const next=current==='dark'?'light':'dark';html.setAttribute('data-theme',next);document.querySelector('.theme-toggle').textContent=next==='dark'?'☀️':'🌙';localStorage.setItem('theme',next);}
+  const saved=localStorage.getItem('theme');if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.theme-toggle').textContent=saved==='dark'?'☀️':'🌙';}
+  const observer=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting)entry.target.classList.add('visible');});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>
