@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Keep the Data Home &mdash; Edge-First Computing, POPIA &amp; AI Residency</title>
+<meta name="description" content="A non-technical CEO/CFO briefing on edge-first computing: running software in hundreds of locations close to your users — and using that layer as border control for your data. How it turns POPIA compliance and AI data-residency from a legal headache into a rule you set, plus the speed and cost dividend.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/briefings/edge-first">
+<meta property="og:title" content="Keep the Data Home — Edge-First, POPIA & AI Residency">
+<meta property="og:description" content="Edge-first computing as border control for your data: keep South African personal data in South Africa, route AI safely, and get faster, cheaper software. A non-technical CEO/CFO briefing.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai — The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Keep the Data Home — Edge-First, POPIA & AI Residency">
+<meta name="twitter:description" content="Edge-first computing as border control for your data: keep SA personal data in SA, route AI safely, faster and cheaper. A non-technical CEO/CFO briefing.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%2338BDF8' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2310B981' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --ink: #0B1120; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6;
+    --sky: #38BDF8; --cyan: #22D3EE; --paper: #F8FAFC; --slate: #94A3B8;
+    --warm: #F59E0B; --warm-soft: rgba(245,158,11,0.12);
+    --green: #10B981; --green-soft: rgba(16,185,129,0.12);
+    --rose: #F43F5E; --rose-soft: rgba(244,63,94,0.12);
+    --indigo: #6366F1; --indigo-soft: rgba(99,102,241,0.12);
+    --max-w: 1080px; --read-w: 820px;
+    --radius-md: 14px; --radius-lg: 22px; --radius-pill: 100px;
+    --bg: #F4F6FB; --bg-soft: #EAEEF6; --card: #FFFFFF; --card-2: #FBFCFE;
+    --text: #0B1120; --text-2: #475569; --text-3: #8A97AB;
+    --border: rgba(15,23,42,0.10); --border-strong: rgba(15,23,42,0.16);
+    --shadow: 0 14px 40px rgba(15,23,42,0.08);
+  }
+  [data-theme="dark"] {
+    --bg: #0B1120; --bg-soft: #0E1626; --card: #121D33; --card-2: #0F1929;
+    --text: #F8FAFC; --text-2: #B6C2D6; --text-3: #6B7A92;
+    --border: rgba(148,163,184,0.14); --border-strong: rgba(148,163,184,0.24);
+    --shadow: 0 16px 48px rgba(0,0,0,0.4);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+    background: radial-gradient(1200px 600px at 80% -100px, var(--bg-soft), var(--bg)) fixed;
+    color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  }
+  .wrap { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+
+  .topbar { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(14px);
+    background: color-mix(in srgb, var(--bg) 80%, transparent); border-bottom: 1px solid var(--border); }
+  .topbar-inner { max-width: var(--max-w); margin: 0 auto; padding: 12px 24px;
+    display: flex; align-items: center; justify-content: space-between; }
+  .brand { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 14px;
+    background: linear-gradient(135deg, var(--sky), var(--green));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .brand-sub { font-size: 11px; color: var(--text-3); letter-spacing: 1.5px; text-transform: uppercase;
+    margin-left: 10px; padding-left: 10px; border-left: 1px solid var(--border); font-weight: 500; }
+  .toggle { background: none; border: 1px solid var(--border); color: var(--text-2);
+    width: 34px; height: 34px; border-radius: 50%; cursor: pointer; display: grid; place-items: center;
+    font-size: 15px; transition: all 0.2s; }
+  .toggle:hover { border-color: var(--border-strong); }
+
+  .hero { padding: 64px 0 36px; }
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500;
+    letter-spacing: 2.5px; text-transform: uppercase; color: var(--sky);
+    display: inline-flex; align-items: center; gap: 10px; margin-bottom: 22px; }
+  .eyebrow .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--sky); box-shadow: 0 0 12px var(--sky); }
+  .hero h1 { font-size: clamp(36px, 6vw, 60px); font-weight: 800; line-height: 1.05;
+    letter-spacing: -1.8px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .hl { background: linear-gradient(135deg, var(--sky), var(--green)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .lede { font-size: 19px; color: var(--text-2); max-width: 690px; line-height: 1.6; font-weight: 300; margin-bottom: 26px; }
+  .chips { display: flex; gap: 8px; flex-wrap: wrap; }
+  .chip { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 7px 14px;
+    border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-2); background: var(--card); }
+
+  .bluf { background: linear-gradient(135deg, var(--green-soft), transparent);
+    border: 1px solid var(--border); border-left: 4px solid var(--green);
+    border-radius: var(--radius-lg); padding: 28px 32px; box-shadow: var(--shadow); margin: 12px 0 8px; }
+  .bluf .tag { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.6px; text-transform: uppercase; color: var(--green); font-weight: 600; margin-bottom: 10px; }
+  .bluf p { font-size: 18px; line-height: 1.6; color: var(--text); font-weight: 400; }
+  .bluf p strong { font-weight: 700; }
+
+  section { padding: 46px 0; }
+  .s-num { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--sky); font-weight: 600; margin-bottom: 12px; }
+  .s-title { font-size: clamp(26px, 4vw, 38px); font-weight: 700; letter-spacing: -0.8px; line-height: 1.15; margin-bottom: 16px; max-width: 20ch; }
+  .s-lede { font-size: 17px; color: var(--text-2); max-width: var(--read-w); line-height: 1.65; font-weight: 300; margin-bottom: 30px; }
+
+  /* central vs edge */
+  .vs { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 720px){ .vs { grid-template-columns: 1fr; } }
+  .vs-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 26px 28px; box-shadow: var(--shadow); }
+  .vs-card.old { border-top: 4px solid var(--rose); }
+  .vs-card.new { border-top: 4px solid var(--green); }
+  .vs-card .vt { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; font-weight: 600; margin-bottom: 14px; }
+  .vs-card.old .vt { color: var(--rose); } .vs-card.new .vt { color: var(--green); }
+  .vs-diagram { display: flex; align-items: center; justify-content: center; gap: 6px; height: 84px; margin-bottom: 16px; flex-wrap: wrap; }
+  .node { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: #fff; border-radius: 6px; display: grid; place-items: center; padding: 6px; text-align: center; line-height: 1.2; }
+  .node.user { background: var(--slate); width: 42px; height: 30px; }
+  .node.dc-far { background: var(--rose); width: 60px; height: 44px; }
+  .node.dc-near { background: var(--green); width: 30px; height: 30px; font-size: 8px; }
+  .dots { color: var(--text-3); font-size: 14px; letter-spacing: -1px; }
+  .vs-card p { font-size: 14px; color: var(--text-2); line-height: 1.6; }
+  .vs-card p strong { color: var(--text); }
+
+  /* border control flow */
+  .border { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 30px 32px; box-shadow: var(--shadow); max-width: var(--read-w); }
+  .border h3 { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+  .border .bsub { font-size: 14px; color: var(--text-3); margin-bottom: 24px; }
+  .bflow { display: grid; grid-template-columns: auto auto 1fr; gap: 14px; align-items: center; }
+  @media (max-width: 680px){ .bflow { grid-template-columns: 1fr; } }
+  .bnode { border-radius: var(--radius-md); padding: 16px 18px; font-size: 14px; line-height: 1.4; }
+  .bnode .bl { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; display: block; margin-bottom: 5px; }
+  .bnode.req { background: var(--bg-soft); border: 1px solid var(--border); }
+  .bnode.gate { background: linear-gradient(135deg, var(--sky), var(--cyan)); color: #06283a; font-weight: 600; }
+  .bnode.gate .bl { color: #06283a; opacity: 0.8; }
+  .barrow { text-align: center; color: var(--text-3); font-family: 'JetBrains Mono', monospace; font-size: 16px; }
+  .boutcomes { display: grid; gap: 10px; }
+  .bout { border-radius: var(--radius-md); padding: 14px 16px; font-size: 13.5px; line-height: 1.45; }
+  .bout .bl { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; display: block; margin-bottom: 4px; font-weight: 600; }
+  .bout.stay { background: var(--green-soft); border-left: 3px solid var(--green); }
+  .bout.stay .bl { color: var(--green); }
+  .bout.leave { background: var(--warm-soft); border-left: 3px solid var(--warm); }
+  .bout.leave .bl { color: var(--warm); }
+
+  /* residency table */
+  .restable { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow); max-width: var(--read-w); }
+  .resrow { display: grid; grid-template-columns: 1.1fr 1.4fr 0.9fr; border-bottom: 1px solid var(--border); }
+  .resrow:last-child { border-bottom: none; }
+  .resrow > div { padding: 14px 16px; font-size: 14px; }
+  .resrow .rd { font-weight: 600; color: var(--text); border-right: 1px solid var(--border); }
+  .resrow .rw { color: var(--text-2); border-right: 1px solid var(--border); }
+  .resrow .rv { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.5px; display: flex; align-items: center; }
+  .resrow .rv.home { color: var(--green); } .resrow .rv.cond { color: var(--warm); }
+  .reshead > div { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--sky); font-weight: 600; }
+  @media (max-width: 680px){ .resrow { grid-template-columns: 1fr; } .resrow .rd, .resrow .rw { border-right: none; } .resrow > div { border-bottom: 1px solid var(--border); } }
+
+  .panel { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 26px 30px; box-shadow: var(--shadow); max-width: var(--read-w); }
+  .callout { background: var(--card-2); border: 1px solid var(--border); border-left: 4px solid var(--sky); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); box-shadow: var(--shadow); }
+  .callout.warn { border-left-color: var(--warm); }
+  .callout.good { border-left-color: var(--green); }
+  .callout h4 { font-size: 19px; font-weight: 700; margin-bottom: 10px; }
+  .callout p { font-size: 15.5px; color: var(--text-2); line-height: 1.7; }
+  .callout p strong { color: var(--text); }
+  .callout p + p { margin-top: 12px; }
+
+  /* value cards */
+  .vals { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; max-width: var(--read-w); }
+  @media (max-width: 760px){ .vals { grid-template-columns: 1fr; } }
+  .val { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px 24px; box-shadow: var(--shadow); border-top: 4px solid var(--sky); }
+  .val .vi { font-size: 22px; margin-bottom: 10px; }
+  .val h4 { font-size: 17px; font-weight: 700; margin-bottom: 8px; }
+  .val p { font-size: 13.5px; color: var(--text-2); line-height: 1.6; }
+
+  /* limits */
+  .limits { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px,1fr)); gap: 14px; }
+  .limit { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 24px; box-shadow: var(--shadow); border-left: 4px solid var(--warm); }
+  .limit .lq { font-size: 16px; font-weight: 700; margin-bottom: 8px; line-height: 1.3; }
+  .limit p { font-size: 13.5px; color: var(--text-2); line-height: 1.6; }
+
+  /* steps */
+  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  @media (max-width: 860px){ .steps { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 520px){ .steps { grid-template-columns: 1fr; } }
+  .step { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px 22px; box-shadow: var(--shadow); }
+  .step .n { font-family: 'JetBrains Mono', monospace; font-size: 26px; font-weight: 700;
+    background: linear-gradient(135deg, var(--sky), var(--green)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1; margin-bottom: 12px; display: block; }
+  .step h4 { font-size: 16px; font-weight: 700; margin-bottom: 7px; }
+  .step p { font-size: 13.5px; color: var(--text-2); line-height: 1.55; }
+
+  .aside { background: var(--bg-soft); border: 1px dashed var(--border-strong); border-radius: var(--radius-md); padding: 22px 26px; max-width: var(--read-w); margin-top: 8px; }
+  .aside h5 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-3); margin-bottom: 14px; }
+  .aside .row { display: grid; grid-template-columns: 1fr auto 1fr; gap: 12px; align-items: center; font-size: 14px; padding: 7px 0; border-bottom: 1px solid var(--border); }
+  .aside .row:last-child { border-bottom: none; }
+  .aside .row .plain { font-weight: 600; color: var(--text); }
+  .aside .row .arr { color: var(--text-3); font-family: 'JetBrains Mono', monospace; }
+  .aside .row .tech { color: var(--text-2); font-family: 'JetBrains Mono', monospace; font-size: 13px; }
+
+  .finalbox { background: linear-gradient(135deg, #0E7490, var(--sky)); color: #06283a; border-radius: var(--radius-lg); padding: 40px 40px; box-shadow: 0 20px 60px rgba(56,189,248,0.28); }
+  .finalbox .tag { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.75; margin-bottom: 14px; }
+  .finalbox p { font-size: clamp(20px, 3vw, 26px); font-weight: 700; line-height: 1.45; max-width: 26ch; }
+
+  footer { padding: 56px 0 48px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600;
+    background: linear-gradient(135deg, var(--sky), var(--green)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tag { font-size: 13px; color: var(--text-3); margin-bottom: 18px; }
+  .footer-links { display: flex; justify-content: center; gap: 22px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-2); text-decoration: none; }
+  .footer-links a:hover { color: var(--sky); }
+  .footer-copy { font-size: 12px; color: var(--text-3); margin-top: 18px; }
+
+  .fade { opacity: 0; transform: translateY(22px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade.vis { opacity: 1; transform: translateY(0); }
+
+  @media print {
+    .topbar, .toggle { position: static; }
+    .fade { opacity: 1 !important; transform: none !important; }
+    body { background: #fff; }
+    section { padding: 22px 0; page-break-inside: avoid; }
+    .panel, .limit, .step, .border, .callout, .vs-card, .val, .restable, .bluf, .finalbox { box-shadow: none; }
+    .finalbox { color: #06283a; background: #E0F2FE; border: 1px solid #BAE6FD; }
+  }
+  *, *::before, *::after { transition-property: background-color, border-color, color; transition-duration: 0.3s; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div><span class="brand">know.2nth.ai</span><span class="brand-sub">CEO Briefing</span></div>
+    <div style="display:flex;align-items:center;gap:16px;">
+      <a href="/briefings/" style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-2);text-decoration:none;letter-spacing:0.5px;">&larr; All briefings</a>
+      <button class="toggle" onclick="toggleTheme()" aria-label="Toggle light/dark">🌙</button>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div class="eyebrow fade"><span class="dot"></span> CEO &amp; CFO Briefing &middot; Data residency by design</div>
+    <h1 class="fade" style="transition-delay:.05s">Keep the data home. <span class="hl">Decide what's allowed to leave.</span></h1>
+    <p class="lede fade" style="transition-delay:.1s">
+      "Edge-first" sounds like an engineering choice about speed. It is &mdash; but for a South African business its bigger value is control. Because every request to your software passes through a layer you run in many locations, <strong>the edge becomes border control for your data</strong>: the checkpoint where you decide what personal information stays in South Africa and what, if anything, is allowed to cross the border. That turns POPIA and AI data-residency from a legal headache into a rule you set &mdash; and you get faster, cheaper software as the bonus.
+    </p>
+    <div class="chips fade" style="transition-delay:.15s">
+      <span class="chip">6-minute read</span>
+      <span class="chip">For CEO &amp; CFO</span>
+      <span class="chip">POPIA &amp; AI residency</span>
+    </div>
+  </div>
+</section>
+
+<!-- BLUF -->
+<div class="wrap">
+  <div class="bluf fade">
+    <div class="tag">The bottom line, up front</div>
+    <p>Most software sends your customers' data to a big data centre somewhere far away to be processed. Edge-first flips that: it runs the work close to the user, and gives you a single place to enforce one rule &mdash; <strong>South African personal data stays in South Africa unless you deliberately, lawfully let it leave.</strong> For AI, where the powerful models mostly live overseas, that same checkpoint is where you strip out or hold back personal details before anything is sent abroad. It's the practical answer to "how do we use modern cloud and AI without breaking POPIA?"</p>
+  </div>
+</div>
+
+<!-- 01 WHAT IT IS -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">01 &middot; The shift</div>
+      <h2 class="s-title">From one faraway building to many nearby ones</h2>
+      <p class="s-lede">The old model runs your software in a single data centre &mdash; often in the US or Europe &mdash; and every customer's request travels there and back. Edge-first runs the work in a network of locations close to where your users actually are, including inside South Africa.</p>
+    </div>
+    <div class="vs fade" style="transition-delay:.05s">
+      <div class="vs-card old">
+        <div class="vt">The old way &middot; centralised</div>
+        <div class="vs-diagram">
+          <span class="node user">SA user</span>
+          <span class="dots">&middot; &middot; &middot; &middot; &middot;</span>
+          <span class="node dc-far">one far<br>data centre</span>
+        </div>
+        <p>Every request &mdash; and the personal data in it &mdash; travels overseas and back. Slower for your users, and your customers' data is being processed in another country by default.</p>
+      </div>
+      <div class="vs-card new">
+        <div class="vt">Edge-first &middot; distributed</div>
+        <div class="vs-diagram">
+          <span class="node user">SA user</span>
+          <span class="dots">&middot;</span>
+          <span class="node dc-near">edge</span>
+          <span class="node dc-near">edge</span>
+          <span class="node dc-near">edge</span>
+        </div>
+        <p>The work happens at the nearest location &mdash; for SA users, in South Africa. Faster, and the data is handled close to home <strong>by default</strong>, not shipped abroad to be processed.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 BORDER CONTROL -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">02 &middot; The big idea</div>
+      <h2 class="s-title">The edge is border control for your data</h2>
+      <p class="s-lede">This is the part that matters for compliance. Because every request flows through the edge layer, it's the one place you can inspect what's happening and enforce a rule on it &mdash; a passport check at the border of your system. Nothing leaves the country without passing through it.</p>
+    </div>
+    <div class="border fade" style="transition-delay:.05s">
+      <h3>How a request gets handled</h3>
+      <p class="bsub">The edge decides, per request, what may cross the border</p>
+      <div class="bflow">
+        <div class="bnode req"><span class="bl">Comes in</span>A customer request, carrying personal data</div>
+        <div class="barrow">&rarr;</div>
+        <div class="boutcomes">
+          <div class="bnode gate"><span class="bl">The checkpoint</span>The edge applies your rules</div>
+          <div class="bout stay"><span class="bl">Stays in SA</span>Personal data is processed &amp; stored in-country &mdash; the default path</div>
+          <div class="bout leave"><span class="bl">Allowed to leave</span>Only de-identified or non-personal data crosses the border &mdash; and only when lawful</div>
+        </div>
+      </div>
+    </div>
+    <div class="callout good fade" style="transition-delay:.08s; margin-top:18px">
+      <h4>Why "a place to enforce it" is the whole game</h4>
+      <p>POPIA doesn't ask you to never use overseas services. It asks you to <strong>control and justify what happens to personal information</strong> &mdash; especially when it leaves the country. The hard part has always been <em>where</em> you actually enforce that. The edge gives you that one chokepoint: a single layer, in code you own, that every request passes through, where the rule lives and where the audit trail is written.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 POPIA -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">03 &middot; POPIA</div>
+      <h2 class="s-title">What this does for POPIA, plainly</h2>
+      <p class="s-lede">POPIA is South Africa's data-protection law. One of its sharpest edges is the rule on sending personal information out of the country &mdash; you can only do it under specific conditions. Edge-first lets you mostly sidestep the question by keeping the data home, and control it cleanly when you can't.</p>
+    </div>
+    <div class="restable fade" style="transition-delay:.05s">
+      <div class="resrow reshead">
+        <div>Kind of data</div><div>What the edge does with it</div><div>Where it goes</div>
+      </div>
+      <div class="resrow">
+        <div class="rd">ID numbers, contact &amp; account details</div>
+        <div class="rw">Process and store at the South African edge / in-country region</div>
+        <div class="rv home">&#9679; Stays in SA</div>
+      </div>
+      <div class="resrow">
+        <div class="rd">Health, financial, other sensitive data</div>
+        <div class="rw">Kept in-country; never sent abroad without a lawful basis</div>
+        <div class="rv home">&#9679; Stays in SA</div>
+      </div>
+      <div class="resrow">
+        <div class="rd">Anonymous usage &amp; analytics</div>
+        <div class="rw">Stripped of anything identifying before it moves</div>
+        <div class="rv cond">&#9679; May leave, safely</div>
+      </div>
+      <div class="resrow">
+        <div class="rd">Data for an overseas service you need</div>
+        <div class="rw">Minimised &amp; logged at the checkpoint; crosses only when justified</div>
+        <div class="rv cond">&#9679; Conditional</div>
+      </div>
+    </div>
+    <div class="callout warn fade" style="transition-delay:.08s; margin-top:18px">
+      <h4>The honest line &mdash; what the edge is and isn't</h4>
+      <p>The edge is the <strong>enforcement point, not a certificate of compliance</strong>. It's what makes a residency policy real and auditable &mdash; but you still need the policy, a lawyer's read on your specific cross-border transfers, and a South African region to actually store the data in. Think of it as the lock and the logbook on the door. You still have to decide who's allowed through, and write that down. What the edge removes is the excuse that there was nowhere to put the rule.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 AI RESIDENCY -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">04 &middot; AI residency</div>
+      <h2 class="s-title">The hard one: using AI without exporting your customers</h2>
+      <p class="s-lede">Here's the tension every SA business now feels. The most capable AI models mostly run overseas. Sending a customer's personal details to one of them is, in POPIA terms, exporting their personal information. Edge-first is what lets you use powerful AI without that being the automatic consequence.</p>
+    </div>
+    <div class="panel fade" style="transition-delay:.05s">
+      <p style="font-size:15px;color:var(--text-2);line-height:1.7;margin-bottom:16px;">Three things the edge checkpoint can do before anything reaches an AI model, in order of preference:</p>
+      <div class="vals" style="max-width:none;">
+        <div class="val">
+          <div class="vi">🏠</div>
+          <h4>Keep it in-country</h4>
+          <p>When personal data is involved, route the AI request to a model running <strong>inside South Africa</strong> (in-country cloud AI regions now exist). Nothing crosses the border at all.</p>
+        </div>
+        <div class="val">
+          <div class="vi">✂️</div>
+          <h4>Strip it first</h4>
+          <p>Remove or mask the personal details &mdash; names, ID numbers &mdash; at the edge, so only an anonymised question reaches the overseas model. The useful answer comes back; the person never left.</p>
+        </div>
+        <div class="val">
+          <div class="vi">🚦</div>
+          <h4>Decide per request</h4>
+          <p>Sensitive request stays home; harmless one can use the best global model. The edge makes that call automatically, every time, and logs it.</p>
+        </div>
+      </div>
+    </div>
+    <div class="callout good fade" style="transition-delay:.08s; margin-top:18px">
+      <h4>Why this is the unlock, not a compromise</h4>
+      <p>Without a checkpoint, your only options are "ban AI" (lose the advantage) or "send everything overseas and hope" (carry the POPIA risk). The edge gives you a third option: <strong>use the best AI available, while personal data either stays in South Africa or is stripped out before it travels.</strong> You get the capability and keep the control &mdash; which is exactly the position a board wants to be in on AI.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 SPEED & MONEY -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">05 &middot; The bonus</div>
+      <h2 class="s-title">It's also faster and cheaper</h2>
+      <p class="s-lede">Residency is the headline, but edge-first earns its place on the numbers too &mdash; which is what makes it an easy call rather than a compliance tax.</p>
+    </div>
+    <div class="vals fade" style="transition-delay:.05s">
+      <div class="val">
+        <div class="vi">⚡</div>
+        <h4>Faster &rarr; more revenue</h4>
+        <p>Work done near the user means pages and apps respond quicker. Speed measurably lifts conversion and retention &mdash; a revenue lever, not just a nicety.</p>
+      </div>
+      <div class="val">
+        <div class="vi">💸</div>
+        <h4>Lower running cost</h4>
+        <p>Edge platforms scale to zero &mdash; you pay per request, with no idle servers humming overnight. For spiky or growing workloads that's often dramatically cheaper.</p>
+      </div>
+      <div class="val">
+        <div class="vi">📈</div>
+        <h4>Scales without drama</h4>
+        <p>A traffic spike is absorbed across the whole network automatically. No emergency capacity buying, no 2 a.m. outage when something goes viral.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 LIMITS -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">06 &middot; The honest limits</div>
+      <h2 class="s-title">Where edge-first isn't the answer</h2>
+      <p class="s-lede">It's a sharp tool, not a universal one. The phrase engineers use is "constrained runtime" &mdash; the edge is deliberately lightweight, so some work belongs elsewhere.</p>
+    </div>
+    <div class="limits fade" style="transition-delay:.05s">
+      <div class="limit"><div class="lq">Heavy, long jobs</div><p>Big batch processing, large data crunching and long-running tasks still belong in a full cloud region &mdash; the edge is built for quick, light work.</p></div>
+      <div class="limit"><div class="lq">You still need a home base</div><p>The edge processes and routes; your data still has to be stored somewhere. For residency, that means a South African cloud region behind it.</p></div>
+      <div class="limit"><div class="lq">It's not legal advice</div><p>Edge-first makes a residency policy enforceable. It doesn't write the policy or sign it off &mdash; your legal and compliance people still own that.</p></div>
+      <div class="limit"><div class="lq">Rules need maintaining</div><p>"What counts as personal data" and "what may cross the border" are decisions someone has to set and keep current as the business changes.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 07 WHAT TO DO -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">07 &middot; What to do</div>
+      <h2 class="s-title">Four moves to get there</h2>
+    </div>
+    <div class="steps fade" style="transition-delay:.05s">
+      <div class="step"><span class="n">1</span><h4>Put the edge in front</h4><p>Route your traffic through an edge layer, with a South African region behind it as the home base for data.</p></div>
+      <div class="step"><span class="n">2</span><h4>Label your data</h4><p>Agree what counts as personal / SA-resident and what's harmless. This list is the basis of every border rule.</p></div>
+      <div class="step"><span class="n">3</span><h4>Set the border rule</h4><p>Default: personal data stays home. Anything leaving is minimised, justified and logged at the checkpoint.</p></div>
+      <div class="step"><span class="n">4</span><h4>Route AI through it</h4><p>Send AI requests via the edge &mdash; in-country model for personal data, stripped prompts for the rest.</p></div>
+    </div>
+
+    <div class="aside fade" style="transition-delay:.08s">
+      <h5>If your tech team uses the technical terms &mdash; here's the translation</h5>
+      <div class="row"><span class="plain">Compute near the user</span><span class="arr">=</span><span class="tech">edge-first · Cloudflare Workers / CDN edge</span></div>
+      <div class="row"><span class="plain">The border checkpoint</span><span class="arr">=</span><span class="tech">edge middleware / policy gateway</span></div>
+      <div class="row"><span class="plain">Strip out the personal details</span><span class="arr">=</span><span class="tech">redaction / tokenisation / PII filtering</span></div>
+      <div class="row"><span class="plain">In-country AI model</span><span class="arr">=</span><span class="tech">Azure South Africa North inference</span></div>
+      <div class="row"><span class="plain">Home base for data</span><span class="arr">=</span><span class="tech">af-south-1 / SA region</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL -->
+<section>
+  <div class="wrap">
+    <div class="finalbox fade">
+      <div class="tag">The decision</div>
+      <p>Use the best of global cloud and AI &mdash; without your customers' data leaving South Africa by accident. The edge is where you draw that line, and hold it.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tag">A 2nth.ai CEO briefing &middot; plain-language by design</p>
+    <div class="footer-links">
+      <a href="/briefings/">All briefings</a>
+      <a href="/explainers/tech/cloudflare/workers.html">Technical: Cloudflare Workers &nearr;</a>
+      <a href="/explainers/tech/aws">Technical: AWS &amp; af-south-1 &nearr;</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in Johannesburg, South Africa</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme(){
+    const h=document.documentElement, cur=h.getAttribute('data-theme'), nxt=cur==='dark'?'light':'dark';
+    h.setAttribute('data-theme',nxt);
+    document.querySelector('.toggle').textContent = nxt==='dark' ? '☀️' : '🌙';
+    localStorage.setItem('brief-theme',nxt);
+  }
+  const saved=localStorage.getItem('brief-theme');
+  if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.toggle').textContent=saved==='dark'?'☀️':'🌙';}
+  const ob=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');});},{threshold:0.08,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.fade').forEach(el=>ob.observe(el));
+</script>
+</body>
+</html>
