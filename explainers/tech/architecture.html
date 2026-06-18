@@ -95,6 +95,19 @@
   .pat h4 { font-size: 15px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.2px; }
   .pat p { font-size: 12.5px; color: var(--text-secondary); line-height: 1.55; margin-bottom: 8px; }
   .pat .use { font-size: 11.5px; color: var(--green); font-weight: 500; }
+  /* 12-pattern visual overview */
+  .arch-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; max-width: var(--read-w); margin-bottom: 26px; }
+  @media (max-width: 720px) { .arch-grid { grid-template-columns: repeat(2, 1fr); } }
+  .arch-tile { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 12px 12px 10px; }
+  .arch-tile svg { width: 100%; height: auto; display: block; margin-bottom: 8px; }
+  .arch-tile .an { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--text-muted); display: block; }
+  .arch-tile .at { font-size: 12.5px; font-weight: 700; letter-spacing: -0.2px; line-height: 1.2; }
+  .arch-tile .ln { stroke: var(--sky); stroke-width: 1.6; fill: none; }
+  .arch-tile .mut { stroke: var(--text-muted); stroke-width: 1.4; fill: none; }
+  .arch-tile .bx { stroke: var(--blue-glow); stroke-width: 1.5; fill: rgba(56,189,248,0.10); }
+  .arch-tile .hx { stroke: var(--blue-glow); stroke-width: 1.5; fill: rgba(37,99,235,0.12); }
+  .arch-tile .dot { fill: var(--sky); }
+  .arch-tile .ac { fill: var(--sky); }
   .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: var(--read-w); margin-bottom: 20px; }
   .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
   .compare th, .compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
@@ -270,6 +283,57 @@
       <div class="section-label">03 &middot; The catalogue</div>
       <h2 class="section-title">Twelve patterns worth knowing by name.</h2>
       <p class="section-lede">A pattern is a named, reusable shape with a known set of trade-offs. Knowing them by name is leverage: it turns a vague debate into "we're choosing between a modular monolith and event-driven services, and here's why." None is universally right &mdash; each is the answer to a specific pressure.</p>
+    </div>
+
+    <div class="arch-grid fade-up" style="transition-delay: 0.03s">
+      <div class="arch-tile">
+        <svg viewBox="0 0 120 56" aria-hidden="true"><rect class="bx" x="40" y="12" width="40" height="32" rx="4"/></svg>
+        <span class="an">01 &middot; structure</span><span class="at">Monolith</span>
+      </div>
+      <div class="arch-tile">
+        <svg viewBox="0 0 120 56" aria-hidden="true"><rect class="bx" x="34" y="12" width="52" height="32" rx="4"/><line class="ln" x1="51" y1="12" x2="51" y2="44"/><line class="ln" x1="68" y1="12" x2="68" y2="44"/></svg>
+        <span class="an">02 &middot; structure</span><span class="at">Modular monolith</span>
+      </div>
+      <div class="arch-tile">
+        <svg viewBox="0 0 120 56" aria-hidden="true"><rect class="bx" x="18" y="18" width="20" height="20" rx="3"/><rect class="bx" x="50" y="18" width="20" height="20" rx="3"/><rect class="bx" x="82" y="18" width="20" height="20" rx="3"/></svg>
+        <span class="an">03 &middot; structure</span><span class="at">Microservices</span>
+      </div>
+      <div class="arch-tile">
+        <svg viewBox="0 0 120 56" aria-hidden="true"><rect class="bx" x="6" y="20" width="22" height="16" rx="3"/><line class="ln" x1="28" y1="28" x2="49" y2="28"/><circle class="hx" cx="61" cy="28" r="11"/><line class="ln" x1="72" y1="23" x2="90" y2="15"/><line class="ln" x1="72" y1="33" x2="90" y2="41"/><rect class="bx" x="90" y="8" width="22" height="15" rx="3"/><rect class="bx" x="90" y="33" width="22" height="15" rx="3"/></svg>
+        <span class="an">04 &middot; messaging</span><span class="at">Event-driven</span>
+      </div>
+      <div class="arch-tile">
+        <svg viewBox="0 0 120 56" aria-hidden="true"><rect class="bx" x="18" y="14" width="32" height="28" rx="4"/><rect class="bx" x="70" y="14" width="32" height="28" rx="4"/><line class="mut" x1="50" y1="28" x2="70" y2="28" stroke-dasharray="2 2"/><text class="ac" x="34" y="32" text-anchor="middle" font-size="12" font-family="JetBrains Mono">W</text><text class="ac" x="86" y="32" text-anchor="middle" font-size="12" font-family="JetBrains Mono">R</text></svg>
+        <span class="an">05 &middot; data</span><span class="at">CQRS</span>
+      </div>
+      <div class="arch-tile">
+        <svg viewBox="0 0 120 56" aria-hidden="true"><rect class="bx" x="30" y="9" width="60" height="7" rx="2"/><rect class="bx" x="30" y="20" width="60" height="7" rx="2"/><rect class="bx" x="30" y="31" width="60" height="7" rx="2"/><rect class="bx" x="30" y="42" width="60" height="7" rx="2"/></svg>
+        <span class="an">06 &middot; data</span><span class="at">Event sourcing</span>
+      </div>
+      <div class="arch-tile">
+        <svg viewBox="0 0 120 56" aria-hidden="true"><polygon class="hx" points="60,8 78,18 78,38 60,48 42,38 42,18"/></svg>
+        <span class="an">07 &middot; structure</span><span class="at">Hexagonal</span>
+      </div>
+      <div class="arch-tile">
+        <svg viewBox="0 0 120 56" aria-hidden="true"><rect class="bx" x="30" y="11" width="60" height="9" rx="2"/><rect class="bx" x="30" y="24" width="60" height="9" rx="2"/><rect class="bx" x="30" y="37" width="60" height="9" rx="2"/></svg>
+        <span class="an">08 &middot; structure</span><span class="at">Layered</span>
+      </div>
+      <div class="arch-tile">
+        <svg viewBox="0 0 120 56" aria-hidden="true"><rect class="mut" x="40" y="11" width="40" height="34" rx="4" stroke-dasharray="3 3"/><text class="ac" x="60" y="37" text-anchor="middle" font-size="24" font-family="JetBrains Mono">&#955;</text></svg>
+        <span class="an">09 &middot; compute</span><span class="at">Serverless</span>
+      </div>
+      <div class="arch-tile">
+        <svg viewBox="0 0 120 56" aria-hidden="true"><line class="ln" x1="60" y1="28" x2="30" y2="13"/><line class="ln" x1="60" y1="28" x2="90" y2="13"/><line class="ln" x1="60" y1="28" x2="24" y2="42"/><line class="ln" x1="60" y1="28" x2="96" y2="42"/><line class="ln" x1="60" y1="28" x2="60" y2="50"/><circle class="dot" cx="60" cy="28" r="5"/><circle class="dot" cx="30" cy="13" r="3.2"/><circle class="dot" cx="90" cy="13" r="3.2"/><circle class="dot" cx="24" cy="42" r="3.2"/><circle class="dot" cx="96" cy="42" r="3.2"/><circle class="dot" cx="60" cy="50" r="3.2"/></svg>
+        <span class="an">10 &middot; compute</span><span class="at">Edge-first</span>
+      </div>
+      <div class="arch-tile">
+        <svg viewBox="0 0 120 56" aria-hidden="true"><rect class="mut" x="16" y="14" width="40" height="30" rx="4" stroke-dasharray="3 3" opacity="0.6"/><line class="ln" x1="60" y1="29" x2="74" y2="29"/><path class="ln" d="M70 25 L75 29 L70 33"/><rect class="bx" x="78" y="18" width="26" height="22" rx="3"/></svg>
+        <span class="an">11 &middot; migration</span><span class="at">Strangler fig</span>
+      </div>
+      <div class="arch-tile">
+        <svg viewBox="0 0 120 56" aria-hidden="true"><circle class="dot" cx="40" cy="12" r="4"/><circle class="dot" cx="80" cy="12" r="4"/><line class="ln" x1="40" y1="16" x2="40" y2="26"/><line class="ln" x1="80" y1="16" x2="80" y2="26"/><rect class="bx" x="26" y="26" width="28" height="18" rx="3"/><rect class="bx" x="66" y="26" width="28" height="18" rx="3"/></svg>
+        <span class="an">12 &middot; integration</span><span class="at">BFF + Saga</span>
+      </div>
     </div>
 
     <div class="pat-grid fade-up" style="transition-delay: 0.05s">
