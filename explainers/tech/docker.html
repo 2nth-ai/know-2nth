@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Docker &mdash; know.2nth.ai</title>
+<meta name="description" content="Docker and containers, explained for builders. What a container actually is, images vs containers, the Dockerfile workflow, containers vs VMs, the OCI ecosystem (Engine, Desktop, Hub, Compose, containerd, Podman), how it relates to Kubernetes and managed runtimes, the Docker Desktop licensing gotcha, a decision guide, and SA delivery context.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/tech/docker">
+<meta property="og:title" content="Docker &mdash; know.2nth.ai">
+<meta property="og:description" content="Docker and containers for builders — images vs containers, the Dockerfile workflow, containers vs VMs, the OCI ecosystem, Kubernetes, the Desktop licensing gotcha, and when to use it.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Docker &mdash; know.2nth.ai">
+<meta name="twitter:description" content="Docker and containers for builders — images vs containers, the Dockerfile workflow, containers vs VMs, the OCI ecosystem, Kubernetes, and when to use it.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3Cline x1='16' y1='3' x2='16' y2='7' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='16' y1='25' x2='16' y2='29' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='3' y1='16' x2='7' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='25' y1='16' x2='29' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3C/svg%3E">
+<style>
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12); --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-soft: rgba(99, 102, 241, 0.12); --bg: var(--ink); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(37, 99, 235, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(56, 189, 248, 0.3); --max-w: 1200px; --read-w: 760px; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(37, 99, 235, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(37, 99, 235, 0.25); }
+  * { margin: 0; padding: 0; box-sizing: border-box; } html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.blue { width: 600px; height: 600px; background: var(--blue); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--sky); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--sky); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--sky); } .crumb-sep { opacity: 0.5; } .crumb-current { color: var(--text-secondary); }
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--blue-glow); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--blue-glow); box-shadow: 0 0 12px var(--blue-glow); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 15ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--blue-glow), var(--sky), var(--sky-muted)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.accent { background: rgba(37, 99, 235, 0.12); color: var(--blue-glow); border-color: rgba(37, 99, 235, 0.25); }
+  .pill.green { background: var(--green-soft); color: var(--green); border-color: rgba(16, 185, 129, 0.25); }
+  .pill.indigo { background: var(--indigo-soft); color: var(--indigo); border-color: rgba(99, 102, 241, 0.25); }
+  .pill.warn { background: var(--warm-soft); color: var(--warm-glow); border-color: rgba(245, 158, 11, 0.25); }
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--sky); margin-bottom: 14px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--sky); }
+  .prose ul, .prose ol { padding-left: 24px; margin-bottom: 18px; max-width: var(--read-w); }
+  .prose li { font-size: 15px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 8px; }
+  .prose li strong { color: var(--text-primary); font-weight: 600; }
+  pre.code { background: var(--ink-deep); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px 22px; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.65; color: var(--mist); margin: 0 0 20px; max-width: var(--read-w); }
+  [data-theme="light"] pre.code { background: #0F172A; color: #E2E8F0; }
+  pre.code .k { color: var(--sky); } pre.code .s { color: #A5F3B8; } pre.code .c { color: var(--text-muted); font-style: italic; } pre.code .h { color: var(--blue-glow); font-weight: 600; }
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); margin-bottom: 20px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.indigo { border-left: 3px solid var(--indigo); }
+  .info-card.rose { border-left: 3px solid var(--rose); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .info-card ul { padding-left: 20px; margin: 0; }
+  .info-card li { font-size: 14px; color: var(--text-secondary); line-height: 1.65; margin-bottom: 6px; }
+  .info-card li strong { color: var(--text-primary); }
+  .stack-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; max-width: var(--read-w); margin-bottom: 20px; }
+  .stack-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--blue); border-radius: var(--radius-md); padding: 18px 22px; }
+  .stack-cell .layer { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .stack-cell h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.3px; }
+  .stack-cell p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: var(--read-w); margin-bottom: 20px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--sky); background: rgba(37, 99, 235, 0.04); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); } .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--sky); }
+  .compare td strong { color: var(--text-primary); }
+  .decision-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: var(--read-w); }
+  @media (max-width: 720px) { .decision-grid { grid-template-columns: 1fr; } }
+  .decision-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 24px; }
+  .decision-card.use { border-left: 3px solid var(--green); } .decision-card.skip { border-left: 3px solid var(--rose); }
+  .decision-card h4 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 12px; }
+  .decision-card.use h4 { color: var(--green); } .decision-card.skip h4 { color: var(--rose); }
+  .decision-card ul { list-style: none; padding: 0; }
+  .decision-card li { font-size: 13px; color: var(--text-secondary); line-height: 1.6; padding: 6px 0; border-bottom: 1px solid var(--border); }
+  .decision-card li:last-child { border-bottom: none; }
+  .connect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .connect-node { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; transition: all 0.3s; text-decoration: none; color: inherit; display: block; }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node.soon { cursor: default; opacity: 0.72; }
+  .connect-node .tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--sky); word-break: break-all; }
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--sky); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } pre.code { font-size: 11px; padding: 14px 16px; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+
+<div class="glow-orb blue"></div>
+<div class="glow-orb sky"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand"><span class="nav-brand-mark">know.2nth.ai</span><span class="nav-brand-sub">tech/docker</span></a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">&larr; Tech</a>
+      <a href="../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x2600;&#xFE0F;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="./">Tech</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">Docker</span>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> tech &middot; Docker &amp; Containers &middot; Skill Leaf</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      Build once. <span class="gradient">Run the same everywhere.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      Docker kills the oldest excuse in software: <em>"it works on my machine."</em> It packages an application together with everything it needs to run &mdash; the code, the runtime, the libraries, the settings &mdash; into one portable <strong>container</strong> that behaves identically on a laptop, a colleague's machine, a test server, and production. It's lightweight (it shares the host's kernel, unlike a virtual machine), fast to start, and built on open standards. This is what a container actually is, how the workflow works, where it fits next to Kubernetes and managed clouds, and when it's the wrong tool.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill accent">Containers</span>
+      <span class="pill green">Engine: Apache-2.0</span>
+      <span class="pill indigo">OCI standard</span>
+      <span class="pill">Dockerfile &middot; Compose</span>
+      <span class="pill warn">Desktop: licensed</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 WHAT IT IS -->
+<section id="what">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; What it is</div>
+      <h2 class="section-title">A container is your app, sealed with its world.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Software almost never runs in isolation. An app needs a specific language version, particular libraries, environment variables, system packages, and a dozen other assumptions about the machine it sits on. When any of those differ between your laptop and the server, things break &mdash; the legendary "works on my machine" failure. A <strong>container</strong> solves this by bundling the app <em>and</em> all of those dependencies into a single, self-contained unit that carries its world with it.</p>
+      <p>Docker, released in 2013, is the tool that made containers mainstream. The core insight isn't new &mdash; Linux had the underlying primitives (<code>namespaces</code> for isolation, <code>cgroups</code> for resource limits) for years &mdash; but Docker wrapped them in a workflow so simple that containers went from a kernel-hacker curiosity to the default way modern software is packaged and shipped.</p>
+      <p>The crucial distinction from a virtual machine: a container <strong>shares the host's operating-system kernel</strong> rather than booting a whole second OS. That makes it dramatically lighter &mdash; megabytes not gigabytes, starting in milliseconds not minutes &mdash; while still keeping each app isolated from the others. You can run dozens of containers on one modest server where you'd fit only a handful of VMs.</p>
+    </div>
+    <div class="info-card indigo fade-up" style="transition-delay: 0.08s">
+      <h4>The one-sentence version for a stakeholder</h4>
+      <p>Docker is shipping containers for software: a standard box you pack your application into once, that any compatible machine &mdash; anywhere &mdash; can pick up and run exactly as you built it. The standardisation is the whole value: the box is the same shape no matter what's inside or where it lands.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 HOW IT WORKS -->
+<section id="how">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; How it works</div>
+      <h2 class="section-title">Image, container, registry &mdash; three words carry it.</h2>
+      <p class="section-lede">An <strong>image</strong> is the blueprint &mdash; a read-only, layered snapshot of your app and its dependencies. A <strong>container</strong> is a running instance of an image. A <strong>registry</strong> (like Docker Hub) is where images are stored and shared. You write a <code>Dockerfile</code> describing how to build the image, and three commands cover most of daily life.</p>
+    </div>
+
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>A <code>Dockerfile</code> is a plain recipe. Each line is a step, and each step becomes a cached <strong>layer</strong> &mdash; so rebuilds only redo what changed:</p>
+    </div>
+
+    <pre class="code fade-up" style="transition-delay: 0.07s"><span class="c"># Start from a small official base image</span>
+<span class="h">FROM</span> node:22-alpine
+<span class="h">WORKDIR</span> /app
+
+<span class="c"># Install dependencies first (cached unless package.json changes)</span>
+<span class="h">COPY</span> package*.json ./
+<span class="h">RUN</span> npm ci --omit=dev
+
+<span class="c"># Then copy the rest of the source</span>
+<span class="h">COPY</span> . .
+<span class="h">EXPOSE</span> 3000
+<span class="h">CMD</span> [<span class="s">"node"</span>, <span class="s">"server.js"</span>]</pre>
+
+    <div class="prose fade-up" style="transition-delay: 0.1s">
+      <p>Build it into an image, run it as a container, push it to a registry so others (or a server) can pull it:</p>
+    </div>
+
+    <pre class="code fade-up" style="transition-delay: 0.12s"><span class="c"># Build an image and tag it</span>
+docker build -t myapp:1.0 .
+
+<span class="c"># Run a container, mapping a host port to the container port</span>
+docker run -p 3000:3000 myapp:1.0
+
+<span class="c"># Share it via a registry</span>
+docker push registry.example.com/myapp:1.0</pre>
+
+    <div class="prose fade-up" style="transition-delay: 0.14s">
+      <p>Real apps are rarely one container &mdash; you've got a web app, a database, maybe a cache. <strong>Docker Compose</strong> describes the whole set in one <code>compose.yaml</code> and brings it all up with a single command:</p>
+    </div>
+
+    <pre class="code fade-up" style="transition-delay: 0.16s"><span class="c"># compose.yaml &mdash; the whole stack, one file</span>
+<span class="k">services</span>:
+  <span class="k">web</span>:
+    <span class="k">build</span>: .
+    <span class="k">ports</span>: [<span class="s">"3000:3000"</span>]
+    <span class="k">depends_on</span>: [db]
+  <span class="k">db</span>:
+    <span class="k">image</span>: postgres:17
+    <span class="k">environment</span>:
+      <span class="k">POSTGRES_PASSWORD</span>: secret
+
+<span class="c"># bring the whole stack up:  docker compose up</span></pre>
+
+    <div class="info-card green fade-up" style="transition-delay: 0.18s">
+      <h4>Why layers matter (the productivity win)</h4>
+      <p>Because each <code>Dockerfile</code> step is a cached layer, changing one line of source code doesn't reinstall every dependency &mdash; only the layers after the change rebuild. Order your <code>Dockerfile</code> from least-changing (base image, dependencies) to most-changing (your source) and builds drop from minutes to seconds. Getting that ordering right is the single highest-leverage Docker skill.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 VS VMs -->
+<section id="vs">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; Containers vs VMs</div>
+      <h2 class="section-title">Same goal, very different weight.</h2>
+      <p class="section-lede">Virtual machines and containers both isolate workloads &mdash; but a VM virtualises the hardware and boots a full OS, while a container virtualises the operating system and shares the host kernel. That difference drives everything: size, speed, density, and the isolation trade-off.</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead><tr><th>Dimension</th><th>Container (Docker)</th><th>Virtual machine</th></tr></thead>
+        <tbody>
+          <tr><td><strong>What's virtualised</strong></td><td>The OS &mdash; shares the host kernel</td><td>The hardware &mdash; full guest OS each</td></tr>
+          <tr><td><strong>Size</strong></td><td>Megabytes</td><td>Gigabytes</td></tr>
+          <tr><td><strong>Start time</strong></td><td>Milliseconds to seconds</td><td>Tens of seconds to minutes</td></tr>
+          <tr><td><strong>Density</strong></td><td>Dozens per host</td><td>A handful per host</td></tr>
+          <tr><td><strong>Isolation</strong></td><td>Strong, but shares the kernel</td><td>Strongest &mdash; full hardware boundary</td></tr>
+          <tr><td><strong>Best for</strong></td><td>Packaging &amp; shipping apps, microservices, CI</td><td>Running different OSes, hard multi-tenant isolation</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.08s">
+      <h4>They're not rivals &mdash; they stack</h4>
+      <p>In practice you usually run <strong>containers inside VMs</strong>. A cloud gives you a VM (the strong hardware-level boundary, often for multi-tenant security); you run many containers on it (the packaging and density win). "Containers vs VMs" is rarely a real either/or &mdash; the question is how many of each, and where the isolation boundary needs to be.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 ECOSYSTEM -->
+<section id="ecosystem">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; The ecosystem</div>
+      <h2 class="section-title">Docker the product, OCI the standard.</h2>
+      <p class="section-lede">"Docker" is a company, a CLI, a daemon, a desktop app, and a registry &mdash; and underneath it all is an open standard (OCI) that means images and runtimes aren't locked to Docker the vendor. Knowing which piece is which keeps you out of the licensing and lock-in traps.</p>
+    </div>
+
+    <div class="stack-grid fade-up" style="transition-delay: 0.05s">
+      <div class="stack-cell">
+        <span class="layer">Engine &middot; open source</span>
+        <h4>Docker Engine</h4>
+        <p>The core runtime + CLI that builds and runs containers. Apache-2.0 licensed, free, Linux-native. The part that actually does the work.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">GUI &middot; licensed</span>
+        <h4>Docker Desktop</h4>
+        <p>The Mac/Windows app that runs Engine in a tidy VM with a UI. Free for personal / small use; a paid subscription for larger organisations.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Registry</span>
+        <h4>Docker Hub</h4>
+        <p>The default public registry of images. Official bases (node, postgres, nginx) live here. Private registries (GHCR, ECR, Artifact Registry) are common too.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Multi-container</span>
+        <h4>Compose &amp; BuildKit</h4>
+        <p>Compose runs a multi-service stack from one file; BuildKit is the fast, modern build engine. Both ship with current Docker.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Standard</span>
+        <h4>OCI &amp; containerd</h4>
+        <p>The Open Container Initiative standardises the image and runtime formats. <code>containerd</code> is the runtime underneath Docker &mdash; and under much of the cloud.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Alternatives</span>
+        <h4>Podman &amp; nerdctl</h4>
+        <p>Daemonless, largely drop-in CLIs that build and run the same OCI images &mdash; no Docker Desktop licence required. Common in security-conscious shops.</p>
+      </div>
+    </div>
+
+    <div class="info-card rose fade-up" style="transition-delay: 0.08s">
+      <h4>The licensing gotcha worth knowing</h4>
+      <p><strong>Docker Engine is free and open source; Docker <em>Desktop</em> is not, for larger organisations.</strong> Since 2021, Docker Desktop requires a paid subscription for companies above Docker's size threshold (currently &gt;250 employees or &gt;$10M annual revenue). The images and the Engine stay free &mdash; it's specifically the Desktop app that's licensed. Teams that hit the threshold either buy the subscription or switch to a free alternative (Podman, Rancher Desktop, plain Engine on Linux). Worth checking before a finance surprise lands.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 ORCHESTRATION -->
+<section id="orchestration">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; Where it fits</div>
+      <h2 class="section-title">Docker builds it. Something else runs it at scale.</h2>
+      <p class="section-lede">Docker is brilliant at building an image and running a few containers on one machine. Running hundreds of containers across many machines &mdash; with health checks, auto-restart, rolling updates and scaling &mdash; is a different job called <strong>orchestration</strong>. The image Docker produces is the unit that every orchestrator and managed platform consumes.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <ul>
+        <li><strong>Kubernetes</strong> &mdash; the dominant orchestrator. You hand it your OCI images; it schedules, scales and heals them across a cluster. Docker builds the image; Kubernetes runs the fleet. (Kubernetes dropped Docker as its internal runtime years ago in favour of <code>containerd</code> &mdash; your images are unaffected, because they're OCI-standard.)</li>
+        <li><strong>Managed container services</strong> &mdash; AWS ECS / Fargate, Google Cloud Run, Azure Container Apps. You push an image; the platform runs it without you managing servers. The sweet spot for most teams that don't need full Kubernetes.</li>
+        <li><strong>Cloudflare Containers</strong> &mdash; run container images at the edge alongside Workers. Note the contrast: Cloudflare <em>Workers</em> are not containers (they're lightweight V8 isolates); Cloudflare <em>Containers</em> are for heavier workloads that need a full container.</li>
+      </ul>
+    </div>
+    <div class="info-card indigo fade-up" style="transition-delay: 0.08s">
+      <h4>The honest progression</h4>
+      <p>Most teams should resist jumping to Kubernetes. The healthy path: <strong>Docker locally &rarr; Compose for the dev stack &rarr; a managed service (Cloud Run / Fargate) for production</strong>. Reach for Kubernetes only when you genuinely have the scale, the multi-team org, and the platform expertise to justify its considerable complexity. The container image you built on day one carries through every step without change &mdash; that portability is the point.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 DECISION -->
+<section id="decision">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; Decision guide</div>
+      <h2 class="section-title">Reach for Docker when. Skip it when.</h2>
+      <p class="section-lede">Containers are close to a default for server software in 2026 &mdash; but they're not free of cost, and some workloads are better served without them.</p>
+    </div>
+    <div class="decision-grid fade-up" style="transition-delay: 0.05s">
+      <div class="decision-card use">
+        <h4>Reach for Docker when</h4>
+        <ul>
+          <li>"Works on my machine" keeps biting you</li>
+          <li>You want identical dev, test and production environments</li>
+          <li>You're running services (APIs, web apps, databases) on a server</li>
+          <li>You need reproducible builds in CI/CD</li>
+          <li>You're deploying microservices or to Kubernetes / a PaaS</li>
+          <li>Onboarding a developer should be one command, not a day</li>
+        </ul>
+      </div>
+      <div class="decision-card skip">
+        <h4>Skip or defer when</h4>
+        <ul>
+          <li>It's a static site &mdash; a CDN or Pages is simpler</li>
+          <li>Your target is Cloudflare Workers / edge isolates (different model)</li>
+          <li>A tiny script or one-off where the setup outweighs the gain</li>
+          <li>Hard multi-tenant isolation is required &mdash; reach for VMs</li>
+          <li>The team has zero container experience and a one-week deadline</li>
+          <li>A fully managed serverless runtime already fits the workload</li>
+        </ul>
+      </div>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.08s">
+      <h4>Pin your bases, mind your image size</h4>
+      <p>Two habits separate smooth Docker shops from painful ones. <strong>Pin base-image versions</strong> (<code>node:22-alpine</code>, not <code>node:latest</code>) so a rebuild next month produces the same thing. And <strong>keep images small</strong> &mdash; start from <code>-alpine</code> or <code>-slim</code> bases and use multi-stage builds to leave build tools out of the final image. A bloated, floating-tag image is a slow deploy and a future surprise.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 07 SA CONTEXT -->
+<section id="sa-context">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; South African context</div>
+      <h2 class="section-title">Reproducibility as resilience.</h2>
+      <p class="section-lede">Docker's value lands hard in SA delivery conditions: patchy connectivity, load-shedding, lean teams, and FX-priced cloud all reward an artefact you can rebuild identically and run anywhere.</p>
+    </div>
+    <div class="info-card indigo fade-up" style="transition-delay: 0.05s">
+      <h4>Resilience &middot; rebuild anywhere, identically</h4>
+      <p>When a machine dies mid-load-shedding or a developer's laptop is swapped, a container image means the environment comes back <strong>exactly</strong> as it was &mdash; no day-long "set up the dev box" ritual reconstructed from memory. The image is the source of truth for the runtime, and it lives in a registry you can pull from the moment power and connectivity return.</p>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.07s">
+      <h4>Cost &middot; density on cheap infrastructure</h4>
+      <p>Containers pack many services onto one modest VM, which matters when every cloud rand is FX-exposed. A small Hetzner or local-provider box running several containers often does the work of multiple pricier managed services. And because images are portable, you keep the freedom to move between providers &mdash; or to <code>af-south-1</code> for residency &mdash; without re-architecting.</p>
+    </div>
+    <div class="info-card green fade-up" style="transition-delay: 0.09s">
+      <h4>Teams &middot; one command to onboard</h4>
+      <p>For small SA studios and lean in-house teams, <code>docker compose up</code> turning a new hire's first day into a single command &mdash; database, cache, app, all running &mdash; is a real productivity multiplier. It also makes handovers between a studio and a client's internal team clean: the environment ships as code, not as tribal knowledge.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 08 CONNECTIONS -->
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 &middot; Connections</div>
+      <h2 class="section-title">Where Docker links in the tree.</h2>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="runtime/" class="connect-node">
+        <span class="tag">tech/runtime</span>
+        <div class="skill">Runtime</div>
+        <div class="why">Node, Bun and Deno are exactly what runs <em>inside</em> your containers. The base image you pick (<code>node:22-alpine</code>) is a runtime decision.</div>
+      </a>
+      <a href="aws.html" class="connect-node">
+        <span class="tag">tech/aws</span>
+        <div class="skill">AWS</div>
+        <div class="why">ECS and Fargate run your container images without managing servers &mdash; the common production target once an image exists.</div>
+      </a>
+      <a href="architecture.html" class="connect-node">
+        <span class="tag">tech/architecture</span>
+        <div class="skill">Architecture</div>
+        <div class="why">Containers are what make microservices and clean modular deploys practical. The packaging unit behind several patterns in the catalogue.</div>
+      </a>
+      <a href="own-your-stack.html" class="connect-node">
+        <span class="tag">tech/own-your-stack</span>
+        <div class="skill">Own Your Stack</div>
+        <div class="why">A container image plus a Dockerfile in Git is reproducible, owned infrastructure &mdash; the runtime you control, not a vendor black box.</div>
+      </a>
+      <a href="cloudflare/workers.html" class="connect-node">
+        <span class="tag">tech/cloudflare/workers</span>
+        <div class="skill">Cloudflare Workers</div>
+        <div class="why">The contrast worth understanding: Workers are V8 isolates, not containers. Cloudflare Containers cover the heavier, full-container case.</div>
+      </a>
+      <a href="frappe/framework.html" class="connect-node">
+        <span class="tag">tech/frappe/framework</span>
+        <div class="skill">Frappe Framework</div>
+        <div class="why">ERPNext / Frappe are commonly deployed via Docker (the official <code>frappe_docker</code> setup) &mdash; a real-world multi-container stack.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 09 RESOURCES -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">09 &middot; Resources</div>
+      <h2 class="section-title">Primary sources.</h2>
+      <p class="section-lede">Official Docker documentation, the Dockerfile and Compose references, and the OCI standard. Docker Desktop licensing terms change &mdash; confirm the current thresholds on Docker's pricing page before assuming. Last reviewed 2026-06-18.</p>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://docs.docker.com" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs</span>
+        <span class="r-title">Docker Documentation</span>
+        <span class="r-url">docs.docker.com</span>
+      </a>
+      <a href="https://docs.docker.com/reference/dockerfile/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Reference</span>
+        <span class="r-title">Dockerfile reference</span>
+        <span class="r-url">docs.docker.com/reference/dockerfile</span>
+      </a>
+      <a href="https://docs.docker.com/compose/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Tool</span>
+        <span class="r-title">Docker Compose</span>
+        <span class="r-url">docs.docker.com/compose</span>
+      </a>
+      <a href="https://hub.docker.com" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Registry</span>
+        <span class="r-title">Docker Hub</span>
+        <span class="r-url">hub.docker.com</span>
+      </a>
+      <a href="https://opencontainers.org" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Standard</span>
+        <span class="r-title">Open Container Initiative (OCI)</span>
+        <span class="r-url">opencontainers.org</span>
+      </a>
+      <a href="https://www.docker.com/pricing/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Licensing</span>
+        <span class="r-title">Docker pricing &amp; Desktop terms</span>
+        <span class="r-url">docker.com/pricing</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../index.html">Knowledge tree</a>
+      <a href="./">Tech hub</a>
+      <a href="https://docs.docker.com" target="_blank" rel="noopener">Docker docs &nearr;</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in Johannesburg, South Africa</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme(){const html=document.documentElement;const current=html.getAttribute('data-theme');const next=current==='dark'?'light':'dark';html.setAttribute('data-theme',next);document.querySelector('.theme-toggle').textContent=next==='dark'?'☀️':'🌙';localStorage.setItem('theme',next);}
+  const saved=localStorage.getItem('theme');if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.theme-toggle').textContent=saved==='dark'?'☀️':'🌙';}
+  const observer=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting)entry.target.classList.add('visible');});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>
