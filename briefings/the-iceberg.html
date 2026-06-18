@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Iceberg &mdash; Front Office, Back Office, and What Runs Your Business</title>
+<meta name="description" content="The mental model behind the know.2nth.ai CEO briefings: the front office is the tip your customers see (website, Shopify, portal); the back office is the larger mass below the waterline — ERP, Git, SharePoint, files, and where suppliers, finance and HR actually live. Where cost, risk and your IP really sit.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/briefings/the-iceberg">
+<meta property="og:title" content="The Iceberg — Front Office, Back Office, and What Runs Your Business">
+<meta property="og:description" content="Front office = the tip your customers see (website, Shopify, portal). Back office = the larger mass below — ERP, Git, files, suppliers, finance, HR. Where cost, risk and IP really sit.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai — The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Iceberg — Front Office & Back Office">
+<meta name="twitter:description" content="Front office = the tip customers see. Back office = the mass below: ERP, Git, files, suppliers, finance, HR. Where cost, risk and IP really sit.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%2338BDF8' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%232563EB' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --ink: #0B1120; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6;
+    --sky: #38BDF8; --cyan: #22D3EE; --paper: #F8FAFC; --slate: #94A3B8;
+    --warm: #F59E0B; --warm-soft: rgba(245,158,11,0.12);
+    --green: #10B981; --green-soft: rgba(16,185,129,0.12);
+    --rose: #F43F5E; --rose-soft: rgba(244,63,94,0.12);
+    --indigo: #6366F1; --indigo-soft: rgba(99,102,241,0.12);
+    --max-w: 1080px; --read-w: 820px;
+    --radius-md: 14px; --radius-lg: 22px; --radius-pill: 100px;
+    --bg: #EEF4FB; --bg-soft: #E2ECF6; --card: #FFFFFF; --card-2: #F8FBFE;
+    --text: #0B1120; --text-2: #475569; --text-3: #8A97AB;
+    --border: rgba(15,23,42,0.10); --border-strong: rgba(15,23,42,0.16);
+    --shadow: 0 14px 40px rgba(15,23,42,0.08);
+  }
+  [data-theme="dark"] {
+    --bg: #07101D; --bg-soft: #0B1828; --card: #102033; --card-2: #0C1828;
+    --text: #F8FAFC; --text-2: #B6C2D6; --text-3: #6B7A92;
+    --border: rgba(148,163,184,0.14); --border-strong: rgba(148,163,184,0.24);
+    --shadow: 0 16px 48px rgba(0,0,0,0.5);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+    background: radial-gradient(1100px 560px at 80% -120px, var(--bg-soft), var(--bg)) fixed;
+    color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  }
+  .wrap { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+
+  .topbar { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(14px);
+    background: color-mix(in srgb, var(--bg) 80%, transparent); border-bottom: 1px solid var(--border); }
+  .topbar-inner { max-width: var(--max-w); margin: 0 auto; padding: 12px 24px;
+    display: flex; align-items: center; justify-content: space-between; }
+  .brand { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 14px;
+    background: linear-gradient(135deg, var(--blue), var(--sky));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .brand-sub { font-size: 11px; color: var(--text-3); letter-spacing: 1.5px; text-transform: uppercase;
+    margin-left: 10px; padding-left: 10px; border-left: 1px solid var(--border); font-weight: 500; }
+  .toggle { background: none; border: 1px solid var(--border); color: var(--text-2);
+    width: 34px; height: 34px; border-radius: 50%; cursor: pointer; display: grid; place-items: center;
+    font-size: 15px; transition: all 0.2s; }
+  .toggle:hover { border-color: var(--border-strong); }
+
+  .hero { padding: 60px 0 12px; }
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500;
+    letter-spacing: 2.5px; text-transform: uppercase; color: var(--blue);
+    display: inline-flex; align-items: center; gap: 10px; margin-bottom: 22px; }
+  .eyebrow .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--sky); box-shadow: 0 0 12px var(--sky); }
+  .hero h1 { font-size: clamp(36px, 6vw, 60px); font-weight: 800; line-height: 1.05;
+    letter-spacing: -1.8px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .hl { background: linear-gradient(135deg, var(--blue-glow), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .lede { font-size: 19px; color: var(--text-2); max-width: 700px; line-height: 1.6; font-weight: 300; }
+
+  /* iceberg figure */
+  .berg { max-width: 880px; margin: 8px auto 0; }
+  .berg svg { width: 100%; height: auto; display: block; }
+  .berg .t-fo { font-family: 'Outfit', sans-serif; font-weight: 800; }
+  .berg .t-bo { font-family: 'Outfit', sans-serif; font-weight: 800; }
+  .berg .lab-primary { fill: var(--text); }
+  .berg .lab-secondary { fill: var(--text-2); }
+  .berg .lab-onice { fill: #0B2540; }
+  .berg .mono { font-family: 'JetBrains Mono', monospace; }
+  .berg-caption { text-align: center; font-size: 13px; color: var(--text-3); margin-top: 10px; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.4px; }
+
+  section { padding: 44px 0; }
+  .s-num { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--sky); font-weight: 600; margin-bottom: 12px; }
+  .s-title { font-size: clamp(26px, 4vw, 36px); font-weight: 700; letter-spacing: -0.8px; line-height: 1.15; margin-bottom: 16px; max-width: 22ch; }
+  .s-lede { font-size: 17px; color: var(--text-2); max-width: var(--read-w); line-height: 1.65; font-weight: 300; margin-bottom: 30px; }
+
+  /* two definitions */
+  .defs { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 720px){ .defs { grid-template-columns: 1fr; } }
+  .def { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 30px; box-shadow: var(--shadow); }
+  .def.front { border-top: 4px solid var(--sky); }
+  .def.back { border-top: 4px solid var(--blue); }
+  .def .dt { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; font-weight: 600; margin-bottom: 6px; }
+  .def.front .dt { color: var(--sky); } .def.back .dt { color: var(--blue); }
+  .def h3 { font-size: 22px; font-weight: 800; letter-spacing: -0.4px; margin-bottom: 6px; }
+  .def .sub { font-size: 14px; color: var(--text-3); margin-bottom: 16px; }
+  .def ul { list-style: none; padding: 0; }
+  .def li { font-size: 14px; color: var(--text-2); line-height: 1.5; padding: 8px 0; border-bottom: 1px solid var(--border); display: flex; gap: 10px; }
+  .def li:last-child { border-bottom: none; }
+  .def li .ic { flex-shrink: 0; }
+
+  .callout { background: var(--card-2); border: 1px solid var(--border); border-left: 4px solid var(--blue); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); box-shadow: var(--shadow); }
+  .callout.sky { border-left-color: var(--sky); }
+  .callout h4 { font-size: 19px; font-weight: 700; margin-bottom: 10px; }
+  .callout p { font-size: 15.5px; color: var(--text-2); line-height: 1.7; }
+  .callout p strong { color: var(--text); }
+  .callout p + p { margin-top: 12px; }
+
+  /* thread cards */
+  .thread { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+  @media (max-width: 820px){ .thread { grid-template-columns: 1fr; } }
+  .tcard { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px 26px; box-shadow: var(--shadow); text-decoration: none; color: inherit; display: block; transition: transform .25s, border-color .25s; border-top: 4px solid var(--sky); }
+  .tcard:hover { transform: translateY(-3px); border-color: var(--border-strong); }
+  .tcard .tt { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--text-3); margin-bottom: 8px; }
+  .tcard h4 { font-size: 17px; font-weight: 700; margin-bottom: 7px; }
+  .tcard p { font-size: 13.5px; color: var(--text-2); line-height: 1.55; }
+  .tcard .go { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--sky); margin-top: 12px; display: inline-block; }
+
+  .finalbox { background: linear-gradient(135deg, #0C4A6E, var(--blue)); color: #fff; border-radius: var(--radius-lg); padding: 40px 40px; box-shadow: 0 20px 60px rgba(37,99,235,0.28); }
+  .finalbox .tag { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.8; margin-bottom: 14px; }
+  .finalbox p { font-size: clamp(20px, 3vw, 26px); font-weight: 600; line-height: 1.45; max-width: 26ch; }
+
+  footer { padding: 56px 0 48px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600;
+    background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tag { font-size: 13px; color: var(--text-3); margin-bottom: 18px; }
+  .footer-links { display: flex; justify-content: center; gap: 22px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-2); text-decoration: none; }
+  .footer-links a:hover { color: var(--sky); }
+  .footer-copy { font-size: 12px; color: var(--text-3); margin-top: 18px; }
+
+  .fade { opacity: 0; transform: translateY(22px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade.vis { opacity: 1; transform: translateY(0); }
+  @media print {
+    .topbar, .toggle { position: static; }
+    .fade { opacity: 1 !important; transform: none !important; }
+    body { background: #fff; }
+    section { padding: 20px 0; page-break-inside: avoid; }
+    .def, .callout, .tcard, .finalbox { box-shadow: none; }
+  }
+  *, *::before, *::after { transition-property: background-color, border-color, color; transition-duration: 0.3s; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div><span class="brand">know.2nth.ai</span><span class="brand-sub">How we think</span></div>
+    <div style="display:flex;align-items:center;gap:16px;">
+      <a href="/briefings/" style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-2);text-decoration:none;letter-spacing:0.5px;">&larr; All briefings</a>
+      <button class="toggle" onclick="toggleTheme()" aria-label="Toggle light/dark">🌙</button>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div class="eyebrow fade"><span class="dot"></span> How we think &middot; The mental model behind the briefings</div>
+    <h1 class="fade" style="transition-delay:.05s">Your business is an <span class="hl">iceberg.</span></h1>
+    <p class="lede fade" style="transition-delay:.1s">
+      What your customers see &mdash; the website, the Shopify store, the portal &mdash; is the tip above the waterline. It's real, it matters, and it's a small fraction of the whole. The bulk sits below the surface: the systems that make, buy, count and run everything. We call the tip the <strong>front office</strong> and the mass beneath it the <strong>back office</strong> &mdash; and almost every decision that matters lives below the waterline.
+    </p>
+  </div>
+</section>
+
+<!-- ICEBERG FIGURE -->
+<section style="padding-top:20px;">
+  <div class="wrap">
+    <div class="berg fade">
+      <svg viewBox="0 0 760 600" role="img" aria-label="An iceberg. The small tip above the waterline is the front office — website, Shopify, portal — what the customer sees. The large mass below the waterline is the back office — ERP, Git, SharePoint, files, and where suppliers, finance and HR live, along with cost, risk and IP.">
+        <defs>
+          <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#BAE6FD" stop-opacity="0"/>
+            <stop offset="100%" stop-color="#BAE6FD" stop-opacity="0"/>
+          </linearGradient>
+          <linearGradient id="water" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.22"/>
+            <stop offset="100%" stop-color="#0C4A6E" stop-opacity="0.42"/>
+          </linearGradient>
+          <linearGradient id="iceAbove" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#FFFFFF"/>
+            <stop offset="100%" stop-color="#DBEAFE"/>
+          </linearGradient>
+          <linearGradient id="iceBelow" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#E0F2FE"/>
+            <stop offset="100%" stop-color="#93C5FD"/>
+          </linearGradient>
+        </defs>
+
+        <!-- water -->
+        <rect x="0" y="196" width="760" height="404" fill="url(#water)"/>
+        <!-- waterline -->
+        <line x1="0" y1="196" x2="760" y2="196" stroke="#0EA5E9" stroke-opacity="0.55" stroke-width="2" stroke-dasharray="2 6"/>
+        <text x="748" y="190" text-anchor="end" class="mono" font-size="11" fill="#0EA5E9">waterline</text>
+
+        <!-- ICEBERG below water (back office) -->
+        <polygon points="330,196 158,300 196,452 312,536 430,540 566,470 636,322 452,196"
+                 fill="url(#iceBelow)" stroke="#60A5FA" stroke-opacity="0.5" stroke-width="1.5"/>
+        <!-- facets -->
+        <polygon points="330,196 158,300 252,318 360,206" fill="#FFFFFF" fill-opacity="0.18"/>
+        <polygon points="452,196 636,322 520,360 420,212" fill="#1D4ED8" fill-opacity="0.06"/>
+        <line x1="312" y1="536" x2="360" y2="206" stroke="#60A5FA" stroke-opacity="0.25" stroke-width="1"/>
+
+        <!-- ICEBERG above water (front office) -->
+        <polygon points="380,86 330,196 452,196" fill="url(#iceAbove)" stroke="#93C5FD" stroke-opacity="0.7" stroke-width="1.5"/>
+        <polygon points="380,86 452,196 406,150" fill="#1D4ED8" fill-opacity="0.07"/>
+
+        <!-- FRONT OFFICE label (above water, in sky) -->
+        <text x="120" y="86" class="t-fo lab-primary" font-size="22">FRONT OFFICE</text>
+        <text x="120" y="110" class="lab-secondary" font-size="14">what the customer sees</text>
+        <text x="120" y="150" class="mono lab-secondary" font-size="12">~10% &middot; above the surface</text>
+        <!-- pointer to tip -->
+        <line x1="250" y1="145" x2="330" y2="150" stroke="#94A3B8" stroke-width="1" stroke-dasharray="3 3"/>
+        <!-- on-tip label -->
+        <text x="391" y="182" text-anchor="middle" class="mono lab-onice" font-size="10.5">Website &middot; Shopify &middot; Portal</text>
+
+        <!-- BACK OFFICE labels (below water, on ice) -->
+        <text x="397" y="258" text-anchor="middle" class="t-bo lab-onice" font-size="23">BACK OFFICE</text>
+        <text x="397" y="280" text-anchor="middle" class="lab-onice" font-size="13" opacity="0.85">what actually runs the business</text>
+        <text x="397" y="332" text-anchor="middle" class="mono lab-onice" font-size="12">ERP &middot; Git &middot; SharePoint &middot; Files</text>
+        <text x="397" y="392" text-anchor="middle" class="mono lab-onice" font-size="12">Suppliers &middot; Finance &middot; HR</text>
+        <text x="397" y="452" text-anchor="middle" class="mono lab-onice" font-size="11.5" opacity="0.8">cost &middot; risk &middot; your IP</text>
+        <text x="397" y="508" text-anchor="middle" class="mono lab-onice" font-size="11" opacity="0.6">~90% &middot; below the surface</text>
+      </svg>
+      <p class="berg-caption">Front office: the visible tip &nbsp;&middot;&nbsp; Back office: the 90% that holds it up</p>
+    </div>
+  </div>
+</section>
+
+<!-- DEFINITIONS -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">01 &middot; The two halves</div>
+      <h2 class="s-title">Front office and back office, defined</h2>
+    </div>
+    <div class="defs fade" style="transition-delay:.05s">
+      <div class="def front">
+        <div class="dt">Above the waterline</div>
+        <h3>Front office</h3>
+        <div class="sub">What the customer sees and touches</div>
+        <ul>
+          <li><span class="ic">🌐</span> Your website</li>
+          <li><span class="ic">🛍️</span> The Shopify storefront</li>
+          <li><span class="ic">🧑‍💻</span> Customer-facing portals &amp; apps</li>
+          <li><span class="ic">✨</span> The brand, the checkout, the experience</li>
+        </ul>
+      </div>
+      <div class="def back">
+        <div class="dt">Below the waterline</div>
+        <h3>Back office</h3>
+        <div class="sub">What runs the business &mdash; unseen by the customer</div>
+        <ul>
+          <li><span class="ic">🏭</span> ERP &mdash; making, stock, the books</li>
+          <li><span class="ic">🔧</span> Git, SharePoint, files &mdash; your records &amp; IP</li>
+          <li><span class="ic">📦</span> Suppliers &amp; procurement</li>
+          <li><span class="ic">💰</span> Finance and 👥 HR</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY IT MATTERS -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">02 &middot; Why it matters</div>
+      <h2 class="s-title">The decisions that matter live below the surface</h2>
+      <p class="s-lede">It's natural to spend attention on the tip &mdash; it's visible, it's the brand, it's where the customer is. But the front office is the small part. Cost, risk, lock-in, compliance, your intellectual property, and the relationships with suppliers, finance and people all sit in the 90% below the waterline.</p>
+    </div>
+    <div class="callout sky fade" style="transition-delay:.05s">
+      <h4>The one rule the whole series turns on</h4>
+      <p><strong>Rent the front office. Own the back office.</strong> The storefront is a commodity worth renting &mdash; Shopify and the rest are excellent at it, and it's not where your edge is. The back office <em>is</em> your edge: how you make things, what they cost, who supplies you, your records and your IP. That's the part to own, control, and be able to reach &mdash; because you can't be held hostage on the visible tip nearly as easily as on the mass that holds it up.</p>
+    </div>
+  </div>
+</section>
+
+<!-- THREADS -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">03 &middot; Where it leads</div>
+      <h2 class="s-title">How this runs through the briefings</h2>
+      <p class="s-lede">Every CEO briefing is really a story about the back office &mdash; the part below the waterline that decides whether the business is owned or rented, safe or exposed, legible or a guess.</p>
+    </div>
+    <div class="thread fade" style="transition-delay:.05s">
+      <a href="/briefings/own-your-stack" class="tcard">
+        <div class="tt">Ownership</div>
+        <h4>Who Holds the Keys?</h4>
+        <p>Owning the back office &mdash; the records and IP below the waterline &mdash; instead of renting it back from vendors.</p>
+        <span class="go">Read &rarr;</span>
+      </a>
+      <a href="/briefings/make-it-sell-it" class="tcard">
+        <div class="tt">Commerce</div>
+        <h4>Make It, Sell It, See the Margin</h4>
+        <p>Rent the front-office storefront; own the back office that makes, buys and counts &mdash; and finally see your margin.</p>
+        <span class="go">Read &rarr;</span>
+      </a>
+      <a href="/briefings/edge-first" class="tcard">
+        <div class="tt">Residency</div>
+        <h4>Keep the Data Home</h4>
+        <p>The back office is where personal data, suppliers and finance live &mdash; so it's where POPIA and residency must be enforced.</p>
+        <span class="go">Read &rarr;</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL -->
+<section>
+  <div class="wrap">
+    <div class="finalbox fade">
+      <div class="tag">The model</div>
+      <p>Mind the whole iceberg, not just the tip. Rent the front office your customers see; own the back office that actually runs the business.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tag">How we think &middot; the model behind the CEO briefings</p>
+    <div class="footer-links">
+      <a href="/briefings/">All briefings</a>
+      <a href="/index.html">Knowledge tree</a>
+      <a href="https://2nth.ai" target="_blank" rel="noopener">2nth.ai</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in Johannesburg, South Africa</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme(){
+    const h=document.documentElement, cur=h.getAttribute('data-theme'), nxt=cur==='dark'?'light':'dark';
+    h.setAttribute('data-theme',nxt);
+    document.querySelector('.toggle').textContent = nxt==='dark' ? '☀️' : '🌙';
+    localStorage.setItem('brief-theme',nxt);
+  }
+  const saved=localStorage.getItem('brief-theme');
+  if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.toggle').textContent=saved==='dark'?'☀️':'🌙';}
+  const ob=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');});},{threshold:0.08,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.fade').forEach(el=>ob.observe(el));
+</script>
+</body>
+</html>
