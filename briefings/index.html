@@ -87,6 +87,20 @@
   .strip-item .si-ic { font-size: 20px; margin-bottom: 8px; }
   .strip-item h4 { font-size: 15px; font-weight: 700; margin-bottom: 5px; }
   .strip-item p { font-size: 13.5px; color: var(--text-2); line-height: 1.55; }
+  /* iceberg banner */
+  .iceband { display: grid; grid-template-columns: 230px 1fr; gap: 26px; align-items: center; margin-top: 20px;
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 22px 28px;
+    box-shadow: var(--shadow); text-decoration: none; color: inherit; transition: transform .25s, border-color .25s; }
+  .iceband:hover { transform: translateY(-2px); border-color: var(--border-strong); }
+  @media (max-width: 680px){ .iceband { grid-template-columns: 1fr; text-align: center; } .iceband .ib-fig { max-width: 200px; margin: 0 auto; } }
+  .iceband svg { width: 100%; height: auto; display: block; }
+  .iceband .ib-ey { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1.6px; text-transform: uppercase; color: var(--sky); font-weight: 600; margin-bottom: 7px; }
+  .iceband h3 { font-size: 21px; font-weight: 800; letter-spacing: -0.4px; margin-bottom: 7px; }
+  .iceband p { font-size: 14px; color: var(--text-2); line-height: 1.55; margin-bottom: 11px; }
+  .iceband .go { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--sky); font-weight: 600; }
+  .iceband .lab-onice { fill: #0B2540; font-family: 'JetBrains Mono', monospace; }
+  .iceband .lab-air { fill: var(--text); }
+  .iceband .lab-air2 { fill: var(--text-2); }
 
   section { padding: 40px 0; }
   .sec-label { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--sky); font-weight: 600; margin-bottom: 12px; }
@@ -186,8 +200,34 @@
         <p>Every claim sits on a full technical leaf in the knowledge tree. Hand the deep version to whoever has to make it true.</p>
       </div>
     </div>
-    <a href="/briefings/the-iceberg" class="fade" style="display:inline-flex;align-items:center;gap:10px;margin-top:18px;padding:12px 20px;border:1px solid var(--border);border-radius:var(--radius-pill);background:var(--card);text-decoration:none;color:var(--text-2);font-size:14px;font-weight:500;box-shadow:var(--shadow);">
-      <span style="font-size:17px;">🧊</span> <strong style="color:var(--text);font-weight:700;">Start here — how we think:</strong> the front office / back office iceberg <span style="color:var(--sky);font-family:'JetBrains Mono',monospace;">&rarr;</span>
+    <a href="/briefings/the-iceberg" class="iceband fade" aria-label="Start here — the front office / back office iceberg">
+      <div class="ib-fig">
+        <svg viewBox="0 0 240 188" role="img" aria-label="A small iceberg: the tip above the waterline is the front office; the larger mass below is the back office.">
+          <defs>
+            <linearGradient id="ibWater" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.22"/>
+              <stop offset="100%" stop-color="#0C4A6E" stop-opacity="0.40"/>
+            </linearGradient>
+            <linearGradient id="ibIceA" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#FFFFFF"/><stop offset="100%" stop-color="#DBEAFE"/></linearGradient>
+            <linearGradient id="ibIceB" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#E0F2FE"/><stop offset="100%" stop-color="#93C5FD"/></linearGradient>
+          </defs>
+          <rect x="0" y="66" width="240" height="122" fill="url(#ibWater)"/>
+          <line x1="0" y1="66" x2="240" y2="66" stroke="#0EA5E9" stroke-opacity="0.5" stroke-width="1.5" stroke-dasharray="2 5"/>
+          <polygon points="104,66 56,108 76,156 120,176 168,150 188,104 142,66" fill="url(#ibIceB)" stroke="#60A5FA" stroke-opacity="0.5" stroke-width="1.3"/>
+          <polygon points="123,30 104,66 150,66" fill="url(#ibIceA)" stroke="#93C5FD" stroke-opacity="0.7" stroke-width="1.3"/>
+          <text class="lab-air" x="6" y="26" font-size="11" font-weight="700" font-family="Outfit, sans-serif">FRONT OFFICE</text>
+          <text class="lab-air2" x="6" y="42" font-size="9.5">what they see</text>
+          <text class="lab-onice" x="122" y="110" text-anchor="middle" font-size="11" font-weight="700">BACK OFFICE</text>
+          <text class="lab-onice" x="122" y="128" text-anchor="middle" font-size="8" opacity="0.85">ERP · Git · Suppliers</text>
+          <text class="lab-onice" x="122" y="142" text-anchor="middle" font-size="8" opacity="0.85">Finance · HR</text>
+        </svg>
+      </div>
+      <div>
+        <div class="ib-ey">Start here · How we think</div>
+        <h3>Your business is an iceberg</h3>
+        <p>The <strong>front office</strong> is the tip your customers see — website, Shopify, portal. The <strong>back office</strong> is the bigger mass below: ERP, Git, files, suppliers, finance, HR — where cost, risk and your IP really sit. Rent the front, own the back.</p>
+        <span class="go">Open the model &rarr;</span>
+      </div>
     </a>
   </div>
 </section>
