@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unreal Engine &mdash; know.2nth.ai</title>
+<meta name="description" content="Unreal Engine for builders — Epic's real-time 3D engine for games, virtual production, archviz and digital twins, now an agent-driveable surface. UE 5.8 ships an embedded MCP server in the Editor: agents spawn actors, set lighting, build materials, run tests. How the engine works, what it's for, the pricing/royalty reality, the experimental-and-no-auth caveats, a decision guide, and SA context.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/tech/game-engines/unreal">
+<meta property="og:title" content="Unreal Engine &mdash; know.2nth.ai">
+<meta property="og:description" content="Epic's real-time 3D engine — and now an agent-driveable surface. UE 5.8's embedded MCP server lets agents drive the Editor. How it works, what it's for, pricing reality, the caveats, and when to use it.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Unreal Engine &mdash; know.2nth.ai">
+<meta name="twitter:description" content="Epic's real-time 3D engine — and now an agent-driveable surface via UE 5.8's embedded MCP server. How it works, what it's for, pricing, caveats, when to use it.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%238B5CF6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12); --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-soft: rgba(99, 102, 241, 0.12); --violet: #8B5CF6; --violet-glow: #A78BFA; --violet-soft: rgba(139, 92, 246, 0.12); --bg: var(--ink); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(139, 92, 246, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(167, 139, 250, 0.3); --max-w: 1200px; --read-w: 760px; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(139, 92, 246, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(139, 92, 246, 0.25); }
+  * { margin: 0; padding: 0; box-sizing: border-box; } html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.violet { width: 600px; height: 600px; background: var(--violet); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.05; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--violet-glow); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--violet-glow); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--violet-glow); } .crumb-sep { opacity: 0.5; } .crumb-current { color: var(--text-secondary); }
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--violet-glow); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--violet-glow); box-shadow: 0 0 12px var(--violet-glow); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--violet-glow), var(--indigo), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.accent { background: var(--violet-soft); color: var(--violet-glow); border-color: rgba(139, 92, 246, 0.25); }
+  .pill.green { background: var(--green-soft); color: var(--green); border-color: rgba(16, 185, 129, 0.25); }
+  .pill.sky { background: rgba(56,189,248,0.12); color: var(--sky); border-color: rgba(56,189,248,0.25); }
+  .pill.warn { background: var(--warm-soft); color: var(--warm-glow); border-color: rgba(245, 158, 11, 0.25); }
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--sky); margin-bottom: 14px; }
+  .section-label.violet { color: var(--violet-glow); }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--violet-glow); }
+  .prose ul, .prose ol { padding-left: 24px; margin-bottom: 18px; max-width: var(--read-w); }
+  .prose li { font-size: 15px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 8px; }
+  .prose li strong { color: var(--text-primary); font-weight: 600; }
+  pre.code { background: var(--ink-deep); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px 22px; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.65; color: var(--mist); margin: 0 0 20px; max-width: var(--read-w); }
+  [data-theme="light"] pre.code { background: #0F172A; color: #E2E8F0; }
+  pre.code .k { color: var(--sky); } pre.code .s { color: #A5F3B8; } pre.code .c { color: var(--text-muted); font-style: italic; } pre.code .h { color: var(--violet-glow); font-weight: 600; }
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); margin-bottom: 20px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.violet { border-left: 3px solid var(--violet); }
+  .info-card.rose { border-left: 3px solid var(--rose); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .info-card ul { padding-left: 20px; margin: 0; }
+  .info-card li { font-size: 14px; color: var(--text-secondary); line-height: 1.65; margin-bottom: 6px; }
+  .info-card li strong { color: var(--text-primary); }
+  .stack-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; max-width: var(--read-w); margin-bottom: 20px; }
+  .stack-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--violet); border-radius: var(--radius-md); padding: 18px 22px; }
+  .stack-cell .layer { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .stack-cell h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.3px; }
+  .stack-cell p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: var(--read-w); margin-bottom: 20px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--violet-glow); background: rgba(139, 92, 246, 0.05); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); } .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--violet-glow); }
+  .compare td strong { color: var(--text-primary); }
+  .decision-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: var(--read-w); }
+  @media (max-width: 720px) { .decision-grid { grid-template-columns: 1fr; } }
+  .decision-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 24px; }
+  .decision-card.use { border-left: 3px solid var(--green); } .decision-card.skip { border-left: 3px solid var(--rose); }
+  .decision-card h4 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 12px; }
+  .decision-card.use h4 { color: var(--green); } .decision-card.skip h4 { color: var(--rose); }
+  .decision-card ul { list-style: none; padding: 0; }
+  .decision-card li { font-size: 13px; color: var(--text-secondary); line-height: 1.6; padding: 6px 0; border-bottom: 1px solid var(--border); }
+  .decision-card li:last-child { border-bottom: none; }
+  .connect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .connect-node { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; transition: all 0.3s; text-decoration: none; color: inherit; display: block; }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node .tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--violet-glow); word-break: break-all; }
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--violet-glow); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } pre.code { font-size: 11px; padding: 14px 16px; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+
+<div class="glow-orb violet"></div>
+<div class="glow-orb sky"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../../index.html" class="nav-brand"><span class="nav-brand-mark">know.2nth.ai</span><span class="nav-brand-sub">tech/game-engines/unreal</span></a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">&larr; Game Engines</a>
+      <a href="../../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x2600;&#xFE0F;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="../">Tech</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="./">Game Engines</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">Unreal Engine</span>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> tech &middot; Game Engines &middot; Unreal Engine</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      The 3D engine just became <span class="gradient">an agent surface.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      Unreal Engine is Epic Games' real-time 3D engine &mdash; the technology behind AAA games, virtual-production film sets, architectural visualisation and digital twins. The reason it's on this tree now: <strong>Unreal Engine 5.8 ships an embedded MCP server inside the Editor</strong>. An AI agent (Claude Code, Cursor) can spawn actors, set lighting, build materials and run tests by driving the editor over the Model Context Protocol. A flagship 3D engine has become an agent-driveable surface &mdash; the exact convergence this tree tracks. This is the engine, the agent angle, the honest caveats, and where it fits.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill accent">Real-time 3D</span>
+      <span class="pill sky">UE 5.8 &middot; MCP</span>
+      <span class="pill warn">MCP: experimental</span>
+      <span class="pill green">Free to use &middot; royalty</span>
+      <span class="pill">Blueprints + C++</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 WHAT IT IS -->
+<section id="what">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label violet">01 &middot; What it is</div>
+      <h2 class="section-title">A real-time engine, not just for games.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Unreal Engine is a <strong>real-time 3D engine</strong>: it renders interactive 3D worlds at speed, with physics, lighting, animation and audio, and lets you build the logic that drives them. Epic Games created it for first-person shooters in 1998; today its <strong>UE 5.x</strong> line &mdash; with Nanite (virtualised geometry), Lumen (real-time global illumination) and MetaHuman (photoreal characters) &mdash; is used far beyond games.</p>
+      <p>You build in Unreal two ways, usually together: <strong>Blueprints</strong> (a visual node-based scripting system that non-programmers can use) and <strong>C++</strong> (for performance-critical or deep custom work). The Editor is the hub &mdash; a heavyweight desktop application where you assemble levels, author materials, wire up logic and preview the running experience.</p>
+      <p>It matters here because the engine has crossed into territory the rest of this tree already covers: real-time 3D now intersects <strong>AI agents</strong> (the new MCP surface), <strong>digital twins</strong> (live 3D mirrors of real assets), <strong>virtual production</strong> (LED-volume film sets), and <strong>archviz</strong> for the built environment. Unreal sits at that crossroads.</p>
+    </div>
+    <div class="info-card violet fade-up" style="transition-delay: 0.08s">
+      <h4>Why it's filed under "game engines" but isn't only about games</h4>
+      <p>"Game engine" is the category name, but the real definition is broader: <strong>a runtime for interactive, real-time 3D</strong>. Games are the origin and still the biggest use, yet the same engine renders a car configurator, a construction digital twin, a training simulator, and a film background plate. Think of it as the real-time half of 3D &mdash; the counterpart to offline renderers and BIM tools elsewhere on the tree.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 THE AGENT SURFACE -->
+<section id="mcp">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label violet">02 &middot; The agent surface</div>
+      <h2 class="section-title">UE 5.8 puts an MCP server inside the Editor.</h2>
+      <p class="section-lede">This is the headline. As of Unreal Engine 5.8, the Editor can run an <strong>embedded Model Context Protocol server</strong> &mdash; the same standard that lets agents reach tools and data elsewhere on this tree. An AI agent connects over HTTP and drives the editor through callable tools. It is marked <strong>Experimental</strong>, and that matters.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>What a connected agent (Claude Code, Cursor, VS Code integrations) can actually do:</p>
+      <ul>
+        <li><strong>Spawn and modify actors</strong> &mdash; place and edit objects in the scene</li>
+        <li><strong>Configure lighting</strong> and <strong>create material instances</strong></li>
+        <li><strong>Inspect UI widgets</strong> and <strong>run automation tests</strong></li>
+        <li><strong>Call custom tools</strong> you author yourself</li>
+      </ul>
+      <p>It exposes the three MCP primitives &mdash; <strong>Tools</strong> (named functions with typed parameters), <strong>Resources</strong> (read-only data by URI) and <strong>Prompts</strong> (reusable templates). Custom tools are authored as <strong>Toolsets</strong> (classes inheriting <code>UToolsetDefinition</code> / <code>unreal.ToolsetDefinition</code>) in Python or C++, and the Toolset Registry auto-discovers them at startup.</p>
+    </div>
+    <pre class="code fade-up" style="transition-delay: 0.07s"><span class="c"># Enable the plugin (Edit &gt; Plugins), then bind it (Editor Preferences)</span>
+<span class="c"># Default endpoint:</span> http://127.0.0.1:8000/mcp
+
+<span class="c"># Generate the client config for your agent</span>
+ModelContextProtocol.GenerateClientConfig ClaudeCode
+
+<span class="c"># Launch your agent from the project root — it now drives the Editor</span></pre>
+    <div class="info-card rose fade-up" style="transition-delay: 0.1s">
+      <h4>The two caveats that decide whether you use it yet</h4>
+      <ul>
+        <li><strong>Experimental.</strong> Epic's own note: "use caution when shipping with it." Treat it as a productivity tool for authoring and prototyping, not a production dependency.</li>
+        <li><strong>Loopback, no auth.</strong> The server binds to <code>127.0.0.1</code> with no authentication layer, and supports HTTP + Server-Sent Events only (no stdio or WebSocket). Anything that can reach localhost can drive your editor &mdash; fine on a trusted dev machine, a real consideration anywhere shared. Don't expose the port.</li>
+      </ul>
+    </div>
+    <div class="info-card violet fade-up" style="transition-delay: 0.12s">
+      <h4>Why this is the same story as the rest of the tree</h4>
+      <p>MCP is the "agent-driveable surface" filter: a standardised, swappable way for an agent to reach tools and data rather than bespoke glue. Unreal joining the MCP ecosystem means a 3D engine is now reachable the same way a database, a CRM or a CLI is. The skill that transfers from the agents domain &mdash; supervising an agent, scoping the task, governing what it may touch &mdash; applies here too. The engine is just another surface the agent can act on.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 USE CASES -->
+<section id="uses">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label violet">03 &middot; What it's used for</div>
+      <h2 class="section-title">Five worlds Unreal renders today.</h2>
+      <p class="section-lede">Games are the origin; the real-time engine now reaches well beyond them. Each of these is a place where an agent-driveable editor changes who can build.</p>
+    </div>
+    <div class="stack-grid fade-up" style="transition-delay: 0.05s">
+      <div class="stack-cell">
+        <span class="layer">Origin</span>
+        <h4>Games</h4>
+        <p>AAA and indie titles across PC, console and mobile. Still the largest use and the source of every engine feature.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Film &amp; TV</span>
+        <h4>Virtual production</h4>
+        <p>Real-time backgrounds on LED volumes (the Mandalorian technique). The set is rendered live behind the actors.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Built environment</span>
+        <h4>Archviz &amp; AEC</h4>
+        <p>Walkable architectural visualisation and design review via Twinmotion / Datasmith. Ties to openBIM and construction.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Operations</span>
+        <h4>Digital twins</h4>
+        <p>Live 3D mirrors of factories, buildings and infrastructure, fed by IoT data &mdash; for monitoring and simulation.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Training</span>
+        <h4>Simulation</h4>
+        <p>Interactive training and simulation &mdash; equipment, safety, scenarios &mdash; where a real-world rehearsal is costly or dangerous.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Product</span>
+        <h4>Configurators</h4>
+        <p>Real-time car / product configurators and interactive showrooms &mdash; photoreal, explorable, on the web or in-store.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 PRICING -->
+<section id="pricing">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label violet">04 &middot; Pricing reality</div>
+      <h2 class="section-title">Free to build with &mdash; the catch is downstream.</h2>
+      <p class="section-lede">Unreal is famously free to download and develop on, which is real and generous. The honest detail is in how Epic monetises, and it differs by what you're building.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <ul>
+        <li><strong>Games</strong> &mdash; free to make and ship; Epic takes a <strong>5% royalty</strong> on gross revenue above a per-product threshold (lifetime). For most small titles that's nothing until you're succeeding, which is a fair deal.</li>
+        <li><strong>Non-games (enterprise / linear content)</strong> &mdash; archviz, virtual production, simulation, automotive use a <strong>per-seat licence model</strong> rather than royalties. Budget for it if you're a studio doing AEC or film work, not games.</li>
+        <li><strong>The real cost is hardware and skills.</strong> Unreal is demanding &mdash; a capable GPU workstation per artist, large project storage, and people who know the engine. The licence is the cheap part; the talent and the iron are not.</li>
+      </ul>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.08s">
+      <h4>Check the current terms before you model a budget</h4>
+      <p>Epic has changed its pricing structure more than once, and the games-royalty threshold and the non-games seat pricing both move. Confirm the live terms on Epic's licensing page before committing a commercial plan &mdash; this leaf gives you the shape, not a quote.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 DECISION -->
+<section id="decision">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label violet">05 &middot; Decision guide</div>
+      <h2 class="section-title">Reach for Unreal when. Look elsewhere when.</h2>
+      <p class="section-lede">Unreal is the heavyweight: the most capable real-time renderer, with the steepest hardware and learning demands. That trade is right for some projects and wrong for others.</p>
+    </div>
+    <div class="decision-grid fade-up" style="transition-delay: 0.05s">
+      <div class="decision-card use">
+        <h4>Reach for Unreal when</h4>
+        <ul>
+          <li>You need top-tier real-time visual fidelity</li>
+          <li>Virtual production, archviz, digital twins, or simulation</li>
+          <li>A high-end PC / console game</li>
+          <li>You want photoreal humans (MetaHuman) or huge scenes (Nanite)</li>
+          <li>You want to drive the editor with agents via MCP</li>
+          <li>You have the GPU hardware and the skills to match</li>
+        </ul>
+      </div>
+      <div class="decision-card skip">
+        <h4>Look elsewhere when</h4>
+        <ul>
+          <li>Mobile-first or 2D &mdash; Unity is often the better fit</li>
+          <li>Lightweight, open-source, small team &mdash; consider Godot</li>
+          <li>It's a web 3D widget &mdash; three.js / Babylon.js, not an engine</li>
+          <li>You need offline photoreal stills &mdash; a ray-tracer / DCC tool</li>
+          <li>The team and hardware can't carry Unreal's weight</li>
+          <li>It's a simple visualisation a real-time engine over-serves</li>
+        </ul>
+      </div>
+    </div>
+    <div class="info-card violet fade-up" style="transition-delay: 0.08s">
+      <h4>Unity and Godot are the siblings</h4>
+      <p>This sub-category will grow to cover them. In short: <strong>Unity</strong> is the broad, mobile-strong, C#-based default with the largest asset ecosystem; <strong>Godot</strong> is the lightweight, fully open-source (MIT) engine that's risen fast for indie and 2D. Unreal is the fidelity-and-scale leader. Pick by platform, team skills, and how much visual ceiling you actually need.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 SA CONTEXT -->
+<section id="sa-context">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label violet">06 &middot; South African context</div>
+      <h2 class="section-title">Real-time 3D, lower barrier.</h2>
+      <p class="section-lede">Unreal's free engine and the new agent surface both lower the entry cost of real-time 3D &mdash; which has practical leverage for SA studios, property, training and the local games scene.</p>
+    </div>
+    <div class="info-card violet fade-up" style="transition-delay: 0.05s">
+      <h4>Property &amp; AEC &middot; archviz that ties to construction</h4>
+      <p>For SA property developers and built-environment firms, Unreal-powered <strong>archviz and digital twins</strong> turn plans into walkable, photoreal experiences &mdash; a strong sales and design-review tool. It connects directly to the construction branch (openBIM): the BIM model is the source, Unreal is the real-time presentation and twin layer on top.</p>
+    </div>
+    <div class="info-card green fade-up" style="transition-delay: 0.07s">
+      <h4>Skills &middot; the agent surface lowers the floor</h4>
+      <p>Unreal's learning curve has always been the barrier for lean SA teams. The MCP surface shifts that: an artist or developer can <strong>supervise an agent</strong> to scaffold scenes, wire materials, or run tests &mdash; the supervisor-not-author pattern from the agents domain, applied to 3D. It doesn't remove the need for skill, but it lowers the floor on the repetitive editor work.</p>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.09s">
+      <h4>The honest constraint &middot; hardware &amp; FX</h4>
+      <p>The engine is free; the workstations aren't. Unreal needs capable GPUs, and that hardware is FX-priced in rand. For SA studios the realistic path is a few strong workstations rather than a large farm, scoped projects that fit that capacity, and cloud GPU rental (af-south-1 or elsewhere) for burst rendering rather than owning idle iron.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 07 CONNECTIONS -->
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label violet">07 &middot; Connections</div>
+      <h2 class="section-title">Where Unreal links in the tree.</h2>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="./" class="connect-node">
+        <span class="tag">tech/game-engines</span>
+        <div class="skill">Game Engines hub</div>
+        <div class="why">The sub-category this opens. Unity, Godot and the real-time-3D landscape land here as the band grows.</div>
+      </a>
+      <a href="../../agents/mcp.html" class="connect-node">
+        <span class="tag">agents/mcp</span>
+        <div class="skill">Model Context Protocol</div>
+        <div class="why">The standard UE 5.8's editor server speaks. The reason a 3D engine is now an agent surface at all.</div>
+      </a>
+      <a href="../../agents/rearchitecture.html" class="connect-node">
+        <span class="tag">agents/rearchitecture</span>
+        <div class="skill">Agents, Data &amp; Trust</div>
+        <div class="why">The thesis: MCP as the agent-driveable surface filter. Unreal is that filter reaching real-time 3D.</div>
+      </a>
+      <a href="../../construction/openbim.html" class="connect-node">
+        <span class="tag">construction/openbim</span>
+        <div class="skill">openBIM</div>
+        <div class="why">The source model for archviz and digital twins. BIM holds the data; Unreal is the real-time presentation layer.</div>
+      </a>
+      <a href="../../agents/claude-code.html" class="connect-node">
+        <span class="tag">agents/claude-code</span>
+        <div class="skill">Claude Code</div>
+        <div class="why">One of the agents that drives the Unreal editor via the generated MCP client config. Supervisor, not author.</div>
+      </a>
+      <a href="../docker.html" class="connect-node">
+        <span class="tag">tech/docker</span>
+        <div class="skill">Docker</div>
+        <div class="why">How runtime Unreal servers (pixel-streaming, cooked builds) are commonly packaged and deployed at scale.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 08 RESOURCES -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label violet">08 &middot; Resources</div>
+      <h2 class="section-title">Primary sources.</h2>
+      <p class="section-lede">Epic's official documentation, including the Unreal MCP page this leaf is anchored on. The MCP feature is experimental and the pricing terms change &mdash; confirm both against Epic's live docs before committing. Last reviewed 2026-06-18.</p>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://dev.epicgames.com/documentation/unreal-engine/unreal-mcp-in-unreal-editor" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs &middot; the anchor</span>
+        <span class="r-title">Unreal MCP in the Unreal Editor</span>
+        <span class="r-url">dev.epicgames.com &middot; unreal-mcp-in-unreal-editor</span>
+      </a>
+      <a href="https://www.unrealengine.com" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Site</span>
+        <span class="r-title">Unreal Engine</span>
+        <span class="r-url">unrealengine.com</span>
+      </a>
+      <a href="https://dev.epicgames.com/documentation/unreal-engine" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs</span>
+        <span class="r-title">Unreal Engine documentation</span>
+        <span class="r-url">dev.epicgames.com/documentation/unreal-engine</span>
+      </a>
+      <a href="https://www.unrealengine.com/en-US/license" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Licensing</span>
+        <span class="r-title">Unreal Engine licensing &amp; royalty</span>
+        <span class="r-url">unrealengine.com/license</span>
+      </a>
+      <a href="https://modelcontextprotocol.io" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Standard</span>
+        <span class="r-title">Model Context Protocol</span>
+        <span class="r-url">modelcontextprotocol.io</span>
+      </a>
+      <a href="https://www.twinmotion.com" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">AEC tool</span>
+        <span class="r-title">Twinmotion (archviz on Unreal)</span>
+        <span class="r-url">twinmotion.com</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../../index.html">Knowledge tree</a>
+      <a href="./">Game Engines hub</a>
+      <a href="https://dev.epicgames.com/documentation/unreal-engine/unreal-mcp-in-unreal-editor" target="_blank" rel="noopener">Unreal MCP docs &nearr;</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in Johannesburg, South Africa</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme(){const html=document.documentElement;const current=html.getAttribute('data-theme');const next=current==='dark'?'light':'dark';html.setAttribute('data-theme',next);document.querySelector('.theme-toggle').textContent=next==='dark'?'☀️':'🌙';localStorage.setItem('theme',next);}
+  const saved=localStorage.getItem('theme');if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.theme-toggle').textContent=saved==='dark'?'☀️':'🌙';}
+  const observer=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting)entry.target.classList.add('visible');});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>
