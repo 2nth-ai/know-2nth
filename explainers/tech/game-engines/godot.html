@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Godot Engine &mdash; know.2nth.ai</title>
+<meta name="description" content="Godot Engine for builders — the MIT-licensed, fully open-source game engine. No royalties or seat fees, ever. Node/scene architecture, GDScript + C#, a Vulkan renderer in 4.x, lightweight and fast to iterate. How it works, what it's for, the genuine zero-licence-cost story, the honest 2D-strong/3D-catching-up picture, the agent angle, a decision guide, and SA context. The 'own your stack' engine.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/tech/game-engines/godot">
+<meta property="og:title" content="Godot Engine &mdash; know.2nth.ai">
+<meta property="og:description" content="The MIT-licensed, fully open-source game engine — no royalties or seat fees ever. Node/scene architecture, GDScript + C#, lightweight. The 'own your stack' engine, for builders.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Godot Engine &mdash; know.2nth.ai">
+<meta name="twitter:description" content="The MIT-licensed open-source game engine — no royalties or seat fees ever. Node/scene, GDScript + C#, lightweight. The 'own your stack' engine.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%238B5CF6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12); --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-soft: rgba(99, 102, 241, 0.12); --violet: #8B5CF6; --violet-glow: #A78BFA; --violet-soft: rgba(139, 92, 246, 0.12); --bg: var(--ink); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(139, 92, 246, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(167, 139, 250, 0.3); --max-w: 1200px; --read-w: 760px; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(139, 92, 246, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(139, 92, 246, 0.25); }
+  * { margin: 0; padding: 0; box-sizing: border-box; } html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.violet { width: 600px; height: 600px; background: var(--violet); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.05; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--violet-glow); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--violet-glow); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--violet-glow); } .crumb-sep { opacity: 0.5; } .crumb-current { color: var(--text-secondary); }
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--violet-glow); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--violet-glow); box-shadow: 0 0 12px var(--violet-glow); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--violet-glow), var(--indigo), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.accent { background: var(--violet-soft); color: var(--violet-glow); border-color: rgba(139, 92, 246, 0.25); }
+  .pill.green { background: var(--green-soft); color: var(--green); border-color: rgba(16, 185, 129, 0.25); }
+  .pill.sky { background: rgba(56,189,248,0.12); color: var(--sky); border-color: rgba(56,189,248,0.25); }
+  .pill.warn { background: var(--warm-soft); color: var(--warm-glow); border-color: rgba(245, 158, 11, 0.25); }
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--sky); margin-bottom: 14px; }
+  .section-label.violet { color: var(--violet-glow); }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--violet-glow); }
+  .prose ul, .prose ol { padding-left: 24px; margin-bottom: 18px; max-width: var(--read-w); }
+  .prose li { font-size: 15px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 8px; }
+  .prose li strong { color: var(--text-primary); font-weight: 600; }
+  pre.code { background: var(--ink-deep); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px 22px; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.65; color: var(--mist); margin: 0 0 20px; max-width: var(--read-w); }
+  [data-theme="light"] pre.code { background: #0F172A; color: #E2E8F0; }
+  pre.code .k { color: var(--sky); } pre.code .s { color: #A5F3B8; } pre.code .c { color: var(--text-muted); font-style: italic; } pre.code .h { color: var(--violet-glow); font-weight: 600; }
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); margin-bottom: 20px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.violet { border-left: 3px solid var(--violet); }
+  .info-card.rose { border-left: 3px solid var(--rose); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .info-card ul { padding-left: 20px; margin: 0; }
+  .info-card li { font-size: 14px; color: var(--text-secondary); line-height: 1.65; margin-bottom: 6px; }
+  .info-card li strong { color: var(--text-primary); }
+  .stack-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; max-width: var(--read-w); margin-bottom: 20px; }
+  .stack-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--violet); border-radius: var(--radius-md); padding: 18px 22px; }
+  .stack-cell .layer { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .stack-cell h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.3px; }
+  .stack-cell p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: var(--read-w); margin-bottom: 20px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--violet-glow); background: rgba(139, 92, 246, 0.05); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); } .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--violet-glow); }
+  .compare td strong { color: var(--text-primary); }
+  .decision-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: var(--read-w); }
+  @media (max-width: 720px) { .decision-grid { grid-template-columns: 1fr; } }
+  .decision-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 24px; }
+  .decision-card.use { border-left: 3px solid var(--green); } .decision-card.skip { border-left: 3px solid var(--rose); }
+  .decision-card h4 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 12px; }
+  .decision-card.use h4 { color: var(--green); } .decision-card.skip h4 { color: var(--rose); }
+  .decision-card ul { list-style: none; padding: 0; }
+  .decision-card li { font-size: 13px; color: var(--text-secondary); line-height: 1.6; padding: 6px 0; border-bottom: 1px solid var(--border); }
+  .decision-card li:last-child { border-bottom: none; }
+  .connect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .connect-node { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; transition: all 0.3s; text-decoration: none; color: inherit; display: block; }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node .tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--violet-glow); word-break: break-all; }
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--violet-glow); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } pre.code { font-size: 11px; padding: 14px 16px; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+
+<div class="glow-orb violet"></div>
+<div class="glow-orb sky"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../../index.html" class="nav-brand"><span class="nav-brand-mark">know.2nth.ai</span><span class="nav-brand-sub">tech/game-engines/godot</span></a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">&larr; Game Engines</a>
+      <a href="../../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x2600;&#xFE0F;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="../">Tech</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="./">Game Engines</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">Godot</span>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> tech &middot; Game Engines &middot; Godot</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      The engine you <span class="gradient">actually own.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      Godot is a fully open-source game engine under the <strong>MIT licence</strong> &mdash; no royalties, no seat fees, no revenue threshold, ever. You can ship a million-selling game and owe the engine nothing, and if the project ever changed direction you'd still hold a complete copy. It's lightweight (the editor is a ~100 MB download), fast to iterate in, exceptional at 2D and increasingly capable at 3D, and built around a clean <strong>node-and-scene</strong> model. This is what it is, how it works, the genuine zero-licence-cost story, where it fits next to Unreal and Unity, and the honest limits.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill green">MIT &middot; no fees ever</span>
+      <span class="pill accent">2D-strong &middot; 3D rising</span>
+      <span class="pill sky">GDScript + C#</span>
+      <span class="pill">~100 MB editor</span>
+      <span class="pill">Godot Foundation</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 WHAT IT IS -->
+<section id="what">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label violet">01 &middot; What it is</div>
+      <h2 class="section-title">A community-owned engine with no strings.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Godot is a free, open-source engine for making 2D and 3D games and interactive applications. It's developed in the open by the <strong>Godot Foundation</strong> and a large contributor community, funded by donations rather than a parent company &mdash; which is exactly why it can promise what the commercial engines can't: <strong>it will never charge you a royalty or a per-seat fee.</strong> The MIT licence means the engine itself is yours to use, modify, and ship, forever.</p>
+      <p>The current <strong>4.x</strong> line was a major leap &mdash; a rewritten rendering backend on Vulkan, a much-improved 3D pipeline, and a cleaner architecture throughout. Godot's heritage is in 2D, where it's genuinely one of the best tools available; its 3D has historically trailed Unity and Unreal but closed a lot of ground in 4.x.</p>
+      <p>It earns its place on this tree as <strong>the "own your stack" engine</strong>. Everywhere else in the knowledge tree the argument is the same: rent the commodity, own what's your edge, avoid lock-in. Godot is that principle applied to real-time 3D &mdash; the engine equivalent of choosing PostgreSQL or Valkey over a proprietary alternative.</p>
+    </div>
+    <div class="info-card violet fade-up" style="transition-delay: 0.08s">
+      <h4>The Unity exodus that put Godot on the map</h4>
+      <p>In September 2023, Unity announced a per-install "Runtime Fee" that blindsided its developers. The backlash was enormous, and a visible wave of studios migrated to Godot precisely because <strong>an open-source engine can't surprise you with a new fee</strong>. Unity later cancelled the fee, but the episode made Godot's core promise concrete: when you own the engine, no vendor decision can change your economics overnight. That trust is now its strongest selling point.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 HOW IT WORKS -->
+<section id="how">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label violet">02 &middot; How it works</div>
+      <h2 class="section-title">Everything is a node; a scene is a tree of them.</h2>
+      <p class="section-lede">Godot's whole model is unusually simple to hold in your head. A <strong>node</strong> is a single-purpose building block (a sprite, a camera, a collision shape, a sound). You compose nodes into a <strong>scene</strong> (a tree), and scenes nest inside other scenes. A player, a level, a whole game &mdash; all just trees of nodes. Master that and the engine clicks.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>You script behaviour two main ways. <strong>GDScript</strong> is Godot's own Python-like language, tightly integrated with the editor and the fastest way to be productive. <strong>C#</strong> is fully supported for teams that prefer it or need .NET libraries. For performance-critical native code there's <strong>GDExtension</strong> (C++ and others) without recompiling the engine.</p>
+    </div>
+    <pre class="code fade-up" style="transition-delay: 0.07s"><span class="c"># A minimal GDScript node: move a player each frame</span>
+<span class="h">extends</span> CharacterBody2D
+
+<span class="h">const</span> SPEED = 300.0
+
+<span class="h">func</span> _physics_process(delta):
+    <span class="k">var</span> direction = Input.get_axis(<span class="s">"left"</span>, <span class="s">"right"</span>)
+    velocity.x = direction * SPEED
+    move_and_slide()</pre>
+    <div class="info-card green fade-up" style="transition-delay: 0.1s">
+      <h4>Why "lightweight" is a real productivity feature</h4>
+      <p>Godot's editor is a single ~100 MB download with no account, no launcher, no install ceremony &mdash; it opens in seconds and runs on modest hardware. For learning, for lean teams, and for fast iteration, that lightness is a genuine advantage over the heavyweight engines. The whole thing fits on a memory stick, which also makes it superb for teaching and for low-resource environments.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 USE CASES -->
+<section id="uses">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label violet">03 &middot; What it's used for</div>
+      <h2 class="section-title">Where Godot is the right call.</h2>
+      <p class="section-lede">Godot's sweet spot is 2D and small-to-mid 3D, shipped by indies and small teams &mdash; and increasingly recognised hits prove it scales further than its reputation suggests.</p>
+    </div>
+    <div class="stack-grid fade-up" style="transition-delay: 0.05s">
+      <div class="stack-cell">
+        <span class="layer">Core strength</span>
+        <h4>2D games</h4>
+        <p>Best-in-class 2D tooling &mdash; dedicated 2D engine, pixel-perfect rendering, tilemaps. The default pick for a 2D project in 2026.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Growing</span>
+        <h4>Indie 3D</h4>
+        <p>Small-to-mid 3D games. The 4.x Vulkan renderer made this viable; not AAA-scale, but plenty for most indie 3D.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Beyond games</span>
+        <h4>Apps &amp; tools</h4>
+        <p>The node/scene model and export targets make Godot a credible engine for interactive apps, kiosks and data-viz, not only games.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Education</span>
+        <h4>Teaching &amp; learning</h4>
+        <p>Free, tiny, no account, GDScript is approachable &mdash; the strongest engine for classrooms, workshops and self-teaching.</p>
+      </div>
+    </div>
+    <div class="info-card violet fade-up" style="transition-delay: 0.08s">
+      <h4>It ships real, successful games</h4>
+      <p>Godot's "just for hobby projects" reputation is outdated. Commercial hits &mdash; <strong>Buckshot Roulette</strong>, <strong>Brotato</strong>, <strong>Halls of Torment</strong>, <strong>Cruelty Squad</strong> and others &mdash; were built and shipped in Godot, several of them strong sellers. It's a production engine for the indie tier, not a toy.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 PRICING -->
+<section id="pricing">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label violet">04 &middot; The cost story</div>
+      <h2 class="section-title">Zero licence cost. Genuinely.</h2>
+      <p class="section-lede">This is the simplest pricing section on the tree, and the most important reason to reach for Godot: there is no licence cost, at any scale, ever.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <ul>
+        <li><strong>No royalty.</strong> Ship a game that earns nothing or earns millions &mdash; you owe the engine the same amount: zero.</li>
+        <li><strong>No seat fees.</strong> One developer or a hundred, no per-user subscription. Add people without adding cost.</li>
+        <li><strong>No revenue threshold to watch.</strong> Nothing to track, nothing that flips you into a paid tier when you succeed.</li>
+        <li><strong>You own the engine.</strong> MIT-licensed source means you can fork it, fix it, or ship it embedded &mdash; no vendor can revoke or re-price it.</li>
+      </ul>
+      <p>Your only costs are the same as any project: the people, the hardware, and the optional choice to <strong>donate</strong> to the Godot Foundation to keep development funded &mdash; which is the healthy thing to do if the engine is making you money, but it's a choice, not an invoice.</p>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.08s">
+      <h4>"Free" still has a cost &mdash; it's the gaps</h4>
+      <p>The honest counterweight: a community-funded engine has a smaller paid-support ecosystem, fewer ready-made commercial assets than Unity's store, and historically thinner console-export tooling (often handled via third-party porting houses). "Free" buys you ownership and predictability; it doesn't buy you the deepest asset marketplace or first-party console pipelines. Weigh that against what your project actually needs.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 DECISION -->
+<section id="decision">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label violet">05 &middot; Decision guide</div>
+      <h2 class="section-title">Reach for Godot when. Look elsewhere when.</h2>
+    </div>
+    <div class="decision-grid fade-up" style="transition-delay: 0.05s">
+      <div class="decision-card use">
+        <h4>Reach for Godot when</h4>
+        <ul>
+          <li>It's a 2D game &mdash; this is its strongest ground</li>
+          <li>You want zero licence cost and no vendor surprises</li>
+          <li>Ownership and a permissive (MIT) licence matter to you</li>
+          <li>It's an indie / small-team / solo project</li>
+          <li>You're teaching, learning, or on modest hardware</li>
+          <li>Fast iteration and a tiny toolchain are worth a lot</li>
+        </ul>
+      </div>
+      <div class="decision-card skip">
+        <h4>Look elsewhere when</h4>
+        <ul>
+          <li>You need AAA-grade 3D fidelity &mdash; that's Unreal</li>
+          <li>Mobile-first with a deep asset store &mdash; Unity fits better</li>
+          <li>You need first-party, polished console export pipelines</li>
+          <li>You rely on a large commercial asset marketplace</li>
+          <li>You want paid first-party enterprise support</li>
+          <li>Your team has deep existing investment in another engine</li>
+        </ul>
+      </div>
+    </div>
+    <div class="info-card violet fade-up" style="transition-delay: 0.08s">
+      <h4>The agent angle &mdash; honest version</h4>
+      <p>Unlike Unreal 5.8's first-party embedded MCP server, Godot's agent surface is <strong>community-built</strong>: third-party Godot MCP servers exist on GitHub that let an agent manipulate scenes and run the editor, but they're not official and not bundled. Being open source, Godot is unusually friendly to building exactly the agent tooling you want &mdash; but treat any current MCP integration as community software, and check its provenance before relying on it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 SA CONTEXT -->
+<section id="sa-context">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label violet">06 &middot; South African context</div>
+      <h2 class="section-title">The most affordable on-ramp to real-time 3D.</h2>
+      <p class="section-lede">Free, tiny, MIT-licensed and runs on modest machines &mdash; Godot fits SA realities (FX-priced hardware, lean teams, a growing local games and education scene) better than any other engine.</p>
+    </div>
+    <div class="info-card green fade-up" style="transition-delay: 0.05s">
+      <h4>Cost &middot; nothing between you and shipping</h4>
+      <p>For SA indies and studios, removing the licence question entirely is real leverage: no USD-billed seat fee, no royalty eating into rand revenue, no threshold to fear if a game does well. The only spend is people and machines &mdash; and Godot runs happily on hardware that would struggle with Unreal.</p>
+    </div>
+    <div class="info-card violet fade-up" style="transition-delay: 0.07s">
+      <h4>Education &middot; the classroom engine</h4>
+      <p>A free, ~100 MB, account-free engine with an approachable language is ideal for SA schools, bootcamps and community workshops teaching game development and interactive 3D. No licences to procure, no per-student cost, runs on a lab of modest PCs &mdash; the lowest-friction way to build local real-time-3D skills.</p>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.09s">
+      <h4>The honest trade &middot; support &amp; porting</h4>
+      <p>The flip side for SA teams: less local commercial support and the console-porting gap. For a 2D or PC-first indie title that's rarely a problem; for a team targeting consoles, budget for a third-party porting partner. Pick Godot for ownership and cost; plan around the gaps it openly has.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 07 CONNECTIONS -->
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label violet">07 &middot; Connections</div>
+      <h2 class="section-title">Where Godot links in the tree.</h2>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="./" class="connect-node">
+        <span class="tag">tech/game-engines</span>
+        <div class="skill">Game Engines hub</div>
+        <div class="why">The sub-category. Godot is the open-source corner of the real-time-3D landscape, beside Unreal and Unity.</div>
+      </a>
+      <a href="unreal.html" class="connect-node">
+        <span class="tag">tech/game-engines/unreal</span>
+        <div class="skill">Unreal Engine</div>
+        <div class="why">The fidelity-and-scale leader and the opposite trade: maximum capability with a royalty/seat model and heavy hardware demands.</div>
+      </a>
+      <a href="unity.html" class="connect-node">
+        <span class="tag">tech/game-engines/unity</span>
+        <div class="skill">Unity</div>
+        <div class="why">The commercial alternative whose 2023 fee episode is exactly why Godot's ownership promise matters. The direct comparison.</div>
+      </a>
+      <a href="../own-your-stack.html" class="connect-node">
+        <span class="tag">tech/own-your-stack</span>
+        <div class="skill">Own Your Stack</div>
+        <div class="why">Godot is this principle as a game engine &mdash; rent nothing, own the tool, no vendor can re-price your economics.</div>
+      </a>
+      <a href="../../data/warehousing/postgresql.html" class="connect-node">
+        <span class="tag">data/warehousing/postgresql</span>
+        <div class="skill">PostgreSQL</div>
+        <div class="why">The same open-source-default reasoning in another layer: the permissively-licensed, community-owned choice you can't be locked out of.</div>
+      </a>
+      <a href="../../agents/mcp.html" class="connect-node">
+        <span class="tag">agents/mcp</span>
+        <div class="skill">Model Context Protocol</div>
+        <div class="why">The standard behind the agent angle. Godot's MCP support is community-built today &mdash; open source makes rolling your own tractable.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 08 RESOURCES -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label violet">08 &middot; Resources</div>
+      <h2 class="section-title">Primary sources.</h2>
+      <p class="section-lede">The official Godot site, documentation, and source. Godot is MIT-licensed and community-developed; the foundation runs on donations. Last reviewed 2026-06-18.</p>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://godotengine.org" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Site</span>
+        <span class="r-title">Godot Engine</span>
+        <span class="r-url">godotengine.org</span>
+      </a>
+      <a href="https://docs.godotengine.org" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs</span>
+        <span class="r-title">Godot documentation</span>
+        <span class="r-url">docs.godotengine.org</span>
+      </a>
+      <a href="https://github.com/godotengine/godot" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Source &middot; MIT</span>
+        <span class="r-title">godotengine/godot</span>
+        <span class="r-url">github.com/godotengine/godot</span>
+      </a>
+      <a href="https://godot.foundation" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Foundation</span>
+        <span class="r-title">Godot Foundation</span>
+        <span class="r-url">godot.foundation</span>
+      </a>
+      <a href="https://docs.godotengine.org/en/stable/tutorials/scripting/gdscript/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Guide</span>
+        <span class="r-title">GDScript reference</span>
+        <span class="r-url">docs.godotengine.org &middot; gdscript</span>
+      </a>
+      <a href="https://godotengine.org/license/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Licence</span>
+        <span class="r-title">Godot licensing (MIT)</span>
+        <span class="r-url">godotengine.org/license</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../../index.html">Knowledge tree</a>
+      <a href="./">Game Engines hub</a>
+      <a href="https://godotengine.org" target="_blank" rel="noopener">Godot &nearr;</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in Johannesburg, South Africa</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme(){const html=document.documentElement;const current=html.getAttribute('data-theme');const next=current==='dark'?'light':'dark';html.setAttribute('data-theme',next);document.querySelector('.theme-toggle').textContent=next==='dark'?'☀️':'🌙';localStorage.setItem('theme',next);}
+  const saved=localStorage.getItem('theme');if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.theme-toggle').textContent=saved==='dark'?'☀️':'🌙';}
+  const observer=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting)entry.target.classList.add('visible');});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>
