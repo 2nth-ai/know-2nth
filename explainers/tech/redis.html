@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Redis &mdash; know.2nth.ai</title>
+<meta name="description" content="Redis (and Valkey) explained for builders. The in-memory data-structure store behind caching, sessions, rate limiting, queues and pub/sub. How it works, what it's actually used for, persistence and durability honestly, the 2024 licence change and the Valkey fork, managed options, a decision guide, and SA delivery context.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/tech/redis">
+<meta property="og:title" content="Redis &mdash; know.2nth.ai">
+<meta property="og:description" content="Redis & Valkey for builders — the in-memory store behind caching, sessions, rate limiting, queues and pub/sub. How it works, durability honestly, the licence change and Valkey fork, and when to use it.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Redis &mdash; know.2nth.ai">
+<meta name="twitter:description" content="Redis & Valkey for builders — caching, sessions, rate limiting, queues, pub/sub. How it works, durability honestly, the licence change and Valkey fork, and when to use it.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3Cline x1='16' y1='3' x2='16' y2='7' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='16' y1='25' x2='16' y2='29' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='3' y1='16' x2='7' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='25' y1='16' x2='29' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3C/svg%3E">
+<style>
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12); --rose: #F43F5E; --rose-glow: #FB7185; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-soft: rgba(99, 102, 241, 0.12); --bg: var(--ink); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(37, 99, 235, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(56, 189, 248, 0.3); --max-w: 1200px; --read-w: 760px; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(37, 99, 235, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(37, 99, 235, 0.25); }
+  * { margin: 0; padding: 0; box-sizing: border-box; } html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.rose { width: 600px; height: 600px; background: var(--rose); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--sky); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--sky); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--sky); } .crumb-sep { opacity: 0.5; } .crumb-current { color: var(--text-secondary); }
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--rose-glow); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--rose-glow); box-shadow: 0 0 12px var(--rose-glow); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 15ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--rose-glow), #F87171, var(--warm-glow)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.accent { background: rgba(37, 99, 235, 0.12); color: var(--blue-glow); border-color: rgba(37, 99, 235, 0.25); }
+  .pill.green { background: var(--green-soft); color: var(--green); border-color: rgba(16, 185, 129, 0.25); }
+  .pill.rose { background: var(--rose-soft); color: var(--rose-glow); border-color: rgba(244, 63, 94, 0.25); }
+  .pill.warn { background: var(--warm-soft); color: var(--warm-glow); border-color: rgba(245, 158, 11, 0.25); }
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--sky); margin-bottom: 14px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--sky); }
+  .prose ul, .prose ol { padding-left: 24px; margin-bottom: 18px; max-width: var(--read-w); }
+  .prose li { font-size: 15px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 8px; }
+  .prose li strong { color: var(--text-primary); font-weight: 600; }
+  pre.code { background: var(--ink-deep); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px 22px; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.65; color: var(--mist); margin: 0 0 20px; max-width: var(--read-w); }
+  [data-theme="light"] pre.code { background: #0F172A; color: #E2E8F0; }
+  pre.code .k { color: var(--sky); } pre.code .s { color: #A5F3B8; } pre.code .c { color: var(--text-muted); font-style: italic; } pre.code .h { color: var(--rose-glow); font-weight: 600; }
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); margin-bottom: 20px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.indigo { border-left: 3px solid var(--indigo); }
+  .info-card.rose { border-left: 3px solid var(--rose); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .info-card ul { padding-left: 20px; margin: 0; }
+  .info-card li { font-size: 14px; color: var(--text-secondary); line-height: 1.65; margin-bottom: 6px; }
+  .info-card li strong { color: var(--text-primary); }
+  .stack-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; max-width: var(--read-w); margin-bottom: 20px; }
+  .stack-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--rose); border-radius: var(--radius-md); padding: 18px 22px; }
+  .stack-cell .layer { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .stack-cell h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.3px; }
+  .stack-cell p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+  .stack-cell .cmd { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--rose-glow); margin-top: 8px; display: block; }
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: var(--read-w); margin-bottom: 20px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--sky); background: rgba(37, 99, 235, 0.04); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); } .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--sky); }
+  .compare td strong { color: var(--text-primary); }
+  .decision-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: var(--read-w); }
+  @media (max-width: 720px) { .decision-grid { grid-template-columns: 1fr; } }
+  .decision-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 24px; }
+  .decision-card.use { border-left: 3px solid var(--green); } .decision-card.skip { border-left: 3px solid var(--rose); }
+  .decision-card h4 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 12px; }
+  .decision-card.use h4 { color: var(--green); } .decision-card.skip h4 { color: var(--rose); }
+  .decision-card ul { list-style: none; padding: 0; }
+  .decision-card li { font-size: 13px; color: var(--text-secondary); line-height: 1.6; padding: 6px 0; border-bottom: 1px solid var(--border); }
+  .decision-card li:last-child { border-bottom: none; }
+  .connect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .connect-node { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; transition: all 0.3s; text-decoration: none; color: inherit; display: block; }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node .tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--sky); word-break: break-all; }
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--sky); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } pre.code { font-size: 11px; padding: 14px 16px; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+
+<div class="glow-orb rose"></div>
+<div class="glow-orb sky"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand"><span class="nav-brand-mark">know.2nth.ai</span><span class="nav-brand-sub">tech/redis</span></a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">&larr; Tech</a>
+      <a href="../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x2600;&#xFE0F;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="./">Tech</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">Redis</span>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> tech &middot; Redis &amp; Valkey &middot; Skill Leaf</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      The fast layer <span class="gradient">in front of everything.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      Redis is an <strong>in-memory data-structure store</strong> &mdash; data lives in RAM, so reads and writes return in microseconds instead of milliseconds. It's most often used as a <strong>cache</strong> sitting in front of a slower database, but the same engine handles sessions, rate limiting, queues, real-time leaderboards and pub/sub messaging. It is not your system of record; it's the speed-and-coordination layer your app leans on. This is how it works, what it's genuinely good for, the honest durability story, and the 2024 licence drama that produced the <strong>Valkey</strong> fork.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill rose">In-memory</span>
+      <span class="pill accent">Cache &middot; queue &middot; pub/sub</span>
+      <span class="pill">&micro;s latency</span>
+      <span class="pill green">Valkey: BSD</span>
+      <span class="pill warn">Redis: AGPL / RSAL</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 WHAT IT IS -->
+<section id="what">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; What it is</div>
+      <h2 class="section-title">Key-value, but with real data structures.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Redis &mdash; REmote DIctionary Server &mdash; was created by Salvatore Sanfilippo (&quot;antirez&quot;) in 2009 and became the default in-memory store of the modern web. At its simplest it's a giant dictionary: you <code>SET</code> a key to a value and <code>GET</code> it back, blisteringly fast, because it all lives in memory.</p>
+      <p>What makes it more than a glorified hash table is that the <strong>values are rich data structures</strong>, not just strings. Lists, hashes, sets, sorted sets, streams, bitmaps and more &mdash; each with native commands. That's the real differentiator: a leaderboard is a sorted set, a job queue is a list, a rate limiter is a counter with an expiry, a session is a hash. You're not bolting these on top of a dumb store; Redis understands them.</p>
+      <p>Because it's single-threaded for command execution (an event loop, with I/O threading added in newer versions), operations are atomic and predictable &mdash; no surprise race conditions inside a single command. The trade is that one Redis instance uses one CPU core for the main work; you scale out with replication and clustering rather than up.</p>
+    </div>
+    <div class="info-card rose fade-up" style="transition-delay: 0.08s">
+      <h4>The mental model</h4>
+      <p>Think of Redis as your application's <strong>short-term memory and nervous system</strong>: the place it keeps what it needs instantly (cache, sessions), and the channel through which its parts coordinate (queues, pub/sub, locks). Your database is the long-term memory &mdash; the durable record. Redis makes the database fast and the system coordinated; it does not replace it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 WHAT IT'S USED FOR -->
+<section id="uses">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; What it's actually for</div>
+      <h2 class="section-title">One engine, six everyday jobs.</h2>
+      <p class="section-lede">Redis earns its place because the same fast in-memory store solves a cluster of common problems that would each otherwise need bespoke infrastructure. The big one is caching; the rest come almost free once it's there.</p>
+    </div>
+    <div class="stack-grid fade-up" style="transition-delay: 0.05s">
+      <div class="stack-cell">
+        <span class="layer">#1 use</span>
+        <h4>Caching</h4>
+        <p>Store the result of a slow query or API call; serve it from memory until it expires. The classic database-relief pattern.</p>
+        <span class="cmd">SET / GET + EXPIRE</span>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">State</span>
+        <h4>Sessions</h4>
+        <p>Hold user session data outside any single app server, so requests can hit any instance behind a load balancer.</p>
+        <span class="cmd">HSET / HGETALL</span>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Control</span>
+        <h4>Rate limiting</h4>
+        <p>Count requests per user per window with an auto-expiring counter. Throttle abuse without touching the database.</p>
+        <span class="cmd">INCR + EXPIRE</span>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Async</span>
+        <h4>Queues &amp; streams</h4>
+        <p>Hand background work between producers and workers &mdash; simple lists, or durable consumer-group Streams for serious pipelines.</p>
+        <span class="cmd">LPUSH / BRPOP &middot; XADD</span>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Realtime</span>
+        <h4>Pub/sub</h4>
+        <p>Broadcast events to many subscribers instantly &mdash; live notifications, chat fan-out, cache-invalidation signals.</p>
+        <span class="cmd">PUBLISH / SUBSCRIBE</span>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Ranking</span>
+        <h4>Leaderboards</h4>
+        <p>Sorted sets keep millions of scores ranked in real time &mdash; "top 10", "your rank" &mdash; without a single ORDER BY.</p>
+        <span class="cmd">ZADD / ZRANGE</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 COMMANDS -->
+<section id="commands">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; In practice</div>
+      <h2 class="section-title">The whole API is small and legible.</h2>
+      <p class="section-lede">Redis commands read like plain instructions. Here's the cache-aside pattern, a rate limiter, and a queue &mdash; the three you'll write most.</p>
+    </div>
+    <pre class="code fade-up" style="transition-delay: 0.05s"><span class="c"># Cache-aside: cache a value for 1 hour</span>
+<span class="h">SET</span> user:42:profile <span class="s">"{...json...}"</span> EX 3600
+<span class="h">GET</span> user:42:profile        <span class="c"># hit → return; miss → load from DB, then SET</span>
+
+<span class="c"># Rate limit: max 100 requests per minute per user</span>
+<span class="h">INCR</span> rate:user:42
+<span class="h">EXPIRE</span> rate:user:42 60      <span class="c"># first call sets the 60s window</span>
+<span class="c"># if INCR returns &gt; 100 → reject</span>
+
+<span class="c"># Simple job queue</span>
+<span class="h">LPUSH</span> jobs:email <span class="s">"send:welcome:42"</span>   <span class="c"># producer adds</span>
+<span class="h">BRPOP</span> jobs:email 0                  <span class="c"># worker blocks until a job arrives</span></pre>
+    <div class="info-card green fade-up" style="transition-delay: 0.08s">
+      <h4>Expiry is the quiet superpower</h4>
+      <p>Almost every Redis use leans on <strong>TTL</strong> &mdash; a key that deletes itself after a set time (<code>EX</code>, <code>EXPIRE</code>). Caches that expire, rate-limit windows that reset, sessions that time out, locks that auto-release if a worker dies: all just keys with an expiry. Master TTL and a surprising share of "we need a background job to clean this up" problems vanish.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 DURABILITY -->
+<section id="durability">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; The honest bit</div>
+      <h2 class="section-title">It's memory-first &mdash; treat durability with respect.</h2>
+      <p class="section-lede">Redis can persist to disk, but it is designed memory-first. Understanding exactly what survives a crash is the difference between using it well and losing data you assumed was safe.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Two persistence mechanisms, often combined:</p>
+      <ul>
+        <li><strong>RDB snapshots</strong> &mdash; periodic point-in-time dumps of the whole dataset. Compact and fast to restore, but you can lose everything since the last snapshot if the process dies.</li>
+        <li><strong>AOF (append-only file)</strong> &mdash; logs every write. Far more durable (configurable down to every-second or every-write fsync), at some performance and file-size cost.</li>
+      </ul>
+      <p>Even with AOF, Redis is not a drop-in replacement for a transactional database with the durability guarantees of PostgreSQL. The right framing: <strong>if losing the data would hurt, the source of truth belongs in your real database</strong>, with Redis as the fast cache or coordination layer in front. If the data is genuinely ephemeral &mdash; a cache, a rate-limit window, a transient queue &mdash; memory-first is exactly right.</p>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.08s">
+      <h4>The cache-invalidation caveat</h4>
+      <p>"There are only two hard things in computer science: cache invalidation and naming things." Redis makes caching trivial to <em>add</em> and easy to get subtly <em>wrong</em> &mdash; stale data served after the source changed. Decide your invalidation strategy up front (TTL-based expiry is the simplest and most robust; explicit deletion on write is more precise but easier to miss). A cache that serves wrong answers is worse than no cache.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 LICENSING / VALKEY -->
+<section id="valkey">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; Redis vs Valkey</div>
+      <h2 class="section-title">The licence change you need to know about.</h2>
+      <p class="section-lede">For most of its life Redis was permissively open source (BSD). In 2024 that changed, the community forked, and the result genuinely affects which one you should reach for. This is the current state &mdash; and it's worth getting right before you standardise on a name.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p><strong>What happened.</strong> In March 2024, Redis Inc. relicensed the Redis server away from the permissive BSD licence to a dual <strong>RSALv2 / SSPLv1</strong> model &mdash; &quot;source-available&quot;, not OSI-approved open source &mdash; primarily to stop cloud providers reselling Redis-as-a-service without contributing back. The community response was immediate: a fork called <strong>Valkey</strong>, hosted under the Linux Foundation, BSD-licensed, and backed by AWS, Google Cloud, Oracle, Ericsson and Snap. Valkey is a drop-in continuation of open-source Redis.</p>
+      <p><strong>Where it landed.</strong> In 2025 Redis Inc. added <strong>AGPLv3</strong> as an option for Redis 8, restoring an OSI-approved open-source licence alongside the source-available ones. So today you have a genuine choice: <strong>Redis</strong> (AGPLv3 or the commercial/source-available licences, with Redis Inc.'s modules and ecosystem) or <strong>Valkey</strong> (BSD, vendor-neutral, drop-in compatible). They speak the same protocol and commands; switching is usually trivial.</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.08s">
+      <table class="compare">
+        <thead><tr><th>Dimension</th><th>Redis</th><th>Valkey</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Licence</strong></td><td>AGPLv3 or RSALv2 / SSPL</td><td>BSD-3 (permissive)</td></tr>
+          <tr><td><strong>Steward</strong></td><td>Redis Inc.</td><td>Linux Foundation</td></tr>
+          <tr><td><strong>Backers</strong></td><td>Redis Inc. + ecosystem</td><td>AWS, Google, Oracle, Snap, Ericsson</td></tr>
+          <tr><td><strong>Compatibility</strong></td><td>The original</td><td>Drop-in; same protocol &amp; commands</td></tr>
+          <tr><td><strong>Managed as</strong></td><td>Redis Cloud, Azure, others</td><td>AWS ElastiCache / MemoryDB, GCP Memorystore</td></tr>
+          <tr><td><strong>Reach for it when</strong></td><td>You want Redis Inc.'s modules / Cloud / support</td><td>You want permissive licensing &amp; vendor neutrality</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="info-card rose fade-up" style="transition-delay: 0.1s">
+      <h4>Practical guidance</h4>
+      <p>For most new builds that just need caching, sessions and queues, <strong>Valkey is the low-drama default</strong> &mdash; BSD-licensed, vendor-neutral, and what the major clouds now offer by default (AWS ElastiCache defaults to Valkey, often cheaper than the Redis option). Choose <strong>Redis</strong> when you specifically want Redis Inc.'s commercial modules, Redis Cloud, or enterprise support, and you're comfortable with AGPL or a commercial agreement. Either way: pin the version and check the licence terms, because this space is still settling.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 DECISION -->
+<section id="decision">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; Decision guide</div>
+      <h2 class="section-title">Reach for it when. Don't when.</h2>
+      <p class="section-lede">Redis/Valkey is near-default infrastructure for any app with traffic &mdash; but reaching for it reflexively, or treating it as a database, are the two common mistakes.</p>
+    </div>
+    <div class="decision-grid fade-up" style="transition-delay: 0.05s">
+      <div class="decision-card use">
+        <h4>Reach for it when</h4>
+        <ul>
+          <li>A slow query or API call is hit repeatedly &mdash; cache it</li>
+          <li>You need shared sessions across multiple app servers</li>
+          <li>You need rate limiting, locks or counters</li>
+          <li>You want a simple, fast job queue or pub/sub</li>
+          <li>Real-time leaderboards, presence, or live feeds</li>
+          <li>You need a CQRS-style fast read model in front of a DB</li>
+        </ul>
+      </div>
+      <div class="decision-card skip">
+        <h4>Don't when</h4>
+        <ul>
+          <li>It would be your only copy of data you can't lose</li>
+          <li>The dataset is far larger than your RAM budget</li>
+          <li>You need rich queries / joins &mdash; that's a real database</li>
+          <li>You're adding a cache before you have a measured hot path</li>
+          <li>A single small app with no real load &mdash; it's overhead</li>
+          <li>Strong cross-record transactions are the core need</li>
+        </ul>
+      </div>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.08s">
+      <h4>Don't cache before you measure</h4>
+      <p>Caching adds a second source of truth and the invalidation problem that comes with it. Add Redis when you've <strong>measured</strong> a genuine hot path &mdash; the same expensive read served over and over &mdash; not pre-emptively because "caching is good." Premature caching buys you stale-data bugs for performance you didn't need. The fast layer is worth it exactly where the slow layer hurts, and not before.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 07 SA CONTEXT -->
+<section id="sa-context">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; South African context</div>
+      <h2 class="section-title">Cheap latency, on a small box.</h2>
+      <p class="section-lede">Redis/Valkey gives an outsized performance return for very little cost &mdash; which suits lean SA teams, FX-priced cloud, and apps serving users over variable connectivity.</p>
+    </div>
+    <div class="info-card indigo fade-up" style="transition-delay: 0.05s">
+      <h4>Performance &middot; do more with the box you have</h4>
+      <p>A single small instance of Redis or Valkey can take enormous read load off a database, letting a modest, cheap server handle traffic that would otherwise need a bigger, pricier one. For cost-sensitive builds, a cache is often the highest-return-per-rand piece of infrastructure you can add &mdash; and it runs happily in a container next to the app.</p>
+    </div>
+    <div class="info-card green fade-up" style="transition-delay: 0.07s">
+      <h4>Licensing &middot; Valkey keeps it clean and free</h4>
+      <p>For SA studios and in-house teams who want permissively-licensed, no-strings open source &mdash; and no AGPL questions to run past a client's legal team &mdash; <strong>Valkey (BSD)</strong> is the straightforward choice, and it's what AWS's <code>af-south-1</code> ElastiCache offers. Same commands, no licence overhead, often a lower managed price than the Redis option.</p>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.09s">
+      <h4>Resilience &middot; sessions that survive a restart</h4>
+      <p>Keeping sessions and transient state in Redis rather than in app memory means a deploy, a crash, or a load-shedding restart of one app server doesn't log everyone out. With AOF persistence on a small instance, the fast layer comes back warm. Pair it with PostgreSQL as the durable record and you have a resilient, affordable two-tier data setup.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 08 CONNECTIONS -->
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 &middot; Connections</div>
+      <h2 class="section-title">Where Redis links in the tree.</h2>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="../data/warehousing/postgresql.html" class="connect-node">
+        <span class="tag">data/warehousing/postgresql</span>
+        <div class="skill">PostgreSQL</div>
+        <div class="why">The durable system of record Redis sits in front of. The canonical pairing: Postgres holds the truth, Redis serves it fast.</div>
+      </a>
+      <a href="docker.html" class="connect-node">
+        <span class="tag">tech/docker</span>
+        <div class="skill">Docker</div>
+        <div class="why">How you run Redis/Valkey locally and in production &mdash; <code>image: valkey/valkey</code> in a Compose file is a one-line cache.</div>
+      </a>
+      <a href="architecture.html" class="connect-node">
+        <span class="tag">tech/architecture</span>
+        <div class="skill">Architecture</div>
+        <div class="why">Redis is the engine behind the CQRS read model and the cache-aside pattern &mdash; the fast read side of several catalogue patterns.</div>
+      </a>
+      <a href="aws.html" class="connect-node">
+        <span class="tag">tech/aws</span>
+        <div class="skill">AWS</div>
+        <div class="why">ElastiCache and MemoryDB run managed Redis/Valkey &mdash; the no-ops way to add the fast layer, available in <code>af-south-1</code>.</div>
+      </a>
+      <a href="cloudflare/workers.html" class="connect-node">
+        <span class="tag">tech/cloudflare/workers</span>
+        <div class="skill">Cloudflare Workers</div>
+        <div class="why">The edge alternative: Workers KV and Durable Objects cover caching and coordination at the edge, where a central Redis would add latency.</div>
+      </a>
+      <a href="own-your-stack.html" class="connect-node">
+        <span class="tag">tech/own-your-stack</span>
+        <div class="skill">Own Your Stack</div>
+        <div class="why">A Valkey container you run is owned, free, portable infrastructure &mdash; the fast layer without a per-seat licence or vendor lock.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 09 RESOURCES -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">09 &middot; Resources</div>
+      <h2 class="section-title">Primary sources.</h2>
+      <p class="section-lede">Official Redis and Valkey documentation and the command reference. The licensing situation is still settling &mdash; confirm the current licence of the exact version you deploy. Last reviewed 2026-06-18.</p>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://redis.io/docs/latest/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs</span>
+        <span class="r-title">Redis documentation</span>
+        <span class="r-url">redis.io/docs</span>
+      </a>
+      <a href="https://valkey.io" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Fork</span>
+        <span class="r-title">Valkey (Linux Foundation)</span>
+        <span class="r-url">valkey.io</span>
+      </a>
+      <a href="https://redis.io/docs/latest/commands/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Reference</span>
+        <span class="r-title">Command reference</span>
+        <span class="r-url">redis.io/docs/latest/commands</span>
+      </a>
+      <a href="https://redis.io/docs/latest/operate/oss_and_stack/management/persistence/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Guide</span>
+        <span class="r-title">Persistence (RDB &amp; AOF)</span>
+        <span class="r-url">redis.io &middot; persistence</span>
+      </a>
+      <a href="https://github.com/valkey-io/valkey" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Source</span>
+        <span class="r-title">valkey-io/valkey</span>
+        <span class="r-url">github.com/valkey-io/valkey</span>
+      </a>
+      <a href="https://aws.amazon.com/elasticache/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Managed</span>
+        <span class="r-title">AWS ElastiCache (Valkey / Redis)</span>
+        <span class="r-url">aws.amazon.com/elasticache</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../index.html">Knowledge tree</a>
+      <a href="./">Tech hub</a>
+      <a href="https://valkey.io" target="_blank" rel="noopener">Valkey &nearr;</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in Johannesburg, South Africa</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme(){const html=document.documentElement;const current=html.getAttribute('data-theme');const next=current==='dark'?'light':'dark';html.setAttribute('data-theme',next);document.querySelector('.theme-toggle').textContent=next==='dark'?'☀️':'🌙';localStorage.setItem('theme',next);}
+  const saved=localStorage.getItem('theme');if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.theme-toggle').textContent=saved==='dark'?'☀️':'🌙';}
+  const observer=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting)entry.target.classList.add('visible');});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>
