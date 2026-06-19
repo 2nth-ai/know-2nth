@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Go (Golang) &mdash; know.2nth.ai</title>
+<meta name="description" content="Go (Golang) for builders — Google's compiled, statically-typed language built for simplicity and scale. Goroutines and channels for concurrency, single static binaries, fast compiles, a strong standard library. The language of cloud-native (Docker, Kubernetes, Terraform are written in Go). How it works, what it's for, why agents write it reliably, a decision guide vs Rust/Python/Node, and SA context.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/software/go">
+<meta property="og:title" content="Go (Golang) &mdash; know.2nth.ai">
+<meta property="og:description" content="Google's compiled, statically-typed language built for simplicity and scale — goroutines, single static binaries, fast compiles. The language of cloud-native. How it works, what it's for, and when to use it.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Go (Golang) &mdash; know.2nth.ai">
+<meta name="twitter:description" content="Google's compiled language built for simplicity and scale — goroutines, static binaries, fast compiles. The language of cloud-native. How it works and when to use it.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%2314B8A6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12); --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-soft: rgba(99, 102, 241, 0.12); --code: #14B8A6; --code-soft: rgba(20, 184, 166, 0.12); --bg: var(--ink); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(20, 184, 166, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(20, 184, 166, 0.3); --max-w: 1200px; --read-w: 760px; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(20, 184, 166, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(20, 184, 166, 0.28); }
+  * { margin: 0; padding: 0; box-sizing: border-box; } html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.blue { width: 600px; height: 600px; background: var(--code); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--code), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--code); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--code); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--code); } .crumb-sep { opacity: 0.5; } .crumb-current { color: var(--text-secondary); }
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--code); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--code); box-shadow: 0 0 12px var(--code); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--code), var(--sky), var(--sky-muted)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.accent { background: rgba(37, 99, 235, 0.12); color: var(--blue-glow); border-color: rgba(37, 99, 235, 0.25); }
+  .pill.green { background: var(--green-soft); color: var(--green); border-color: rgba(16, 185, 129, 0.25); }
+  .pill.code { background: var(--code-soft); color: var(--code); border-color: rgba(20, 184, 166, 0.25); }
+  .pill.warn { background: var(--warm-soft); color: var(--warm-glow); border-color: rgba(245, 158, 11, 0.25); }
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--code); margin-bottom: 14px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--code); }
+  .prose ul, .prose ol { padding-left: 24px; margin-bottom: 18px; max-width: var(--read-w); }
+  .prose li { font-size: 15px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 8px; }
+  .prose li strong { color: var(--text-primary); font-weight: 600; }
+  pre.code { background: var(--ink-deep); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px 22px; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.65; color: var(--mist); margin: 0 0 20px; max-width: var(--read-w); }
+  [data-theme="light"] pre.code { background: #0F172A; color: #E2E8F0; }
+  pre.code .k { color: var(--sky); } pre.code .s { color: #A5F3B8; } pre.code .c { color: var(--text-muted); font-style: italic; } pre.code .h { color: var(--code); font-weight: 600; }
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); margin-bottom: 20px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.code { border-left: 3px solid var(--code); }
+  .info-card.rose { border-left: 3px solid var(--rose); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .info-card code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--code); }
+  .info-card strong { color: var(--text-primary); }
+  .info-card ul { padding-left: 20px; margin: 0; }
+  .info-card li { font-size: 14px; color: var(--text-secondary); line-height: 1.65; margin-bottom: 6px; }
+  .stack-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; max-width: var(--read-w); margin-bottom: 20px; }
+  .stack-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--code); border-radius: var(--radius-md); padding: 18px 22px; }
+  .stack-cell .layer { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .stack-cell h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.3px; }
+  .stack-cell p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: var(--read-w); margin-bottom: 20px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--code); background: var(--code-soft); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); } .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--code); }
+  .compare td strong { color: var(--text-primary); }
+  .decision-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: var(--read-w); }
+  @media (max-width: 720px) { .decision-grid { grid-template-columns: 1fr; } }
+  .decision-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 24px; }
+  .decision-card.use { border-left: 3px solid var(--green); } .decision-card.skip { border-left: 3px solid var(--rose); }
+  .decision-card h4 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 12px; }
+  .decision-card.use h4 { color: var(--green); } .decision-card.skip h4 { color: var(--rose); }
+  .decision-card ul { list-style: none; padding: 0; }
+  .decision-card li { font-size: 13px; color: var(--text-secondary); line-height: 1.6; padding: 6px 0; border-bottom: 1px solid var(--border); }
+  .decision-card li:last-child { border-bottom: none; }
+  .connect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .connect-node { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; transition: all 0.3s; text-decoration: none; color: inherit; display: block; }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node .tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--code); word-break: break-all; }
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--code), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--code); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } pre.code { font-size: 11px; padding: 14px 16px; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+
+<div class="glow-orb blue"></div>
+<div class="glow-orb sky"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand"><span class="nav-brand-mark">know.2nth.ai</span><span class="nav-brand-sub">software/go</span></a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">&larr; Software</a>
+      <a href="../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x2600;&#xFE0F;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="./">Software</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="languages.html">Languages</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">Go</span>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> software &middot; Languages &middot; Go (Golang)</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      Boring on purpose. <span class="gradient">That's the point.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      Go &mdash; often "Golang" &mdash; is Google's compiled, statically-typed language, designed in 2009 to make large-team software <strong>simple to write, fast to build, and easy to deploy</strong>. It deliberately leaves out cleverness: a small spec, one way to do most things, automatic formatting. In return you get lightning-fast compiles, built-in concurrency (<code>goroutines</code>), and a single self-contained binary you can copy onto a server and run. It's the language the modern cloud is built in &mdash; Docker, Kubernetes and Terraform are all Go.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill code">Compiled &middot; static</span>
+      <span class="pill green">Goroutines</span>
+      <span class="pill">Single binary</span>
+      <span class="pill accent">Cloud-native</span>
+      <span class="pill">BSD-licensed</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 WHAT IT IS -->
+<section id="what">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; What it is</div>
+      <h2 class="section-title">A language that optimises for the reader.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Go was created at Google by Robert Griesemer, Rob Pike and Ken Thompson (names behind Unix, UTF-8 and C) and released in 2009. The brief was specific: Google had huge codebases, huge teams, and slow builds, and wanted a language that scaled to <em>that</em> &mdash; not the most expressive language, the most <strong>maintainable</strong> one. The result is compiled, statically typed, and garbage-collected, with a spec small enough to read in an afternoon.</p>
+      <p>Its defining quality is restraint. Go intentionally omits features other languages prize &mdash; no inheritance, minimal magic, and for years no generics (added in 1.18, 2022) &mdash; on the principle that <strong>code is read far more than it's written</strong>, and a smaller language means any engineer can read any codebase. The <code>gofmt</code> tool even removes formatting debates by enforcing one canonical style.</p>
+      <p>That "boring by design" philosophy is exactly why it won the cloud-native era. When a tool has to be reliable, deployable anywhere, and maintainable by a rotating team, Go's trade-offs line up. The official home is <a href="https://go.dev" target="_blank" rel="noopener" style="color:var(--code)">go.dev &nearr;</a>.</p>
+    </div>
+    <div class="info-card code fade-up" style="transition-delay: 0.08s">
+      <h4>The one-line pitch</h4>
+      <p>Go gives you most of the speed of C, the safety of a garbage-collected language, and a deployment story so simple it's almost unfair: <strong>compile to one static binary with no runtime to install, and copy it to the server.</strong> Simplicity isn't a limitation here &mdash; it's the feature.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 HOW IT WORKS -->
+<section id="how">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; What makes it Go</div>
+      <h2 class="section-title">Four traits do most of the work.</h2>
+      <p class="section-lede">You don't need much to be productive in Go, by design. Four properties explain why teams reach for it and why it deploys so cleanly.</p>
+    </div>
+    <div class="stack-grid fade-up" style="transition-delay: 0.05s">
+      <div class="stack-cell">
+        <span class="layer">Concurrency</span>
+        <h4>Goroutines &amp; channels</h4>
+        <p>Run thousands of lightweight concurrent tasks with the <code>go</code> keyword; coordinate them with channels. Concurrency is built into the language, not bolted on.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Deployment</span>
+        <h4>One static binary</h4>
+        <p>Compiles to a single executable with no external runtime or dependencies. Copy it to a server, a container, a Pi &mdash; and run. No "install the right version" dance.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Speed</span>
+        <h4>Fast compiles</h4>
+        <p>Builds in seconds even for large projects &mdash; a deliberate design goal. The edit-build-test loop stays tight where C++ would crawl.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Batteries</span>
+        <h4>Strong standard library</h4>
+        <p>A production-grade HTTP server, JSON, crypto and more in the standard library. You can build a real web service with no third-party dependencies at all.</p>
+      </div>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.07s">
+      <p>An HTTP server and a goroutine, in the whole of the code it takes:</p>
+    </div>
+    <pre class="code fade-up" style="transition-delay: 0.09s"><span class="h">package</span> main
+
+<span class="h">import</span> (
+    <span class="s">"fmt"</span>
+    <span class="s">"net/http"</span>
+)
+
+<span class="h">func</span> main() {
+    <span class="c">// Run a task concurrently — that's the whole syntax</span>
+    <span class="h">go</span> func() { fmt.Println(<span class="s">"working in the background"</span>) }()
+
+    http.HandleFunc(<span class="s">"/"</span>, <span class="h">func</span>(w http.ResponseWriter, r *http.Request) {
+        fmt.Fprintln(w, <span class="s">"hello from Go"</span>)
+    })
+    http.ListenAndServe(<span class="s">":8080"</span>, <span class="k">nil</span>)
+}</pre>
+    <div class="info-card green fade-up" style="transition-delay: 0.11s">
+      <h4>Why agents write Go reliably</h4>
+      <p>Go's small surface area and one-obvious-way philosophy make it one of the languages AI coding agents produce most dependably. There's less ambiguity to get wrong, <code>gofmt</code> normalises the output, and the compiler catches a lot before anything runs. When you're supervising an agent rather than typing every line, a language with fewer ways to be subtly wrong is a real advantage &mdash; the point the <a href="../agents/rearchitecture.html" style="color:var(--code)">Agents, Data &amp; Trust</a> thesis makes about agent-friendly stacks.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 USE CASES -->
+<section id="uses">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; What it's used for</div>
+      <h2 class="section-title">The language the cloud is written in.</h2>
+      <p class="section-lede">Go's sweet spot is networked, concurrent, deploy-everywhere software &mdash; which is most of modern backend and infrastructure.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <ul>
+        <li><strong>Cloud-native infrastructure</strong> &mdash; Docker, Kubernetes, Terraform, Prometheus and much of the CNCF landscape are written in Go. If you run modern infra, you're running Go.</li>
+        <li><strong>Backend APIs &amp; microservices</strong> &mdash; fast, concurrent HTTP services with a tiny deploy footprint. The default for a new Go-shop backend.</li>
+        <li><strong>CLI tools</strong> &mdash; a single static binary per platform makes Go ideal for command-line tools people download and run with no setup.</li>
+        <li><strong>Networking &amp; systems plumbing</strong> &mdash; proxies, load balancers, agents, daemons &mdash; anywhere concurrency and a small footprint matter.</li>
+      </ul>
+    </div>
+    <div class="info-card code fade-up" style="transition-delay: 0.08s">
+      <h4>The tell: your tools are already Go</h4>
+      <p>You don't have to decide Go is important &mdash; the tools you already use decided for you. <code>docker</code>, <code>kubectl</code>, <code>terraform</code>, <code>gh</code> (the GitHub CLI) and countless others are Go binaries. That ubiquity in the infrastructure layer is the strongest evidence of where the language fits.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 DECISION -->
+<section id="decision">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; Decision guide</div>
+      <h2 class="section-title">Reach for Go when. Look elsewhere when.</h2>
+      <p class="section-lede">Go is a sharp tool for a clear job. It's not trying to be the most powerful language &mdash; it's trying to be the one a team can ship and maintain. Know where that fits.</p>
+    </div>
+    <div class="decision-grid fade-up" style="transition-delay: 0.05s">
+      <div class="decision-card use">
+        <h4>Reach for Go when</h4>
+        <ul>
+          <li>You're building backend services, APIs or microservices</li>
+          <li>You're writing CLI tools or cloud / infra software</li>
+          <li>Concurrency matters and you want it built-in</li>
+          <li>Simple, dependency-free deployment is valuable</li>
+          <li>A mixed-skill team needs a readable, maintainable codebase</li>
+          <li>You want fast builds and a fast onboarding ramp</li>
+        </ul>
+      </div>
+      <div class="decision-card skip">
+        <h4>Look elsewhere when</h4>
+        <ul>
+          <li>You need maximum performance with no GC pauses &mdash; Rust</li>
+          <li>It's data science / ML / scripting &mdash; Python</li>
+          <li>It's a browser front-end &mdash; TypeScript</li>
+          <li>You want a rich, expressive type system &amp; FP</li>
+          <li>It's a tiny one-off script Go would over-serve</li>
+          <li>The team is deeply invested in another backend stack</li>
+        </ul>
+      </div>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.08s">
+      <h4>Go vs Rust &mdash; the backend question</h4>
+      <p>The most common modern comparison. <strong>Go optimises for simplicity and speed of delivery</strong>; <strong>Rust optimises for maximum performance and compile-time safety</strong>, at the cost of a steep learning curve. For most backend services and tools, Go's productivity wins. When you genuinely need no-GC performance, systems-level control, or guaranteed memory safety in long-lived critical infrastructure, that's <a href="rust.html" style="color:var(--code)">Rust's</a> ground. Many teams use both: Go for services, Rust for the hot path.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 SA CONTEXT -->
+<section id="sa-context">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; South African context</div>
+      <h2 class="section-title">Deploys clean, runs lean.</h2>
+      <p class="section-lede">Go's single-binary deploy and small footprint suit SA delivery realities &mdash; lean teams, cheap infrastructure, and conditions where "just restart it" needs to be genuinely simple.</p>
+    </div>
+    <div class="info-card code fade-up" style="transition-delay: 0.05s">
+      <h4>Resilience &middot; one binary, no runtime to break</h4>
+      <p>A Go service is one self-contained file with nothing to install on the host. After a load-shedding restart there's no runtime version to reconcile, no dependency tree to rebuild &mdash; the binary starts and serves. That operational simplicity is worth a lot when the infrastructure underneath is less reliable than you'd like.</p>
+    </div>
+    <div class="info-card green fade-up" style="transition-delay: 0.07s">
+      <h4>Cost &amp; skills &middot; efficient on cheap iron</h4>
+      <p>Go's low memory footprint and high concurrency mean more service on a smaller, cheaper VM &mdash; useful when every rand of FX-priced cloud counts. And its gentle learning curve makes it a practical language to standardise a mixed-skill SA team on: readable code, fast onboarding, fewer ways to go subtly wrong.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 CONNECTIONS -->
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; Connections</div>
+      <h2 class="section-title">Where Go links in the tree.</h2>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="languages.html" class="connect-node">
+        <span class="tag">software/languages</span>
+        <div class="skill">Programming languages</div>
+        <div class="why">The overview this sits under &mdash; how to choose a language, and why the discipline around it matters more than the choice.</div>
+      </a>
+      <a href="rust.html" class="connect-node">
+        <span class="tag">software/rust</span>
+        <div class="skill">Rust</div>
+        <div class="why">The direct comparison. Go for simplicity and delivery speed; Rust for maximum performance and compile-time safety.</div>
+      </a>
+      <a href="../tech/docker.html" class="connect-node">
+        <span class="tag">tech/docker</span>
+        <div class="skill">Docker</div>
+        <div class="why">Written in Go &mdash; and the natural way to ship a Go binary. A tiny static binary makes for tiny container images.</div>
+      </a>
+      <a href="../tech/runtime/" class="connect-node">
+        <span class="tag">tech/runtime</span>
+        <div class="skill">Runtime</div>
+        <div class="why">The JavaScript-runtime counterpart. Go is the compiled, single-binary alternative when Node/Bun/Deno's model doesn't fit the backend.</div>
+      </a>
+      <a href="../agents/rearchitecture.html" class="connect-node">
+        <span class="tag">agents/rearchitecture</span>
+        <div class="skill">Agents, Data &amp; Trust</div>
+        <div class="why">Go is one of the languages agents write most reliably &mdash; the agent-friendly-stack point, made concrete.</div>
+      </a>
+      <a href="../tech/aws.html" class="connect-node">
+        <span class="tag">tech/aws</span>
+        <div class="skill">AWS</div>
+        <div class="why">Go is a first-class Lambda runtime and the language of much cloud tooling &mdash; a natural fit for serverless and infra.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 07 RESOURCES -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; Resources</div>
+      <h2 class="section-title">Primary sources.</h2>
+      <p class="section-lede">The official Go site and learning materials. Go is open source under a BSD-style licence, stewarded by Google and the Go team. Last reviewed 2026-06-19.</p>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://go.dev" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Site</span>
+        <span class="r-title">go.dev &mdash; the Go home</span>
+        <span class="r-url">go.dev</span>
+      </a>
+      <a href="https://go.dev/tour/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Learn</span>
+        <span class="r-title">A Tour of Go</span>
+        <span class="r-url">go.dev/tour</span>
+      </a>
+      <a href="https://go.dev/doc/effective_go" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Guide</span>
+        <span class="r-title">Effective Go</span>
+        <span class="r-url">go.dev/doc/effective_go</span>
+      </a>
+      <a href="https://pkg.go.dev" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Packages</span>
+        <span class="r-title">pkg.go.dev &mdash; package index</span>
+        <span class="r-url">pkg.go.dev</span>
+      </a>
+      <a href="https://go.dev/ref/spec" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Spec</span>
+        <span class="r-title">The Go Programming Language Specification</span>
+        <span class="r-url">go.dev/ref/spec</span>
+      </a>
+      <a href="https://github.com/golang/go" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Source &middot; BSD</span>
+        <span class="r-title">golang/go</span>
+        <span class="r-url">github.com/golang/go</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../index.html">Knowledge tree</a>
+      <a href="./">Software hub</a>
+      <a href="https://go.dev" target="_blank" rel="noopener">go.dev &nearr;</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in Johannesburg, South Africa</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme(){const html=document.documentElement;const current=html.getAttribute('data-theme');const next=current==='dark'?'light':'dark';html.setAttribute('data-theme',next);document.querySelector('.theme-toggle').textContent=next==='dark'?'☀️':'🌙';localStorage.setItem('theme',next);}
+  const saved=localStorage.getItem('theme');if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.theme-toggle').textContent=saved==='dark'?'☀️':'🌙';}
+  const observer=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting)entry.target.classList.add('visible');});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>

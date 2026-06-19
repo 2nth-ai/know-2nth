@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rust &mdash; know.2nth.ai</title>
+<meta name="description" content="Rust for builders — the systems language that gives you C/C++ performance with memory safety and no garbage collector, enforced at compile time by the ownership model and borrow checker. Cargo tooling, fearless concurrency, WASM and embedded reach. How it works, what it's used for, the honest learning-curve cost, a decision guide vs Go, and SA context.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/software/rust">
+<meta property="og:title" content="Rust &mdash; know.2nth.ai">
+<meta property="og:description" content="C/C++ performance with memory safety and no garbage collector — enforced at compile time by the borrow checker. Cargo, fearless concurrency, WASM, embedded. How it works, the honest cost, and when to use it.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Rust &mdash; know.2nth.ai">
+<meta name="twitter:description" content="C/C++ performance with memory safety and no GC — enforced at compile time by the borrow checker. Cargo, WASM, embedded. How it works, the honest cost, and when to use it.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%2314B8A6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12); --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-soft: rgba(99, 102, 241, 0.12); --code: #14B8A6; --code-soft: rgba(20, 184, 166, 0.12); --bg: var(--ink); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(20, 184, 166, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(20, 184, 166, 0.3); --max-w: 1200px; --read-w: 760px; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(20, 184, 166, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(20, 184, 166, 0.28); }
+  * { margin: 0; padding: 0; box-sizing: border-box; } html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.blue { width: 600px; height: 600px; background: var(--code); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--code), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--code); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--code); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--code); } .crumb-sep { opacity: 0.5; } .crumb-current { color: var(--text-secondary); }
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--code); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--code); box-shadow: 0 0 12px var(--code); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--code), var(--sky), var(--sky-muted)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.accent { background: rgba(37, 99, 235, 0.12); color: var(--blue-glow); border-color: rgba(37, 99, 235, 0.25); }
+  .pill.green { background: var(--green-soft); color: var(--green); border-color: rgba(16, 185, 129, 0.25); }
+  .pill.code { background: var(--code-soft); color: var(--code); border-color: rgba(20, 184, 166, 0.25); }
+  .pill.warn { background: var(--warm-soft); color: var(--warm-glow); border-color: rgba(245, 158, 11, 0.25); }
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--code); margin-bottom: 14px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--code); }
+  .prose ul, .prose ol { padding-left: 24px; margin-bottom: 18px; max-width: var(--read-w); }
+  .prose li { font-size: 15px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 8px; }
+  .prose li strong { color: var(--text-primary); font-weight: 600; }
+  pre.code { background: var(--ink-deep); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px 22px; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.65; color: var(--mist); margin: 0 0 20px; max-width: var(--read-w); }
+  [data-theme="light"] pre.code { background: #0F172A; color: #E2E8F0; }
+  pre.code .k { color: var(--sky); } pre.code .s { color: #A5F3B8; } pre.code .c { color: var(--text-muted); font-style: italic; } pre.code .h { color: var(--code); font-weight: 600; }
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); margin-bottom: 20px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.code { border-left: 3px solid var(--code); }
+  .info-card.rose { border-left: 3px solid var(--rose); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .info-card code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--code); }
+  .info-card strong { color: var(--text-primary); }
+  .info-card ul { padding-left: 20px; margin: 0; }
+  .info-card li { font-size: 14px; color: var(--text-secondary); line-height: 1.65; margin-bottom: 6px; }
+  .stack-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; max-width: var(--read-w); margin-bottom: 20px; }
+  .stack-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--code); border-radius: var(--radius-md); padding: 18px 22px; }
+  .stack-cell .layer { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .stack-cell h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.3px; }
+  .stack-cell p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: var(--read-w); margin-bottom: 20px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--code); background: var(--code-soft); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); } .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--code); }
+  .compare td strong { color: var(--text-primary); }
+  .decision-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: var(--read-w); }
+  @media (max-width: 720px) { .decision-grid { grid-template-columns: 1fr; } }
+  .decision-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 24px; }
+  .decision-card.use { border-left: 3px solid var(--green); } .decision-card.skip { border-left: 3px solid var(--rose); }
+  .decision-card h4 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 12px; }
+  .decision-card.use h4 { color: var(--green); } .decision-card.skip h4 { color: var(--rose); }
+  .decision-card ul { list-style: none; padding: 0; }
+  .decision-card li { font-size: 13px; color: var(--text-secondary); line-height: 1.6; padding: 6px 0; border-bottom: 1px solid var(--border); }
+  .decision-card li:last-child { border-bottom: none; }
+  .connect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .connect-node { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; transition: all 0.3s; text-decoration: none; color: inherit; display: block; }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node .tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--code); word-break: break-all; }
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--code), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--code); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } pre.code { font-size: 11px; padding: 14px 16px; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+
+<div class="glow-orb blue"></div>
+<div class="glow-orb sky"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand"><span class="nav-brand-mark">know.2nth.ai</span><span class="nav-brand-sub">software/rust</span></a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">&larr; Software</a>
+      <a href="../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x2600;&#xFE0F;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="./">Software</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="languages.html">Languages</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">Rust</span>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> software &middot; Languages &middot; Rust</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      Fast and safe. <span class="gradient">Pick both.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      Rust is the systems language that refuses the old trade-off. For decades you chose either <strong>speed</strong> (C/C++, but a single memory mistake crashes or gets exploited) or <strong>safety</strong> (a garbage-collected language, but with pauses and overhead). Rust gives you C-level performance <em>and</em> memory safety with <strong>no garbage collector</strong> &mdash; because its compiler proves your code can't have whole classes of memory bugs before it ever runs. The cost is a famously steep learning curve. The payoff is software that's fast, safe, and built to last.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill code">No GC</span>
+      <span class="pill green">Memory-safe</span>
+      <span class="pill">Cargo &middot; crates.io</span>
+      <span class="pill accent">Systems &middot; WASM</span>
+      <span class="pill">MIT / Apache-2.0</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 WHAT IT IS -->
+<section id="what">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; What it is</div>
+      <h2 class="section-title">Memory safety, proven at compile time.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Rust began as a personal project by Graydon Hoare at Mozilla, reached its stable 1.0 in 2015, and is now stewarded by the independent <strong>Rust Foundation</strong> (backed by AWS, Google, Microsoft, Meta and others). It's a compiled systems language aimed at the same jobs as C and C++ &mdash; but with a defining difference: <strong>it eliminates whole categories of memory bugs at compile time</strong>, without a garbage collector.</p>
+      <p>The mechanism is the <strong>ownership model</strong> and its <strong>borrow checker</strong>. Every value has a single owner; the compiler tracks who can read or modify what, and when memory is freed, all at build time. Code that would risk a use-after-free, a data race, or a null-pointer crash in C simply won't compile in Rust. Those bugs &mdash; the ones behind a large share of security vulnerabilities &mdash; are caught before the program runs, with zero runtime cost.</p>
+      <p>That guarantee is why Rust has topped Stack Overflow's "most admired language" survey for years running, and why it's the first language other than C accepted into the Linux kernel. The official home is <a href="https://www.rust-lang.org" target="_blank" rel="noopener" style="color:var(--code)">rust-lang.org &nearr;</a>.</p>
+    </div>
+    <div class="info-card code fade-up" style="transition-delay: 0.08s">
+      <h4>The one-line pitch</h4>
+      <p>Rust lets you write code as fast as C, with the memory safety of a managed language, <strong>and no garbage collector to pay for it</strong> &mdash; because the compiler does the proving instead of the runtime. You move the cost from "crashes in production" to "arguments with the compiler", which is exactly the trade serious systems work wants.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 HOW IT WORKS -->
+<section id="how">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; What makes it Rust</div>
+      <h2 class="section-title">The borrow checker, and the tooling around it.</h2>
+      <p class="section-lede">Rust's reputation rests on one hard idea and a lot of polish around it. Understand ownership and you understand Rust; the rest is unusually good tooling.</p>
+    </div>
+    <div class="stack-grid fade-up" style="transition-delay: 0.05s">
+      <div class="stack-cell">
+        <span class="layer">The core idea</span>
+        <h4>Ownership &amp; borrowing</h4>
+        <p>Each value has one owner; you "borrow" references under strict rules the compiler enforces. This is what makes memory safety free at runtime &mdash; and what takes time to learn.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Performance</span>
+        <h4>Zero-cost abstractions</h4>
+        <p>High-level features compile down to code as efficient as hand-written low-level work. No garbage collector, no runtime overhead you didn't ask for.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Concurrency</span>
+        <h4>Fearless concurrency</h4>
+        <p>The same rules that prevent memory bugs prevent data races. The compiler refuses to build many concurrency mistakes &mdash; threading without the usual dread.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Tooling</span>
+        <h4>Cargo &amp; crates.io</h4>
+        <p>One tool builds, tests, and manages dependencies; crates.io is the package registry. Rust's tooling is consistently rated among the best of any language.</p>
+      </div>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.07s">
+      <p>The borrow checker in miniature &mdash; the compiler stops a use-after-move that C would happily let through:</p>
+    </div>
+    <pre class="code fade-up" style="transition-delay: 0.09s"><span class="h">fn</span> main() {
+    <span class="k">let</span> s = String::from(<span class="s">"hello"</span>);
+    <span class="k">let</span> moved = s;          <span class="c">// ownership of the string moves to `moved`</span>
+
+    println!(<span class="s">"{}"</span>, moved);     <span class="c">// fine</span>
+    <span class="c">// println!("{}", s);    // COMPILE ERROR: `s` was moved — caught before it runs</span>
+}</pre>
+    <div class="info-card amber fade-up" style="transition-delay: 0.11s">
+      <h4>The honest cost: the learning curve is real</h4>
+      <p>No leaf on this tree should pretend otherwise. <strong>Rust is hard to learn</strong> &mdash; "fighting the borrow checker" is a rite of passage, and a team's productivity dips before it climbs. Compile times are slower than Go's. The payoff (correctness, performance, no whole-class-of-bugs) is worth it for the right project and a waste of pain for the wrong one. Budget for the ramp, and don't reach for Rust just to seem serious.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 USE CASES -->
+<section id="uses">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; What it's used for</div>
+      <h2 class="section-title">Where the safety-and-speed guarantee earns its keep.</h2>
+      <p class="section-lede">Rust shines where a bug is expensive, performance is non-negotiable, or there's no room for a garbage collector &mdash; and it's spread well beyond its systems origins.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <ul>
+        <li><strong>Performance-critical infrastructure</strong> &mdash; AWS's Firecracker (the engine under Lambda &amp; Fargate) and Cloudflare's Pingora proxy are Rust. When the hot path carries everyone's traffic, the guarantees matter.</li>
+        <li><strong>Systems &amp; OS work</strong> &mdash; the first language besides C in the Linux kernel; drivers, operating systems, and low-level tooling.</li>
+        <li><strong>WebAssembly (WASM)</strong> &mdash; Rust is the leading language for compiling to WASM, which runs at near-native speed in browsers and at the edge.</li>
+        <li><strong>Embedded</strong> &mdash; memory safety with no runtime is exactly what constrained microcontrollers want; a growing presence in embedded and IoT firmware.</li>
+        <li><strong>CLI tools &amp; dev tooling</strong> &mdash; fast, single-binary tools (ripgrep, the uv Python installer, parts of build pipelines) where speed is felt directly.</li>
+      </ul>
+    </div>
+    <div class="info-card code fade-up" style="transition-delay: 0.08s">
+      <h4>Who's betting on it</h4>
+      <p>Rust isn't a niche enthusiasm &mdash; <strong>AWS, Cloudflare, Microsoft, Google, Discord, Dropbox and Meta</strong> all run Rust in production for performance-critical work, and the Rust Foundation is funded by exactly those companies. When the failure cost is high, this is increasingly where serious infrastructure lands.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 DECISION -->
+<section id="decision">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; Decision guide</div>
+      <h2 class="section-title">Reach for Rust when. Look elsewhere when.</h2>
+      <p class="section-lede">Rust is a deliberate, high-investment choice. It pays back enormously on the right problem and punishes you on the wrong one. The honest split:</p>
+    </div>
+    <div class="decision-grid fade-up" style="transition-delay: 0.05s">
+      <div class="decision-card use">
+        <h4>Reach for Rust when</h4>
+        <ul>
+          <li>Performance is non-negotiable and GC pauses won't do</li>
+          <li>It's systems, embedded, or OS-level work</li>
+          <li>You're targeting WebAssembly</li>
+          <li>It's long-lived, critical infrastructure worth getting right</li>
+          <li>Memory-safety guarantees have real security value</li>
+          <li>You have (or will build) the team skill to carry it</li>
+        </ul>
+      </div>
+      <div class="decision-card skip">
+        <h4>Look elsewhere when</h4>
+        <ul>
+          <li>You want fast iteration and simplicity &mdash; Go</li>
+          <li>It's standard CRUD / business backend &mdash; Go or Python</li>
+          <li>It's data science / ML / scripting &mdash; Python</li>
+          <li>A small team on a tight deadline can't absorb the curve</li>
+          <li>The performance ceiling isn't a real requirement</li>
+          <li>You'd be choosing Rust for prestige, not for the problem</li>
+        </ul>
+      </div>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.08s">
+      <h4>Rust vs Go &mdash; the modern backend split</h4>
+      <p>These two come up together constantly. <strong><a href="go.html" style="color:var(--code)">Go</a> optimises for simplicity and speed of delivery</strong>; <strong>Rust optimises for maximum performance and compile-time guarantees</strong>. For most services and tools, Go ships faster and is easier to staff. Reach for Rust when the workload genuinely demands no-GC performance, systems control, or ironclad safety. The common pattern in serious shops: <strong>Go for the breadth of services, Rust for the few hot paths that justify it.</strong></p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 SA CONTEXT -->
+<section id="sa-context">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; South African context</div>
+      <h2 class="section-title">A specialist skill with outsized leverage.</h2>
+      <p class="section-lede">Rust is a deliberate investment anywhere, and that calculus has a particular shape in SA &mdash; high-value scarce skill, real performance gains on cheap hardware, and a natural fit for embedded and edge work.</p>
+    </div>
+    <div class="info-card code fade-up" style="transition-delay: 0.05s">
+      <h4>Performance &middot; more out of less hardware</h4>
+      <p>Rust's no-GC efficiency means a service does more on a smaller, cheaper instance &mdash; and for compute-heavy work the difference is large. Where every rand of FX-priced cloud and every watt during load-shedding counts, squeezing maximum work from minimum hardware is a concrete advantage, not a vanity metric.</p>
+    </div>
+    <div class="info-card green fade-up" style="transition-delay: 0.07s">
+      <h4>Embedded &amp; edge &middot; where it fits the local stack</h4>
+      <p>Memory safety with no runtime makes Rust a strong fit for the <a href="../tech/embedded/platformio.html" style="color:var(--code)">embedded</a> and IoT work happening locally &mdash; sensor firmware, edge devices &mdash; and for WASM at the <a href="../tech/cloudflare/workers.html" style="color:var(--code)">edge</a>, which serves SA users with low latency. These are exactly the niches where Rust's guarantees pay for the learning curve.</p>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.09s">
+      <h4>Skills &middot; scarce, and worth being deliberate about</h4>
+      <p>Rust developers are scarce and command a premium everywhere, SA included. That cuts both ways: it's a high-value skill to grow, but standardising a whole team on Rust is a big commitment. The pragmatic SA play mirrors the global one &mdash; a clear, well-chosen Go or Python default, with Rust reserved for the specific hot paths and embedded work where it genuinely earns its cost.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 CONNECTIONS -->
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; Connections</div>
+      <h2 class="section-title">Where Rust links in the tree.</h2>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="languages.html" class="connect-node">
+        <span class="tag">software/languages</span>
+        <div class="skill">Programming languages</div>
+        <div class="why">The overview this sits under &mdash; choosing a language, and why the discipline around it matters more than the choice.</div>
+      </a>
+      <a href="go.html" class="connect-node">
+        <span class="tag">software/go</span>
+        <div class="skill">Go</div>
+        <div class="why">The direct comparison. Go for delivery speed and simplicity; Rust for maximum performance and compile-time safety.</div>
+      </a>
+      <a href="../tech/embedded/platformio.html" class="connect-node">
+        <span class="tag">tech/embedded</span>
+        <div class="skill">Embedded / PlatformIO</div>
+        <div class="why">Memory safety with no runtime makes Rust a natural fit for microcontroller and IoT firmware.</div>
+      </a>
+      <a href="../tech/cloudflare/workers.html" class="connect-node">
+        <span class="tag">tech/cloudflare/workers</span>
+        <div class="skill">Cloudflare Workers</div>
+        <div class="why">Rust is the leading language for WebAssembly, which runs at near-native speed at the edge.</div>
+      </a>
+      <a href="packages.html" class="connect-node">
+        <span class="tag">software/packages</span>
+        <div class="skill">Packages &amp; dependencies</div>
+        <div class="why">Cargo and crates.io are widely held up as a model of how a language's package and build tooling should work.</div>
+      </a>
+      <a href="../tech/aws.html" class="connect-node">
+        <span class="tag">tech/aws</span>
+        <div class="skill">AWS</div>
+        <div class="why">AWS's Firecracker — the engine under Lambda and Fargate — is written in Rust. The performance-critical layer of the cloud.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 07 RESOURCES -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; Resources</div>
+      <h2 class="section-title">Primary sources.</h2>
+      <p class="section-lede">The official Rust site, "the book", and the package registry. Rust is open source under a dual MIT / Apache-2.0 licence, stewarded by the Rust Foundation. Last reviewed 2026-06-19.</p>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://www.rust-lang.org" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Site</span>
+        <span class="r-title">rust-lang.org</span>
+        <span class="r-url">rust-lang.org</span>
+      </a>
+      <a href="https://doc.rust-lang.org/book/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Learn</span>
+        <span class="r-title">The Rust Programming Language ("the book")</span>
+        <span class="r-url">doc.rust-lang.org/book</span>
+      </a>
+      <a href="https://crates.io" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Packages</span>
+        <span class="r-title">crates.io &mdash; the package registry</span>
+        <span class="r-url">crates.io</span>
+      </a>
+      <a href="https://rustup.rs" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Install</span>
+        <span class="r-title">rustup &mdash; the toolchain installer</span>
+        <span class="r-url">rustup.rs</span>
+      </a>
+      <a href="https://foundation.rust-lang.org" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Foundation</span>
+        <span class="r-title">Rust Foundation</span>
+        <span class="r-url">foundation.rust-lang.org</span>
+      </a>
+      <a href="https://github.com/rust-lang/rust" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Source &middot; MIT/Apache</span>
+        <span class="r-title">rust-lang/rust</span>
+        <span class="r-url">github.com/rust-lang/rust</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../index.html">Knowledge tree</a>
+      <a href="./">Software hub</a>
+      <a href="https://www.rust-lang.org" target="_blank" rel="noopener">rust-lang.org &nearr;</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in Johannesburg, South Africa</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme(){const html=document.documentElement;const current=html.getAttribute('data-theme');const next=current==='dark'?'light':'dark';html.setAttribute('data-theme',next);document.querySelector('.theme-toggle').textContent=next==='dark'?'☀️':'🌙';localStorage.setItem('theme',next);}
+  const saved=localStorage.getItem('theme');if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.theme-toggle').textContent=saved==='dark'?'☀️':'🌙';}
+  const observer=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting)entry.target.classList.add('visible');});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>
