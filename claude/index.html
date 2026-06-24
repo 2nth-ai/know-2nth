@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude &amp; Anthropic, Tracked &mdash; know.2nth.ai</title>
+<meta name="description" content="A living map of Claude and Anthropic for business: the models, Claude Code, Agent Skills, MCP, and the fast-moving layer of tools, tricks, settings and extensions — kept current, translated into what it means for your team. The plain-language Claude tracker from know.2nth.ai.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/claude/">
+<meta property="og:title" content="Claude & Anthropic, Tracked — know.2nth.ai">
+<meta property="og:description" content="A living map of Claude for business — models, Claude Code, Skills, MCP, and the emerging tools/tricks/settings layer, kept current and translated into what it means for your team.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai — The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Claude & Anthropic, Tracked — know.2nth.ai">
+<meta name="twitter:description" content="The plain-language Claude tracker for business — models, Claude Code, Skills, MCP, and the tools/tricks/settings layer, kept current.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --ink: #0B1120; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6;
+    --sky: #38BDF8; --paper: #F8FAFC; --slate: #94A3B8;
+    --warm: #F59E0B; --warm-soft: rgba(245,158,11,0.12);
+    --green: #10B981; --green-soft: rgba(16,185,129,0.12);
+    --rose: #F43F5E; --rose-soft: rgba(244,63,94,0.12);
+    --indigo: #6366F1; --indigo-soft: rgba(99,102,241,0.12);
+    --max-w: 1080px; --read-w: 760px;
+    --radius-md: 14px; --radius-lg: 22px; --radius-pill: 100px;
+    --bg: #F4F6FB; --bg-soft: #EAEEF6; --card: #FFFFFF; --card-2: #FBFCFE;
+    --text: #0B1120; --text-2: #475569; --text-3: #8A97AB;
+    --border: rgba(15,23,42,0.10); --border-strong: rgba(15,23,42,0.16);
+    --shadow: 0 14px 40px rgba(15,23,42,0.08);
+  }
+  [data-theme="dark"] {
+    --bg: #0B1120; --bg-soft: #0E1626; --card: #121D33; --card-2: #0F1929;
+    --text: #F8FAFC; --text-2: #B6C2D6; --text-3: #6B7A92;
+    --border: rgba(148,163,184,0.14); --border-strong: rgba(148,163,184,0.24);
+    --shadow: 0 16px 48px rgba(0,0,0,0.4);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body {
+    font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+    background: radial-gradient(1200px 600px at 80% -100px, var(--bg-soft), var(--bg)) fixed;
+    color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  }
+  .wrap { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+  a { color: var(--blue); text-decoration: none; }
+
+  .topbar { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(14px);
+    background: color-mix(in srgb, var(--bg) 80%, transparent); border-bottom: 1px solid var(--border); }
+  .topbar-inner { max-width: var(--max-w); margin: 0 auto; padding: 12px 24px;
+    display: flex; align-items: center; justify-content: space-between; }
+  .brand-wrap { display: flex; align-items: center; }
+  .brand { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 14px;
+    background: linear-gradient(135deg, var(--blue), var(--sky));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; text-decoration: none; }
+  .brand-sub { font-size: 11px; color: var(--text-3); letter-spacing: 1.5px; text-transform: uppercase;
+    margin-left: 10px; padding-left: 10px; border-left: 1px solid var(--border); font-weight: 500; }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-2); text-decoration: none; font-weight: 500; }
+  .nav-link:hover { color: var(--sky); }
+  .toggle { background: none; border: 1px solid var(--border); color: var(--text-2);
+    width: 34px; height: 34px; border-radius: 50%; cursor: pointer; display: grid; place-items: center;
+    font-size: 15px; transition: all 0.2s; }
+  .toggle:hover { border-color: var(--border-strong); }
+
+  .hero { padding: 66px 0 26px; }
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500;
+    letter-spacing: 2.5px; text-transform: uppercase; color: var(--indigo);
+    display: inline-flex; align-items: center; gap: 10px; margin-bottom: 22px; }
+  .eyebrow .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--indigo); box-shadow: 0 0 12px var(--indigo); }
+  .hero h1 { font-size: clamp(38px, 6vw, 62px); font-weight: 800; line-height: 1.05;
+    letter-spacing: -1.8px; margin-bottom: 22px; max-width: 15ch; }
+  .hero h1 .hl { background: linear-gradient(135deg, var(--blue-glow), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .lede { font-size: 19px; color: var(--text-2); max-width: 720px; line-height: 1.6; font-weight: 300; }
+  .hero .lede .hl { color: var(--text); font-weight: 500; }
+
+  /* how-it-works strip */
+  .strip { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin: 34px 0 8px; }
+  @media (max-width: 760px){ .strip { grid-template-columns: 1fr; } }
+  .strip-item { background: var(--card-2); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px 22px; }
+  .strip-item .si-ic { font-size: 20px; margin-bottom: 8px; }
+  .strip-item h4 { font-size: 15px; font-weight: 700; margin-bottom: 5px; }
+  .strip-item p { font-size: 13.5px; color: var(--text-2); line-height: 1.55; }
+
+  section { padding: 40px 0; }
+  .sec-label { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--sky); font-weight: 600; margin-bottom: 12px; }
+  .sec-title { font-size: clamp(24px, 3.4vw, 32px); font-weight: 700; letter-spacing: -0.6px; margin-bottom: 10px; }
+  .sec-intro { font-size: 16px; color: var(--text-2); max-width: var(--read-w); line-height: 1.6; font-weight: 300; margin-bottom: 26px; }
+
+  /* changelog feed */
+  .feed { display: flex; flex-direction: column; gap: 12px; }
+  .entry { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 22px 26px; box-shadow: var(--shadow); display: grid; grid-template-columns: 130px 1fr; gap: 20px; }
+  @media (max-width: 680px){ .entry { grid-template-columns: 1fr; gap: 8px; } }
+  .entry .when { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--text-3); letter-spacing: 0.4px; }
+  .entry .tag { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; padding: 3px 9px; border-radius: var(--radius-pill); margin-top: 8px; }
+  .entry .tag.models { color: var(--indigo); background: var(--indigo-soft); }
+  .entry .tag.tooling { color: var(--green); background: var(--green-soft); }
+  .entry .tag.protocol { color: var(--sky); background: rgba(56,189,248,0.12); }
+  .entry h3 { font-size: 18px; font-weight: 700; letter-spacing: -0.3px; margin-bottom: 6px; }
+  .entry p { font-size: 14.5px; color: var(--text-2); line-height: 1.6; margin-bottom: 8px; }
+  .entry a.more { font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: var(--blue); font-weight: 600; }
+  .entry a.more:hover { text-decoration: underline; }
+  .feed-note { font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: var(--text-3); margin-top: 16px; max-width: var(--read-w); line-height: 1.6; }
+
+  /* stack + tools cards */
+  .cards { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+  @media (max-width: 860px){ .cards { grid-template-columns: repeat(2,1fr); } }
+  @media (max-width: 560px){ .cards { grid-template-columns: 1fr; } }
+  .svc { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 22px 24px; box-shadow: var(--shadow); text-decoration: none; color: inherit; display: block; transition: transform .25s, border-color .25s; border-top: 3px solid var(--accent, var(--sky)); }
+  .svc:hover { transform: translateY(-3px); border-color: var(--border-strong); }
+  .svc .svc-name { font-size: 16px; font-weight: 700; letter-spacing: -0.3px; margin-bottom: 4px; }
+  .svc .svc-path { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: var(--text-3); margin-bottom: 10px; display: block; }
+  .svc p { font-size: 13.5px; color: var(--text-2); line-height: 1.55; }
+  .svc.a-indigo { --accent: var(--indigo); } .svc.a-sky { --accent: var(--sky); }
+  .svc.a-green { --accent: var(--green); } .svc.a-warm { --accent: var(--warm); }
+  .svc .soon { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-3); letter-spacing: 1px; text-transform: uppercase; }
+
+  /* business callout */
+  .callout { background: var(--card-2); border: 1px solid var(--border); border-left: 4px solid var(--indigo); border-radius: var(--radius-lg); padding: 28px 32px; box-shadow: var(--shadow); max-width: var(--read-w); }
+  .callout h4 { font-size: 19px; font-weight: 700; margin-bottom: 10px; }
+  .callout p { font-size: 15px; color: var(--text-2); line-height: 1.7; margin-bottom: 14px; }
+  .callout p strong { color: var(--text); }
+  .callout .cta { display: inline-flex; gap: 14px; flex-wrap: wrap; }
+  .callout .cta a { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 600; }
+
+  footer { padding: 54px 0 48px; border-top: 1px solid var(--border); text-align: center; margin-top: 36px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600;
+    background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tag { font-size: 13px; color: var(--text-3); margin-bottom: 18px; }
+  .footer-links { display: flex; justify-content: center; gap: 22px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-2); text-decoration: none; }
+  .footer-links a:hover { color: var(--sky); }
+  .footer-copy { font-size: 12px; color: var(--text-3); margin-top: 18px; }
+
+  .fade { opacity: 0; transform: translateY(22px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade.vis { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand-wrap"><a href="/index.html" class="brand">know.2nth.ai</a><span class="brand-sub">Claude Tracker</span></div>
+    <div class="nav-right">
+      <a href="/briefings/" class="nav-link">Briefings</a>
+      <a href="/index.html#domains" class="nav-link">Knowledge tree</a>
+      <button class="toggle" onclick="toggleTheme()" aria-label="Toggle light/dark">🌙</button>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div class="eyebrow fade"><span class="dot"></span> Stay current &middot; Claude &amp; Anthropic</div>
+    <h1 class="fade" style="transition-delay:.05s">Claude &amp; Anthropic, <span class="hl">tracked.</span></h1>
+    <p class="lede fade" style="transition-delay:.1s">
+      Claude is moving fast &mdash; new models, Claude Code releases, Agent Skills, MCP, and a whole emerging layer of tools, tricks, settings and extensions. This is the one place that maps it for <span class="hl">business</span>: what shipped, what it actually changes, and how your team puts it to work. Plain-language, kept current, and wired to the deeper technical leaves for whoever has to build it.
+    </p>
+    <div class="strip fade" style="transition-delay:.15s">
+      <div class="strip-item">
+        <div class="si-ic">🛰️</div>
+        <h4>What moved, and why it matters</h4>
+        <p>A running feed of meaningful changes across models, Claude Code and the protocols &mdash; each translated from release-note to business consequence.</p>
+      </div>
+      <div class="strip-item">
+        <div class="si-ic">🧰</div>
+        <h4>The tools &amp; tricks layer</h4>
+        <p>Hooks, sub-agents, slash commands, MCP servers, output styles, plugins, settings &mdash; the fast-moving practitioner layer, explained without the jargon.</p>
+      </div>
+      <div class="strip-item">
+        <div class="si-ic">🎓</div>
+        <h4>Built for training</h4>
+        <p>Designed to brief a team or a board. Every topic links to a CEO briefing for awareness and a technical leaf for the people who implement.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT'S MOVING -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="sec-label">The feed</div>
+      <h2 class="sec-title">What we&rsquo;re tracking now</h2>
+      <p class="sec-intro">The themes we watch on every update. Dated, sourced entries land here as they ship &mdash; verified before they&rsquo;re published, the same way every briefing is.</p>
+    </div>
+    <div class="feed fade" style="transition-delay:.05s">
+      <div class="entry">
+        <div><div class="when">Tracked</div><span class="tag models">Models</span></div>
+        <div>
+          <h3>The Claude model line &mdash; Opus, Sonnet, Haiku</h3>
+          <p>Tier changes, context windows, pricing and the &ldquo;which model for which job&rdquo; call. The decision most teams get wrong by defaulting to the biggest or the cheapest.</p>
+          <a class="more" href="/explainers/agents/claude">Technical leaf: agents/claude &nearr;</a>
+        </div>
+      </div>
+      <div class="entry">
+        <div><div class="when">Tracked</div><span class="tag tooling">Tooling</span></div>
+        <div>
+          <h3>Claude Code &mdash; the agent harness</h3>
+          <p>Releases that change how work gets done: hooks, sub-agents, slash commands and skills, background tasks, IDE and web surfaces. Where the &ldquo;builder is the operator&rdquo; thesis becomes a real workflow.</p>
+          <a class="more" href="/explainers/agents/claude-code">Technical leaf: agents/claude-code &nearr;</a>
+        </div>
+      </div>
+      <div class="entry">
+        <div><div class="when">Tracked</div><span class="tag protocol">Protocol</span></div>
+        <div>
+          <h3>Agent Skills &amp; MCP &mdash; the open standards</h3>
+          <p>How capability and data get packaged and reached. Agent Skills (folders + <code>SKILL.md</code>) and the Model Context Protocol are the interoperable plumbing under every serious Claude deployment.</p>
+          <a class="more" href="/explainers/agents/skills">Leaves: agents/skills &middot; agents/mcp &nearr;</a>
+        </div>
+      </div>
+    </div>
+    <p class="feed-note fade">↻ Updated on a regular cadence. Each dated entry cites its primary source (Anthropic changelog, docs or announcement) and notes the business consequence — no unsourced claims.</p>
+  </div>
+</section>
+
+<!-- THE STACK -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="sec-label">The stack</div>
+      <h2 class="sec-title">Claude, mapped</h2>
+      <p class="sec-intro">The pieces that matter, each a maintained leaf in the knowledge tree. Start here to understand the parts before the changes make sense.</p>
+    </div>
+    <div class="cards fade" style="transition-delay:.05s">
+      <a href="/explainers/agents/claude" class="svc a-indigo">
+        <div class="svc-name">Claude (models)</div>
+        <span class="svc-path">agents/claude</span>
+        <p>Anthropic&rsquo;s flagship family &mdash; Opus / Sonnet / Haiku. Frontier reasoning, native MCP and tool-use, extended thinking. The default for production agents that need long-context reasoning and reliable function-calling.</p>
+      </a>
+      <a href="/explainers/agents/claude-code" class="svc a-green">
+        <div class="svc-name">Claude Code</div>
+        <span class="svc-path">agents/claude-code</span>
+        <p>The coding-CLI agent harness. Runs in terminal, IDE, desktop and web; orchestrates sub-agents, tools and skills. The surface where one operator commands many agents.</p>
+      </a>
+      <a href="/explainers/agents/anthropic-agent-sdk" class="svc a-sky">
+        <div class="svc-name">Anthropic Agent SDK</div>
+        <span class="svc-path">agents/anthropic-agent-sdk</span>
+        <p>Claude-first agent framework &mdash; MCP-native, extended-thinking integration, sub-agent orchestration. The default when Claude is the model.</p>
+      </a>
+      <a href="/explainers/agents/skills" class="svc a-green">
+        <div class="svc-name">Agent Skills</div>
+        <span class="svc-path">agents/skills</span>
+        <p>Open standard for packaging capabilities as folders (<code>SKILL.md</code> + scripts/refs/assets). Native in Claude Code, Claude.ai and the API; progressive disclosure keeps context lean.</p>
+      </a>
+      <a href="/explainers/agents/mcp" class="svc a-sky">
+        <div class="svc-name">Model Context Protocol</div>
+        <span class="svc-path">agents/mcp</span>
+        <p>Anthropic-originated, broadly adopted. The lingua franca that lets any agent consume tools and data from any MCP server.</p>
+      </a>
+      <a href="/explainers/agents/coding-cli-agents" class="svc a-warm">
+        <div class="svc-name">Coding CLI agents</div>
+        <span class="svc-path">agents/coding-cli-agents</span>
+        <p>Claude Code in context &mdash; how it compares to OpenAI Codex CLI and GitHub Copilot CLI. The honest field guide to the category.</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- TOOLS, TRICKS & SETTINGS -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="sec-label">The practitioner layer</div>
+      <h2 class="sec-title">Tools, tricks &amp; settings</h2>
+      <p class="sec-intro">The fast-moving layer you&rsquo;re seeing emerge &mdash; the configuration and extension points that turn Claude Code from a chat box into an operated system. Deeper leaves for each are rolling out; here&rsquo;s the map.</p>
+    </div>
+    <div class="cards fade" style="transition-delay:.05s">
+      <div class="svc a-green">
+        <div class="svc-name">Hooks</div>
+        <span class="svc-path">automation</span>
+        <p>Shell commands the harness runs automatically on events &mdash; format on save, block risky edits, notify on stop. How you encode &ldquo;always do X&rdquo; reliably.</p>
+      </div>
+      <div class="svc a-indigo">
+        <div class="svc-name">Sub-agents</div>
+        <span class="svc-path">orchestration</span>
+        <p>Specialised agents the operator delegates to &mdash; explore, review, plan &mdash; each with its own tools and context. Parallelism and separation of concerns.</p>
+      </div>
+      <div class="svc a-sky">
+        <div class="svc-name">Slash commands &amp; Skills</div>
+        <span class="svc-path">capabilities</span>
+        <p>Reusable, packaged workflows invoked on demand. The unit you build once and the whole team runs the same way.</p>
+      </div>
+      <div class="svc a-sky">
+        <div class="svc-name">MCP servers</div>
+        <span class="svc-path">connectivity</span>
+        <p>Connect Claude to your tools and data &mdash; ERP, CRM, files, internal APIs &mdash; through one standard protocol, scoped and auditable.</p>
+      </div>
+      <div class="svc a-warm">
+        <div class="svc-name">Settings &amp; permissions</div>
+        <span class="svc-path">governance</span>
+        <p>Allow-lists, permission modes, environment config. Where safety and &ldquo;don&rsquo;t prompt me 40 times&rdquo; are tuned for a team.</p>
+      </div>
+      <div class="svc a-indigo">
+        <div class="svc-name">Plugins &amp; output styles</div>
+        <span class="svc-path">extensions</span>
+        <p>The extension and presentation layer &mdash; packaged add-ons and how responses are shaped for a given audience or workflow.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOR BUSINESS -->
+<section>
+  <div class="wrap">
+    <div class="callout fade">
+      <h4>Using this to train a team or a board</h4>
+      <p>This tracker is the technical half. The <strong>CEO Briefings</strong> are the other half &mdash; the same subjects told as the decisions a leader has to make. Start with the convergence thesis (why &ldquo;builder&rdquo; and &ldquo;operator&rdquo; are the same role), then hand the relevant leaf to whoever builds it.</p>
+      <div class="cta">
+        <a href="/briefings/builder-is-the-operator">Briefing: The Builder Is the Operator &rarr;</a>
+        <a href="/briefings/">All CEO briefings &rarr;</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tag">Claude Tracker &middot; staying current with Claude &amp; Anthropic, for business</p>
+    <div class="footer-links">
+      <a href="/briefings/">CEO Briefings</a>
+      <a href="/index.html">Knowledge tree</a>
+      <a href="https://2nth.ai" target="_blank" rel="noopener">2nth.ai</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme(){
+    const h=document.documentElement, cur=h.getAttribute('data-theme'), nxt=cur==='dark'?'light':'dark';
+    h.setAttribute('data-theme',nxt);
+    document.querySelector('.toggle').textContent = nxt==='dark' ? '☀️' : '🌙';
+    localStorage.setItem('brief-theme',nxt);
+  }
+  const saved=localStorage.getItem('brief-theme');
+  if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.toggle').textContent=saved==='dark'?'☀️':'🌙';}
+  const ob=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');});},{threshold:0.08,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.fade').forEach(el=>ob.observe(el));
+</script>
+</body>
+</html>
