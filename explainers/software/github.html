@@ -287,11 +287,46 @@
   </div>
 </section>
 
-<!-- 06 SA CONTEXT -->
+<!-- 06 MEMORY, SKILLS & GROUNDING -->
+<section id="memory">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; Memory, skills &amp; grounding</div>
+      <h2 class="section-title">The repo is where an agent remembers, learns, and stays grounded.</h2>
+      <p class="section-lede">A model is stateless &mdash; a brain in a jar with no memory and no access to your business. Everything that makes an agent durable, capable, and correct is <strong>files in a repository</strong>, versioned like code.</p>
+    </div>
+    <div class="stack-grid fade-up" style="transition-delay: 0.05s">
+      <div class="stack-cell">
+        <span class="layer">Memory</span>
+        <h4>Notes the agent can re-read</h4>
+        <p>The model forgets everything between requests. Persistent memory is software writing notes back to the repo &mdash; a <code>CLAUDE.md</code>, an <code>AGENTS.md</code>, decision records, the PR trail &mdash; and reading them in next time. Versioned, reviewable, diffable.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Skills</span>
+        <h4>Capabilities, packaged</h4>
+        <p>An Agent Skill is a folder with a <code>SKILL.md</code> committed to the repo. Build a capability once, version it, and every agent on the team loads the same one. The canonical library, <code>anthropics/skills</code>, is itself a GitHub repo (~131k stars).</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Grounding</span>
+        <h4>Tied to the live state</h4>
+        <p>Agents go wrong when they guess. Keeping context &mdash; configs, schemas, runbooks, structured data &mdash; in version control means the agent reasons over the <em>current</em> truth of the business, not a stale snapshot, and you can see exactly what it saw.</p>
+      </div>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.08s">
+      <p>This is why "AI memory" and "agent skills" aren't a separate product to buy &mdash; they're the repository discipline you may already have. Notes-to-self, packaged capabilities, and grounding context are all just <strong>committed files under review</strong>. The same pull-request workflow that gates code changes also gates what an agent knows and how it behaves, so memory and skills evolve with an audit trail instead of drifting in someone's chat history.</p>
+    </div>
+    <div class="info-card code fade-up" style="transition-delay: 0.1s">
+      <h4>Where this is developed in the tree</h4>
+      <p><a href="software-for-agents.html" style="color:var(--code)">software/software-for-agents</a> treats the repo as the agent's context, workspace and audit trail. <a href="../agents/skills.html" style="color:var(--code)">agents/skills</a> is the <code>SKILL.md</code> standard in full. <a href="../agents/rearchitecture.html" style="color:var(--code)">agents/rearchitecture</a> is the Ng &times; Chase case for grounded, structured data; <a href="../agents/mcp.html" style="color:var(--code)">agents/mcp</a> is the seam where that grounded data reaches the agent. And <a href="ai-is-software.html" style="color:var(--code)">software/ai-is-software</a> is why a stateless brain needs all of it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 07 SA CONTEXT -->
 <section id="sa-context">
   <div class="container">
     <div class="fade-up">
-      <div class="section-label">06 &middot; South African context</div>
+      <div class="section-label">07 &middot; South African context</div>
       <h2 class="section-title">Repo-readiness as AI-readiness.</h2>
     </div>
     <div class="info-card code fade-up" style="transition-delay: 0.05s">
@@ -308,10 +343,25 @@
 <section id="connect">
   <div class="container">
     <div class="fade-up">
-      <div class="section-label">07 &middot; Connections</div>
+      <div class="section-label">08 &middot; Connections</div>
       <h2 class="section-title">Where repositories link in the tree.</h2>
     </div>
     <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="software-for-agents.html" class="connect-node">
+        <span class="tag">software/software-for-agents</span>
+        <div class="skill">Software for agents</div>
+        <div class="why">The repo as an agent's context, memory and audit trail &mdash; SKILL.md in version control. The full version of §06.</div>
+      </a>
+      <a href="../agents/skills.html" class="connect-node">
+        <span class="tag">agents/skills</span>
+        <div class="skill">Agent Skills</div>
+        <div class="why">The SKILL.md standard. Capabilities packaged as committed folders; the canonical library is itself a GitHub repo.</div>
+      </a>
+      <a href="../agents/rearchitecture.html" class="connect-node">
+        <span class="tag">agents/rearchitecture</span>
+        <div class="skill">Agents, data &amp; trust</div>
+        <div class="why">Why grounding in structured, owned data is the prerequisite &mdash; the Ng &times; Chase thesis behind compounding agents.</div>
+      </a>
       <a href="version-control.html" class="connect-node">
         <span class="tag">software/version-control</span>
         <div class="skill">Version control</div>
@@ -350,7 +400,7 @@
 <section id="resources">
   <div class="container">
     <div class="fade-up">
-      <div class="section-label">08 &middot; Resources</div>
+      <div class="section-label">09 &middot; Resources</div>
       <h2 class="section-title">Primary sources only.</h2>
     </div>
     <div class="resource-grid fade-up" style="transition-delay: 0.05s">
@@ -363,6 +413,11 @@
         <span class="r-kind">Repo</span>
         <span class="r-title">GitHub MCP server — repos/issues/PRs as agent tools</span>
         <span class="r-url">github.com/github/github-mcp-server</span>
+      </a>
+      <a href="https://github.com/anthropics/skills" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Repo</span>
+        <span class="r-title">anthropics/skills — the canonical Agent Skills library</span>
+        <span class="r-url">github.com/anthropics/skills</span>
       </a>
       <a href="https://docs.gitlab.com" class="resource" target="_blank" rel="noopener">
         <span class="r-kind">Docs</span>
