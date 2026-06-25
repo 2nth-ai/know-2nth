@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Software for agents &mdash; know.2nth.ai</title>
-<meta name="description" content="Where the Software branch meets the Agents domain head-on. The repository as an agent's context window, SKILL.md and instructions in version control, agent-authored pull requests, and CI as the agent's safety net. Why repo-ready is agent-ready.">
+<meta name="description" content="Where the Software branch meets the Agents domain head-on. The repository as an agent's memory, skills, and grounding — context window, SKILL.md and instructions in version control, agent-authored pull requests, and CI as the agent's safety net. Why repo-ready is agent-ready.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="know.2nth.ai">
 <meta property="og:url" content="https://know.2nth.ai/explainers/software/software-for-agents">
@@ -149,11 +149,12 @@
       Where this branch meets <span class="gradient">Agents.</span>
     </h1>
     <p class="sub fade-up" style="transition-delay: 0.1s">
-      The Agents domain says <em>agents are software, not prompt soup</em>. This leaf is the concrete consequence: the repository is the agent's <strong>context, workspace, and audit trail</strong> all at once. The repo is what it reads, version control is how it's instructed and how its work is gated, and CI is the safety net that makes its autonomy safe. <strong>Repo-ready is agent-ready.</strong>
+      The Agents domain says <em>agents are software, not prompt soup</em>. This leaf is the concrete consequence: the repository is where an agent's <strong>memory, skills, and grounding</strong> live &mdash; its context, workspace, and audit trail all at once. The repo is what it reads, version control is how it's instructed and how its work is gated, and CI is the safety net that makes its autonomy safe. <strong>Repo-ready is agent-ready.</strong>
     </p>
     <div class="hero-meta fade-up" style="transition-delay: 0.15s">
       <span class="pill code">Repo-as-context</span>
-      <span class="pill accent">SKILL.md in VCS</span>
+      <span class="pill accent">Memory + skills</span>
+      <span class="pill green">Grounding</span>
       <span class="pill green">Agent PRs</span>
       <span class="pill warn">CI safety net</span>
     </div>
@@ -178,11 +179,41 @@
   </div>
 </section>
 
-<!-- 02 SKILL.MD IN VCS -->
+<!-- 02 MEMORY, SKILLS & GROUNDING -->
+<section id="triad">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; Memory, skills &amp; grounding</div>
+      <h2 class="section-title">Three jobs the repository does.</h2>
+      <p class="section-lede">&ldquo;Give the agent memory,&rdquo; &ldquo;teach it a skill,&rdquo; and &ldquo;keep it grounded&rdquo; sound like three products to buy. They&rsquo;re three uses of one thing you already have: <strong>files under version control</strong>. Pulling them apart is worth doing, because they fail in different ways.</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead><tr><th>Job</th><th>What it is</th><th>Where it lives in the repo</th><th>Failure mode if missing</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Memory</strong></td><td>What the agent has learned and decided over time &mdash; carried across sessions a stateless model can&rsquo;t hold itself</td><td><code>CLAUDE.md</code> notes, decision records (ADRs), the commit &amp; PR trail, a <code>/memory</code> or <code>docs/</code> folder</td><td>The agent re-learns the same context every session and repeats past mistakes</td></tr>
+          <tr><td><strong>Skills</strong></td><td>Reusable capabilities &mdash; how to do a specific task, the same way every time</td><td><code>SKILL.md</code> folders (instructions + <code>scripts/</code>, <code>references/</code>, <code>assets/</code>)</td><td>Every agent improvises; quality is inconsistent and non-transferable</td></tr>
+          <tr><td><strong>Grounding</strong></td><td>Tie to the <em>current</em> truth of the system &mdash; the live state it must reason over, not a guess</td><td>The code itself, schemas, configs, runbooks, tests, and structured data the agent can read or fetch</td><td>The agent confidently invents APIs, fields, and facts that aren&rsquo;t real</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.08s">
+      <p><strong>Memory has tiers, and only the durable ones belong in the repo.</strong> The model&rsquo;s context window is <em>short-term memory</em> &mdash; fast, but gone the moment the session ends. Anything that must survive is <em>long-term memory</em>: software writing notes back to durable storage and reading them in next time. In a repo that storage is just committed text &mdash; an updated <code>CLAUDE.md</code>, an architecture decision record, a note in <code>docs/</code>. And the repo gives you a tier most systems lack for free: <strong>git history is episodic memory</strong> &mdash; every change, who made it, when, and the reasoning in the PR. The agent can read the log to recover not just <em>what</em> the code is but <em>how it got that way</em>.</p>
+      <p><strong>Grounding is not memory, and conflating them causes real bugs.</strong> Memory is the agent&rsquo;s accumulated <em>internal</em> notes; grounding is its tie to <em>external current truth</em>. A note that says &ldquo;the orders table has a <code>status</code> column&rdquo; is memory &mdash; and it goes stale the instant someone renames the column. Grounding is reading the live schema, the actual code, the real config at the moment of the task. The discipline: keep memory for intent and decisions (&ldquo;<em>why</em> we did it this way&rdquo;) and ground facts against the live source (&ldquo;<em>what</em> is true right now&rdquo;). When an agent hallucinates a field that doesn&rsquo;t exist, it&rsquo;s almost always trusting stale memory where it should have grounded.</p>
+      <p>For data too large to sit in the repo &mdash; a document corpus, a warehouse, a customer record set &mdash; grounding moves from &ldquo;read the file&rdquo; to <strong>retrieval</strong>: the agent fetches the relevant slice on demand, classically via vector search (RAG) or, increasingly, through a tool call over <strong>MCP</strong>. The repo still holds the <em>wiring</em> &mdash; which sources exist, how they&rsquo;re reached, what&rsquo;s in scope &mdash; even when the data itself lives elsewhere. The principle is unchanged: the agent reasons over current, retrievable truth, and the configuration of that truth is versioned.</p>
+    </div>
+    <div class="info-card code fade-up" style="transition-delay: 0.1s">
+      <h4>Why &ldquo;files under review&rdquo; beats a memory product</h4>
+      <p>Because all three jobs reduce to committed files, they inherit the repo&rsquo;s whole discipline at no extra cost: memory and skills <strong>evolve through pull requests</strong>, so a change to what the agent knows or how it behaves is reviewable, attributable, and reversible &mdash; not drifting in someone&rsquo;s chat history. You can <code>git blame</code> a behaviour, <code>git revert</code> a bad instruction, and diff exactly how an agent&rsquo;s context changed between releases. A black-box &ldquo;agent memory&rdquo; service gives you none of that. The next three sections are the mechanics: how skills are packaged, how the agent&rsquo;s work is gated, and how CI keeps it all honest.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 SKILL.MD IN VCS -->
 <section id="skills">
   <div class="container">
     <div class="fade-up">
-      <div class="section-label">02 &middot; Instructions in version control</div>
+      <div class="section-label">03 &middot; Instructions in version control</div>
       <h2 class="section-title">Capabilities as committed files.</h2>
       <p class="section-lede">The most important agent-era addition to a repo is text written <em>for the agent</em> — instructions, conventions, and reusable procedures, committed and versioned like everything else.</p>
     </div>
@@ -218,7 +249,7 @@
 <section id="prs">
   <div class="container">
     <div class="fade-up">
-      <div class="section-label">03 &middot; Agent-authored pull requests</div>
+      <div class="section-label">04 &middot; Agent-authored pull requests</div>
       <h2 class="section-title">The agent works the way everyone works.</h2>
     </div>
     <div class="prose fade-up" style="transition-delay: 0.05s">
@@ -236,7 +267,7 @@
 <section id="ci">
   <div class="container">
     <div class="fade-up">
-      <div class="section-label">04 &middot; CI as the safety net</div>
+      <div class="section-label">05 &middot; CI as the safety net</div>
       <h2 class="section-title">The automated reviewer that never tires.</h2>
     </div>
     <div class="prose fade-up" style="transition-delay: 0.05s">
@@ -254,7 +285,7 @@
 <section id="ready">
   <div class="container">
     <div class="fade-up">
-      <div class="section-label">05 &middot; Making an org agent-ready</div>
+      <div class="section-label">06 &middot; Making an org agent-ready</div>
       <h2 class="section-title">Repo-ready is agent-ready.</h2>
     </div>
     <div class="prose fade-up" style="transition-delay: 0.05s">
@@ -274,7 +305,7 @@
 <section id="sa-context">
   <div class="container">
     <div class="fade-up">
-      <div class="section-label">06 &middot; South African context</div>
+      <div class="section-label">07 &middot; South African context</div>
       <h2 class="section-title">An affordable path to real AI leverage.</h2>
     </div>
     <div class="info-card code fade-up" style="transition-delay: 0.05s">
@@ -288,7 +319,7 @@
 <section id="connect">
   <div class="container">
     <div class="fade-up">
-      <div class="section-label">07 &middot; Connections</div>
+      <div class="section-label">08 &middot; Connections</div>
       <h2 class="section-title">Where this links in the tree.</h2>
     </div>
     <div class="connect-grid fade-up" style="transition-delay: 0.05s">
@@ -317,6 +348,16 @@
         <div class="skill">Agent Skills</div>
         <div class="why">Capabilities as version-controlled SKILL.md files — the format behind "instructions in version control".</div>
       </a>
+      <a href="../agents/rearchitecture.html" class="connect-node">
+        <span class="tag">agents/rearchitecture</span>
+        <div class="skill">Agents, data &amp; trust</div>
+        <div class="why">The grounding case in full — Ng × Chase on why agents need structured, owned data to stay tied to the live state.</div>
+      </a>
+      <a href="../agents/mcp.html" class="connect-node">
+        <span class="tag">agents/mcp</span>
+        <div class="skill">Model Context Protocol</div>
+        <div class="why">The seam where grounding scales beyond the repo — the agent fetches current data on demand via a tool call.</div>
+      </a>
       <a href="../agents/coding-cli-agents.html" class="connect-node">
         <span class="tag">agents/coding-cli-agents</span>
         <div class="skill">Coding CLI agents</div>
@@ -330,7 +371,7 @@
 <section id="resources">
   <div class="container">
     <div class="fade-up">
-      <div class="section-label">08 &middot; Resources</div>
+      <div class="section-label">09 &middot; Resources</div>
       <h2 class="section-title">Primary sources only.</h2>
     </div>
     <div class="resource-grid fade-up" style="transition-delay: 0.05s">
