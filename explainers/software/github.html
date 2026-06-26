@@ -304,7 +304,7 @@
       <div class="stack-cell">
         <span class="layer">Skills</span>
         <h4>Capabilities, packaged</h4>
-        <p>An Agent Skill is a folder with a <code>SKILL.md</code> committed to the repo. Build a capability once, version it, and every agent on the team loads the same one. The canonical library, <code>anthropics/skills</code>, is itself a GitHub repo (~131k stars).</p>
+        <p>An Agent Skill is a folder with a <code>SKILL.md</code> committed to the repo. Build a capability once, version it, and every agent on the team loads the same one. The canonical library, <code>anthropics/skills</code>, is itself a GitHub repo (~155k stars).</p>
       </div>
       <div class="stack-cell">
         <span class="layer">Grounding</span>
@@ -318,6 +318,58 @@
     <div class="info-card code fade-up" style="transition-delay: 0.1s">
       <h4>Where this is developed in the tree</h4>
       <p><a href="software-for-agents.html" style="color:var(--code)">software/software-for-agents</a> treats the repo as the agent's context, workspace and audit trail. <a href="../agents/skills.html" style="color:var(--code)">agents/skills</a> is the <code>SKILL.md</code> standard in full. <a href="../agents/rearchitecture.html" style="color:var(--code)">agents/rearchitecture</a> is the Ng &times; Chase case for grounded, structured data; <a href="../agents/mcp.html" style="color:var(--code)">agents/mcp</a> is the seam where that grounded data reaches the agent. And <a href="ai-is-software.html" style="color:var(--code)">software/ai-is-software</a> is why a stateless brain needs all of it.</p>
+    </div>
+
+    <div class="fade-up" style="transition-delay: 0.12s; margin-top: 36px;">
+      <div class="section-label">The reference shelf</div>
+      <h3 style="font-size: 20px; font-weight: 700; letter-spacing: -0.4px; margin-bottom: 10px;">The repos worth knowing &mdash; memory, skills &amp; grounding.</h3>
+      <p class="section-lede" style="margin-bottom: 22px;">The open-source projects that turn the repo-as-memory idea into running infrastructure. Star counts are a health signal, not a recommendation &mdash; checked June 2026. A plain <code>CLAUDE.md</code> / <code>AGENTS.md</code> in your own repo beats all of them until you actually need scale.</p>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.14s">
+      <a href="https://github.com/mem0ai/mem0" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Memory &middot; 59k&starf;</span>
+        <span class="r-title">mem0ai/mem0 &mdash; universal memory layer</span>
+        <span class="r-url">github.com/mem0ai/mem0</span>
+      </a>
+      <a href="https://github.com/letta-ai/letta" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Memory &middot; 24k&starf;</span>
+        <span class="r-title">letta-ai/letta &mdash; stateful agents (ex-MemGPT); memory as an OS</span>
+        <span class="r-url">github.com/letta-ai/letta</span>
+      </a>
+      <a href="https://github.com/getzep/graphiti" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Memory + Grounding &middot; 28k&starf;</span>
+        <span class="r-title">getzep/graphiti &mdash; real-time temporal knowledge graphs</span>
+        <span class="r-url">github.com/getzep/graphiti</span>
+      </a>
+      <a href="https://github.com/topoteretes/cognee" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Memory &middot; 23k&starf;</span>
+        <span class="r-title">topoteretes/cognee &mdash; self-hosted knowledge-graph memory</span>
+        <span class="r-url">github.com/topoteretes/cognee</span>
+      </a>
+      <a href="https://github.com/agentskills/agentskills" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Skills &middot; 21k&starf;</span>
+        <span class="r-title">agentskills/agentskills &mdash; the open Agent Skills spec</span>
+        <span class="r-url">github.com/agentskills/agentskills</span>
+      </a>
+      <a href="https://github.com/agentsmd/agents.md" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Skills &middot; 23k&starf;</span>
+        <span class="r-title">agentsmd/agents.md &mdash; the AGENTS.md instructions convention</span>
+        <span class="r-url">github.com/agentsmd/agents.md</span>
+      </a>
+      <a href="https://github.com/modelcontextprotocol/servers" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Grounding &middot; 88k&starf;</span>
+        <span class="r-title">modelcontextprotocol/servers &mdash; reference MCP servers</span>
+        <span class="r-url">github.com/modelcontextprotocol/servers</span>
+      </a>
+      <a href="https://github.com/anthropics/skills" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Skills &middot; 155k&starf;</span>
+        <span class="r-title">anthropics/skills &mdash; the canonical Agent Skills library</span>
+        <span class="r-url">github.com/anthropics/skills</span>
+      </a>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.16s; margin-top: 4px;">
+      <h4>The 2nth read on this shelf</h4>
+      <p>Don't start here. Start with a <code>CLAUDE.md</code> and a <code>SKILL.md</code> folder in the repo you already have &mdash; that <em>is</em> memory and skills, versioned and reviewable, with nothing to host. Reach for a <strong>memory</strong> framework (<code>mem0</code>, <code>letta</code>) only when an agent needs durable, queryable recall across many sessions and users; reach for a <strong>temporal knowledge graph</strong> (<code>graphiti</code>, <code>cognee</code>) when facts change over time and "what was true <em>when</em>" matters. <strong>Grounding</strong> is the seam, not a store: <code>modelcontextprotocol/servers</code> is how the agent reaches your live, owned data &mdash; the part worth investing in first.</p>
     </div>
   </div>
 </section>
@@ -418,6 +470,16 @@
         <span class="r-kind">Repo</span>
         <span class="r-title">anthropics/skills — the canonical Agent Skills library</span>
         <span class="r-url">github.com/anthropics/skills</span>
+      </a>
+      <a href="https://github.com/modelcontextprotocol/servers" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Repo</span>
+        <span class="r-title">modelcontextprotocol/servers — grounding via MCP</span>
+        <span class="r-url">github.com/modelcontextprotocol/servers</span>
+      </a>
+      <a href="https://github.com/mem0ai/mem0" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Repo</span>
+        <span class="r-title">mem0ai/mem0 — universal agent memory layer</span>
+        <span class="r-url">github.com/mem0ai/mem0</span>
       </a>
       <a href="https://docs.gitlab.com" class="resource" target="_blank" rel="noopener">
         <span class="r-kind">Docs</span>
