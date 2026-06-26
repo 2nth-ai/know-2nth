@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Building Effective Agents &mdash; know.2nth.ai</title>
+<meta name="description" content="Anthropic's taxonomy for building effective agents, mapped to the tree. The augmented LLM building block; workflows vs agents; the five workflow patterns — prompt chaining, routing, parallelization, orchestrator-workers, evaluator-optimizer; when not to use an agent; and the three principles: simplicity, transparency, a well-crafted agent-computer interface.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/agents/effective-agents">
+<meta property="og:title" content="Building Effective Agents &mdash; know.2nth.ai">
+<meta property="og:description" content="Workflows vs agents, the augmented LLM, the five workflow patterns, and the three principles — Anthropic's practical agent-design taxonomy, mapped to the tree.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Building Effective Agents &mdash; know.2nth.ai">
+<meta name="twitter:description" content="Workflows vs agents, the augmented LLM, the five workflow patterns, and the three principles. Anthropic's agent-design taxonomy, mapped to the tree.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3Cline x1='16' y1='3' x2='16' y2='7' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='16' y1='25' x2='16' y2='29' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='3' y1='16' x2='7' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='25' y1='16' x2='29' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3C/svg%3E">
+<style>
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12); --violet: #8B5CF6; --violet-soft: rgba(139, 92, 246, 0.12); --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-soft: rgba(99, 102, 241, 0.12); --bg: var(--ink); --bg-raised: var(--navy); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(37, 99, 235, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(56, 189, 248, 0.3); --max-w: 1200px; --read-w: 760px; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-raised: #FFFFFF; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(37, 99, 235, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(37, 99, 235, 0.25); }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.blue { width: 600px; height: 600px; background: var(--blue); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--sky); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--sky); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .read { max-width: var(--read-w); }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--sky); }
+  .crumb-sep { opacity: 0.5; }
+  .crumb-current { color: var(--text-secondary); }
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--indigo); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--indigo); box-shadow: 0 0 12px var(--indigo); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--blue-glow), var(--sky), var(--sky-muted)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.accent { background: rgba(37, 99, 235, 0.12); color: var(--blue-glow); border-color: rgba(37, 99, 235, 0.25); }
+  .pill.green { background: var(--green-soft); color: var(--green); border-color: rgba(16, 185, 129, 0.25); }
+  .pill.indigo { background: var(--indigo-soft); color: var(--indigo); border-color: rgba(99, 102, 241, 0.25); }
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--sky); margin-bottom: 14px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--sky); }
+  .prose ul, .prose ol { padding-left: 24px; margin-bottom: 18px; max-width: var(--read-w); }
+  .prose li { font-size: 15px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 8px; }
+  .prose li strong { color: var(--text-primary); font-weight: 600; }
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); margin-bottom: 20px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.indigo { border-left: 3px solid var(--indigo); }
+  .info-card.rose { border-left: 3px solid var(--rose); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .info-card code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--sky); }
+  .info-card strong { color: var(--text-primary); }
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: var(--read-w); margin-bottom: 20px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--sky); background: rgba(37, 99, 235, 0.04); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); }
+  .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--sky); }
+  .compare td strong { color: var(--text-primary); }
+  .pattern { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--indigo); border-radius: var(--radius-md); padding: 22px 26px; max-width: var(--read-w); margin-bottom: 14px; }
+  .pattern .pnum { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--indigo); display: block; margin-bottom: 8px; }
+  .pattern h4 { font-size: 18px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.3px; }
+  .pattern p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .pattern p:last-child { margin-bottom: 0; }
+  .pattern .when { font-size: 13px; color: var(--text-secondary); }
+  .pattern .when strong { color: var(--sky); font-weight: 600; }
+  .stack-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; max-width: var(--read-w); margin-bottom: 20px; }
+  .stack-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--indigo); border-radius: var(--radius-md); padding: 18px 22px; }
+  .stack-cell .layer { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .stack-cell h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.3px; }
+  .stack-cell p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+  .connect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .connect-node { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; transition: all 0.3s; text-decoration: none; color: inherit; display: block; }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node .tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--sky); word-break: break-all; }
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--sky); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+
+<div class="glow-orb blue"></div>
+<div class="glow-orb sky"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand"><span class="nav-brand-mark">know.2nth.ai</span><span class="nav-brand-sub">agents/effective-agents</span></a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">&larr; Agents</a>
+      <a href="../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x1F319;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="./">Agents</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">Building Effective Agents</span>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> agents &middot; Building Effective Agents &middot; Skill Leaf</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      Most &ldquo;agents&rdquo; should be <span class="gradient">workflows.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      Anthropic&rsquo;s <em>Building Effective Agents</em> (Schluntz &amp; Zhang, Dec 2024) is the most-cited practical guide to composing agentic systems. Its core move is a distinction most teams skip: <strong>workflows</strong> orchestrate LLMs through predefined code paths; <strong>agents</strong> let the LLM direct its own process. The advice that follows is consistently &ldquo;use the simplest thing that works&rdquo; &mdash; and most of the time, that&rsquo;s a workflow. This leaf maps the taxonomy to the rest of the tree.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill indigo">Anthropic origin</span>
+      <span class="pill accent">Workflows vs agents</span>
+      <span class="pill">Augmented LLM</span>
+      <span class="pill">5 patterns</span>
+      <span class="pill green">Dec 2024</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 THE DISTINCTION -->
+<section id="distinction">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; The core distinction</div>
+      <h2 class="section-title">Workflows and agents are not the same thing.</h2>
+      <p class="section-lede">Anthropic groups everything people loosely call &ldquo;agentic&rdquo; into two categories, and keeping them apart is the whole point of the article &mdash; they have different cost, predictability, and failure profiles.</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead><tr><th>&nbsp;</th><th>Workflow</th><th>Agent</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Who decides the steps</strong></td><td>You do, in code &mdash; predefined paths</td><td>The model does, dynamically, at run time</td></tr>
+          <tr><td><strong>Control flow</strong></td><td>Fixed; LLMs &amp; tools orchestrated through code</td><td>Open-ended; the LLM directs its own tool use</td></tr>
+          <tr><td><strong>Predictability</strong></td><td>High &mdash; same shape every run</td><td>Lower &mdash; the path varies with the task</td></tr>
+          <tr><td><strong>Cost / latency</strong></td><td>Bounded and known</td><td>Variable; can be many model calls</td></tr>
+          <tr><td><strong>Best for</strong></td><td>Well-defined tasks you can decompose</td><td>Open problems where steps can&rsquo;t be predicted</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.08s">
+      <p>The guiding rule the article returns to again and again: <strong>find the simplest solution possible, and only increase complexity when it demonstrably improves outcomes.</strong> Agentic systems trade latency and cost for better performance on hard tasks &mdash; a trade worth making when the task warrants it, and a waste when a single well-crafted prompt or a fixed workflow would do. &ldquo;Build an agent&rdquo; is rarely the right first instinct.</p>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.1s">
+      <h4>On frameworks</h4>
+      <p>Frameworks (LangGraph, Bedrock Agents, Rivet, Vellum, and others) make it easy to start, but they add abstraction layers that hide the underlying prompts and responses and make debugging harder. Anthropic&rsquo;s recommendation: <strong>start by using the model APIs directly</strong> &mdash; many patterns need only a few lines of code &mdash; and if you do adopt a framework, make sure you understand what it does underneath. See <a href="langgraph.html" style="color:var(--sky)">agents/langgraph</a> for where a framework genuinely earns its place.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 BUILDING BLOCK -->
+<section id="augmented-llm">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; The building block</div>
+      <h2 class="section-title">The augmented LLM.</h2>
+      <p class="section-lede">Every workflow and every agent is built from one unit: a model enhanced with three augmentations. Get this interface right before composing anything on top of it.</p>
+    </div>
+    <div class="stack-grid fade-up" style="transition-delay: 0.05s">
+      <div class="stack-cell">
+        <span class="layer">Augmentation 01</span>
+        <h4>Retrieval</h4>
+        <p>The model can pull in relevant external information on demand &mdash; documents, records, search results &mdash; instead of relying only on what&rsquo;s in its weights or the prompt.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Augmentation 02</span>
+        <h4>Tools</h4>
+        <p>The model can call out to take actions and read live systems &mdash; function-calling, and increasingly MCP servers as the standard interface to them.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Augmentation 03</span>
+        <h4>Memory</h4>
+        <p>The model can persist and re-read state across steps and sessions &mdash; in the tree, that&rsquo;s files under version control, not a black box.</p>
+      </div>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.08s">
+      <p>Anthropic&rsquo;s guidance on the building block is to <strong>tailor these augmentations to your specific use case</strong> and to give the model an easy, well-documented interface to them. That interface point is so important it returns as one of the three closing principles. <strong>MCP</strong> is the emerging standard way to wire the tools and retrieval into any model &mdash; covered in full at <a href="mcp.html" style="color:var(--sky)">agents/mcp</a> &mdash; and the memory augmentation is exactly the repo-as-memory discipline from <a href="../software/software-for-agents.html" style="color:var(--sky)">software/software-for-agents</a>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 THE FIVE PATTERNS -->
+<section id="patterns">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; The five workflow patterns</div>
+      <h2 class="section-title">Composable building blocks, simplest first.</h2>
+      <p class="section-lede">Five workflow patterns cover the great majority of useful agentic systems. They&rsquo;re ordered roughly by increasing flexibility &mdash; and increasing cost. Reach for the earliest one that solves your problem.</p>
+    </div>
+
+    <div class="pattern fade-up" style="transition-delay: 0.05s">
+      <span class="pnum">Pattern 01</span>
+      <h4>Prompt chaining</h4>
+      <p>Decompose a task into a fixed sequence of steps, each LLM call working on the previous call&rsquo;s output. You can add programmatic <strong>&ldquo;gates&rdquo;</strong> between steps to check progress and bail early if something&rsquo;s off.</p>
+      <p class="when"><strong>Use when</strong> the task cleanly splits into fixed subtasks, and you&rsquo;ll trade a little latency for higher accuracy per step. <em>Example: write an outline, check it meets criteria, then write the full document from it.</em></p>
+    </div>
+
+    <div class="pattern fade-up" style="transition-delay: 0.06s">
+      <span class="pnum">Pattern 02</span>
+      <h4>Routing</h4>
+      <p>Classify an input, then direct it to a specialised follow-up &mdash; a different prompt, tool, or even a different model. Separation of concerns: each path is optimised for its category.</p>
+      <p class="when"><strong>Use when</strong> there are distinct categories better handled separately and classification is accurate. <em>Example: route support queries by type; send easy questions to a cheaper model and hard ones to a stronger one.</em></p>
+    </div>
+
+    <div class="pattern fade-up" style="transition-delay: 0.07s">
+      <span class="pnum">Pattern 03</span>
+      <h4>Parallelization</h4>
+      <p>Run multiple LLM calls at once and aggregate the results. Two variants: <strong>sectioning</strong> (split into independent subtasks run in parallel) and <strong>voting</strong> (run the same task several times for diverse takes, then combine).</p>
+      <p class="when"><strong>Use when</strong> subtasks parallelize for speed, or multiple attempts raise confidence. <em>Example (sectioning): one model answers while another screens the same input for policy violations. Example (voting): several passes review code for vulnerabilities and you act on any hit.</em></p>
+    </div>
+
+    <div class="pattern fade-up" style="transition-delay: 0.08s">
+      <span class="pnum">Pattern 04</span>
+      <h4>Orchestrator-workers</h4>
+      <p>A central LLM dynamically breaks a task into subtasks, delegates them to worker LLMs, and synthesises their results. Unlike parallelization, the subtasks aren&rsquo;t fixed in advance &mdash; the orchestrator decides them based on the input.</p>
+      <p class="when"><strong>Use when</strong> you can&rsquo;t predict the subtasks ahead of time. <em>Example: a coding change that touches an unknown set of files; a research task gathering from multiple sources the orchestrator picks on the fly.</em></p>
+    </div>
+
+    <div class="pattern fade-up" style="transition-delay: 0.09s">
+      <span class="pnum">Pattern 05</span>
+      <h4>Evaluator-optimizer</h4>
+      <p>One LLM generates a response; a second evaluates it and returns feedback; the first revises &mdash; in a loop &mdash; until the evaluation passes. A built-in critic.</p>
+      <p class="when"><strong>Use when</strong> you have clear evaluation criteria and iterative refinement measurably helps. <em>Example: literary translation where a critic catches nuance; multi-round research that&rsquo;s refined against an explicit rubric.</em></p>
+    </div>
+
+    <div class="info-card indigo fade-up" style="transition-delay: 0.1s">
+      <h4>The pair people confuse: parallelization vs orchestrator-workers</h4>
+      <p>Both fan work out to multiple LLM calls. The difference is <strong>who picks the subtasks</strong>. In <strong>parallelization</strong> the subtasks are <em>predefined</em> by you in code &mdash; the structure is fixed. In <strong>orchestrator-workers</strong> the subtasks are <em>decided at run time</em> by the orchestrator model. If you know the breakdown in advance, parallelize; if the breakdown depends on the input, orchestrate.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 AGENTS -->
+<section id="agents">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; Agents proper</div>
+      <h2 class="section-title">When the path can&rsquo;t be drawn in advance.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>An agent, in the article&rsquo;s strict sense, starts from a command or a conversation with a human, then <strong>plans and operates independently</strong> &mdash; choosing its own tools and steps, gaining ground truth from the environment at each step (a tool result, a test run, code execution), and looping until it judges the task done. It can pause for human feedback at checkpoints or when it hits a blocker. Crucially, it should include <strong>stopping conditions</strong> &mdash; a maximum number of iterations, say &mdash; so it stays under control.</p>
+      <p>Agents suit open-ended problems where you genuinely can&rsquo;t predict the number or shape of steps. The cost is real: more model calls, higher latency, and compounding errors if a wrong early step poisons the rest. That&rsquo;s why the autonomy has to sit inside a harness &mdash; sandboxing, gated changes, tests, reversibility &mdash; which is precisely the <a href="../software/software-for-agents.html" style="color:var(--sky)">repo-as-safety-net</a> argument the Software branch makes.</p>
+    </div>
+    <div class="info-card green fade-up" style="transition-delay: 0.08s">
+      <h4>Agents in practice</h4>
+      <p>The two worked examples in the article are a <strong>customer-support agent</strong> (a chatbot given tools to look up orders, issue refunds, and act on them, with clear success/stop conditions) and <strong>coding agents</strong> that resolve SWE-bench issues end-to-end &mdash; reading a repo, editing across files, running tests, and iterating until green. Both work because the environment gives honest feedback at every step and the changes are verifiable. <a href="coding-cli-agents.html" style="color:var(--sky)">agents/coding-cli-agents</a> is this category, productised.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 PRINCIPLES -->
+<section id="principles">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; The three principles</div>
+      <h2 class="section-title">What &ldquo;effective&rdquo; actually means.</h2>
+      <p class="section-lede">Whatever you build, the article closes on three principles &mdash; and a warning not to over-engineer.</p>
+    </div>
+    <div class="stack-grid fade-up" style="transition-delay: 0.05s">
+      <div class="stack-cell">
+        <span class="layer">Principle 01</span>
+        <h4>Simplicity</h4>
+        <p>Keep the design as simple as the task allows. Add a pattern, a tool, or autonomy only when it earns its place by improving outcomes you can measure.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Principle 02</span>
+        <h4>Transparency</h4>
+        <p>Show the agent&rsquo;s planning steps explicitly. If you can see what it intends to do, you can catch a bad plan before it executes &mdash; and debug when it goes wrong.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Principle 03</span>
+        <h4>A crafted ACI</h4>
+        <p>The agent-computer interface &mdash; your tools&rsquo; names, docs, and formats &mdash; deserves the same care as a human UI. Thorough tool documentation and testing is most of the battle.</p>
+      </div>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.08s">
+      <p>The agent-computer interface (ACI) is the sleeper of the three. The article spends an appendix on it: put yourself in the model&rsquo;s shoes, give it enough tokens to think, keep tool formats close to text the model has seen naturally, name and document tools well, and test them exhaustively &mdash; even &ldquo;poka-yoke&rdquo; them so a tool is hard to misuse. In the tree, that&rsquo;s the discipline behind <a href="skills.html" style="color:var(--sky)">agents/skills</a> and <a href="mcp.html" style="color:var(--sky)">agents/mcp</a>: a capability is only as good as the interface the model meets it through.</p>
+    </div>
+    <div class="info-card rose fade-up" style="transition-delay: 0.1s">
+      <h4>When NOT to build an agent</h4>
+      <p>If a single prompt with good examples solves it &mdash; do that. If a fixed workflow solves it &mdash; do that, and enjoy the predictability and bounded cost. Reserve full agent autonomy for open-ended problems where the value of flexibility outweighs the cost and unpredictability, and where you have the harness (tests, sandboxing, review, reversibility) to contain it. <strong>The goal is the task done reliably, not the most sophisticated architecture.</strong></p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 SA CONTEXT -->
+<section id="sa-context">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; South African context</div>
+      <h2 class="section-title">Most SA automations are workflows, not agents.</h2>
+    </div>
+    <div class="info-card indigo fade-up" style="transition-delay: 0.05s">
+      <h4>Match the pattern to the budget</h4>
+      <p>For SA teams costing AI work in rands against USD-billed tokens, the workflow-first discipline is also a cost discipline. A SARS-submission helper, a POPIA-assessment drafter, an invoice-to-ledger step &mdash; these are <strong>prompt chains and routers</strong>, not autonomous agents, and they should be priced and built that way: bounded calls, predictable cost, auditable paths. Save agent autonomy &mdash; with its variable token spend and compounding-error risk &mdash; for the genuinely open-ended jobs that justify it, and wrap those in the repo harness so every change is reviewable and reversible. Choosing the simplest pattern that works is the difference between an AI line item you can forecast and one you can&rsquo;t.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 07 CONNECTIONS -->
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; Connections</div>
+      <h2 class="section-title">Where this links in the tree.</h2>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="./" class="connect-node">
+        <span class="tag">agents</span>
+        <div class="skill">Agents hub</div>
+        <div class="why">The domain this leaf anchors — how to compose the frameworks, protocols, and models into systems that work.</div>
+      </a>
+      <a href="mcp.html" class="connect-node">
+        <span class="tag">agents/mcp</span>
+        <div class="skill">Model Context Protocol</div>
+        <div class="why">The tools augmentation, standardised — how the augmented LLM reaches live data and actions.</div>
+      </a>
+      <a href="skills.html" class="connect-node">
+        <span class="tag">agents/skills</span>
+        <div class="skill">Agent Skills</div>
+        <div class="why">The ACI principle in practice — packaged, well-documented procedures the model loads on demand.</div>
+      </a>
+      <a href="rearchitecture.html" class="connect-node">
+        <span class="tag">agents/rearchitecture</span>
+        <div class="skill">Agents, data &amp; trust</div>
+        <div class="why">The grounding prerequisite — Ng × Chase on why patterns only pay off over structured, owned data.</div>
+      </a>
+      <a href="../software/software-for-agents.html" class="connect-node">
+        <span class="tag">software/software-for-agents</span>
+        <div class="skill">Software for agents</div>
+        <div class="why">The harness — repo as memory, CI as the safety net that makes agent autonomy safe.</div>
+      </a>
+      <a href="coding-cli-agents.html" class="connect-node">
+        <span class="tag">agents/coding-cli-agents</span>
+        <div class="skill">Coding CLI agents</div>
+        <div class="why">Agents proper, productised — Claude Code, Codex CLI, Copilot CLI working the agent loop.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 08 RESOURCES -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 &middot; Resources</div>
+      <h2 class="section-title">Primary source first.</h2>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://www.anthropic.com/engineering/building-effective-agents" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Engineering</span>
+        <span class="r-title">Anthropic — Building effective agents</span>
+        <span class="r-url">anthropic.com/engineering/building-effective-agents</span>
+      </a>
+      <a href="https://www.anthropic.com/research/building-effective-agents" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Mirror</span>
+        <span class="r-title">Same essay, research index</span>
+        <span class="r-url">anthropic.com/research/building-effective-agents</span>
+      </a>
+      <a href="https://github.com/anthropics/anthropic-cookbook/tree/main/patterns/agents" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Code</span>
+        <span class="r-title">Cookbook — agent pattern implementations</span>
+        <span class="r-url">github.com/anthropics/anthropic-cookbook/.../patterns/agents</span>
+      </a>
+      <a href="https://modelcontextprotocol.io" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Spec</span>
+        <span class="r-title">Model Context Protocol — the tools interface</span>
+        <span class="r-url">modelcontextprotocol.io</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../index.html">Skills tree</a>
+      <a href="./">Agents hub</a>
+      <a href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank" rel="noopener">Read the source &nearr;</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme(){const html=document.documentElement;const current=html.getAttribute('data-theme');const next=current==='dark'?'light':'dark';html.setAttribute('data-theme',next);document.querySelector('.theme-toggle').textContent=next==='dark'?'☀️':'🌙';localStorage.setItem('theme',next);}
+  const saved=localStorage.getItem('theme');if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.theme-toggle').textContent=saved==='dark'?'☀️':'🌙';}
+  const observer=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting)entry.target.classList.add('visible');});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>
