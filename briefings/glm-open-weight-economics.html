@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Cheap Model Is Real. Why Can&rsquo;t You Just Switch? &mdash; know.2nth.ai Briefing</title>
+<meta name="description" content="A frontier-grade AI model now does the everyday work — routine sites, first-draft decks, common code — at a fraction of the price. So why isn't everyone switching tomorrow? Because the model was never the expensive part; the scaffolding around it is. A plain-language CEO briefing on cost, lock-in, ownership and the spare-generator logic of keeping a backstop you control.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/briefings/glm-open-weight-economics">
+<meta property="og:title" content="The Cheap Model Is Real. Why Can't You Just Switch? — know.2nth.ai Briefing">
+<meta property="og:description" content="A cheap model now does the everyday work at a fraction of frontier cost. Why switching isn't a swap, who should move now vs wait, and why a backstop you control is the real decision.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai — The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Cheap Model Is Real. Why Can't You Just Switch? — know.2nth.ai">
+<meta name="twitter:description" content="A cheap model now does the everyday work at a fraction of frontier cost. Why switching isn't a swap, who should move now, and why a backstop you control is the decision.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%2338BDF8' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%232563EB' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --ink: #0B1120; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6;
+    --sky: #38BDF8; --cyan: #22D3EE; --paper: #F8FAFC; --slate: #94A3B8;
+    --warm: #F59E0B; --warm-soft: rgba(245,158,11,0.12);
+    --green: #10B981; --green-soft: rgba(16,185,129,0.12);
+    --rose: #F43F5E; --rose-soft: rgba(244,63,94,0.12);
+    --indigo: #6366F1; --indigo-soft: rgba(99,102,241,0.12);
+    --max-w: 1080px; --read-w: 820px;
+    --radius-md: 14px; --radius-lg: 22px; --radius-pill: 100px;
+    --bg: #EEF4FB; --bg-soft: #E2ECF6; --card: #FFFFFF; --card-2: #F8FBFE;
+    --text: #0B1120; --text-2: #475569; --text-3: #8A97AB;
+    --border: rgba(15,23,42,0.10); --border-strong: rgba(15,23,42,0.16);
+    --shadow: 0 14px 40px rgba(15,23,42,0.08);
+  }
+  [data-theme="dark"] {
+    --bg: #07101D; --bg-soft: #0B1828; --card: #102033; --card-2: #0C1828;
+    --text: #F8FAFC; --text-2: #B6C2D6; --text-3: #6B7A92;
+    --border: rgba(148,163,184,0.14); --border-strong: rgba(148,163,184,0.24);
+    --shadow: 0 16px 48px rgba(0,0,0,0.5);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body {
+    font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+    background: radial-gradient(1100px 560px at 80% -120px, var(--bg-soft), var(--bg)) fixed;
+    color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  }
+  .wrap { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+  a { color: var(--blue); text-decoration: none; }
+
+  .topbar { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(14px);
+    background: color-mix(in srgb, var(--bg) 80%, transparent); border-bottom: 1px solid var(--border); }
+  .topbar-inner { max-width: var(--max-w); margin: 0 auto; padding: 12px 24px;
+    display: flex; align-items: center; justify-content: space-between; }
+  .brand-wrap { display: flex; align-items: center; }
+  .brand { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 14px;
+    background: linear-gradient(135deg, var(--blue), var(--sky));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; text-decoration: none; }
+  .brand-sub { font-size: 11px; color: var(--text-3); letter-spacing: 1.5px; text-transform: uppercase;
+    margin-left: 10px; padding-left: 10px; border-left: 1px solid var(--border); font-weight: 500; }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-2); text-decoration: none; font-weight: 500; }
+  .nav-link:hover { color: var(--sky); }
+  .toggle { background: none; border: 1px solid var(--border); color: var(--text-2);
+    width: 34px; height: 34px; border-radius: 50%; cursor: pointer; display: grid; place-items: center;
+    font-size: 15px; transition: all 0.2s; }
+  .toggle:hover { border-color: var(--border-strong); }
+
+  .hero { padding: 60px 0 8px; }
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500;
+    letter-spacing: 2.5px; text-transform: uppercase; color: var(--indigo);
+    display: inline-flex; align-items: center; gap: 10px; margin-bottom: 22px; }
+  .eyebrow .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--indigo); box-shadow: 0 0 12px var(--indigo); }
+  .hero h1 { font-size: clamp(36px, 6vw, 60px); font-weight: 800; line-height: 1.05;
+    letter-spacing: -1.8px; margin-bottom: 22px; max-width: 18ch; }
+  .hero h1 .hl { background: linear-gradient(135deg, var(--blue-glow), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .lede { font-size: 19px; color: var(--text-2); max-width: 720px; line-height: 1.6; font-weight: 300; }
+  .hero .lede .hl { color: var(--text); font-weight: 500; }
+  .meta-chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+  .chip { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.4px; color: var(--text-2);
+    border: 1px solid var(--border); padding: 8px 14px; border-radius: var(--radius-pill); background: var(--card-2); }
+
+  section { padding: 44px 0; }
+  .s-num { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--sky); font-weight: 600; margin-bottom: 12px; }
+  .s-title { font-size: clamp(26px, 4vw, 36px); font-weight: 700; letter-spacing: -0.8px; line-height: 1.15; margin-bottom: 16px; max-width: 24ch; }
+  .s-lede { font-size: 17px; color: var(--text-2); max-width: var(--read-w); line-height: 1.7; font-weight: 300; margin-bottom: 26px; }
+  .s-lede .hl { color: var(--text); font-weight: 600; }
+  .s-lede + .s-lede { margin-top: -8px; }
+
+  /* two-card contrast */
+  .defs { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 26px 0; }
+  @media (max-width: 720px){ .defs { grid-template-columns: 1fr; } }
+  .def { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 26px 28px; box-shadow: var(--shadow); }
+  .def.flow { border-top: 4px solid var(--sky); }
+  .def.agent { border-top: 4px solid var(--indigo); }
+  .def .dt { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; font-weight: 600; margin-bottom: 8px; }
+  .def.flow .dt { color: var(--sky); } .def.agent .dt { color: var(--indigo); }
+  .def h3 { font-size: 21px; font-weight: 800; letter-spacing: -0.4px; margin-bottom: 8px; }
+  .def p { font-size: 14.5px; color: var(--text-2); line-height: 1.6; margin-bottom: 10px; }
+  .def p:last-child { margin-bottom: 0; }
+  .def .tag { font-size: 13px; color: var(--text-3); font-style: italic; }
+
+  /* callout */
+  .callout { background: var(--card-2); border: 1px solid var(--border); border-left: 4px solid var(--sky); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); box-shadow: var(--shadow); }
+  .callout.warm { border-left-color: var(--warm); }
+  .callout.green { border-left-color: var(--green); }
+  .callout .co-tag { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; font-weight: 600; color: var(--sky); margin-bottom: 10px; }
+  .callout.warm .co-tag { color: var(--warm); }
+  .callout.green .co-tag { color: var(--green); }
+  .callout p { font-size: 15.5px; color: var(--text-2); line-height: 1.7; }
+  .callout p strong { color: var(--text); }
+  .callout p + p { margin-top: 12px; }
+
+  /* checklist */
+  .checks { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: var(--read-w); }
+  @media (max-width: 720px){ .checks { grid-template-columns: 1fr; } }
+  .check { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 22px 24px; box-shadow: var(--shadow); }
+  .check .q { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+  .check p { font-size: 13.5px; color: var(--text-2); line-height: 1.55; }
+
+  /* related */
+  .thread { display: grid; grid-template-columns: repeat(2,1fr); gap: 14px; }
+  @media (max-width: 760px){ .thread { grid-template-columns: 1fr; } }
+  .tcard { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px 26px; box-shadow: var(--shadow); text-decoration: none; color: inherit; display: block; transition: transform .25s, border-color .25s; border-top: 4px solid var(--sky); }
+  .tcard:hover { transform: translateY(-3px); border-color: var(--border-strong); }
+  .tcard .tt { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--sky); font-weight: 600; margin-bottom: 8px; }
+  .tcard h4 { font-size: 19px; font-weight: 800; letter-spacing: -0.4px; margin-bottom: 8px; }
+  .tcard p { font-size: 14px; color: var(--text-2); line-height: 1.55; margin-bottom: 10px; }
+  .tcard .go { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--sky); font-weight: 600; }
+
+  /* final */
+  .finalbox { max-width: var(--read-w); margin: 0 auto; background: var(--card); border: 1px solid var(--border-strong); border-radius: var(--radius-lg); padding: 34px 36px; box-shadow: var(--shadow); text-align: center; }
+  .finalbox .tag { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.6px; text-transform: uppercase; color: var(--indigo); font-weight: 600; margin-bottom: 14px; }
+  .finalbox p { font-size: clamp(18px, 2.4vw, 22px); font-weight: 500; color: var(--text); line-height: 1.5; }
+
+  footer { padding: 54px 0 48px; border-top: 1px solid var(--border); text-align: center; margin-top: 36px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600;
+    background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tag { font-size: 13px; color: var(--text-3); margin-bottom: 18px; }
+  .footer-links { display: flex; justify-content: center; gap: 22px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-2); text-decoration: none; }
+  .footer-links a:hover { color: var(--sky); }
+  .footer-copy { font-size: 12px; color: var(--text-3); margin-top: 18px; }
+
+  .fade { opacity: 0; transform: translateY(22px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade.vis { opacity: 1; transform: translateY(0); }
+  @media (prefers-reduced-motion: reduce) { .fade { opacity: 1; transform: none; } }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand-wrap"><a href="/index.html" class="brand">know.2nth.ai</a><span class="brand-sub">CEO Briefing</span></div>
+    <div class="nav-right">
+      <a href="/briefings/" class="nav-link">All briefings</a>
+      <button class="toggle" onclick="toggleTheme()" aria-label="Toggle light/dark">🌙</button>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div class="eyebrow fade"><span class="dot"></span> AI &amp; cost strategy &middot; The switch decision</div>
+    <h1 class="fade" style="transition-delay:.05s">The cheap model is real. <span class="hl">Why can&rsquo;t you just switch?</span></h1>
+    <p class="lede fade" style="transition-delay:.1s">
+      A frontier-grade AI model now does the <span class="hl">everyday</span> work &mdash; standard websites, first-draft decks, routine code &mdash; at roughly a <span class="hl">sixth</span> of what the premium models charge. So why isn&rsquo;t everyone switching tomorrow? Because the model was never the expensive part. <span class="hl">The scaffolding around it is.</span> This is the decision a leader actually faces &mdash; and it&rsquo;s about cost, lock-in and ownership, not parameters.
+    </p>
+    <div class="meta-chips fade" style="transition-delay:.15s">
+      <span class="chip">Source &middot; Nate B. Jones &amp; the CNBC open-source-AI panel</span>
+      <span class="chip">6-min read</span>
+      <span class="chip">For decision-makers</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">01 &middot; Where the cheap model already wins</div>
+      <h2 class="s-title">Most of what your team does is routine. The cheap model is good at routine.</h2>
+      <p class="s-lede">Picture all the work your people hand to AI as a curve. The fat middle is <span class="hl">standard and repeatable</span> &mdash; a first-pass website, a presentation outline, summarising a document, a common coding task. On that middle, the cheap model isn&rsquo;t a compromise; it often does the job as well or better. The premium models earn their price only on the hard, unusual tail &mdash; the genuinely novel or ambiguous problems &mdash; which is a <span class="hl">minority</span> of real usage.</p>
+    </div>
+    <div class="callout fade" style="transition-delay:.05s">
+      <div class="co-tag">Why it matters to you</div>
+      <p>Most leaders have never measured which of their AI work is routine and which is genuinely hard. That single measurement is the whole decision &mdash; because if most of your volume sits in the routine middle, you are paying a premium price for work a cheaper model does just as well.</p>
+    </div>
+    <div class="callout green fade" style="transition-delay:.08s">
+      <div class="co-tag">The practical &ldquo;how&rdquo; &middot; the barbell</div>
+      <p>You don&rsquo;t have to choose one model for everything. The pattern worth knowing by name is the <strong>barbell</strong>: keep the expensive premium model for the few high-stakes calls &mdash; planning, final review &mdash; and send the heavy, repetitive bulk to the cheap one. Most of the work, and most of the savings, sits on the cheap end. The catch: someone has to build the switch that decides which job goes where &mdash; and that&rsquo;s talent, not software you buy.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">02 &middot; Why switching isn&rsquo;t a swap</div>
+      <h2 class="s-title">Moving to a cheaper model isn&rsquo;t changing a setting. It&rsquo;s a rebuild.</h2>
+      <p class="s-lede">The tempting assumption is that a cheaper model is one configuration change away &mdash; swap the key, keep the savings. It isn&rsquo;t. The model sits inside scaffolding &mdash; the instructions it follows, the memory it keeps, the tools it&rsquo;s wired to (call it <span class="hl">the harness</span>) &mdash; and all of that is tuned to one model&rsquo;s habits. Change the model and the scaffolding has to be re-built.</p>
+    </div>
+    <div class="defs fade" style="transition-delay:.05s">
+      <div class="def flow">
+        <div class="dt">What people think it costs</div>
+        <h3>One config change</h3>
+        <p>Point the system at a different model, keep everything else, bank the saving. A five-minute job.</p>
+        <p class="tag">Like swapping the engine and expecting the car to drive identically.</p>
+      </div>
+      <div class="def agent">
+        <div class="dt">What it actually costs</div>
+        <h3>Re-engineering the harness</h3>
+        <p>The instructions, the memory, the tool connections all have to be re-tuned for how the new model behaves. Real engineering time, before any saving lands.</p>
+        <p class="tag">The saving is real &mdash; so is the rebuild. Both go in the business case.</p>
+      </div>
+    </div>
+    <div class="prose fade" style="transition-delay:.08s">
+      <p class="s-lede"><span class="hl">Why it matters to you:</span> the token saving and the rebuild cost sit on opposite sides of the same ledger. Which one wins depends on how much you use AI. At high volume the saving dwarfs the rebuild; at low volume the rebuild can outrun it for a year. The number that decides it is your usage &mdash; so the honest first step is to know it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">03 &middot; Who should switch now &mdash; and who should wait</div>
+      <h2 class="s-title">If AI is your cost-of-goods, switch. If it&rsquo;s internal productivity, you can wait.</h2>
+      <p class="s-lede">There&rsquo;s a clean line through it, and it&rsquo;s drawn at <span class="hl">margin</span>.</p>
+    </div>
+    <div class="defs fade" style="transition-delay:.05s">
+      <div class="def flow">
+        <div class="dt">Switch now</div>
+        <h3>You resell AI</h3>
+        <p>If AI tokens are the cost of the product you sell, every cent saved drops straight to margin. The rebuild pays for itself quickly, and your competitors are doing the same maths. This is who is actually migrating today.</p>
+      </div>
+      <div class="def agent">
+        <div class="dt">You can wait</div>
+        <h3>AI is internal productivity</h3>
+        <p>If AI helps your staff work faster but isn&rsquo;t what you sell, the rebuild cost can outrun the saving for now. Waiting until the case is clear is a <em>legitimate</em> decision, not a failure of nerve.</p>
+      </div>
+    </div>
+    <div class="callout fade" style="transition-delay:.08s">
+      <div class="co-tag">The honest version</div>
+      <p>This isn&rsquo;t a sales pitch for switching. For a lot of businesses, &ldquo;not yet&rdquo; is the right answer &mdash; and knowing <em>why</em> it&rsquo;s not yet (the rebuild cost exceeds your saving at your current volume) is worth more than a rushed migration.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">04 &middot; The real lock-in</div>
+      <h2 class="s-title">The lock-in isn&rsquo;t price. It&rsquo;s convenience.</h2>
+      <p class="s-lede">The premium vendors aren&rsquo;t defending their prices by being smarter. They&rsquo;re defending them by being <span class="hl">everywhere your team already works</span> &mdash; inside the chat tool, the shared documents, the everyday apps &mdash; quietly absorbing how your company actually operates.</p>
+    </div>
+    <div class="callout warm fade" style="transition-delay:.05s">
+      <div class="co-tag">The trap</div>
+      <p>Run your whole operation on a vendor&rsquo;s out-of-the-box convenience and, bit by bit, your operating knowledge ends up living in their tool. You start <strong>renting your own know-how back from them</strong> &mdash; and a cheaper model can&rsquo;t rescue you if you can&rsquo;t take your context with you when you leave. The cure isn&rsquo;t a different model. It&rsquo;s owning the layer where your company&rsquo;s knowledge sits, so any model can plug into it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">05 &middot; What if the vendor cuts you off?</div>
+      <h2 class="s-title">You&rsquo;ve quietly assumed your AI vendor will always be available to you. That stopped being safe.</h2>
+      <p class="s-lede">Access to top-tier AI has been switched off before &mdash; under regulatory and export pressure, sometimes to whole countries or sectors, sometimes overnight. So &ldquo;can we keep operating if the tap gets turned off?&rdquo; is no longer paranoid; it&rsquo;s planning. The answer is a model you can <span class="hl">download and run yourself</span> (the open-weight kind) kept as a backstop &mdash; the thing you fall back to if your main supplier becomes unavailable.</p>
+    </div>
+    <div class="callout green fade" style="transition-delay:.05s">
+      <div class="co-tag">The analogy every SA business already knows</div>
+      <p>This is <strong>spare-generator logic</strong>. You don&rsquo;t run the business off the generator &mdash; you keep it so a power cut doesn&rsquo;t stop you. A self-hostable AI model is the same: redundancy you control, not a rip-and-replace of your best tool.</p>
+    </div>
+    <div class="callout fade" style="transition-delay:.08s">
+      <div class="co-tag">Two honest notes</div>
+      <p><strong>It&rsquo;s redundancy, not replacement.</strong> The backstop covers the everyday work and keeps you running; you still reach for the premium model on the hard problems when it&rsquo;s available.</p>
+      <p><strong>A backstop you control is the point &mdash; whoever built it.</strong> The argument is for holding a model you can run yourself, not for any one vendor. The cheap, capable open-weight models leading this shift today happen to come from Chinese labs, which carries its own trade-off: running the weights yourself on your own machines is one thing; sending your prompts to that vendor&rsquo;s hosted service is another. Weigh those separately. For the data-residency side of this &mdash; keeping customer information in South Africa &mdash; see the <a href="/briefings/edge-first">Keep the Data Home</a> briefing rather than re-reading it here.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">06 &middot; The decision</div>
+      <h2 class="s-title">Four questions to take to your team.</h2>
+    </div>
+    <div class="checks fade" style="transition-delay:.05s">
+      <div class="check"><div class="q">What&rsquo;s our task mix?</div><p>Have we actually measured how much of our AI use is routine versus genuinely hard? Until we have, we&rsquo;re guessing at what we could save.</p></div>
+      <div class="check"><div class="q">Where does our context live?</div><p>Is our operating knowledge ours &mdash; in a place any model can use &mdash; or trapped inside one vendor&rsquo;s tool?</p></div>
+      <div class="check"><div class="q">Do we have the talent?</div><p>The scarce thing isn&rsquo;t the model; it&rsquo;s the people who can build the switch that routes routine work to the cheap model and hard work to the premium one. Do we have them, or do we need a partner?</p></div>
+      <div class="check"><div class="q">Do we have a backstop?</div><p>If our main AI vendor became unavailable tomorrow, could we keep operating? And is the saving worth the rebuild &mdash; for us, now?</p></div>
+    </div>
+    <div class="callout warm fade" style="transition-delay:.08s">
+      <div class="co-tag">The honest default</div>
+      <p>For most mid-sized South African businesses, the move today is <strong>not</strong> &ldquo;rip out the premium model tomorrow.&rdquo; It&rsquo;s the quieter, cheaper discipline: <strong>measure your task mix, own your context, build the routing muscle, and keep a backstop you control</strong> &mdash; so that when switching pays, or a vendor cuts you off, you&rsquo;re ready either way.</p>
+      <p>And a reality check on self-hosting: running the cheap open-weight model <em>yourself</em> needs a serious, expensive GPU cluster &mdash; data-centre hardware, not a spare server in the cupboard. The weights are free; the machines aren&rsquo;t. For many teams the near-term path is trusted hosted access with eyes open, not a data-centre build.</p>
+    </div>
+  </div>
+</section>
+
+<!-- RELATED -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">Keep reading</div>
+      <h2 class="s-title">Related</h2>
+    </div>
+    <div class="thread fade" style="transition-delay:.05s">
+      <a href="/explainers/agents/glm" class="tcard">
+        <div class="tt">Technical version</div>
+        <h4>GLM &middot; Z.ai</h4>
+        <p>The deep version for your engineers: the open-weight flagship behind this briefing &mdash; architecture, the real benchmarks, the hardware bill, and where the routing seam lives.</p>
+        <span class="go">Open the leaf &rarr;</span>
+      </a>
+      <a href="/briefings/edge-first" class="tcard">
+        <div class="tt">Briefing</div>
+        <h4>Keep the Data Home</h4>
+        <p>The data-residency half of this decision: how to use global AI without your customers&rsquo; data leaving South Africa. The POPIA answer in plain language.</p>
+        <span class="go">Read briefing &rarr;</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL -->
+<section>
+  <div class="wrap">
+    <div class="finalbox fade">
+      <div class="tag">The take</div>
+      <p>The cheap model is real, and it&rsquo;s good. But the moat moved &mdash; from the model to the harness, the routing, and the context around it. Owning those, and keeping a backstop you control, is the actual decision.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tag">CEO briefings &middot; the plain-language layer over the knowledge tree</p>
+    <div class="footer-links">
+      <a href="/briefings/">All briefings</a>
+      <a href="/index.html">Knowledge tree</a>
+      <a href="/explainers/agents/glm">GLM technical leaf</a>
+      <a href="https://2nth.ai" target="_blank" rel="noopener">2nth.ai</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme(){
+    const h=document.documentElement, cur=h.getAttribute('data-theme'), nxt=cur==='dark'?'light':'dark';
+    h.setAttribute('data-theme',nxt);
+    document.querySelector('.toggle').textContent = nxt==='dark' ? '☀️' : '🌙';
+    localStorage.setItem('brief-theme',nxt);
+  }
+  const saved=localStorage.getItem('brief-theme');
+  if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.toggle').textContent=saved==='dark'?'☀️':'🌙';}
+  const ob=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');});},{threshold:0.08,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.fade').forEach(el=>ob.observe(el));
+</script>
+</body>
+</html>
