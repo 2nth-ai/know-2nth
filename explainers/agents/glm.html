@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GLM &middot; Z.ai &mdash; know.2nth.ai</title>
+<meta name="description" content="GLM is Zhipu AI's open-weight model family, shipped internationally under the Z.ai brand. GLM-5.2 (June 2026): ~753B-parameter Mixture-of-Experts, ~40B active per token, 1M-token context, pure MIT licence, built for long-horizon agentic and coding work. Anthropic-Messages-API-compatible endpoint means Claude Code retargets with a base-URL change. The institutionally-deployable Chinese open-weight flagship — competitive with the closed frontier on agentic engineering, self-hostable to avoid the hosted-API governance risk, with an ~800GB-VRAM hardware reality that is the real binding constraint.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/agents/glm">
+<meta property="og:title" content="GLM &middot; Z.ai &mdash; know.2nth.ai">
+<meta property="og:description" content="GLM-5.2 (Jun 2026): 753B MoE, 40B active, 1M context, MIT-licensed. Long-horizon agentic coding, Anthropic-Messages-API-compatible, self-hostable. The institutionally-deployable Chinese open-weight flagship — and the harness, not the model, is now the hard part.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="GLM &middot; Z.ai &mdash; know.2nth.ai">
+<meta name="twitter:description" content="GLM-5.2: 753B MoE open weights, 1M context, MIT, Anthropic-Messages-compatible. Competitive on agentic coding, self-hostable to dodge the hosted-API governance risk — if you can afford the ~800GB VRAM.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12); --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-soft: rgba(99, 102, 241, 0.12); --bg: var(--ink); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(37, 99, 235, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(56, 189, 248, 0.3); --max-w: 1200px; --read-w: 760px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(37, 99, 235, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(37, 99, 235, 0.25); }
+  * { margin: 0; padding: 0; box-sizing: border-box; } html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.blue { width: 600px; height: 600px; background: var(--blue); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--sky); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--sky); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--sky); } .crumb-sep { opacity: 0.5; } .crumb-current { color: var(--text-secondary); }
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--indigo); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--indigo); box-shadow: 0 0 12px var(--indigo); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--blue-glow), var(--sky), var(--sky-muted)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.green { background: var(--green-soft); color: var(--green); border-color: rgba(16, 185, 129, 0.25); }
+  .pill.indigo { background: var(--indigo-soft); color: var(--indigo); border-color: rgba(99, 102, 241, 0.25); }
+  .pill.warn { background: var(--warm-soft); color: var(--warm-glow); border-color: rgba(245, 158, 11, 0.25); }
+  .pill.accent { background: rgba(37, 99, 235, 0.12); color: var(--blue-glow); border-color: rgba(37, 99, 235, 0.25); }
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--sky); margin-bottom: 14px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--sky); }
+  .prose ul, .prose ol { padding-left: 24px; margin-bottom: 18px; max-width: var(--read-w); }
+  .prose li { font-size: 15px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 8px; }
+  .prose li strong { color: var(--text-primary); font-weight: 600; }
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); margin-bottom: 20px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.indigo { border-left: 3px solid var(--indigo); }
+  .info-card.rose { border-left: 3px solid var(--rose); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .info-card p strong { color: var(--text-primary); }
+  .info-card code { font-family: 'JetBrains Mono', monospace; font-size: 0.86em; color: var(--sky); }
+  .stack-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; max-width: var(--read-w); margin-bottom: 20px; }
+  .stack-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--indigo); border-radius: var(--radius-md); padding: 18px 22px; }
+  .stack-cell .layer { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .stack-cell h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.3px; }
+  .stack-cell p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: var(--read-w); margin-bottom: 20px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--sky); background: rgba(37, 99, 235, 0.04); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); } .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--sky); }
+  .compare td strong { color: var(--text-primary); }
+  .decision-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: var(--read-w); }
+  @media (max-width: 720px) { .decision-grid { grid-template-columns: 1fr; } }
+  .decision-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 24px; }
+  .decision-card.use { border-left: 3px solid var(--green); } .decision-card.skip { border-left: 3px solid var(--rose); }
+  .decision-card h4 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 12px; }
+  .decision-card.use h4 { color: var(--green); } .decision-card.skip h4 { color: var(--rose); }
+  .decision-card ul { list-style: none; padding: 0; }
+  .decision-card li { font-size: 13px; color: var(--text-secondary); line-height: 1.6; padding: 6px 0; border-bottom: 1px solid var(--border); }
+  .decision-card li:last-child { border-bottom: none; }
+  .connect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .connect-node { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; transition: all 0.3s; text-decoration: none; color: inherit; display: block; }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node .tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--sky); word-break: break-all; }
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--sky); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+<div class="glow-orb blue"></div>
+<div class="glow-orb sky"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand"><span class="nav-brand-mark">know.2nth.ai</span><span class="nav-brand-sub">agents/glm</span></a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">&larr; Agents</a>
+      <a href="../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x1F319;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="./">Agents</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">GLM &middot; Z.ai</span>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> agents &middot; GLM &middot; Z.ai &middot; Model Leaf</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      The open-weight flagship <span class="gradient">that trades blows with the frontier.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      <strong>GLM</strong> is Zhipu AI's model family, shipped internationally under the <strong>Z.ai</strong> brand. <strong>GLM-5.2</strong> (June 2026) is the current headline: a ~753B-parameter Mixture-of-Experts model with ~40B active per token, a <strong>1M-token context window</strong>, and a pure <strong>MIT licence</strong>. It is built for long-horizon agentic and coding work, and its API is Anthropic-Messages-compatible &mdash; so Claude Code retargets to it with a base-URL change. The institutionally-deployable Chinese open-weight flagship: genuinely competitive on agentic engineering, self-hostable to keep your data on your own infrastructure &mdash; if you can afford the GPUs.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill green">Live &middot; open weights</span>
+      <span class="pill accent">MIT licence</span>
+      <span class="pill indigo">GLM-5.2 &middot; Jun 2026</span>
+      <span class="pill indigo">753B MoE &middot; 40B active</span>
+      <span class="pill warn">~800GB VRAM to self-host</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 WHAT IT IS -->
+<section id="what">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; What it is</div>
+      <h2 class="section-title">Zhipu AI's family, told as one tight arc.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p><strong>GLM</strong> (General Language Model) is the family from <strong>Zhipu AI</strong>, a Beijing lab spun out of Tsinghua University, now shipping internationally under the <strong>Z.ai</strong> brand. Its defining trait is cadence: roughly quarterly releases, the most consistent of any Chinese frontier lab. The lineage worth anchoring runs GLM-4.5 (Jul 2025) &rarr; GLM-4.6 (Sep 2025, 200K context, MIT) &rarr; GLM-4.7 (Dec 2025) &rarr; <strong>GLM-5</strong> (Feb 2026, 744B MoE) &rarr; GLM-5.1 (Apr 2026) &rarr; <strong>GLM-5.2</strong> (Jun 2026). Z.ai listed on the Hong Kong Stock Exchange in January 2026 &mdash; the first publicly-listed Chinese AI lab (ticker <code>02513.HK</code>).</p>
+      <p>The strategic point for this tree is not the changelog &mdash; it is the <strong>licence and the shape of the business</strong>. GLM-5.2 ships under <strong>pure MIT</strong>: free to self-host, fine-tune, and use commercially, with none of the MAU caps or attribution clauses that complicate Llama's Community Licence. Z.ai monetises through its hosted API and the GLM Coding Plan, <em>not</em> by withholding weights. That makes GLM an open-weight model you can run next to your own data and systems-of-record &mdash; which is the only frame the Agents domain cares about. Judge it the way this sub-tree judges every model: on tool-use reliability and agent-framework integration, not chat vibes.</p>
+    </div>
+    <div class="info-card indigo fade-up" style="transition-delay: 0.08s">
+      <h4>Where it sits in the Models band</h4>
+      <p>GLM is the seventh distinct model story in this band and the third open-weight option, alongside <a href="llama.html" style="color:var(--sky);text-decoration:none;">Llama</a> and <a href="mistral-qwen.html" style="color:var(--sky);text-decoration:none;">Mistral / Qwen</a>. Where Llama is the broad community workhorse and Qwen Coder is the small-model code specialist, <strong>GLM-5.2 is the frontier-adjacent open-weight flagship</strong> &mdash; the one you reach for when you want closed-frontier-class agentic and coding quality but need the weights in your own hands. The cost of that is hardware, not licence (see &sect;02).</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 HOW IT WORKS -->
+<section id="how">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; How GLM-5.2 works</div>
+      <h2 class="section-title">The architecture, the context, and the two hard caveats.</h2>
+      <p class="section-lede">GLM-5.2 was released 13 June 2026 to GLM Coding Plan subscribers; the open weights dropped on Hugging Face three days later (<code>zai-org/GLM-5.2</code> in BF16, <code>zai-org/GLM-5.2-FP8</code>). It is text-only and tuned for long-horizon agentic loops, not one-shot answers.</p>
+    </div>
+
+    <div class="stack-grid fade-up" style="transition-delay: 0.05s">
+      <div class="stack-cell">
+        <span class="layer">Architecture</span>
+        <h4>~753B MoE &middot; ~40B active</h4>
+        <p>Mixture-of-Experts: 8 of 256 routed experts fire per token plus 1 shared expert. 78 layers, hidden size 6,144, 64 attention heads. You hold three-quarters of a trillion parameters; you pay compute for only ~40B per token.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Context</span>
+        <h4>1M-token window</h4>
+        <p>Up from GLM-5.1's 200K. Long enough to hold a whole repository, a multi-document brief, or a long agent trajectory in-context &mdash; the structural requirement for long-horizon coding work.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Efficiency &middot; IndexShare</span>
+        <h4>~2.9&times; lower FLOPs at 1M</h4>
+        <p>Reuses one lightweight indexer across every four sparse-attention layers, cutting per-token FLOPs ~2.9&times; at the 1M-context end. The trick that makes a 1M window economically serveable rather than just nominally supported.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Efficiency &middot; MTP</span>
+        <h4>Multi-token prediction</h4>
+        <p>An improved multi-token-prediction layer for speculative decoding lifts acceptance length ~20%, so more tokens clear per forward pass. Throughput, not capability &mdash; but throughput is what makes agentic loops affordable.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Licence</span>
+        <h4>Pure MIT</h4>
+        <p>Self-host, fine-tune, and use commercially with no MAU ceiling and no attribution clause. The monetisation lives in the hosted API and GLM Coding Plan, not in the weights.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Interop</span>
+        <h4>Anthropic-Messages-compatible</h4>
+        <p>The API speaks the Anthropic Messages format, so agent tooling built for Claude &mdash; <a href="claude-code.html" style="color:var(--sky);text-decoration:none;">Claude Code</a> included &mdash; retargets to GLM with a base-URL change rather than a rewrite. The open-standards seam, made concrete.</p>
+      </div>
+    </div>
+
+    <div class="info-card amber fade-up" style="transition-delay: 0.08s">
+      <h4>Hard caveat #1 &mdash; the hardware reality</h4>
+      <p>The MIT licence is free; the hardware is the binding constraint for most teams. The FP8 weights need <strong>~800GB of VRAM</strong> spread across multiple GPUs &mdash; on the order of <strong>8&times;H100</strong>. Self-hosting GLM-5.2 is not a laptop exercise and not a single-card exercise; it is a serious GPU cluster. This is precisely where the Inference band's honest answer is <a href="vllm.html" style="color:var(--sky);text-decoration:none;">vLLM</a> on a dedicated host, not <a href="ollama.html" style="color:var(--sky);text-decoration:none;">Ollama</a> on a workstation. If the cluster is out of reach, hosted access (DeepInfra, OpenRouter, Z.ai's own API) is the realistic path &mdash; with the governance trade-off below.</p>
+    </div>
+
+    <div class="info-card rose fade-up" style="transition-delay: 0.1s">
+      <h4>Hard caveat #2 &mdash; the serving path, not the weights</h4>
+      <p>Z.ai is Beijing-based, and its former name, Zhipu AI, was added to the US BIS <strong>Entity List</strong> in January 2025. If you call Z.ai's <strong>hosted API</strong>, your prompts route through servers governed by China's National Intelligence Law &mdash; a real data-path consideration for regulated or sensitive workloads. The distinction that matters: <strong>the risk is in the serving path, not in the weights</strong>. Self-hosting the open weights, or serving them through a provider you trust, removes the data-path exposure entirely.</p>
+      <p>The honest tension to hold, rather than resolve glibly: the <em>same</em> export-control geopolitics that makes GLM's hosted API a governance risk is also what makes <em>holding open weights you control</em> &mdash; from any lab &mdash; a continuity hedge. Both directions are real; weigh them against your own threat model. The continuity side is unpacked in &sect;04.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 BENCHMARKS & COST -->
+<section id="benchmarks">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; Where it actually lands</div>
+      <h2 class="section-title">Competitive on agentic engineering &mdash; read the rows honestly.</h2>
+      <p class="section-lede">The strong rows below are largely <strong>vendor-claimed</strong>. Independent composites place GLM-5.2 as the strongest open-weight model while still trailing the closed frontier on the hardest general tasks. Both things are true at once; the real story is not any single number but that a self-hostable, MIT-licensed model now trades blows on agentic coding.</p>
+    </div>
+
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead><tr><th>Benchmark</th><th>GLM-5.2</th><th>Comparison</th><th>Source</th></tr></thead>
+        <tbody>
+          <tr><td><strong>SWE-bench Pro</strong></td><td><strong>62.1</strong></td><td>GPT-5.5 &middot; 58.6 (GLM ahead)</td><td>Vendor-claimed</td></tr>
+          <tr><td><strong>FrontierSWE</strong></td><td><strong>74.4%</strong></td><td>GPT-5.5 72.6% &middot; Claude Opus 4.8 75.1%</td><td>Vendor-claimed</td></tr>
+          <tr><td><strong>Terminal-Bench 2.1</strong></td><td><strong>81.0</strong></td><td>&mdash;</td><td>Vendor-claimed</td></tr>
+          <tr><td><strong>Artificial Analysis Intelligence Index v4.1</strong></td><td><strong>51</strong></td><td>MiniMax-M3 &middot; DeepSeek V4 Pro 44 &middot; Kimi K2.6 43</td><td>Independent</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="info-card green fade-up" style="transition-delay: 0.08s">
+      <h4>The honest read</h4>
+      <p>On the independent <strong>Artificial Analysis Intelligence Index v4.1</strong>, GLM-5.2 tops the open-weight field at <strong>51</strong> &mdash; ahead of MiniMax-M3, DeepSeek V4 Pro (44) and Kimi K2.6 (43), as reported via Artificial Analysis and Simon Willison. It still trails the closed frontier on the hardest reasoning rows. Net: GLM-5.2 <strong>trades blows</strong> with Claude Opus 4.8, GPT-5.5 and Gemini 3.1 Pro &mdash; winning some rows, losing others. Do not upgrade the vendor rows into flat assertions; the load-bearing claim is that an <em>open-weight, self-hostable</em> model is genuinely in the conversation on agentic engineering.</p>
+    </div>
+
+    <div class="info-card fade-up" style="transition-delay: 0.1s">
+      <h4>Cost &mdash; named, not oversold</h4>
+      <p>For comparable long-horizon coding, hosted GLM-5.2 runs at roughly <strong>one-sixth the cost of GPT-5.5</strong>. Published hosted pricing lands around <strong>$0.95&ndash;$1.40 per 1M input tokens</strong> and <strong>~$3.00&ndash;$4.10 per 1M output tokens</strong>, depending on provider (DeepInfra, OpenRouter). Self-hosting is compute-and-electricity only &mdash; no per-token fee, but the ~800GB-VRAM cluster from &sect;02 is the up-front price. Which model is cheaper for <em>you</em> depends entirely on volume; the token saving is real and so is the cluster bill.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 DECISION GUIDE -->
+<section id="decision">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; Decision guide</div>
+      <h2 class="section-title">The model was the easy part. The harness is the decision.</h2>
+      <p class="section-lede">The most important content on this leaf is not a benchmark. It is the economics of <em>switching</em> &mdash; because GLM-5.2 forces the question that the whole Agents domain has been circling: if a cheap open-weight model now does the everyday work, why isn't everyone switching? The answer is that the moat moved from the model to the harness, the routing, and the context around it. Five decision criteria follow, then the use / skip call.</p>
+    </div>
+
+    <div class="info-card indigo fade-up" style="transition-delay: 0.05s">
+      <h4>1 &middot; Audit your task distribution before assuming you need the frontier</h4>
+      <p>Most knowledge work is standard and repeatable &mdash; first-pass websites, presentation outlines, content synthesis, common coding problems. In that fat middle of the curve, GLM-5.2 is frequently not just a budget alternative but the better execution, notably on front-end aesthetics. The frontier's edge shows up on the hard tail &mdash; novel reasoning, ambiguous specs &mdash; which is a <em>minority</em> of real usage. Most teams have never measured what share of their AI calls are predictable middle-of-curve work. <strong>Measure it first;</strong> the answer usually argues for a cheaper model on most of the volume.</p>
+    </div>
+
+    <div class="info-card indigo fade-up" style="transition-delay: 0.07s">
+      <h4>2 &middot; &ldquo;Lift and shift&rdquo; is a myth &mdash; switching models means rewriting the harness</h4>
+      <p>Swapping a cheaper model in is not an API-key change. System prompts, memory architecture, and tool-call / integration handling are all tuned to a specific model's logic and must be re-engineered for the new one. This re-engineering is the concrete cost that sits <em>opposite</em> the token savings. The saving is real; the migration friction is also real; which one dominates depends on your volume. State that plainly and you avoid both the hype and the despair.</p>
+    </div>
+
+    <div class="info-card indigo fade-up" style="transition-delay: 0.09s">
+      <h4>3 &middot; The ROI line is currently drawn at gross margin</h4>
+      <p>The teams actually migrating today are &ldquo;AI-as-a-service&rdquo; businesses where token cost is cost-of-goods &mdash; cutting it hits margin directly, so the harness rewrite pays back fast. For internal-productivity use, the up-front engineering friction often obscures the payback, and waiting is the correct call. This is the honest <strong>when-to-switch / when-to-wait</strong> criterion: not everyone should migrate yet, and that is not a failure of nerve.</p>
+    </div>
+
+    <div class="info-card indigo fade-up" style="transition-delay: 0.11s">
+      <h4>4 &middot; Convenience is the real lock-in, not capability</h4>
+      <p>Frontier labs are defending price with ergonomics &mdash; drop-in presence inside Slack and shared workspaces that quietly absorbs uncodified corporate context. A team running entirely on out-of-the-box frontier tooling is, in effect, renting its own operational context back from a third party; cheap open weights don't help if you can't extract yourself. This is the <strong>decisions-follow-data-and-systems-of-record</strong> position from the Agents hub: own your context layer or stay locked in regardless of model price. (The context-ownership argument lives in the <a href="../data/" style="color:var(--sky);text-decoration:none;">Data domain</a>.)</p>
+    </div>
+
+    <div class="info-card amber fade-up" style="transition-delay: 0.13s">
+      <h4>The routing corollary &mdash; the barbell architecture</h4>
+      <p>The practical answer to criteria 1&ndash;3 is an auto-router: a cheap open-weight model for center-of-distribution tasks, a frontier model for the hard tail. The industry name for this &mdash; confirmed across the June 2026 CNBC open-source-AI panel &mdash; is the <strong>barbell</strong>: reserve the expensive closed frontier for top-tier orchestration, planning, and final review only; route the bulk &mdash; heavy document processing, data combing, repetitive agentic loops &mdash; to cheap open weights. Agentic work consumes far more tokens than chatbot queries, so the barbell is what stops an agent pipeline from blowing its budget. The scarce thing is the talent to build that router safely, not the models. The seam where routing lives is <a href="litellm.html" style="color:var(--sky);text-decoration:none;">LiteLLM</a> and <a href="openrouter.html" style="color:var(--sky);text-decoration:none;">OpenRouter</a> &mdash; build the router there, not inside this model.</p>
+    </div>
+
+    <div class="info-card green fade-up" style="transition-delay: 0.15s">
+      <h4>5 &middot; Open weights as a business-continuity backstop (sovereign AI)</h4>
+      <p>Software access can no longer be assumed a stable global constant. Western labs have cut off access to frontier models under regulatory and export pressure, which turns &ldquo;can we self-host a capable model?&rdquo; from a cost question into a <em>continuity</em> question. An MIT-licensed, self-hostable model like GLM-5.2 is the backstop &mdash; the thing you fall back to if a hosted frontier vendor becomes unavailable to you. Two honest notes: (a) this is <strong>redundancy, not a wholesale replacement</strong> &mdash; the barbell still sends the hard tail to the frontier when it is available; and (b) the <em>same</em> geopolitics cuts both ways for GLM specifically (see the serving-path caveat in &sect;02). The sovereign-AI argument is for holding open weights <em>you control</em>, whoever made them; for SA/EU teams it also overlaps data-sovereignty (your proprietary data stays in-house rather than transiting a foreign vendor). The residency mechanics live in the <a href="../tech/" style="color:var(--sky);text-decoration:none;">Tech</a> and <a href="../data/" style="color:var(--sky);text-decoration:none;">Data</a> domains.</p>
+    </div>
+
+    <div class="decision-grid fade-up" style="transition-delay: 0.17s">
+      <div class="decision-card use">
+        <h4>Reach for GLM-5.2 when</h4>
+        <ul>
+          <li>You want frontier-adjacent agentic / coding quality with the weights in your own hands</li>
+          <li>Token cost is your cost-of-goods &mdash; the harness rewrite pays back on margin</li>
+          <li>You have (or can rent) a serious GPU cluster, or trust a non-Z.ai hosted provider</li>
+          <li>You're building the cheap end of a barbell router for high-volume agentic loops</li>
+          <li>You need a self-hostable continuity backstop against frontier-vendor cut-off</li>
+          <li>POPIA / data-residency rules out routing sensitive prompts to a foreign hosted API</li>
+        </ul>
+      </div>
+      <div class="decision-card skip">
+        <h4>Skip when</h4>
+        <ul>
+          <li>You need the absolute hardest-tail reasoning &mdash; the closed frontier still edges it</li>
+          <li>You have no GPU cluster and the workload is too sensitive for a hosted Chinese API</li>
+          <li>You want a laptop / load-shedding-resilient local model &mdash; Gemma on Ollama fits, GLM doesn't</li>
+          <li>Your AI use is low-volume internal productivity &mdash; the harness rewrite won't pay back yet</li>
+          <li>You need multimodal &mdash; GLM-5.2 is text-only</li>
+          <li>You can't put the talent on a safe router and just want one drop-in frontier vendor</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 SA CONTEXT -->
+<section id="sa-context">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; South African context</div>
+      <h2 class="section-title">The POPIA-friendly path &mdash; and the VRAM bill that comes with it.</h2>
+    </div>
+    <div class="info-card green fade-up" style="transition-delay: 0.05s">
+      <h4>The self-host story is genuinely POPIA-friendly</h4>
+      <p>For SA teams, the open-weight + self-host route is the clean POPIA answer: the data never leaves your infrastructure, and there is no foreign hosted endpoint in the prompt path. Unlike a closed frontier API, GLM-5.2's MIT weights let you run inference entirely in-country &mdash; in your own rack or an SA-region GPU host &mdash; so customer data stays where the regulator expects it.</p>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.07s">
+      <h4>But this is a serious-cluster option, not a load-shedding laptop model</h4>
+      <p>Be honest about the cost: GLM-5.2 is a <strong>serious on-prem GPU cluster</strong> decision (~800GB VRAM, 8&times;H100-class), not a lightweight local model. It is the opposite end of the spectrum from <a href="ollama.html" style="color:var(--sky);text-decoration:none;">Gemma on Ollama</a>, which runs FX-free and load-shedding-resilient on a maxed laptop. If you need a POPIA-friendly model that survives a power cut on a workstation, GLM is the wrong shape &mdash; reach for the lighter open-weights leaves. GLM earns its place when you have real GPU infrastructure and want frontier-adjacent quality on it.</p>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.09s">
+      <h4>The pragmatic SA middle path</h4>
+      <p>For most mid-sized SA teams the near-term move is not a data-centre build. It is to <strong>measure the task mix, build the barbell routing muscle, and keep GLM-5.2 as the open-weight backstop you can stand up if a frontier vendor becomes unavailable</strong> &mdash; using trusted hosted access (a non-Z.ai provider) for the cheap-end volume in the meantime, with eyes open about which prompts may cross a border. Own the context layer regardless; that is the part no model price rescues.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 CONNECTIONS -->
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; Connections</div>
+      <h2 class="section-title">Where GLM links in the tree.</h2>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="./" class="connect-node">
+        <span class="tag">agents</span>
+        <div class="skill">Agents hub</div>
+        <div class="why">The sub-tree landing. GLM sits in the Models band as the frontier-adjacent open-weight flagship.</div>
+      </a>
+      <a href="llama.html" class="connect-node">
+        <span class="tag">agents/llama</span>
+        <div class="skill">Llama</div>
+        <div class="why">The broad open-weights community workhorse. GLM is the pick when you want closed-frontier-class quality in open weights, not the largest fine-tune ecosystem.</div>
+      </a>
+      <a href="mistral-qwen.html" class="connect-node">
+        <span class="tag">agents/mistral-qwen</span>
+        <div class="skill">Mistral / Qwen</div>
+        <div class="why">The other strong open-weights families. Qwen Coder is the small-model code specialist; GLM-5.2 is the heavy frontier-adjacent flagship.</div>
+      </a>
+      <a href="vllm.html" class="connect-node">
+        <span class="tag">agents/vllm</span>
+        <div class="skill">vLLM</div>
+        <div class="why">How you actually serve GLM-5.2 on your own cluster. The honest inference answer for an 800GB-VRAM model &mdash; not Ollama.</div>
+      </a>
+      <a href="litellm.html" class="connect-node">
+        <span class="tag">agents/litellm</span>
+        <div class="skill">LiteLLM</div>
+        <div class="why">The routing seam. Build the barbell here &mdash; GLM for the center of distribution, a frontier model for the hard tail &mdash; behind one OpenAI-compatible interface.</div>
+      </a>
+      <a href="openrouter.html" class="connect-node">
+        <span class="tag">agents/openrouter</span>
+        <div class="skill">OpenRouter</div>
+        <div class="why">Hosted access to GLM-5.2 without a Z.ai billing relationship, and the multiplexer where barbell routing across providers lives.</div>
+      </a>
+      <a href="claude-code.html" class="connect-node">
+        <span class="tag">agents/claude-code</span>
+        <div class="skill">Claude Code</div>
+        <div class="why">The Anthropic-Messages-compatible endpoint means Claude Code retargets to GLM with a base-URL change &mdash; the interop seam, made concrete.</div>
+      </a>
+      <a href="mcp.html" class="connect-node">
+        <span class="tag">agents/mcp</span>
+        <div class="skill">Model Context Protocol</div>
+        <div class="why">How a GLM-backed agent reaches tools and data. The model calls; MCP is the surface it calls through.</div>
+      </a>
+      <a href="../data/" class="connect-node">
+        <span class="tag">data</span>
+        <div class="skill">Data domain</div>
+        <div class="why">Own your context layer. Cheap open weights don't help if your operating knowledge is trapped in a vendor's tool &mdash; the data domain is where ownership is built.</div>
+      </a>
+      <a href="../../briefings/glm-open-weight-economics" class="connect-node">
+        <span class="tag">briefings</span>
+        <div class="skill">Plain-language version</div>
+        <div class="why">The CEO briefing: &ldquo;The 98%-Cheaper Model &mdash; Why Can't You Just Switch?&rdquo; The same economics, told for the corner office.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 07 RESOURCES -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; Resources</div>
+      <h2 class="section-title">Primary sources only.</h2>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://huggingface.co/zai-org/GLM-5.2" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Weights &middot; BF16</span>
+        <span class="r-title">Hugging Face &middot; zai-org/GLM-5.2</span>
+        <span class="r-url">huggingface.co/zai-org/GLM-5.2</span>
+      </a>
+      <a href="https://huggingface.co/zai-org/GLM-5.2-FP8" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Weights &middot; FP8</span>
+        <span class="r-title">Hugging Face &middot; zai-org/GLM-5.2-FP8</span>
+        <span class="r-url">huggingface.co/zai-org/GLM-5.2-FP8</span>
+      </a>
+      <a href="https://github.com/zai-org/GLM" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Source</span>
+        <span class="r-title">zai-org/GLM &middot; GitHub</span>
+        <span class="r-url">github.com/zai-org/GLM</span>
+      </a>
+      <a href="https://docs.z.ai" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs</span>
+        <span class="r-title">Z.ai API &amp; model documentation</span>
+        <span class="r-url">docs.z.ai</span>
+      </a>
+      <a href="https://z.ai" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Site &middot; Z.ai</span>
+        <span class="r-title">Z.ai &middot; GLM Coding Plan &amp; hosted API</span>
+        <span class="r-url">z.ai</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../index.html">Skills tree</a>
+      <a href="./">Agents hub</a>
+      <a href="../../briefings/glm-open-weight-economics">CEO briefing</a>
+      <a href="https://z.ai" target="_blank" rel="noopener">Z.ai &nearr;</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme(){const html=document.documentElement;const current=html.getAttribute('data-theme');const next=current==='dark'?'light':'dark';html.setAttribute('data-theme',next);document.querySelector('.theme-toggle').textContent=next==='dark'?'☀️':'🌙';localStorage.setItem('theme',next);}
+  const saved=localStorage.getItem('theme');if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.theme-toggle').textContent=saved==='dark'?'☀️':'🌙';}
+  const observer=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting)entry.target.classList.add('visible');});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>
