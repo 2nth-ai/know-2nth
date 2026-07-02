@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Planning with agents &mdash; know.2nth.ai</title>
+<meta name="description" content="Sprint ceremonies were always context-transfer mechanisms — and stateless agents need that context transfer more than humans do. The modern backlog stops being a to-do list and becomes executable specification under version control: spec-driven development, the backlog as agent-readable data, cadence below the sprint, forecasting when the bottleneck moves to review, and the honest tradeoffs. The process-level continuation of 'software for agents'.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/software/planning-with-agents">
+<meta property="og:title" content="Planning with agents &mdash; know.2nth.ai">
+<meta property="og:description" content="The backlog is the prompt. Spec-driven development, the backlog as agent-readable data, cadence below the sprint, and forecasting when review becomes the bottleneck. Planning compiled down from meetings into files.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Planning with agents &mdash; know.2nth.ai">
+<meta name="twitter:description" content="The backlog is the prompt. Spec-driven development, the backlog as agent-readable data, cadence below the sprint, and forecasting when review becomes the bottleneck.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3Cline x1='16' y1='3' x2='16' y2='7' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='16' y1='25' x2='16' y2='29' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='3' y1='16' x2='7' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='25' y1='16' x2='29' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3C/svg%3E">
+<style>
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12); --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-soft: rgba(99, 102, 241, 0.12); --code: #14B8A6; --code-soft: rgba(20, 184, 166, 0.12); --bg: var(--ink); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(20, 184, 166, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(20, 184, 166, 0.3); --max-w: 1200px; --read-w: 760px; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(20, 184, 166, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(20, 184, 166, 0.28); }
+  * { margin: 0; padding: 0; box-sizing: border-box; } html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.blue { width: 600px; height: 600px; background: var(--code); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--code), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--code); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--code); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--code); } .crumb-sep { opacity: 0.5; } .crumb-current { color: var(--text-secondary); }
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--code); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--code); box-shadow: 0 0 12px var(--code); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--code), var(--sky), var(--sky-muted)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.accent { background: rgba(37, 99, 235, 0.12); color: var(--blue-glow); border-color: rgba(37, 99, 235, 0.25); }
+  .pill.green { background: var(--green-soft); color: var(--green); border-color: rgba(16, 185, 129, 0.25); }
+  .pill.code { background: var(--code-soft); color: var(--code); border-color: rgba(20, 184, 166, 0.25); }
+  .pill.warn { background: var(--warm-soft); color: var(--warm-glow); border-color: rgba(245, 158, 11, 0.25); }
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--sky); margin-bottom: 14px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--code); }
+  .prose ul, .prose ol { padding-left: 24px; margin-bottom: 18px; max-width: var(--read-w); }
+  .prose li { font-size: 15px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 8px; }
+  .prose li strong { color: var(--text-primary); font-weight: 600; }
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); margin-bottom: 20px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.code { border-left: 3px solid var(--code); }
+  .info-card.rose { border-left: 3px solid var(--rose); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .info-card code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--code); }
+  .info-card strong { color: var(--text-primary); }
+  .info-card ul { margin: 6px 0 0; padding-left: 20px; }
+  .info-card li { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 8px; }
+  .info-card li:last-child { margin-bottom: 0; }
+  .info-card li strong { color: var(--text-primary); }
+  .stack-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; max-width: var(--read-w); margin-bottom: 20px; }
+  .stack-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--code); border-radius: var(--radius-md); padding: 18px 22px; }
+  .stack-cell .layer { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .stack-cell h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.3px; }
+  .stack-cell p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+  .codeblock { background: var(--ink-deep); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 20px; max-width: var(--read-w); margin-bottom: 20px; overflow-x: auto; }
+  .codeblock .cb-cap { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; display: block; }
+  .codeblock pre { font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.65; color: var(--mist); white-space: pre; }
+  .codeblock pre .k { color: var(--code); }
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: var(--read-w); margin-bottom: 20px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--sky); background: rgba(37, 99, 235, 0.04); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); } .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--code); }
+  .compare td strong { color: var(--text-primary); }
+  .connect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .connect-node { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; transition: all 0.3s; text-decoration: none; color: inherit; display: block; }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node .tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--code); word-break: break-all; }
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--code), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--code); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+
+<div class="glow-orb blue"></div>
+<div class="glow-orb sky"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand"><span class="nav-brand-mark">know.2nth.ai</span><span class="nav-brand-sub">software/planning-with-agents</span></a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">&larr; Software</a>
+      <a href="../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x1F319;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="./">Software</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">Planning with agents</span>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> software &middot; Planning with agents &middot; Skill Leaf</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      The backlog <span class="gradient">is the prompt.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      Strip the ritual and every agile ceremony solves one problem: <strong>moving context from one head to another</strong>. Agents are stateless &mdash; they need that transfer more than humans do, on every task. So nothing about planning is obsolete; it just <strong>compiled down from meetings into files</strong>. The modern backlog stops being a to-do list and becomes <strong>executable specification under version control</strong>: the spec is the ticket, the ticket is the prompt, and the operator's job is keeping the queue full of well-specified, independently shippable work.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill code">Spec-driven</span>
+      <span class="pill accent">Backlog as data</span>
+      <span class="pill green">Operator model</span>
+      <span class="pill warn">Honest tradeoffs</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 CEREMONIES ARE CONTEXT TRANSFER -->
+<section id="ceremonies">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; Ceremonies are context transfer</div>
+      <h2 class="section-title">Every ritual was always about moving context.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Sprint planning scopes work before a line of code is written. Backlog refinement chunks a big idea into pieces one worker can hold in their head at once. A PRD gets the picture out of one brain and into a format someone else can execute. Look past the ceremony and agile has always been a set of <strong>context-transfer mechanisms</strong> &mdash; disciplines for getting what's in one person's head into another's before work starts. The practitioner argument that named this cleanly is Josh Owens' &ldquo;Your AI Doesn't Need Better Prompts. It Needs a Sprint Planning Session.&rdquo; (Feb 2026).</p>
+      <p>Here is the reframe the whole leaf turns on: an agent is <em>stateless</em>. It holds nothing between sessions, and it starts every task cold. Where a human teammate accumulates context over months and can coast on it, an agent needs the full transfer <strong>on every single task</strong>. So the planning disciplines aren't obsolete in the agent era &mdash; they're load-bearing in a way they never quite were for humans. What changes is the medium: the context that used to live in a two-hour meeting and three people's memory now has to live in <strong>files an agent can read</strong>. Planning didn't die. It compiled down from meetings into artifacts under version control.</p>
+    </div>
+    <div class="info-card code fade-up" style="transition-delay: 0.07s">
+      <h4>The one-line version</h4>
+      <p>A ceremony is a context-transfer protocol with a human runtime. Give it an agent runtime and the protocol survives &mdash; it just runs against committed text instead of a room full of people. The rest of this leaf is what each ceremony becomes once you write it down for a machine.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 THE SPEC IS THE TICKET -->
+<section id="spec">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; The spec is the ticket</div>
+      <h2 class="section-title">Spec-driven development: the spec is the source of truth.</h2>
+      <p class="section-lede">In spec-driven development (SDD), a versioned, structured <strong>specification</strong> &mdash; not the code, not the Jira card &mdash; is the source of truth, and code is generated and maintained against it. It exists to answer three specific failure modes of hand-a-model-a-prompt development.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Those three failure modes: <strong>intent drift</strong> (the code slowly stops matching what anyone actually asked for), <strong>context decay</strong> (the &ldquo;why&rdquo; behind a decision evaporates the moment the session ends), and <strong>unverifiable output</strong> (you can't tell whether the agent did the right thing because &ldquo;the right thing&rdquo; was never written down). A working ticket in this model carries what a good agent brief always carried: <strong>outcomes, scope boundaries, constraints, prior decisions, a task breakdown, and verification criteria</strong>. That is not new project-management theology &mdash; it's the same brief a competent contractor would demand before quoting, made executable.</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.07s">
+      <table class="compare">
+        <thead><tr><th>Tool</th><th>What it is</th><th>Since</th></tr></thead>
+        <tbody>
+          <tr><td><strong>GitHub Spec Kit</strong></td><td>Open-source toolkit for spec-driven development against coding agents</td><td>Open-sourced Sept 2025</td></tr>
+          <tr><td><strong>AWS Kiro</strong></td><td>Spec-first IDE that generates requirements, design, and tasks before code</td><td>2025</td></tr>
+          <tr><td><strong>Claude Code plan mode</strong></td><td>A read-only planning pass that produces an approved plan before any edit</td><td>2025</td></tr>
+          <tr><td><strong>OpenSpec</strong></td><td>Open convention for structured, versioned specifications in the repo</td><td>2025</td></tr>
+          <tr><td><strong>BMAD-METHOD</strong></td><td>Agentic agile framework wrapping planning roles around the build loop</td><td>2025</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.09s">
+      <p>For the requirement statements themselves, <strong>EARS notation</strong> (Easy Approach to Requirements Syntax) gives a small, testable grammar &mdash; &ldquo;<em>When</em> &lt;trigger&gt;, the system <em>shall</em> &lt;response&gt;&rdquo; &mdash; that turns a vague wish into something an agent can build against and a reviewer can check.</p>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.11s">
+      <h4>Honest caveat &mdash; SDD is not waterfall with extra YAML</h4>
+      <p>ThoughtWorks' Technology Radar Vol. 33 (2025) places spec-driven development in the <strong>Assess</strong> ring &mdash; worth a look, not yet a default &mdash; and warns explicitly against <strong>heavy up-front specification and big-bang releases</strong> as an antipattern. The discipline earns its keep when specs stay small, living, and close to the code. Push it toward exhaustive up-front documents and you've reinvented waterfall. It is also a genuinely poor fit for <strong>exploratory work</strong>, where you're still discovering what to build and a firm spec would just be a confident guess.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 BACKLOG AS AGENT-READABLE DATA -->
+<section id="backlog">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; The backlog as agent-readable data</div>
+      <h2 class="section-title">From a human-only artifact to a machine-operable one.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Once the ticket is a structured spec, the backlog stops being a human-only list and becomes <strong>data an agent can operate on</strong> &mdash; issues in GitHub, Linear, or Jira reached over <strong>MCP</strong>, or plain markdown work items committed alongside the code. What that changes in practice is concrete: agents <strong>cluster duplicates</strong>, <strong>flag stale tickets</strong>, <strong>draft sizing</strong>, and produce the <strong>planning pre-read</strong>. The planning meeting stops being &ldquo;let's build a plan while everyone watches&rdquo; and starts from a complete draft &mdash; the question in the room becomes &ldquo;<em>do we agree?</em>&rdquo; instead of &ldquo;<em>let's write this from scratch</em>.&rdquo;</p>
+    </div>
+    <div class="info-card rose fade-up" style="transition-delay: 0.07s">
+      <h4>The hard boundary &mdash; drafting is not deciding</h4>
+      <p>AI is good at <strong>clustering and drafting</strong>. It is bad at <strong>deciding business priority</strong>, and pretending otherwise is how teams automate themselves into shipping the wrong thing efficiently. The division of labour that holds: <strong>the human ranks the backlog</strong> (priority is a judgement about the business, not a text-prediction task), and <strong>the engineer who ships the work owns the estimate</strong>. The agent prepares; the people decide.</p>
+    </div>
+    <div class="codeblock fade-up" style="transition-delay: 0.09s">
+      <span class="cb-cap">A markdown work item, committed in-repo &mdash; runnable-in-spirit</span>
+<pre><span class="k">## [WORK-142] Add rate-limit to the /export endpoint</span>
+
+<span class="k">outcome:</span>     /export refuses more than 5 requests/min per API key,
+             returning HTTP 429 with a Retry-After header.
+<span class="k">scope:</span>       api/export handler + shared limiter. No UI changes.
+<span class="k">constraints:</span> Limiter state in existing Redis. No new deps.
+<span class="k">decisions:</span>   Per-key, not per-IP (keys already authenticated).
+<span class="k">verify:</span>
+  - Unit: 6th call within 60s returns 429 + Retry-After.
+  - Unit: counter resets after the window.
+  - CI: existing /export tests still pass.
+<span class="k">context:</span>    See software-for-agents.html &sect;grounding; limiter at
+             api/lib/limiter.ts.</pre>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.11s">
+      <p>That item is small enough for one agent session, states its own acceptance criteria, points at the live code to ground against, and can be verified without a human reading the agent's reasoning &mdash; only its diff and its passing tests. A backlog full of items shaped like this <em>is</em> the prompt library the operator runs against.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 CADENCE -->
+<section id="cadence">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; Cadence &mdash; the sprint gets smaller than the loop</div>
+      <h2 class="section-title">When spec-to-commit is minutes, two weeks stops being the unit.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>The two-week sprint was calibrated to a human build loop. When spec-to-first-commit compresses to <strong>minutes</strong>, that unit stops being natural &mdash; you can cycle through several well-specified items in the time a planning meeting used to take. The habit is sticky, though: State of Agile data still shows roughly <strong>59% of teams on two-week sprints</strong>, a share that has declined every year since 2022 (via Cadence, &ldquo;How to plan a software development sprint in 2026&rdquo;, June 2026). The mainstream alternatives are <strong>flow-based cycles</strong> (Linear-style continuous flow) and <strong>Shape Up appetites</strong> (fixed time, variable scope).</p>
+    </div>
+    <div class="info-card code fade-up" style="transition-delay: 0.07s">
+      <h4>Practical guidance, not dogma</h4>
+      <ul>
+        <li><strong>Pick cycle length by release cadence</strong>, not by convention &mdash; the cycle should match how often you actually ship, which for many agent-assisted teams is now continuous.</li>
+        <li><strong>Keep a ~20% interrupt buffer at commit</strong> &mdash; agent throughput makes it tempting to pack the cycle to 100%, which leaves no room for the review and rework that autonomy generates.</li>
+        <li><strong>Move refinement out of the planning meeting</strong> into an AI-assisted <strong>30-minute triage</strong> before it &mdash; the agent produces the pre-read; the humans spend the meeting deciding, not drafting.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 05 FORECASTING -->
+<section id="forecasting">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; Forecasting when the bottleneck moves</div>
+      <h2 class="section-title">Velocity was calibrated on typing speed. That constraint moved.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Story-point velocity is an estimate of how much a team can <em>write</em> in a cycle. When agents write most of the code, the constraint stops being how fast anyone types and shifts to <strong>spec quality and review capacity</strong> &mdash; and a metric calibrated on the old bottleneck goes haywire against the new one. What survives the shift is measurement of <strong>throughput and cycle-time on merged, verified work</strong>, and <strong>probabilistic forecasting off actual completion data</strong>, which beats ceremony-driven estimation precisely because it doesn't care who wrote the code, only what shipped and passed.</p>
+      <p>State the recalibration honestly, because someone will wave a chart: <strong>velocity numbers will move sharply, and stakeholder expectations need resetting.</strong> A bigger number is not a better forecast if review is the queue &mdash; code drafted but stuck behind a human reviewer isn't delivered, and counting it as velocity just moves the lie downstream. What to watch <em>instead</em> of raw velocity:</p>
+    </div>
+    <div class="stack-grid fade-up" style="transition-delay: 0.07s">
+      <div class="stack-cell">
+        <span class="layer">Signal</span>
+        <h4>First-pass success rate</h4>
+        <p>Share of agent tasks that pass review and CI on the first attempt. The truest read on spec quality.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Signal</span>
+        <h4>Review queue depth</h4>
+        <p>How many finished-but-unreviewed PRs are waiting. The new bottleneck, made visible.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Signal</span>
+        <h4>CI pass rate on agent PRs</h4>
+        <p>How often agent changes clear the pipeline unaided. Falling rate = specs or tests degrading.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Signal</span>
+        <h4>Rework rate</h4>
+        <p>Share of merged work later reverted or reopened. Catches the &ldquo;shipped fast, wrong anyway&rdquo; failure.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 THE OPERATOR MODEL -->
+<section id="operator">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; The operator model</div>
+      <h2 class="section-title">Planning's job is keeping the operator's queue full.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>The throughline across this branch is the <strong>operator</strong>: one person commanding several agents in parallel, with human specialists in the loop for review and judgement. In that model, planning has a precise, humble job &mdash; keep the operator's queue full of <strong>well-specified, independently shippable work items</strong>, each small enough for one agent session and each gated by CI and PR review exactly as <a href="software-for-agents.html">software/software-for-agents</a> describes. Planning isn't running the build anymore; it's feeding it clean inputs.</p>
+    </div>
+    <div class="info-card code fade-up" style="transition-delay: 0.07s">
+      <h4>What makes this planning model safe</h4>
+      <p>Everything here rests on the machinery from <a href="software-for-agents.html">software-for-agents</a>: the <strong>repo as context</strong>, a <strong><code>CLAUDE.md</code></strong> that orients the agent, <strong><code>SKILL.md</code></strong> procedures it can load, and <strong>CI as the safety net</strong> that gates every change. A spec-driven backlog is only safe <em>because</em> each item lands as a branch, runs the full pipeline, and waits for a human to approve the diff. Take away the harness and &ldquo;let agents work the backlog&rdquo; becomes the reckless sentence it sounds like. With the harness, it's a controlled, auditable operation &mdash; the queue is full, and every item that clears it was reviewed and is reversible.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 07 HONEST TRADEOFFS -->
+<section id="tradeoffs">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; Honest tradeoffs</div>
+      <h2 class="section-title">Where this costs more than it returns &mdash; and the objection to answer.</h2>
+      <p class="section-lede">No leaf in this branch ships without the counter-case. Spec-driven, agent-operated planning is not free, and it is not always worth it.</p>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.05s">
+      <h4>The real costs</h4>
+      <ul>
+        <li><strong>Automation noise.</strong> Every auto-generated ticket, sync, and status update creates notification load. Past a point, the drafting that was supposed to save attention drowns the signal it was meant to surface.</li>
+        <li><strong>Governance gap.</strong> Deloitte's State of AI 2026 reports only about <strong>one in five</strong> companies has a mature governance model for autonomous agents. Most teams are running the practice ahead of the guardrails.</li>
+        <li><strong>Quality tail-risk.</strong> A Feb 2026 large-scale empirical study (arXiv preprint) counted <strong>110,000+ surviving AI-introduced issues</strong> in production repositories. Unit tests catch regressions; they do not catch <strong>architectural drift</strong>, which accumulates silently under a green pipeline.</li>
+        <li><strong>Spec overhead is a real line item.</strong> For small teams, low feature volume, or fast-pivoting pre-PMF work, the specification machinery costs more than it returns &mdash; you're documenting decisions you'll reverse next week.</li>
+      </ul>
+    </div>
+    <div class="info-card green fade-up" style="transition-delay: 0.07s">
+      <h4>&ldquo;Human gates are just a hindrance&rdquo; &mdash; the objection, answered</h4>
+      <p>The position exists and deserves a straight answer: if agents can produce a passing PR in minutes, isn't a human reviewer just a bottleneck slowing the machine down? No. <strong>The gate isn't there because agents can't type &mdash; it's there for risk, compliance, and accountability.</strong> Someone has to be answerable for what shipped, a regulator will ask who approved it, and &ldquo;the model did&rdquo; is not an answer a POPIA or FSCA review accepts. Review is not friction to be optimised away; it's where responsibility lives. The correct optimisation is making the diff <em>easy to review</em> &mdash; small, well-specified, well-tested &mdash; not removing the reviewer.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 08 SA CONTEXT -->
+<section id="sa-context">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 &middot; South African context</div>
+      <h2 class="section-title">Frontier-grade leverage on hygiene, not budget.</h2>
+    </div>
+    <div class="info-card code fade-up" style="transition-delay: 0.05s">
+      <h4>The affordable path &mdash; and the audit trail comes free</h4>
+      <p>Same move as <a href="software-for-agents.html">software-for-agents</a>: this is leverage SA teams can afford. A spec-and-PR planning discipline gives you <strong>frontier-grade agent output on hygiene, not budget</strong> &mdash; you don't need a research team or a frontier bill, you need work items written well enough for an agent to execute and a pipeline that gates them. And the by-product is exactly what regulators ask for: the <strong>versioned spec plus the PR trail is the change-control audit artifact</strong> a POPIA or FSCA review wants &mdash; who changed what, why, who approved it, and how it was verified &mdash; produced automatically as you work, not assembled in a panic before an audit.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 09 CONNECTIONS -->
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">09 &middot; Connections</div>
+      <h2 class="section-title">Where this links in the tree.</h2>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="software-for-agents.html" class="connect-node">
+        <span class="tag">software/software-for-agents</span>
+        <div class="skill">Software for agents</div>
+        <div class="why">The harness this planning model runs on &mdash; repo-as-context, SKILL.md, CI as the safety net. This leaf is its process-level continuation.</div>
+      </a>
+      <a href="ci-cd.html" class="connect-node">
+        <span class="tag">software/ci-cd</span>
+        <div class="skill">CI/CD &amp; automation</div>
+        <div class="why">The pipeline that gates every backlog item &mdash; and the source of the CI-pass-rate signal that replaces velocity.</div>
+      </a>
+      <a href="github.html" class="connect-node">
+        <span class="tag">software/github</span>
+        <div class="skill">GitHub &amp; code repositories</div>
+        <div class="why">Where issues and PRs live &mdash; the backlog agents reach over MCP and the gate every change passes through.</div>
+      </a>
+      <a href="version-control.html" class="connect-node">
+        <span class="tag">software/version-control</span>
+        <div class="skill">Version control</div>
+        <div class="why">Why the spec is the source of truth: versioned, diffable, revertible &mdash; the ledger a spec-driven backlog is written into.</div>
+      </a>
+      <a href="../agents/" class="connect-node">
+        <span class="tag">agents</span>
+        <div class="skill">Agents hub</div>
+        <div class="why">&ldquo;Agents are software, not prompt soup.&rdquo; The stateless workers this planning discipline feeds well-specified work.</div>
+      </a>
+      <a href="../agents/skills.html" class="connect-node">
+        <span class="tag">agents/skills</span>
+        <div class="skill">Agent Skills</div>
+        <div class="why">Reusable SKILL.md procedures &mdash; the packaged capabilities a work item can call on instead of respecifying every time.</div>
+      </a>
+      <a href="../agents/coding-cli-agents.html" class="connect-node">
+        <span class="tag">agents/coding-cli-agents</span>
+        <div class="skill">Coding CLI agents</div>
+        <div class="why">Claude Code, Codex CLI, Copilot CLI &mdash; the agents an operator runs against the backlog, one session per item.</div>
+      </a>
+      <a href="../agents/mcp.html" class="connect-node">
+        <span class="tag">agents/mcp</span>
+        <div class="skill">Model Context Protocol</div>
+        <div class="why">The seam that turns GitHub / Linear / Jira issues into a backlog an agent can read and operate over.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 10 RESOURCES -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">10 &middot; Resources</div>
+      <h2 class="section-title">Primary sources only.</h2>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://github.com/github/spec-kit" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Repo &middot; SDD</span>
+        <span class="r-title">GitHub Spec Kit &mdash; spec-driven development toolkit</span>
+        <span class="r-url">github.com/github/spec-kit</span>
+      </a>
+      <a href="https://agents.md" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Convention</span>
+        <span class="r-title">AGENTS.md &mdash; the agent-instructions file</span>
+        <span class="r-url">agents.md</span>
+      </a>
+      <a href="https://www.anthropic.com/engineering/building-effective-agents" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Engineering</span>
+        <span class="r-title">Anthropic &mdash; Building effective agents</span>
+        <span class="r-url">anthropic.com/engineering/building-effective-agents</span>
+      </a>
+      <a href="https://www.thoughtworks.com/radar" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Radar &middot; Vol. 33</span>
+        <span class="r-title">ThoughtWorks Technology Radar &mdash; SDD in Assess</span>
+        <span class="r-url">thoughtworks.com/radar</span>
+      </a>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.08s; margin-top: 8px;">
+      <p style="font-size: 13px; color: var(--text-muted);">Also cited inline: &ldquo;Spec-Driven Development: From Code to Contract in the Age of AI&rdquo; (arXiv preprint, Feb 2026); Deloitte, <em>State of AI 2026</em>; Cadence, &ldquo;How to plan a software development sprint in 2026&rdquo; (June 2026); Josh Owens, &ldquo;Your AI Doesn't Need Better Prompts. It Needs a Sprint Planning Session.&rdquo; (Feb 2026). Linked here only where a stable primary URL resolves.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../index.html">Skills tree</a>
+      <a href="./">Software hub</a>
+      <a href="software-for-agents.html">Software for agents</a>
+      <a href="../../briefings/sprint-isnt-the-bottleneck">CEO briefing</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme() {
+    const html = document.documentElement;
+    const current = html.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
+    localStorage.setItem('theme', next);
+  }
+  const saved = localStorage.getItem('theme');
+  if (saved) {
+    document.documentElement.setAttribute('data-theme', saved);
+    document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '☀️' : '🌙';
+  }
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>
