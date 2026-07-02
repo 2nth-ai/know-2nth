@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Sprint Isn&rsquo;t the Bottleneck Anymore &mdash; know.2nth.ai Briefing</title>
+<meta name="description" content="AI agents compressed the time it takes to build software. The queue didn't disappear — it moved to deciding what to build, writing it down clearly, and reviewing it. A plain-language CEO briefing on why your team's velocity numbers will look strange this year, the three questions to ask your engineering lead, and why the governance fix is boring on purpose.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/briefings/sprint-isnt-the-bottleneck">
+<meta property="og:title" content="Your Sprint Isn't the Bottleneck Anymore — know.2nth.ai Briefing">
+<meta property="og:description" content="AI compressed build time; the queue moved to deciding, specifying and reviewing. Why your velocity numbers will look strange, the three questions for your engineering lead, and the boring governance fix.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai — The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Your Sprint Isn't the Bottleneck Anymore — know.2nth.ai">
+<meta name="twitter:description" content="AI compressed build time; the queue moved to deciding, specifying and reviewing. Why velocity looks strange, three questions for your eng lead, and the boring governance fix.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%2338BDF8' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%232563EB' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --ink: #0B1120; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6;
+    --sky: #38BDF8; --cyan: #22D3EE; --paper: #F8FAFC; --slate: #94A3B8;
+    --warm: #F59E0B; --warm-soft: rgba(245,158,11,0.12);
+    --green: #10B981; --green-soft: rgba(16,185,129,0.12);
+    --rose: #F43F5E; --rose-soft: rgba(244,63,94,0.12);
+    --indigo: #6366F1; --indigo-soft: rgba(99,102,241,0.12);
+    --max-w: 1080px; --read-w: 820px;
+    --radius-md: 14px; --radius-lg: 22px; --radius-pill: 100px;
+    --bg: #EEF4FB; --bg-soft: #E2ECF6; --card: #FFFFFF; --card-2: #F8FBFE;
+    --text: #0B1120; --text-2: #475569; --text-3: #8A97AB;
+    --border: rgba(15,23,42,0.10); --border-strong: rgba(15,23,42,0.16);
+    --shadow: 0 14px 40px rgba(15,23,42,0.08);
+  }
+  [data-theme="dark"] {
+    --bg: #07101D; --bg-soft: #0B1828; --card: #102033; --card-2: #0C1828;
+    --text: #F8FAFC; --text-2: #B6C2D6; --text-3: #6B7A92;
+    --border: rgba(148,163,184,0.14); --border-strong: rgba(148,163,184,0.24);
+    --shadow: 0 16px 48px rgba(0,0,0,0.5);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body {
+    font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+    background: radial-gradient(1100px 560px at 80% -120px, var(--bg-soft), var(--bg)) fixed;
+    color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  }
+  .wrap { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+  a { color: var(--blue); text-decoration: none; }
+
+  .topbar { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(14px);
+    background: color-mix(in srgb, var(--bg) 80%, transparent); border-bottom: 1px solid var(--border); }
+  .topbar-inner { max-width: var(--max-w); margin: 0 auto; padding: 12px 24px;
+    display: flex; align-items: center; justify-content: space-between; }
+  .brand-wrap { display: flex; align-items: center; }
+  .brand { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 14px;
+    background: linear-gradient(135deg, var(--blue), var(--sky));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; text-decoration: none; }
+  .brand-sub { font-size: 11px; color: var(--text-3); letter-spacing: 1.5px; text-transform: uppercase;
+    margin-left: 10px; padding-left: 10px; border-left: 1px solid var(--border); font-weight: 500; }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-2); text-decoration: none; font-weight: 500; }
+  .nav-link:hover { color: var(--sky); }
+  .toggle { background: none; border: 1px solid var(--border); color: var(--text-2);
+    width: 34px; height: 34px; border-radius: 50%; cursor: pointer; display: grid; place-items: center;
+    font-size: 15px; transition: all 0.2s; }
+  .toggle:hover { border-color: var(--border-strong); }
+
+  .hero { padding: 60px 0 8px; }
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500;
+    letter-spacing: 2.5px; text-transform: uppercase; color: var(--indigo);
+    display: inline-flex; align-items: center; gap: 10px; margin-bottom: 22px; }
+  .eyebrow .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--indigo); box-shadow: 0 0 12px var(--indigo); }
+  .hero h1 { font-size: clamp(36px, 6vw, 60px); font-weight: 800; line-height: 1.05;
+    letter-spacing: -1.8px; margin-bottom: 22px; max-width: 17ch; }
+  .hero h1 .hl { background: linear-gradient(135deg, var(--blue-glow), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .lede { font-size: 19px; color: var(--text-2); max-width: 720px; line-height: 1.6; font-weight: 300; }
+  .hero .lede .hl { color: var(--text); font-weight: 500; }
+  .meta-chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+  .chip { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.4px; color: var(--text-2);
+    border: 1px solid var(--border); padding: 8px 14px; border-radius: var(--radius-pill); background: var(--card-2); }
+
+  section { padding: 44px 0; }
+  .s-num { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--sky); font-weight: 600; margin-bottom: 12px; }
+  .s-title { font-size: clamp(26px, 4vw, 36px); font-weight: 700; letter-spacing: -0.8px; line-height: 1.15; margin-bottom: 16px; max-width: 24ch; }
+  .s-lede { font-size: 17px; color: var(--text-2); max-width: var(--read-w); line-height: 1.7; font-weight: 300; margin-bottom: 26px; }
+  .s-lede .hl { color: var(--text); font-weight: 600; }
+  .s-lede + .s-lede { margin-top: -8px; }
+
+  /* two-card contrast */
+  .defs { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 26px 0; }
+  @media (max-width: 720px){ .defs { grid-template-columns: 1fr; } }
+  .def { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 26px 28px; box-shadow: var(--shadow); }
+  .def.flow { border-top: 4px solid var(--slate); }
+  .def.agent { border-top: 4px solid var(--sky); }
+  .def .dt { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; font-weight: 600; margin-bottom: 8px; }
+  .def.flow .dt { color: var(--text-3); } .def.agent .dt { color: var(--sky); }
+  .def h3 { font-size: 21px; font-weight: 800; letter-spacing: -0.4px; margin-bottom: 8px; }
+  .def p { font-size: 14.5px; color: var(--text-2); line-height: 1.6; margin-bottom: 10px; }
+  .def p:last-child { margin-bottom: 0; }
+  .def .tag { font-size: 13px; color: var(--text-3); font-style: italic; }
+
+  /* callout */
+  .callout { background: var(--card-2); border: 1px solid var(--border); border-left: 4px solid var(--sky); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); box-shadow: var(--shadow); }
+  .callout.warm { border-left-color: var(--warm); }
+  .callout.green { border-left-color: var(--green); }
+  .callout .co-tag { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; font-weight: 600; color: var(--sky); margin-bottom: 10px; }
+  .callout.warm .co-tag { color: var(--warm); }
+  .callout.green .co-tag { color: var(--green); }
+  .callout p { font-size: 15.5px; color: var(--text-2); line-height: 1.7; }
+  .callout p strong { color: var(--text); }
+  .callout p + p { margin-top: 12px; }
+
+  /* checklist */
+  .checks { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: var(--read-w); }
+  @media (max-width: 720px){ .checks { grid-template-columns: 1fr; } }
+  .check { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 22px 24px; box-shadow: var(--shadow); }
+  .check .q { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+  .check p { font-size: 13.5px; color: var(--text-2); line-height: 1.55; }
+
+  /* related */
+  .thread { display: grid; grid-template-columns: repeat(2,1fr); gap: 14px; }
+  @media (max-width: 760px){ .thread { grid-template-columns: 1fr; } }
+  .tcard { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px 26px; box-shadow: var(--shadow); text-decoration: none; color: inherit; display: block; transition: transform .25s, border-color .25s; border-top: 4px solid var(--sky); }
+  .tcard:hover { transform: translateY(-3px); border-color: var(--border-strong); }
+  .tcard .tt { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--sky); font-weight: 600; margin-bottom: 8px; }
+  .tcard h4 { font-size: 19px; font-weight: 800; letter-spacing: -0.4px; margin-bottom: 8px; }
+  .tcard p { font-size: 14px; color: var(--text-2); line-height: 1.55; margin-bottom: 10px; }
+  .tcard .go { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--sky); font-weight: 600; }
+
+  /* final */
+  .finalbox { max-width: var(--read-w); margin: 0 auto; background: var(--card); border: 1px solid var(--border-strong); border-radius: var(--radius-lg); padding: 34px 36px; box-shadow: var(--shadow); text-align: center; }
+  .finalbox .tag { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.6px; text-transform: uppercase; color: var(--indigo); font-weight: 600; margin-bottom: 14px; }
+  .finalbox p { font-size: clamp(18px, 2.4vw, 22px); font-weight: 500; color: var(--text); line-height: 1.5; }
+
+  footer { padding: 54px 0 48px; border-top: 1px solid var(--border); text-align: center; margin-top: 36px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600;
+    background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tag { font-size: 13px; color: var(--text-3); margin-bottom: 18px; }
+  .footer-links { display: flex; justify-content: center; gap: 22px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-2); text-decoration: none; }
+  .footer-links a:hover { color: var(--sky); }
+  .footer-copy { font-size: 12px; color: var(--text-3); margin-top: 18px; }
+
+  .fade { opacity: 0; transform: translateY(22px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade.vis { opacity: 1; transform: translateY(0); }
+  @media (prefers-reduced-motion: reduce) { .fade { opacity: 1; transform: none; } }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand-wrap"><a href="/index.html" class="brand">know.2nth.ai</a><span class="brand-sub">CEO Briefing</span></div>
+    <div class="nav-right">
+      <a href="/briefings/" class="nav-link">All briefings</a>
+      <button class="toggle" onclick="toggleTheme()" aria-label="Toggle light/dark">🌙</button>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div class="eyebrow fade"><span class="dot"></span> Engineering &amp; delivery &middot; The planning shift</div>
+    <h1 class="fade" style="transition-delay:.05s">Your sprint isn&rsquo;t <span class="hl">the bottleneck anymore.</span></h1>
+    <p class="lede fade" style="transition-delay:.1s">
+      AI agents have compressed the slow part of software &mdash; <span class="hl">writing the code</span> &mdash; from weeks to hours. That&rsquo;s the good news. The catch: the queue didn&rsquo;t vanish, it <span class="hl">moved</span> &mdash; to deciding what to build, writing it down clearly enough to hand off, and reviewing what comes back. If your delivery numbers start behaving strangely this year, this is why, and here&rsquo;s what to do about it.
+    </p>
+    <div class="meta-chips fade" style="transition-delay:.15s">
+      <span class="chip">Sources &middot; Deloitte State of AI 2026, ThoughtWorks Radar Vol. 33</span>
+      <span class="chip">6-min read</span>
+      <span class="chip">For decision-makers</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">01 &middot; What actually changed</div>
+      <h2 class="s-title">Building got cheap. Deciding, specifying and reviewing didn&rsquo;t.</h2>
+      <p class="s-lede">For thirty years, writing the code was the expensive, slow step, and everything in software management was built to schedule around it. Agents removed that constraint &mdash; and revealed the <span class="hl">three steps that were always underneath it.</span></p>
+    </div>
+    <div class="defs fade" style="transition-delay:.05s">
+      <div class="def flow">
+        <div class="dt">The old bottleneck</div>
+        <h3>Writing the code</h3>
+        <p>Build time dominated. Plans, estimates and team size all revolved around how long it took people to type the software into existence.</p>
+        <p class="tag">Fix the typing speed, fix the delivery.</p>
+      </div>
+      <div class="def agent">
+        <div class="dt">The new bottleneck</div>
+        <h3>Deciding &middot; specifying &middot; reviewing</h3>
+        <p>When code is fast, the queue moves upstream and downstream: choosing what&rsquo;s worth building, describing it clearly enough for an agent to execute, and checking what it produced.</p>
+        <p class="tag">The work that&rsquo;s left is the human judgement.</p>
+      </div>
+    </div>
+    <div class="prose fade" style="transition-delay:.08s">
+      <p class="s-lede"><span class="hl">Why it matters to you:</span> if your team is still organised entirely around the old bottleneck &mdash; measuring output by how much code got written &mdash; you&rsquo;re optimising the step that&rsquo;s no longer the constraint. The leverage now is in how clearly work is defined and how fast good work gets reviewed and shipped.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">02 &middot; The strange numbers</div>
+      <h2 class="s-title">Your velocity will look weird. That&rsquo;s a recalibration, not a crisis.</h2>
+      <p class="s-lede">&ldquo;Velocity&rdquo; is the number most engineering teams use to estimate how much they can deliver in a cycle. It was calibrated on how fast <span class="hl">people write code</span> &mdash; so when agents write most of it, the number moves sharply, and it stops meaning what it used to.</p>
+    </div>
+    <div class="callout fade" style="transition-delay:.05s">
+      <div class="co-tag">The trap to avoid</div>
+      <p>A bigger velocity number is <strong>not</strong> a better result if the work is piling up unreviewed. Code that&rsquo;s been drafted but is stuck waiting for a human to check it hasn&rsquo;t been delivered &mdash; and counting it as progress just hides the real queue. When someone shows you a chart with a thrilling new number on it, the question to ask is: <strong>how much of that has actually shipped and been verified?</strong></p>
+    </div>
+    <div class="prose fade" style="transition-delay:.08s">
+      <p class="s-lede"><span class="hl">Reset the expectation before the number does it for you.</span> Tell your board and your team, plainly, that the old measure is being recalibrated &mdash; that what you&rsquo;ll now watch is finished, reviewed, shipped work and how quickly it moves, not how much got typed. That&rsquo;s a performance-<em>measurement</em> problem to fix, not a performance problem to panic about.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">03 &middot; The conversation to have</div>
+      <h2 class="s-title">Three questions to ask your engineering lead.</h2>
+    </div>
+    <div class="checks fade" style="transition-delay:.05s">
+      <div class="check"><div class="q">Are our work items written so an agent could execute them?</div><p>Does each task say what &ldquo;done&rdquo; looks like, what&rsquo;s in and out of scope, and how it&rsquo;ll be checked? That clear brief is now the thing that determines quality &mdash; more than the model.</p></div>
+      <div class="check"><div class="q">What&rsquo;s our review capacity?</div><p>If agents can produce ten changes a day and we can only carefully review three, the other seven are the bottleneck. Can we review faster without lowering the bar?</p></div>
+      <div class="check"><div class="q">Who owns priority?</div><p>Deciding what matters most is a business judgement, not something to hand the AI. A person must own the ranking &mdash; the agent can prepare the list, but it can&rsquo;t choose what&rsquo;s worth doing.</p></div>
+      <div class="check"><div class="q">Who&rsquo;s accountable for what ships?</div><p>&ldquo;The model wrote it&rdquo; is not an answer an auditor accepts. A named human still approves each change &mdash; that&rsquo;s not friction, it&rsquo;s accountability.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">04 &middot; The governance line</div>
+      <h2 class="s-title">The fix is boring on purpose &mdash; and that&rsquo;s the good news.</h2>
+      <p class="s-lede">Most companies are running ahead of their guardrails: Deloitte&rsquo;s <em>State of AI 2026</em> finds only about <span class="hl">one in five</span> has a mature way of governing autonomous AI agents. The instinct is to convene a committee. The better answer is more mundane.</p>
+    </div>
+    <div class="callout green fade" style="transition-delay:.05s">
+      <div class="co-tag">What good governance actually looks like</div>
+      <p>It isn&rsquo;t an AI ethics board. It&rsquo;s three boring engineering habits your team may already have: <strong>a clear written brief for each piece of work</strong> (the spec), <strong>every change reviewed and approved before it goes live</strong> (the pull request), and <strong>automated checks that run on every change</strong> (the test pipeline). Those three give you a complete record of who changed what, why, and who signed off &mdash; which is exactly what a POPIA or FSCA review asks for, produced as a by-product of working this way rather than assembled in a panic.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">05 &middot; When it isn&rsquo;t worth it</div>
+      <h2 class="s-title">The honest limits.</h2>
+      <p class="s-lede">This discipline is not free, and it doesn&rsquo;t pay off everywhere. Two cases where the machinery costs more than it returns:</p>
+    </div>
+    <div class="callout warm fade" style="transition-delay:.05s">
+      <div class="co-tag">Where to hold off</div>
+      <p><strong>Small teams and low volume.</strong> If a couple of people ship a handful of changes a week, writing formal briefs for each one is overhead you&rsquo;ll feel and won&rsquo;t recoup. Keep it lightweight.</p>
+      <p><strong>Genuinely exploratory work.</strong> When you&rsquo;re still figuring out <em>what</em> to build &mdash; early product, pre-market-fit &mdash; a firm written spec is just a confident guess you&rsquo;ll rewrite next week. Specify once you know; explore before you do.</p>
+    </div>
+    <div class="prose fade" style="transition-delay:.08s">
+      <p class="s-lede">The rule of thumb: the more your work is <span class="hl">repeatable and accountable</span>, the more this pays; the more it&rsquo;s <span class="hl">small or exploratory</span>, the lighter you keep it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- RELATED -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">Keep reading</div>
+      <h2 class="s-title">Related</h2>
+    </div>
+    <div class="thread fade" style="transition-delay:.05s">
+      <a href="/explainers/software/planning-with-agents" class="tcard">
+        <div class="tt">Technical version</div>
+        <h4>Planning with agents</h4>
+        <p>The deep version for your engineering lead: spec-driven development, the backlog as agent-readable data, cadence below the sprint, and what to measure when velocity breaks.</p>
+        <span class="go">Open the leaf &rarr;</span>
+      </a>
+      <a href="/briefings/when-is-an-agent-the-right-tool" class="tcard">
+        <div class="tt">Briefing</div>
+        <h4>When Is an Agent the Right Tool?</h4>
+        <p>Before you specify the work, decide whether it needs an agent at all. Most things sold as agents should be simpler, cheaper and more predictable.</p>
+        <span class="go">Read briefing &rarr;</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL -->
+<section>
+  <div class="wrap">
+    <div class="finalbox fade">
+      <div class="tag">The take</div>
+      <p>Agents didn&rsquo;t remove the work &mdash; they moved it. From typing code to deciding what&rsquo;s worth building, writing it down clearly, and reviewing what comes back. Manage those three, and the speed takes care of itself.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tag">CEO briefings &middot; the plain-language layer over the knowledge tree</p>
+    <div class="footer-links">
+      <a href="/briefings/">All briefings</a>
+      <a href="/index.html">Knowledge tree</a>
+      <a href="/explainers/software/planning-with-agents">Planning with agents</a>
+      <a href="https://2nth.ai" target="_blank" rel="noopener">2nth.ai</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme(){
+    const h=document.documentElement, cur=h.getAttribute('data-theme'), nxt=cur==='dark'?'light':'dark';
+    h.setAttribute('data-theme',nxt);
+    document.querySelector('.toggle').textContent = nxt==='dark' ? '☀️' : '🌙';
+    localStorage.setItem('brief-theme',nxt);
+  }
+  const saved=localStorage.getItem('brief-theme');
+  if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.toggle').textContent=saved==='dark'?'☀️':'🌙';}
+  const ob=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');});},{threshold:0.08,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.fade').forEach(el=>ob.observe(el));
+</script>
+</body>
+</html>
