@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Copilot Studio Agents Are Software — ALM &amp; Dataverse · know.2nth.ai</title>
+<meta name="description" content="A Copilot Studio agent is a Dataverse solution component — so it is software, and must be shipped with ALM discipline. Dev/test/prod, managed vs unmanaged, the components that silently don't survive export, and the tooling that puts an agent under version control. If it's not in a solution, you're editing in production.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/tech/microsoft/copilot-studio">
+<meta property="og:title" content="Copilot Studio Agents Are Software — ALM &amp; Dataverse · know.2nth.ai">
+<meta property="og:description" content="A Copilot Studio agent is a Dataverse solution component — so it is software. Dev/test/prod, managed vs unmanaged, the components that don't survive export, and putting an agent under version control.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai — The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Copilot Studio Agents Are Software — ALM &amp; Dataverse · know.2nth.ai">
+<meta name="twitter:description" content="A Copilot Studio agent is a Dataverse solution component — so it is software. ALM discipline: dev/test/prod, managed vs unmanaged, the export gotchas, version control.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3Cline x1='16' y1='3' x2='16' y2='7' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='16' y1='25' x2='16' y2='29' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='3' y1='16' x2='7' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='25' y1='16' x2='29' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --ink: #0B1120;
+    --ink-deep: #060A14;
+    --navy: #121D33;
+    --blue: #2563EB;
+    --blue-glow: #3B82F6;
+    --sky: #38BDF8;
+    --sky-muted: #7DD3FC;
+    --paper: #F8FAFC;
+    --mist: #E2E8F0;
+    --mist-dark: #334155;
+    --slate: #94A3B8;
+    --warm: #F59E0B;
+    --warm-soft: rgba(245, 158, 11, 0.12);
+    --green: #10B981;
+    --green-soft: rgba(16, 185, 129, 0.12);
+    --violet: #8B5CF6;
+    --violet-soft: rgba(139, 92, 246, 0.12);
+    --rose: #F43F5E;
+    --rose-soft: rgba(244, 63, 94, 0.12);
+
+    --bg: var(--ink);
+    --bg-raised: var(--navy);
+    --bg-card: rgba(18, 29, 51, 0.7);
+    --bg-card-hover: rgba(37, 99, 235, 0.08);
+    --text-primary: var(--paper);
+    --text-secondary: var(--slate);
+    --text-muted: #64748B;
+    --border: rgba(148, 163, 184, 0.1);
+    --border-hover: rgba(56, 189, 248, 0.25);
+
+    --max-w: 1200px;
+    --read-w: 760px;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+    --radius-pill: 100px;
+
+    --domain: var(--blue);
+    --domain-glow: var(--blue-glow);
+    --domain-soft: rgba(37, 99, 235, 0.1);
+  }
+
+  [data-theme="light"] {
+    --bg: #F1F5F9;
+    --bg-raised: #FFFFFF;
+    --bg-card: rgba(255, 255, 255, 0.85);
+    --bg-card-hover: rgba(37, 99, 235, 0.04);
+    --text-primary: var(--ink);
+    --text-secondary: #475569;
+    --text-muted: #94A3B8;
+    --border: rgba(15, 23, 42, 0.08);
+    --border-hover: rgba(37, 99, 235, 0.2);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  .glow-orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: 0.08;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .glow-orb.blue { width: 600px; height: 600px; background: var(--blue); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+
+  /* ── Nav ── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: 0 24px;
+    backdrop-filter: blur(20px) saturate(1.4);
+    background: rgba(11, 17, 32, 0.75);
+    border-bottom: 1px solid var(--border);
+  }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+  }
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: var(--text-primary);
+  }
+  .nav-brand-mark {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    font-size: 15px;
+    background: linear-gradient(135deg, var(--blue), var(--sky));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+  }
+  .nav-brand-sub {
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-weight: 500;
+    padding-left: 10px;
+    border-left: 1px solid var(--border);
+  }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link {
+    font-size: 13px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+  .nav-link:hover { color: var(--sky); }
+  .theme-toggle {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    font-size: 16px;
+    transition: all 0.2s;
+  }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--sky); }
+
+  /* ── Container ── */
+  .container {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+    z-index: 1;
+  }
+  .read { max-width: var(--read-w); }
+
+  /* ── Breadcrumb ── */
+  .crumb {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.5px;
+    padding: 28px 0 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .crumb a {
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .crumb a:hover { color: var(--sky); }
+  .crumb-sep { opacity: 0.5; }
+  .crumb-current { color: var(--text-secondary); }
+
+  /* ── Hero ── */
+  .hero { padding: 48px 0 72px; }
+  .hero-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--sky);
+    margin-bottom: 24px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .hero-eyebrow .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--domain-glow);
+    box-shadow: 0 0 12px var(--domain-glow);
+  }
+  .hero h1 {
+    font-size: clamp(38px, 6vw, 64px);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -2px;
+    margin-bottom: 24px;
+    max-width: 16ch;
+  }
+  .hero h1 .gradient {
+    background: linear-gradient(135deg, var(--blue-glow), var(--sky), var(--sky-muted));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero-sub {
+    font-size: 19px;
+    color: var(--text-secondary);
+    max-width: 660px;
+    line-height: 1.65;
+    font-weight: 300;
+    margin-bottom: 32px;
+  }
+  .hero-meta { display: flex; gap: 10px; flex-wrap: wrap; }
+  .pill {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    letter-spacing: 0.5px;
+  }
+  .pill.accent {
+    background: var(--domain-soft);
+    color: var(--domain-glow);
+    border-color: rgba(37, 99, 235, 0.25);
+  }
+
+  /* ── Section system ── */
+  section { padding: 64px 0; position: relative; }
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--sky);
+    margin-bottom: 14px;
+  }
+  .section-title {
+    font-size: clamp(26px, 3.4vw, 36px);
+    font-weight: 700;
+    letter-spacing: -0.8px;
+    margin-bottom: 18px;
+    line-height: 1.2;
+  }
+  .section-lede {
+    font-size: 17px;
+    color: var(--text-secondary);
+    max-width: var(--read-w);
+    line-height: 1.7;
+    font-weight: 300;
+    margin-bottom: 36px;
+  }
+  .prose p {
+    font-size: 16px;
+    color: var(--text-secondary);
+    line-height: 1.75;
+    max-width: var(--read-w);
+    margin-bottom: 18px;
+  }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.88em;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 1px 6px;
+    border-radius: 4px;
+    color: var(--sky);
+  }
+
+  /* ── Flow diagram (section 01) ── */
+  .flow {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    max-width: var(--read-w);
+    background: var(--bg-card);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    margin: 8px 0 24px;
+    flex-wrap: wrap;
+  }
+  .flow-node {
+    flex: 1;
+    min-width: 120px;
+    text-align: center;
+    padding: 12px 8px;
+    position: relative;
+  }
+  .flow-node + .flow-node::before {
+    content: '→';
+    position: absolute;
+    left: -8px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--sky);
+    opacity: 0.5;
+    font-size: 16px;
+  }
+  .flow-node .mark {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    display: block;
+  }
+  .flow-node .name { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+  .flow-node .note {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 4px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ── Stat strip (section 02) ── */
+  .stat-strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 2px;
+    background: var(--bg-card);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+  .stat { padding: 32px 24px; border-right: 1px solid var(--border); }
+  .stat:last-child { border-right: none; }
+  .stat .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 32px;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--blue-glow), var(--sky));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .stat .label { font-size: 13px; color: var(--text-secondary); line-height: 1.4; }
+  .stat .foot {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-muted);
+    margin-top: 6px;
+    letter-spacing: 0.5px;
+  }
+
+  /* ── Concept cards (section 03) ── */
+  .concepts { display: grid; grid-template-columns: 1fr; gap: 18px; }
+  .concept {
+    background: var(--bg-card);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 32px;
+    transition: all 0.3s;
+  }
+  .concept:hover { border-color: var(--border-hover); }
+  .concept-head {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+  .concept-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--domain-glow);
+    letter-spacing: 1px;
+  }
+  .concept h3 { font-size: 22px; font-weight: 700; letter-spacing: -0.3px; }
+  .concept p {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 16px;
+    max-width: 64ch;
+  }
+  .concept pre {
+    background: var(--ink-deep);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 18px 20px;
+    overflow-x: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    line-height: 1.65;
+    color: var(--mist);
+  }
+  [data-theme="light"] .concept pre { background: #0F172A; color: #E2E8F0; }
+  .concept pre .tok-kw { color: var(--sky); }
+  .concept pre .tok-str { color: #A5F3B8; }
+  .concept pre .tok-com { color: var(--text-muted); font-style: italic; }
+  .concept pre .tok-fn { color: var(--sky-muted); }
+
+  /* ── Comparison table (section 04) ── */
+  .compare-wrap {
+    background: var(--bg-card);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td {
+    padding: 16px 18px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .compare thead th {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--sky);
+    background: rgba(56, 189, 248, 0.04);
+  }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare tbody tr:hover { background: var(--bg-card-hover); }
+  .compare td.name { font-weight: 600; color: var(--text-primary); white-space: nowrap; }
+  .compare td.name.this { color: var(--domain-glow); }
+  .compare td { color: var(--text-secondary); }
+  .compare .yes { color: var(--green); font-weight: 600; }
+  .compare .no { color: var(--rose); font-weight: 600; }
+  .compare .partial { color: var(--warm); font-weight: 600; }
+
+  /* ── Use case grid (section 05) ── */
+  .usecases {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 14px;
+  }
+  .usecase {
+    background: var(--bg-card);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 26px;
+    transition: all 0.3s;
+  }
+  .usecase:hover { border-color: var(--border-hover); transform: translateY(-2px); }
+  .usecase .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--domain-glow);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    display: block;
+  }
+  .usecase h4 { font-size: 17px; font-weight: 600; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .usecase p { font-size: 13.5px; color: var(--text-secondary); line-height: 1.6; }
+
+  /* ── Timeline (section 06) ── */
+  .timeline { position: relative; padding-left: 28px; max-width: var(--read-w); }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 10px;
+    bottom: 10px;
+    width: 1px;
+    background: linear-gradient(180deg, var(--domain-glow), var(--sky), transparent);
+    opacity: 0.4;
+  }
+  .t-item { position: relative; padding: 10px 0 22px; }
+  .t-item::before {
+    content: '';
+    position: absolute;
+    left: -28px;
+    top: 16px;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 2px solid var(--domain-glow);
+  }
+  .t-year {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--sky);
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+  .t-title { font-size: 15px; font-weight: 600; color: var(--text-primary); margin-bottom: 2px; }
+  .t-note { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+  /* ── Decision guide (section 07) ── */
+  .decide { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .decide-col {
+    background: var(--bg-card);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 32px;
+  }
+  .decide-col.use { border-left: 3px solid var(--green); }
+  .decide-col.skip { border-left: 3px solid var(--rose); }
+  .decide-head {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .decide-col.use .decide-head { color: var(--green); }
+  .decide-col.skip .decide-head { color: var(--rose); }
+  .decide ul { list-style: none; }
+  .decide li {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    padding: 10px 0 10px 22px;
+    position: relative;
+    border-bottom: 1px solid var(--border);
+  }
+  .decide li:last-child { border-bottom: none; }
+  .decide li::before {
+    position: absolute;
+    left: 0;
+    top: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    font-size: 13px;
+  }
+  .decide-col.use li::before { content: '+'; color: var(--green); }
+  .decide-col.skip li::before { content: '−'; color: var(--rose); }
+  .decide li strong { color: var(--text-primary); font-weight: 600; }
+
+  /* ── Connection map (section 08) ── */
+  .connect-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  .connect-node {
+    background: var(--bg-card);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 18px 20px;
+    transition: all 0.3s;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node.soon { cursor: default; opacity: 0.72; }
+  .connect-node.soon:hover { border-color: var(--border); background: var(--bg-card); }
+  .connect-node .domain-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+    display: block;
+  }
+  .connect-node .skill { font-size: 14px; font-weight: 600; color: var(--text-primary); margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+  .connect-node.infra .domain-tag { color: var(--blue-glow); }
+  .connect-node.security .domain-tag { color: var(--green); }
+  .connect-node.data .domain-tag { color: var(--sky); }
+  .connect-node.ai .domain-tag { color: var(--violet); }
+  .connect-node.biz .domain-tag { color: var(--warm); }
+  .connect-node.legal .domain-tag { color: var(--rose); }
+
+  .agent-callout {
+    background: linear-gradient(135deg, var(--violet-soft), rgba(56, 189, 248, 0.05));
+    border: 1px solid rgba(139, 92, 246, 0.2);
+    border-radius: var(--radius-lg);
+    padding: 28px 32px;
+    max-width: var(--read-w);
+  }
+  .agent-callout .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--violet);
+    margin-bottom: 10px;
+  }
+  .agent-callout h4 { font-size: 18px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .agent-callout p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; }
+  .agent-callout p + p { margin-top: 10px; }
+
+  /* ── Resources (section 09) ── */
+  .resource-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 12px;
+    margin-bottom: 36px;
+  }
+  .resource {
+    background: var(--bg-card);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 18px 20px;
+    text-decoration: none;
+    transition: all 0.3s;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--sky);
+    word-break: break-all;
+  }
+
+  .download-stub {
+    background: var(--bg-card);
+    backdrop-filter: blur(10px);
+    border: 1px dashed var(--border);
+    border-radius: var(--radius-lg);
+    padding: 28px 32px;
+    max-width: var(--read-w);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .download-stub .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--sky);
+    margin-bottom: 6px;
+  }
+  .download-stub h4 { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+  .download-stub p { font-size: 13px; color: var(--text-muted); }
+  .download-stub button {
+    font-family: 'Outfit', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 10px 22px;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-muted);
+    cursor: not-allowed;
+    white-space: nowrap;
+  }
+
+  /* ── Footer ── */
+  footer {
+    padding: 60px 0 40px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    margin-top: 40px;
+  }
+  .footer-brand {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 600;
+    background: linear-gradient(135deg, var(--blue), var(--sky));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+  }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+  .footer-links a {
+    font-size: 13px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--sky); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+
+  /* ── Fade-in ── */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── Residency badge in flow diagram ── */
+  .geo-band {
+    grid-column: 1 / -1;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--green);
+    text-align: center;
+    padding: 8px 0;
+    border-top: 1px dashed rgba(16, 185, 129, 0.3);
+    margin-top: 14px;
+    width: 100%;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 820px) {
+    .decide { grid-template-columns: 1fr; }
+    .hero h1 { max-width: none; }
+    .flow { flex-direction: column; align-items: stretch; }
+    .flow-node + .flow-node::before { content: '↓'; left: 50%; top: -8px; transform: translateX(-50%); }
+    .flow-node { padding: 14px 8px; }
+    .stat { border-right: none; border-bottom: 1px solid var(--border); }
+    .stat:last-child { border-bottom: none; }
+    .compare { font-size: 12px; }
+    .compare th, .compare td { padding: 12px 12px; }
+    .nav-brand-sub { display: none; }
+    .nav-link { display: none; }
+  }
+
+  *, *::before, *::after {
+    transition-property: background-color, border-color, color, box-shadow;
+    transition-duration: 0.3s;
+    transition-timing-function: ease;
+  }
+</style>
+</head>
+<body>
+
+<div class="glow-orb blue"></div>
+<div class="glow-orb sky"></div>
+
+<!-- ── NAV ── -->
+<nav>
+  <div class="nav-inner">
+    <a href="../../../index.html" class="nav-brand">
+      <span class="nav-brand-mark">know.2nth.ai</span>
+      <span class="nav-brand-sub">Technology</span>
+    </a>
+    <div class="nav-right">
+      <a href="../../../index.html#domains" class="nav-link">← Back to tree</a>
+      <a href="../../../index.html#access" class="nav-link">Access</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">☀️</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">›</span>
+    <a href="../../../index.html#domains">Technology</a>
+    <span class="crumb-sep">›</span>
+    <a href="index.html">Microsoft</a>
+    <span class="crumb-sep">›</span>
+    <span class="crumb-current">Copilot Studio</span>
+  </div>
+</div>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-eyebrow fade-up"><span class="dot"></span> Technology · Microsoft · Skill Node</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      Copilot Studio agents<br><span class="gradient">are software.</span>
+    </h1>
+    <p class="hero-sub fade-up" style="transition-delay: 0.1s">
+      An agent you build in Copilot Studio isn't a standalone app — it's a <strong>Dataverse solution component</strong>. Which means it's software, and it earns the same discipline every other piece of software gets: environments, version control, review, rollback. If your agent isn't in a solution moving through dev → test → prod, you're editing in production — no versioning, no rollback, no audit trail. This node is the ALM playbook; residency lives one cross-link away.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill accent">Technology</span>
+      <span class="pill">Microsoft</span>
+      <span class="pill">Copilot Studio</span>
+      <span class="pill">ALM</span>
+      <span class="pill">Dataverse</span>
+      <span class="pill">Last updated · Jul 2026</span>
+    </div>
+  </div>
+</section>
+
+<!-- ── 01 WHAT IS ── -->
+<section id="what">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 · What it is</div>
+      <h2 class="section-title">The agent is a solution component, not a standalone app.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p><strong>Copilot Studio</strong> is the low-code agent-authoring surface on Power Platform — the place a business user assembles an agent without writing a service. But the thing you build is not a standalone application. When you create an agent, it's <strong>automatically added to a Power Platform solution</strong> and stored as <strong>Dataverse</strong> components (per Microsoft Learn, "Create and manage custom solutions", Apr 2026). That single fact is the whole leaf: a solution is a versionable, exportable unit, and Dataverse is a governed store — so the agent inherits application lifecycle management whether you use it or not.</p>
+      <p>A production agent is assembled from six building blocks: the <strong>instructions</strong> (its main prompt), <strong>topics</strong> (deterministic, authored flows), <strong>generative answers</strong> (the RAG fallback), <strong>knowledge sources</strong>, <strong>actions</strong> (Power Automate flows and connectors), and the <strong>Dataverse tables</strong> behind memory and logging (per the Copilot Consulting field guide, Apr 2026 — a single-source vendor blog, not Microsoft-official; treat as directional). Each of those is a component that either travels with the solution or, as §03 shows, quietly doesn't.</p>
+      <p>Microsoft recognises three official agent types, in ascending order of blast radius: <strong>retrieval</strong> (answers over knowledge), <strong>task</strong> (executes a bounded job), and <strong>autonomous</strong> (triggers itself and acts without a person in the loop). The more autonomy, the higher the ALM stakes — an autonomous agent shipped straight to prod is an unversioned actor with write access (framing per m365princess, "ALM reality check", 2025 — a community MVP post, noted as such).</p>
+    </div>
+    <div class="flow fade-up" style="transition-delay: 0.1s">
+      <div class="flow-node">
+        <span class="mark">01</span>
+        <span class="name">You author</span>
+        <div class="note">Copilot Studio</div>
+      </div>
+      <div class="flow-node">
+        <span class="mark">02</span>
+        <span class="name">Added to a Solution</span>
+        <div class="note">preferred / default</div>
+      </div>
+      <div class="flow-node">
+        <span class="mark">03</span>
+        <span class="name">Stored in Dataverse</span>
+        <div class="note">as components</div>
+      </div>
+      <div class="flow-node">
+        <span class="mark">04</span>
+        <span class="name">Exported as source</span>
+        <div class="note">solution zip / unpack</div>
+      </div>
+      <div class="flow-node">
+        <span class="mark">05</span>
+        <span class="name">Imported downstream</span>
+        <div class="note">test · prod</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 02 WHY IT MATTERS ── -->
+<section id="why">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 · Why it matters</div>
+      <h2 class="section-title">The failure mode isn't a bad prompt. It's skipping ALM.</h2>
+      <p class="section-lede">Teams pour effort into instructions and topics, ship by clicking Publish, and discover there's no way back when it breaks. The mechanics below are why "just build it in the portal" quietly becomes "we edit our production agent live."</p>
+    </div>
+    <div class="stat-strip fade-up" style="transition-delay: 0.05s">
+      <div class="stat">
+        <div class="num">Dataverse</div>
+        <div class="label">Every agent is a solution-aware Dataverse component — ALM is real and supported</div>
+        <div class="foot">Microsoft Learn · Apr 2026</div>
+      </div>
+      <div class="stat">
+        <div class="num">Maker</div>
+        <div class="label">The default environment makes every user a maker, with no connector guardrails by default</div>
+        <div class="foot">m365princess · MVP blog · 2025</div>
+      </div>
+      <div class="stat">
+        <div class="num">Publish ≠ ship</div>
+        <div class="label">Publish is a channel push to Teams / M365 Chat / web — not a deployment pipeline</div>
+        <div class="foot">m365princess · MVP blog · 2025</div>
+      </div>
+      <div class="stat">
+        <div class="num">1-way</div>
+        <div class="label">You can't export a managed solution — dev must stay unmanaged</div>
+        <div class="foot">Microsoft Learn · Apr 2026</div>
+      </div>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.1s">
+      <p>The through-line, borrowed from the community and paraphrased rather than quoted: the point of this discipline is to <strong>scale your discipline, not your chaos</strong>. Agents make it trivially easy to produce more surface area faster — which is exactly why the ungoverned version compounds into something no one can safely change.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── 03 HOW IT WORKS ── -->
+<section id="how">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 · How it works</div>
+      <h2 class="section-title">Solutions carry the agent. Not everything comes along for the ride.</h2>
+      <p class="section-lede">ALM in Copilot Studio is solution mechanics: which solution holds the agent, how it moves between environments as managed vs unmanaged, and — the load-bearing part — which components silently don't travel.</p>
+    </div>
+    <div class="concepts fade-up" style="transition-delay: 0.05s">
+
+      <div class="concept">
+        <div class="concept-head">
+          <span class="concept-num">01</span>
+          <h3>The solution is the carrier</h3>
+        </div>
+        <p>Create an agent without choosing a solution and its components land in the <strong>Preferred Solution</strong> — or, failing that, the environment's default solution, which is <em>not</em> exportable cleanly (per Microsoft Learn, plus Rajeev Pentyala's blog, Jul 2025 — community, corroborating). The fix is a one-time setting: pick a preferred solution before you build, so every component you author is captured in a unit you can actually move. Moving an agent between environments means exporting the <em>solution that contains it</em>, never the agent alone.</p>
+      </div>
+
+      <div class="concept">
+        <div class="concept-head">
+          <span class="concept-num">02</span>
+          <h3>Unmanaged in dev, managed downstream</h3>
+        </div>
+        <p>The supported shape is dev → test → prod across separate environments (per Microsoft Learn ALM guidance, Jan 2026). Dev works in an <strong>unmanaged</strong> solution — editable, the source of truth. Test and prod import it as <strong>managed</strong> — locked, no in-place edits. Production is managed-only. This is what makes a rollback possible: you re-import the previous managed version, you don't frantically un-edit a live agent. Put the unpacked solution under source control and the agent becomes diffable and reviewable like any other code.</p>
+        <pre><span class="tok-com"># Put the agent's solution under source control</span>
+<span class="tok-com"># (illustrative — verify flags against the `pac solution` docs)</span>
+pac solution export --name <span class="tok-str">ContosoServiceAgents</span> --managed <span class="tok-str">false</span> --path ./out
+pac solution unpack --zipfile ./out/ContosoServiceAgents.zip \
+    --folder ./src/ContosoServiceAgents
+
+<span class="tok-com"># commit the unpacked source — the agent is now versioned + reviewable</span>
+git add ./src/ContosoServiceAgents
+git commit -m <span class="tok-str">"agent v3: add refund topic + escalation action"</span></pre>
+      </div>
+
+      <div class="concept">
+        <div class="concept-head">
+          <span class="concept-num">03</span>
+          <h3>The gotcha: not everything is solution-aware</h3>
+        </div>
+        <p>This is where naive "just export it" migrations lose data. Per Microsoft Learn ("Export and import agents using solutions", Apr 2026): some components — certain custom topics, some knowledge sources, channel details, the agent icon, and user authentication — <strong>may not travel with the export</strong> and need reconfiguration after import. Concretely: <strong>authentication must be reconfigured</strong> in the target environment, the <strong>agent must be re-published before it can be shared</strong>, and the <strong>icon can take up to 24 hours to propagate</strong>. And removing an agent from a solution does <strong>not</strong> remove its underlying components — they linger in Dataverse. Treat export as "most of the agent moves," build a post-import checklist, and never assume a clean copy.</p>
+      </div>
+
+    </div>
+
+    <div class="fade-up" style="transition-delay: 0.08s; margin-top: 32px;">
+      <p class="prose" style="max-width: var(--read-w); margin-bottom: 16px;">Underneath the ALM story is the runtime one — how an agent actually acts on a request. It's a stateless model reaching through Power Automate to a governed store (pattern per the Medium "Dataverse for Copilot Agents" series, Dec 2025 — community, flagged):</p>
+    </div>
+    <div class="flow fade-up" style="transition-delay: 0.1s">
+      <div class="flow-node">
+        <span class="mark">01</span>
+        <span class="name">User message</span>
+        <div class="note">Teams · web</div>
+      </div>
+      <div class="flow-node">
+        <span class="mark">02</span>
+        <span class="name">Copilot Studio</span>
+        <div class="note">instructions + RAG</div>
+      </div>
+      <div class="flow-node">
+        <span class="mark">03</span>
+        <span class="name">Action / tool call</span>
+        <div class="note">connector</div>
+      </div>
+      <div class="flow-node">
+        <span class="mark">04</span>
+        <span class="name">Power Automate</span>
+        <div class="note">flow</div>
+      </div>
+      <div class="flow-node">
+        <span class="mark">05</span>
+        <span class="name">Dataverse</span>
+        <div class="note">read · write · log</div>
+      </div>
+      <div class="flow-node">
+        <span class="mark">06</span>
+        <span class="name">Response</span>
+        <div class="note">+ transcript row</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 04 ECOSYSTEM ── -->
+<section id="ecosystem">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 · The ecosystem</div>
+      <h2 class="section-title">Four ways to automate the pipeline.</h2>
+      <p class="section-lede">Once the agent is a solution, moving it becomes a normal deployment problem — and Power Platform gives you four tools for it, from citizen-dev to full enterprise CI/CD. Pick by who owns the pipeline and how much control you need (comparison per Microsoft Learn ALM guidance, Jan 2026).</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead>
+          <tr>
+            <th>Tool</th>
+            <th>Audience</th>
+            <th>CI/CD depth</th>
+            <th>Source control</th>
+            <th>Reach for it when</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="name">Pipelines in Power Platform</td>
+            <td>Citizen devs / makers</td>
+            <td><span class="partial">In-product</span></td>
+            <td><span class="no">No</span></td>
+            <td>You want dev→test→prod promotion inside the platform, no external tooling.</td>
+          </tr>
+          <tr>
+            <td class="name">GitHub Actions for Power Platform</td>
+            <td>Developers / admins</td>
+            <td><span class="yes">Full</span></td>
+            <td><span class="yes">Git-native</span></td>
+            <td>Your team already lives in GitHub and wants the agent in the same repos and PRs.</td>
+          </tr>
+          <tr>
+            <td class="name">Azure DevOps</td>
+            <td>Enterprise platform teams</td>
+            <td><span class="yes">Full</span></td>
+            <td><span class="yes">Yes</span></td>
+            <td>You need the most capable enterprise CI/CD, gated releases, and audit at scale.</td>
+          </tr>
+          <tr>
+            <td class="name">Native Git integration</td>
+            <td>Developers</td>
+            <td><span class="partial">Source-sync</span></td>
+            <td><span class="yes">Unpacked source</span></td>
+            <td>You want solutions committed as unpacked source, diffable per component.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ── 05 USE CASES ── -->
+<section id="use-cases">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 · Use cases</div>
+      <h2 class="section-title">Where the ALM discipline earns its keep.</h2>
+      <p class="section-lede">The pattern is always the same: topics own the deterministic promises, generative answers handle the long tail, and the solution pipeline is what lets you change either one safely. (For the SA data-residency dimension of these same workloads — keeping inference in country — see <a href="copilot-sa.html" style="color: var(--sky);">Copilot in South Africa</a>.)</p>
+    </div>
+    <div class="usecases fade-up" style="transition-delay: 0.05s">
+      <div class="usecase">
+        <span class="tag">Banking · service</span>
+        <h4>Customer service agent</h4>
+        <p>Topics own the deterministic, compliance-sensitive promises (balances, disputes, hand-off rules); generative answers cover the messy long tail. <strong>Without ALM:</strong> a reworded refund topic ships straight to prod with no diff and no rollback — and no one can say what changed when a customer complains.</p>
+      </div>
+      <div class="usecase">
+        <span class="tag">Internal · ESS</span>
+        <h4>HR / IT employee self-service</h4>
+        <p>Leave balances, policy Q&amp;A, ticket creation. Microsoft's own Employee Self-Service reference deployment runs unmanaged-in-dev → managed-downstream (per Microsoft Learn, ESS deploy-overview ALM). <strong>Without ALM:</strong> HR edits collide with IT edits in one shared environment and quietly overwrite each other.</p>
+      </div>
+      <div class="usecase">
+        <span class="tag">Public sector · citizen</span>
+        <h4>Citizen helpdesk</h4>
+        <p>Departmental services over a governed pipeline, with an audit trail reviewers can actually read. <strong>Without ALM:</strong> there's no evidence of who approved a change to a public-facing answer — the exact thing an oversight review asks for first.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 06 EVOLUTION ── -->
+<section id="evolution">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 · Evolution</div>
+      <h2 class="section-title">From chatbot builder to first-class solution component.</h2>
+      <p class="section-lede">Copilot Studio's history is the story of a low-code chatbot tool growing real software discipline — the ALM surface caught up as the agents got more powerful.</p>
+    </div>
+    <div class="timeline fade-up" style="transition-delay: 0.05s">
+      <div class="t-item">
+        <div class="t-year">2023</div>
+        <div class="t-title">Power Virtual Agents</div>
+        <div class="t-note">The low-code bot builder. Capable, but treated as a portal toy — solution/ALM support was an afterthought for most makers.</div>
+      </div>
+      <div class="t-item">
+        <div class="t-year">2024 · wave 2</div>
+        <div class="t-title">Rebrand to Copilot Studio · solution management in-app</div>
+        <div class="t-note">Power Virtual Agents becomes Copilot Studio, and solution management is brought <em>into</em> the Copilot Studio app (per Microsoft Learn release plan, 2024 wave 2) — ALM stops being a separate console.</div>
+      </div>
+      <div class="t-item">
+        <div class="t-year">2025</div>
+        <div class="t-title">Agents become first-class solution components</div>
+        <div class="t-note">Agents are proper Dataverse solution components — exportable, importable, and versionable like any other Power Platform asset.</div>
+      </div>
+      <div class="t-item">
+        <div class="t-year">2026</div>
+        <div class="t-title">Pipelines · Git · DevOps — and autonomous agents</div>
+        <div class="t-note">Pipelines, GitHub Actions, Azure DevOps, and native Git are all supported (per Microsoft Learn, Jan 2026). Autonomous agents arrive and raise the ALM stakes — an unversioned self-triggering actor is a governance problem, not a demo.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 07 DECISION GUIDE ── -->
+<section id="decide">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 · Decision guide</div>
+      <h2 class="section-title">When Copilot Studio is the right ceiling. When it isn't.</h2>
+      <p class="section-lede">Copilot Studio is an excellent fit for a specific shape of team and problem. Force it past its ceiling — or skip the ALM it depends on — and it turns from leverage into a liability you can't roll back.</p>
+    </div>
+    <div class="decide fade-up" style="transition-delay: 0.05s">
+      <div class="decide-col use">
+        <div class="decide-head">✓ Use it when</div>
+        <ul>
+          <li><strong>Your users already live in Teams / M365.</strong> The agent surfaces where people work, and inherits the identity and data they already have.</li>
+          <li><strong>Low-code is the right ceiling.</strong> Topics, generative answers, and Power Automate actions cover the job without dropping to full code.</li>
+          <li><strong>You want governance for free.</strong> Agents inherit Entra ID, Dataverse RBAC, Purview audit, and DLP by default — you don't build the compliance plane, you get it.</li>
+          <li><strong>You'll commit to the discipline.</strong> Dev / test / prod with managed-import downstream is a habit you can actually sustain — that's what makes any of the above safe.</li>
+        </ul>
+      </div>
+      <div class="decide-col skip">
+        <div class="decide-head">✗ Skip it when</div>
+        <ul>
+          <li><strong>The low-code ceiling is too low.</strong> Complex orchestration, custom tool loops, or heavy state want full code — the escape hatch is <strong>Azure AI Agent Service</strong> on the same Azure OpenAI substrate.</li>
+          <li><strong>You can't or won't run three environments.</strong> One environment isn't ALM — it's a sandbox you've mistaken for production. Without dev/test/prod you have no rollback.</li>
+          <li><strong>You need portability off Microsoft.</strong> Agents are Dataverse-bound. That's real lock-in — name it plainly and price it in before you build a fleet.</li>
+          <li><strong>You expect "just export it" to be clean.</strong> Components that don't survive export mean naive migrations silently drop auth, channels, and config. If you can't own that checklist, the migration will bite.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 08 2ⁿ PERSPECTIVE ── -->
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 · 2ⁿ perspective</div>
+      <h2 class="section-title">How this node connects in the tree.</h2>
+      <p class="section-lede">The "agents are software" thesis isn't a Microsoft idea — it's the spine of the whole Agents domain. This node is that thesis applied to one low-code stack: the ALM machinery is what makes a Copilot Studio agent trustworthy.</p>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="copilot-sa.html" class="connect-node data">
+        <span class="domain-tag">tech/microsoft/copilot-sa</span>
+        <div class="skill">Copilot in South Africa</div>
+        <div class="why">The residency dimension of the same agent — keeping prompts and grounding data in country with BYO Azure OpenAI in SA North.</div>
+      </a>
+      <div class="connect-node ai soon">
+        <span class="domain-tag">tech/microsoft/azure-ai</span>
+        <div class="skill">Azure AI Agent Service</div>
+        <div class="why">The full-code escape hatch when Copilot Studio's low-code ceiling is too low — same Azure OpenAI substrate, code-first control.</div>
+      </div>
+      <a href="../../agents/effective-agents.html" class="connect-node ai">
+        <span class="domain-tag">agents/effective-agents</span>
+        <div class="skill">Building Effective Agents</div>
+        <div class="why">The "should this even be an agent?" discipline — workflows vs agents, and why deterministic topics beat generative improvisation where they can.</div>
+      </a>
+      <a href="../../agents/rearchitecture.html" class="connect-node data">
+        <span class="domain-tag">agents/rearchitecture</span>
+        <div class="skill">Agents, data &amp; trust</div>
+        <div class="why">Why an agent is only as good as the owned, structured data it's grounded in — the Dataverse plane behind this one, generalised.</div>
+      </a>
+      <a href="../../agents/mcp.html" class="connect-node ai">
+        <span class="domain-tag">agents/mcp</span>
+        <div class="skill">Model Context Protocol</div>
+        <div class="why">The interop seam if the agent exposes or consumes tools beyond Power Platform connectors — the open standard alongside the Microsoft-native path.</div>
+      </a>
+      <div class="connect-node biz soon">
+        <span class="domain-tag">biz/crm</span>
+        <div class="skill">Dynamics 365 / Dataverse</div>
+        <div class="why">The system-of-record most Copilot Studio agents ground in — Dataverse and Dynamics grounding stays in-env when the Power env region matches.</div>
+      </div>
+    </div>
+    <div class="agent-callout fade-up" style="transition-delay: 0.1s">
+      <div class="label">For agents loading this context</div>
+      <h4>What this node gives you</h4>
+      <p>A decision procedure for any "we built a Copilot Studio agent, how do we ship it safely?" prompt. Treat the agent as a solution component: confirm it's in a preferred (not default) solution, move it dev→test→prod as unmanaged→managed, and run the post-import checklist for the components that don't travel — re-auth, re-publish before sharing, allow 24h for the icon, and remember that removing an agent from a solution doesn't remove its Dataverse components.</p>
+      <p>Escalate to Azure AI Agent Service when the low-code ceiling blocks the design, and cross-check residency against the Copilot-in-SA node when the workload is regulated.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── 09 RESOURCES ── -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">09 · Resources</div>
+      <h2 class="section-title">Go deeper.</h2>
+      <p class="section-lede">Microsoft Learn is authoritative for the ALM mechanics — read it, don't trust summaries. Community posts are labelled as such; lead with Learn for anything load-bearing.</p>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-solutions-overview" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs · Microsoft</span>
+        <span class="r-title">Create and manage custom solutions</span>
+        <span class="r-url">learn.microsoft.com · authoring-solutions-overview</span>
+      </a>
+      <a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-solutions-import-export" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs · Microsoft</span>
+        <span class="r-title">Export and import agents using solutions</span>
+        <span class="r-url">learn.microsoft.com · authoring-solutions-import-export</span>
+      </a>
+      <a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/guidance/alm" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs · Microsoft</span>
+        <span class="r-title">Establish an ALM strategy (Copilot Studio)</span>
+        <span class="r-url">learn.microsoft.com · copilot-studio/guidance/alm</span>
+      </a>
+      <a href="https://learn.microsoft.com/en-us/power-platform/alm/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs · Microsoft</span>
+        <span class="r-title">Application lifecycle management (Power Platform)</span>
+        <span class="r-url">learn.microsoft.com · power-platform/alm</span>
+      </a>
+      <a href="https://github.com/2nth-ai/skills/tree/main/tech/microsoft/copilot" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Skill tree</span>
+        <span class="r-title">tech/microsoft/copilot — full SKILL.md</span>
+        <span class="r-url">github.com/2nth-ai/skills · copilot/</span>
+      </a>
+      <a href="https://m365princess.com" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Community · MVP blog</span>
+        <span class="r-title">m365princess — Copilot Studio ALM reality check (2025)</span>
+        <span class="r-url">m365princess.com</span>
+      </a>
+      <a href="https://copilotconsulting.com" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Community · vendor blog</span>
+        <span class="r-title">Copilot Consulting — Dataverse enterprise agents (Apr 2026)</span>
+        <span class="r-url">copilotconsulting.com</span>
+      </a>
+    </div>
+    <div class="download-stub fade-up" style="transition-delay: 0.1s">
+      <div>
+        <div class="label">Agent context</div>
+        <h4>Load this node into your agent</h4>
+        <p>Structured context bundle: the solution-as-carrier model, the unmanaged→managed promotion path, the post-import checklist for components that don't travel, and the ALM tooling comparison. Shipping with the know.2nth.ai Worker API.</p>
+      </div>
+      <button disabled title="Coming with the agent context API">Download context · coming soon</button>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../../index.html">Skills tree</a>
+      <a href="index.html">Microsoft hub</a>
+      <a href="https://2nth.ai" target="_blank" rel="noopener">2nth.ai</a>
+      <a href="https://imbila.ai" target="_blank" rel="noopener">Imbila.AI</a>
+    </div>
+    <p class="footer-copy">© 2026 2nth.ai · Built in South Africa — Globally relevant</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme() {
+    const html = document.documentElement;
+    const current = html.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
+    localStorage.setItem('theme', next);
+  }
+  const saved = localStorage.getItem('theme');
+  if (saved) {
+    document.documentElement.setAttribute('data-theme', saved);
+    document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '☀️' : '🌙';
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
