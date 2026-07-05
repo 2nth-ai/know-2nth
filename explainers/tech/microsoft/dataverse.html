@@ -3,21 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Copilot Studio Agents Are Software — ALM &amp; Dataverse · know.2nth.ai</title>
-<meta name="description" content="A Copilot Studio agent is a Dataverse solution component — so it is software, and must be shipped with ALM discipline. Dev/test/prod, managed vs unmanaged, the components that silently don't survive export, and the tooling that puts an agent under version control. If it's not in a solution, you're editing in production.">
+<title>Dataverse Is Not a Database — the platform under Copilot &amp; Dynamics · know.2nth.ai</title>
+<meta name="description" content="Dataverse is the managed low-code data platform under Power Platform, Dynamics 365, and Copilot Studio — tables on a shared Common Data Model, wrapped in a security, audit, and ALM plane you don't build yourself. What it actually is, why the agents live in it, how the security and solution model works, and when a plain database is the better call.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="know.2nth.ai">
-<meta property="og:url" content="https://know.2nth.ai/explainers/tech/microsoft/copilot-studio">
-<meta property="og:title" content="Copilot Studio Agents Are Software — ALM &amp; Dataverse · know.2nth.ai">
-<meta property="og:description" content="A Copilot Studio agent is a Dataverse solution component — so it is software. Dev/test/prod, managed vs unmanaged, the components that don't survive export, and putting an agent under version control.">
+<meta property="og:url" content="https://know.2nth.ai/explainers/tech/microsoft/dataverse">
+<meta property="og:title" content="Dataverse Is Not a Database — the platform under Copilot &amp; Dynamics · know.2nth.ai">
+<meta property="og:description" content="The managed data platform under Power Platform, Dynamics 365, and Copilot Studio. Tables + Common Data Model + inherited security and ALM. What it is, why the agents live in it, and when a plain database is the better call.">
 <meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="know.2nth.ai — The Knowledge Tree">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Copilot Studio Agents Are Software — ALM &amp; Dataverse · know.2nth.ai">
-<meta name="twitter:description" content="A Copilot Studio agent is a Dataverse solution component — so it is software. ALM discipline: dev/test/prod, managed vs unmanaged, the export gotchas, version control.">
+<meta name="twitter:title" content="Dataverse Is Not a Database — the platform under Copilot &amp; Dynamics · know.2nth.ai">
+<meta name="twitter:description" content="The managed data platform under Power Platform, Dynamics 365, and Copilot Studio. Tables + Common Data Model + inherited security and ALM — and when a plain database beats it.">
 <meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -816,7 +816,7 @@
     <span class="crumb-sep">›</span>
     <a href="index.html">Microsoft</a>
     <span class="crumb-sep">›</span>
-    <span class="crumb-current">Copilot Studio</span>
+    <span class="crumb-current">Dataverse</span>
   </div>
 </div>
 
@@ -825,17 +825,17 @@
   <div class="container">
     <div class="hero-eyebrow fade-up"><span class="dot"></span> Technology · Microsoft · Skill Node</div>
     <h1 class="fade-up" style="transition-delay: 0.05s">
-      Copilot Studio agents<br><span class="gradient">are software.</span>
+      Dataverse is not<br><span class="gradient">a database.</span>
     </h1>
     <p class="hero-sub fade-up" style="transition-delay: 0.1s">
-      An agent you build in Copilot Studio isn't a standalone app — it's a <strong>Dataverse solution component</strong>. Which means it's software, and it earns the same discipline every other piece of software gets: environments, version control, review, rollback. If your agent isn't in a solution moving through dev → test → prod, you're editing in production — no versioning, no rollback, no audit trail. This node is the ALM playbook; residency lives one cross-link away.
+      It's the managed data platform under Power Platform, Dynamics 365, and Copilot Studio — <strong>tables on a shared Common Data Model</strong>, wrapped in a security, audit, and lifecycle plane you don't build yourself. Treat it as "just a SQL database" and you'll fight it on cost and control. Treat it as a governed application-data platform your apps and agents <em>live inside</em>, and the rest of the Microsoft stack — including the Copilot agents that ground in it — makes sense.
     </p>
     <div class="hero-meta fade-up" style="transition-delay: 0.15s">
       <span class="pill accent">Technology</span>
       <span class="pill">Microsoft</span>
-      <span class="pill">Copilot Studio</span>
-      <span class="pill">ALM</span>
       <span class="pill">Dataverse</span>
+      <span class="pill">Power Platform</span>
+      <span class="pill">Common Data Model</span>
       <span class="pill">Last updated · Jul 2026</span>
     </div>
   </div>
@@ -846,38 +846,38 @@
   <div class="container">
     <div class="fade-up">
       <div class="section-label">01 · What it is</div>
-      <h2 class="section-title">The agent is a solution component, not a standalone app.</h2>
+      <h2 class="section-title">One governed store. Every Power Platform surface sits on it.</h2>
     </div>
     <div class="prose fade-up" style="transition-delay: 0.05s">
-      <p><strong>Copilot Studio</strong> is the low-code agent-authoring surface on Power Platform — the place a business user assembles an agent without writing a service. But the thing you build is not a standalone application. When you create an agent, it's <strong>automatically added to a Power Platform solution</strong> and stored as <strong>Dataverse</strong> components (per Microsoft Learn, "Create and manage custom solutions", Apr 2026). That single fact is the whole leaf: a solution is a versionable, exportable unit, and Dataverse is a governed store — so the agent inherits application lifecycle management whether you use it or not.</p>
-      <p>A production agent is assembled from six building blocks: the <strong>instructions</strong> (its main prompt), <strong>topics</strong> (deterministic, authored flows), <strong>generative answers</strong> (the RAG fallback), <strong>knowledge sources</strong>, <strong>actions</strong> (Power Automate flows and connectors), and the <strong>Dataverse tables</strong> behind memory and logging (per the Copilot Consulting field guide, Apr 2026 — a single-source vendor blog, not Microsoft-official; treat as directional). Each of those is a component that either travels with the solution or, as §03 shows, quietly doesn't.</p>
-      <p>Microsoft recognises three official agent types, in ascending order of blast radius: <strong>retrieval</strong> (answers over knowledge), <strong>task</strong> (executes a bounded job), and <strong>autonomous</strong> (triggers itself and acts without a person in the loop). The more autonomy, the higher the ALM stakes — an autonomous agent shipped straight to prod is an unversioned actor with write access (framing per m365princess, "ALM reality check", 2025 — a community MVP post, noted as such).</p>
+      <p><strong>Dataverse</strong> is the data backbone of Power Platform. Data lives in <strong>tables</strong> (rows and typed columns), described by a shared schema called the <strong>Common Data Model</strong>, with relationships, business rules, role-based security, and auditing built into the platform rather than bolted on afterwards (per Microsoft Learn, "What is Microsoft Dataverse", 2026). The reframe that matters: it isn't an external database you connect to and administer — it's a managed <em>application-data platform</em> your apps and agents run <em>inside</em>, inheriting its identity, security, and governance automatically.</p>
+      <p>That's why it keeps showing up under everything Microsoft. <strong>Power Apps</strong> read and write it, <strong>Power Automate</strong> flows act on it, <strong>Copilot Studio</strong> agents ground and log to it, and <strong>Dynamics 365</strong> <em>is</em> it — the Sales, Service, and Field apps are Dataverse tables plus logic with a UI on top. Learn Dataverse once and you've learned the storage layer of the entire Microsoft business-applications stack.</p>
+      <p>This is the substrate the <a href="copilot-studio.html" style="color: var(--sky);">Copilot Studio leaf</a> leans on when it says an agent "is a Dataverse solution component." The agent's memory, its logs, and the tables it reads all sit here — which is exactly why the agent inherits ALM and RBAC for free. This node is that substrate, explained on its own terms.</p>
     </div>
     <div class="flow fade-up" style="transition-delay: 0.1s">
       <div class="flow-node">
         <span class="mark">01</span>
-        <span class="name">You author</span>
-        <div class="note">Copilot Studio</div>
+        <span class="name">Dynamics 365</span>
+        <div class="note">Sales · Service</div>
       </div>
       <div class="flow-node">
         <span class="mark">02</span>
-        <span class="name">Added to a Solution</span>
-        <div class="note">preferred / default</div>
+        <span class="name">Power Apps / Automate</span>
+        <div class="note">low-code apps</div>
       </div>
       <div class="flow-node">
         <span class="mark">03</span>
-        <span class="name">Stored in Dataverse</span>
-        <div class="note">as components</div>
+        <span class="name">Copilot Studio</span>
+        <div class="note">agent memory + logs</div>
       </div>
       <div class="flow-node">
         <span class="mark">04</span>
-        <span class="name">Exported as source</span>
-        <div class="note">solution zip / unpack</div>
+        <span class="name">Dataverse tables</span>
+        <div class="note">Common Data Model</div>
       </div>
       <div class="flow-node">
         <span class="mark">05</span>
-        <span class="name">Imported downstream</span>
-        <div class="note">test · prod</div>
+        <span class="name">Entra ID + Purview</span>
+        <div class="note">RBAC · audit · DLP</div>
       </div>
     </div>
   </div>
@@ -888,33 +888,30 @@
   <div class="container">
     <div class="fade-up">
       <div class="section-label">02 · Why it matters</div>
-      <h2 class="section-title">The failure mode isn't a bad prompt. It's skipping ALM.</h2>
-      <p class="section-lede">Teams pour effort into instructions and topics, ship by clicking Publish, and discover there's no way back when it breaks. The mechanics below are why "just build it in the portal" quietly becomes "we edit our production agent live."</p>
+      <h2 class="section-title">Governance you inherit, not governance you build.</h2>
+      <p class="section-lede">The reason Dataverse costs more than a bare table is the same reason it's worth it: the security, audit, and lifecycle machinery ships with the store. For regulated work, that inherited plane is most of the compliance answer.</p>
     </div>
     <div class="stat-strip fade-up" style="transition-delay: 0.05s">
       <div class="stat">
-        <div class="num">Dataverse</div>
-        <div class="label">Every agent is a solution-aware Dataverse component — ALM is real and supported</div>
-        <div class="foot">Microsoft Learn · Apr 2026</div>
+        <div class="num">1 store</div>
+        <div class="label">Power Apps, Power Automate, Copilot Studio and Dynamics 365 all sit on the same Dataverse</div>
+        <div class="foot">Microsoft Learn · 2026</div>
       </div>
       <div class="stat">
-        <div class="num">Maker</div>
-        <div class="label">The default environment makes every user a maker, with no connector guardrails by default</div>
-        <div class="foot">m365princess · MVP blog · 2025</div>
+        <div class="num">Row + field</div>
+        <div class="label">Security is table-, row-, and column-level, inherited from Entra ID — not reinvented per app</div>
+        <div class="foot">Microsoft Learn · security roles</div>
       </div>
       <div class="stat">
-        <div class="num">Publish ≠ ship</div>
-        <div class="label">Publish is a channel push to Teams / M365 Chat / web — not a deployment pipeline</div>
-        <div class="foot">m365princess · MVP blog · 2025</div>
+        <div class="num">Solutions</div>
+        <div class="label">Schema and logic ship as a solution — the same ALM unit as a Copilot Studio agent</div>
+        <div class="foot">Microsoft Learn · Power Platform ALM</div>
       </div>
       <div class="stat">
-        <div class="num">1-way</div>
-        <div class="label">You can't export a managed solution — dev must stay unmanaged</div>
-        <div class="foot">Microsoft Learn · Apr 2026</div>
+        <div class="num">Purview</div>
+        <div class="label">Audit, DLP, and data lineage come from the Microsoft governance plane by default</div>
+        <div class="foot">Microsoft Learn · 2026</div>
       </div>
-    </div>
-    <div class="prose fade-up" style="transition-delay: 0.1s">
-      <p>The through-line, borrowed from the community and paraphrased rather than quoted: the point of this discipline is to <strong>scale your discipline, not your chaos</strong>. Agents make it trivially easy to produce more surface area faster — which is exactly why the ungoverned version compounds into something no one can safely change.</p>
     </div>
   </div>
 </section>
@@ -924,80 +921,43 @@
   <div class="container">
     <div class="fade-up">
       <div class="section-label">03 · How it works</div>
-      <h2 class="section-title">Solutions carry the agent. Not everything comes along for the ride.</h2>
-      <p class="section-lede">ALM in Copilot Studio is solution mechanics: which solution holds the agent, how it moves between environments as managed vs unmanaged, and — the load-bearing part — which components silently don't travel.</p>
+      <h2 class="section-title">Tables, a security model, and solutions as the unit.</h2>
+      <p class="section-lede">Three ideas carry the whole platform: the Common Data Model that gives tables a shared meaning, the role-based security every caller acts through, and the solution that packages it all for dev → test → prod.</p>
     </div>
     <div class="concepts fade-up" style="transition-delay: 0.05s">
 
       <div class="concept">
         <div class="concept-head">
           <span class="concept-num">01</span>
-          <h3>The solution is the carrier</h3>
+          <h3>Tables and the Common Data Model</h3>
         </div>
-        <p>Create an agent without choosing a solution and its components land in the <strong>Preferred Solution</strong> — or, failing that, the environment's default solution, which is <em>not</em> exportable cleanly (per Microsoft Learn, plus Rajeev Pentyala's blog, Jul 2025 — community, corroborating). The fix is a one-time setting: pick a preferred solution before you build, so every component you author is captured in a unit you can actually move. Moving an agent between environments means exporting the <em>solution that contains it</em>, never the agent alone.</p>
+        <p>Data lives in <strong>tables</strong> — rows and strongly-typed columns, with real relationships between them (per Microsoft Learn, "Tables in Dataverse"). Dataverse ships a library of <strong>standard tables</strong> — Account, Contact, and dozens more — defined by the <strong>Common Data Model</strong>, so a "Contact" means the same shape whether it's touched by Dynamics, a Power App, or a Copilot agent. You add <strong>custom tables</strong> for your own domain. That shared model is the quiet superpower: apps and agents interoperate because they're speaking one schema, not five bespoke ones.</p>
       </div>
 
       <div class="concept">
         <div class="concept-head">
           <span class="concept-num">02</span>
-          <h3>Unmanaged in dev, managed downstream</h3>
+          <h3>The security model callers act through</h3>
         </div>
-        <p>The supported shape is dev → test → prod across separate environments (per Microsoft Learn ALM guidance, Jan 2026). Dev works in an <strong>unmanaged</strong> solution — editable, the source of truth. Test and prod import it as <strong>managed</strong> — locked, no in-place edits. Production is managed-only. This is what makes a rollback possible: you re-import the previous managed version, you don't frantically un-edit a live agent. Put the unpacked solution under source control and the agent becomes diffable and reviewable like any other code.</p>
-        <pre><span class="tok-com"># Put the agent's solution under source control</span>
-<span class="tok-com"># (illustrative — verify flags against the `pac solution` docs)</span>
-pac solution export --name <span class="tok-str">ContosoServiceAgents</span> --managed <span class="tok-str">false</span> --path ./out
-pac solution unpack --zipfile ./out/ContosoServiceAgents.zip \
-    --folder ./src/ContosoServiceAgents
-
-<span class="tok-com"># commit the unpacked source — the agent is now versioned + reviewable</span>
-git add ./src/ContosoServiceAgents
-git commit -m <span class="tok-str">"agent v3: add refund topic + escalation action"</span></pre>
+        <p>Access is governed by <strong>business units</strong> and <strong>security roles</strong>, down to table-, row-, and column-level (per Microsoft Learn, "Security roles and privileges"). Crucially, an app or an agent doesn't get a god-mode connection — it acts <em>as a user</em> and sees only what that user's roles permit. This is the concrete mechanism behind the claim in the Copilot Studio leaf that an agent "inherits Dataverse RBAC for free": there's no separate agent permission system to build, because the agent is already inside the one Dataverse enforces.</p>
       </div>
 
       <div class="concept">
         <div class="concept-head">
           <span class="concept-num">03</span>
-          <h3>The gotcha: not everything is solution-aware</h3>
+          <h3>Solutions are the ALM unit — and the Web API is the door</h3>
         </div>
-        <p>This is where naive "just export it" migrations lose data. Per Microsoft Learn ("Export and import agents using solutions", Apr 2026): some components — certain custom topics, some knowledge sources, channel details, the agent icon, and user authentication — <strong>may not travel with the export</strong> and need reconfiguration after import. Concretely: <strong>authentication must be reconfigured</strong> in the target environment, the <strong>agent must be re-published before it can be shared</strong>, and the <strong>icon can take up to 24 hours to propagate</strong>. And removing an agent from a solution does <strong>not</strong> remove its underlying components — they linger in Dataverse. Treat export as "most of the agent moves," build a post-import checklist, and never assume a clean copy.</p>
+        <p>Schema, security roles, and logic are packaged as a <strong>solution</strong> and moved across environments dev → test → prod, exactly like the Copilot agent that sits on top of it (per Microsoft Learn, Power Platform ALM). Code reaches Dataverse through the <strong>Web API</strong> — a standard OData v4 REST surface, authenticated with an Entra ID token — so a Worker, a script, or an MCP server can query the same governed tables the low-code apps use.</p>
+        <pre><span class="tok-com"># Dataverse Web API — OData query against a standard table (illustrative)</span>
+GET https://org.crm.dynamics.com/api/data/v9.2/contacts \
+  ?$select=fullname,emailaddress1 \
+  &amp;$filter=statecode eq 0
+
+<span class="tok-com"># Auth: bearer token from Entra ID (same identity plane as the rest of the stack)</span>
+Authorization: Bearer <span class="tok-str">&lt;entra-token&gt;</span>
+Accept: application/json</pre>
       </div>
 
-    </div>
-
-    <div class="fade-up" style="transition-delay: 0.08s; margin-top: 32px;">
-      <p class="prose" style="max-width: var(--read-w); margin-bottom: 16px;">Underneath the ALM story is the runtime one — how an agent actually acts on a request. It's a stateless model reaching through Power Automate to a governed store (pattern per the Medium "Dataverse for Copilot Agents" series, Dec 2025 — community, flagged):</p>
-    </div>
-    <div class="flow fade-up" style="transition-delay: 0.1s">
-      <div class="flow-node">
-        <span class="mark">01</span>
-        <span class="name">User message</span>
-        <div class="note">Teams · web</div>
-      </div>
-      <div class="flow-node">
-        <span class="mark">02</span>
-        <span class="name">Copilot Studio</span>
-        <div class="note">instructions + RAG</div>
-      </div>
-      <div class="flow-node">
-        <span class="mark">03</span>
-        <span class="name">Action / tool call</span>
-        <div class="note">connector</div>
-      </div>
-      <div class="flow-node">
-        <span class="mark">04</span>
-        <span class="name">Power Automate</span>
-        <div class="note">flow</div>
-      </div>
-      <div class="flow-node">
-        <span class="mark">05</span>
-        <span class="name">Dataverse</span>
-        <div class="note">read · write · log</div>
-      </div>
-      <div class="flow-node">
-        <span class="mark">06</span>
-        <span class="name">Response</span>
-        <div class="note">+ transcript row</div>
-      </div>
     </div>
   </div>
 </section>
@@ -1007,48 +967,55 @@ git commit -m <span class="tok-str">"agent v3: add refund topic + escalation act
   <div class="container">
     <div class="fade-up">
       <div class="section-label">04 · The ecosystem</div>
-      <h2 class="section-title">Four ways to automate the pipeline.</h2>
-      <p class="section-lede">Once the agent is a solution, moving it becomes a normal deployment problem — and Power Platform gives you four tools for it, from citizen-dev to full enterprise CI/CD. Pick by who owns the pipeline and how much control you need (comparison per Microsoft Learn ALM guidance, Jan 2026).</p>
+      <h2 class="section-title">Dataverse vs the things people reach for instead.</h2>
+      <p class="section-lede">Dataverse is a managed application-data platform, not a general-purpose database — and that framing decides when it's the right pick. The honest comparison against the usual alternatives:</p>
     </div>
     <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
       <table class="compare">
         <thead>
           <tr>
-            <th>Tool</th>
-            <th>Audience</th>
-            <th>CI/CD depth</th>
-            <th>Source control</th>
-            <th>Reach for it when</th>
+            <th>Option</th>
+            <th>What it is</th>
+            <th>Governance &amp; security</th>
+            <th>Low-code fit</th>
+            <th>Best when</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td class="name">Pipelines in Power Platform</td>
-            <td>Citizen devs / makers</td>
-            <td><span class="partial">In-product</span></td>
-            <td><span class="no">No</span></td>
-            <td>You want dev→test→prod promotion inside the platform, no external tooling.</td>
+            <td class="name this">Dataverse</td>
+            <td>Managed app-data platform</td>
+            <td><span class="yes">Inherited</span> (Entra + Purview)</td>
+            <td><span class="yes">Native</span></td>
+            <td>You're on M365 / Power Platform and building agents or Dynamics apps.</td>
           </tr>
           <tr>
-            <td class="name">GitHub Actions for Power Platform</td>
-            <td>Developers / admins</td>
-            <td><span class="yes">Full</span></td>
-            <td><span class="yes">Git-native</span></td>
-            <td>Your team already lives in GitHub and wants the agent in the same repos and PRs.</td>
+            <td class="name">Azure SQL Database</td>
+            <td>General-purpose relational DB</td>
+            <td><span class="partial">You build it</span></td>
+            <td><span class="no">Needs a layer</span></td>
+            <td>High-volume, custom-coded apps where you want raw control and lower per-GB cost.</td>
           </tr>
           <tr>
-            <td class="name">Azure DevOps</td>
-            <td>Enterprise platform teams</td>
-            <td><span class="yes">Full</span></td>
-            <td><span class="yes">Yes</span></td>
-            <td>You need the most capable enterprise CI/CD, gated releases, and audit at scale.</td>
+            <td class="name">SharePoint lists</td>
+            <td>Document-centric list store</td>
+            <td><span class="partial">Basic</span></td>
+            <td><span class="yes">Quick</span></td>
+            <td>A handful of simple lists — not real relational data or scale.</td>
           </tr>
           <tr>
-            <td class="name">Native Git integration</td>
-            <td>Developers</td>
-            <td><span class="partial">Source-sync</span></td>
-            <td><span class="yes">Unpacked source</span></td>
-            <td>You want solutions committed as unpacked source, diffable per component.</td>
+            <td class="name">Salesforce Platform</td>
+            <td>Rival managed app-data platform</td>
+            <td><span class="yes">Inherited</span> (its own model)</td>
+            <td><span class="yes">Native</span></td>
+            <td>You're a Salesforce shop — see <code>biz/crm/salesforce</code> for the mirror image.</td>
+          </tr>
+          <tr>
+            <td class="name">Microsoft Fabric / warehouse</td>
+            <td>Analytical (OLAP) store</td>
+            <td><span class="yes">Inherited</span></td>
+            <td><span class="partial">BI-side</span></td>
+            <td>Reporting and analytics at scale — link Dataverse to it, don't run analytics <em>in</em> it.</td>
           </tr>
         </tbody>
       </table>
@@ -1061,24 +1028,24 @@ git commit -m <span class="tok-str">"agent v3: add refund topic + escalation act
   <div class="container">
     <div class="fade-up">
       <div class="section-label">05 · Use cases</div>
-      <h2 class="section-title">Where the ALM discipline earns its keep.</h2>
-      <p class="section-lede">The pattern is always the same: topics own the deterministic promises, generative answers handle the long tail, and the solution pipeline is what lets you change either one safely. (For the SA data-residency dimension of these same workloads — keeping inference in country — see <a href="copilot-sa.html" style="color: var(--sky);">Copilot in South Africa</a>.)</p>
+      <h2 class="section-title">Where it's the substrate underneath the work.</h2>
+      <p class="section-lede">You rarely "adopt Dataverse" on its own — it shows up as the store beneath an agent, a CRM, or a line-of-business app that needed governance more than raw speed.</p>
     </div>
     <div class="usecases fade-up" style="transition-delay: 0.05s">
       <div class="usecase">
-        <span class="tag">Banking · service</span>
-        <h4>Customer service agent</h4>
-        <p>Topics own the deterministic, compliance-sensitive promises (balances, disputes, hand-off rules); generative answers cover the messy long tail. <strong>Without ALM:</strong> a reworded refund topic ships straight to prod with no diff and no rollback — and no one can say what changed when a customer complains.</p>
+        <span class="tag">Agents · grounding</span>
+        <h4>Copilot Studio agent memory &amp; logs</h4>
+        <p>A stateless agent reads and writes Dataverse tables for the state it can't hold itself, and its transcript rows land there for audit. The governed store is what makes an agent's actions reviewable — see the <a href="copilot-studio.html" style="color: var(--sky);">Copilot Studio</a> node for the ALM half.</p>
       </div>
       <div class="usecase">
-        <span class="tag">Internal · ESS</span>
-        <h4>HR / IT employee self-service</h4>
-        <p>Leave balances, policy Q&amp;A, ticket creation. Microsoft's own Employee Self-Service reference deployment runs unmanaged-in-dev → managed-downstream (per Microsoft Learn, ESS deploy-overview ALM). <strong>Without ALM:</strong> HR edits collide with IT edits in one shared environment and quietly overwrite each other.</p>
+        <span class="tag">CRM · system-of-record</span>
+        <h4>Dynamics 365 as the customer system</h4>
+        <p>Dynamics Sales and Service <em>are</em> Dataverse tables with logic and a UI. Owning the schema here means your customer data, its rules, and its audit trail sit in one governed place — the anchor an agent grounds against.</p>
       </div>
       <div class="usecase">
-        <span class="tag">Public sector · citizen</span>
-        <h4>Citizen helpdesk</h4>
-        <p>Departmental services over a governed pipeline, with an audit trail reviewers can actually read. <strong>Without ALM:</strong> there's no evidence of who approved a change to a public-facing answer — the exact thing an oversight review asks for first.</p>
+        <span class="tag">Line-of-business · Power Apps</span>
+        <h4>Governed internal apps</h4>
+        <p>Asset registers, approvals, case management — custom tables and a Power App, with row-level security and audit inherited. The pitch over a spreadsheet or a raw DB isn't features, it's the governance you didn't have to build.</p>
       </div>
     </div>
   </div>
@@ -1089,29 +1056,29 @@ git commit -m <span class="tok-str">"agent v3: add refund topic + escalation act
   <div class="container">
     <div class="fade-up">
       <div class="section-label">06 · Evolution</div>
-      <h2 class="section-title">From chatbot builder to first-class solution component.</h2>
-      <p class="section-lede">Copilot Studio's history is the story of a low-code chatbot tool growing real software discipline — the ALM surface caught up as the agents got more powerful.</p>
+      <h2 class="section-title">From Common Data Service to the agent substrate.</h2>
+      <p class="section-lede">Dataverse's history is a slow promotion: a shared data model that became the backbone of Power Platform, and then the governed store the agents needed.</p>
     </div>
     <div class="timeline fade-up" style="transition-delay: 0.05s">
       <div class="t-item">
-        <div class="t-year">2023</div>
-        <div class="t-title">Power Virtual Agents</div>
-        <div class="t-note">The low-code bot builder. Capable, but treated as a portal toy — solution/ALM support was an afterthought for most makers.</div>
+        <div class="t-year">2016</div>
+        <div class="t-title">Common Data Service launches</div>
+        <div class="t-note">The shared-schema idea: standard tables so business apps stop reinventing "Account" and "Contact" from scratch.</div>
       </div>
       <div class="t-item">
-        <div class="t-year">2024 · wave 2</div>
-        <div class="t-title">Rebrand to Copilot Studio · solution management in-app</div>
-        <div class="t-note">Power Virtual Agents becomes Copilot Studio, and solution management is brought <em>into</em> the Copilot Studio app (per Microsoft Learn release plan, 2024 wave 2) — ALM stops being a separate console.</div>
+        <div class="t-year">2020</div>
+        <div class="t-title">Rebranded to Dataverse</div>
+        <div class="t-note">CDS becomes Dataverse — positioned as "the database for Power Platform," with the Common Data Model underneath.</div>
       </div>
       <div class="t-item">
-        <div class="t-year">2025</div>
-        <div class="t-title">Agents become first-class solution components</div>
-        <div class="t-note">Agents are proper Dataverse solution components — exportable, importable, and versionable like any other Power Platform asset.</div>
+        <div class="t-year">2022–24</div>
+        <div class="t-title">First-class solutions, virtual tables, analytics link</div>
+        <div class="t-note">ALM matures: schema ships as solutions, virtual tables front external data, and a link to Synapse / Fabric hands analytics to the right tool.</div>
       </div>
       <div class="t-item">
         <div class="t-year">2026</div>
-        <div class="t-title">Pipelines · Git · DevOps — and autonomous agents</div>
-        <div class="t-note">Pipelines, GitHub Actions, Azure DevOps, and native Git are all supported (per Microsoft Learn, Jan 2026). Autonomous agents arrive and raise the ALM stakes — an unversioned self-triggering actor is a governance problem, not a demo.</div>
+        <div class="t-title">The agent-grounding substrate</div>
+        <div class="t-note">Copilot Studio agents live as Dataverse solution components and ground in its tables. Autonomous agents raise the stakes on the security and audit plane this platform provides.</div>
       </div>
     </div>
   </div>
@@ -1122,26 +1089,26 @@ git commit -m <span class="tok-str">"agent v3: add refund topic + escalation act
   <div class="container">
     <div class="fade-up">
       <div class="section-label">07 · Decision guide</div>
-      <h2 class="section-title">When Copilot Studio is the right ceiling. When it isn't.</h2>
-      <p class="section-lede">Copilot Studio is an excellent fit for a specific shape of team and problem. Force it past its ceiling — or skip the ALM it depends on — and it turns from leverage into a liability you can't roll back.</p>
+      <h2 class="section-title">When Dataverse earns its cost. When a plain database wins.</h2>
+      <p class="section-lede">Dataverse trades raw-storage economics for inherited governance. That's a great deal for governed business apps and a bad one for high-volume plumbing — knowing which you're building is the whole call.</p>
     </div>
     <div class="decide fade-up" style="transition-delay: 0.05s">
       <div class="decide-col use">
         <div class="decide-head">✓ Use it when</div>
         <ul>
-          <li><strong>Your users already live in Teams / M365.</strong> The agent surfaces where people work, and inherits the identity and data they already have.</li>
-          <li><strong>Low-code is the right ceiling.</strong> Topics, generative answers, and Power Automate actions cover the job without dropping to full code.</li>
-          <li><strong>You want governance for free.</strong> Agents inherit Entra ID, Dataverse RBAC, Purview audit, and DLP by default — you don't build the compliance plane, you get it.</li>
-          <li><strong>You'll commit to the discipline.</strong> Dev / test / prod with managed-import downstream is a habit you can actually sustain — that's what makes any of the above safe.</li>
+          <li><strong>You're already on M365 / Power Platform.</strong> The identity, licensing, and governance are in place — Dataverse is the low-friction store, not a new platform to stand up.</li>
+          <li><strong>You want governance inherited, not built.</strong> Row- and field-level RBAC, Purview audit, and DLP come with the store — most of a compliance answer for free.</li>
+          <li><strong>You're building Copilot Studio agents or Dynamics apps.</strong> They live in Dataverse anyway; owning the schema is owning the substrate they ground in.</li>
+          <li><strong>Low-code makers own the app.</strong> Tables, relationships, and rules without a database team — the model is built for makers.</li>
         </ul>
       </div>
       <div class="decide-col skip">
         <div class="decide-head">✗ Skip it when</div>
         <ul>
-          <li><strong>The low-code ceiling is too low.</strong> Complex orchestration, custom tool loops, or heavy state want full code — the escape hatch is <strong>Azure AI Agent Service</strong> on the same Azure OpenAI substrate.</li>
-          <li><strong>You can't or won't run three environments.</strong> One environment isn't ALM — it's a sandbox you've mistaken for production. Without dev/test/prod you have no rollback.</li>
-          <li><strong>You need portability off Microsoft.</strong> Agents are Dataverse-bound. That's real lock-in — name it plainly and price it in before you build a fleet.</li>
-          <li><strong>You expect "just export it" to be clean.</strong> Components that don't survive export mean naive migrations silently drop auth, channels, and config. If you can't own that checklist, the migration will bite.</li>
+          <li><strong>You need a general-purpose app database at volume.</strong> Dataverse is priced by database/file/log capacity, not per-row — high-volume data gets expensive fast. Reach for Azure SQL or Postgres.</li>
+          <li><strong>The workload is analytical.</strong> Heavy reporting and OLAP belong in Fabric / a warehouse. Link Dataverse to it; don't run analytics inside it.</li>
+          <li><strong>You need portability off Microsoft.</strong> Schema, security, and logic are Dataverse-shaped — that's real lock-in. Name it and price it before you build a fleet on it.</li>
+          <li><strong>It's a few simple lists or raw telemetry.</strong> SharePoint, a spreadsheet, or an append-only event store is cheaper and simpler than a governed platform you won't use.</li>
         </ul>
       </div>
     </div>
@@ -1154,45 +1121,45 @@ git commit -m <span class="tok-str">"agent v3: add refund topic + escalation act
     <div class="fade-up">
       <div class="section-label">08 · 2ⁿ perspective</div>
       <h2 class="section-title">How this node connects in the tree.</h2>
-      <p class="section-lede">The "agents are software" thesis isn't a Microsoft idea — it's the spine of the whole Agents domain. This node is that thesis applied to one low-code stack: the ALM machinery is what makes a Copilot Studio agent trustworthy.</p>
+      <p class="section-lede">Dataverse is a substrate node — it's what several other leaves have been standing on. These are the adjacent nodes an agent should pull when it loads this context.</p>
     </div>
     <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="copilot-studio.html" class="connect-node ai">
+        <span class="domain-tag">tech/microsoft/copilot-studio</span>
+        <div class="skill">Copilot Studio — agents are software</div>
+        <div class="why">The agent that lives in Dataverse. This node is the store; that node is the ALM discipline for the components it holds.</div>
+      </a>
       <a href="copilot-sa.html" class="connect-node data">
         <span class="domain-tag">tech/microsoft/copilot-sa</span>
         <div class="skill">Copilot in South Africa</div>
-        <div class="why">The residency dimension of the same agent — keeping prompts and grounding data in country with BYO Azure OpenAI in SA North.</div>
+        <div class="why">Where the Dataverse env sits decides residency — pin the Power Platform environment to SA to keep grounding data in country.</div>
       </a>
-      <div class="connect-node ai soon">
-        <span class="domain-tag">tech/microsoft/azure-ai</span>
-        <div class="skill">Azure AI Agent Service</div>
-        <div class="why">The full-code escape hatch when Copilot Studio's low-code ceiling is too low — same Azure OpenAI substrate, code-first control.</div>
-      </div>
-      <a href="../../agents/effective-agents.html" class="connect-node ai">
-        <span class="domain-tag">agents/effective-agents</span>
-        <div class="skill">Building Effective Agents</div>
-        <div class="why">The "should this even be an agent?" discipline — workflows vs agents, and why deterministic topics beat generative improvisation where they can.</div>
+      <a href="../../biz/crm/salesforce.html" class="connect-node biz">
+        <span class="domain-tag">biz/crm/salesforce</span>
+        <div class="skill">Salesforce</div>
+        <div class="why">The mirror image — Salesforce's platform is Dataverse's rival managed app-data model. Same idea, different lock-in.</div>
       </a>
       <a href="../../agents/rearchitecture.html" class="connect-node data">
         <span class="domain-tag">agents/rearchitecture</span>
         <div class="skill">Agents, data &amp; trust</div>
-        <div class="why">Why an agent is only as good as the owned, structured data it's grounded in — the Dataverse plane behind this one, generalised.</div>
+        <div class="why">Why grounding on owned, structured data matters — Dataverse is one concrete way to make an agent's world governed and real.</div>
       </a>
       <a href="../../agents/mcp.html" class="connect-node ai">
         <span class="domain-tag">agents/mcp</span>
         <div class="skill">Model Context Protocol</div>
-        <div class="why">The interop seam if the agent exposes or consumes tools beyond Power Platform connectors — the open standard alongside the Microsoft-native path.</div>
+        <div class="why">Expose Dataverse tables to any agent via an MCP server over the Web API — grounding beyond the Microsoft-native surfaces.</div>
       </a>
-      <a href="dataverse.html" class="connect-node data">
-        <span class="domain-tag">tech/microsoft/dataverse</span>
-        <div class="skill">Dataverse</div>
-        <div class="why">The governed data platform every Copilot Studio agent lives in — tables on the Common Data Model, inherited RBAC, and solutions as the ALM unit.</div>
+      <a href="../../data/" class="connect-node data">
+        <span class="domain-tag">data</span>
+        <div class="skill">Data domain</div>
+        <div class="why">Where Dataverse sits in the wider picture — operational store vs warehouse vs lake, and when to push analytics to Fabric.</div>
       </a>
     </div>
     <div class="agent-callout fade-up" style="transition-delay: 0.1s">
       <div class="label">For agents loading this context</div>
       <h4>What this node gives you</h4>
-      <p>A decision procedure for any "we built a Copilot Studio agent, how do we ship it safely?" prompt. Treat the agent as a solution component: confirm it's in a preferred (not default) solution, move it dev→test→prod as unmanaged→managed, and run the post-import checklist for the components that don't travel — re-auth, re-publish before sharing, allow 24h for the icon, and remember that removing an agent from a solution doesn't remove its Dataverse components.</p>
-      <p>Escalate to Azure AI Agent Service when the low-code ceiling blocks the design, and cross-check residency against the Copilot-in-SA node when the workload is regulated.</p>
+      <p>The mental model for anything grounded in the Microsoft business stack: data lives in Dataverse <em>tables</em> on the Common Data Model; every caller — app or agent — acts through a <em>security role</em> and sees only what it permits; and schema moves between environments as a <em>solution</em>. When a prompt involves Dynamics, Power Apps, or a Copilot Studio agent, the real store underneath is this one, and its RBAC, audit, and residency posture are inherited, not configured per app.</p>
+      <p>Reach through the Web API (OData, Entra-authenticated) for code access, and cross-check residency against the Copilot-in-SA node when the workload is regulated.</p>
     </div>
   </div>
 </section>
@@ -1203,50 +1170,50 @@ git commit -m <span class="tok-str">"agent v3: add refund topic + escalation act
     <div class="fade-up">
       <div class="section-label">09 · Resources</div>
       <h2 class="section-title">Go deeper.</h2>
-      <p class="section-lede">Microsoft Learn is authoritative for the ALM mechanics — read it, don't trust summaries. Community posts are labelled as such; lead with Learn for anything load-bearing.</p>
+      <p class="section-lede">Microsoft Learn is authoritative on the platform mechanics — read it, don't trust summaries.</p>
     </div>
     <div class="resource-grid fade-up" style="transition-delay: 0.05s">
-      <a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-solutions-overview" class="resource" target="_blank" rel="noopener">
+      <a href="https://learn.microsoft.com/en-us/power-apps/maker/data-platform/data-platform-intro" class="resource" target="_blank" rel="noopener">
         <span class="r-kind">Docs · Microsoft</span>
-        <span class="r-title">Create and manage custom solutions</span>
-        <span class="r-url">learn.microsoft.com · authoring-solutions-overview</span>
+        <span class="r-title">What is Microsoft Dataverse?</span>
+        <span class="r-url">learn.microsoft.com · data-platform-intro</span>
       </a>
-      <a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/authoring-solutions-import-export" class="resource" target="_blank" rel="noopener">
+      <a href="https://learn.microsoft.com/en-us/power-apps/maker/data-platform/entity-overview" class="resource" target="_blank" rel="noopener">
         <span class="r-kind">Docs · Microsoft</span>
-        <span class="r-title">Export and import agents using solutions</span>
-        <span class="r-url">learn.microsoft.com · authoring-solutions-import-export</span>
+        <span class="r-title">Tables in Dataverse</span>
+        <span class="r-url">learn.microsoft.com · entity-overview</span>
       </a>
-      <a href="https://learn.microsoft.com/en-us/microsoft-copilot-studio/guidance/alm" class="resource" target="_blank" rel="noopener">
+      <a href="https://learn.microsoft.com/en-us/power-platform/admin/security-roles-privileges" class="resource" target="_blank" rel="noopener">
         <span class="r-kind">Docs · Microsoft</span>
-        <span class="r-title">Establish an ALM strategy (Copilot Studio)</span>
-        <span class="r-url">learn.microsoft.com · copilot-studio/guidance/alm</span>
+        <span class="r-title">Security roles and privileges</span>
+        <span class="r-url">learn.microsoft.com · security-roles-privileges</span>
+      </a>
+      <a href="https://learn.microsoft.com/en-us/power-apps/developer/data-platform/webapi/overview" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs · Microsoft</span>
+        <span class="r-title">Dataverse Web API (OData)</span>
+        <span class="r-url">learn.microsoft.com · webapi/overview</span>
+      </a>
+      <a href="https://learn.microsoft.com/en-us/common-data-model/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs · Microsoft</span>
+        <span class="r-title">Common Data Model</span>
+        <span class="r-url">learn.microsoft.com · common-data-model</span>
       </a>
       <a href="https://learn.microsoft.com/en-us/power-platform/alm/" class="resource" target="_blank" rel="noopener">
         <span class="r-kind">Docs · Microsoft</span>
         <span class="r-title">Application lifecycle management (Power Platform)</span>
         <span class="r-url">learn.microsoft.com · power-platform/alm</span>
       </a>
-      <a href="https://github.com/2nth-ai/skills/tree/main/tech/microsoft/copilot" class="resource" target="_blank" rel="noopener">
+      <a href="https://github.com/2nth-ai/skills/tree/main/tech/microsoft" class="resource" target="_blank" rel="noopener">
         <span class="r-kind">Skill tree</span>
-        <span class="r-title">tech/microsoft/copilot — full SKILL.md</span>
-        <span class="r-url">github.com/2nth-ai/skills · copilot/</span>
-      </a>
-      <a href="https://m365princess.com" class="resource" target="_blank" rel="noopener">
-        <span class="r-kind">Community · MVP blog</span>
-        <span class="r-title">m365princess — Copilot Studio ALM reality check (2025)</span>
-        <span class="r-url">m365princess.com</span>
-      </a>
-      <a href="https://copilotconsulting.com" class="resource" target="_blank" rel="noopener">
-        <span class="r-kind">Community · vendor blog</span>
-        <span class="r-title">Copilot Consulting — Dataverse enterprise agents (Apr 2026)</span>
-        <span class="r-url">copilotconsulting.com</span>
+        <span class="r-title">tech/microsoft — full SKILL.md set</span>
+        <span class="r-url">github.com/2nth-ai/skills · tech/microsoft</span>
       </a>
     </div>
     <div class="download-stub fade-up" style="transition-delay: 0.1s">
       <div>
         <div class="label">Agent context</div>
         <h4>Load this node into your agent</h4>
-        <p>Structured context bundle: the solution-as-carrier model, the unmanaged→managed promotion path, the post-import checklist for components that don't travel, and the ALM tooling comparison. Shipping with the know.2nth.ai Worker API.</p>
+        <p>Structured context bundle: the tables + Common Data Model primer, the security-role model callers act through, solutions as the ALM unit, and the Dataverse-vs-plain-database decision. Shipping with the know.2nth.ai Worker API.</p>
       </div>
       <button disabled title="Coming with the agent context API">Download context · coming soon</button>
     </div>
