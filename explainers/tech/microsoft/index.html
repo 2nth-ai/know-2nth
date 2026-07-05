@@ -296,8 +296,8 @@
       Microsoft offers the most mature path to in-country frontier-model inference in South Africa via Azure OpenAI Regional PTU in <code style="font-family: 'JetBrains Mono', monospace; color: var(--sky);">southafricanorth</code>. Google Vertex AI's <code style="font-family: 'JetBrains Mono', monospace; color: var(--sky);">africa-south1</code> and AWS Bedrock's <code style="font-family: 'JetBrains Mono', monospace; color: var(--sky);">af-south-1</code> are also present in country, but for current frontier closed models neither matches Azure's Regional PTU residency guarantee. For regulated workloads that have to keep prompts and grounding data in country — banking, healthcare, public sector, FAIS-covered advisory — that asymmetry is the deciding architectural input. This sub-tree maps the strategy decision (which Copilot surface fits the workload), the implementation patterns (how a Worker actually calls <code style="font-family: 'JetBrains Mono', monospace; color: var(--sky);">gpt-4o</code> in Joburg), and the auth model that holds it all together.
     </p>
     <div class="hub-stats fade-up" style="transition-delay: 0.15s">
-      <div class="hub-stat"><div class="num">6</div><div class="label">Skill nodes</div></div>
-      <div class="hub-stat"><div class="num">4</div><div class="label">Live explainers</div></div>
+      <div class="hub-stat"><div class="num">7</div><div class="label">Skill nodes</div></div>
+      <div class="hub-stat"><div class="num">5</div><div class="label">Live explainers</div></div>
       <div class="hub-stat"><div class="num">SA-North</div><div class="label">Regional PTU for ZA residency</div></div>
     </div>
   </div>
@@ -309,7 +309,25 @@
     <div class="fade-up">
       <div class="hub-label">01 · Explainers</div>
       <h2 class="hub-title">The branch, by what it teaches.</h2>
-      <p class="hub-lede">Four live nodes today: the strategy-level explainer for the in-country LLM decision, the implementation node for the headless Worker pattern, the AI Gateway upgrade that wraps it with observability, and the Copilot Studio playbook on treating agents as software. Two more in the pipeline — the Azure AI Agent Service alternative for full-code agents, and the M365 Copilot deep dive on the SA M365 Geo.</p>
+      <p class="hub-lede">Five live nodes today: the strategy-level explainer for the in-country LLM decision, the implementation node for the headless Worker pattern, the AI Gateway upgrade that wraps it with observability, the Copilot Studio playbook on treating agents as software, and the Dataverse platform node beneath them all. Two more in the pipeline — the Azure AI Agent Service alternative for full-code agents, and the M365 Copilot deep dive on the SA M365 Geo.</p>
+    </div>
+
+    <!-- Platform foundations -->
+    <div class="category-band fade-up">
+      <span class="c-label">Platform foundations · 1</span>
+      <span class="c-rule"></span>
+    </div>
+    <div class="svc-grid fade-up" style="transition-delay: 0.03s">
+
+      <a href="dataverse.html" class="svc-card">
+        <div class="svc-head">
+          <div class="svc-name">Dataverse</div>
+          <span class="svc-state live">Live</span>
+        </div>
+        <span class="svc-path">tech/microsoft/dataverse</span>
+        <p>Not a database — the governed data platform under Power Platform, Dynamics 365, and Copilot Studio. Tables on the Common Data Model, inherited RBAC + Purview, and solutions as the ALM unit. The substrate the agents live in.</p>
+      </a>
+
     </div>
 
     <!-- Strategy -->
