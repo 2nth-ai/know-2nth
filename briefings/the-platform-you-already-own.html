@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Platform You Already Own &mdash; know.2nth.ai Briefing</title>
+<meta name="description" content="Corporate South Africa is being sold 'AI data platforms' while the most governed, POPIA-friendly, AI-ready one in the country already sits inside the Microsoft 365 licences it pays for every month. It's called Dataverse — the store your Microsoft apps and Copilot agents already run inside. A plain-language CEO briefing on what it is, why it's a POPIA advantage, how it sits under Copilot, and where the lock-in bites.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/briefings/the-platform-you-already-own">
+<meta property="og:title" content="The Platform You Already Own — know.2nth.ai Briefing">
+<meta property="og:description" content="The AI-ready, POPIA-friendly data platform already inside your Microsoft 365 stack — Dataverse. What it is in plain terms, why it keeps data in South Africa, how it sits under Copilot, and the honest lock-in.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai — The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Platform You Already Own — know.2nth.ai">
+<meta name="twitter:description" content="The AI-ready, POPIA-friendly data platform already inside your Microsoft 365 stack — Dataverse. What it is, why it keeps data in SA, how it sits under Copilot, and the lock-in.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%2338BDF8' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%232563EB' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --ink: #0B1120; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6;
+    --sky: #38BDF8; --cyan: #22D3EE; --paper: #F8FAFC; --slate: #94A3B8;
+    --warm: #F59E0B; --warm-soft: rgba(245,158,11,0.12);
+    --green: #10B981; --green-soft: rgba(16,185,129,0.12);
+    --rose: #F43F5E; --rose-soft: rgba(244,63,94,0.12);
+    --indigo: #6366F1; --indigo-soft: rgba(99,102,241,0.12);
+    --max-w: 1080px; --read-w: 820px;
+    --radius-md: 14px; --radius-lg: 22px; --radius-pill: 100px;
+    --bg: #EEF4FB; --bg-soft: #E2ECF6; --card: #FFFFFF; --card-2: #F8FBFE;
+    --text: #0B1120; --text-2: #475569; --text-3: #8A97AB;
+    --border: rgba(15,23,42,0.10); --border-strong: rgba(15,23,42,0.16);
+    --shadow: 0 14px 40px rgba(15,23,42,0.08);
+  }
+  [data-theme="dark"] {
+    --bg: #07101D; --bg-soft: #0B1828; --card: #102033; --card-2: #0C1828;
+    --text: #F8FAFC; --text-2: #B6C2D6; --text-3: #6B7A92;
+    --border: rgba(148,163,184,0.14); --border-strong: rgba(148,163,184,0.24);
+    --shadow: 0 16px 48px rgba(0,0,0,0.5);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body {
+    font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+    background: radial-gradient(1100px 560px at 80% -120px, var(--bg-soft), var(--bg)) fixed;
+    color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  }
+  .wrap { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+  a { color: var(--blue); text-decoration: none; }
+
+  .topbar { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(14px);
+    background: color-mix(in srgb, var(--bg) 80%, transparent); border-bottom: 1px solid var(--border); }
+  .topbar-inner { max-width: var(--max-w); margin: 0 auto; padding: 12px 24px;
+    display: flex; align-items: center; justify-content: space-between; }
+  .brand-wrap { display: flex; align-items: center; }
+  .brand { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 14px;
+    background: linear-gradient(135deg, var(--blue), var(--sky));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; text-decoration: none; }
+  .brand-sub { font-size: 11px; color: var(--text-3); letter-spacing: 1.5px; text-transform: uppercase;
+    margin-left: 10px; padding-left: 10px; border-left: 1px solid var(--border); font-weight: 500; }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-2); text-decoration: none; font-weight: 500; }
+  .nav-link:hover { color: var(--sky); }
+  .toggle { background: none; border: 1px solid var(--border); color: var(--text-2);
+    width: 34px; height: 34px; border-radius: 50%; cursor: pointer; display: grid; place-items: center;
+    font-size: 15px; transition: all 0.2s; }
+  .toggle:hover { border-color: var(--border-strong); }
+
+  .hero { padding: 60px 0 8px; }
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500;
+    letter-spacing: 2.5px; text-transform: uppercase; color: var(--indigo);
+    display: inline-flex; align-items: center; gap: 10px; margin-bottom: 22px; }
+  .eyebrow .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--indigo); box-shadow: 0 0 12px var(--indigo); }
+  .hero h1 { font-size: clamp(36px, 6vw, 60px); font-weight: 800; line-height: 1.05;
+    letter-spacing: -1.8px; margin-bottom: 22px; max-width: 17ch; }
+  .hero h1 .hl { background: linear-gradient(135deg, var(--blue-glow), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .lede { font-size: 19px; color: var(--text-2); max-width: 720px; line-height: 1.6; font-weight: 300; }
+  .hero .lede .hl { color: var(--text); font-weight: 500; }
+  .meta-chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+  .chip { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.4px; color: var(--text-2);
+    border: 1px solid var(--border); padding: 8px 14px; border-radius: var(--radius-pill); background: var(--card-2); }
+
+  section { padding: 44px 0; }
+  .s-num { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--sky); font-weight: 600; margin-bottom: 12px; }
+  .s-title { font-size: clamp(26px, 4vw, 36px); font-weight: 700; letter-spacing: -0.8px; line-height: 1.15; margin-bottom: 16px; max-width: 24ch; }
+  .s-lede { font-size: 17px; color: var(--text-2); max-width: var(--read-w); line-height: 1.7; font-weight: 300; margin-bottom: 26px; }
+  .s-lede .hl { color: var(--text); font-weight: 600; }
+  .s-lede + .s-lede { margin-top: -8px; }
+
+  .defs { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 26px 0; }
+  @media (max-width: 720px){ .defs { grid-template-columns: 1fr; } }
+  .def { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 26px 28px; box-shadow: var(--shadow); }
+  .def.flow { border-top: 4px solid var(--warm); }
+  .def.agent { border-top: 4px solid var(--green); }
+  .def .dt { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; font-weight: 600; margin-bottom: 8px; }
+  .def.flow .dt { color: var(--warm); } .def.agent .dt { color: var(--green); }
+  .def h3 { font-size: 21px; font-weight: 800; letter-spacing: -0.4px; margin-bottom: 8px; }
+  .def p { font-size: 14.5px; color: var(--text-2); line-height: 1.6; margin-bottom: 10px; }
+  .def p:last-child { margin-bottom: 0; }
+  .def .tag { font-size: 13px; color: var(--text-3); font-style: italic; }
+
+  .callout { background: var(--card-2); border: 1px solid var(--border); border-left: 4px solid var(--sky); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); box-shadow: var(--shadow); }
+  .callout.warm { border-left-color: var(--warm); }
+  .callout.green { border-left-color: var(--green); }
+  .callout .co-tag { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; font-weight: 600; color: var(--sky); margin-bottom: 10px; }
+  .callout.warm .co-tag { color: var(--warm); }
+  .callout.green .co-tag { color: var(--green); }
+  .callout p { font-size: 15.5px; color: var(--text-2); line-height: 1.7; }
+  .callout p strong { color: var(--text); }
+  .callout p + p { margin-top: 12px; }
+
+  .checks { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: var(--read-w); }
+  @media (max-width: 720px){ .checks { grid-template-columns: 1fr; } }
+  .check { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 22px 24px; box-shadow: var(--shadow); }
+  .check .q { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+  .check p { font-size: 13.5px; color: var(--text-2); line-height: 1.55; }
+
+  .thread { display: grid; grid-template-columns: repeat(2,1fr); gap: 14px; }
+  @media (max-width: 760px){ .thread { grid-template-columns: 1fr; } }
+  .tcard { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px 26px; box-shadow: var(--shadow); text-decoration: none; color: inherit; display: block; transition: transform .25s, border-color .25s; border-top: 4px solid var(--sky); }
+  .tcard:hover { transform: translateY(-3px); border-color: var(--border-strong); }
+  .tcard .tt { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--sky); font-weight: 600; margin-bottom: 8px; }
+  .tcard h4 { font-size: 19px; font-weight: 800; letter-spacing: -0.4px; margin-bottom: 8px; }
+  .tcard p { font-size: 14px; color: var(--text-2); line-height: 1.55; margin-bottom: 10px; }
+  .tcard .go { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--sky); font-weight: 600; }
+
+  .finalbox { max-width: var(--read-w); margin: 0 auto; background: var(--card); border: 1px solid var(--border-strong); border-radius: var(--radius-lg); padding: 34px 36px; box-shadow: var(--shadow); text-align: center; }
+  .finalbox .tag { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.6px; text-transform: uppercase; color: var(--indigo); font-weight: 600; margin-bottom: 14px; }
+  .finalbox p { font-size: clamp(18px, 2.4vw, 22px); font-weight: 500; color: var(--text); line-height: 1.5; }
+
+  footer { padding: 54px 0 48px; border-top: 1px solid var(--border); text-align: center; margin-top: 36px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600;
+    background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tag { font-size: 13px; color: var(--text-3); margin-bottom: 18px; }
+  .footer-links { display: flex; justify-content: center; gap: 22px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-2); text-decoration: none; }
+  .footer-links a:hover { color: var(--sky); }
+  .footer-copy { font-size: 12px; color: var(--text-3); margin-top: 18px; }
+
+  .fade { opacity: 0; transform: translateY(22px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade.vis { opacity: 1; transform: translateY(0); }
+  @media (prefers-reduced-motion: reduce) { .fade { opacity: 1; transform: none; } }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand-wrap"><a href="/index.html" class="brand">know.2nth.ai</a><span class="brand-sub">CEO Briefing</span></div>
+    <div class="nav-right">
+      <a href="/briefings/" class="nav-link">All briefings</a>
+      <button class="toggle" onclick="toggleTheme()" aria-label="Toggle light/dark">🌙</button>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div class="eyebrow fade"><span class="dot"></span> AI &amp; data strategy &middot; The Microsoft stack</div>
+    <h1 class="fade" style="transition-delay:.05s">Your AI already has a home. <span class="hl">It's called Dataverse.</span></h1>
+    <p class="lede fade" style="transition-delay:.1s">
+      Corporate South Africa is being pitched &ldquo;AI data platforms&rdquo; by the dozen &mdash; while the most governed, <span class="hl">POPIA-friendly</span>, AI-ready one in the country is already sitting inside the <span class="hl">Microsoft 365 licences you pay for every month</span>. It's called Dataverse, it's the store your Microsoft apps and Copilot agents already run inside, and most executives have never heard its name. Here's what it is, why it's a South African advantage, and where it bites.
+    </p>
+    <div class="meta-chips fade" style="transition-delay:.15s">
+      <span class="chip">Source &middot; Microsoft Learn + the know.2nth.ai tech leaves</span>
+      <span class="chip">6-min read</span>
+      <span class="chip">For decision-makers</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">01 &middot; The platform under your stack</div>
+      <h2 class="s-title">You're probably about to buy something you already own.</h2>
+      <p class="s-lede">Strip the jargon and Dataverse is a <span class="hl">single, governed filing system</span> that sits underneath the Microsoft tools your business already runs &mdash; Microsoft 365, the Power Platform (Power Apps and Power Automate), Dynamics 365, and Copilot. It isn't a database you buy and bolt on. It's the place your Microsoft apps &mdash; and any AI agent you build with them &mdash; keep their data, with the security and audit built in.</p>
+    </div>
+    <div class="defs fade" style="transition-delay:.05s">
+      <div class="def flow">
+        <div class="dt">What you're being sold</div>
+        <h3>A new AI data platform</h3>
+        <p>A separate product to license, stand up, secure, and govern from scratch &mdash; another vendor, another bill, another integration project before any value lands.</p>
+        <p class="tag">Cost and risk you may not need to take on.</p>
+      </div>
+      <div class="def agent">
+        <div class="dt">What you already have</div>
+        <h3>Dataverse, inside Microsoft 365</h3>
+        <p>Included with the Power Platform and Dynamics licences most corporates already hold. The governance, identity, and audit are already wired in &mdash; you configure it, you don't build it.</p>
+        <p class="tag">Use what you pay for before you buy more.</p>
+      </div>
+    </div>
+    <div class="prose fade" style="transition-delay:.08s">
+      <p class="s-lede"><span class="hl">Why it matters to you:</span> the first question isn't &ldquo;which AI platform should we buy?&rdquo; It's &ldquo;are we already paying for one?&rdquo; For most Microsoft-shop corporates in South Africa, the answer is yes &mdash; and the cost of not knowing is a second platform bought to do a job the first one already does.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">02 &middot; Why it's a South African advantage</div>
+      <h2 class="s-title">Two things you'd otherwise pay a consultant to build, included.</h2>
+      <p class="s-lede">For a regulated SA business, Dataverse quietly answers two of the hardest questions on the compliance checklist &mdash; and it answers them the same way for every app and agent that sits on it.</p>
+    </div>
+    <div class="callout green fade" style="transition-delay:.05s">
+      <div class="co-tag">1 · Keep the data in the country</div>
+      <p>You can pin your Dataverse environment to the <strong>South African region</strong>, so the data your apps and agents work on stays in country &mdash; the plain answer to the POPIA question a board keeps asking. It's the same in-country footing the rest of the Microsoft stack gives you; for the full residency picture see the <a href="/briefings/edge-first">Keep the Data Home</a> briefing.</p>
+    </div>
+    <div class="callout fade" style="transition-delay:.08s">
+      <div class="co-tag">2 · Governance you inherit, not build</div>
+      <p><strong>Who can see what</strong> (down to a single field), a complete <strong>audit trail</strong> of who changed what, and <strong>data-loss controls</strong> all come with the platform. For banking, insurance, healthcare, and public-sector work, that inherited governance is most of a compliance answer you'd otherwise pay a team to assemble &mdash; and because it's one platform, it's consistent across every app and agent instead of reinvented each time.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">03 &middot; How it sits under Copilot</div>
+      <h2 class="s-title">Your Copilot agent isn't floating in the cloud. It lives here.</h2>
+      <p class="s-lede">When you build a custom agent in Copilot Studio, it isn't a magic app somewhere on the internet &mdash; it's <span class="hl">software that lives in Dataverse</span>. That single fact drives the two things a leader most needs to understand about agent risk.</p>
+    </div>
+    <div class="callout green fade" style="transition-delay:.05s">
+      <div class="co-tag">The upside — it inherits your controls</div>
+      <p>Because the agent lives in Dataverse, it acts <strong>as a user</strong> and sees only what that person's permissions allow, and every action it takes is audited. You don't build a separate security system for &ldquo;the AI&rdquo; &mdash; it inherits the one you already run. An agent is also only ever as good as the <strong>governed data it can reach</strong>: clean, owned data in Dataverse is what stops it guessing.</p>
+    </div>
+    <div class="callout warm fade" style="transition-delay:.08s">
+      <div class="co-tag">The catch — it needs to be treated like software</div>
+      <p>&ldquo;It's software&rdquo; cuts both ways. An agent shipped by clicking <em>Publish</em> in your live system has no version history and no undo. The discipline that fixes this is <strong>ALM &mdash; application lifecycle management</strong>: build and test the agent in a separate environment, promote it to production in a controlled way, and keep the ability to roll back. Plain version: <strong>don't edit your AI live, ship it like software</strong>. The full engineering treatment is the <a href="/explainers/tech/microsoft/copilot-studio">Copilot Studio</a> leaf.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">04 &middot; The honest trade-offs</div>
+      <h2 class="s-title">Where it's the wrong tool — say it before you build on it.</h2>
+      <p class="s-lede">Dataverse buys inherited governance by giving up two things. Neither is a dealbreaker; both should be priced in before you make it the foundation of everything.</p>
+    </div>
+    <div class="checks fade" style="transition-delay:.05s">
+      <div class="check"><div class="q">Lock-in is real.</div><p>Your data, its rules, and your agents become Microsoft-shaped. That's the cost of the convenience &mdash; name it and decide it deliberately, don't back into it.</p></div>
+      <div class="check"><div class="q">It's priced by capacity.</div><p>Dataverse charges by storage capacity, not per record. For high-volume, plain data plumbing a normal database (Azure SQL, PostgreSQL) can be much cheaper &mdash; use the right tool for that job.</p></div>
+      <div class="check"><div class="q">It's not for analytics.</div><p>Heavy reporting and number-crunching belong in a reporting/warehouse tool. Dataverse runs your operations; it doesn't replace your BI stack.</p></div>
+      <div class="check"><div class="q">Not for a few simple lists.</div><p>If it's a handful of small lists, a spreadsheet or SharePoint is cheaper and simpler than a governed platform you won't use.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">05 &middot; The decision</div>
+      <h2 class="s-title">Four questions for your exec and your IT lead.</h2>
+    </div>
+    <div class="checks fade" style="transition-delay:.05s">
+      <div class="check"><div class="q">Are we about to pay twice?</div><p>Before buying an AI or data platform, have we checked whether our Microsoft 365 / Power Platform licences already include Dataverse for the same job?</p></div>
+      <div class="check"><div class="q">Is our environment pinned to South Africa?</div><p>Is the region set so customer data stays in country — or did we leave it on a default that quietly sends it offshore?</p></div>
+      <div class="check"><div class="q">Do our agents inherit our permissions?</div><p>Does the Copilot agent see only what the user is allowed to see, with every action audited — or has someone given it a back door around our controls?</p></div>
+      <div class="check"><div class="q">Do we ship agents like software?</div><p>Do we build and test in a separate environment and promote to production with a rollback — or are we editing a live agent and hoping?</p></div>
+    </div>
+    <div class="callout warm fade" style="transition-delay:.08s">
+      <div class="co-tag">The honest default</div>
+      <p>For a mid-to-large SA corporate already on Microsoft 365, the move isn't a new platform &mdash; it's to <strong>use the one you own, pin it to South Africa, ground your Copilot agents in it, and ship those agents with the same test-then-release discipline as any other software</strong>. Don't buy a second platform for a job M365 already does; <em>do</em> price the lock-in honestly before you make Dataverse the floor under your whole operation.</p>
+    </div>
+  </div>
+</section>
+
+<!-- RELATED -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">Keep reading</div>
+      <h2 class="s-title">Related</h2>
+    </div>
+    <div class="thread fade" style="transition-delay:.05s">
+      <a href="/explainers/tech/microsoft/dataverse" class="tcard">
+        <div class="tt">Technical version</div>
+        <h4>Dataverse</h4>
+        <p>The deep version for your IT lead: tables and the Common Data Model, the security model callers act through, solutions as the lifecycle unit, and Dataverse vs a plain database.</p>
+        <span class="go">Open the leaf &rarr;</span>
+      </a>
+      <a href="/briefings/edge-first" class="tcard">
+        <div class="tt">Briefing</div>
+        <h4>Keep the Data Home</h4>
+        <p>The residency half of this decision: how to use global cloud and AI without your customers' data leaving South Africa. The plain POPIA answer.</p>
+        <span class="go">Read briefing &rarr;</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL -->
+<section>
+  <div class="wrap">
+    <div class="finalbox fade">
+      <div class="tag">The take</div>
+      <p>The AI-ready, POPIA-friendly data platform corporate South Africa keeps being sold is, for most Microsoft shops, already paid for. Use what you own, keep it in the country, and ship your agents like the software they are.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tag">CEO briefings &middot; the plain-language layer over the knowledge tree</p>
+    <div class="footer-links">
+      <a href="/briefings/">All briefings</a>
+      <a href="/index.html">Knowledge tree</a>
+      <a href="/explainers/tech/microsoft/dataverse">Dataverse</a>
+      <a href="https://2nth.ai" target="_blank" rel="noopener">2nth.ai</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme(){
+    const h=document.documentElement, cur=h.getAttribute('data-theme'), nxt=cur==='dark'?'light':'dark';
+    h.setAttribute('data-theme',nxt);
+    document.querySelector('.toggle').textContent = nxt==='dark' ? '☀️' : '🌙';
+    localStorage.setItem('brief-theme',nxt);
+  }
+  const saved=localStorage.getItem('brief-theme');
+  if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.toggle').textContent=saved==='dark'?'☀️':'🌙';}
+  const ob=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');});},{threshold:0.08,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.fade').forEach(el=>ob.observe(el));
+</script>
+</body>
+</html>
