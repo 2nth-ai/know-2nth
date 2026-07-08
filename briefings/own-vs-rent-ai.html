@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Five Things You Can Own in AI &mdash; know.2nth.ai Briefing</title>
+<meta name="description" content="'Own your AI' sounds like one decision. It's five — the model, the fine-tune, the hardware, the data layer, and the testing — and you only need to get two of them right. A plain-language CEO briefing on why the frontier model is the one piece you're usually better off renting, how the three reasons to build in-house actually translate, and why a backstop you control is the real question.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/briefings/own-vs-rent-ai">
+<meta property="og:title" content="The Five Things You Can Own in AI — know.2nth.ai Briefing">
+<meta property="og:description" content="'Own your AI' isn't one decision — it's five, and you only need two. Why you rent the frontier model, own the router and a small model on your own data, and keep your context and location.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai — The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Five Things You Can Own in AI — know.2nth.ai">
+<meta name="twitter:description" content="'Own your AI' isn't one decision — it's five, and you only need two. Rent the frontier; own the router, a small model on your data, your context, and your location.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%2338BDF8' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%232563EB' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --ink: #0B1120; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6;
+    --sky: #38BDF8; --cyan: #22D3EE; --paper: #F8FAFC; --slate: #94A3B8;
+    --warm: #F59E0B; --warm-soft: rgba(245,158,11,0.12);
+    --green: #10B981; --green-soft: rgba(16,185,129,0.12);
+    --rose: #F43F5E; --rose-soft: rgba(244,63,94,0.12);
+    --indigo: #6366F1; --indigo-soft: rgba(99,102,241,0.12);
+    --max-w: 1080px; --read-w: 820px;
+    --radius-md: 14px; --radius-lg: 22px; --radius-pill: 100px;
+    --bg: #EEF4FB; --bg-soft: #E2ECF6; --card: #FFFFFF; --card-2: #F8FBFE;
+    --text: #0B1120; --text-2: #475569; --text-3: #8A97AB;
+    --border: rgba(15,23,42,0.10); --border-strong: rgba(15,23,42,0.16);
+    --shadow: 0 14px 40px rgba(15,23,42,0.08);
+  }
+  [data-theme="dark"] {
+    --bg: #07101D; --bg-soft: #0B1828; --card: #102033; --card-2: #0C1828;
+    --text: #F8FAFC; --text-2: #B6C2D6; --text-3: #6B7A92;
+    --border: rgba(148,163,184,0.14); --border-strong: rgba(148,163,184,0.24);
+    --shadow: 0 16px 48px rgba(0,0,0,0.5);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body {
+    font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+    background: radial-gradient(1100px 560px at 80% -120px, var(--bg-soft), var(--bg)) fixed;
+    color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  }
+  .wrap { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+  a { color: var(--blue); text-decoration: none; }
+
+  .topbar { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(14px);
+    background: color-mix(in srgb, var(--bg) 80%, transparent); border-bottom: 1px solid var(--border); }
+  .topbar-inner { max-width: var(--max-w); margin: 0 auto; padding: 12px 24px;
+    display: flex; align-items: center; justify-content: space-between; }
+  .brand-wrap { display: flex; align-items: center; }
+  .brand { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 14px;
+    background: linear-gradient(135deg, var(--blue), var(--sky));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; text-decoration: none; }
+  .brand-sub { font-size: 11px; color: var(--text-3); letter-spacing: 1.5px; text-transform: uppercase;
+    margin-left: 10px; padding-left: 10px; border-left: 1px solid var(--border); font-weight: 500; }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-2); text-decoration: none; font-weight: 500; }
+  .nav-link:hover { color: var(--sky); }
+  .toggle { background: none; border: 1px solid var(--border); color: var(--text-2);
+    width: 34px; height: 34px; border-radius: 50%; cursor: pointer; display: grid; place-items: center;
+    font-size: 15px; transition: all 0.2s; }
+  .toggle:hover { border-color: var(--border-strong); }
+
+  .hero { padding: 60px 0 8px; }
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500;
+    letter-spacing: 2.5px; text-transform: uppercase; color: var(--indigo);
+    display: inline-flex; align-items: center; gap: 10px; margin-bottom: 22px; }
+  .eyebrow .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--indigo); box-shadow: 0 0 12px var(--indigo); }
+  .hero h1 { font-size: clamp(36px, 6vw, 60px); font-weight: 800; line-height: 1.05;
+    letter-spacing: -1.8px; margin-bottom: 22px; max-width: 17ch; }
+  .hero h1 .hl { background: linear-gradient(135deg, var(--blue-glow), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .lede { font-size: 19px; color: var(--text-2); max-width: 720px; line-height: 1.6; font-weight: 300; }
+  .hero .lede .hl { color: var(--text); font-weight: 500; }
+  .meta-chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+  .chip { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.4px; color: var(--text-2);
+    border: 1px solid var(--border); padding: 8px 14px; border-radius: var(--radius-pill); background: var(--card-2); }
+
+  section { padding: 44px 0; }
+  .s-num { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--sky); font-weight: 600; margin-bottom: 12px; }
+  .s-title { font-size: clamp(26px, 4vw, 36px); font-weight: 700; letter-spacing: -0.8px; line-height: 1.15; margin-bottom: 16px; max-width: 24ch; }
+  .s-lede { font-size: 17px; color: var(--text-2); max-width: var(--read-w); line-height: 1.7; font-weight: 300; margin-bottom: 26px; }
+  .s-lede .hl { color: var(--text); font-weight: 600; }
+  .s-lede + .s-lede { margin-top: -8px; }
+
+  .defs { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 26px 0; }
+  @media (max-width: 720px){ .defs { grid-template-columns: 1fr; } }
+  .def { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 26px 28px; box-shadow: var(--shadow); }
+  .def.flow { border-top: 4px solid var(--warm); }
+  .def.agent { border-top: 4px solid var(--green); }
+  .def .dt { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; font-weight: 600; margin-bottom: 8px; }
+  .def.flow .dt { color: var(--warm); } .def.agent .dt { color: var(--green); }
+  .def h3 { font-size: 21px; font-weight: 800; letter-spacing: -0.4px; margin-bottom: 8px; }
+  .def p { font-size: 14.5px; color: var(--text-2); line-height: 1.6; margin-bottom: 10px; }
+  .def p:last-child { margin-bottom: 0; }
+  .def .tag { font-size: 13px; color: var(--text-3); font-style: italic; }
+
+  .callout { background: var(--card-2); border: 1px solid var(--border); border-left: 4px solid var(--sky); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); box-shadow: var(--shadow); }
+  .callout.warm { border-left-color: var(--warm); }
+  .callout.green { border-left-color: var(--green); }
+  .callout.indigo { border-left-color: var(--indigo); }
+  .callout .co-tag { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; font-weight: 600; color: var(--sky); margin-bottom: 10px; }
+  .callout.warm .co-tag { color: var(--warm); }
+  .callout.green .co-tag { color: var(--green); }
+  .callout.indigo .co-tag { color: var(--indigo); }
+  .callout p { font-size: 15.5px; color: var(--text-2); line-height: 1.7; }
+  .callout p strong { color: var(--text); }
+  .callout p + p { margin-top: 12px; }
+  .callout .more { font-family: 'JetBrains Mono', monospace; font-size: 12.5px; font-weight: 600; margin-top: 12px; display: inline-block; }
+
+  .checks { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: var(--read-w); }
+  @media (max-width: 720px){ .checks { grid-template-columns: 1fr; } }
+  .check { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 22px 24px; box-shadow: var(--shadow); }
+  .check .q { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+  .check p { font-size: 13.5px; color: var(--text-2); line-height: 1.55; }
+
+  .thread { display: grid; grid-template-columns: repeat(2,1fr); gap: 14px; }
+  @media (max-width: 760px){ .thread { grid-template-columns: 1fr; } }
+  .tcard { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px 26px; box-shadow: var(--shadow); text-decoration: none; color: inherit; display: block; transition: transform .25s, border-color .25s; border-top: 4px solid var(--sky); }
+  .tcard:hover { transform: translateY(-3px); border-color: var(--border-strong); }
+  .tcard .tt { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--sky); font-weight: 600; margin-bottom: 8px; }
+  .tcard h4 { font-size: 19px; font-weight: 800; letter-spacing: -0.4px; margin-bottom: 8px; }
+  .tcard p { font-size: 14px; color: var(--text-2); line-height: 1.55; margin-bottom: 10px; }
+  .tcard .go { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--sky); font-weight: 600; }
+
+  .finalbox { max-width: var(--read-w); margin: 0 auto; background: var(--card); border: 1px solid var(--border-strong); border-radius: var(--radius-lg); padding: 34px 36px; box-shadow: var(--shadow); text-align: center; }
+  .finalbox .tag { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.6px; text-transform: uppercase; color: var(--indigo); font-weight: 600; margin-bottom: 14px; }
+  .finalbox p { font-size: clamp(18px, 2.4vw, 22px); font-weight: 500; color: var(--text); line-height: 1.5; }
+
+  footer { padding: 54px 0 48px; border-top: 1px solid var(--border); text-align: center; margin-top: 36px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600;
+    background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tag { font-size: 13px; color: var(--text-3); margin-bottom: 18px; }
+  .footer-links { display: flex; justify-content: center; gap: 22px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-2); text-decoration: none; }
+  .footer-links a:hover { color: var(--sky); }
+  .footer-copy { font-size: 12px; color: var(--text-3); margin-top: 18px; }
+
+  .fade { opacity: 0; transform: translateY(22px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade.vis { opacity: 1; transform: translateY(0); }
+  @media (prefers-reduced-motion: reduce) { .fade { opacity: 1; transform: none; } }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand-wrap"><a href="/index.html" class="brand">know.2nth.ai</a><span class="brand-sub">CEO Briefing</span></div>
+    <div class="nav-right">
+      <a href="/briefings/" class="nav-link">All briefings</a>
+      <button class="toggle" onclick="toggleTheme()" aria-label="Toggle light/dark">🌙</button>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div class="eyebrow fade"><span class="dot"></span> AI &amp; cost strategy &middot; The ownership decision</div>
+    <h1 class="fade" style="transition-delay:.05s">&ldquo;Own your AI&rdquo; isn't one decision. <span class="hl">It's five.</span></h1>
+    <p class="lede fade" style="transition-delay:.1s">
+      There's a growing push for companies to stop <span class="hl">renting</span> AI and start <span class="hl">owning</span> it. The instinct is right &mdash; but &ldquo;own your AI&rdquo; isn't one decision, it's <span class="hl">five</span>, and you only need to get <span class="hl">two</span> of them right. Nail those two and you capture most of the benefit without the cost or risk of the other three. The trap is treating it as a single switch and owning the wrong thing.
+    </p>
+    <div class="meta-chips fade" style="transition-delay:.15s">
+      <span class="chip">Source &middot; Nadella (Jun 2026) &amp; RouteLLM (LMSYS, 2024)</span>
+      <span class="chip">6-min read</span>
+      <span class="chip">For decision-makers</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">01 &middot; The instinct is right</div>
+      <h2 class="s-title">If switching providers breaks everything, you never owned it.</h2>
+      <p class="s-lede">The loudest voice here is Satya Nadella. In a widely-read June 2026 essay, Microsoft's CEO argued the AI model you license is <span class="hl">not</span> your advantage &mdash; anyone can rent the same one &mdash; and the durable value is the system you build on top of it.</p>
+    </div>
+    <div class="callout indigo fade" style="transition-delay:.05s">
+      <div class="co-tag">His test, blunt version</div>
+      <p>You should be able to <strong>swap the underlying model for a different provider's without losing what your business has learned</strong>. If switching providers breaks everything, you rented a clever interface and called it infrastructure. The expertise lives in the layers <em>around</em> the model, not in the model &mdash; which is why &ldquo;which model?&rdquo; is the wrong headline.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">02 &middot; Five things, not one</div>
+      <h2 class="s-title">Own the parts that compound. Rent the part that keeps changing.</h2>
+      <p class="s-lede">There are five separate things you could own, and they aren't equally worth owning. You could own the <span class="hl">model itself</span> — the hardest and least valuable. You could own the <span class="hl">fine-tune</span> that shapes a model to your business, the <span class="hl">hardware</span> it runs on, the <span class="hl">data layer</span> that feeds it your documents, and the <span class="hl">testing</span> that proves any of it works.</p>
+    </div>
+    <div class="defs fade" style="transition-delay:.05s">
+      <div class="def flow">
+        <div class="dt">Rent this</div>
+        <h3>The frontier model</h3>
+        <p>The expensive, headline part. A better one ships every few months, and you'd be rebuilding constantly to keep up. Renting it is the point &mdash; someone else carries that treadmill.</p>
+        <p class="tag">Obsolete by Christmas — so don't buy it.</p>
+      </div>
+      <div class="def agent">
+        <div class="dt">Own these</div>
+        <h3>The four cheap layers</h3>
+        <p>The fine-tune on your work, the hardware/location, the data layer that holds your knowledge, and the tests that let you swap models safely. Cheap to own, and they compound.</p>
+        <p class="tag">This is where your advantage actually lives.</p>
+      </div>
+    </div>
+    <div class="prose fade" style="transition-delay:.08s">
+      <p class="s-lede"><span class="hl">Why it matters to you:</span> the frontier model is the one piece you're usually better off renting, and the four cheap layers are the ones worth owning. Get that backwards &mdash; spend your effort owning the model, rent everything around it &mdash; and you've bought the treadmill and rented the moat.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">03 &middot; The three reasons, translated</div>
+      <h2 class="s-title">Cut the fees, tune to your needs, control your data — none needs owning a frontier model.</h2>
+      <p class="s-lede">The case for building in-house always comes down to the same three things. All three are real; each argues for a specific cheap layer, never the model itself.</p>
+    </div>
+    <div class="callout green fade" style="transition-delay:.05s">
+      <div class="co-tag">&ldquo;Cut the fees&rdquo; &rarr; own the router</div>
+      <p>The waste isn't the frontier price &mdash; it's sending every task, including the simple ones, to your most expensive model. The fix is a <strong>routing layer</strong> that sends easy work (classification, extraction, summaries) to a cheap model and reserves the premium one for hard reasoning. The RouteLLM research (LMSYS, 2024) showed a router can hold <strong>95% of a frontier model's quality while sending only 14&ndash;26% of requests to it</strong> &mdash; a 75&ndash;85% cost cut on the routed work. A configuration change, not a construction project.</p>
+      <a class="more" href="/briefings/glm-open-weight-economics">Briefing 08: The Cheap Model Is Real &rarr;</a>
+    </div>
+    <div class="callout green fade" style="transition-delay:.07s">
+      <div class="co-tag">&ldquo;Tune to our needs&rdquo; &rarr; own a small model</div>
+      <p>This is the reason that justifies real ownership &mdash; for a <em>narrow</em> job. A small model shaped to your specific work can match a frontier model on your distribution for a fraction of the cost: AWS reports its managed distillation runs at roughly <strong>75% lower cost at under 2% accuracy loss</strong> on the classification, extraction and retrieval tasks that make up most workflows. The trade-off, stated plainly: that small model is <strong>worse at everything outside its narrow job</strong>. Own it for the repetitive, high-volume task; rent for open-ended thinking.</p>
+      <a class="more" href="/briefings/builder-is-the-operator">Featured: The Builder Is the Operator &rarr;</a>
+    </div>
+    <div class="callout fade" style="transition-delay:.09s">
+      <div class="co-tag">&ldquo;Control our data&rdquo; &rarr; own the location</div>
+      <p>For a South African business this is the strongest reason of the three, and US-reported coverage never has to think about why. Every call to a US-hosted model is your data crossing a border and a delay before the model even starts. Keeping inference local isn't a cost saving &mdash; it's a <strong>POPIA posture and a latency floor</strong>. Even Microsoft's own &ldquo;Frontier Tuning&rdquo; runs the learning loop <em>inside</em> the customer's compliance boundary so data never leaves; the principle holds whether your boundary is Azure or a box under your desk.</p>
+      <a class="more" href="/briefings/edge-first">Briefing 03: Keep the Data Home &rarr;</a>
+    </div>
+  </div>
+</section>
+
+<!-- 04 -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">04 &middot; Who holds the keys?</div>
+      <h2 class="s-title">If the biggest AI platform on earth got caught by pricing, so can you.</h2>
+      <p class="s-lede">Underneath all three reasons sits the ownership question itself: who holds the keys if the model you built on changes its price, its terms, or its availability?</p>
+    </div>
+    <div class="callout warm fade" style="transition-delay:.05s">
+      <div class="co-tag">Microsoft demonstrated the risk on itself</div>
+      <p>Microsoft reportedly <strong>cancelled most internal Claude Code licences</strong> for its Windows and Office division ahead of a 30 June deadline, after per-engineer costs ran <strong>$500&ndash;$2,000 a month</strong> &mdash; because agentic tasks can consume on the order of <strong>1,000&times; the tokens of a normal chat</strong> (reported via Microsoft Research, April 2026). If the largest AI platform on earth can get caught by usage-based pricing, so can you. The defence is owning the layers that survive a price change &mdash; the router, the small models, the data, the tests &mdash; so a vendor's pricing decision is an inconvenience, not an outage.</p>
+      <a class="more" href="/briefings/own-your-stack">Briefing 01: Who Holds the Keys? &rarr;</a>
+    </div>
+  </div>
+</section>
+
+<!-- 05 -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">05 &middot; What to actually do</div>
+      <h2 class="s-title">Two decisions capture most of the value.</h2>
+    </div>
+    <div class="checks fade" style="transition-delay:.05s">
+      <div class="check"><div class="q">Put a router in front of your AI.</div><p>So cheap work stops going to expensive models. This is a configuration layer, not a rebuild, and it pays for itself in weeks against a bill that compounds every month you don't.</p></div>
+      <div class="check"><div class="q">Pick your one highest-volume task.</div><p>Identify your single most repetitive, highest-volume AI task and ask whether a small, owned model on your own infrastructure — close to your data — should handle it.</p></div>
+    </div>
+    <div class="callout warm fade" style="transition-delay:.08s">
+      <div class="co-tag">The honest default</div>
+      <p>Everything else &mdash; owning the frontier model, chasing every new release &mdash; is <strong>motion, not progress</strong>. The debate gets framed as renting versus owning. The sharper question is <em>which slice</em> you own: the two that compound, or the one that's obsolete by Christmas.</p>
+    </div>
+  </div>
+</section>
+
+<!-- RELATED -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">Keep reading</div>
+      <h2 class="s-title">Related</h2>
+    </div>
+    <div class="thread fade" style="transition-delay:.05s">
+      <a href="/explainers/agents/owning-ai" class="tcard">
+        <div class="tt">Technical version</div>
+        <h4>Owning AI — which slice you own</h4>
+        <p>The deep version for your engineers: the five ownable layers, the router seam (LiteLLM/OpenRouter), small-model distillation, the residency numbers, and the barbell it all adds up to.</p>
+        <span class="go">Open the leaf &rarr;</span>
+      </a>
+      <a href="/briefings/glm-open-weight-economics" class="tcard">
+        <div class="tt">Briefing</div>
+        <h4>The Cheap Model Is Real</h4>
+        <p>The companion decision: a frontier-grade model now does the everyday work at a fraction of the cost — so why can't you just switch? Because the harness, not the model, is the hard part.</p>
+        <span class="go">Read briefing &rarr;</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL -->
+<section>
+  <div class="wrap">
+    <div class="finalbox fade">
+      <div class="tag">The take</div>
+      <p>Stop asking whether to rent or own your AI. Ask <em>which slice</em>. Own the two that compound &mdash; the router and a small model on your own data, kept close and tested &mdash; and rent the frontier model that's obsolete by Christmas.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tag">CEO briefings &middot; the plain-language layer over the knowledge tree</p>
+    <div class="footer-links">
+      <a href="/briefings/">All briefings</a>
+      <a href="/index.html">Knowledge tree</a>
+      <a href="/explainers/agents/owning-ai">Owning AI</a>
+      <a href="https://2nth.ai" target="_blank" rel="noopener">2nth.ai</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme(){
+    const h=document.documentElement, cur=h.getAttribute('data-theme'), nxt=cur==='dark'?'light':'dark';
+    h.setAttribute('data-theme',nxt);
+    document.querySelector('.toggle').textContent = nxt==='dark' ? '☀️' : '🌙';
+    localStorage.setItem('brief-theme',nxt);
+  }
+  const saved=localStorage.getItem('brief-theme');
+  if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.toggle').textContent=saved==='dark'?'☀️':'🌙';}
+  const ob=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');});},{threshold:0.08,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.fade').forEach(el=>ob.observe(el));
+</script>
+</body>
+</html>
