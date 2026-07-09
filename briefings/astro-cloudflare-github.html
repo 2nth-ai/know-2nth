@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Three Companies, One Publish Button &mdash; know.2nth.ai Briefing</title>
+<meta name="description" content="Astro + Cloudflare + GitHub is the modern way fast marketing and content sites get built and shipped — three companies, three roles, one publishing pipeline. A plain-language CEO briefing for the person who signs off the budget: who does what, what it buys the business, the honest lock-in, and when a different stack is the right call.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/briefings/astro-cloudflare-github">
+<meta property="og:title" content="Three Companies, One Publish Button — know.2nth.ai Briefing">
+<meta property="og:description" content="Astro + Cloudflare + GitHub as one publishing pipeline, in business terms: who does what, what it buys you (speed, near-zero hosting, marketing autonomy), the honest lock-in, and when to skip it.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai — The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Three Companies, One Publish Button — know.2nth.ai">
+<meta name="twitter:description" content="Astro + Cloudflare + GitHub as one publishing pipeline, in business terms: who does what, what it buys you, the honest lock-in, and when to skip it.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%2338BDF8' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%232563EB' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --ink: #0B1120; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6;
+    --sky: #38BDF8; --cyan: #22D3EE; --paper: #F8FAFC; --slate: #94A3B8;
+    --warm: #F59E0B; --warm-soft: rgba(245,158,11,0.12);
+    --green: #10B981; --green-soft: rgba(16,185,129,0.12);
+    --rose: #F43F5E; --rose-soft: rgba(244,63,94,0.12);
+    --indigo: #6366F1; --indigo-soft: rgba(99,102,241,0.12);
+    --orange: #EA580C;
+    --max-w: 1080px; --read-w: 820px;
+    --radius-md: 14px; --radius-lg: 22px; --radius-pill: 100px;
+    --bg: #EEF4FB; --bg-soft: #E2ECF6; --card: #FFFFFF; --card-2: #F8FBFE;
+    --text: #0B1120; --text-2: #475569; --text-3: #8A97AB;
+    --border: rgba(15,23,42,0.10); --border-strong: rgba(15,23,42,0.16);
+    --shadow: 0 14px 40px rgba(15,23,42,0.08);
+  }
+  [data-theme="dark"] {
+    --bg: #07101D; --bg-soft: #0B1828; --card: #102033; --card-2: #0C1828;
+    --text: #F8FAFC; --text-2: #B6C2D6; --text-3: #6B7A92;
+    --border: rgba(148,163,184,0.14); --border-strong: rgba(148,163,184,0.24);
+    --shadow: 0 16px 48px rgba(0,0,0,0.5);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body {
+    font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+    background: radial-gradient(1100px 560px at 80% -120px, var(--bg-soft), var(--bg)) fixed;
+    color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  }
+  .wrap { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+  a { color: var(--blue); text-decoration: none; }
+
+  .topbar { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(14px);
+    background: color-mix(in srgb, var(--bg) 80%, transparent); border-bottom: 1px solid var(--border); }
+  .topbar-inner { max-width: var(--max-w); margin: 0 auto; padding: 12px 24px;
+    display: flex; align-items: center; justify-content: space-between; }
+  .brand-wrap { display: flex; align-items: center; }
+  .brand { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 14px;
+    background: linear-gradient(135deg, var(--blue), var(--sky));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; text-decoration: none; }
+  .brand-sub { font-size: 11px; color: var(--text-3); letter-spacing: 1.5px; text-transform: uppercase;
+    margin-left: 10px; padding-left: 10px; border-left: 1px solid var(--border); font-weight: 500; }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-2); text-decoration: none; font-weight: 500; }
+  .nav-link:hover { color: var(--sky); }
+  .toggle { background: none; border: 1px solid var(--border); color: var(--text-2);
+    width: 34px; height: 34px; border-radius: 50%; cursor: pointer; display: grid; place-items: center;
+    font-size: 15px; transition: all 0.2s; }
+  .toggle:hover { border-color: var(--border-strong); }
+
+  .hero { padding: 60px 0 8px; }
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500;
+    letter-spacing: 2.5px; text-transform: uppercase; color: var(--indigo);
+    display: inline-flex; align-items: center; gap: 10px; margin-bottom: 22px; }
+  .eyebrow .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--indigo); box-shadow: 0 0 12px var(--indigo); }
+  .hero h1 { font-size: clamp(36px, 6vw, 60px); font-weight: 800; line-height: 1.05;
+    letter-spacing: -1.8px; margin-bottom: 22px; max-width: 17ch; }
+  .hero h1 .hl { background: linear-gradient(135deg, var(--blue-glow), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .lede { font-size: 19px; color: var(--text-2); max-width: 720px; line-height: 1.6; font-weight: 300; }
+  .hero .lede .hl { color: var(--text); font-weight: 500; }
+  .meta-chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+  .chip { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.4px; color: var(--text-2);
+    border: 1px solid var(--border); padding: 8px 14px; border-radius: var(--radius-pill); background: var(--card-2); }
+
+  section { padding: 44px 0; }
+  .s-num { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--sky); font-weight: 600; margin-bottom: 12px; }
+  .s-title { font-size: clamp(26px, 4vw, 36px); font-weight: 700; letter-spacing: -0.8px; line-height: 1.15; margin-bottom: 16px; max-width: 24ch; }
+  .s-lede { font-size: 17px; color: var(--text-2); max-width: var(--read-w); line-height: 1.7; font-weight: 300; margin-bottom: 26px; }
+  .s-lede .hl { color: var(--text); font-weight: 600; }
+  .s-lede + .s-lede { margin-top: -8px; }
+
+  /* three-role cards */
+  .trio { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin: 26px 0; }
+  @media (max-width: 760px){ .trio { grid-template-columns: 1fr; } }
+  .role { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 26px 26px; box-shadow: var(--shadow); border-top: 4px solid var(--accent); }
+  .role.git { --accent: var(--indigo); } .role.astro { --accent: var(--orange); } .role.cf { --accent: var(--warm); }
+  .role .who { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.2px; text-transform: uppercase; font-weight: 600; color: var(--accent); margin-bottom: 8px; }
+  .role h3 { font-size: 20px; font-weight: 800; letter-spacing: -0.4px; margin-bottom: 8px; }
+  .role p { font-size: 14px; color: var(--text-2); line-height: 1.6; }
+
+  /* pipeline steps */
+  .pipe { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin: 26px 0; }
+  @media (max-width: 760px){ .pipe { grid-template-columns: 1fr 1fr; } }
+  .step { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 18px; box-shadow: var(--shadow); position: relative; }
+  .step .n { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; color: var(--sky); margin-bottom: 6px; }
+  .step h4 { font-size: 15px; font-weight: 700; margin-bottom: 4px; letter-spacing: -0.2px; }
+  .step p { font-size: 12.5px; color: var(--text-2); line-height: 1.5; }
+
+  .callout { background: var(--card-2); border: 1px solid var(--border); border-left: 4px solid var(--sky); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); box-shadow: var(--shadow); }
+  .callout.warm { border-left-color: var(--warm); }
+  .callout.green { border-left-color: var(--green); }
+  .callout .co-tag { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; font-weight: 600; color: var(--sky); margin-bottom: 10px; }
+  .callout.warm .co-tag { color: var(--warm); }
+  .callout.green .co-tag { color: var(--green); }
+  .callout p { font-size: 15.5px; color: var(--text-2); line-height: 1.7; }
+  .callout p strong { color: var(--text); }
+  .callout p + p { margin-top: 12px; }
+
+  .checks { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: var(--read-w); }
+  @media (max-width: 720px){ .checks { grid-template-columns: 1fr; } }
+  .check { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 22px 24px; box-shadow: var(--shadow); }
+  .check .q { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+  .check p { font-size: 13.5px; color: var(--text-2); line-height: 1.55; }
+
+  .thread { display: grid; grid-template-columns: repeat(2,1fr); gap: 14px; }
+  @media (max-width: 760px){ .thread { grid-template-columns: 1fr; } }
+  .tcard { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px 26px; box-shadow: var(--shadow); text-decoration: none; color: inherit; display: block; transition: transform .25s, border-color .25s; border-top: 4px solid var(--sky); }
+  .tcard:hover { transform: translateY(-3px); border-color: var(--border-strong); }
+  .tcard .tt { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--sky); font-weight: 600; margin-bottom: 8px; }
+  .tcard h4 { font-size: 19px; font-weight: 800; letter-spacing: -0.4px; margin-bottom: 8px; }
+  .tcard p { font-size: 14px; color: var(--text-2); line-height: 1.55; margin-bottom: 10px; }
+  .tcard .go { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--sky); font-weight: 600; }
+
+  .finalbox { max-width: var(--read-w); margin: 0 auto; background: var(--card); border: 1px solid var(--border-strong); border-radius: var(--radius-lg); padding: 34px 36px; box-shadow: var(--shadow); text-align: center; }
+  .finalbox .tag { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.6px; text-transform: uppercase; color: var(--indigo); font-weight: 600; margin-bottom: 14px; }
+  .finalbox p { font-size: clamp(18px, 2.4vw, 22px); font-weight: 500; color: var(--text); line-height: 1.5; }
+
+  footer { padding: 54px 0 48px; border-top: 1px solid var(--border); text-align: center; margin-top: 36px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600;
+    background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tag { font-size: 13px; color: var(--text-3); margin-bottom: 18px; }
+  .footer-links { display: flex; justify-content: center; gap: 22px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-2); text-decoration: none; }
+  .footer-links a:hover { color: var(--sky); }
+  .footer-copy { font-size: 12px; color: var(--text-3); margin-top: 18px; }
+
+  .fade { opacity: 0; transform: translateY(22px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade.vis { opacity: 1; transform: translateY(0); }
+  @media (prefers-reduced-motion: reduce) { .fade { opacity: 1; transform: none; } }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand-wrap"><a href="/index.html" class="brand">know.2nth.ai</a><span class="brand-sub">CEO Briefing</span></div>
+    <div class="nav-right">
+      <a href="/briefings/" class="nav-link">All briefings</a>
+      <button class="toggle" onclick="toggleTheme()" aria-label="Toggle light/dark">🌙</button>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div class="eyebrow fade"><span class="dot"></span> Web &amp; marketing &middot; The publishing stack</div>
+    <h1 class="fade" style="transition-delay:.05s">Three companies. <span class="hl">One publish button.</span></h1>
+    <p class="lede fade" style="transition-delay:.1s">
+      When a team says they're building your site on <span class="hl">Astro, Cloudflare and GitHub</span>, they're naming three companies that do three different jobs &mdash; and most explanations stop at the jargon. Here's the same stack told as <span class="hl">one story</span>, for the person who signs off the budget rather than writes the code: who does what, what it buys the business, and what it locks you into.
+    </p>
+    <div class="meta-chips fade" style="transition-delay:.15s">
+      <span class="chip">Source &middot; Cloudflare docs (Jul 2026) &amp; Astro docs</span>
+      <span class="chip">6-min read</span>
+      <span class="chip">For decision-makers</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">01 &middot; The one-paragraph version</div>
+      <h2 class="s-title">Content in one place, turned into a fast site, served worldwide.</h2>
+      <p class="s-lede">Your website's content and code live in <span class="hl">GitHub</span>. A tool called <span class="hl">Astro</span> turns that content into a fast, mostly-static website. <span class="hl">Cloudflare</span> serves that website from data centres close to each visitor. Publishing a change is a single action &mdash; a &ldquo;push&rdquo; &mdash; that rebuilds and redeploys the site automatically, and every version is saved, so any change can be undone. That's the whole thing. The rest of this briefing is what each piece buys you and where it bites.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">02 &middot; Who does what</div>
+      <h2 class="s-title">Three roles, three owners, better together.</h2>
+      <p class="s-lede">Each piece is swappable &mdash; but they're designed to compose. Think of it as a small publishing team where each member is owned by a different company.</p>
+    </div>
+    <div class="trio fade" style="transition-delay:.05s">
+      <div class="role git">
+        <div class="who">GitHub &middot; owned by Microsoft</div>
+        <h3>Where the work lives</h3>
+        <p>The single source of truth for your content and code &mdash; and the trigger. A &ldquo;push&rdquo; to GitHub is the publish button. Its history, review process, and one-click rollback are built in and free, so nothing goes live unreviewed and nothing is ever truly lost.</p>
+      </div>
+      <div class="role astro">
+        <div class="who">Astro</div>
+        <h3>What makes it fast</h3>
+        <p>The build tool that turns your content into a site. It ships mostly static HTML with little to no extra code, so pages load fast and rank well &mdash; and it's content-first, so editors aren't blocked on engineers for every change.</p>
+      </div>
+      <div class="role cf">
+        <div class="who">Cloudflare</div>
+        <h3>Where it's served</h3>
+        <p>The global host. Your pages are delivered from locations near each visitor, on a generous free tier, and it scales without a server for anyone to manage or patch.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">03 &middot; How they connect</div>
+      <h2 class="s-title">Push to live, in seconds — and reversible.</h2>
+      <p class="s-lede">The value isn't the three tools; it's that they form <span class="hl">one automatic pipeline</span>. An editor or developer makes a change, and the rest happens on its own:</p>
+    </div>
+    <div class="pipe fade" style="transition-delay:.05s">
+      <div class="step">
+        <div class="n">1</div>
+        <h4>Push to GitHub</h4>
+        <p>The change is saved to the single source of truth, with a full history.</p>
+      </div>
+      <div class="step">
+        <div class="n">2</div>
+        <h4>Build runs Astro</h4>
+        <p>Automation rebuilds the site into fast static pages &mdash; no one clicks anything.</p>
+      </div>
+      <div class="step">
+        <div class="n">3</div>
+        <h4>Deployed to the edge</h4>
+        <p>The new site is pushed out to Cloudflare's global network in seconds.</p>
+      </div>
+      <div class="step">
+        <div class="n">4</div>
+        <h4>Live &amp; reversible</h4>
+        <p>Visitors see the update; a bad change rolls back to the previous version instantly.</p>
+      </div>
+    </div>
+    <div class="prose fade" style="transition-delay:.08s">
+      <p class="s-lede"><span class="hl">Why it matters to you:</span> publishing stops being a risky, IT-scheduled event and becomes routine and safe. The engineering detail &mdash; how Astro's &ldquo;islands&rdquo; work, how the edge serves it &mdash; is in the <a href="/explainers/tech/web-stacks">Modern web stacks</a> leaf; this briefing is the business door into it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">04 &middot; What it buys the business</div>
+      <h2 class="s-title">Four things a marketer or owner actually feels.</h2>
+    </div>
+    <div class="checks fade" style="transition-delay:.05s">
+      <div class="check"><div class="q">Speed &mdash; both kinds.</div><p>Fast pages (mostly static HTML, served near the visitor) that rank well on Google's speed metrics, and fast <em>publishing</em> — a change is live in seconds, not on next week's release.</p></div>
+      <div class="check"><div class="q">Cost &mdash; genuinely low.</div><p>A marketing site's traffic is static, and Cloudflare serves static traffic <strong>free and unlimited on every plan</strong>, with 500 builds a month and 100 custom domains on the free tier (Cloudflare docs, Jul 2026). For most content sites the hosting bill is near zero.</p></div>
+      <div class="check"><div class="q">Marketing autonomy.</div><p>Because it's content-first, editors change copy, posts, and pages without waiting on developers — the bottleneck that quietly slows most marketing teams.</p></div>
+      <div class="check"><div class="q">Reliability &amp; safety.</div><p>Served from a global network with no single server to fall over, and every version saved — a bad publish is one rollback away, not a crisis.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">05 &middot; The honest trade-offs</div>
+      <h2 class="s-title">Where this stack is the wrong call.</h2>
+      <p class="s-lede">This combination is excellent for one shape of website and a poor fit for others. The honest &ldquo;skip it when&rdquo; &mdash; framed as business risk, not code critique:</p>
+    </div>
+    <div class="checks fade" style="transition-delay:.05s">
+      <div class="check"><div class="q">Your product is an app, not a site.</div><p>If the thing is highly dynamic and login-heavy — a dashboard, a marketplace, a web app — the &ldquo;mostly static&rdquo; approach fights you. A different stack (Next.js-style) fits better.</p></div>
+      <div class="check"><div class="q">No git literacy on the team.</div><p>The workflow assumes someone is comfortable with the &ldquo;push to publish&rdquo; model. With zero git familiarity and no partner, a traditional CMS may onboard your team faster.</p></div>
+      <div class="check"><div class="q">Vendor concentration.</div><p>Your build ties to Cloudflare's hosting, and your source and automation to GitHub (Microsoft). It's swappable in principle — Astro runs on other hosts — but in practice you're leaning on two big vendors. Name it and price it.</p></div>
+      <div class="check"><div class="q">Smaller ecosystem &amp; the free-tier ceiling.</div><p>Astro's community is smaller than Next.js's, so niche plugins and hire-ability are thinner. And &ldquo;free&rdquo; has edges: heavy dynamic features, very high build volume, or big file counts push you onto a paid plan (Cloudflare docs, Jul 2026).</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">06 &middot; When it's the right call</div>
+      <h2 class="s-title">The sites this stack was built for.</h2>
+    </div>
+    <div class="callout green fade" style="transition-delay:.05s">
+      <div class="co-tag">Reach for it when</div>
+      <p>The content is the point: <strong>marketing sites, documentation, blogs and editorial properties, campaign and product-launch sites, and content-heavy corporate sites</strong>. These are read far more than they're interacted with, they live or die on page speed and search ranking, and they change often enough that publishing autonomy matters. That's exactly the shape Astro + Cloudflare + GitHub is tuned for &mdash; and it's the stack this very site runs on.</p>
+    </div>
+  </div>
+</section>
+
+<!-- RELATED -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">Keep reading</div>
+      <h2 class="s-title">Related</h2>
+    </div>
+    <div class="thread fade" style="transition-delay:.05s">
+      <a href="/explainers/tech/web-stacks" class="tcard">
+        <div class="tt">Technical version</div>
+        <h4>Modern web stacks</h4>
+        <p>The engineering detail for your team: Astro's islands architecture and zero-JS-by-default, the Cloudflare edge, and how the whole stack became agent-readable via MCP.</p>
+        <span class="go">Open the leaf &rarr;</span>
+      </a>
+      <a href="/explainers/software/github" class="tcard">
+        <div class="tt">Technical version</div>
+        <h4>GitHub &amp; code repositories</h4>
+        <p>The half that makes &ldquo;push to publish&rdquo; safe: version history, review, rollback, and the automation that runs the build. Where the work lives and the trigger fires.</p>
+        <span class="go">Open the leaf &rarr;</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL -->
+<section>
+  <div class="wrap">
+    <div class="finalbox fade">
+      <div class="tag">The take</div>
+      <p>Astro, Cloudflare and GitHub aren't three decisions &mdash; they're one publishing pipeline: content in one place, built fast, served everywhere, published with a push and undone with a click. For a content or marketing site, it's fast, cheap, and safe. For an app, look elsewhere.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tag">CEO briefings &middot; the plain-language layer over the knowledge tree</p>
+    <div class="footer-links">
+      <a href="/briefings/">All briefings</a>
+      <a href="/index.html">Knowledge tree</a>
+      <a href="/explainers/tech/web-stacks">Modern web stacks</a>
+      <a href="https://2nth.ai" target="_blank" rel="noopener">2nth.ai</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme(){
+    const h=document.documentElement, cur=h.getAttribute('data-theme'), nxt=cur==='dark'?'light':'dark';
+    h.setAttribute('data-theme',nxt);
+    document.querySelector('.toggle').textContent = nxt==='dark' ? '☀️' : '🌙';
+    localStorage.setItem('brief-theme',nxt);
+  }
+  const saved=localStorage.getItem('brief-theme');
+  if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.toggle').textContent=saved==='dark'?'☀️':'🌙';}
+  const ob=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');});},{threshold:0.08,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.fade').forEach(el=>ob.observe(el));
+</script>
+</body>
+</html>
