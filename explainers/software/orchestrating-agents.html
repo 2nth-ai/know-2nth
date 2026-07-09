@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Orchestrating agents &mdash; running large projects with coding agents &middot; know.2nth.ai</title>
+<meta name="description" content="The shift from pairing with one agent to orchestrating several against a shared codebase — the skill set of an engineering manager, not a coder. The three execution modes (interactive planning, isolated worktrees, batch/headless), orchestrator-vs-peer multi-agent patterns and their token cost, the three forge-automation layers and their permission failure modes, and an adoption sequence. Builds on the agent-legible codebase and spec-as-prompt backlog covered elsewhere in this branch.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/software/orchestrating-agents">
+<meta property="og:title" content="Orchestrating agents &mdash; running large projects with coding agents &middot; know.2nth.ai">
+<meta property="og:description" content="Pairing to orchestrating: the three execution modes, orchestrator-vs-peer multi-agent patterns and their token cost, the three forge-automation layers and their permission traps, and an adoption sequence. Foundation before fleet.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Orchestrating agents &mdash; running large projects with coding agents">
+<meta name="twitter:description" content="Pairing to orchestrating: three execution modes, orchestrator-vs-peer patterns and token cost, the three forge-automation layers and their permission traps, and an adoption sequence.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3Cline x1='16' y1='3' x2='16' y2='7' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='16' y1='25' x2='16' y2='29' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='3' y1='16' x2='7' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='25' y1='16' x2='29' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3C/svg%3E">
+<style>
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12); --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-soft: rgba(99, 102, 241, 0.12); --code: #14B8A6; --code-soft: rgba(20, 184, 166, 0.12); --bg: var(--ink); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(20, 184, 166, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(20, 184, 166, 0.3); --max-w: 1200px; --read-w: 760px; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(20, 184, 166, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(20, 184, 166, 0.28); }
+  * { margin: 0; padding: 0; box-sizing: border-box; } html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.blue { width: 600px; height: 600px; background: var(--code); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--code), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--code); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--code); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--code); } .crumb-sep { opacity: 0.5; } .crumb-current { color: var(--text-secondary); }
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--code); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--code); box-shadow: 0 0 12px var(--code); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--code), var(--sky), var(--sky-muted)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.accent { background: rgba(37, 99, 235, 0.12); color: var(--blue-glow); border-color: rgba(37, 99, 235, 0.25); }
+  .pill.green { background: var(--green-soft); color: var(--green); border-color: rgba(16, 185, 129, 0.25); }
+  .pill.code { background: var(--code-soft); color: var(--code); border-color: rgba(20, 184, 166, 0.25); }
+  .pill.warn { background: var(--warm-soft); color: var(--warm-glow); border-color: rgba(245, 158, 11, 0.25); }
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--sky); margin-bottom: 14px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--code); }
+  .prose ul, .prose ol { padding-left: 24px; margin-bottom: 18px; max-width: var(--read-w); }
+  .prose li { font-size: 15px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 8px; }
+  .prose li strong { color: var(--text-primary); font-weight: 600; }
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); margin-bottom: 20px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.code { border-left: 3px solid var(--code); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .info-card code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--code); }
+  .info-card strong { color: var(--text-primary); }
+  .stack-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; max-width: var(--read-w); margin-bottom: 20px; }
+  .stack-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--code); border-radius: var(--radius-md); padding: 18px 22px; }
+  .stack-cell .layer { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .stack-cell h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.3px; }
+  .stack-cell p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: var(--read-w); margin-bottom: 20px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--sky); background: rgba(37, 99, 235, 0.04); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); } .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--code); }
+  .compare td strong { color: var(--text-primary); }
+  .connect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .connect-node { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; transition: all 0.3s; text-decoration: none; color: inherit; display: block; }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node.soon { cursor: default; opacity: 0.72; }
+  .connect-node .tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--code); word-break: break-all; }
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--code), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--code); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+
+  .codeblock { background: var(--ink-deep); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 20px; max-width: var(--read-w); margin-bottom: 20px; overflow-x: auto; }
+  .codeblock .cb-cap { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; display: block; }
+  .codeblock pre { font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.65; color: var(--mist); white-space: pre; }
+  .codeblock pre .k { color: var(--code); }
+  .info-card ul { margin: 6px 0 0; padding-left: 20px; }
+  .info-card li { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 8px; }
+  .info-card li:last-child { margin-bottom: 0; }
+  .info-card li strong { color: var(--text-primary); }
+  .prose ol { padding-left: 22px; margin-bottom: 18px; max-width: var(--read-w); }
+  .prose ol li { font-size: 15px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 10px; }
+  .prose ol li strong { color: var(--text-primary); }
+</style>
+</head>
+<body>
+
+<div class="glow-orb blue"></div>
+<div class="glow-orb sky"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand"><span class="nav-brand-mark">know.2nth.ai</span><span class="nav-brand-sub">software/orchestrating-agents</span></a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">&larr; Software</a>
+      <a href="../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x1F319;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="./">Software</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">Orchestrating agents</span>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> software &middot; Orchestrating agents &middot; Skill Leaf</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      Stop pairing. <span class="gradient">Start orchestrating.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      The teams getting durable value from coding agents in 2026 aren't pointing one assistant at one file. They run a small number of <strong>coordinated</strong> agents against a codebase whose conventions, guardrails, and backlog are written down in a form the agent can read. The shift is from <em>pairing</em> &mdash; guiding one agent in real time, bounded by one context window &mdash; to <em>orchestrating</em>: planning work, handing it out, and verifying results. That's the skill set of an <strong>engineering manager, not a coder</strong>. This leaf is the execution playbook; the foundation it stands on lives one link away.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill code">Orchestrate, not pair</span>
+      <span class="pill accent">3 execution modes</span>
+      <span class="pill green">Forge automation</span>
+      <span class="pill warn">Honest tradeoffs</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 THE SHIFT -->
+<section id="shift">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; From pairing to orchestrating</div>
+      <h2 class="section-title">Plan the work, hand it out, verify the result.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Pairing is sequential and real-time: you steer one agent through one task inside one context window. Orchestrating is a different job &mdash; you decompose work, dispatch it to agents that don't share your memory, and check what comes back. Five ideas do most of the work, and none of them is &ldquo;a bigger model&rdquo;:</p>
+      <ul>
+        <li><strong>The environment around the model matters as much as the model.</strong> Convention files, hooks, skills, and scoped permissions are what make an agent reliable on a large codebase. Invest there before reaching for more agents or bigger context windows.</li>
+        <li><strong>The backlog is the interface.</strong> Agents are stateless between tasks, so context must travel <em>with</em> each unit of work. A well-specified ticket is the prompt; your issue tracker becomes the coordination layer.</li>
+        <li><strong>Separate planning from implementation.</strong> The most expensive mistake is letting an agent write code before the team agrees what to build. Reviewing intent is cheap; unwinding a wrong multi-file diff is not.</li>
+        <li><strong>Isolate parallel work.</strong> Multiple agents against one working directory collide. Give each its own branch and checkout; coordinate through shared state, not shared files.</li>
+        <li><strong>Keep humans on the diff.</strong> An agent-assisted change is done when the diff is reviewed, comments are resolved, CI is green, and it still merges cleanly &mdash; not when the bot posts a comment.</li>
+      </ul>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.08s">
+      <h4>When this is overkill</h4>
+      <p>A single-maintainer repo with one workstream needs almost none of the apparatus below. It earns its cost specifically when <strong>multiple people and multiple parallel streams share one codebase</strong>. Scale the ceremony to the coordination you actually have &mdash; running an orchestration fleet against a solo side-project just burns tokens and attention.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 FOUNDATION -->
+<section id="foundation">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; The foundation (already in the tree)</div>
+      <h2 class="section-title">Foundation before fleet.</h2>
+      <p class="section-lede">Orchestration only works on top of two things this branch already covers in full. This leaf assumes them rather than repeating them &mdash; get them right first.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>An <strong>agent-legible codebase</strong>: a lean root convention file (the map and the non-negotiables) with scoped per-directory detail, deterministic <strong>hooks</strong> that enforce guardrails instead of trusting the model to remember them, path-scoped <strong>skills</strong> for on-demand expertise, language-server (<strong>LSP</strong>) access so the agent searches by symbol not string, and all of it bundled into a version-controlled unit so a new developer &mdash; or a fresh agent session on another machine &mdash; inherits identical setup on day one. And a <strong>backlog that carries context</strong>: a &ldquo;ready&rdquo; gate, stream/size/agent-ready fields, and tickets written as specifications, not reminders.</p>
+    </div>
+    <div class="info-card green fade-up" style="transition-delay: 0.07s">
+      <h4>The two prerequisite leaves</h4>
+      <p><a href="software-for-agents.html">Software for agents</a> is the agent-legible codebase in full &mdash; repo-as-context, <code>CLAUDE.md</code> / <code>SKILL.md</code>, agent PRs, CI as the safety net. <a href="planning-with-agents.html">Planning with agents</a> is the backlog as interface &mdash; spec-as-prompt, the ready gate, cadence, and what to measure. If those aren't in place, start there; nothing below compensates for a codebase an agent can't navigate or a ticket it can't execute.</p>
+    </div>
+    <div class="info-card code fade-up" style="transition-delay: 0.09s">
+      <h4>At scale, this work needs a named owner</h4>
+      <p>Several organisations have created a hybrid PM/engineer role &mdash; an &ldquo;agent manager&rdquo; or DRI &mdash; sitting under developer experience, responsible for the conventions, the guardrails, and keeping them current as models and tools change. Without a named owner, good setups stay tribal and fragment. The rollouts that spread fastest had this infrastructure built by a small team, sometimes one person, <em>before</em> broad access &mdash; so the first experience was productive rather than frustrating (practitioner-reported).</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 THREE MODES -->
+<section id="modes">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; Three execution modes</div>
+      <h2 class="section-title">Match the mode to the task's size and coordination.</h2>
+      <p class="section-lede">Three ways to task an agent, from most-supervised to least. Most day-to-day work is Mode 1; the others earn their place as the work gets wider or more parallel.</p>
+    </div>
+    <div class="stack-grid fade-up" style="transition-delay: 0.05s">
+      <div class="stack-cell">
+        <span class="layer">Mode 1 &middot; default</span>
+        <h4>Interactive planning</h4>
+        <p>Run the agent read-only: it investigates and proposes an approach touching no files, you correct the plan in a sentence, then it implements. The highest-leverage habit for multi-file work &mdash; a wrong plan costs one sentence, a wrong 300-line diff costs hours.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Mode 2 &middot; parallel</span>
+        <h4>Isolated worktrees</h4>
+        <p>Give each stream its own branch checked out into its own directory. Git <strong>worktrees</strong> are the native, cheap way &mdash; they share one underlying repository, so no re-cloning or duplicated dependencies. One session per stream; serialise anything touching shared files.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Mode 3 &middot; batch</span>
+        <h4>Headless / scripted</h4>
+        <p>For wide mechanical work (a migration, an audit, a coverage sweep), drive the agent non-interactively from a script or CI, one invocation per unit, with tightly scoped permissions. Use a cheaper model for triage and classification; reserve the stronger one for the build.</p>
+      </div>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.07s">
+      <table class="compare">
+        <thead><tr><th>Mode</th><th>Best for</th><th>Supervision</th><th>Isolation</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Interactive planning</strong></td><td>Anything non-trivial &amp; multi-file</td><td>Plan boundary + diff</td><td>One session</td></tr>
+          <tr><td><strong>Isolated worktrees</strong></td><td>2+ streams running at once</td><td>Per-stream, at the diff</td><td>Branch + directory each</td></tr>
+          <tr><td><strong>Headless / scripted</strong></td><td>Wide mechanical fan-out</td><td>Evidence + CI gates</td><td>Scoped tool permissions</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="codeblock fade-up" style="transition-delay: 0.09s">
+      <span class="cb-cap">Mode 2 &mdash; a worktree per stream (illustrative; verify flags against git docs)</span>
+<pre><span class="k"># one shared repo, two isolated checkouts — no re-clone, no dep duplication</span>
+git worktree add ../proj-auth    -b stream/auth     origin/main
+git worktree add ../proj-billing -b stream/billing  origin/main
+
+<span class="k"># run one agent session in each directory; they never touch the same files</span>
+<span class="k"># serialise work on genuinely shared files (root config, shared components)</span></pre>
+    </div>
+  </div>
+</section>
+
+<!-- 04 MANY AGENTS -->
+<section id="many">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; Orchestrating many agents</div>
+      <h2 class="section-title">Two coordination models &mdash; and the token bill.</h2>
+      <p class="section-lede">When one person managing a handful of agents stops scaling, two patterns exist. Understand the distinction before reaching for either &mdash; and price the tokens honestly.</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead><tr><th>Pattern</th><th>How it works</th><th>Best when</th><th>The cost</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Orchestrator / subagent</strong> <br>(hierarchical)</td><td>One lead holds the plan and delegates bounded subtasks to workers, each with its own context; workers report concise summaries; the lead reconciles them into one reviewable change set.</td><td>Tasks split into specialised responsibilities (backend, frontend, tests, review) that don't need to talk to each other.</td><td>The orchestrator's context accumulates every summary &mdash; on large pipelines it can balloon.</td></tr>
+          <tr><td><strong>Peer team / shared list</strong> <br>(lateral)</td><td>Agents coordinate through a shared queue &mdash; like a kanban board &mdash; claiming tasks, posting outputs, unblocking each other, with a lead seeding the top-level items.</td><td>Workers genuinely need to share findings and challenge each other across a change that spans layers.</td><td>More coordination surface; no single agent holds the whole history (which keeps per-agent context lean).</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.07s">
+      <h4>The honest token tradeoff</h4>
+      <p>Multi-agent setups use substantially more tokens than a single session doing the same work sequentially &mdash; a three-worker team roughly <strong>three-to-four times the tokens</strong> is a commonly cited figure (largely vendor-reported; verify against your own runs). They pay off on large, genuinely divisible work and <strong>waste money</strong> on sequential tasks, same-file edits, or anything with heavy dependencies. Built-in team features in agent runtimes are, at time of writing, often experimental and off by default &mdash; treat them as promising, not production-hardened, and keep humans approving anything that ships.</p>
+    </div>
+    <div class="info-card green fade-up" style="transition-delay: 0.09s">
+      <h4>Verification is not optional</h4>
+      <p>Have agents <strong>show evidence</strong> rather than assert success: the command run and its output, the test result, the diff between the branch and the base. Reviewing evidence is faster than re-deriving it, and it works for runs you didn't watch. The powerful pattern is a <strong>fresh-context reviewer</strong> &mdash; one agent (or a human) whose only job is to try to <em>refute</em> the first agent's claim of success, because a worker is biased toward the code it just wrote. One hard constraint of most subagent models: a worker can't pause to get your approval mid-task &mdash; so <strong>investigation belongs in subagents, approval-gated edits belong in the parent session or a human</strong>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 FORGE -->
+<section id="forge">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; Making full use of the forge</div>
+      <h2 class="section-title">GitHub (or equivalent) is where agents and humans meet.</h2>
+      <p class="section-lede">Three layers of forge automation, from least to most automated. Each is useful on its own; together they close the loop from an incoming issue to a merged, reviewed change.</p>
+    </div>
+    <div class="stack-grid fade-up" style="transition-delay: 0.05s">
+      <div class="stack-cell">
+        <span class="layer">Layer 1</span>
+        <h4>Agent in issues &amp; PRs</h4>
+        <p>A mention (<code>@</code>-tag in an issue or PR comment) hands the agent a bounded task; it reads the repo, opens or revises a PR honouring your convention files, and reports back. Install adds the app, a workflow file, and an API secret &mdash; usually needs repo-admin rights.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Layer 2</span>
+        <h4>Read-only CI review</h4>
+        <p>Run the agent in CI on PR events as a <strong>read-only</strong> reviewer &mdash; no write access, so it advises but can't modify. Turns a 30&ndash;60-minute first review pass into a sub-five-minute one (vendor/practitioner-reported), catching style, missing error handling, and pattern violations so humans focus on architecture.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Layer 3</span>
+        <h4>Structured outputs &rarr; automation</h4>
+        <p>Have the agent return validated JSON that downstream steps branch on: auto-triage an incoming issue into stream/size/ready fields and move it to the right column; detect a flaky test and re-run CI. A cheap model is enough for most classification, so it can run on every issue.</p>
+      </div>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.07s">
+      <h4>Permissions &amp; safety &mdash; the most common failure</h4>
+      <ul>
+        <li><strong>Grant the narrowest scope that works</strong> and escalate only when a specific action fails. An explicit permissions block typically resets every unnamed scope to none, so the recurring error is &ldquo;not accessible&rdquo; &mdash; the token lacks exactly one scope. Add that one, nothing more. Posting comments, pushing branches, and reading CI are each distinct scopes.</li>
+        <li><strong>Exclude bots from triggering the agent</strong>, or it responds to itself and other bots &mdash; an infinite loop that also burns budget.</li>
+        <li><strong>Never run agent review against untrusted fork code in a context that exposes your secrets.</strong> Use the event type that keeps secrets away from forks as the default; a fork PR then sees no key and exits before spending anything.</li>
+        <li><strong>Treat pushing to shared branches as high-risk</strong> &mdash; require explicit human confirmation; it changes shared state and shouldn't be silent. Pin the versions of any actions you depend on, and vet MCP servers and external integrations as part of your trusted computing base.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 06 ADOPTION -->
+<section id="adoption">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; Adoption sequence &amp; readiness</div>
+      <h2 class="section-title">In order &mdash; foundation, board, planning, parallelism, forge, fleet.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <ol>
+        <li>Get the <strong>convention-file hierarchy and guardrails</strong> right (see &sect;02).</li>
+        <li>Make the <strong>board agent-legible</strong> &mdash; a ready gate and stream fields.</li>
+        <li>Adopt <strong>interactive planning</strong> mode as the team default.</li>
+        <li>Add <strong>isolated parallel checkouts</strong> for streams that genuinely run concurrently.</li>
+        <li>Wire the <strong>forge integration</strong> &mdash; mention-driven, then read-only review, then triage automation.</li>
+        <li><em>Only then</em> experiment with <strong>multi-agent orchestration</strong> on a genuinely divisible pilot task.</li>
+      </ol>
+      <p>Name an owner early. And review the whole configuration every few months or after a major model release &mdash; <strong>instructions written for a weaker model can actively constrain a stronger one</strong>.</p>
+    </div>
+    <div class="info-card code fade-up" style="transition-delay: 0.08s">
+      <h4>Readiness checklist (the load-bearing items)</h4>
+      <ul>
+        <li>Lean root convention file + scoped per-directory files; guardrails enforced by <strong>hooks, not prose</strong>.</li>
+        <li>Board with a <strong>ready gate</strong> and stream / size / agent-ready fields; a filtered agent queue.</li>
+        <li>A ticket template that enforces <strong>spec-as-prompt</strong>: context, checkable definition of done, constraints, explicit out-of-scope.</li>
+        <li>Interactive planning the default; <strong>evidence-based verification</strong> expected on every task.</li>
+        <li>Worktrees documented for parallel streams; shared-file work serialised.</li>
+        <li>Forge integration installed (write-scoped + bot-guarded mention agent; read-only review); <strong>permissions start narrow</strong>; fork-secret safety verified.</li>
+        <li>A named owner for conventions and permissions policy; a standing review cadence (every 3&ndash;6 months or on major model releases).</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 07 LIMITATIONS -->
+<section id="limits">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; Honest limitations</div>
+      <h2 class="section-title">What this doesn't fix.</h2>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.05s">
+      <h4>Read these before you scale</h4>
+      <ul>
+        <li><strong>Cost scales with parallelism.</strong> Multi-agent runs multiply token spend; the payoff is real only on large, divisible work. Measure it on your own tasks rather than trusting headline multipliers.</li>
+        <li><strong>Experimental features are experimental.</strong> Built-in team orchestration in current runtimes has known rough edges around session resumption, coordination, and shutdown. Treat as preview.</li>
+        <li><strong>Context length is not competence.</strong> A larger window lets an agent <em>see</em> more; it doesn't make it <em>finish</em> correctly. Scoping, verification, and gates keep an agent on track &mdash; not raw context.</li>
+        <li><strong>The human is still accountable.</strong> Everything that reaches production goes through human review of the diff and the behaviour. Agents compress the time to a first draft and first review; they don't remove the reviewer.</li>
+        <li><strong>This is a moving target.</strong> Commands, flags, feature availability, and best practice shift on a monthly cadence &mdash; re-verify anything version-specific against current docs before you rely on it.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 08 SA CONTEXT -->
+<section id="sa-context">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 &middot; South African context</div>
+      <h2 class="section-title">Orchestration is discipline, not budget.</h2>
+    </div>
+    <div class="info-card code fade-up" style="transition-delay: 0.05s">
+      <h4>Scale the ceremony to the coordination you actually have</h4>
+      <p>For SA teams the good news is the same as the rest of this branch: the apparatus that makes agents productive at scale is <strong>engineering hygiene, not a frontier budget</strong>. Worktrees, a ready-gated board, and a read-only CI reviewer are free discipline anyone can adopt. A small team &mdash; often one <strong>agent-manager</strong> &mdash; builds the convention files, guardrails, and forge config once, and every contributor (and every fresh agent session) inherits it. Start with interactive planning and one repo; add parallelism and multi-agent orchestration only when you genuinely have the concurrent streams to justify the token bill. And the by-product is the compliance artifact POPIA and FSCA reviews ask for: the versioned spec, the PR trail, and the evidence each agent showed are your change-control record, produced as you work.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 09 CONNECTIONS -->
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">09 &middot; Connections</div>
+      <h2 class="section-title">Where this links in the tree.</h2>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="software-for-agents.html" class="connect-node">
+        <span class="tag">software/software-for-agents</span>
+        <div class="skill">Software for agents</div>
+        <div class="why">The agent-legible codebase this stands on — repo-as-context, CLAUDE.md / SKILL.md, agent PRs, CI as the safety net.</div>
+      </a>
+      <a href="planning-with-agents.html" class="connect-node">
+        <span class="tag">software/planning-with-agents</span>
+        <div class="skill">Planning with agents</div>
+        <div class="why">The backlog as interface — spec-as-prompt, the ready gate, cadence. The planning half of orchestration.</div>
+      </a>
+      <a href="ci-cd.html" class="connect-node">
+        <span class="tag">software/ci-cd</span>
+        <div class="skill">CI/CD &amp; automation</div>
+        <div class="why">Where read-only agent review and headless batch runs live — the pipeline that gates every agent change.</div>
+      </a>
+      <a href="github.html" class="connect-node">
+        <span class="tag">software/github</span>
+        <div class="skill">GitHub &amp; code repositories</div>
+        <div class="why">The forge itself — issues, PRs, Actions, and the permission scopes the automation layers depend on.</div>
+      </a>
+      <a href="version-control.html" class="connect-node">
+        <span class="tag">software/version-control</span>
+        <div class="skill">Version control</div>
+        <div class="why">Branches and worktrees are the isolation mechanism for parallel streams; git history is the audit trail.</div>
+      </a>
+      <a href="../agents/coding-cli-agents.html" class="connect-node">
+        <span class="tag">agents/coding-cli-agents</span>
+        <div class="skill">Coding CLI agents</div>
+        <div class="why">Claude Code, Codex CLI, Copilot CLI — the runtimes you orchestrate, and their plan / worktree / headless modes.</div>
+      </a>
+      <a href="../agents/effective-agents.html" class="connect-node">
+        <span class="tag">agents/effective-agents</span>
+        <div class="skill">Building Effective Agents</div>
+        <div class="why">The orchestrator-worker and evaluator patterns, upstream — and the discipline of asking whether a task needs an agent at all.</div>
+      </a>
+      <a href="../agents/mcp.html" class="connect-node">
+        <span class="tag">agents/mcp</span>
+        <div class="skill">Model Context Protocol</div>
+        <div class="why">External tool integrations are part of your trusted computing base — vet MCP servers as you would any dependency.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 10 RESOURCES -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">10 &middot; Resources</div>
+      <h2 class="section-title">Primary sources &mdash; verify version-specifics before adopting.</h2>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://www.anthropic.com/engineering/claude-code-best-practices" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Engineering &middot; vendor</span>
+        <span class="r-title">Claude Code best practices</span>
+        <span class="r-url">anthropic.com/engineering/claude-code-best-practices</span>
+      </a>
+      <a href="https://docs.claude.com/en/docs/claude-code/sub-agents" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs &middot; vendor</span>
+        <span class="r-title">Claude Code &mdash; subagents</span>
+        <span class="r-url">docs.claude.com &middot; claude-code/sub-agents</span>
+      </a>
+      <a href="https://docs.claude.com/en/docs/claude-code/github-actions" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs &middot; vendor</span>
+        <span class="r-title">Claude Code &mdash; GitHub Actions</span>
+        <span class="r-url">docs.claude.com &middot; claude-code/github-actions</span>
+      </a>
+      <a href="https://github.com/anthropics/claude-code-action" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Repo &middot; official action</span>
+        <span class="r-title">anthropics/claude-code-action</span>
+        <span class="r-url">github.com/anthropics/claude-code-action</span>
+      </a>
+      <a href="https://www.anthropic.com/engineering/building-effective-agents" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Engineering &middot; vendor</span>
+        <span class="r-title">Building effective agents</span>
+        <span class="r-url">anthropic.com/engineering/building-effective-agents</span>
+      </a>
+      <a href="https://git-scm.com/docs/git-worktree" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs &middot; git</span>
+        <span class="r-title">git worktree &mdash; isolated parallel checkouts</span>
+        <span class="r-url">git-scm.com/docs/git-worktree</span>
+      </a>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.08s; margin-top: 8px;">
+      <p style="font-size: 13px; color: var(--text-muted);">Provenance: the load-bearing patterns come from primary vendor documentation and engineering writing; practitioner and community sources corroborate the permissions, orchestration, and token-economics points. Figures on time saved and token multipliers are <strong>vendor- or practitioner-reported and labelled as such in the text</strong> — indicative, not independently benchmarked. Feature names and version-specific mechanics reflect mid-2026 tooling and should be re-checked before you rely on them.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../index.html">Skills tree</a>
+      <a href="./">Software hub</a>
+      <a href="software-for-agents.html">Software for agents</a>
+      <a href="planning-with-agents.html">Planning with agents</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme() {
+    const html = document.documentElement;
+    const current = html.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
+    localStorage.setItem('theme', next);
+  }
+  const saved = localStorage.getItem('theme');
+  if (saved) {
+    document.documentElement.setAttribute('data-theme', saved);
+    document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '☀️' : '🌙';
+  }
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>
