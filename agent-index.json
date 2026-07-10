@@ -1,0 +1,1513 @@
+{
+  "site": "https://know.2nth.ai",
+  "description": "The public knowledge tree for the 2nth.ai ecosystem. Every leaf is both a human-readable reference and an agent-consumable context document.",
+  "agent_fetch": "https://know.2nth.ai/api/context/<domain>/<leaf>",
+  "mcp": "https://know.2nth.ai/mcp",
+  "count": 188,
+  "items": [
+    {
+      "title": "Agents — know.2nth.ai",
+      "description": "The Agents domain on know.2nth.ai — the agentic frameworks, protocols, models, inference platforms, and coding CLI agents that matter in 2026. Twenty-eight Live leaves across five bands: eight frameworks (Google ADK, Google Antigravity, LangGraph, CrewAI, OpenAI Agents SDK, Anthropic Agent SDK, AutoGen, AgentForce), three protocols (A2A, MCP, Agent Skills), nine models, four inference platforms, and four coding CLI agents (Claude Code, OpenAI Codex CLI, GitHub Copilot CLI plus a comparison). Built around the principle that agents are software, not prompt soup.",
+      "domain": "agents",
+      "kind": "hub",
+      "url": "https://know.2nth.ai/explainers/agents/",
+      "fetch": "agents"
+    },
+    {
+      "title": "A2A Protocol — know.2nth.ai",
+      "description": "The Agent-to-Agent (A2A) Protocol — open standard for cross-framework agent communication. JSON-RPC over HTTP, Agent Card discovery, streaming and push notifications. Released by Google, now under Linux Foundation governance. The interop layer that lets ADK orchestrate LangGraph and CrewAI agents in production.",
+      "domain": "agents",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/agents/a2a",
+      "fetch": "agents/a2a"
+    },
+    {
+      "title": "Agent Skills — know.2nth.ai",
+      "description": "Agent Skills — Anthropic-originated open standard for packaging agent capabilities as folders. SKILL.md frontmatter + markdown, progressive disclosure, hosted at agentskills.io. Native in Claude Code (plugin marketplace), Claude.ai, and the Claude API. ~131k-star anthropics/skills repo as canonical implementation.",
+      "domain": "agents",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/agents/skills",
+      "fetch": "agents/skills"
+    },
+    {
+      "title": "AgentForce — know.2nth.ai",
+      "description": "AgentForce — Salesforce's agent platform. Atlas Reasoning Engine (ReAct + hybrid graph reasoning), five-attribute agents (Role / Data / Actions / Guardrails / Channel), Flex Credits pricing ($0.10/credit). Built on the Salesforce Platform, grounded in Data Cloud, wrapped by the Einstein Trust Layer. The vendor-bound first-party agent platform for Salesforce-shaped enterprises.",
+      "domain": "agents",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/agents/agentforce",
+      "fetch": "agents/agentforce"
+    },
+    {
+      "title": "Agents, Data & Trust — know.2nth.ai",
+      "description": "Why AI agents require a rearchitecture of data and trust. The Andrew Ng / Harrison Chase thesis from LangChain's Interrupt: coding agents are cheap, so the bottleneck moves up to product scoping and data architecture. Ground agents in owned, structured data or they're confidently wrong — and avoid lock-in. With the validated open-source toolchain (LangChain, LangGraph, Gemini CLI, OpenCode — licences stated) and MCP as the through-line.",
+      "domain": "agents",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/agents/rearchitecture",
+      "fetch": "agents/rearchitecture"
+    },
+    {
+      "title": "Anthropic Agent SDK — know.2nth.ai",
+      "description": "The Anthropic Agent SDK (claude-agent-sdk) — the Claude-first agent framework. Python and TypeScript SDKs, MCP-native tool layer, native sub-agent orchestration via the Task tool, extended thinking integration. Inherits the architectural model that powers Claude Code itself. The default for production agents on Claude — and the framework with the deepest MCP integration of any agent SDK in 2026.",
+      "domain": "agents",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/agents/anthropic-agent-sdk",
+      "fetch": "agents/anthropic-agent-sdk"
+    },
+    {
+      "title": "AutoGen / AG2 — know.2nth.ai",
+      "description": "AutoGen — Microsoft Research's multi-agent conversation framework, with the AG2 community fork as its sibling. Python, MIT-licensed, built around the metaphor of agents talking to each other in a group chat to converge on answers. AutoGen v0.4 is the modular rewrite by Microsoft; AG2 is the community continuation of the original v0.2 design. The framework that pioneered conversational multi-agent patterns and remains the strongest fit for research workflows, agent-debate experiments, and academic / R&D use cases. Production tooling is still maturing; for production agents most teams choose LangGraph, CrewAI, or vendor SDKs instead.",
+      "domain": "agents",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/agents/autogen",
+      "fetch": "agents/autogen"
+    },
+    {
+      "title": "Building Effective Agents — know.2nth.ai",
+      "description": "Anthropic's taxonomy for building effective agents, mapped to the tree. The augmented LLM building block; workflows vs agents; the five workflow patterns — prompt chaining, routing, parallelization, orchestrator-workers, evaluator-optimizer; when not to use an agent; and the three principles: simplicity, transparency, a well-crafted agent-computer interface.",
+      "domain": "agents",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/agents/effective-agents",
+      "fetch": "agents/effective-agents"
+    },
+    {
+      "title": "Claude — know.2nth.ai",
+      "description": "Claude — Anthropic's flagship model family. Four tiers in 2026: Fable 5 (Mythos-class, the new top tier above Opus) for the hardest, longest-horizon work, Opus 4.8 for hard reasoning, Sonnet 4.6 for everyday agent work, Haiku 4.5 for high-volume routing. 1M context on Fable/Opus/Sonnet, 200k on Haiku. Adaptive thinking, MCP-first tool layer, vision and computer use built in. The default for production agents that need long-context reasoning, reliable function-calling, and instruction-following beyond what open-weights models reach.",
+      "domain": "agents",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/agents/claude",
+      "fetch": "agents/claude"
+    },
+    {
+      "title": "Claude Code — Anthropic's agentic coding CLI — know.2nth.ai",
+      "description": "Claude Code is Anthropic's agentic coding environment — a terminal-native agent that reads entire codebases, plans multi-file changes, runs tests, and iterates on failures. Available with Claude Pro / Max / Team / Enterprise. Same engine as the Claude Agent SDK. Native Skills, hooks, MCP, sub-agents, plan and autopilot modes. Stripe migrated 10,000 lines in 4 days; Wiz refactored a 50,000-line library in 20 hours. May 2026 reference.",
+      "domain": "agents",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/agents/claude-code",
+      "fetch": "agents/claude-code"
+    },
+    {
+      "title": "Coding CLI agents — Claude Code vs Codex CLI vs Copilot CLI — know.2nth.ai",
+      "description": "The three agentic coding CLIs that matter in mid-2026 — Anthropic's Claude Code, OpenAI's Codex CLI, and GitHub Copilot CLI. Side-by-side across model lock-in, sandbox model, pricing shape, extensibility, IDE bridges, and open-source posture. When each wins, the open-source alternatives, and the South African / production context.",
+      "domain": "agents",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/agents/coding-cli-agents",
+      "fetch": "agents/coding-cli-agents"
+    },
+    {
+      "title": "CrewAI — know.2nth.ai",
+      "description": "CrewAI — the role-based multi-agent framework. Python-first, MIT-licensed, built around a 'crew' metaphor: agents with roles, goals, and backstories collaborate on tasks. Sequential and hierarchical processes; CrewAI Flows for explicit orchestration. 30,000+ GitHub stars and one of the most-starred agent frameworks in the field. The fastest path from zero to a working multi-agent prototype — and the framework most teams reach for when 'a team of specialists' is the right mental model.",
+      "domain": "agents",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/agents/crewai",
+      "fetch": "agents/crewai"
+    },
+    {
+      "title": "Gemini — know.2nth.ai",
+      "description": "Gemini — Google's flagship multimodal model family. Mid-2026: the Gemini 3.x line — Gemini 3.1 Pro for the hardest reasoning and agentic coding, Gemini 3.5 Flash for frontier agentic/coding work, Gemini 3.1 Flash-Lite for high-volume routing. 1M+ token context (reportedly to ~2M on Pro) — the largest in the field. Native multimodal across text, image, video, and audio, native search grounding, and native media generation via Gemini Omni (conversational video + image creation). Hosted via Google AI Studio, Vertex AI (including africa-south1 in Johannesburg), and OpenRouter. The default for production agents that need extreme context length, Google search integration, voice via the Live API, or generative multimodal output.",
+      "domain": "agents",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/agents/gemini",
+      "fetch": "agents/gemini"
+    },
+    {
+      "title": "Gemini Omni — know.2nth.ai",
+      "description": "Gemini Omni — Google DeepMind's native multimodal generation model. 'Create anything from any input — starting with video.' Conversational, multi-turn video and image generation and editing where every edit builds on the last and the scene stays coherent. Turns image, text, video, or audio reference into one cohesive output, with physics-aware motion (gravity, kinetic energy, fluid dynamics) and Gemini's world knowledge. Ships as Gemini Omni Flash, surfaced through the Gemini app, Google Flow, and YouTube Shorts; benchmarks lead on MovieGenBench and VBench. SynthID + C2PA provenance baked in. The generation half of the Gemini family — the reasoning tiers read media, Omni creates it.",
+      "domain": "agents",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/agents/gemini-omni",
+      "fetch": "agents/gemini-omni"
+    },
+    {
+      "title": "Gemma — know.2nth.ai",
+      "description": "Gemma — Google's open-weights model family from the Gemini research line. Gemma 4 is the current generation, shipping in four sizes (E2B / E4B / 31B dense / 26B A4B MoE), multimodal across text + image + video + audio, 128k context on small models / 256k on medium, with native function-calling and configurable thinking modes. Permissive licence; runs on Ollama, vLLM, Hugging Face. The local-first option for teams that want frontier-quality inference without cloud dependency.",
+      "domain": "agents",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/agents/gemma",
+      "fetch": "agents/gemma"
+    },
+    {
+      "title": "GitHub Copilot CLI — multi-model agentic terminal — know.2nth.ai",
+      "description": "GitHub Copilot CLI is Microsoft / GitHub's terminal-native agentic coding environment, GA in 2026. The only major coding CLI that switches between Claude (Sonnet/Opus 4.6) and GPT-5.2–5.5 from one tool, via /model. Worktree isolation, self-iterating code review, specialised Explore + Task agents, Plan and Autopilot modes. Bundled with Copilot Pro / Pro+ / Business / Enterprise; moves to usage-based AI Credits June 1 2026.",
+      "domain": "agents",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/agents/github-copilot-cli",
+      "fetch": "agents/github-copilot-cli"
+    },
+    {
+      "title": "GLM · Z.ai — know.2nth.ai",
+      "description": "GLM is Zhipu AI's open-weight model family, shipped internationally under the Z.ai brand. GLM-5.2 (June 2026): ~753B-parameter Mixture-of-Experts, ~40B active per token, 1M-token context, pure MIT licence, built for long-horizon agentic and coding work. Anthropic-Messages-API-compatible endpoint means Claude Code retargets with a base-URL change. The institutionally-deployable Chinese open-weight flagship — competitive with the closed frontier on agentic engineering, self-hostable to avoid the hosted-API governance risk, with an ~800GB-VRAM hardware reality that is the real binding constraint.",
+      "domain": "agents",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/agents/glm",
+      "fetch": "agents/glm"
+    },
+    {
+      "title": "Google ADK — know.2nth.ai",
+      "description": "Google Agent Development Kit (ADK) — Apache-2.0, code-first framework for building production AI agents across Python, TypeScript, Go, and Java. Optimised for Gemini, model-agnostic via LiteLLM, native A2A and MCP support, one-command deploy to Cloud Run / GKE / Vertex AI Agent Engine.",
+      "domain": "agents",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/agents/google-adk",
+      "fetch": "agents/google-adk"
+    },
+    {
+      "title": "Google ADK vs LangGraph — know.2nth.ai",
+      "description": "A neutral side-by-side of two of the most credible agent frameworks in 2026 — Google's Agent Development Kit (ADK) and LangChain's LangGraph. Both Python-first, both open-source, both multi-provider, both production-grade. Different centers of gravity: ADK leans into managed compliance via Vertex AI Agent Engine; LangGraph leans into vendor neutrality and broader ecosystem. When each wins, when to combine them, and the SA / regulated-industry angle.",
+      "domain": "agents",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/agents/adk-vs-langgraph",
+      "fetch": "agents/adk-vs-langgraph"
+    },
+    {
+      "title": "Google Antigravity — know.2nth.ai",
+      "description": "Google Antigravity — Google's agent-first development platform. Autonomous agents that plan, execute, and verify software tasks across editor, terminal, browser, and cloud, exposed through four surfaces: the Antigravity 2.0 desktop app, the Antigravity CLI (the Gemini CLI migration path), a Python SDK (Research Preview), and the Gemini Enterprise Agent Platform — plus Managed Agents in the Gemini API on Gemini 3.5 Flash. First-class MCP surface (stdio/SSE/HTTP), markdown Agent Skills, deny-by-default safety. Not OSI open source: a proprietary compiled runtime.",
+      "domain": "agents",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/agents/google-antigravity",
+      "fetch": "agents/google-antigravity"
+    },
+    {
+      "title": "GPT · OpenAI — know.2nth.ai",
+      "description": "GPT — OpenAI's flagship model family. Mid-2026: GPT-5.5 the flagship with built-in reasoning (~1M context), GPT-5.4 plus mini and nano for cost-tiered production, and o3 as the dedicated reasoning model. Native multimodal, leading function-calling, hosted via OpenAI Platform and Azure OpenAI. The default for production agents on OpenAI infrastructure — and the most-used closed frontier model family in the world by deployed count.",
+      "domain": "agents",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/agents/gpt",
+      "fetch": "agents/gpt"
+    },
+    {
+      "title": "LangGraph — know.2nth.ai",
+      "description": "LangGraph — the graph-based orchestration framework from LangChain Inc. MIT-licensed, Python + TypeScript, built around a StateGraph primitive with explicit nodes, edges, and shared state. Native checkpointing, time-travel debugging, human-in-the-loop interrupts, LangSmith observability. The de-facto choice when you want full control over agent flow rather than letting an LLM decide. Used in production by Klarna, Replit, Elastic, and the LangChain ecosystem itself.",
+      "domain": "agents",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/agents/langgraph",
+      "fetch": "agents/langgraph"
+    },
+    {
+      "title": "LiteLLM — know.2nth.ai",
+      "description": "LiteLLM — the multi-vendor LLM proxy and SDK. Apache 2.0, Python and TypeScript. Maps every LLM provider's API (OpenAI, Anthropic, Gemini, Bedrock, Ollama, Together, Vertex, Azure, and 100+ more) to a single unified OpenAI-compatible interface. Used under the hood by Google ADK, CrewAI, and many other frameworks for cross-vendor model support. The seam where you swap a Claude call for a local Ollama call by changing one config line.",
+      "domain": "agents",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/agents/litellm",
+      "fetch": "agents/litellm"
+    },
+    {
+      "title": "Llama — know.2nth.ai",
+      "description": "Llama — Meta's open-weights model family. The most-used open-weights workhorse in the field, with the largest community fine-tune ecosystem of any model family. Llama 3.x and Llama 4 generations cover 1B / 8B / 70B / 405B sizes plus vision variants. Available on Hugging Face, Ollama, Together AI, Groq, AWS Bedrock, and Vertex AI Model Garden. Permissive licence with commercial restrictions only over 700M monthly active users — practically open for almost every business case.",
+      "domain": "agents",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/agents/llama",
+      "fetch": "agents/llama"
+    },
+    {
+      "title": "Microsoft MAI & Humanist Superintelligence — know.2nth.ai",
+      "description": "Microsoft Build 2026: the seven in-house MAI frontier models and the \"humanist superintelligence\" strategy. What was actually announced, what it means for agent-OS architecture, the open-standard anchors (MCP, Agent Skills, Gymnasium, MRC), and the POPIA/SA data-residency note.",
+      "domain": "agents",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/agents/microsoft-mai",
+      "fetch": "agents/microsoft-mai"
+    },
+    {
+      "title": "Mistral / Qwen — know.2nth.ai",
+      "description": "Mistral and Qwen — the two strongest 'second-tier' open-weights model families. Mistral (Mistral AI, France) leads on function-calling reliability, European multilingual, and apache-licensed releases. Qwen (Alibaba) leads on code-specific work via Qwen Coder and on multilingual including Chinese and Asian languages. Together they cover use cases where Llama and Gemma are the wrong shape — function-calling-heavy production, code-strong agents, multilingual deployments. Both run on Ollama, vLLM, Together AI, and major hosted platforms.",
+      "domain": "agents",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/agents/mistral-qwen",
+      "fetch": "agents/mistral-qwen"
+    },
+    {
+      "title": "Model Context Protocol (MCP) — know.2nth.ai",
+      "description": "The Model Context Protocol — Anthropic-originated open standard for connecting agents to tools, data, and prompts. JSON-RPC over stdio, SSE, or HTTP. The lingua franca of agent tooling in 2026 — adopted across Claude Desktop, Cursor, Windsurf, Google ADK, OpenAI Agents SDK, and the broader ecosystem.",
+      "domain": "agents",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/agents/mcp",
+      "fetch": "agents/mcp"
+    },
+    {
+      "title": "Ollama — know.2nth.ai",
+      "description": "Ollama — local LLM runtime, MIT-licensed, llama.cpp under the hood. Run Gemma, Llama, Qwen, Mistral, Phi, and 200+ open models on your laptop or on a Hetzner droplet. OpenAI-compatible API endpoint, zero cloud dependency, POPIA-friendly by default. The default local-inference platform for SA teams managing FX exposure on agent infrastructure.",
+      "domain": "agents",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/agents/ollama",
+      "fetch": "agents/ollama"
+    },
+    {
+      "title": "OpenAI Agents SDK — know.2nth.ai",
+      "description": "The OpenAI Agents SDK — OpenAI's official agent framework. Python and TypeScript SDKs, the successor to the Assistants API. Built around five primitives: Agents, Handoffs, Tools, Guardrails, and Tracing. Native OpenAI Platform tracing, native MCP support, native function-calling. The default for production agents on GPT — and the cleanest path from prototype to scaled deployment for teams already on OpenAI infrastructure.",
+      "domain": "agents",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/agents/openai-agents-sdk",
+      "fetch": "agents/openai-agents-sdk"
+    },
+    {
+      "title": "OpenAI Codex CLI — cloud-sandboxed coding agent — know.2nth.ai",
+      "description": "OpenAI Codex CLI is OpenAI's terminal-native coding agent — open-source Rust binary, cloud-sandboxed by default, capable of parallel task execution. Powered by codex-1 (o3-based, RL-trained on real PRs) and codex-mini (o4-mini). Available with ChatGPT Plus / Pro / Business / Enterprise. Launched May 2025; reached production maturity through 2025-2026 with web app, IDE integrations, and Chrome extension. May 2026 reference.",
+      "domain": "agents",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/agents/openai-codex",
+      "fetch": "agents/openai-codex"
+    },
+    {
+      "title": "OpenRouter — know.2nth.ai",
+      "description": "OpenRouter — the hosted multiplexer over hundreds of LLMs from dozens of providers. One API key, one billing relationship, every model worth using. OpenAI-compatible API surface; competitive per-token pricing across providers; transparent routing across upstream provider availability. The pragmatic choice for teams that want frontier model flexibility without managing N billing relationships, and for prototyping work where 'try this prompt against five different models' is the daily question.",
+      "domain": "agents",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/agents/openrouter",
+      "fetch": "agents/openrouter"
+    },
+    {
+      "title": "Owning AI · which slice you actually own — know.2nth.ai",
+      "description": "Enterprise AI gets framed as rent vs. own — one lever with two settings. It isn't. There are at least five things you can own independently: the weights, the fine-tune, the inference location, the retrieval layer, and the eval harness. The smart move is to own the cheap, high-leverage ones and rent the frontier model. The weights are the least valuable thing to own; the harness around them is the moat — and for a South African enterprise, residency makes owning the location a compliance posture, not a cost optimisation.",
+      "domain": "agents",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/agents/owning-ai",
+      "fetch": "agents/owning-ai"
+    },
+    {
+      "title": "vLLM — know.2nth.ai",
+      "description": "vLLM — the production-grade open-source inference server for open-weights LLMs. Apache 2.0, originated at UC Berkeley's Sky Lab, now broadly adopted across hosting providers including Together AI, Fireworks, and many self-hosted deployments. PagedAttention for memory-efficient KV cache, continuous batching for high-throughput serving, OpenAI-compatible API surface, native CUDA / ROCm support. The default when you've outgrown Ollama and need real production throughput on dedicated GPUs.",
+      "domain": "agents",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/agents/vllm",
+      "fetch": "agents/vllm"
+    },
+    {
+      "title": "Business — know.2nth.ai",
+      "description": "The Business domain of the 2nth skill tree — ERP, CRM, HR, sales, accounting, operations. The systems businesses actually run on.",
+      "domain": "biz",
+      "kind": "hub",
+      "url": "https://know.2nth.ai/explainers/biz/",
+      "fetch": "biz"
+    },
+    {
+      "title": "CRM — know.2nth.ai",
+      "description": "Customer relationship management integrations in the 2nth skill tree. The six GTM roles, and how each one gets an AI partner that shares the same customer graph.",
+      "domain": "biz",
+      "kind": "hub",
+      "url": "https://know.2nth.ai/explainers/biz/crm/",
+      "fetch": "biz/crm"
+    },
+    {
+      "title": "ERP — know.2nth.ai",
+      "description": "Enterprise resource planning integrations in the 2nth skill tree. Six production skills — Sage X3, ERPNext, Odoo, Shopify, WooCommerce, Oracle Fusion Cloud SCM — plus SYSPRO as a context leaf.",
+      "domain": "biz",
+      "kind": "hub",
+      "url": "https://know.2nth.ai/explainers/biz/erp/",
+      "fetch": "biz/erp"
+    },
+    {
+      "title": "HR & People — know.2nth.ai",
+      "description": "The HR & people value chain in the 2nth skill tree — talent in (recruiting/ATS), through the employee lifecycle (HRMS: payroll, leave, performance), to people development. Open-source, agent-addressable, POPIA-aware, self-hostable in South Africa. Frappe HR and Huly are the two Live leaves.",
+      "domain": "biz",
+      "kind": "hub",
+      "url": "https://know.2nth.ai/explainers/biz/hr/",
+      "fetch": "biz/hr"
+    },
+    {
+      "title": "ERPNext — know.2nth.ai",
+      "description": "ERPNext integration via the Frappe REST + RPC API. Authentication, the manufacturing flow (BOM → Work Order → Job Card → Stock Entry), filters, and production gotchas.",
+      "domain": "biz",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/biz/erp/erpnext",
+      "fetch": "biz/erp/erpnext"
+    },
+    {
+      "title": "ERPNext × Shopify — know.2nth.ai",
+      "description": "The ERPNext ↔ Shopify integration for light manufacturing and multi-supplier e-commerce. The sync map, the order-to-cash flow, BOM-driven make-to-order, multi-supplier procurement and reorder, true costing and margin, setup gotchas, and the decision guide. Own the back office, rent the storefront.",
+      "domain": "biz",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/biz/erp/erpnext-shopify",
+      "fetch": "biz/erp/erpnext-shopify"
+    },
+    {
+      "title": "HR Compliance (South Africa) — know.2nth.ai",
+      "description": "The South African HR statutory layer — the labour and tax law every employer must satisfy. LRA, BCEA, EEA (Employment Equity Amendment Act 4 of 2022), National Minimum Wage Act, UIF, SDL, POPIA, B-BBEE, and the SARS payroll filings (EMP201, EMP501, IRP5). Primary-source citations to the Department of Employment and Labour, the CCMA, SARS, and the Information Regulator. The compliance gap Frappe HR and Huly leave you to fill.",
+      "domain": "biz",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/biz/hr/compliance",
+      "fetch": "biz/hr/compliance"
+    },
+    {
+      "title": "HR Onboarding (South Africa) — know.2nth.ai",
+      "description": "Onboarding — the stage from signed offer to a productive day-one and through the first 90 days, and the handoff from the ATS (recruiting) into the HRMS employee record. The offer-accepted seam, the SA statutory starting line (BCEA section 29 written particulars, the National Minimum Wage floor, UIF/COIDA/SDL registrations, PAYE), POPIA on the onboarding data burst, and an honest guide to what to automate and what to keep human.",
+      "domain": "biz",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/biz/hr/onboarding",
+      "fetch": "biz/hr/onboarding"
+    },
+    {
+      "title": "HubSpot — know.2nth.ai",
+      "description": "HubSpot integration via the v3 CRM API, Private Apps, scopes, associations, Search API, webhooks, and the six GTM roles each with their own AI tool set.",
+      "domain": "biz",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/biz/crm/hubspot",
+      "fetch": "biz/crm/hubspot"
+    },
+    {
+      "title": "Huly — know.2nth.ai",
+      "description": "Huly (hcengineering/platform) — an open-source all-in-one work platform and a Linear/Jira/Slack/Notion alternative, whose ATS covers recruiting and HRM covers the team, alongside project management, CRM, and chat. EPL-2.0, TypeScript + Svelte, self-hostable via huly-selfhost. Filed under biz/hr for its HR modules; honestly a horizontal platform. POPIA-aware when self-hosted in South Africa; not a payroll system.",
+      "domain": "biz",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/biz/hr/huly",
+      "fetch": "biz/hr/huly"
+    },
+    {
+      "title": "Odoo — know.2nth.ai",
+      "description": "Odoo — Belgian-origin open-source ERP. Python + PostgreSQL, modular architecture, three editions (Community / Enterprise / Odoo.sh). Latest is Odoo 18 with 19 emerging. Native XML-RPC and JSON-RPC APIs; the Odoo Apps Store now hosts multiple MCP server modules that expose the ERP as natural-language-CRUD to Claude, ChatGPT, and Cursor agents. The most code-friendly ERP in the open-source field and the strongest agentic story among open-source ERPs in 2026.",
+      "domain": "biz",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/biz/erp/odoo",
+      "fetch": "biz/erp/odoo"
+    },
+    {
+      "title": "Open-source ECM · 2026 — know.2nth.ai",
+      "description": "Open-source Enterprise Content Management in 2026 — the credible replacements for IBM FileNet and OpenText Documentum. Alfresco Community, Nuxeo, Mayan EDMS, Paperless-ngx, OpenKM, NemakiWare. Mindshare for FileNet has dropped from 10.2% to 5.8% and Documentum from 12.3% to 6.4% YoY. The top 5 open-source ECM platforms, the migration patterns, the CMIS-standard story, and the honest cost comparison.",
+      "domain": "biz",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/biz/ecm/open-source-ecm",
+      "fetch": "biz/ecm/open-source-ecm"
+    },
+    {
+      "title": "Oracle Fusion Cloud SCM — know.2nth.ai",
+      "description": "Oracle Fusion Cloud SCM & Manufacturing integration via REST API. Nine pillars — planning, inventory, manufacturing, maintenance, order management, logistics, PLM, procurement, analytics — with SA context (VAT, B-BBEE, SARS customs, POPIA).",
+      "domain": "biz",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/biz/erp/oracle-scm",
+      "fetch": "biz/erp/oracle-scm"
+    },
+    {
+      "title": "Performance Management (South Africa) — know.2nth.ai",
+      "description": "Goals, KRAs and appraisal cycles — where the HRMS mechanics of Frappe HR's Appraisal meet the human craft of feedback in the People domain, and where SA labour law makes the performance record legally load-bearing. Under the LRA, poor performance is incapacity — a fair reason for dismissal only if both substantive and procedural fairness are met (Schedule 8). Primary-source citations to the CCMA and the Department of Employment and Labour.",
+      "domain": "biz",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/biz/hr/performance",
+      "fetch": "biz/hr/performance"
+    },
+    {
+      "title": "Process orchestration · 2026 — know.2nth.ai",
+      "description": "Process orchestration in 2026 — Camunda 8, Temporal, Orkes Conductor, Flowable, and Argo Workflows as the credible replacements for IBM BPM, Oracle BPM Suite, TIBCO ActiveMatrix, and Pega. Camunda mindshare dropped from 21.5% to 9.9% YoY but the category is shifting, not shrinking: enterprise workflow moved to BPMN-as-code (Camunda 8) or workflow-as-code (Temporal). Top 5 modern orchestrators, the migration patterns, the honest cost picture for SA enterprise.",
+      "domain": "biz",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/biz/bpm/process-orchestration",
+      "fetch": "biz/bpm/process-orchestration"
+    },
+    {
+      "title": "Recruitment value chain (South Africa) — know.2nth.ai",
+      "description": "The recruiting front of the HR value chain — the six-stage hiring pipeline from role spec to offer, each stage emitting a structured artifact an agent can act on. JD, sourcing, screening, interview, assessment, offer. With the SA law that binds the front of the chain: the Employment Equity Act's prohibition of unfair discrimination, POPIA on candidate data, and POPIA s71 on decisions made solely by automated profiling. Primary-source citations to the Department of Employment and Labour, the Information Regulator, and the CCMA.",
+      "domain": "biz",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/biz/hr/recruitment",
+      "fetch": "biz/hr/recruitment"
+    },
+    {
+      "title": "Sage X3 — know.2nth.ai",
+      "description": "Sage X3 ERP integration via its GraphQL API. Authentication, the Relay query pattern, introspection, and the gotchas that only show up in production.",
+      "domain": "biz",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/biz/erp/sage-x3",
+      "fetch": "biz/erp/sage-x3"
+    },
+    {
+      "title": "Salesforce — know.2nth.ai",
+      "description": "Salesforce — the enterprise CRM platform. SObject + SOQL + Apex + Flow on the Lightning Platform, with AgentForce, Data Cloud, Einstein Trust Layer, MuleSoft, Slack, and Tableau wrapped around it. The system of record most large SA businesses run sales, service, and customer data on.",
+      "domain": "biz",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/biz/crm/salesforce",
+      "fetch": "biz/crm/salesforce"
+    },
+    {
+      "title": "Shopify — know.2nth.ai",
+      "description": "Shopify integration via the Admin API (REST + GraphQL) and Storefront API. Authentication, the six AI roles, MCP tool patterns, and production gotchas.",
+      "domain": "biz",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/biz/erp/shopify",
+      "fetch": "biz/erp/shopify"
+    },
+    {
+      "title": "SYSPRO — know.2nth.ai",
+      "description": "SYSPRO — the SA-founded mid-market ERP for manufacturing and distribution. Its technology and tech stack, integration surfaces and MCP readiness, plus a side note on where ERPNext competes for the smaller business.",
+      "domain": "biz",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/biz/erp/syspro",
+      "fetch": "biz/erp/syspro"
+    },
+    {
+      "title": "WooCommerce — know.2nth.ai",
+      "description": "WooCommerce integration via the WordPress REST API v3. Consumer key auth, core resources, HMAC-signed webhooks, AI workflow patterns, and production gotchas.",
+      "domain": "biz",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/biz/erp/woocommerce",
+      "fetch": "biz/erp/woocommerce"
+    },
+    {
+      "title": "Agents Expose Your Data, Not Your Engineers — A CEO Briefing",
+      "description": "A non-technical CEO briefing: AI agents make building cheap, which moves the bottleneck up to two things you control — knowing what to build (scoping) and having clean, reachable data. An agent is only as good as the data it can reach; fix the data layer first or you get faster chaos. Based on the Andrew Ng / Harrison Chase thesis.",
+      "domain": "briefings",
+      "kind": "briefing",
+      "url": "https://know.2nth.ai/briefings/agents-and-data",
+      "fetch": null
+    },
+    {
+      "title": "AI Agents, Plainly — What They Can Safely Do for Your Business",
+      "description": "A non-technical CEO/CFO briefing on AI agents: the difference between a chatbot that talks and an agent that acts, the ladder of autonomy, which tasks are safe (green) versus dangerous (red), the guardrails that move a task from red to green, what agents can safely do today by function, where they go wrong, and why an agent is only as safe as the systems you let it touch.",
+      "domain": "briefings",
+      "kind": "briefing",
+      "url": "https://know.2nth.ai/briefings/ai-agents",
+      "fetch": null
+    },
+    {
+      "title": "Keep the Data Home — Edge-First Computing, POPIA & AI Residency",
+      "description": "A non-technical CEO/CFO briefing on edge-first computing: running software in hundreds of locations close to your users — and using that layer as border control for your data. How it turns POPIA compliance and AI data-residency from a legal headache into a rule you set, plus the speed and cost dividend.",
+      "domain": "briefings",
+      "kind": "briefing",
+      "url": "https://know.2nth.ai/briefings/edge-first",
+      "fetch": null
+    },
+    {
+      "title": "Make It, Sell It, See the Margin — ERPNext + Shopify for Makers",
+      "description": "A non-technical CEO briefing for makers and e-commerce shops: why connecting your online storefront (Shopify) to an owned back office (ERPNext) finally gives you real stock, real cost, real margin, and purchasing that follows your sales — especially when you make products and source from different suppliers.",
+      "domain": "briefings",
+      "kind": "briefing",
+      "url": "https://know.2nth.ai/briefings/make-it-sell-it",
+      "fetch": null
+    },
+    {
+      "title": "Strangle the Licence — Replacing Expensive Software Without a Big-Bang Rewrite",
+      "description": "A non-technical board briefing on the strangler-fig strategy: how to replace an expensive ERP, big-ticket licence or SaaS subscription gradually — one function at a time, behind a façade, with the old system as a safety net — using open source, Git ownership and AI coding tools to build the replacement faster and cheaper than ever.",
+      "domain": "briefings",
+      "kind": "briefing",
+      "url": "https://know.2nth.ai/briefings/strangle-the-licence",
+      "fetch": null
+    },
+    {
+      "title": "The Builder Is the Operator — know.2nth.ai Briefing",
+      "description": "Marc Andreessen says programmer, designer and product manager are collapsing into one 'builder' role. It's the same person we call the operator — commanding AI agents with human specialists in the loop. A plain-language briefing on what the convergence means for how you organise work.",
+      "domain": "briefings",
+      "kind": "briefing",
+      "url": "https://know.2nth.ai/briefings/builder-is-the-operator",
+      "fetch": null
+    },
+    {
+      "title": "The Cheap Model Is Real. Why Can’t You Just Switch? — know.2nth.ai Briefing",
+      "description": "A frontier-grade AI model now does the everyday work — routine sites, first-draft decks, common code — at a fraction of the price. So why isn't everyone switching tomorrow? Because the model was never the expensive part; the scaffolding around it is. A plain-language CEO briefing on cost, lock-in, ownership and the spare-generator logic of keeping a backstop you control.",
+      "domain": "briefings",
+      "kind": "briefing",
+      "url": "https://know.2nth.ai/briefings/glm-open-weight-economics",
+      "fetch": null
+    },
+    {
+      "title": "The Five Things You Can Own in AI — know.2nth.ai Briefing",
+      "description": "'Own your AI' sounds like one decision. It's five — the model, the fine-tune, the hardware, the data layer, and the testing — and you only need to get two of them right. A plain-language CEO briefing on why the frontier model is the one piece you're usually better off renting, how the three reasons to build in-house actually translate, and why a backstop you control is the real question.",
+      "domain": "briefings",
+      "kind": "briefing",
+      "url": "https://know.2nth.ai/briefings/own-vs-rent-ai",
+      "fetch": null
+    },
+    {
+      "title": "The Iceberg — Front Office, Back Office, and What Runs Your Business",
+      "description": "The mental model behind the know.2nth.ai CEO briefings: the front office is the tip your customers see (website, Shopify, portal); the back office is the larger mass below the waterline — ERP, Git, SharePoint, files, and where suppliers, finance and HR actually live. Where cost, risk and your IP really sit.",
+      "domain": "briefings",
+      "kind": "briefing",
+      "url": "https://know.2nth.ai/briefings/the-iceberg",
+      "fetch": null
+    },
+    {
+      "title": "The Mind as Architect — know.2nth.ai Briefing",
+      "description": "A 250-year-old idea — that the mind structures reality rather than passively recording it — is the cleanest lens on why modern AI works the way it does, and on the posture a mature technology leader takes toward their own roadmap. Why flexible learned procedures beat rigid rules, why data architecture is rule-design not data-hoarding, and why the smart move is to plan 'as-if' while knowing the exact boundaries of the tool. A plain-language CEO briefing — the lens borrowed from Kant, the decisions kept concrete.",
+      "domain": "briefings",
+      "kind": "briefing",
+      "url": "https://know.2nth.ai/briefings/mind-as-architect",
+      "fetch": null
+    },
+    {
+      "title": "The Platform You Already Own — know.2nth.ai Briefing",
+      "description": "Corporate South Africa is being sold 'AI data platforms' while the most governed, POPIA-friendly, AI-ready one in the country already sits inside the Microsoft 365 licences it pays for every month. It's called Dataverse — the store your Microsoft apps and Copilot agents already run inside. A plain-language CEO briefing on what it is, why it's a POPIA advantage, how it sits under Copilot, and where the lock-in bites.",
+      "domain": "briefings",
+      "kind": "briefing",
+      "url": "https://know.2nth.ai/briefings/the-platform-you-already-own",
+      "fetch": null
+    },
+    {
+      "title": "Three Companies, One Publish Button — know.2nth.ai Briefing",
+      "description": "Astro + Cloudflare + GitHub is the modern way fast marketing and content sites get built and shipped — three companies, three roles, one publishing pipeline. A plain-language CEO briefing for the person who signs off the budget: who does what, what it buys the business, the honest lock-in, and when a different stack is the right call.",
+      "domain": "briefings",
+      "kind": "briefing",
+      "url": "https://know.2nth.ai/briefings/astro-cloudflare-github",
+      "fetch": null
+    },
+    {
+      "title": "When Is an Agent Actually the Right Tool? — know.2nth.ai Briefing",
+      "description": "Most things sold as 'AI agents' should be simpler — a fixed workflow, not an autonomous agent. A plain-language CEO briefing on the difference, the ladder from prompt to workflow to agent, and how to pick the cheapest option that does the job. Based on Anthropic's 'Building Effective Agents'.",
+      "domain": "briefings",
+      "kind": "briefing",
+      "url": "https://know.2nth.ai/briefings/when-is-an-agent-the-right-tool",
+      "fetch": null
+    },
+    {
+      "title": "Who Holds the Keys? — A Board Briefing on Owning Your Stack",
+      "description": "A five-minute, non-technical board briefing for CEOs and CFOs: do you own the systems your business runs on, or do you rent them back from your vendors? The lock-in risk, the switching-cost trap, the money picture, and what to do about it — in plain business language.",
+      "domain": "briefings",
+      "kind": "briefing",
+      "url": "https://know.2nth.ai/briefings/own-your-stack",
+      "fetch": null
+    },
+    {
+      "title": "Your Sprint Isn’t the Bottleneck Anymore — know.2nth.ai Briefing",
+      "description": "AI agents compressed the time it takes to build software. The queue didn't disappear — it moved to deciding what to build, writing it down clearly, and reviewing it. A plain-language CEO briefing on why your team's velocity numbers will look strange this year, the three questions to ask your engineering lead, and why the governance fix is boring on purpose.",
+      "domain": "briefings",
+      "kind": "briefing",
+      "url": "https://know.2nth.ai/briefings/sprint-isnt-the-bottleneck",
+      "fetch": null
+    },
+    {
+      "title": "Construction — know.2nth.ai",
+      "description": "The Construction sub-tree of know.2nth.ai — open building information modeling (openBIM, IFC, IfcOpenShell, BlenderBIM, Speckle, BCF), AI-driven quantity takeoff, 4D programme management, RFIs, materials and quality capture, and South African construction compliance. Grounded in a live SA smart-building pilot.",
+      "domain": "construction",
+      "kind": "hub",
+      "url": "https://know.2nth.ai/explainers/construction/",
+      "fetch": "construction"
+    },
+    {
+      "title": "OpenBIM — know.2nth.ai",
+      "description": "OpenBIM — the open, vendor-neutral building information modeling stack. IFC as the ISO standard, IfcOpenShell + BlenderBIM + Speckle as the open tooling, BCF for coordination. The cost-honest alternative to SmartBIM and other proprietary BIM platforms, with South African construction practice and regulations as a first-class concern.",
+      "domain": "construction",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/construction/openbim",
+      "fetch": "construction/openbim"
+    },
+    {
+      "title": "Analytics — know.2nth.ai",
+      "description": "The Analytics sub-hub of the 2nth data domain. Five BI tools — Superset, Metabase, Evidence, Druid, Grafana — with Superset as the default for new builds.",
+      "domain": "data",
+      "kind": "hub",
+      "url": "https://know.2nth.ai/explainers/data/analytics/",
+      "fetch": "data/analytics"
+    },
+    {
+      "title": "Data — know.2nth.ai",
+      "description": "The Data & Observability domain of the 2nth skill tree — analytics, engineering, warehousing, governance, ML ops, visualization.",
+      "domain": "data",
+      "kind": "hub",
+      "url": "https://know.2nth.ai/explainers/data/",
+      "fetch": "data"
+    },
+    {
+      "title": "Warehousing — know.2nth.ai",
+      "description": "The Warehousing sub-hub of the 2nth data domain. Five databases — PostgreSQL, ClickHouse, DuckDB, BigQuery, Snowflake — with PostgreSQL as the default for new builds.",
+      "domain": "data",
+      "kind": "hub",
+      "url": "https://know.2nth.ai/explainers/data/warehousing/",
+      "fetch": "data/warehousing"
+    },
+    {
+      "title": "Apache Superset — know.2nth.ai",
+      "description": "Apache Superset — open-source BI for data exploration, SQL Lab, 40+ chart types, and embedded analytics. The 2nth default over Power BI and Tableau for new builds.",
+      "domain": "data",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/data/analytics/superset",
+      "fetch": "data/analytics/superset"
+    },
+    {
+      "title": "LiteParse — know.2nth.ai",
+      "description": "LiteParse — local, POPIA-safe document parsing for RAG. PDFs, DOCX, PPTX, XLSX, images → clean text or JSON with bounding boxes. No cloud, no LLM required.",
+      "domain": "data",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/data/engineering/liteparse",
+      "fetch": "data/engineering/liteparse"
+    },
+    {
+      "title": "Postgres vs Microsoft SQL — know.2nth.ai",
+      "description": "Postgres vs Microsoft SQL Server — the BI-offload play that drops your SQL licence by 35-70% without touching production. Function-by-function comparison, the two-paths framing (BI offload first, full migration second), concrete licence math for a 16-core mid-market SMB, and the week-by-week migration shape. The decision guide for any team currently paying for SQL Server BI Edition / SSRS / Power BI Premium on top of an OLTP licence.",
+      "domain": "data",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/data/warehousing/postgres-vs-mssql",
+      "fetch": "data/warehousing/postgres-vs-mssql"
+    },
+    {
+      "title": "PostgreSQL — know.2nth.ai",
+      "description": "PostgreSQL 18 — the relational database underneath Frappe, Superset, and most of the 2nth stack. ACID, extensible, OLTP and analytical workloads in the same engine.",
+      "domain": "data",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/data/warehousing/postgresql",
+      "fetch": "data/warehousing/postgresql"
+    },
+    {
+      "title": "Salesforce Data Cloud — know.2nth.ai",
+      "description": "Salesforce Data Cloud — the unified customer profile and Customer Data Platform that grounds AgentForce. Real-time ingestion, identity resolution, harmonisation across structured and unstructured sources, RAG-ready semantic search. The load-bearing data licence for any serious AgentForce deployment.",
+      "domain": "data",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/data/data-cloud",
+      "fetch": "data/data-cloud"
+    },
+    {
+      "title": "Tableau — know.2nth.ai",
+      "description": "Tableau — Salesforce's analytics platform. Tableau Cloud / Server / Desktop, Tableau Pulse (AI-monitored metrics), Tableau Next (agentic analytics inside AgentForce). Zero-copy integration with Salesforce Data Cloud via Data 360. The visual surface most enterprise SA businesses already have for BI.",
+      "domain": "data",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/data/analytics/tableau",
+      "fetch": "data/analytics/tableau"
+    },
+    {
+      "title": "Design — know.2nth.ai",
+      "description": "The Design sub-domain of the 2nth technology branch. Nine crafts for building interfaces — tokens, components, frameworks, motion, typography, accessibility, Figma, AI design tools, and Open Design.",
+      "domain": "design",
+      "kind": "hub",
+      "url": "https://know.2nth.ai/explainers/design/",
+      "fetch": "design"
+    },
+    {
+      "title": "Accessibility — know.2nth.ai",
+      "description": "Accessibility — WCAG 2.2 AA, semantic HTML, ARIA, keyboard navigation, focus management, and screen reader testing. Not a layer you bolt on later.",
+      "domain": "design",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/design/accessibility",
+      "fetch": "design/accessibility"
+    },
+    {
+      "title": "AI Design Tools — know.2nth.ai",
+      "description": "AI design tools — image generation, design-to-code, AI-assisted workflows, and why the human with the tokens file is still the last step.",
+      "domain": "design",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/design/ai-design",
+      "fetch": "design/ai-design"
+    },
+    {
+      "title": "Component Libraries — know.2nth.ai",
+      "description": "Component libraries — atomic design, Storybook, composition patterns, visual regression testing, and the craft of building reusable interface parts.",
+      "domain": "design",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/design/components",
+      "fetch": "design/components"
+    },
+    {
+      "title": "Design Systems — know.2nth.ai",
+      "description": "Design systems — tokens, theming, multi-brand architecture. The layer where every design decision gets encoded once and cascades everywhere.",
+      "domain": "design",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/design/design-systems",
+      "fetch": "design/design-systems"
+    },
+    {
+      "title": "DESIGN.md — know.2nth.ai",
+      "description": "DESIGN.md — the file-format spec for handing your design system to a coding agent. YAML tokens, markdown rationale, lintable in CI, 14 KB of structure that turns a vibe into a contract.",
+      "domain": "design",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/design/design-md",
+      "fetch": "design/design-md"
+    },
+    {
+      "title": "Figma — know.2nth.ai",
+      "description": "Figma — auto layout, variables, dev mode, REST API for token extraction, and the bridge between design files and production components.",
+      "domain": "design",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/design/figma",
+      "fetch": "design/figma"
+    },
+    {
+      "title": "Frameworks — know.2nth.ai",
+      "description": "CSS frameworks — Tailwind, shadcn/ui, Radix UI, and the tradeoffs between utility-first, CSS-in-JS, and CSS Modules.",
+      "domain": "design",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/design/frameworks",
+      "fetch": "design/frameworks"
+    },
+    {
+      "title": "Motion — know.2nth.ai",
+      "description": "Motion — CSS transitions, Web Animations API, Framer Motion, spring physics, reduced motion, and the line between animation that communicates and animation that decorates.",
+      "domain": "design",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/design/motion",
+      "fetch": "design/motion"
+    },
+    {
+      "title": "Open Design — know.2nth.ai",
+      "description": "Open Design — open-source, Apache-2.0, local-first alternative to Anthropic's Claude Design. The daemon turns whichever coding-agent CLI is on PATH into a design engine, driven by 19 Skills and 71 Design Systems. POPIA-friendly, load-shedding-resilient, ZAR-friendly.",
+      "domain": "design",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/design/open-design.html",
+      "fetch": "design/open-design"
+    },
+    {
+      "title": "Typography — know.2nth.ai",
+      "description": "Typography — fluid type scales, font loading, variable fonts, and the invisible craft that breaks everything when it's wrong.",
+      "domain": "design",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/design/typography",
+      "fetch": "design/typography"
+    },
+    {
+      "title": "Finance — know.2nth.ai",
+      "description": "Financial reporting, planning and compliance on top of ERP data — the operational intelligence layer for finance teams and the agents that assist them.",
+      "domain": "fin",
+      "kind": "hub",
+      "url": "https://know.2nth.ai/explainers/fin/",
+      "fetch": "fin"
+    },
+    {
+      "title": "Consolidation — know.2nth.ai",
+      "description": "Group consolidation on ERP data — multi-entity roll-ups, inter-company elimination and currency translation, ERP-agnostic, using a warehouse and the open BI stack to consolidate across ERPNext, SYSPRO, Sage and Oracle.",
+      "domain": "fin",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/fin/consolidation",
+      "fetch": "fin/consolidation"
+    },
+    {
+      "title": "Financial reporting on ERP data — know.2nth.ai",
+      "description": "Financial reporting on ERP data, generically across SYSPRO, ERPNext, Sage and Oracle — the costing/WIP/inventory-valuation feed, statutory vs management reporting, and using Evidence and the open BI stack to complement ERPNext.",
+      "domain": "fin",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/fin/reporting",
+      "fetch": "fin/reporting"
+    },
+    {
+      "title": "Planning & FP&A — know.2nth.ai",
+      "description": "Financial planning and analysis on ERP data — budgets, rolling forecasts and driver-based scenario models built on the same warehouse the reporting layer feeds, ERP-agnostic, with the open BI stack.",
+      "domain": "fin",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/fin/planning",
+      "fetch": "fin/planning"
+    },
+    {
+      "title": "Tax & compliance — know.2nth.ai",
+      "description": "South African tax and statutory compliance on ERP data — VAT201, EMP201, provisional tax and CIPC filings that tie back to the ledger, with the agent assembling and a human submitting via SARS eFiling.",
+      "domain": "fin",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/fin/compliance",
+      "fetch": "fin/compliance"
+    },
+    {
+      "title": "Media — know.2nth.ai",
+      "description": "The Media domain on know.2nth.ai — generative media: AI speech and voice, with image, video, and music generation as future bands. Launches voice-first: the seven-category voice AI landscape (TTS, STT, voice cloning, conversational voice agents, dubbing, speech-to-speech, music), and a deep dive on ElevenLabs. Built around verified, current state and the South African languages context.",
+      "domain": "media",
+      "kind": "hub",
+      "url": "https://know.2nth.ai/explainers/media/",
+      "fetch": "media"
+    },
+    {
+      "title": "ElevenLabs — the voice AI platform — know.2nth.ai",
+      "description": "ElevenLabs is the deepest voice AI platform as of mid-2026 — ElevenCreative (text-to-speech across 70+ languages, voice cloning, music, sound effects), ElevenAgents (conversational voice agents, omnichannel), and ElevenAPI for developers. Flagship models: Eleven Flash (75ms latency), Multilingual v2, Eleven v3 (most expressive), Scribe v2 (speech-to-text). Credit-based per-character pricing. The default pick for creators and developers; what to know before committing.",
+      "domain": "media",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/media/elevenlabs",
+      "fetch": "media/elevenlabs"
+    },
+    {
+      "title": "The voice AI landscape — know.2nth.ai",
+      "description": "The AI speech and voice generation landscape as of mid-2026 — the seven categories (text-to-speech, speech-to-text, voice cloning, conversational voice agents, dubbing, speech-to-speech, music generation), who leads where (ElevenLabs, Cartesia, Hume, OpenAI, Google, Deepgram, plus open-weights Whisper and Kokoro), the latency reality, the voice-rights regulation that arrived in 2026, and the South African languages gap.",
+      "domain": "media",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/media/landscape",
+      "fetch": "media/landscape"
+    },
+    {
+      "title": "Voice agents & telephony — know.2nth.ai",
+      "description": "The deployment layer for voice AI — how a synthetic voice reaches a real phone line. Two distinct layers: voice-agent orchestration platforms (Vapi, Retell, Bland, LiveKit, Pipecat) that wire STT + LLM + TTS into a real-time conversation, and telephony / cloud contact-centre platforms (Amazon Connect, Twilio, Genesys) that connect calls, route them, and manage queues. The South African in-country picture: Amazon Connect in af-south-1, the SA-native incumbents Telviva and Euphoria, and the ICASA regulatory frame.",
+      "domain": "media",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/media/voice-agents",
+      "fetch": "media/voice-agents"
+    },
+    {
+      "title": "ODEK LEAP + 2nth.ai — Branded Analytics Platform",
+      "description": "How 2nth.ai delivers a branded BI and database platform for ODEK LEAP — Apache Superset and PostgreSQL, stood up and managed so your team can focus on the analytics that matter.",
+      "domain": "partners",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/partners/odek-leap",
+      "fetch": "partners/odek-leap"
+    },
+    {
+      "title": "ODEK LEAP Analytics — Dashboard Demo",
+      "description": "Interactive demo of the ODEK LEAP branded analytics platform — powered by Apache Superset and PostgreSQL, built by 2nth.ai.",
+      "domain": "partners",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/partners/odek-leap-demo",
+      "fetch": "partners/odek-leap-demo"
+    },
+    {
+      "title": "People — know.2nth.ai",
+      "description": "The People domain of the 2nth skill tree — coaching, leadership, teams, organisational psychology. The discipline of growing humans, expressed as the same kind of skills tree as the technical domains.",
+      "domain": "people",
+      "kind": "hub",
+      "url": "https://know.2nth.ai/explainers/people/",
+      "fetch": "people"
+    },
+    {
+      "title": "The Enneagram — know.2nth.ai",
+      "description": "The Enneagram — nine types, three centres, two arrows, three instincts. A structurally rich personality framework with weaker empirical scaffolding than its proponents claim and stronger practical traction than its critics acknowledge. Honest take, oriented for coaching and team work.",
+      "domain": "people",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/people/typologies/enneagram",
+      "fetch": "people/typologies/enneagram"
+    },
+    {
+      "title": "Software — know.2nth.ai",
+      "description": "The Software domain of the 2nth skill tree. The thesis the whole tree rests on: AI is just software, and LLMs are just brains — they need software, tools, and version control to do anything. Git, GitHub and code repositories, CI/CD, packages, and the craft that makes knowledge compound.",
+      "domain": "software",
+      "kind": "hub",
+      "url": "https://know.2nth.ai/explainers/software/",
+      "fetch": "software"
+    },
+    {
+      "title": "AI is just software — know.2nth.ai",
+      "description": "The thesis the whole 2nth tree rests on: AI is just software, and an LLM is just a brain. A model is a stateless text-in/text-out function — no memory, no actions, no way to check itself. Software, tools, context, and version control are what turn a brain into work. Buying AI means buying software discipline, not magic.",
+      "domain": "software",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/software/ai-is-software",
+      "fetch": "software/ai-is-software"
+    },
+    {
+      "title": "CI/CD & automation — know.2nth.ai",
+      "description": "Continuous integration and delivery. Pipelines, tests as gates, and deploy-on-merge — the automation that turns 'it works on my machine' into 'main is always shippable'. The platforms (GitHub Actions, GitLab CI), and why CI is the safety net that makes agent-authored change safe.",
+      "domain": "software",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/software/ci-cd",
+      "fetch": "software/ci-cd"
+    },
+    {
+      "title": "GitHub & code repositories — know.2nth.ai",
+      "description": "A code repository is the system of record for software. GitHub, GitLab, Bitbucket, and Codeberg add collaboration on top of Git — pull requests, code review, issues, Actions/CI, releases. And the repo is the layer AI agents read, write, and ship through: GitHub MCP, Copilot CLI, and agent-authored pull requests gated by CI.",
+      "domain": "software",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/software/github",
+      "fetch": "software/github"
+    },
+    {
+      "title": "Go (Golang) — know.2nth.ai",
+      "description": "Go (Golang) for builders — Google's compiled, statically-typed language built for simplicity and scale. Goroutines and channels for concurrency, single static binaries, fast compiles, a strong standard library. The language of cloud-native (Docker, Kubernetes, Terraform are written in Go). How it works, what it's for, why agents write it reliably, a decision guide vs Rust/Python/Node, and SA context.",
+      "domain": "software",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/software/go",
+      "fetch": "software/go"
+    },
+    {
+      "title": "Orchestrating agents — running large projects with coding agents · know.2nth.ai",
+      "description": "The shift from pairing with one agent to orchestrating several against a shared codebase — the skill set of an engineering manager, not a coder. The three execution modes (interactive planning, isolated worktrees, batch/headless), orchestrator-vs-peer multi-agent patterns and their token cost, the three forge-automation layers and their permission failure modes, and an adoption sequence. Builds on the agent-legible codebase and spec-as-prompt backlog covered elsewhere in this branch.",
+      "domain": "software",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/software/orchestrating-agents",
+      "fetch": "software/orchestrating-agents"
+    },
+    {
+      "title": "Packages & dependencies — know.2nth.ai",
+      "description": "The dependency graph every modern build sits on. Package registries (npm, PyPI, crates, Maven), semantic versioning, lockfiles for reproducible installs, and supply-chain risk — the part of software you didn't write but still ship and own. Including the risk surface when agents install packages.",
+      "domain": "software",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/software/packages",
+      "fetch": "software/packages"
+    },
+    {
+      "title": "Planning with agents — know.2nth.ai",
+      "description": "Sprint ceremonies were always context-transfer mechanisms — and stateless agents need that context transfer more than humans do. The modern backlog stops being a to-do list and becomes executable specification under version control: spec-driven development, the backlog as agent-readable data, cadence below the sprint, forecasting when the bottleneck moves to review, and the honest tradeoffs. The process-level continuation of 'software for agents'.",
+      "domain": "software",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/software/planning-with-agents",
+      "fetch": "software/planning-with-agents"
+    },
+    {
+      "title": "Programming languages — know.2nth.ai",
+      "description": "How to choose a programming language — and why it matters less than the discipline around it. Typed vs dynamic, ecosystem and runtime fit, the languages that matter in 2026, and the ones AI agents write most reliably.",
+      "domain": "software",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/software/languages",
+      "fetch": "software/languages"
+    },
+    {
+      "title": "Repositories & monorepos — know.2nth.ai",
+      "description": "How code is organised. The anatomy of a repository, monorepo vs polyrepo, branching strategies, and the repo as a knowledge-management surface — README, docs-as-code, and a structure both humans and agents can navigate.",
+      "domain": "software",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/software/repositories",
+      "fetch": "software/repositories"
+    },
+    {
+      "title": "Rust — know.2nth.ai",
+      "description": "Rust for builders — the systems language that gives you C/C++ performance with memory safety and no garbage collector, enforced at compile time by the ownership model and borrow checker. Cargo tooling, fearless concurrency, WASM and embedded reach. How it works, what it's used for, the honest learning-curve cost, a decision guide vs Go, and SA context.",
+      "domain": "software",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/software/rust",
+      "fetch": "software/rust"
+    },
+    {
+      "title": "Software for agents — know.2nth.ai",
+      "description": "Where the Software branch meets the Agents domain head-on. The repository as an agent's memory, skills, and grounding — context window, SKILL.md and instructions in version control, agent-authored pull requests, and CI as the agent's safety net. Why repo-ready is agent-ready.",
+      "domain": "software",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/software/software-for-agents",
+      "fetch": "software/software-for-agents"
+    },
+    {
+      "title": "Version control — know.2nth.ai",
+      "description": "Version control is the ledger underneath all software. Git — commits, branches, merges, and history as institutional memory — is what makes code reproducible, reviewable, reversible, and auditable. The substrate that lets both humans and AI agents change a system safely.",
+      "domain": "software",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/software/version-control",
+      "fetch": "software/version-control"
+    },
+    {
+      "title": "Android HCE — know.2nth.ai",
+      "description": "Android Host Card Emulation in the 2nth skill tree. Build NFC tap-to-pay wallets on Android — HostApduService, APDU parsing, EMV transaction flow, tokenization, keystore security, and South African payments context.",
+      "domain": "tech",
+      "kind": "hub",
+      "url": "https://know.2nth.ai/explainers/tech/android-hce/",
+      "fetch": "tech/android-hce"
+    },
+    {
+      "title": "Cloudflare — know.2nth.ai",
+      "description": "The Cloudflare developer platform in the 2nth skill tree. Sixteen services across compute, storage, messaging, data, AI, and networking — all on a single edge network.",
+      "domain": "tech",
+      "kind": "hub",
+      "url": "https://know.2nth.ai/explainers/tech/cloudflare/",
+      "fetch": "tech/cloudflare"
+    },
+    {
+      "title": "Electronics & Hardware — know.2nth.ai",
+      "description": "The Electronics & Hardware sub-hub of the 2nth skill tree — code-defined PCB design (Diode/Zener), EDA tooling (KiCad, Altium, Flux), and the fab/manufacturing layer (JLCPCB, PCBWay). Where hardware becomes a software problem.",
+      "domain": "tech",
+      "kind": "hub",
+      "url": "https://know.2nth.ai/explainers/tech/hardware/",
+      "fetch": "tech/hardware"
+    },
+    {
+      "title": "Frappe — know.2nth.ai",
+      "description": "The Frappe platform in the 2nth skill tree. A metadata-driven Python framework with a thirteen-app ecosystem — ERPNext, HRMS, CRM, Helpdesk, LMS, Builder, Drive, Books, Insights, Raven, Wiki, and Frappe Cloud.",
+      "domain": "tech",
+      "kind": "hub",
+      "url": "https://know.2nth.ai/explainers/tech/frappe/",
+      "fetch": "tech/frappe"
+    },
+    {
+      "title": "Game Engines & Real-Time 3D — know.2nth.ai",
+      "description": "The Game Engines & Real-Time 3D sub-domain of know.2nth.ai — Unreal, Unity, Godot and the real-time-3D landscape behind games, virtual production, archviz and digital twins. Launches with Unreal, anchored on UE 5.8's embedded MCP server: 3D engines becoming agent-driveable surfaces.",
+      "domain": "tech",
+      "kind": "hub",
+      "url": "https://know.2nth.ai/explainers/tech/game-engines/",
+      "fetch": "tech/game-engines"
+    },
+    {
+      "title": "Google — know.2nth.ai",
+      "description": "Google Cloud and Workspace in the 2nth skill tree. GCP infrastructure — Cloud Run, BigQuery, Vertex AI, Pub/Sub — next to the Workspace productivity APIs, bound together by a single OAuth + service-account identity plane.",
+      "domain": "tech",
+      "kind": "hub",
+      "url": "https://know.2nth.ai/explainers/tech/google/",
+      "fetch": "tech/google"
+    },
+    {
+      "title": "Microsoft — know.2nth.ai",
+      "description": "The Microsoft sub-tree on the 2nth technology branch. Azure AI, M365 Copilot, Copilot Studio, and Entra ID — the strongest frontier-model residency story in South Africa via Azure OpenAI Regional PTU in southafricanorth, and the production patterns that wire it up.",
+      "domain": "tech",
+      "kind": "hub",
+      "url": "https://know.2nth.ai/explainers/tech/microsoft/",
+      "fetch": "tech/microsoft"
+    },
+    {
+      "title": "Runtime — know.2nth.ai",
+      "description": "The Runtime sub-domain of the 2nth.ai technology branch. JavaScript runtimes that matter in 2026 — Node.js (the safe default), Bun (the modern challenger), and Deno (the security-first alternative). The decision frame for which runtime to pick, and why the hybrid pattern (Bun for dev, Node for prod) wins for most teams.",
+      "domain": "tech",
+      "kind": "hub",
+      "url": "https://know.2nth.ai/explainers/tech/runtime/",
+      "fetch": "tech/runtime"
+    },
+    {
+      "title": "Technology — know.2nth.ai",
+      "description": "The Technology domain of the 2nth skill tree — Cloudflare, AWS, Google (GCP + Workspace), Microsoft, Cisco, ElevenLabs, GitHub, Zoho, Claude Code, agent protocols, architecture.",
+      "domain": "tech",
+      "kind": "hub",
+      "url": "https://know.2nth.ai/explainers/tech/",
+      "fetch": "tech"
+    },
+    {
+      "title": "2nth × Google Cloud — Johannesburg, operational — know.2nth.ai",
+      "description": "Production-ready Google Cloud infrastructure for South African clients. Private compute and serverless containers in Johannesburg (africa-south1), POPIA-compliant data residency, defence-in-depth architecture, AI-native stack ready.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/google/demo",
+      "fetch": "tech/google/demo"
+    },
+    {
+      "title": "2nth × Google Cloud Compute — Johannesburg — know.2nth.ai",
+      "description": "What 2nth.ai builds with Google Cloud Compute — from an ERPNext instance to a scale-to-zero API to a GPU inference endpoint. All in Johannesburg, POPIA-aligned, Cloudflare-defended.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/google/compute",
+      "fetch": "tech/google/compute"
+    },
+    {
+      "title": "AI Gateway → Azure OpenAI — know.2nth.ai",
+      "description": "The observability and resilience layer over Worker → Azure OpenAI calls. Caching, retries, prompt logs, cost dashboards, and per-tenant rate limits without writing a custom proxy.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/microsoft/ai-gateway-aoai",
+      "fetch": "tech/microsoft/ai-gateway-aoai"
+    },
+    {
+      "title": "Altium Designer — know.2nth.ai",
+      "description": "Altium Designer is the commercial unified EDA heavyweight — schematic, PCB layout, high-speed routing, rigid-flex, and supply-chain in one tool, with Altium 365 as the cloud collaboration layer. The professional benchmark product teams pay for, now owned by Renesas. Where it wins, and where KiCad+Diode wins instead.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/hardware/altium",
+      "fetch": "tech/hardware/altium"
+    },
+    {
+      "title": "Android HCE — know.2nth.ai",
+      "description": "Android Host Card Emulation — HostApduService, AID routing, APDU processing, tokenization, and the security model for building tap-to-pay wallets without a Secure Element.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/android-hce/hce",
+      "fetch": "tech/android-hce/hce"
+    },
+    {
+      "title": "AWS — know.2nth.ai",
+      "description": "Amazon Web Services for the 2nth stack — the IAM-centred identity model that gates everything, the core service map (Lambda, ECS/Fargate, API Gateway, S3, RDS, DynamoDB, VPC, Bedrock, Connect), the af-south-1 Cape Town region and what it does and doesn't run, and the Cloudflare + AWS hybrid pattern where egress cost is the deciding economic factor.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/aws",
+      "fetch": "tech/aws"
+    },
+    {
+      "title": "Azure OpenAI from Cloudflare Workers — know.2nth.ai",
+      "description": "The headless pattern under the SA in-country LLM stack — calling gpt-4o in southafricanorth from a JNB-colocated Worker. Streaming, throttle handling, token caching, and the auth upgrades that take it to production.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/microsoft/azure-openai-workers",
+      "fetch": "tech/microsoft/azure-openai-workers"
+    },
+    {
+      "title": "Bun — know.2nth.ai",
+      "description": "Bun — the all-in-one JavaScript runtime that bundles a runtime, package manager, test runner, and bundler into a single tool. Built on JavaScriptCore in Zig, ~10x faster install than npm, native TypeScript, drop-in npm-compatible. The modern alternative to Node + npm + webpack + tsc + jest.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/runtime/bun",
+      "fetch": "tech/runtime/bun"
+    },
+    {
+      "title": "Cloudflare AI Gateway — know.2nth.ai",
+      "description": "Token metering, caching, and fallback routing for LLM calls. A proxy layer between your Worker and OpenAI, Anthropic, or Workers AI.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/cloudflare/ai-gateway",
+      "fetch": "tech/cloudflare/ai-gateway"
+    },
+    {
+      "title": "Cloudflare Analytics Engine — know.2nth.ai",
+      "description": "Time-series metrics you can write from any Worker. Cheap, append-only, queryable via SQL. The telemetry store for token economies and usage metering.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/cloudflare/analytics-engine",
+      "fetch": "tech/cloudflare/analytics-engine"
+    },
+    {
+      "title": "Cloudflare D1 — know.2nth.ai",
+      "description": "SQLite at the edge. Migrations, batch operations, and the honest constraints of running a single-primary relational database on Cloudflare.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/cloudflare/d1",
+      "fetch": "tech/cloudflare/d1"
+    },
+    {
+      "title": "Cloudflare Durable Objects — know.2nth.ai",
+      "description": "Single-writer stateful compute at the edge. WebSocket hibernation, strong consistency, and the primitive behind real-time collaboration and game state.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/cloudflare/durable-objects",
+      "fetch": "tech/cloudflare/durable-objects"
+    },
+    {
+      "title": "Cloudflare Edge: Africa & Middle East — know.2nth.ai",
+      "description": "A regional primer on Cloudflare's points of presence across Africa and the Middle East — twenty-plus African cities, seventeen across the Middle East, and what the footprint means when you're deploying Workers for users in Nairobi, Cairo, or Riyadh.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/cloudflare/edge-africa-me",
+      "fetch": "tech/cloudflare/edge-africa-me"
+    },
+    {
+      "title": "Cloudflare Email — know.2nth.ai",
+      "description": "Inbound email routing to Workers plus MailChannels outbound. Transactional email that lives on the same network as the code that triggered it.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/cloudflare/email",
+      "fetch": "tech/cloudflare/email"
+    },
+    {
+      "title": "Cloudflare Hyperdrive — know.2nth.ai",
+      "description": "Connection pooling from Workers to your Postgres or MySQL. Skip the cold-connect tax and keep your existing database as the system of record.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/cloudflare/hyperdrive",
+      "fetch": "tech/cloudflare/hyperdrive"
+    },
+    {
+      "title": "Cloudflare KV — know.2nth.ai",
+      "description": "Global eventually-consistent key-value storage on Cloudflare's edge. Sessions, feature flags, config — the first state primitive Workers got.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/cloudflare/kv",
+      "fetch": "tech/cloudflare/kv"
+    },
+    {
+      "title": "Cloudflare Pages — know.2nth.ai",
+      "description": "Git-driven static hosting with edge Functions. Connect a repo, get a global deploy with preview URLs per pull request.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/cloudflare/pages",
+      "fetch": "tech/cloudflare/pages"
+    },
+    {
+      "title": "Cloudflare Queues — know.2nth.ai",
+      "description": "Reliable messaging with dead-letter queues on Cloudflare. Decouple producers from consumers, fan out work, and handle failures gracefully.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/cloudflare/queues",
+      "fetch": "tech/cloudflare/queues"
+    },
+    {
+      "title": "Cloudflare R2 — know.2nth.ai",
+      "description": "S3-compatible object storage with zero egress fees. Store files, serve assets, generate presigned URLs — without the bandwidth tax.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/cloudflare/r2",
+      "fetch": "tech/cloudflare/r2"
+    },
+    {
+      "title": "Cloudflare Tunnel — know.2nth.ai",
+      "description": "Secure outbound connector from on-premise systems to Cloudflare's network. Expose internal services without opening inbound ports or managing VPNs.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/cloudflare/tunnel",
+      "fetch": "tech/cloudflare/tunnel"
+    },
+    {
+      "title": "Cloudflare Vectorize — know.2nth.ai",
+      "description": "Vector database with metadata filtering on Cloudflare. The retrieval half of a RAG pipeline, paired with Workers AI embeddings for a fully edge-hosted stack.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/cloudflare/vectorize",
+      "fetch": "tech/cloudflare/vectorize"
+    },
+    {
+      "title": "Cloudflare Workers & Pages — know.2nth.ai",
+      "description": "The edge runtime that replaced a lot of origin servers. What Workers and Pages actually are, how the pieces fit, and when to pick something else.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/cloudflare/workers",
+      "fetch": "tech/cloudflare/workers"
+    },
+    {
+      "title": "Cloudflare Workflows — know.2nth.ai",
+      "description": "Durable execution on Cloudflare with step.do(). Build multi-step agent flows, retries, and long-running orchestration without managing state machines.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/cloudflare/workflows",
+      "fetch": "tech/cloudflare/workflows"
+    },
+    {
+      "title": "Copilot Studio Agents Are Software — ALM & Dataverse · know.2nth.ai",
+      "description": "A Copilot Studio agent is a Dataverse solution component — so it is software, and must be shipped with ALM discipline. Dev/test/prod, managed vs unmanaged, the components that silently don't survive export, and the tooling that puts an agent under version control. If it's not in a solution, you're editing in production.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/microsoft/copilot-studio",
+      "fetch": "tech/microsoft/copilot-studio"
+    },
+    {
+      "title": "Dataverse Is Not a Database — the platform under Copilot & Dynamics · know.2nth.ai",
+      "description": "Dataverse is the managed low-code data platform under Power Platform, Dynamics 365, and Copilot Studio — tables on a shared Common Data Model, wrapped in a security, audit, and ALM plane you don't build yourself. What it actually is, why the agents live in it, how the security and solution model works, and when a plain database is the better call.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/microsoft/dataverse",
+      "fetch": "tech/microsoft/dataverse"
+    },
+    {
+      "title": "Diode — know.2nth.ai",
+      "description": "Diode is AI-native PCB design and manufacturing. The open-source pcb toolchain and the Zener language (a Starlark dialect) turn schematics into code you can diff, review, and compile to KiCad — the hardware-as-code surface Anthropic partnered with to make Claude a better electrical engineer.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/hardware/diode",
+      "fetch": "tech/hardware/diode"
+    },
+    {
+      "title": "Docker — know.2nth.ai",
+      "description": "Docker and containers, explained for builders. What a container actually is, images vs containers, the Dockerfile workflow, containers vs VMs, the OCI ecosystem (Engine, Desktop, Hub, Compose, containerd, Podman), how it relates to Kubernetes and managed runtimes, the Docker Desktop licensing gotcha, a decision guide, and SA delivery context.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/docker",
+      "fetch": "tech/docker"
+    },
+    {
+      "title": "Drizzle ORM — know.2nth.ai",
+      "description": "Drizzle ORM — TypeScript-first SQL toolkit for Postgres, MySQL, SQLite, and Cloudflare D1. Schema in TypeScript, queries that compile to the SQL you'd write by hand, zero runtime dependencies, first-class edge support.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/frameworks/drizzle",
+      "fetch": "tech/frameworks/drizzle"
+    },
+    {
+      "title": "Flux — know.2nth.ai",
+      "description": "Flux is browser-based, collaborative PCB design with an AI copilot — 'Figma for circuit boards.' Real-time multiplayer eCAD plus Flux Copilot, a natural-language assistant that drafts, wires, and edits hardware designs. The GUI-plus-copilot route to AI-assisted hardware, the counterpart to Diode's code-defined approach.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/hardware/flux",
+      "fetch": "tech/hardware/flux"
+    },
+    {
+      "title": "Frappe Books — know.2nth.ai",
+      "description": "Frappe Books — free desktop accounting for small businesses. Offline-first, single-user, Electron-based. Invoices, payments, ledgers, and reports without the weight of ERPNext.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/frappe/books",
+      "fetch": "tech/frappe/books"
+    },
+    {
+      "title": "Frappe CRM — know.2nth.ai",
+      "description": "Frappe CRM — lead-to-deal pipeline built on the Frappe Framework. Vue 3 frontend, kanban boards, email integration, call logs. The 2024 rebuild that replaced the old ERPNext CRM module.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/frappe/crm",
+      "fetch": "tech/frappe/crm"
+    },
+    {
+      "title": "Frappe Framework — know.2nth.ai",
+      "description": "The Frappe Framework — a metadata-driven Python full-stack where every business object is a doctype. Doctypes, hooks, REST + RPC, Bench, the desk, and the patterns that make the entire Frappe ecosystem coherent.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/frappe/framework",
+      "fetch": "tech/frappe/framework"
+    },
+    {
+      "title": "Frappe Helpdesk — know.2nth.ai",
+      "description": "Frappe Helpdesk — ticket management with SLAs, escalations, customer portal, knowledge base, and email-to-ticket. Built on the Frappe Framework doctype model.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/frappe/helpdesk",
+      "fetch": "tech/frappe/helpdesk"
+    },
+    {
+      "title": "Frappe HR — know.2nth.ai",
+      "description": "Frappe HR (HRMS) — employees, payroll, leave, attendance, expense claims, performance, and recruitment. Spun out of ERPNext in 2023 as a standalone Frappe app.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/frappe/hr",
+      "fetch": "tech/frappe/hr"
+    },
+    {
+      "title": "Furniture Guild — Architecture & review — know.2nth.ai",
+      "description": "Full stack inventory and request-path architecture for the Furniture Guild 2nth.ai demo: customer storefront, Worker API gateway, Cloudflare Tunnel, private ERPNext on GCE in africa-south1. Design decisions, known issues, review questions.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/google/furniture-guild-architecture",
+      "fetch": "tech/google/furniture-guild-architecture"
+    },
+    {
+      "title": "Furniture Guild — Fine furniture, crafted in South Africa",
+      "description": "Furniture Guild — solid hardwood tables, chairs, desks and home furniture, crafted in Cape Town. Browse the catalogue and request a quote. A 2nth.ai consumer-frontend demo running over ERPNext in Johannesburg.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/google/furniture-guild",
+      "fetch": "tech/google/furniture-guild"
+    },
+    {
+      "title": "Godot Engine — know.2nth.ai",
+      "description": "Godot Engine for builders — the MIT-licensed, fully open-source game engine. No royalties or seat fees, ever. Node/scene architecture, GDScript + C#, a Vulkan renderer in 4.x, lightweight and fast to iterate. How it works, what it's for, the genuine zero-licence-cost story, the honest 2D-strong/3D-catching-up picture, the agent angle, a decision guide, and SA context. The 'own your stack' engine.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/game-engines/godot",
+      "fetch": "tech/game-engines/godot"
+    },
+    {
+      "title": "JLCPCB — know.2nth.ai",
+      "description": "JLCPCB is the low-cost prototype PCB fab and SMT assembly house that made hobby and startup hardware economically viable. Upload Gerbers, pick a stackup, and get five real boards for a few dollars — the end of the design pipeline, with the LCSC parts library and EasyEDA tie-in behind it.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/hardware/jlcpcb",
+      "fetch": "tech/hardware/jlcpcb"
+    },
+    {
+      "title": "Keystore & Attestation — know.2nth.ai",
+      "description": "Android Keystore for payment key generation — StrongBox-backed keys, TEE fallback, biometric gating with BiometricPrompt, Play Integrity checks, and Key Attestation for non-GMS devices.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/android-hce/keystore",
+      "fetch": "tech/android-hce/keystore"
+    },
+    {
+      "title": "KiCad — know.2nth.ai",
+      "description": "KiCad is the open-source EDA suite — Eeschema for schematics, Pcbnew for layout, a 3D viewer, ngspice simulation, and a Python scripting API, all GPLv3 and free of per-seat licences. It's the floor the 2nth hardware branch stands on and the GUI engineers drop into after Diode compiles a design to .kicad_pcb.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/hardware/kicad",
+      "fetch": "tech/hardware/kicad"
+    },
+    {
+      "title": "Microsoft Copilot — In-Country LLM for South Africa · know.2nth.ai",
+      "description": "Microsoft Copilot is the only major LLM stack with a South Africa inference region. Here's what each Copilot surface actually keeps in country, how to wire it up, and where it falls short.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/microsoft/copilot-sa",
+      "fetch": "tech/microsoft/copilot-sa"
+    },
+    {
+      "title": "Modern web stacks · 2026 — know.2nth.ai",
+      "description": "The modern web stack in 2026 — the structured-content CMS layer (Sanity, Payload, Directus, Strapi), the islands-first framework layer (Astro, Next, SvelteKit), edge-rendered hosting (Cloudflare Pages, Vercel), and MCP as the agent-integration surface every credible CMS now ships natively. Why WordPress is being replaced (11,334 new CVEs in 2025) and what the top 5 MCP-ready web surfaces look like.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/web-stacks",
+      "fetch": "tech/web-stacks"
+    },
+    {
+      "title": "MuleSoft — know.2nth.ai",
+      "description": "MuleSoft — Salesforce's integration platform. Anypoint Platform for API design + management + iPaaS, plus the AgentForce-era additions: API Catalog, MuleSoft MCP Server, Agent Fabric, Anypoint Exchange as a universal agent registry. The bridge between Salesforce and the rest of the enterprise — and the path for exposing existing APIs as MCP servers consumable by AgentForce and any other agent.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/mulesoft",
+      "fetch": "tech/mulesoft"
+    },
+    {
+      "title": "Node.js — know.2nth.ai",
+      "description": "Node.js — the original server-side JavaScript runtime. V8 engine, libuv event loop, npm ecosystem origin, 16 years of production track record. The default for most JavaScript backends, the runtime almost every npm package is tested against, and the safe choice when ecosystem maturity matters more than developer-loop ergonomics.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/runtime/node",
+      "fetch": "tech/runtime/node"
+    },
+    {
+      "title": "OpenID Connect · the identity layer on OAuth 2.0 — know.2nth.ai",
+      "description": "OpenID Connect (OIDC) — the interoperable authentication protocol built on OAuth 2.0. What it is, how it differs from plain OAuth (authentication vs authorization), the three actors (relying party, OpenID provider, end user), the authorization-code-with-PKCE flow, the ID Token as a signed JWT, scopes and claims, the UserInfo and discovery endpoints, which flow to use in 2026, and the POPIA angle on delegating identity.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/openid-connect",
+      "fetch": "tech/openid-connect"
+    },
+    {
+      "title": "Own Your Stack — know.2nth.ai",
+      "description": "Own your stack — why source code, vendor specs, configs, customisations and real data belong in Git/GitHub, not locked inside M365/SharePoint. When to use SharePoint vs Git, how ERPNext gives you an in-house system of record, how Postgres + Apache Superset deliver affordable BI, and why an owned, reachable stack is the foundation for AI agents, workflows, tools and MCP servers.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/own-your-stack",
+      "fetch": "tech/own-your-stack"
+    },
+    {
+      "title": "PCBWay — know.2nth.ai",
+      "description": "PCBWay is a prototype-to-production PCB fab with broad process options — rigid-flex, advanced HDI, metal-core/aluminium, flexible — plus full turnkey assembly and adjacent CNC, 3D-printing and sheet-metal services. The vendor that takes a board from one prototype to a production run without switching suppliers.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/hardware/pcbway",
+      "fetch": "tech/hardware/pcbway"
+    },
+    {
+      "title": "PlatformIO — know.2nth.ai",
+      "description": "PlatformIO — the unified embedded development platform. One CLI, one config file, 1000+ boards. Build, upload, test, and debug firmware for ESP32, STM32, Arduino, and RP2040 without leaving the terminal.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/embedded/platformio",
+      "fetch": "tech/embedded/platformio"
+    },
+    {
+      "title": "Redis — know.2nth.ai",
+      "description": "Redis (and Valkey) explained for builders. The in-memory data-structure store behind caching, sessions, rate limiting, queues and pub/sub. How it works, what it's actually used for, persistence and durability honestly, the 2024 licence change and the Valkey fork, managed options, a decision guide, and SA delivery context.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/redis",
+      "fetch": "tech/redis"
+    },
+    {
+      "title": "Roboflow · computer vision & edge AI — know.2nth.ai",
+      "description": "Roboflow — the agent-drivable computer-vision platform and open-source CV toolchain. An official hosted MCP server (30 tools), a self-hostable OpenAPI inference server that runs on Jetson and Raspberry Pi, composable Workflows, and a permissive Apache-2.0 / MIT core (supervision, inference, rf-detr, trackers, maestro). What's genuinely open source vs. metered cloud, the POPIA data-residency story for biometric CV, and when to reach for it.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/roboflow",
+      "fetch": "tech/roboflow"
+    },
+    {
+      "title": "SA Payments Context — know.2nth.ai",
+      "description": "South African payments context for Android HCE — ZAR currency codes, POPIA compliance, load-shedding resilience, SARB regulatory landscape, and the device testing matrix for Samsung, Huawei, Transsion, and Xiaomi.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/android-hce/sa-payments",
+      "fetch": "tech/android-hce/sa-payments"
+    },
+    {
+      "title": "Software Architecture — know.2nth.ai",
+      "description": "Software architecture as a practised skill — the decisions that are expensive to reverse, recorded honestly. ADRs, the C4 model, trade-off matrices, twelve named patterns from monolith to event-driven to edge-first, anti-pattern detection, and the discipline of knowing when to break the rules. The skill every 2nth build draws on.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/architecture",
+      "fetch": "tech/architecture"
+    },
+    {
+      "title": "Tokenization — know.2nth.ai",
+      "description": "Payment tokenization for Android HCE — DPAN provisioning, LUK lifecycle, encrypted key storage, Visa VTS and Mastercard MDES integration, and offline-first replenishment for tap-to-pay wallets.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/android-hce/tokenization",
+      "fetch": "tech/android-hce/tokenization"
+    },
+    {
+      "title": "Unity — know.2nth.ai",
+      "description": "Unity for builders — the C#-based, mobile-dominant cross-platform engine with the largest asset ecosystem. GameObject/component architecture, Unity 6, AR/VR strength, Muse and Sentis AI. The honest licensing history (the 2023 Runtime Fee, the backlash, the 2024 cancellation), what it's for, a decision guide vs Unreal and Godot, the agent angle, and SA context.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/game-engines/unity",
+      "fetch": "tech/game-engines/unity"
+    },
+    {
+      "title": "Unreal Engine — know.2nth.ai",
+      "description": "Unreal Engine for builders — Epic's real-time 3D engine for games, virtual production, archviz and digital twins, now an agent-driveable surface. UE 5.8 ships an embedded MCP server in the Editor: agents spawn actors, set lighting, build materials, run tests. How the engine works, what it's for, the pricing/royalty reality, the experimental-and-no-auth caveats, a decision guide, and SA context.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/game-engines/unreal",
+      "fetch": "tech/game-engines/unreal"
+    },
+    {
+      "title": "Workers AI — know.2nth.ai",
+      "description": "Edge inference across a catalogue of open models. LLMs, embeddings, vision, speech — no GPU management, JSON schema enforcement, pay per token.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/cloudflare/workers-ai",
+      "fetch": "tech/cloudflare/workers-ai"
+    },
+    {
+      "title": "Workers for Platforms — know.2nth.ai",
+      "description": "Multi-tenant Workers execution for SaaS builders. Run customer code inside your code with per-tenant isolation, routing, and resource limits.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/cloudflare/workers-for-platforms",
+      "fetch": "tech/cloudflare/workers-for-platforms"
+    },
+    {
+      "title": "Workshop Floor — Furniture Guild — 2nth.ai",
+      "description": "Production dashboard for Furniture Guild — active work orders, raw stock, incoming customer orders, payment status. Operational view on the same ERPNext instance that backs the customer storefront. A 2nth.ai back-office demo.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/google/furniture-guild-workshop",
+      "fetch": "tech/google/furniture-guild-workshop"
+    },
+    {
+      "title": "Tools — the agent tool landscape — know.2nth.ai",
+      "description": "The agent tool landscape — what categories of tooling an agent platform actually needs to ship into production, what credible options exist in each, and how to choose between them. Ten categories (runtime, tool protocol, registries, permissions, audit, sandbox, dual-use workflow, identity, approval, memory) plus the cross-cutting universe of vendor MCP servers. Reference knowledge — no claims about anyone's deployment.",
+      "domain": "tools",
+      "kind": "hub",
+      "url": "https://know.2nth.ai/explainers/tools/",
+      "fetch": "tools"
+    },
+    {
+      "title": "Agent platform architecture — know.2nth.ai",
+      "description": "A reference architecture for agent tool platforms — how a fractional-agent set-up could call tools with proof of work, per-agent permissions, and dual-use (human + agent) surfaces. Cloudflare-first edge (Workers + D1 + R2) glued to Cerbos PDP, Langfuse audit, Inngest dual-use functions, and vendor MCP servers (GitHub, HubSpot, Salesforce, Google Workspace, Slack, Notion, BigQuery, Atlassian). Reference knowledge — design described, not running state.",
+      "domain": "tools",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tools/architecture",
+      "fetch": "tools/architecture"
+    },
+    {
+      "title": "Agent runtime — choosing a multi-provider runtime — know.2nth.ai",
+      "description": "The runtime layer in a model-portable architecture. Why a multi-provider runtime is the right pick when the architecture must support models from open weights (Ollama, vLLM) through frontier (Claude, GPT, Gemini) and never lock to one provider. LangGraph as the recommendation, with Vercel AI SDK and Pydantic AI as credible alternatives. Claude Agent SDK rejected for this architecture (Claude-locked) but explained for when commitment to one model makes it the right call.",
+      "domain": "tools",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tools/runtime",
+      "fetch": "tools/runtime"
+    },
+    {
+      "title": "Tools · worked example — know.2nth.ai",
+      "description": "One worked example of an agent tool stack — a five-agent fractional set-up (Grant CFO, Penny CMO, Leo CLO, Grace CHRO, Katharine CRO) with specific picks across the ten tool categories. Vendor-maintained MCP servers (GitHub, HubSpot, Salesforce, Google Workspace, Slack, Notion, BigQuery, Atlassian) on top of a Cloudflare-first substrate. One of many possible stacks. The landscape map is at /explainers/tools/.",
+      "domain": "tools",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tools/example",
+      "fetch": "tools/example"
+    }
+  ]
+}
