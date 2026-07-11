@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forward Deployed Engineer &mdash; know.2nth.ai</title>
+<meta name="description" content="The Forward Deployed Engineer (FDE): an engineer embedded in the customer's org who writes production code against their data, stays on it after it ships, and routes field learning back into the product. The role Palantir built around 2005, now standard across the frontier AI labs. What it is, how it differs from a consultant and a solutions engineer, the five-verb loop, and when to skip it — with the South African commercial-model reality.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/people/ai-roles/forward-deployed-engineer">
+<meta property="og:title" content="Forward Deployed Engineer — know.2nth.ai">
+<meta property="og:description" content="The engineer embedded in the customer's org who ships production code and owns it after go-live. Palantir's 2005 role, now standard across the AI labs. What it is, how it differs from a consultant, and when to skip it.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai — The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Forward Deployed Engineer — know.2nth.ai">
+<meta name="twitter:description" content="The engineer embedded in the customer's org who ships production code and owns it after go-live. Palantir's 2005 role, now standard across the AI labs. What it is, and when to skip it.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%23F43F5E' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%23FB7185' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33;
+    --blue: #2563EB; --blue-glow: #3B82F6;
+    --sky: #38BDF8; --sky-muted: #7DD3FC;
+    --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8;
+    --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12);
+    --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12);
+    --violet: #8B5CF6; --violet-soft: rgba(139, 92, 246, 0.12);
+    --rose: #F43F5E; --rose-glow: #FB7185; --rose-soft: rgba(244, 63, 94, 0.12);
+    --bg: var(--ink); --bg-raised: var(--navy);
+    --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(244, 63, 94, 0.06);
+    --text-primary: var(--paper); --text-secondary: var(--slate);
+    --text-muted: #64748B;
+    --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(244, 63, 94, 0.3);
+    --max-w: 1200px; --read-w: 760px;
+    --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px;
+    --domain: var(--rose); --domain-glow: var(--rose-glow);
+  }
+  [data-theme="light"] {
+    --bg: #F1F5F9; --bg-raised: #FFFFFF;
+    --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(244, 63, 94, 0.04);
+    --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8;
+    --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(244, 63, 94, 0.25);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.rose { width: 600px; height: 600px; background: var(--rose); top: -200px; right: -100px; }
+  .glow-orb.warm { width: 500px; height: 500px; background: var(--warm); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--rose), var(--warm)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--rose-glow); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--rose-glow); }
+
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .read { max-width: var(--read-w); }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--rose-glow); }
+  .crumb-sep { opacity: 0.5; }
+  .crumb-current { color: var(--text-secondary); }
+
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--rose-glow); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--rose); box-shadow: 0 0 12px var(--rose); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--rose), var(--rose-glow), var(--warm)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.accent { background: var(--rose-soft); color: var(--rose-glow); border-color: rgba(244, 63, 94, 0.25); }
+
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--rose-glow); margin-bottom: 14px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--rose-glow); }
+
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); margin-bottom: 20px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.rose { border-left: 3px solid var(--rose); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+
+  .types-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; max-width: 1100px; }
+  .type-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px 22px; transition: all 0.3s; }
+  .type-card:hover { border-color: var(--border-hover); }
+  .type-card .num { font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 700; background: linear-gradient(135deg, var(--rose), var(--rose-glow)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1; margin-bottom: 8px; }
+  .type-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.2px; }
+  .type-card .triad { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; display: block; }
+  .type-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 8px; }
+  .type-card .arrows { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); padding-top: 8px; border-top: 1px solid var(--border); display: flex; gap: 14px; }
+  .type-card .arrows .grow { color: var(--green); }
+  .type-card .arrows .stress { color: var(--rose); }
+
+  .triad-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; max-width: var(--read-w); }
+  .triad { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 24px; }
+  .triad-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--rose-glow); margin-bottom: 8px; }
+  .triad h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+  .triad .types-list { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--rose-glow); margin-bottom: 12px; }
+  .triad p { font-size: 13px; color: var(--text-secondary); line-height: 1.65; }
+
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: var(--read-w); margin-bottom: 20px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--rose-glow); background: rgba(244, 63, 94, 0.04); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); }
+  .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--rose-glow); }
+
+  .gotcha-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 12px; }
+  .gotcha { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--rose); border-radius: var(--radius-md); padding: 18px 22px; }
+  .gotcha strong { display: block; color: var(--text-primary); font-weight: 600; font-size: 14px; margin-bottom: 6px; }
+  .gotcha p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+  .connect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .connect-node { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; transition: all 0.3s; text-decoration: none; color: inherit; display: block; }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node.soon { cursor: default; opacity: 0.72; }
+  .connect-node.soon:hover { border-color: var(--border); background: var(--bg-card); }
+  .connect-node .tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--rose-glow); word-break: break-all; }
+
+  .decision-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: var(--read-w); }
+  @media (max-width: 720px) { .decision-grid { grid-template-columns: 1fr; } }
+  .decision-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 24px; }
+  .decision-card.use { border-left: 3px solid var(--green); }
+  .decision-card.skip { border-left: 3px solid var(--rose); }
+  .decision-card h4 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 12px; }
+  .decision-card.use h4 { color: var(--green); }
+  .decision-card.skip h4 { color: var(--rose); }
+  .decision-card ul { list-style: none; padding: 0; }
+  .decision-card li { font-size: 13px; color: var(--text-secondary); line-height: 1.6; padding: 6px 0; border-bottom: 1px solid var(--border); }
+  .decision-card li:last-child { border-bottom: none; }
+
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--rose), var(--warm)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--rose-glow); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } .compare { font-size: 12px; } .compare th, .compare td { padding: 10px 12px; } }
+
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+
+<div class="glow-orb rose"></div>
+<div class="glow-orb warm"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../../index.html" class="nav-brand">
+      <span class="nav-brand-mark">know.2nth.ai</span>
+      <span class="nav-brand-sub">people/ai-roles/forward-deployed-engineer</span>
+    </a>
+    <div class="nav-right">
+      <a href="../" class="nav-link">&larr; AI roles</a>
+      <a href="../../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x2600;&#xFE0F;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="../../../index.html#domains">People</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="../">ai-roles</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">Forward Deployed Engineer</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> people/ai-roles &middot; Forward Deployed Engineer &middot; Skill Leaf</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      The role Palantir built in 2005, <span class="gradient">now everywhere.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      A consultant writes a deck and leaves. A forward deployed engineer joins after the contract is signed, writes production code against the customer's data, and is still the person who gets paged when it breaks six months later. Same room, opposite job. The role is twenty years old &mdash; Palantir built it for classified government accounts in the mid-2000s &mdash; and generative AI made it necessary again everywhere, because the products demo brilliantly and deploy unevenly.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill accent">Live</span>
+      <span class="pill">Palantir, 2005</span>
+      <span class="pill">Post-sale, not pre-sale</span>
+      <span class="pill">Ships code</span>
+      <span class="pill">Enterprise AI</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 WHAT IT IS -->
+<section id="what">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; What it is</div>
+      <h2 class="section-title">An engineer embedded in the customer, accountable end to end.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>A Forward Deployed Engineer (FDE) is an engineer embedded inside the customer's organisation who writes production code against the customer's data, stays on it after it ships, and routes what they learn back into the product. The definitional trait across every source is <strong>end-to-end accountability</strong>: the person who maps the problem in week one is the person who gets paged when it breaks in month six. That single fact is what separates the role from the three jobs it is most often confused with.</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.08s">
+      <table class="compare">
+        <thead><tr><th>Role</th><th>Timing</th><th>Ships production code?</th><th>Owns it after go-live?</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Consultant</strong></td><td>Any</td><td>No &mdash; produces a deliverable, then exits</td><td>No</td></tr>
+          <tr><td><strong>Solutions engineer</strong></td><td>Pre-sale</td><td>Demos the product against the buyer's context to close the deal</td><td>No</td></tr>
+          <tr><td><strong>Forward deployed engineer</strong></td><td>Post-sale</td><td>Yes &mdash; writes it, runs it, in the customer's stack</td><td>Yes &mdash; accountable in month six</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.1s">
+      <p>Some organisations blur the solutions-engineer / FDE line &mdash; Palantir did early on &mdash; but the modern labs keep them distinct, because pre-sale demo work and post-sale production ownership select for different people and different incentives.</p>
+      <p>The discriminator is not the title. It's whether they're still accountable in six months.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 WHY IT MATTERS -->
+<section id="why">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; Why it matters</div>
+      <h2 class="section-title">A two-sided knowledge gap that nothing else bridges.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>The customer's engineers know the data schemas, the compliance constraints, the legacy architecture, and the edge cases. The lab's engineers know how models behave in production &mdash; retrieval strategies, eval design, the failure modes that only appear at scale. <strong>Neither side has the other's knowledge, and you need both to ship.</strong> A customer success manager cannot bridge that gap. Documentation cannot bridge it. Closing it in person, in the customer's repo, is the entire reason the role exists.</p>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.08s">
+      <h4>On the "95% of pilots fail" number</h4>
+      <p>The widely-cited claim that most enterprise generative-AI pilots show no measurable business impact &mdash; the MIT NANDA figure of roughly 95% &mdash; is the demand-side argument every FDE article reaches for. Treat it as <strong>contested, not settled</strong>: it has been heavily criticised on methodology since publication and is one of the most over-quoted numbers in enterprise AI. The structural point holds without it &mdash; enterprise AI work has historically died in the gap between a working demo and a production deployment, and the FDE exists to close that gap.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 HOW IT WORKS -->
+<section id="how">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; How it works</div>
+      <h2 class="section-title">The same five-verb loop, in five vocabularies.</h2>
+      <p class="section-lede">Every posting across Anthropic, OpenAI, Google, Palantir, Scale, and ServiceNow describes the same loop in different words. Strip the vocabulary and it is five verbs, run in order and then repeated.</p>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.05s">
+      <h4>1 &middot; Scope</h4>
+      <p>Learn the domain before shipping anything. Palantir-lineage FDEs front-load a domain model &mdash; the Foundry ontology pattern &mdash; before any LLM-grounded application; the same shape shows up as tool-calling schema design in the modern labs. Get the problem right first.</p>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.07s">
+      <h4>2 &middot; Build</h4>
+      <p>Production code in the customer's stack, behind their auth, their logging, their incident response, with evals configured. In Anthropic's posting language, that means shipping MCP servers, subagents, and integrations into the customer's environment (Anthropic job postings, 2026).</p>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.09s">
+      <h4>3 &middot; Deploy</h4>
+      <p>Move from notebook to production &mdash; the step where most enterprise AI work has historically died. The FDE owns the crossing, not just the prototype.</p>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.11s">
+      <h4>4 &middot; Codify</h4>
+      <p>Turn the bespoke thing into a reusable pattern. OpenAI calls it "durable productization," Anthropic "repeatable deployment patterns," ServiceNow "reusable AI-native patterns" &mdash; the same mandate in three vocabularies (collation: Carlson, close-reading of job postings, May 2026).</p>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.13s">
+      <h4>5 &middot; Feed back</h4>
+      <p>Route field learning into the product and research roadmap. At Palantir the FDE was the primary product-management input channel &mdash; which is half the value of the role, and the half most organisations forget to wire up.</p>
+    </div>
+    <div class="info-card rose fade-up" style="transition-delay: 0.15s">
+      <h4>Palantir's own framing</h4>
+      <p>Palantir describes the FDE's responsibilities as looking like a hands-on startup CTO's &mdash; small teams, end-to-end execution of high-stakes projects. That is the cleanest one-line definition of the seat: not a specialist in a lane, but an owner of an outcome.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 ECOSYSTEM -->
+<section id="ecosystem">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; The ecosystem</div>
+      <h2 class="section-title">Who hires under the label &mdash; and who wears it wrongly.</h2>
+      <p class="section-lede">The title has spread fast across the frontier labs and beyond. It has also been applied to jobs that are not this job. Both tables matter; the second one more.</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead><tr><th>Org</th><th>Label</th><th>Note</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Palantir</strong></td><td>Forward Deployed Software Engineer (FDSE); AI variant, Forward Deployed AI Engineer</td><td>Originated the role in the mid-2000s on classified US government accounts. Early FDEs were internally called "Deltas"; until 2016 Palantir had more FDEs than software engineers (Pragmatic Engineer, with ex-Palantir input).</td></tr>
+          <tr><td><strong>Anthropic</strong></td><td>Applied AI Engineer / Forward Deployed Engineer</td><td>Sits under Applied AI; postings emphasise safety-aware deployment and Claude-specific integration (Anthropic job postings, 2026).</td></tr>
+          <tr><td><strong>OpenAI</strong></td><td>Forward Deployed Engineer</td><td>Function established 2025 under Colin Jarvis, deliberately distinguished from the Solutions Architect (professional-services) track (Pragmatic Engineer, Jarvis as named source).</td></tr>
+          <tr><td><strong>Google Cloud</strong></td><td>Forward Deployed Engineer</td><td>Framed as bridging frontier AI products with production-grade reality.</td></tr>
+          <tr><td><strong>Scale, Cohere, Databricks, Anduril, ServiceNow, Ramp, Cursor</strong></td><td>Various</td><td>Anduril runs a security-cleared variant; Ramp runs FDEs in pods (Pragmatic Engineer, with Ramp's FDE lead as named source).</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.08s">
+      <p>The adjacent titles below are <strong>not the same job</strong>, however the req is worded. The discriminating question is the same every time: do they write production code in the customer's repo, and are they still accountable in six months?</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.1s">
+      <table class="compare">
+        <thead><tr><th>Adjacent title</th><th>Timing</th><th>Why it isn't an FDE</th></tr></thead>
+        <tbody>
+          <tr><td>Solutions Architect</td><td>Pre-sale</td><td>Designs and advises; hands off the code.</td></tr>
+          <tr><td>Sales Engineer</td><td>Pre-sale</td><td>Demos to close; doesn't own production.</td></tr>
+          <tr><td>Technical Account Manager</td><td>Post-sale</td><td>Manages the relationship; writes no code.</td></tr>
+          <tr><td>Implementation Consultant</td><td>Delivery</td><td>Produces a deliverable and exits.</td></tr>
+          <tr><td>Agent Engineer</td><td>Any</td><td>Builds the agent; not embedded in the customer, not accountable on their data.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 05 USE CASES -->
+<section id="uses">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; Use cases</div>
+      <h2 class="section-title">When the model earns its place.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>The FDE model is expensive and specific. It earns its keep in a recognisable set of conditions:</p>
+      <ul>
+        <li>The workflow is <strong>custom enough that off-the-shelf doesn't fit</strong> &mdash; the value is in the integration, not the product's defaults.</li>
+        <li>The system must <strong>run in production with accountability</strong>, not ship as a one-time deliverable.</li>
+        <li><strong>In-house AI hiring is too slow or too expensive</strong> for the timeline, so the capability is borrowed embedded rather than built.</li>
+        <li>The vendor <strong>needs field signal</strong> to improve the product, and this customer is a good source of it &mdash; the feedback loop pays for the engagement a second time.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 06 EVOLUTION -->
+<section id="evolution">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; Evolution</div>
+      <h2 class="section-title">A twenty-year-old role that AI made necessary again.</h2>
+      <p class="section-lede">This is not a new role. It is an old one that a new technology re-created the demand for.</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead><tr><th>Era</th><th>What happened</th></tr></thead>
+        <tbody>
+          <tr><td>~2005</td><td>Palantir builds the role for Gotham on government and intel accounts, because consultants couldn't write production code and solutions architects couldn't change the product. (Sources broadly agree on the mid-2000s; some say 2005, one says "around 2010.")</td></tr>
+          <tr><td>2010s</td><td>Defence and intelligence contractors adopt variants of the embedded-engineer model.</td></tr>
+          <tr><td>2023&ndash;24</td><td>Generative AI re-creates the same problem &mdash; products demo brilliantly and deploy unevenly &mdash; and the gap between pilot and production becomes the industry's defining failure.</td></tr>
+          <tr><td>2025</td><td>OpenAI formalises the Forward Deployed Engineer function under Colin Jarvis, explicitly distinct from Solutions Architecture.</td></tr>
+          <tr><td>2026</td><td>The label is standard across the frontier labs and has spread to Scale, Ramp, Cursor, ServiceNow, and the consultancies &mdash; along with the title inflation that follows any hot label.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 07 DECISION GUIDE -->
+<section id="decision">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; Decision guide</div>
+      <h2 class="section-title">When to engage one. When not to.</h2>
+      <p class="section-lede">The disqualifying cases matter more than the qualifying ones. If any of the "skip it when" conditions hold, the model will underperform or the person will leave &mdash; usually both.</p>
+    </div>
+    <div class="decision-grid fade-up" style="transition-delay: 0.05s">
+      <div class="decision-card use">
+        <h4>Use when</h4>
+        <ul>
+          <li>The workflow is custom enough that off-the-shelf configuration doesn't fit.</li>
+          <li>The system must run in production with accountability, not ship as a deliverable.</li>
+          <li>In-house AI hiring is too slow or costly for the timeline.</li>
+          <li>The vendor needs field signal, and this customer is a good source of it.</li>
+          <li>The customer will grant real repo and production-data access.</li>
+        </ul>
+      </div>
+      <div class="decision-card skip">
+        <h4>Skip it when</h4>
+        <ul>
+          <li><strong>The product actually is off-the-shelf.</strong> If configuration solves it, an FDE is an expensive way to run a config change.</li>
+          <li><strong>You want a systems integrator.</strong> Palantir refused contracts that wanted "Accenture with better software." If the ask is body-shop integration, the engineer will leave.</li>
+          <li><strong>The customer won't grant repo and data access.</strong> An FDE with read-only access to a sanitised staging environment is a consultant with a worse title.</li>
+          <li><strong>You need the engineer at HQ.</strong> The role involves substantial customer-site time and travel. If your best engineer can't leave the building, don't put them here.</li>
+          <li><strong>There's no product to feed back into.</strong> The feedback loop is half the value; without a platform of your own you're just doing consulting &mdash; price it that way.</li>
+          <li><strong>You're hiring the title to look modern.</strong> An FDE posting that describes a solutions architect is the 2026 version of the "Prompt Engineer" req. Read the responsibilities.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 08 GOTCHAS -->
+<section id="gotchas">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 &middot; Gotchas</div>
+      <h2 class="section-title">Where the role bites.</h2>
+    </div>
+    <div class="gotcha-list fade-up" style="transition-delay: 0.05s">
+      <div class="gotcha">
+        <strong>The title is being applied to jobs that aren't this job</strong>
+        <p>Solutions architects, sales engineers, and implementation consultants are all now posted under the FDE label. The discriminator is production code and durable accountability &mdash; nothing else.</p>
+      </div>
+      <div class="gotcha">
+        <strong>It is a retention problem by design</strong>
+        <p>High travel, high stakes, unfamiliar codebases, customer politics. Organisations that run it well have a defined exit path back into product engineering. Those that don't lose the person and the field knowledge together.</p>
+      </div>
+      <div class="gotcha">
+        <strong>Compensation data is a mess</strong>
+        <p>Ranges reported for the same role and level differ by more than 2&times; across sources, all US-centric and largely recruiter-published. Treat any published band as directional at best; the honest signal is that the frontier labs budget these as product-engineering roles, not consulting roles.</p>
+      </div>
+      <div class="gotcha">
+        <strong>The role is a product-management input channel most orgs never wire up</strong>
+        <p>If field learning has no route into the roadmap, you have expensive contractors, not FDEs. The feedback loop is not optional plumbing; it's half the economic case.</p>
+      </div>
+      <div class="gotcha">
+        <strong>"Embedded" has a security perimeter</strong>
+        <p>Anduril's cleared variant exists because the standard model doesn't survive contact with classified environments. The same applies to any regulated customer &mdash; the access model is the first thing to design, not the last.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 09 SA CONTEXT -->
+<section id="sa-context">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">09 &middot; South African context</div>
+      <h2 class="section-title">Well-suited to SA delivery, at odds with how SA prices it.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>The FDE model is a description of what good South African delivery already looks like when it's done well: a strong engineer, embedded, writing production code in the customer's repo, accountable after go-live. The constraint is not talent &mdash; it's the <strong>commercial model</strong>. Time-and-materials integration work and fixed-scope deliverables both incentivise exit-at-handover, which is the exact behaviour the FDE role exists to prevent. Adopting the role means changing how the engagement is priced, not just what the engineer is called.</p>
+    </div>
+    <div class="info-card rose fade-up" style="transition-delay: 0.08s">
+      <h4>The feedback-loop condition</h4>
+      <p>The FDE model pays for itself twice &mdash; once on the engagement, once when field learning improves the product. A firm with no product of its own collects only the first payoff, which makes the model <em>worse</em> value for a pure services shop than for a platform vendor. Any SA firm adopting the label should be honest about which of those it is.</p>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.1s">
+      <h4>Data residency and access is a week-zero problem</h4>
+      <p>The role requires repo and production-data access inside the customer's environment. Under POPIA that is a processing arrangement that must be papered <em>before</em> week one, not after. For financial-services customers the access model has to survive an FSCA review. The upside is the one the <a href="../../software/orchestrating-agents.html" style="color: var(--rose-glow);">orchestrating-agents</a> leaf names: the PR trail and the versioned spec the engineer produces <em>is</em> the change-control record the reviewer wants.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 10 CONNECTIONS -->
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">10 &middot; 2&#x207F; Perspective</div>
+      <h2 class="section-title">How this node connects in the tree.</h2>
+      <p class="section-lede">The FDE is the person; the software branch is the practice they work inside. This leaf defines the role; the practice leaves define how the work gets done.</p>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="../" class="connect-node">
+        <span class="tag">people/ai-roles</span>
+        <div class="skill">AI roles hub</div>
+        <div class="why">The parent branch &mdash; the map of which AI job titles are real. The FDE is the first role defined; five more sit as stubs.</div>
+      </a>
+      <a href="../../software/orchestrating-agents.html" class="connect-node">
+        <span class="tag">software/orchestrating-agents</span>
+        <div class="skill">Orchestrating agents</div>
+        <div class="why">The practice to this leaf's person. Its "name an owner" paragraph is a role claim; this branch is where the role gets a job description. Cross-linked both ways.</div>
+      </a>
+      <a href="../../software/planning-with-agents.html" class="connect-node">
+        <span class="tag">software/planning-with-agents</span>
+        <div class="skill">Planning with agents</div>
+        <div class="why">The spec-as-prompt discipline an FDE lives inside &mdash; the backlog as executable specification, which is also the change-control artifact.</div>
+      </a>
+      <a href="../../agents/mcp.html" class="connect-node">
+        <span class="tag">agents/mcp</span>
+        <div class="skill">Model Context Protocol</div>
+        <div class="why">MCP servers are a named FDE deliverable in the modern lab postings &mdash; the integration the engineer ships into the customer's environment.</div>
+      </a>
+      <div class="connect-node soon">
+        <span class="tag">people/ai-roles/context-engineer</span>
+        <div class="skill">Context / eval engineer</div>
+        <div class="why">The skill an FDE is hired on &mdash; retrieval, state, tool-catalogue design, evals. Ships next on this branch.</div>
+      </div>
+      <div class="connect-node soon">
+        <span class="tag">people/ai-roles/title-inflation</span>
+        <div class="skill">Title inflation</div>
+        <div class="why">How to tell an FDE posting from a solutions-architect posting wearing the label. The branch's honesty valve.</div>
+      </div>
+      <a href="../../biz/hr/" class="connect-node">
+        <span class="tag">biz/hr</span>
+        <div class="skill">HR value chain</div>
+        <div class="why">The hiring side &mdash; where a role definition becomes a req, an interview loop, and a retention plan.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 11 RESOURCES -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">11 &middot; Resources</div>
+      <h2 class="section-title">Primary and near-primary only.</h2>
+      <p class="section-lede">Job postings are the primary source for what the role actually is. Recruiter content is used only to corroborate, never as the sole source of a claim &mdash; and the salary figures it leads with are omitted here by design.</p>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://newsletter.pragmaticengineer.com/p/forward-deployed-engineers" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Analysis &middot; independent</span>
+        <span class="r-title">The Pragmatic Engineer &mdash; Forward Deployed Engineers (Nov 2025)</span>
+        <span class="r-url">newsletter.pragmaticengineer.com</span>
+      </a>
+      <a href="https://www.palantir.com/careers/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Primary &middot; postings</span>
+        <span class="r-title">Palantir careers &mdash; Forward Deployed roles</span>
+        <span class="r-url">palantir.com/careers</span>
+      </a>
+      <a href="https://www.anthropic.com/careers" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Primary &middot; postings</span>
+        <span class="r-title">Anthropic careers &mdash; Applied AI / Forward Deployed</span>
+        <span class="r-url">anthropic.com/careers</span>
+      </a>
+      <a href="https://openai.com/careers/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Primary &middot; postings</span>
+        <span class="r-title">OpenAI careers &mdash; Forward Deployed Engineer</span>
+        <span class="r-url">openai.com/careers</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../../index.html">Skills tree</a>
+      <a href="../">AI roles</a>
+      <a href="../../software/orchestrating-agents.html">Orchestrating agents</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme() {
+    const html = document.documentElement;
+    const current = html.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
+    localStorage.setItem('theme', next);
+  }
+  const saved = localStorage.getItem('theme');
+  if (saved) {
+    document.documentElement.setAttribute('data-theme', saved);
+    document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '☀️' : '🌙';
+  }
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>

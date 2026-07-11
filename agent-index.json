@@ -3,7 +3,7 @@
   "description": "The public knowledge tree for the 2nth.ai ecosystem. Every leaf is both a human-readable reference and an agent-consumable context document.",
   "agent_fetch": "https://know.2nth.ai/api/context/<domain>/<leaf>",
   "mcp": "https://know.2nth.ai/mcp",
-  "count": 188,
+  "count": 190,
   "items": [
     {
       "title": "Agents — know.2nth.ai",
@@ -822,12 +822,28 @@
       "fetch": "partners/odek-leap-demo"
     },
     {
+      "title": "AI roles — know.2nth.ai",
+      "description": "AI roles — the new engineering roles, mapped honestly. Around thirty-five AI job titles are in circulation; behind them sit three or four actual jobs. The programmer role did not get replaced, it got decomposed and the pieces were renamed. Forward Deployed Engineer is live; context/eval engineer, AI product manager, agent manager, scrum master and title inflation are stubs. Read the responsibilities, never the title.",
+      "domain": "people",
+      "kind": "hub",
+      "url": "https://know.2nth.ai/explainers/people/ai-roles/",
+      "fetch": "people/ai-roles"
+    },
+    {
       "title": "People — know.2nth.ai",
       "description": "The People domain of the 2nth skill tree — coaching, leadership, teams, organisational psychology. The discipline of growing humans, expressed as the same kind of skills tree as the technical domains.",
       "domain": "people",
       "kind": "hub",
       "url": "https://know.2nth.ai/explainers/people/",
       "fetch": "people"
+    },
+    {
+      "title": "Forward Deployed Engineer — know.2nth.ai",
+      "description": "The Forward Deployed Engineer (FDE): an engineer embedded in the customer's org who writes production code against their data, stays on it after it ships, and routes field learning back into the product. The role Palantir built around 2005, now standard across the frontier AI labs. What it is, how it differs from a consultant and a solutions engineer, the five-verb loop, and when to skip it — with the South African commercial-model reality.",
+      "domain": "people",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/people/ai-roles/forward-deployed-engineer",
+      "fetch": "people/ai-roles/forward-deployed-engineer"
     },
     {
       "title": "The Enneagram — know.2nth.ai",
