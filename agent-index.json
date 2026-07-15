@@ -3,7 +3,7 @@
   "description": "The public knowledge tree for the 2nth.ai ecosystem. Every leaf is both a human-readable reference and an agent-consumable context document.",
   "agent_fetch": "https://know.2nth.ai/api/context/<domain>/<leaf>",
   "mcp": "https://know.2nth.ai/mcp",
-  "count": 190,
+  "count": 192,
   "items": [
     {
       "title": "Agents — know.2nth.ai",
@@ -772,6 +772,22 @@
       "kind": "leaf",
       "url": "https://know.2nth.ai/explainers/fin/compliance",
       "fetch": "fin/compliance"
+    },
+    {
+      "title": "Legal — know.2nth.ai",
+      "description": "The Legal domain of the 2nth skill tree — commercial and contracts, disputes, corporate and M&A, employment, IP, and data privacy. A domain where getting it wrong isn't an option, so the bar is verification, grounding, and residency before capability. The first live leaf is Legal AI: where the value actually lands.",
+      "domain": "leg",
+      "kind": "hub",
+      "url": "https://know.2nth.ai/explainers/leg/",
+      "fetch": "leg"
+    },
+    {
+      "title": "Legal AI — know.2nth.ai",
+      "description": "Legal AI in 2026 — where the value actually lands. The tasks it does well (drafting, summarisation, due diligence, data extraction, translation), the honest read on the vendor-commissioned evidence, the competitive landscape (Harvey, Legora, CoCounsel, Lexis+ AI, Spellbook, Luminance), why the real disruption is the business model not the chatbot, how to measure value without fooling yourself, and the POPIA / legal-privilege / residency reality for South African firms. Getting it wrong isn't an option, so verification and grounding come first.",
+      "domain": "leg",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/leg/legal-ai",
+      "fetch": "leg/legal-ai"
     },
     {
       "title": "Media — know.2nth.ai",
