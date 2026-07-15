@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Legal AI &mdash; know.2nth.ai</title>
+<meta name="description" content="Legal AI in 2026 — where the value actually lands. The tasks it does well (drafting, summarisation, due diligence, data extraction, translation), the honest read on the vendor-commissioned evidence, the competitive landscape (Harvey, Legora, CoCounsel, Lexis+ AI, Spellbook, Luminance), why the real disruption is the business model not the chatbot, how to measure value without fooling yourself, and the POPIA / legal-privilege / residency reality for South African firms. Getting it wrong isn't an option, so verification and grounding come first.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/leg/legal-ai">
+<meta property="og:title" content="Legal AI — where the value actually lands · know.2nth.ai">
+<meta property="og:description" content="The tasks legal AI does well, the honest read on the evidence, the landscape (Harvey, Legora, CoCounsel, Lexis+), why the business model is the real disruption, and the POPIA / privilege / residency reality for SA firms.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai — The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Legal AI — where the value actually lands · know.2nth.ai">
+<meta name="twitter:description" content="The tasks legal AI does well, the honest read on the evidence, the landscape, why the business model is the real disruption, and the POPIA / privilege / residency reality for SA firms.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%23F43F5E' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%23FB7185' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33;
+    --blue: #2563EB; --blue-glow: #3B82F6;
+    --sky: #38BDF8; --sky-muted: #7DD3FC;
+    --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8;
+    --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12);
+    --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12);
+    --violet: #8B5CF6; --violet-soft: rgba(139, 92, 246, 0.12);
+    --rose: #F43F5E; --rose-glow: #FB7185; --rose-soft: rgba(244, 63, 94, 0.12);
+    --bg: var(--ink); --bg-raised: var(--navy);
+    --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(244, 63, 94, 0.06);
+    --text-primary: var(--paper); --text-secondary: var(--slate);
+    --text-muted: #64748B;
+    --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(244, 63, 94, 0.3);
+    --max-w: 1200px; --read-w: 760px;
+    --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px;
+    --domain: var(--rose); --domain-glow: var(--rose-glow);
+  }
+  [data-theme="light"] {
+    --bg: #F1F5F9; --bg-raised: #FFFFFF;
+    --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(244, 63, 94, 0.04);
+    --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8;
+    --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(244, 63, 94, 0.25);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.rose { width: 600px; height: 600px; background: var(--rose); top: -200px; right: -100px; }
+  .glow-orb.warm { width: 500px; height: 500px; background: var(--warm); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--rose), var(--warm)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--rose-glow); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--rose-glow); }
+
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .read { max-width: var(--read-w); }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--rose-glow); }
+  .crumb-sep { opacity: 0.5; }
+  .crumb-current { color: var(--text-secondary); }
+
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--rose-glow); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--rose); box-shadow: 0 0 12px var(--rose); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--rose), var(--rose-glow), var(--warm)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.accent { background: var(--rose-soft); color: var(--rose-glow); border-color: rgba(244, 63, 94, 0.25); }
+
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--rose-glow); margin-bottom: 14px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--rose-glow); }
+
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); margin-bottom: 20px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.rose { border-left: 3px solid var(--rose); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+
+  .types-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; max-width: 1100px; }
+  .type-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px 22px; transition: all 0.3s; }
+  .type-card:hover { border-color: var(--border-hover); }
+  .type-card .num { font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 700; background: linear-gradient(135deg, var(--rose), var(--rose-glow)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1; margin-bottom: 8px; }
+  .type-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.2px; }
+  .type-card .triad { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; display: block; }
+  .type-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 8px; }
+  .type-card .arrows { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); padding-top: 8px; border-top: 1px solid var(--border); display: flex; gap: 14px; }
+  .type-card .arrows .grow { color: var(--green); }
+  .type-card .arrows .stress { color: var(--rose); }
+
+  .triad-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; max-width: var(--read-w); }
+  .triad { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 24px; }
+  .triad-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--rose-glow); margin-bottom: 8px; }
+  .triad h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+  .triad .types-list { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--rose-glow); margin-bottom: 12px; }
+  .triad p { font-size: 13px; color: var(--text-secondary); line-height: 1.65; }
+
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: var(--read-w); margin-bottom: 20px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--rose-glow); background: rgba(244, 63, 94, 0.04); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); }
+  .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--rose-glow); }
+
+  .gotcha-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 12px; }
+  .gotcha { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--rose); border-radius: var(--radius-md); padding: 18px 22px; }
+  .gotcha strong { display: block; color: var(--text-primary); font-weight: 600; font-size: 14px; margin-bottom: 6px; }
+  .gotcha p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+  .connect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .connect-node { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; transition: all 0.3s; text-decoration: none; color: inherit; display: block; }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node.soon { cursor: default; opacity: 0.72; }
+  .connect-node.soon:hover { border-color: var(--border); background: var(--bg-card); }
+  .connect-node .tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--rose-glow); word-break: break-all; }
+
+  .decision-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: var(--read-w); }
+  @media (max-width: 720px) { .decision-grid { grid-template-columns: 1fr; } }
+  .decision-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 24px; }
+  .decision-card.use { border-left: 3px solid var(--green); }
+  .decision-card.skip { border-left: 3px solid var(--rose); }
+  .decision-card h4 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 12px; }
+  .decision-card.use h4 { color: var(--green); }
+  .decision-card.skip h4 { color: var(--rose); }
+  .decision-card ul { list-style: none; padding: 0; }
+  .decision-card li { font-size: 13px; color: var(--text-secondary); line-height: 1.6; padding: 6px 0; border-bottom: 1px solid var(--border); }
+  .decision-card li:last-child { border-bottom: none; }
+
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--rose), var(--warm)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--rose-glow); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } .compare { font-size: 12px; } .compare th, .compare td { padding: 10px 12px; } }
+
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+<div class="glow-orb rose"></div>
+<div class="glow-orb warm"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand">
+      <span class="nav-brand-mark">know.2nth.ai</span>
+      <span class="nav-brand-sub">leg/legal-ai</span>
+    </a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">&larr; Legal</a>
+      <a href="../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x2600;&#xFE0F;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="../../index.html#domains">Legal</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="./">leg</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">Legal AI</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> leg/legal-ai &middot; Skill Leaf</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      Legal AI: where the value <span class="gradient">actually lands.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      Legal AI stopped being experimental and became, in the words of one firm, "table stakes." But the honest picture is narrower and more useful than the marketing: the value shows up in <strong>specific tasks</strong> &mdash; drafting, summarisation, due diligence, data extraction, translation &mdash; the moat is <strong>fluency, not the tool</strong>, and the real disruption is to the <strong>billable-hour business model</strong>. This is a category map, not a product pitch: what the tools do, how to read the evidence, and the POPIA-and-privilege reality of running any of it in a South African firm &mdash; a domain where getting it wrong isn't an option.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill accent">Live</span>
+      <span class="pill">Harvey &middot; Legora &middot; CoCounsel</span>
+      <span class="pill">Drafting &middot; DD &middot; extraction</span>
+      <span class="pill">The billable hour</span>
+      <span class="pill">POPIA &middot; privilege</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 -->
+<section id="what">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; Where the value lands</div>
+      <h2 class="section-title">A handful of tasks, not "legal work" in general.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>The single most useful thing to understand about legal AI is that it is not, yet, good at "being a lawyer." It is good at a specific, recurring set of <strong>tasks</strong> inside legal work &mdash; and knowing which ones is the whole buying decision. Across the largest independent usage study to date (RSGI, commissioned by Harvey, November 2025), the tasks that consistently produced value were the same five, in roughly this order.</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.08s">
+      <table class="compare">
+        <thead><tr><th>Task</th><th>What the tool does</th><th>Where it lands hardest</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Drafting</strong></td><td>First-pass clauses, correspondence, memos from a brief</td><td>Transactional practice; high-volume, template-adjacent work</td></tr>
+          <tr><td><strong>Summarisation</strong></td><td>Condensing long documents and matters to their operative points</td><td>Litigation, board packs, incoming instructions</td></tr>
+          <tr><td><strong>Document review / due diligence</strong></td><td>Reading a data room, flagging issues, building the issues matrix</td><td>M&amp;A, financing, the top in-house use case</td></tr>
+          <tr><td><strong>Data extraction</strong></td><td>Pulling defined fields from many contracts at once</td><td>Data-heavy matters; where the biggest time savings are reported</td></tr>
+          <tr><td><strong>Translation</strong></td><td>Working across languages in client correspondence and documents</td><td>Cross-border firms; non-English-first jurisdictions</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.1s">
+      <p>Notice what is <em>not</em> on that list: judgement, strategy, advocacy, and the client relationship. The study's participants were emphatic that the top benefits were about work fulfilment, time, and client time &mdash; not the work product replacing the lawyer. The value is in clearing the drudgery so the judgement has room to happen.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 -->
+<section id="evidence">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; The evidence, and how to read it</div>
+      <h2 class="section-title">The best data we have is also vendor-commissioned. Both are true.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>The most cited data point in the market right now is the RSGI study &mdash; 40 organisations (29 law firms, 11 in-house), interviewed September&ndash;October 2025. Its headline findings are striking: <strong>68% of organisations saw measurable benefit within three months</strong>, "power users" (typically 20&ndash;30% of lawyers) reported roughly <strong>double the time savings</strong> of standard users, average monthly usage of purchased licences ran around <strong>92%</strong>, and <strong>100% of law-firm participants</strong> agreed their lawyers would be upset if the tool were taken away.</p>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.08s">
+      <h4>How to read a vendor-commissioned study</h4>
+      <p>Those numbers are useful, and they are not neutral. The study was <strong>commissioned by Harvey</strong> and scoped to <strong>Harvey's own customers</strong> &mdash; so there is no control group, no comparison against firms that <em>didn't</em> buy, and built-in survivorship bias (only customers who bought and kept the tool were asked). Time savings are <strong>self-estimated</strong> by participants, usage data was <strong>supplied by the vendor</strong>, and the in-house sample (n=11) is small enough that the report itself calls it "less robust." Read it as a well-run study of <em>satisfied buyers</em>, not as proof of category-wide ROI. The structural findings &mdash; task fit, the power-user curve, the business-model shift &mdash; corroborate what practitioners report elsewhere; the specific percentages should carry the asterisk, not the argument.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 -->
+<section id="landscape">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; The landscape</div>
+      <h2 class="section-title">Not one tool. A field with distinct shapes.</h2>
+      <p class="section-lede">"Legal AI" is several different products wearing one label. The buying decision turns on whether your work ends in a draft, a data-room review, or a filing that needs a defensible source trail. The strengths below are drawn from independent market coverage (2026) &mdash; comparison analysis, not primary benchmarks &mdash; and the market moves quarterly.</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead><tr><th>Tool</th><th>Shape</th><th>Strongest at</th><th>Grounding</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Harvey</strong></td><td>Enterprise firm + in-house platform</td><td>High-volume review, issue tracking, breadth; the "Swiss army knife"</td><td>Model-based; Vault for documents</td></tr>
+          <tr><td><strong>Legora</strong></td><td>Enterprise platform</td><td>Tabular / matrix review, cross-border and multilingual matters</td><td>Model-based</td></tr>
+          <tr><td><strong>CoCounsel</strong> (Thomson Reuters)</td><td>Research engine</td><td>Answers grounded in trusted legal content; the defensible source trail</td><td>Database-grounded</td></tr>
+          <tr><td><strong>Lexis+ AI</strong> / Protégé (LexisNexis)</td><td>Research engine</td><td>Citation-backed research where the answer ends in a filing</td><td>Database-grounded</td></tr>
+          <tr><td><strong>Spellbook</strong></td><td>Word-native drafting/review</td><td>Transactional drafting and markup inside the document</td><td>Model-based, in-Word</td></tr>
+          <tr><td><strong>Luminance &middot; Robin AI</strong></td><td>Contract specialists</td><td>Contract review, negotiation, and lifecycle management</td><td>Model-based, contract-tuned</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="info-card rose fade-up" style="transition-delay: 0.08s">
+      <h4>The grounding distinction that decides the purchase</h4>
+      <p>The sharpest line in the field is <strong>model-based vs database-grounded</strong>. Harvey, Legora and Spellbook reason with a model over <em>your</em> documents &mdash; excellent for drafting and review, but the authority is only as good as what you fed it. CoCounsel and Lexis+ AI ground answers in a licensed corpus of case law and statute, so the output carries a <strong>citable source trail</strong>. If the work ends in advice or a filing that has to survive scrutiny, database grounding changes the decision. Many firms run both, for different jobs.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 -->
+<section id="business-model">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; The real disruption</div>
+      <h2 class="section-title">The chatbot is table stakes. The business model is the story.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>The finding that matters most is not a productivity number &mdash; it's a market one. A US firm in the study described the tool as <strong>"table stakes, not a differentiator."</strong> When the capability is table stakes, the competition moves to how you <em>price and package</em> it, and legal AI is quietly prising apart the billable hour. The study documented firms moving to <strong>fixed-fee and managed-service models</strong> (A&amp;O Shearman's ContractMatrix and Vantage), <strong>subscription pricing</strong>, <strong>first-pass due diligence as a standalone service</strong>, and <strong>workflow-based pricing</strong> for repetitive work &mdash; all priced on outcome, not hours.</p>
+      <p>The mechanism is simple and uncomfortable: AI is absorbing the <strong>commodified mid-tier work</strong> that used to fill associate hours, which lets firms price that work competitively and reserve the hourly premium for genuine judgement. The firms leaning in are taking on <em>previously unprofitable</em> mid-tier mandates to win larger ones later. This is the same move the <a href="../../briefings/strangle-the-licence" style="color: var(--rose-glow);">strangle-the-licence</a> pattern describes, arriving in the one profession whose entire economics were built on billing time.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 -->
+<section id="power-users">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; The fluency curve</div>
+      <h2 class="section-title">The moat is the people who use it well.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Across the study, the same pattern appeared everywhere: value compounds with fluency. "Power users" &mdash; roughly <strong>20&ndash;30% of lawyers</strong> at a firm &mdash; delivered about <strong>double</strong> the time savings of standard users, and firms with the longest tenure showed the highest impact. This is the "Harvey fluency curve," and it is the same shape the software branch describes for coding agents: the tool is undifferentiated; the <strong>skill of the operator</strong> is where the returns live.</p>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.08s">
+      <h4>Why this is the strategic point, not a training footnote</h4>
+      <p>If power users deliver twice the return and are a minority of the firm, then the highest-leverage investment is not more licences &mdash; it's <strong>deliberately growing the power-user cohort</strong>: internal case studies, named champions, and the "use it or lose it" licence reallocation the best-run firms already practise. The tool is bought once; the fluency compounds. This is the legal-sector expression of the tree's recurring thesis: <a href="../agents/owning-ai" style="color: var(--rose-glow);">own the harness and the talent</a>, rent the model.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 -->
+<section id="measurement">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; Measuring value without fooling yourself</div>
+      <h2 class="section-title">Adoption is a proxy. It is not proof.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>The uncomfortable subtext of the whole study is that the sector <strong>cannot yet measure ROI cleanly</strong> &mdash; only a fifth of participants had a formal framework. Firms fall back on adoption rate, intensity of usage, and power-user performance as proxies, plus self-estimated time savings. One participant put the problem exactly: <em>"how would you measure the value of Microsoft Word?"</em> Once a tool is embedded in the workflow, its value becomes real and unmeasurable at the same time.</p>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.08s">
+      <h4>The honest measurement stance</h4>
+      <p>Treat self-reported hours saved as directional, never as banked savings &mdash; time saved on a first draft is partly repaid in <strong>verification</strong>, and the net is what matters. Watch adoption and intensity as leading indicators, but hold that <strong>usage is not value</strong>: a licence used daily on low-stakes work is not the same return as one used weekly on a bet-the-company matter. The defensible metrics are the boring ones &mdash; matters delivered, cycle time on merged work product, realisation on fixed-fee mandates &mdash; not a headline hours-saved figure that no one can reconcile.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 07 -->
+<section id="decision">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; Decision guide</div>
+      <h2 class="section-title">When legal AI earns its place. When to hold back.</h2>
+      <p class="section-lede">This is a domain where getting it wrong isn't an option, so the "skip" cases carry more weight than the "use" cases.</p>
+    </div>
+    <div class="decision-grid fade-up" style="transition-delay: 0.05s">
+      <div class="decision-card use">
+        <h4>Reach for it when</h4>
+        <ul>
+          <li>The work is high-volume drafting, summarisation, due diligence, or data extraction &mdash; the tasks it actually does well.</li>
+          <li>A human verification step is built into the workflow, not bolted on afterwards.</li>
+          <li>You can invest in growing a power-user cohort, not just buying seats.</li>
+          <li>The commercial upside is repackaging commodity work as fixed-fee or managed service, not just internal speed.</li>
+          <li>For research that ends in a filing, you choose a database-grounded tool with a citable source trail.</li>
+        </ul>
+      </div>
+      <div class="decision-card skip">
+        <h4>Hold back when</h4>
+        <ul>
+          <li><strong>The answer must be authoritative and you'd use a model-based tool.</strong> Ungrounded output in a citation-critical matter is a malpractice risk, not a shortcut.</li>
+          <li><strong>Privilege and data residency aren't solved.</strong> If client documents cross a boundary you can't account for, the access model is the first thing to design &mdash; see &sect;09.</li>
+          <li><strong>There's no capacity to verify.</strong> Time saved that no one checks is risk transferred to the client, in a zero-tolerance domain.</li>
+          <li><strong>You're buying the label to look modern.</strong> A tool used daily on trivial work while the real matters stay manual is adoption theatre.</li>
+          <li><strong>You're treating self-reported hours as banked savings.</strong> Model the verification tax and the net, or you'll over-promise the board.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 08 -->
+<section id="gotchas">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 &middot; Gotchas</div>
+      <h2 class="section-title">Where legal AI bites.</h2>
+    </div>
+    <div class="gotcha-list fade-up" style="transition-delay: 0.05s">
+      <div class="gotcha">
+        <strong>Hallucination in a zero-tolerance domain</strong>
+        <p>Model-based tools can invent a plausible clause, citation, or fact. In most fields that's an annoyance; in law it's a filed error with a client's name on it. Grounding and verification aren't optional extras &mdash; they're the product.</p>
+      </div>
+      <div class="gotcha">
+        <strong>The verification tax eats part of the saving</strong>
+        <p>Every draft the model produces still has to be read by someone accountable. The honest time saving is drafting time minus checking time &mdash; real, but smaller than the headline, and the study's participants said aggregating it across complex matters is genuinely hard.</p>
+      </div>
+      <div class="gotcha">
+        <strong>Vendor lock-in and unpublished pricing</strong>
+        <p>The enterprise tools run four-to-five figures per seat on annual contracts, and the market leader doesn't publish pricing at all &mdash; you negotiate. Workflows, prompt libraries, and integrations build switching cost fast. Own your document layer and evals so the model stays swappable.</p>
+      </div>
+      <div class="gotcha">
+        <strong>Privilege waiver by data path</strong>
+        <p>Legal professional privilege can be jeopardised if privileged material is processed somewhere it shouldn't be, or in a way that arguably shares it with a third party. The data path is a legal question before it's a technical one &mdash; design it before week one.</p>
+      </div>
+      <div class="gotcha">
+        <strong>Adoption theatre</strong>
+        <p>High usage numbers are easy to celebrate and easy to fake as value. A firm can hit 92% monthly usage on low-stakes drafting and see no change in realisation or client outcomes. Measure what shipped, not how many prompts ran.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 09 -->
+<section id="sa-context">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">09 &middot; South African context</div>
+      <h2 class="section-title">POPIA, privilege, and where the documents actually sit.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>The evidence base for legal AI is almost entirely US, UK, and European &mdash; the RSGI study included no South African firms &mdash; so the SA reality has to be reasoned from first principles, and it changes the buying order. For an SA firm, the first question is not "which tool is best" but "<strong>where do the privileged documents sit, and who can reach them</strong>."</p>
+    </div>
+    <div class="info-card rose fade-up" style="transition-delay: 0.08s">
+      <h4>Residency and privilege come before capability</h4>
+      <p>Client matter data is special personal information under POPIA and is often privileged. Sending it to a US-hosted model is both a cross-border transfer question (POPIA s.72) and a privilege-preservation question. The practical consequence is that the SA-viable options narrow to tools that can keep inference and storage in country &mdash; which is the same in-country footing the <a href="../tech/microsoft/copilot-sa" style="color: var(--rose-glow);">Copilot-in-SA</a> and <a href="../tech/microsoft/dataverse" style="color: var(--rose-glow);">Dataverse</a> leaves describe, and the reason the <a href="../../briefings/edge-first" style="color: var(--rose-glow);">Keep the Data Home</a> briefing exists. A brilliant tool you can't defend under POPIA is not an option for a regulated firm.</p>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.1s">
+      <h4>The market-shape mismatch</h4>
+      <p>The business-model shift the study documents &mdash; fixed-fee, managed services, subscription &mdash; assumes a market that already prices sophisticated legal work at a level where absorbing commodity work pays off. Much of the SA market still runs on time-and-materials and fixed-scope mandates that incentivise billing hours, not compressing them. An SA firm adopting legal AI to cut drafting time, without changing how it prices, hands the saving to the client and keeps none of it. The tooling is the easy part; the commercial model is the decision.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 10 -->
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">10 &middot; 2&#x207F; Perspective</div>
+      <h2 class="section-title">How this node connects in the tree.</h2>
+      <p class="section-lede">Legal AI is the legal-sector expression of theses the tree already holds: ground the model in owned data, own the harness not the weights, and keep the data in the country.</p>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="./" class="connect-node">
+        <span class="tag">leg/hub</span>
+        <div class="skill">Legal domain hub</div>
+        <div class="why">The parent domain &mdash; the practice areas legal AI sits under, and the evidence bar the whole branch holds.</div>
+      </a>
+      <a href="../agents/owning-ai" class="connect-node">
+        <span class="tag">agents/owning-ai</span>
+        <div class="skill">Owning AI &mdash; which slice you own</div>
+        <div class="why">Why the model is table stakes and the moat is the harness and the talent &mdash; the power-user curve, generalised.</div>
+      </a>
+      <a href="../agents/rearchitecture.html" class="connect-node">
+        <span class="tag">agents/rearchitecture</span>
+        <div class="skill">Agents, data &amp; trust</div>
+        <div class="why">Ground the tool in owned, structured matter data or it's confidently wrong &mdash; the grounding distinction, upstream.</div>
+      </a>
+      <a href="../tech/microsoft/copilot-sa.html" class="connect-node">
+        <span class="tag">tech/microsoft/copilot-sa</span>
+        <div class="skill">Copilot in South Africa</div>
+        <div class="why">The in-country inference story &mdash; the residency footing a POPIA-bound firm needs before it picks a legal-AI tool.</div>
+      </a>
+      <a href="../../briefings/edge-first" class="connect-node">
+        <span class="tag">briefings/edge-first</span>
+        <div class="skill">Keep the Data Home</div>
+        <div class="why">The plain-language POPIA answer &mdash; how to use global AI without client documents leaving South Africa.</div>
+      </a>
+      <a href="../../briefings/strangle-the-licence" class="connect-node">
+        <span class="tag">briefings/strangle-the-licence</span>
+        <div class="skill">Strangle the Licence</div>
+        <div class="why">The business-model move legal AI forces &mdash; repackaging commodity work off the billable hour.</div>
+      </a>
+      <a href="../people/ai-roles/forward-deployed-engineer.html" class="connect-node">
+        <span class="tag">people/ai-roles/forward-deployed-engineer</span>
+        <div class="skill">Forward Deployed Engineer</div>
+        <div class="why">How legaltech vendors actually deploy into a firm &mdash; embedded, accountable, feeding the field back into the product.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 11 -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">11 &middot; Resources</div>
+      <h2 class="section-title">The study, and the field it studied.</h2>
+      <p class="section-lede">The RSGI report is the load-bearing data source and is labelled for what it is &mdash; vendor-commissioned. Vendor sites are primary for what each tool claims to do; the market coverage is secondary and moves fast.</p>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://www.rsgi.co" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Study &middot; vendor-commissioned</span>
+        <span class="r-title">RSGI &mdash; Defining the Impact of Legal AI (Nov 2025, commissioned by Harvey)</span>
+        <span class="r-url">rsgi.co</span>
+      </a>
+      <a href="https://www.harvey.ai" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Vendor</span>
+        <span class="r-title">Harvey</span>
+        <span class="r-url">harvey.ai</span>
+      </a>
+      <a href="https://legora.com" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Vendor</span>
+        <span class="r-title">Legora</span>
+        <span class="r-url">legora.com</span>
+      </a>
+      <a href="https://legal.thomsonreuters.com/en/c/cocounsel" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Vendor &middot; research engine</span>
+        <span class="r-title">CoCounsel (Thomson Reuters)</span>
+        <span class="r-url">legal.thomsonreuters.com/&hellip;/cocounsel</span>
+      </a>
+      <a href="https://www.lexisnexis.com/en-us/products/lexis-plus-ai.page" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Vendor &middot; research engine</span>
+        <span class="r-title">Lexis+ AI (LexisNexis)</span>
+        <span class="r-url">lexisnexis.com &middot; lexis-plus-ai</span>
+      </a>
+      <a href="https://www.spellbook.legal" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Vendor &middot; Word-native</span>
+        <span class="r-title">Spellbook</span>
+        <span class="r-url">spellbook.legal</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../index.html">Skills tree</a>
+      <a href="./">Legal domain</a>
+      <a href="../../briefings/edge-first">Keep the Data Home</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant</p>
+  </div>
+</footer>
+<script>
+  function toggleTheme() {
+    const html = document.documentElement;
+    const current = html.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
+    localStorage.setItem('theme', next);
+  }
+  const saved = localStorage.getItem('theme');
+  if (saved) { document.documentElement.setAttribute('data-theme', saved); document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '☀️' : '🌙'; }
+  const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); }); }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>

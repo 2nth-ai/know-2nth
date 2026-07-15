@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Legal &mdash; know.2nth.ai</title>
+<meta name="description" content="The Legal domain of the 2nth skill tree — commercial and contracts, disputes, corporate and M&A, employment, IP, and data privacy. A domain where getting it wrong isn't an option, so the bar is verification, grounding, and residency before capability. The first live leaf is Legal AI: where the value actually lands.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/leg/">
+<meta property="og:title" content="Legal — know.2nth.ai">
+<meta property="og:description" content="The Legal domain — commercial, disputes, corporate, employment, IP, data privacy. Getting it wrong isn't an option. First live leaf: Legal AI, where the value actually lands.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai — The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Legal — know.2nth.ai">
+<meta name="twitter:description" content="The Legal domain — commercial, disputes, corporate, employment, IP, data privacy. Getting it wrong isn't an option. First live leaf: Legal AI.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%23F43F5E' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%23FB7185' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33;
+    --blue: #2563EB; --blue-glow: #3B82F6;
+    --sky: #38BDF8; --sky-muted: #7DD3FC;
+    --paper: #F8FAFC; --slate: #94A3B8;
+    --warm: #F59E0B; --warm-soft: rgba(245, 158, 11, 0.12);
+    --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12);
+    --violet: #8B5CF6; --violet-soft: rgba(139, 92, 246, 0.12);
+    --rose: #F43F5E; --rose-glow: #FB7185; --rose-soft: rgba(244, 63, 94, 0.12);
+    --bg: var(--ink); --bg-raised: var(--navy);
+    --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(244, 63, 94, 0.06);
+    --text-primary: var(--paper); --text-secondary: var(--slate);
+    --text-muted: #64748B;
+    --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(244, 63, 94, 0.3);
+    --max-w: 1200px;
+    --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px;
+    --domain: var(--rose); --domain-glow: var(--rose-glow);
+  }
+  [data-theme="light"] {
+    --bg: #F1F5F9; --bg-raised: #FFFFFF;
+    --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(244, 63, 94, 0.04);
+    --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8;
+    --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(244, 63, 94, 0.25);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.rose { width: 600px; height: 600px; background: var(--rose); top: -200px; right: -100px; }
+  .glow-orb.warm { width: 500px; height: 500px; background: var(--warm); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--rose), var(--warm)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--rose-glow); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--rose-glow); }
+
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--rose-glow); }
+  .crumb-sep { opacity: 0.5; }
+  .crumb-current { color: var(--text-secondary); }
+
+  .hub-hero { padding: 48px 0 64px; }
+  .hub-hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--rose-glow); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hub-hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--rose); box-shadow: 0 0 12px var(--rose); }
+  .hub-hero h1 { font-size: clamp(44px, 7vw, 72px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 24px; max-width: 14ch; }
+  .hub-hero h1 .gradient { background: linear-gradient(135deg, var(--rose), var(--rose-glow), var(--warm)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hub-hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.7; font-weight: 300; margin-bottom: 32px; }
+  .hub-stats { display: flex; gap: 32px; flex-wrap: wrap; }
+  .hub-stat { padding-right: 32px; border-right: 1px solid var(--border); }
+  .hub-stat:last-child { border-right: none; padding-right: 0; }
+  .hub-stat .num { font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 700; background: linear-gradient(135deg, var(--rose), var(--rose-glow)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1; margin-bottom: 6px; }
+  .hub-stat .label { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+
+  section.hub-section { padding: 48px 0 64px; position: relative; }
+  .hub-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--rose-glow); margin-bottom: 14px; }
+  .hub-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 14px; line-height: 1.2; }
+  .hub-lede { font-size: 16px; color: var(--text-secondary); max-width: 680px; line-height: 1.7; font-weight: 300; margin-bottom: 36px; }
+
+  .hub-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px; }
+  .hub-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 26px 28px; text-decoration: none; color: inherit; transition: all 0.3s; display: block; }
+  .hub-card:hover { border-color: var(--border-hover); transform: translateY(-2px); box-shadow: 0 10px 36px rgba(0, 0, 0, 0.08); }
+  .hub-card .state { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; padding: 3px 12px; border-radius: var(--radius-pill); display: inline-block; margin-bottom: 16px; font-weight: 600; }
+  .hub-card .state.live { background: var(--rose-soft); color: var(--rose-glow); }
+  .hub-card .state.stub { background: transparent; border: 1px dashed var(--border); color: var(--text-muted); }
+  .hub-card h3 { font-size: 19px; font-weight: 700; letter-spacing: -0.3px; margin-bottom: 10px; }
+  .hub-card h3 .path { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; color: var(--text-muted); margin-left: 8px; }
+  .hub-card p { font-size: 13.5px; color: var(--text-secondary); line-height: 1.65; margin-bottom: 16px; }
+  .hub-card .tags { display: flex; flex-wrap: wrap; gap: 5px; }
+  .hub-card .tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; padding: 3px 10px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-muted); }
+  .hub-card.soon { cursor: default; opacity: 0.72; }
+  .hub-card.soon:hover { transform: none; border-color: var(--border); box-shadow: none; }
+
+  .principle-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; max-width: 1000px; }
+  .principle { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 24px; }
+  .principle .num { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--rose-glow); letter-spacing: 1.5px; margin-bottom: 8px; }
+  .principle h4 { font-size: 16px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.2px; }
+  .principle p { font-size: 13px; color: var(--text-secondary); line-height: 1.65; }
+
+  .cross-links { display: flex; gap: 10px; flex-wrap: wrap; }
+  .cross-link { font-family: 'JetBrains Mono', monospace; font-size: 12px; padding: 10px 20px; border-radius: var(--radius-pill); border: 1px solid var(--border); background: var(--bg-card); text-decoration: none; color: var(--text-secondary); transition: all 0.3s; letter-spacing: 0.5px; }
+  .cross-link:hover { border-color: var(--border-hover); color: var(--rose-glow); transform: translateY(-1px); }
+  .cross-link.soon { opacity: 0.5; cursor: default; border-style: dashed; }
+  .cross-link.soon:hover { transform: none; color: var(--text-muted); border-color: var(--border); }
+
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 60px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--rose), var(--warm)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--rose-glow); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } .hub-stats { gap: 20px; } .hub-stat { padding-right: 20px; } }
+
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+<div class="glow-orb rose"></div>
+<div class="glow-orb warm"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand">
+      <span class="nav-brand-mark">know.2nth.ai</span>
+      <span class="nav-brand-sub">Legal</span>
+    </a>
+    <div class="nav-right">
+      <a href="../../index.html#domains" class="nav-link">&larr; Back to tree</a>
+      <a href="../../index.html#access" class="nav-link">Access</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x2600;&#xFE0F;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">Legal</span>
+  </div>
+</div>
+
+<!-- HUB HERO -->
+<section class="hub-hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> Legal &middot; Domain Hub &middot; 1 Live</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      The <span class="gradient">legal</span> branch.
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      Commercial and contracts, disputes, corporate and M&amp;A, employment, IP, and data privacy &mdash; the practice areas where getting it wrong isn't an option. That single fact sets the bar for the whole domain: <strong>verification, grounding, and data residency come before capability</strong>. The branch opens where the pressure is greatest right now &mdash; Legal AI, read as a category rather than a product pitch, with the POPIA and legal-privilege reality that the global studies leave out.
+    </p>
+    <div class="hub-stats fade-up" style="transition-delay: 0.15s">
+      <div class="hub-stat">
+        <div class="num">7</div>
+        <div class="label">Sub-categories</div>
+      </div>
+      <div class="hub-stat">
+        <div class="num">1</div>
+        <div class="label">Live explainer</div>
+      </div>
+      <div class="hub-stat">
+        <div class="num">14</div>
+        <div class="label">Domains in tree</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SUB-CATEGORIES -->
+<section class="hub-section">
+  <div class="container">
+    <div class="fade-up">
+      <div class="hub-label">01 &middot; Sub-categories</div>
+      <h2 class="hub-title">What's in this branch</h2>
+      <p class="hub-lede">Seven sub-categories under <code style="font-family: 'JetBrains Mono', monospace; font-size: 0.88em; color: var(--rose-glow);">leg/</code>. Legal AI is the first live leaf, because it is the question every practice area is currently asking. The practice-area leaves follow.</p>
+    </div>
+    <div class="hub-grid fade-up" style="transition-delay: 0.05s">
+
+      <a href="legal-ai.html" class="hub-card">
+        <span class="state live">1 live</span>
+        <h3>Legal AI &amp; practice tech <span class="path">leg/legal-ai</span></h3>
+        <p>Where the value actually lands &mdash; the tasks (drafting, DD, extraction), the honest read on the evidence, the landscape (Harvey, Legora, CoCounsel, Lexis+), why the business model is the real disruption, and the POPIA / privilege / residency reality for SA firms.</p>
+        <div class="tags">
+          <span class="tag">Harvey</span>
+          <span class="tag">Grounding</span>
+          <span class="tag">Billable hour</span>
+          <span class="tag">POPIA</span>
+        </div>
+      </a>
+
+      <div class="hub-card soon">
+        <span class="state stub">Stub</span>
+        <h3>Commercial &amp; contracts <span class="path">leg/commercial</span></h3>
+        <p>Contract drafting, review, and lifecycle; the standard clauses and the negotiated ones; where contract intelligence tools genuinely help and where they quietly introduce risk.</p>
+        <div class="tags">
+          <span class="tag">Contracts</span>
+          <span class="tag">CLM</span>
+          <span class="tag">Review</span>
+          <span class="tag">Clauses</span>
+        </div>
+      </div>
+
+      <div class="hub-card soon">
+        <span class="state stub">Stub</span>
+        <h3>Disputes &amp; litigation <span class="path">leg/disputes</span></h3>
+        <p>Case strategy, discovery and document review, summarisation of the record. The practice where AI summarisation lands hardest &mdash; and where an invented citation ends up in front of a judge.</p>
+        <div class="tags">
+          <span class="tag">Discovery</span>
+          <span class="tag">Summarisation</span>
+          <span class="tag">Strategy</span>
+          <span class="tag">Citations</span>
+        </div>
+      </div>
+
+      <div class="hub-card soon">
+        <span class="state stub">Stub</span>
+        <h3>Corporate &amp; M&amp;A <span class="path">leg/corporate</span></h3>
+        <p>Deal work, due diligence, the data room and the issues matrix. The top use case for in-house teams and the one where data extraction saves the most measurable time.</p>
+        <div class="tags">
+          <span class="tag">M&amp;A</span>
+          <span class="tag">Due diligence</span>
+          <span class="tag">Data rooms</span>
+          <span class="tag">Extraction</span>
+        </div>
+      </div>
+
+      <div class="hub-card soon">
+        <span class="state stub">Stub</span>
+        <h3>Employment &amp; labour <span class="path">leg/employment</span></h3>
+        <p>BCEA, LRA, disciplinary and IR work, policy drafting. High-volume, template-adjacent work &mdash; a natural fit for drafting tools, with the SA statutory overlay that generic tools miss.</p>
+        <div class="tags">
+          <span class="tag">BCEA / LRA</span>
+          <span class="tag">IR</span>
+          <span class="tag">Policy</span>
+          <span class="tag">Drafting</span>
+        </div>
+      </div>
+
+      <div class="hub-card soon">
+        <span class="state stub">Stub</span>
+        <h3>Data privacy &amp; POPIA <span class="path">leg/data-privacy</span></h3>
+        <p>POPIA compliance, cross-border transfer (s.72), processing agreements, and the transfer test that every AI-in-legal decision runs through. The legal substrate under the whole tree's residency work.</p>
+        <div class="tags">
+          <span class="tag">POPIA</span>
+          <span class="tag">s.72 transfer</span>
+          <span class="tag">Residency</span>
+          <span class="tag">Processing</span>
+        </div>
+      </div>
+
+      <div class="hub-card soon">
+        <span class="state stub">Stub</span>
+        <h3>Intellectual property <span class="path">leg/ip</span></h3>
+        <p>Trade marks, patents, copyright, and the new questions AI itself raises &mdash; training-data rights, authorship, and infringement in generated work. Doctrine meeting a moving target.</p>
+        <div class="tags">
+          <span class="tag">Trade marks</span>
+          <span class="tag">Copyright</span>
+          <span class="tag">AI &amp; IP</span>
+          <span class="tag">Authorship</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PRINCIPLES -->
+<section class="hub-section">
+  <div class="container">
+    <div class="fade-up">
+      <div class="hub-label">02 &middot; Principles</div>
+      <h2 class="hub-title">The opinions every leaf starts from.</h2>
+      <p class="hub-lede">Five positions that hold across the branch. Legal is the domain with the lowest tolerance for hype, because the cost of a confident error lands on a client.</p>
+    </div>
+    <div class="principle-grid fade-up" style="transition-delay: 0.05s">
+      <div class="principle">
+        <div class="num">01</div>
+        <h4>Getting it wrong isn't an option</h4>
+        <p>Legal AI is judged on verifiability and grounding, not fluency. A tool that produces a plausible, unsourced answer is a liability in this domain, not a shortcut.</p>
+      </div>
+      <div class="principle">
+        <div class="num">02</div>
+        <h4>The model is table stakes; the moat is how you use it</h4>
+        <p>The capability is becoming undifferentiated across vendors. The return lives in the power-user cohort and the workflows around the tool &mdash; not in which model you licensed.</p>
+      </div>
+      <div class="principle">
+        <div class="num">03</div>
+        <h4>The business model is the real disruption</h4>
+        <p>AI is prising apart the billable hour &mdash; fixed-fee, subscription, managed services. The technology change is smaller than the commercial one it forces.</p>
+      </div>
+      <div class="principle">
+        <div class="num">04</div>
+        <h4>Residency and privilege come first</h4>
+        <p>Under POPIA, client matter data is special personal information and often privileged. Where the documents sit and who can reach them is decided before any tool is chosen.</p>
+      </div>
+      <div class="principle">
+        <div class="num">05</div>
+        <h4>Vendor research is a starting point, not a verdict</h4>
+        <p>Most of the impressive legal-AI data is commissioned by the vendor and scoped to its own customers. Read the methodology; keep the structural findings, asterisk the numbers.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CROSS-LINKS -->
+<section class="hub-section">
+  <div class="container">
+    <div class="fade-up">
+      <div class="hub-label">03 &middot; Related domains</div>
+      <h2 class="hub-title">Where the legal branch connects</h2>
+      <p class="hub-lede">Legal sits on top of the tree's residency and agents work. Strongest links to the Agents and Tech domains (grounding and in-country inference), the People branch (the roles legaltech creates), and the briefings that translate POPIA and pricing for a decision-maker.</p>
+    </div>
+    <div class="cross-links fade-up" style="transition-delay: 0.05s">
+      <a href="../agents/" class="cross-link">Agents &rarr;</a>
+      <a href="../tech/microsoft/copilot-sa.html" class="cross-link">tech &middot; Copilot in SA &rarr;</a>
+      <a href="../people/ai-roles/" class="cross-link">people/ai-roles &rarr;</a>
+      <a href="../../briefings/edge-first" class="cross-link">Keep the Data Home &rarr;</a>
+      <a href="../biz/" class="cross-link">Business &rarr;</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../index.html">Skills tree</a>
+      <a href="legal-ai.html">Legal AI</a>
+      <a href="https://2nth.ai" target="_blank" rel="noopener">2nth.ai</a>
+      <a href="https://imbila.ai" target="_blank" rel="noopener">Imbila.AI</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant</p>
+  </div>
+</footer>
+<script>
+  function toggleTheme() {
+    const html = document.documentElement;
+    const current = html.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
+    localStorage.setItem('theme', next);
+  }
+  const saved = localStorage.getItem('theme');
+  if (saved) { document.documentElement.setAttribute('data-theme', saved); document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '☀️' : '🌙'; }
+  const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); }); }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>
