@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data privacy &amp; POPIA &mdash; know.2nth.ai</title>
+<meta name="description" content="POPIA — the Protection of Personal Information Act 4 of 2013 — is the law under every data-residency decision on this tree. The eight conditions for lawful processing, special personal information (s.26), the section 72 cross-border transfer test that gates every AI-in-legal choice, responsible party vs operator and the operator agreement you paper before a vendor touches data, how POPIA shapes an AI-use policy, and the enforcement reality under the Information Regulator (fines to R10m plus criminal liability).">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/leg/data-privacy">
+<meta property="og:title" content="Data privacy &amp; POPIA — know.2nth.ai">
+<meta property="og:description" content="POPIA is the law under every residency decision on this tree. The eight conditions, special personal information, the section 72 transfer test that gates every AI choice, operator agreements, AI-use policy, and the enforcement reality.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai — The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Data privacy &amp; POPIA — know.2nth.ai">
+<meta name="twitter:description" content="POPIA is the law under every residency decision on this tree. Eight conditions, special PI, the s.72 transfer test that gates every AI choice, operator agreements, and enforcement.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%23F43F5E' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%23FB7185' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33;
+    --blue: #2563EB; --blue-glow: #3B82F6;
+    --sky: #38BDF8; --sky-muted: #7DD3FC;
+    --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8;
+    --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12);
+    --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12);
+    --violet: #8B5CF6; --violet-soft: rgba(139, 92, 246, 0.12);
+    --rose: #F43F5E; --rose-glow: #FB7185; --rose-soft: rgba(244, 63, 94, 0.12);
+    --bg: var(--ink); --bg-raised: var(--navy);
+    --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(244, 63, 94, 0.06);
+    --text-primary: var(--paper); --text-secondary: var(--slate);
+    --text-muted: #64748B;
+    --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(244, 63, 94, 0.3);
+    --max-w: 1200px; --read-w: 760px;
+    --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px;
+    --domain: var(--rose); --domain-glow: var(--rose-glow);
+  }
+  [data-theme="light"] {
+    --bg: #F1F5F9; --bg-raised: #FFFFFF;
+    --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(244, 63, 94, 0.04);
+    --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8;
+    --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(244, 63, 94, 0.25);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.rose { width: 600px; height: 600px; background: var(--rose); top: -200px; right: -100px; }
+  .glow-orb.warm { width: 500px; height: 500px; background: var(--warm); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--rose), var(--warm)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--rose-glow); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--rose-glow); }
+
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .read { max-width: var(--read-w); }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--rose-glow); }
+  .crumb-sep { opacity: 0.5; }
+  .crumb-current { color: var(--text-secondary); }
+
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--rose-glow); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--rose); box-shadow: 0 0 12px var(--rose); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--rose), var(--rose-glow), var(--warm)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.accent { background: var(--rose-soft); color: var(--rose-glow); border-color: rgba(244, 63, 94, 0.25); }
+
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--rose-glow); margin-bottom: 14px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--rose-glow); }
+
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); margin-bottom: 20px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.rose { border-left: 3px solid var(--rose); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+
+  .types-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; max-width: 1100px; }
+  .type-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px 22px; transition: all 0.3s; }
+  .type-card:hover { border-color: var(--border-hover); }
+  .type-card .num { font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 700; background: linear-gradient(135deg, var(--rose), var(--rose-glow)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1; margin-bottom: 8px; }
+  .type-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.2px; }
+  .type-card .triad { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; display: block; }
+  .type-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 8px; }
+  .type-card .arrows { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); padding-top: 8px; border-top: 1px solid var(--border); display: flex; gap: 14px; }
+  .type-card .arrows .grow { color: var(--green); }
+  .type-card .arrows .stress { color: var(--rose); }
+
+  .triad-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; max-width: var(--read-w); }
+  .triad { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 24px; }
+  .triad-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--rose-glow); margin-bottom: 8px; }
+  .triad h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+  .triad .types-list { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--rose-glow); margin-bottom: 12px; }
+  .triad p { font-size: 13px; color: var(--text-secondary); line-height: 1.65; }
+
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: var(--read-w); margin-bottom: 20px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--rose-glow); background: rgba(244, 63, 94, 0.04); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); }
+  .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--rose-glow); }
+
+  .gotcha-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 12px; }
+  .gotcha { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--rose); border-radius: var(--radius-md); padding: 18px 22px; }
+  .gotcha strong { display: block; color: var(--text-primary); font-weight: 600; font-size: 14px; margin-bottom: 6px; }
+  .gotcha p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+  .connect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .connect-node { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; transition: all 0.3s; text-decoration: none; color: inherit; display: block; }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node.soon { cursor: default; opacity: 0.72; }
+  .connect-node.soon:hover { border-color: var(--border); background: var(--bg-card); }
+  .connect-node .tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--rose-glow); word-break: break-all; }
+
+  .decision-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: var(--read-w); }
+  @media (max-width: 720px) { .decision-grid { grid-template-columns: 1fr; } }
+  .decision-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 24px; }
+  .decision-card.use { border-left: 3px solid var(--green); }
+  .decision-card.skip { border-left: 3px solid var(--rose); }
+  .decision-card h4 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 12px; }
+  .decision-card.use h4 { color: var(--green); }
+  .decision-card.skip h4 { color: var(--rose); }
+  .decision-card ul { list-style: none; padding: 0; }
+  .decision-card li { font-size: 13px; color: var(--text-secondary); line-height: 1.6; padding: 6px 0; border-bottom: 1px solid var(--border); }
+  .decision-card li:last-child { border-bottom: none; }
+
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--rose), var(--warm)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--rose-glow); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } .compare { font-size: 12px; } .compare th, .compare td { padding: 10px 12px; } }
+
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+<div class="glow-orb rose"></div>
+<div class="glow-orb warm"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand">
+      <span class="nav-brand-mark">know.2nth.ai</span>
+      <span class="nav-brand-sub">leg/data-privacy</span>
+    </a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">&larr; Legal</a>
+      <a href="../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x2600;&#xFE0F;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="../../index.html#domains">Legal</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="./">leg</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">Data privacy &amp; POPIA</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> leg/data-privacy &middot; Skill Leaf</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      POPIA is the law under <span class="gradient">every residency decision.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      Everywhere this tree says "keep the data in the country," the reason is one statute: the <strong>Protection of Personal Information Act 4 of 2013</strong> &mdash; POPIA. It sets eight conditions for lawful processing, singles out special personal information for near-prohibition, and &mdash; the part that governs every AI decision &mdash; runs a <strong>cross-border transfer test in section 72</strong>. Every time you send a document to a US-hosted model, you are making a section 72 call, whether you know it or not. This leaf is the law itself, read for the AI era: the conditions, the transfer test, the operator agreement, and the policy that keeps a firm on the right side of it.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill accent">Live</span>
+      <span class="pill">Act 4 of 2013</span>
+      <span class="pill">8 conditions</span>
+      <span class="pill">s.72 transfer test</span>
+      <span class="pill">R10m + criminal</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 -->
+<section id="what">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; What it is</div>
+      <h2 class="section-title">South Africa's data-protection law, with real enforcement.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p><strong>POPIA</strong> &mdash; the Protection of Personal Information Act 4 of 2013 &mdash; is South Africa's comprehensive data-protection law. It commenced on 1 July 2020 with a one-year grace period, so it has been <strong>fully enforceable since 1 July 2021</strong>. It is broadly GDPR-shaped in structure without being identical, and it is now actively enforced by an independent regulator, not a paper commitment.</p>
+      <p>Two roles run through everything. The <strong>responsible party</strong> determines the purpose and means of processing personal information &mdash; the GDPR "controller." The <strong>operator</strong> processes personal information on the responsible party's behalf under a mandate &mdash; the GDPR "processor." An AI vendor that processes your documents is almost always an operator, and that relationship has to be papered (see &sect;05). Oversight sits with the <strong>Information Regulator (South Africa)</strong>, which investigates complaints, conducts assessments, issues enforcement notices, and can impose administrative fines.</p>
+    </div>
+    <div class="info-card rose fade-up" style="transition-delay: 0.08s">
+      <h4>Why this leaf sits under everything else</h4>
+      <p>Every residency claim elsewhere on the tree &mdash; <a href="../tech/microsoft/copilot-sa" style="color: var(--rose-glow);">Copilot in SA</a>, <a href="../tech/microsoft/dataverse" style="color: var(--rose-glow);">Dataverse</a>, the <a href="../../briefings/edge-first" style="color: var(--rose-glow);">Keep the Data Home</a> briefing, the <a href="legal-ai" style="color: var(--rose-glow);">Legal AI</a> leaf &mdash; is ultimately a POPIA argument. This node is the statute those leaves are reasoning from, so the residency posture they describe has a legal spine, not just a preference.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 -->
+<section id="conditions">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; The eight conditions</div>
+      <h2 class="section-title">Lawful processing has eight tests, not one.</h2>
+      <p class="section-lede">POPIA does not turn on "consent" alone &mdash; that is the most common misconception. Lawful processing means satisfying <strong>all eight conditions</strong> for the processing you are doing. An AI workflow has to clear every one of them.</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead><tr><th>#</th><th>Condition</th><th>What it demands</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td><strong>Accountability</strong></td><td>The responsible party must ensure the conditions are met &mdash; it stays liable even when an operator does the work.</td></tr>
+          <tr><td>2</td><td><strong>Processing limitation</strong></td><td>Process lawfully, minimally, with a justification (consent, contract, legal obligation, legitimate interest) &mdash; only what's necessary.</td></tr>
+          <tr><td>3</td><td><strong>Purpose specification</strong></td><td>Collect for a specific, explicit, lawful purpose; don't keep records longer than needed for it.</td></tr>
+          <tr><td>4</td><td><strong>Further processing limitation</strong></td><td>New uses must be compatible with the original purpose &mdash; the trap when data collected for one thing is fed to an AI tool for another.</td></tr>
+          <tr><td>5</td><td><strong>Information quality</strong></td><td>Keep personal information complete, accurate, and up to date for its purpose.</td></tr>
+          <tr><td>6</td><td><strong>Openness</strong></td><td>Be transparent &mdash; maintain documentation and notify data subjects about the processing.</td></tr>
+          <tr><td>7</td><td><strong>Security safeguards</strong></td><td>Secure the integrity and confidentiality of personal information; ensure operators do too, in writing.</td></tr>
+          <tr><td>8</td><td><strong>Data subject participation</strong></td><td>Data subjects can access, correct, and delete their information.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 03 -->
+<section id="special">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; Special personal information</div>
+      <h2 class="section-title">Some data is prohibited by default (s.26).</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Section 26 defines <strong>special personal information</strong> and prohibits processing it unless a specific exception applies (s.27) &mdash; consent, a legal claim, a public-interest research basis, and a few others. The categories are: <strong>religious or philosophical beliefs, race or ethnic origin, trade-union membership, political persuasion, health or sex life, biometric information, and criminal behaviour</strong>. Children's personal information gets its own heightened protection (ss.34&ndash;35).</p>
+      <p>This matters acutely for legal work and for AI. A litigation file routinely contains health data, criminal-behaviour information, and biometric identifiers; an HR matter contains trade-union and health data. Feeding that into an AI tool is not just processing personal information &mdash; it is processing <em>special</em> personal information, which starts from a prohibition and needs an exception plus every one of the eight conditions. The bar is higher, and "we had consent to store it" is not automatically consent to process it through a third-party model abroad.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 -->
+<section id="s72">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; The section 72 transfer test</div>
+      <h2 class="section-title">The clause every AI decision on this tree runs through.</h2>
+      <p class="section-lede">Section 72 restricts transferring personal information to a third party <strong>outside the Republic</strong>. Sending a prompt containing personal information to a model hosted in the US or the EU is such a transfer. It is lawful only on one of these bases &mdash; and you must be able to name which one.</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead><tr><th>Basis</th><th>When it applies</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Adequacy</strong></td><td>The recipient is subject to a law, binding corporate rules, or a binding agreement that provides substantially similar protection to POPIA. Note: unlike the EU, POPIA has <em>no published adequacy whitelist</em> &mdash; you assess and document it yourself.</td></tr>
+          <tr><td><strong>Consent</strong></td><td>The data subject consents to the specific transfer, informed of the risks. Real, specific consent &mdash; not a blanket clause buried in terms.</td></tr>
+          <tr><td><strong>Contractual necessity</strong></td><td>The transfer is necessary to perform or conclude a contract with the data subject, or a contract concluded in the data subject's interest between the responsible party and a third party.</td></tr>
+          <tr><td><strong>Benefit of the data subject</strong></td><td>The transfer is for the data subject's benefit, consent isn't reasonably practicable, and it would likely be given if it were.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.08s">
+      <h4>Why "keep it in country" is the clean answer</h4>
+      <p>Every s.72 basis is a documentable but <em>contestable</em> position &mdash; a regulator or a court can disagree with your adequacy assessment or your reliance on consent. The one posture that removes the question entirely is not making a cross-border transfer at all: keeping inference and storage <strong>inside South Africa</strong>. That is exactly why the tree's residency leaves point at <code>southafricanorth</code>, <code>africa-south1</code>, or on-prem &mdash; not because in-country is always cheaper, but because it turns a section 72 argument into a non-event.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 -->
+<section id="operator">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; The operator agreement</div>
+      <h2 class="section-title">Before a vendor touches the data, paper it.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>When an AI vendor processes personal information for you, it is your <strong>operator</strong>, and POPIA (ss.20&ndash;21) requires a <strong>written mandate</strong>: the operator must process only with your knowledge or authorisation, treat the information as confidential, and establish and maintain the security safeguards condition 7 demands. Crucially, <strong>accountability does not transfer</strong> &mdash; you remain the responsible party and remain liable if the operator leaks or misuses the data. Outsourcing the processing does not outsource the risk.</p>
+      <p>In practice this is a specific due-diligence checklist before any legal-AI tool goes near a matter: a signed operator/data-processing agreement, a named sub-processor list (where does it actually run?), the security posture in writing, breach-notification obligations, and a clear answer to the section 72 question above. This is the same "design the access model in week zero" discipline the <a href="../people/ai-roles/forward-deployed-engineer" style="color: var(--rose-glow);">Forward Deployed Engineer</a> leaf names &mdash; here it is a statutory requirement, not just good practice.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 -->
+<section id="policy">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; AI-use policy under POPIA</div>
+      <h2 class="section-title">Turning the statute into a rule people can follow.</h2>
+      <p class="section-lede">A firm or company can't ask every lawyer to run a section 72 analysis per prompt. POPIA has to be compiled down into an <strong>AI-use policy</strong> &mdash; a small set of rules that keep the eight conditions and the transfer test satisfied by default.</p>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.05s">
+      <h4>What an AI-use policy actually has to decide</h4>
+      <p>The load-bearing decisions, each traceable back to a POPIA condition: <strong>which tools are approved</strong> (and where they process &mdash; the s.72 gate); <strong>what may and may not be pasted in</strong> (special personal information and privileged material default to "no" without an approved, in-country tool); <strong>whether a transfer basis is documented</strong> for any tool that processes abroad; <strong>who the Information Officer is</strong> (POPIA requires one, registered with the Regulator, accountable for compliance); and <strong>how a processing impact is assessed</strong> before a new AI workflow goes live. Written once, it lets a lawyer act quickly and stay compliant, instead of guessing per matter &mdash; the legal-domain version of "the backlog is the interface."</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.08s">
+      <p>The point of the policy is not to say "no to AI." It is to make "yes" safe and fast: an approved, in-country tool for anything touching personal or privileged information, a documented transfer basis for anything else, and a named person accountable for both. Without it, every enthusiastic lawyer with a browser is an unmanaged section 72 exposure.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 07 -->
+<section id="decision">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; Decision guide</div>
+      <h2 class="section-title">When data can leave the country. When it can't.</h2>
+      <p class="section-lede">The section 72 test resolves, in practice, into a short set of rulings. The conservative reading is the defensible one in a regulated matter.</p>
+    </div>
+    <div class="decision-grid fade-up" style="transition-delay: 0.05s">
+      <div class="decision-card use">
+        <h4>A transfer is defensible when</h4>
+        <ul>
+          <li>The data carries no personal information at all &mdash; genuinely de-identified or public.</li>
+          <li>You've assessed and documented the recipient's protection as substantially similar (adequacy), and can defend that assessment.</li>
+          <li>You have specific, informed consent from the data subject for the transfer &mdash; not a buried blanket clause.</li>
+          <li>The transfer is genuinely necessary to perform a contract with, or in the interest of, the data subject.</li>
+          <li>A signed operator agreement and a named processing location back the whole arrangement.</li>
+        </ul>
+      </div>
+      <div class="decision-card skip">
+        <h4>Keep it in country when</h4>
+        <ul>
+          <li><strong>It's special personal information</strong> &mdash; health, criminal behaviour, biometrics. The prohibition default plus a foreign transfer is a bad combination to defend.</li>
+          <li><strong>It's privileged.</strong> Privilege and the transfer test compound; the safe move is not to move it.</li>
+          <li><strong>It's a regulated client</strong> (bank, insurer, health, public sector) whose own rules require in-country processing.</li>
+          <li><strong>You can't name the transfer basis.</strong> "The vendor is probably fine" is not a section 72 basis.</li>
+          <li><strong>An in-country option exists at acceptable cost.</strong> If <code>southafricanorth</code> or on-prem does the job, the transfer question is one you never have to answer.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 08 -->
+<section id="gotchas">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 &middot; Gotchas</div>
+      <h2 class="section-title">Where POPIA bites the unwary.</h2>
+    </div>
+    <div class="gotcha-list fade-up" style="transition-delay: 0.05s">
+      <div class="gotcha">
+        <strong>Consent is not the master key</strong>
+        <p>POPIA is not consent-based like some readings of GDPR. Consent is one justification among several, and it's fragile &mdash; it must be voluntary, specific, and informed, and it can be withdrawn. Building an AI workflow on "we got consent" alone usually fails one of the other seven conditions.</p>
+      </div>
+      <div class="gotcha">
+        <strong>The operator does not absorb your liability</strong>
+        <p>You can outsource the processing to an AI vendor; you cannot outsource accountability (condition 1). If the operator breaches, the responsible party answers to the Regulator and the data subject. The operator agreement manages the risk; it does not transfer it.</p>
+      </div>
+      <div class="gotcha">
+        <strong>There is no adequacy whitelist</strong>
+        <p>Unlike the EU's published adequacy decisions, POPIA leaves adequacy for you to assess and document per recipient. That's more work and more exposure &mdash; you own the judgement that a US vendor's protections are "substantially similar," and you may be wrong.</p>
+      </div>
+      <div class="gotcha">
+        <strong>Further processing is where AI trips</strong>
+        <p>Data lawfully collected for one purpose (say, onboarding) cannot simply be repurposed to train or prompt an AI tool for something else. Condition 4 requires the new use to be compatible with the original purpose &mdash; a check most "let's feed it to the model" initiatives skip.</p>
+      </div>
+      <div class="gotcha">
+        <strong>The Information Officer is mandatory and registrable</strong>
+        <p>Every responsible party has an Information Officer (by default the head of the organisation), who must be registered with the Information Regulator and is accountable for compliance. It is not an optional title, and an unregistered one is an early, visible failure.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 09 -->
+<section id="vs-gdpr">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">09 &middot; POPIA vs GDPR, and enforcement</div>
+      <h2 class="section-title">Similar shape, different edges &mdash; and real teeth now.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>POPIA is close enough to the GDPR that a GDPR programme transfers most of the way &mdash; the same lawful-basis logic, the same controller/processor split, the same data-subject rights. But the edges differ and the differences matter for AI. POPIA's cap on administrative fines is <strong>R10 million</strong> (versus the GDPR's percentage-of-turnover model), it adds <strong>criminal liability</strong> for certain offences, it has <strong>no adequacy whitelist</strong>, and it protects the personal information of <strong>juristic persons</strong> (companies), not only natural persons &mdash; a South African quirk with no GDPR equivalent.</p>
+      <p>The enforcement reality has shifted from theoretical to live. The Information Regulator, fully operational since mid-2021, has moved from guidance to action &mdash; enforcement notices, assessments, and the machinery to fine. Treating POPIA as a box-ticking exercise that no one checks is the posture that ages worst; a documented AI-use policy and a real transfer basis are what a regulator's first question looks for.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 10 -->
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">10 &middot; 2&#x207F; Perspective</div>
+      <h2 class="section-title">How this node connects in the tree.</h2>
+      <p class="section-lede">POPIA is the legal substrate under the tree's entire residency argument. Every "keep the data home" claim resolves here.</p>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="./" class="connect-node">
+        <span class="tag">leg/hub</span>
+        <div class="skill">Legal domain hub</div>
+        <div class="why">The parent domain. Data privacy is the practice area every other legal question runs its data through.</div>
+      </a>
+      <a href="legal-ai" class="connect-node">
+        <span class="tag">leg/legal-ai</span>
+        <div class="skill">Legal AI</div>
+        <div class="why">The tool decision. POPIA is the gate it has to clear &mdash; the s.72 test under every legal-AI purchase.</div>
+      </a>
+      <a href="../../briefings/edge-first" class="connect-node">
+        <span class="tag">briefings/edge-first</span>
+        <div class="skill">Keep the Data Home</div>
+        <div class="why">The plain-language version of this leaf's core argument &mdash; POPIA residency for a decision-maker.</div>
+      </a>
+      <a href="../tech/microsoft/copilot-sa.html" class="connect-node">
+        <span class="tag">tech/microsoft/copilot-sa</span>
+        <div class="skill">Copilot in South Africa</div>
+        <div class="why">The in-country inference pattern that makes the s.72 question a non-event &mdash; the technical answer to this legal problem.</div>
+      </a>
+      <a href="../tech/microsoft/dataverse.html" class="connect-node">
+        <span class="tag">tech/microsoft/dataverse</span>
+        <div class="skill">Dataverse</div>
+        <div class="why">Pin the environment to SA and the inherited audit trail is most of a POPIA-defensible record &mdash; governance meeting the statute.</div>
+      </a>
+      <a href="../agents/rearchitecture.html" class="connect-node">
+        <span class="tag">agents/rearchitecture</span>
+        <div class="skill">Agents, data &amp; trust</div>
+        <div class="why">Owned, structured, in-country data is both the grounding an agent needs and the POPIA posture a firm needs. The same move.</div>
+      </a>
+      <a href="../agents/owning-ai" class="connect-node">
+        <span class="tag">agents/owning-ai</span>
+        <div class="skill">Owning AI</div>
+        <div class="why">"Own the location" as one of the five layers &mdash; for an SA firm, residency is a POPIA posture, not a cost optimisation.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 11 -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">11 &middot; Resources</div>
+      <h2 class="section-title">Primary sources only.</h2>
+      <p class="section-lede">Read the Act and the Regulator, not summaries &mdash; this is a domain where a paraphrase can be wrong in a way that matters.</p>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://www.gov.za/documents/protection-personal-information-act" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Statute &middot; ZA</span>
+        <span class="r-title">POPIA &mdash; full text (Act 4 of 2013)</span>
+        <span class="r-url">gov.za &middot; protection-personal-information-act</span>
+      </a>
+      <a href="https://inforegulator.org.za/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Regulator &middot; ZA</span>
+        <span class="r-title">Information Regulator (South Africa)</span>
+        <span class="r-url">inforegulator.org.za</span>
+      </a>
+      <a href="https://inforegulator.org.za/popia-forms/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Forms &middot; ZA</span>
+        <span class="r-title">POPIA forms &amp; Information Officer registration</span>
+        <span class="r-url">inforegulator.org.za/popia-forms</span>
+      </a>
+      <a href="https://popia.co.za/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Reference</span>
+        <span class="r-title">POPIA section-by-section (community reference)</span>
+        <span class="r-url">popia.co.za</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../index.html">Skills tree</a>
+      <a href="./">Legal domain</a>
+      <a href="legal-ai.html">Legal AI</a>
+      <a href="../../briefings/edge-first">Keep the Data Home</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant</p>
+  </div>
+</footer>
+<script>
+  function toggleTheme() { const html=document.documentElement; const cur=html.getAttribute('data-theme'); const next=cur==='dark'?'light':'dark'; html.setAttribute('data-theme',next); document.querySelector('.theme-toggle').textContent=next==='dark'?'☀️':'🌙'; localStorage.setItem('theme',next); }
+  const saved=localStorage.getItem('theme'); if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.theme-toggle').textContent=saved==='dark'?'☀️':'🌙';}
+  const observer=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'}); document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>
