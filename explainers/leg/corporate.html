@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Corporate &amp; M&amp;A &mdash; know.2nth.ai</title>
+<meta name="description" content="Corporate and M&A in South Africa — the deal, the data room, and the regulators. The Companies Act 71 of 2008 fundamental transactions (share sale, asset sale, statutory merger, scheme of arrangement), where AI due diligence does its heaviest lifting and where it can't, Competition Act merger control and the public-interest test, the Takeover Regulation Panel, and the POPIA reality of a data room full of personal information. The practice where legal AI saves the most measurable time — and where the judgement it can't do is the whole point.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/leg/corporate">
+<meta property="og:title" content="Corporate &amp; M&amp;A — know.2nth.ai">
+<meta property="og:description" content="The deal, the data room, and the regulators. Companies Act fundamental transactions, where AI due diligence lands and where it can't, Competition Act merger control, the Takeover Regulation Panel, and POPIA in the data room.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai — The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Corporate &amp; M&amp;A — know.2nth.ai">
+<meta name="twitter:description" content="The deal, the data room, and the regulators. Companies Act fundamental transactions, where AI due diligence lands and where it can't, merger control, the TRP, and POPIA in the data room.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%23F43F5E' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%23FB7185' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33;
+    --blue: #2563EB; --blue-glow: #3B82F6;
+    --sky: #38BDF8; --sky-muted: #7DD3FC;
+    --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8;
+    --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12);
+    --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12);
+    --violet: #8B5CF6; --violet-soft: rgba(139, 92, 246, 0.12);
+    --rose: #F43F5E; --rose-glow: #FB7185; --rose-soft: rgba(244, 63, 94, 0.12);
+    --bg: var(--ink); --bg-raised: var(--navy);
+    --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(244, 63, 94, 0.06);
+    --text-primary: var(--paper); --text-secondary: var(--slate);
+    --text-muted: #64748B;
+    --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(244, 63, 94, 0.3);
+    --max-w: 1200px; --read-w: 760px;
+    --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px;
+    --domain: var(--rose); --domain-glow: var(--rose-glow);
+  }
+  [data-theme="light"] {
+    --bg: #F1F5F9; --bg-raised: #FFFFFF;
+    --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(244, 63, 94, 0.04);
+    --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8;
+    --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(244, 63, 94, 0.25);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.rose { width: 600px; height: 600px; background: var(--rose); top: -200px; right: -100px; }
+  .glow-orb.warm { width: 500px; height: 500px; background: var(--warm); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--rose), var(--warm)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--rose-glow); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--rose-glow); }
+
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .read { max-width: var(--read-w); }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--rose-glow); }
+  .crumb-sep { opacity: 0.5; }
+  .crumb-current { color: var(--text-secondary); }
+
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--rose-glow); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--rose); box-shadow: 0 0 12px var(--rose); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--rose), var(--rose-glow), var(--warm)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.accent { background: var(--rose-soft); color: var(--rose-glow); border-color: rgba(244, 63, 94, 0.25); }
+
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--rose-glow); margin-bottom: 14px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--rose-glow); }
+
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); margin-bottom: 20px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.rose { border-left: 3px solid var(--rose); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+
+  .types-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; max-width: 1100px; }
+  .type-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px 22px; transition: all 0.3s; }
+  .type-card:hover { border-color: var(--border-hover); }
+  .type-card .num { font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 700; background: linear-gradient(135deg, var(--rose), var(--rose-glow)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1; margin-bottom: 8px; }
+  .type-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.2px; }
+  .type-card .triad { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; display: block; }
+  .type-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 8px; }
+  .type-card .arrows { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); padding-top: 8px; border-top: 1px solid var(--border); display: flex; gap: 14px; }
+  .type-card .arrows .grow { color: var(--green); }
+  .type-card .arrows .stress { color: var(--rose); }
+
+  .triad-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; max-width: var(--read-w); }
+  .triad { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 24px; }
+  .triad-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--rose-glow); margin-bottom: 8px; }
+  .triad h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+  .triad .types-list { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--rose-glow); margin-bottom: 12px; }
+  .triad p { font-size: 13px; color: var(--text-secondary); line-height: 1.65; }
+
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: var(--read-w); margin-bottom: 20px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--rose-glow); background: rgba(244, 63, 94, 0.04); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); }
+  .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--rose-glow); }
+
+  .gotcha-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 12px; }
+  .gotcha { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--rose); border-radius: var(--radius-md); padding: 18px 22px; }
+  .gotcha strong { display: block; color: var(--text-primary); font-weight: 600; font-size: 14px; margin-bottom: 6px; }
+  .gotcha p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+  .connect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .connect-node { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; transition: all 0.3s; text-decoration: none; color: inherit; display: block; }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node.soon { cursor: default; opacity: 0.72; }
+  .connect-node.soon:hover { border-color: var(--border); background: var(--bg-card); }
+  .connect-node .tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--rose-glow); word-break: break-all; }
+
+  .decision-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: var(--read-w); }
+  @media (max-width: 720px) { .decision-grid { grid-template-columns: 1fr; } }
+  .decision-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 24px; }
+  .decision-card.use { border-left: 3px solid var(--green); }
+  .decision-card.skip { border-left: 3px solid var(--rose); }
+  .decision-card h4 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 12px; }
+  .decision-card.use h4 { color: var(--green); }
+  .decision-card.skip h4 { color: var(--rose); }
+  .decision-card ul { list-style: none; padding: 0; }
+  .decision-card li { font-size: 13px; color: var(--text-secondary); line-height: 1.6; padding: 6px 0; border-bottom: 1px solid var(--border); }
+  .decision-card li:last-child { border-bottom: none; }
+
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--rose), var(--warm)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--rose-glow); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } .compare { font-size: 12px; } .compare th, .compare td { padding: 10px 12px; } }
+
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+<div class="glow-orb rose"></div>
+<div class="glow-orb warm"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand">
+      <span class="nav-brand-mark">know.2nth.ai</span>
+      <span class="nav-brand-sub">leg/corporate</span>
+    </a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">&larr; Legal</a>
+      <a href="../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x2600;&#xFE0F;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="../../index.html#domains">Legal</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="./">leg</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">Corporate &amp; M&amp;A</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> leg/corporate &middot; Skill Leaf</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      The deal, the data room, <span class="gradient">and what AI can't decide.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      M&amp;A is the practice where legal AI does its <strong>heaviest lifting</strong> &mdash; due diligence and data extraction are the top-cited use case and the biggest measurable time saving. But it is also the practice where the work that <em>matters</em> is exactly what AI can't do: judging materiality, structuring the deal, and allocating risk in the warranties. And in South Africa a global tool misses the three gates every deal runs through &mdash; the <strong>Companies Act</strong>, <strong>merger control</strong>, and the <strong>Takeover Regulation Panel</strong>. This leaf is the deal read for the AI era: where the tool helps, where it must not, and the SA regulatory stack it doesn't know.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill accent">Live</span>
+      <span class="pill">Companies Act 71 of 2008</span>
+      <span class="pill">Merger control</span>
+      <span class="pill">Due diligence</span>
+      <span class="pill">The TRP</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 -->
+<section id="what">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; What it is</div>
+      <h2 class="section-title">Buying, selling, and combining companies &mdash; by the book.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Corporate and M&amp;A practice covers how companies are structured, governed, and &mdash; the deal work &mdash; bought, sold, and combined. The governing statute in South Africa is the <strong>Companies Act 71 of 2008</strong>. When a transaction materially alters a company, the Act treats it as a <strong>fundamental transaction</strong> with heightened protections for shareholders: the disposal of all or the greater part of a company's assets or undertaking (<strong>s.112</strong>), a statutory amalgamation or merger (<strong>s.113</strong>), and a scheme of arrangement (<strong>s.114</strong>). Each requires a special resolution (s.115), and dissenting shareholders get appraisal rights (s.164) &mdash; the right to be bought out at fair value.</p>
+      <p>Around the deal sit three regulators that a generic tool has never heard of: the <strong>Competition Commission and Tribunal</strong> (merger control), the <strong>Takeover Regulation Panel</strong> (affected transactions in regulated companies), and, for listed companies, the <strong>JSE Listings Requirements</strong>. Getting the private-law deal right and missing a regulatory gate is how a signed transaction fails to close.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 -->
+<section id="shapes">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; The deal shapes</div>
+      <h2 class="section-title">Four ways to do a deal, four risk profiles.</h2>
+      <p class="section-lede">The first real decision on any M&amp;A matter is structure, and it's a judgement call AI does not make for you. The shape drives the tax, the consents, the liabilities that transfer, and which regulator you answer to.</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead><tr><th>Structure</th><th>What transfers</th><th>Key feature</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Share sale</strong></td><td>The shares &mdash; the company and all its liabilities come with it</td><td>Simplest to transfer; buyer inherits history, so due diligence is everything.</td></tr>
+          <tr><td><strong>Asset / business sale</strong></td><td>Selected assets and liabilities, cherry-picked</td><td>Buyer avoids unknown liabilities; but every asset needs its own transfer formality and third-party consents.</td></tr>
+          <tr><td><strong>Statutory merger (s.113)</strong></td><td>Everything, by operation of law &mdash; the companies combine</td><td>The only structure where assets and liabilities pass automatically; no asset-by-asset transfer.</td></tr>
+          <tr><td><strong>Scheme of arrangement (s.114)</strong></td><td>A court/Panel-sanctioned arrangement between a company and its holders</td><td>The route for squeeze-outs and public take-privates; an "affected transaction" under the TRP.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 03 -->
+<section id="dd">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; Due diligence &amp; the data room</div>
+      <h2 class="section-title">This is where legal AI actually earns its keep.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Due diligence is the buyer reading everything the target has &mdash; contracts, leases, IP, litigation, employment, financials &mdash; in a <strong>data room</strong>, and reducing it to an <strong>issues matrix</strong>: what's material, what's a risk, what needs a warranty or a price adjustment. It is document-heavy, repetitive, and time-boxed, which is exactly the shape AI is good at. Across the independent usage study (<a href="legal-ai" style="color: var(--rose-glow);">see the Legal AI leaf</a>), <strong>document review / due diligence was the top in-house use case</strong>, and <strong>data extraction the task with the biggest measurable time saving</strong> &mdash; pulling defined fields (change-of-control clauses, assignment restrictions, termination rights) from hundreds of contracts at once.</p>
+    </div>
+    <div class="info-card rose fade-up" style="transition-delay: 0.08s">
+      <h4>What the tool produces, and what it doesn't</h4>
+      <p>AI extraction produces a <strong>first-pass issues list</strong> &mdash; fast, broad, and genuinely useful. What it does not produce is the <em>judgement</em>: whether a change-of-control clause is a dealbreaker or a footnote, whether a gap in the data room is an oversight or a red flag, and how to price and paper the risk. The extraction is the drudgery; the deal is in the interpretation. Treat the output as a verified starting point for a lawyer, never as the diligence report itself.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 -->
+<section id="merger-control">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; Merger control</div>
+      <h2 class="section-title">The Competition Act gate &mdash; and the public-interest test.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Under the <strong>Competition Act 89 of 1998</strong>, mergers are classified as <strong>small, intermediate, or large</strong> by financial thresholds (set by ministerial notice and revised from time to time &mdash; check the current figures). <strong>Small mergers</strong> need not be notified and can be implemented, unless the Competition Commission calls for notification within six months. <strong>Intermediate and large mergers must be notified and cannot be implemented until approved</strong> &mdash; the Commission decides intermediate mergers; the Competition Tribunal decides large ones. This is a hard gate on closing, with real timelines, and it is invisible to a foreign tool.</p>
+      <p>South African merger control is distinctive for its <strong>public-interest test</strong>, strengthened by the 2018 amendments. Alongside the competition analysis, the authorities weigh effects on <strong>employment, the spread of ownership (including B-BBEE), small businesses, and the ability of national industries to compete</strong> &mdash; and, increasingly, national security. A merger can be pro-competitive and still be conditioned or blocked on public-interest grounds. No generic legal-AI tool models this, and it is often the part of an SA deal that decides the outcome.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 -->
+<section id="takeovers">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; Takeovers, the TRP &amp; listed companies</div>
+      <h2 class="section-title">When the target is a "regulated company."</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>The <strong>Takeover Regulation Panel (TRP)</strong> &mdash; established under s.196 of the Companies Act &mdash; regulates "<strong>affected transactions</strong>" involving "<strong>regulated companies</strong>": all public companies, state-owned companies, and private companies whose memorandum applies the takeover rules or which meet a share-transfer threshold. Chapter 5 of the Act plus the Takeover Regulations govern mandatory offers, comparable and partial offers, squeeze-outs, and disclosure &mdash; and a regulated-company deal generally cannot proceed without <strong>TRP approval or an exemption</strong>. For JSE-listed companies, the <strong>Listings Requirements</strong> add a further layer of disclosure and shareholder-approval categories on top.</p>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.08s">
+      <h4>The private-company trap</h4>
+      <p>It's a common surprise that the TRP reaches <em>private</em> companies, not just listed ones &mdash; a private company can be a "regulated company" and its transaction an "affected transaction" needing Panel clearance. Assuming the takeover regime is a listed-market-only concern is exactly the kind of error a fast, confident, jurisdiction-blind AI answer will reinforce. This is a check to run early, on the structure, not late.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 -->
+<section id="ai-fit">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; Where AI fits the deal</div>
+      <h2 class="section-title">Strong on the volume, absent on the judgement.</h2>
+    </div>
+    <div class="decision-grid fade-up" style="transition-delay: 0.05s">
+      <div class="decision-card use">
+        <h4>AI does this well</h4>
+        <ul>
+          <li>First-pass data-room review and the initial issues matrix.</li>
+          <li>Extracting defined provisions across many contracts (change of control, assignment, termination).</li>
+          <li>Summarising long agreements and the target's material contracts.</li>
+          <li>First drafts of standard transaction documents and disclosure schedules.</li>
+          <li>Translation and cross-border document handling on multinational deals.</li>
+        </ul>
+      </div>
+      <div class="decision-card skip">
+        <h4>AI must not do this</h4>
+        <ul>
+          <li><strong>Decide materiality.</strong> Whether an issue kills the deal, prices it, or gets a warranty is judgement.</li>
+          <li><strong>Choose the structure.</strong> Share vs asset vs merger drives tax, liability, and which regulator applies.</li>
+          <li><strong>Draft the risk allocation.</strong> Warranties, indemnities, and conditions precedent are where value and risk actually move.</li>
+          <li><strong>Clear the regulators.</strong> Merger control and TRP analysis need a lawyer who knows the current thresholds and the public-interest posture.</li>
+          <li><strong>Spot the gap.</strong> The dangerous issues are the ones <em>not</em> in the data room &mdash; and a model only reads what it's given.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 07 -->
+<section id="gotchas">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; Gotchas</div>
+      <h2 class="section-title">Where deals &mdash; and AI on deals &mdash; go wrong.</h2>
+    </div>
+    <div class="gotcha-list fade-up" style="transition-delay: 0.05s">
+      <div class="gotcha">
+        <strong>Extraction is not a diligence report</strong>
+        <p>A clean AI-extracted issues list feels like the answer. It's a first pass a lawyer must verify and interpret. Signing the report the model produced, unread, transfers the risk to the client in a bet-the-company matter.</p>
+      </div>
+      <div class="gotcha">
+        <strong>The risk is what isn't in the data room</strong>
+        <p>Diligence is as much about disclosure gaps as disclosed documents. A model reads what it's given and will confidently report "no issues found" on an incomplete room. Absence of a flag is not absence of a problem.</p>
+      </div>
+      <div class="gotcha">
+        <strong>Merger control gates the closing, not the signing</strong>
+        <p>Intermediate and large mergers can be signed but not implemented until approved. Miss the notification, or misjudge the public-interest exposure, and a done deal sits in limbo &mdash; or gets conditioned in ways the price never accounted for.</p>
+      </div>
+      <div class="gotcha">
+        <strong>The data room is full of personal information</strong>
+        <p>Employee records, customer data, health and criminal information &mdash; a data room is a POPIA event. Hosting it, and running AI over it, is a section 72 question if the tool processes abroad. The access model is a legal decision before it's a convenience &mdash; see the <a href="data-privacy" style="color: var(--rose-glow);">Data privacy &amp; POPIA</a> leaf.</p>
+      </div>
+      <div class="gotcha">
+        <strong>Privilege travels with the diligence</strong>
+        <p>Diligence findings and legal analysis can be privileged. Running them through a third-party model, or sharing them into a joint data room, can jeopardise that privilege. Design the tooling so the privileged work product stays protected.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 08 -->
+<section id="use-cases">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 &middot; Use cases</div>
+      <h2 class="section-title">Where this lands in SA deal practice.</h2>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.05s">
+      <h4>Mid-market private M&amp;A</h4>
+      <p>The sweet spot for AI-assisted diligence: a share or asset deal with a large but bounded data room, a tight timeline, and a buyer that needs the issues matrix fast. Extraction compresses the review; the lawyer's time moves to structure, warranties, and the merger-control call.</p>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.08s">
+      <h4>In-house corporate teams</h4>
+      <p>Corporate legal teams doing repeat deals and commercial contracting are the group the usage study found saving the most measurable time &mdash; data extraction from commercial contracts is easy to define and measure, and the volume makes the ROI visible where one-off matters don't.</p>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.11s">
+      <h4>Regulated-target and public deals</h4>
+      <p>Where AI helps least and the SA regulatory stack matters most: a listed or regulated-company target means TRP clearance, JSE Listings Requirements, and a public-interest-heavy merger filing. The tool drafts and summarises; the deal is won or lost in the regulatory strategy it can't do.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 09 -->
+<section id="sa-context">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">09 &middot; South African context</div>
+      <h2 class="section-title">The regulatory stack a global tool doesn't know.</h2>
+    </div>
+    <div class="info-card rose fade-up" style="transition-delay: 0.05s">
+      <h4>Four SA-specific gates on every deal</h4>
+      <p>Beyond the Companies Act formalities, an SA deal runs through gates no US-trained model models: <strong>Competition Act</strong> merger control with its public-interest and <strong>B-BBEE</strong> lens; the <strong>Takeover Regulation Panel</strong> for regulated companies (private ones included); <strong>exchange control</strong> (SARB approval where funds or ownership cross the border); and, for listed targets, the <strong>JSE Listings Requirements</strong>. A confident foreign AI answer that omits these isn't wrong about company law &mdash; it's silent about the four things most likely to shape or stop the deal.</p>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.08s">
+      <h4>POPIA lives in the data room</h4>
+      <p>Every SA due diligence is also a POPIA exercise: the data room is full of employee, customer, health, and sometimes criminal-behaviour information &mdash; special personal information. Where that data is hosted, and whether an AI tool processes it in or out of the country, is a <strong>section 72 transfer</strong> decision that has to be made before the room opens. The residency answer for the deal is the same one the rest of the tree gives &mdash; keep it in country and the question disappears. This is the <a href="data-privacy" style="color: var(--rose-glow);">Data privacy &amp; POPIA</a> leaf, applied to M&amp;A.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 10 -->
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">10 &middot; 2&#x207F; Perspective</div>
+      <h2 class="section-title">How this node connects in the tree.</h2>
+      <p class="section-lede">M&amp;A is where the Legal branch's two live leaves meet: it's the practice where AI does the most work, and the practice with the most personal information in the room.</p>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="./" class="connect-node">
+        <span class="tag">leg/hub</span>
+        <div class="skill">Legal domain hub</div>
+        <div class="why">The parent domain &mdash; the practice areas and the evidence bar this leaf is held to.</div>
+      </a>
+      <a href="legal-ai" class="connect-node">
+        <span class="tag">leg/legal-ai</span>
+        <div class="skill">Legal AI</div>
+        <div class="why">The tool. Due diligence and extraction are its top use case &mdash; this leaf is where that lands, and where its limits show.</div>
+      </a>
+      <a href="data-privacy" class="connect-node">
+        <span class="tag">leg/data-privacy</span>
+        <div class="skill">Data privacy &amp; POPIA</div>
+        <div class="why">The data room is a POPIA event. The s.72 transfer test governs how AI can touch it.</div>
+      </a>
+      <a href="../biz/" class="connect-node">
+        <span class="tag">biz</span>
+        <div class="skill">Business domain</div>
+        <div class="why">The business the deal buys or sells &mdash; the ERP, CRM, and systems-of-record a buyer inherits and a diligence reads.</div>
+      </a>
+      <a href="../agents/rearchitecture.html" class="connect-node">
+        <span class="tag">agents/rearchitecture</span>
+        <div class="skill">Agents, data &amp; trust</div>
+        <div class="why">Ground the diligence agent in the actual data room, or it confidently reports on documents it never saw.</div>
+      </a>
+      <a href="../../briefings/edge-first" class="connect-node">
+        <span class="tag">briefings/edge-first</span>
+        <div class="skill">Keep the Data Home</div>
+        <div class="why">The plain-language residency answer for the personal information a data room holds.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 11 -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">11 &middot; Resources</div>
+      <h2 class="section-title">Primary sources only.</h2>
+      <p class="section-lede">The Acts and the regulators &mdash; and note that merger thresholds and the takeover rules change by notice, so verify the current figures against the regulator before relying on them.</p>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://www.gov.za/documents/companies-act" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Statute &middot; ZA</span>
+        <span class="r-title">Companies Act 71 of 2008</span>
+        <span class="r-url">gov.za &middot; companies-act</span>
+      </a>
+      <a href="https://www.compcom.co.za/merger-thresholds/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Regulator &middot; ZA</span>
+        <span class="r-title">Competition Commission &mdash; merger thresholds</span>
+        <span class="r-url">compcom.co.za/merger-thresholds</span>
+      </a>
+      <a href="https://www.gov.za/documents/competition-act" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Statute &middot; ZA</span>
+        <span class="r-title">Competition Act 89 of 1998</span>
+        <span class="r-url">gov.za &middot; competition-act</span>
+      </a>
+      <a href="https://trpanel.co.za/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Regulator &middot; ZA</span>
+        <span class="r-title">Takeover Regulation Panel</span>
+        <span class="r-url">trpanel.co.za</span>
+      </a>
+      <a href="https://www.jse.co.za/regulation" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Rules &middot; ZA</span>
+        <span class="r-title">JSE Listings Requirements</span>
+        <span class="r-url">jse.co.za/regulation</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../index.html">Skills tree</a>
+      <a href="./">Legal domain</a>
+      <a href="legal-ai.html">Legal AI</a>
+      <a href="data-privacy.html">Data privacy &amp; POPIA</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant</p>
+  </div>
+</footer>
+<script>
+  function toggleTheme() { const html=document.documentElement; const cur=html.getAttribute('data-theme'); const next=cur==='dark'?'light':'dark'; html.setAttribute('data-theme',next); document.querySelector('.theme-toggle').textContent=next==='dark'?'☀️':'🌙'; localStorage.setItem('theme',next); }
+  const saved=localStorage.getItem('theme'); if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.theme-toggle').textContent=saved==='dark'?'☀️':'🌙';}
+  const observer=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'}); document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>
