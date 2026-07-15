@@ -3,7 +3,7 @@
   "description": "The public knowledge tree for the 2nth.ai ecosystem. Every leaf is both a human-readable reference and an agent-consumable context document.",
   "agent_fetch": "https://know.2nth.ai/api/context/<domain>/<leaf>",
   "mcp": "https://know.2nth.ai/mcp",
-  "count": 192,
+  "count": 193,
   "items": [
     {
       "title": "Agents — know.2nth.ai",
@@ -780,6 +780,14 @@
       "kind": "hub",
       "url": "https://know.2nth.ai/explainers/leg/",
       "fetch": "leg"
+    },
+    {
+      "title": "Data privacy & POPIA — know.2nth.ai",
+      "description": "POPIA — the Protection of Personal Information Act 4 of 2013 — is the law under every data-residency decision on this tree. The eight conditions for lawful processing, special personal information (s.26), the section 72 cross-border transfer test that gates every AI-in-legal choice, responsible party vs operator and the operator agreement you paper before a vendor touches data, how POPIA shapes an AI-use policy, and the enforcement reality under the Information Regulator (fines to R10m plus criminal liability).",
+      "domain": "leg",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/leg/data-privacy",
+      "fetch": "leg/data-privacy"
     },
     {
       "title": "Legal AI — know.2nth.ai",
