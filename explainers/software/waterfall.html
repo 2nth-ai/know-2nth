@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Waterfall &mdash; know.2nth.ai</title>
+<meta name="description" content="Waterfall as a project-management discipline — its history and where it still fits. The model everyone calls waterfall is a misreading of Winston Royce's 1970 paper, which drew the linear model as the thing to avoid ('risky and invites failure') and proposed iteration instead. How a caution became a mandate (Bell & Thayer 1976, DOD-STD-2167), why it drew fire (the Standish CHAOS numbers and their dispute, the 2001 Agile Manifesto), and the honest half — when phase-gated development is still the rational default: fixed, verifiable requirements, safety-critical and regulated builds, fixed-price tenders where the phase sign-off is the audit artifact.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/software/waterfall">
+<meta property="og:title" content="Waterfall — the model its author told you not to use · know.2nth.ai">
+<meta property="og:description" content="Waterfall is a misreading of Royce's 1970 paper, which drew the linear model as the thing to avoid. How a caution became a mandate, why it drew fire, and where phase-gated development still fits.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai — The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Waterfall — the model its author told you not to use">
+<meta name="twitter:description" content="Waterfall is a misreading of Royce's 1970 paper, which drew the linear model as the thing to avoid. How a caution became a mandate, and where phase-gated development still fits.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3Cline x1='16' y1='3' x2='16' y2='7' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='16' y1='25' x2='16' y2='29' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='3' y1='16' x2='7' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='25' y1='16' x2='29' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3C/svg%3E">
+<style>
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12); --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-soft: rgba(99, 102, 241, 0.12); --code: #14B8A6; --code-soft: rgba(20, 184, 166, 0.12); --bg: var(--ink); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(20, 184, 166, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(20, 184, 166, 0.3); --max-w: 1200px; --read-w: 760px; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(20, 184, 166, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(20, 184, 166, 0.28); }
+  * { margin: 0; padding: 0; box-sizing: border-box; } html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.blue { width: 600px; height: 600px; background: var(--code); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--code), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--code); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--code); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--code); } .crumb-sep { opacity: 0.5; } .crumb-current { color: var(--text-secondary); }
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--code); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--code); box-shadow: 0 0 12px var(--code); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--code), var(--sky), var(--sky-muted)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.accent { background: rgba(37, 99, 235, 0.12); color: var(--blue-glow); border-color: rgba(37, 99, 235, 0.25); }
+  .pill.green { background: var(--green-soft); color: var(--green); border-color: rgba(16, 185, 129, 0.25); }
+  .pill.code { background: var(--code-soft); color: var(--code); border-color: rgba(20, 184, 166, 0.25); }
+  .pill.warn { background: var(--warm-soft); color: var(--warm-glow); border-color: rgba(245, 158, 11, 0.25); }
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--sky); margin-bottom: 14px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--code); }
+  .prose ul, .prose ol { padding-left: 24px; margin-bottom: 18px; max-width: var(--read-w); }
+  .prose li { font-size: 15px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 8px; }
+  .prose li strong { color: var(--text-primary); font-weight: 600; }
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); margin-bottom: 20px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.code { border-left: 3px solid var(--code); }
+  .info-card.rose { border-left: 3px solid var(--rose); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .info-card code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--code); }
+  .info-card strong { color: var(--text-primary); }
+  .info-card ul { margin: 6px 0 0; padding-left: 20px; }
+  .info-card li { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 8px; }
+  .info-card li:last-child { margin-bottom: 0; }
+  .info-card li strong { color: var(--text-primary); }
+  .stack-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; max-width: var(--read-w); margin-bottom: 20px; }
+  .stack-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--code); border-radius: var(--radius-md); padding: 18px 22px; }
+  .stack-cell .layer { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .stack-cell h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.3px; }
+  .stack-cell p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+  .codeblock { background: var(--ink-deep); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 20px; max-width: var(--read-w); margin-bottom: 20px; overflow-x: auto; }
+  .codeblock .cb-cap { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; display: block; }
+  .codeblock pre { font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.65; color: var(--mist); white-space: pre; }
+  .codeblock pre .k { color: var(--code); }
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: var(--read-w); margin-bottom: 20px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--sky); background: rgba(37, 99, 235, 0.04); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); } .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--code); }
+  .compare td strong { color: var(--text-primary); }
+  .connect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .connect-node { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; transition: all 0.3s; text-decoration: none; color: inherit; display: block; }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node .tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--code); word-break: break-all; }
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--code), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--code); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+<div class="glow-orb blue"></div>
+<div class="glow-orb sky"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand"><span class="nav-brand-mark">know.2nth.ai</span><span class="nav-brand-sub">software/waterfall</span></a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">&larr; Software</a>
+      <a href="../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x1F319;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="./">Software</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">Waterfall</span>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> software &middot; Waterfall &middot; Skill Leaf</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      The model its author <span class="gradient">told you not to use.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      The linear, phase-gated process everyone calls "waterfall" comes from a 1970 paper that drew it <em>as the thing to avoid</em>. Winston Royce drew the pure sequential model as the naive approach, never used the word "waterfall," and spent the rest of the paper proposing iteration to fix it. The industry kept his cautionary diagram and dropped the caution &mdash; then spent decades mandating the version he warned against. This leaf is the history straight, and the honest other half: where phase-gated development is still the right call.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill code">Royce 1970</span>
+      <span class="pill accent">Phase-gated</span>
+      <span class="pill green">Where it still fits</span>
+      <span class="pill warn">Honest tradeoffs</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 -->
+<section id="what">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; What waterfall actually is</div>
+      <h2 class="section-title">Sequential, phase-gated, fixed early.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Waterfall is a development discipline in which work moves through fixed phases &mdash; requirements, design, implementation, verification, maintenance &mdash; and each phase completes and is signed off before the next begins. Change is controlled formally; the plan is fixed early; the sequence flows one way, like water over a series of ledges. Strip the caricature and it is a <strong>context-and-commitment-transfer discipline</strong>, optimised for one specific case: that the requirements are genuinely knowable, and correct, up front.</p>
+      <p>That framing is the point of rhyme with the rest of this branch. <a href="planning-with-agents.html">Planning with agents</a> argues that sprint ceremonies were always about transferring context to a worker who holds none; waterfall is the same instinct pushed to its extreme &mdash; transfer <em>all</em> the context, once, up front, and freeze it. When requirements really are fixed, that's efficient. When they aren't, freezing them early is the whole problem.</p>
+    </div>
+    <div class="info-card code fade-up" style="transition-delay: 0.08s">
+      <h4>The one-line version</h4>
+      <p>Waterfall bets that you can know the right thing to build before you build any of it, then locks that bet in with phase gates. The bet pays off exactly when requirements are fixed and verifiable in advance &mdash; and fails, expensively, every time they turn out not to be.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 -->
+<section id="paper">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; The paper everyone misread</div>
+      <h2 class="section-title">Royce drew the linear model to warn you off it.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>The paper cited as waterfall's origin is Winston Royce's <em>Managing the Development of Large Software Systems</em> (Royce, 1970, IEEE WESCON). Read it and the story inverts. Royce drew the pure sequential model &mdash; each phase finished before the next &mdash; as his <strong>Figure 2, the naive approach</strong>, and called it, in the one line this leaf will quote him on, <strong>"risky and invites failure."</strong> The rest of the paper is the correction: feedback between adjacent phases, and "doing it twice" &mdash; building a throwaway pilot first so the hard lessons land before the real build.</p>
+      <p>He never wrote the word "waterfall." The industry took the diagram he presented as a warning, discarded the five iterative fixes he wrapped around it, and institutionalised the picture. (A comparable staged model had been presented earlier by Benington in 1956, so Royce didn't invent the sequence &mdash; but he is the one blamed for it.)</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 -->
+<section id="mandate">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; How a caution became a mandate</div>
+      <h2 class="section-title">The authority came from a standard, not the science.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>The word "waterfall" first surfaces in Bell &amp; Thayer (1976). The <em>mandate</em> came from defence procurement. <code>DOD-STD-2167</code> (4 June 1985) and its revision <code>DOD-STD-2167A</code> (29 February 1988) codified phase-gated, document-heavy development for US defence contractors &mdash; and both were widely criticised as waterfall-biased. From there the shape radiated into PMBOK- and PRINCE2-flavoured governance and into regulated industries generally. The irony states itself cleanly: the model drew its institutional authority from a standard arguing for exactly what its supposed originator's paper had argued against. By <code>MIL-STD-498</code> (1994) the DoD had walked it back, explicitly permitting incremental and evolutionary strategies.</p>
+      <p>And the "waterfall dominated software for thirty years" story is itself partly myth. Larman &amp; Basili trace iterative and incremental practice back to the 1930s&ndash;50s, running alongside waterfall the entire time. Waterfall was heavily <em>mandated</em> &mdash; in defence and regulated builds especially &mdash; not universally <em>practised</em>. The teams shipping working software were often iterating quietly under a plan-driven cover sheet.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 -->
+<section id="fire">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; Why it drew fire</div>
+      <h2 class="section-title">The failure modes Royce already named.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>The structural objections are, tellingly, the ones Royce made first. Testing is deferred to the end, so the first time real timing and I/O behaviour is observed is too late to fix cheaply &mdash; his Figure 4 point exactly. Requirements are assumed correct and frozen when they rarely are. Feedback latency is long and delivery is big-bang: you learn whether you built the right thing at the moment it is most expensive to have been wrong.</p>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.08s">
+      <h4>On the Standish CHAOS numbers &mdash; cite the dispute too</h4>
+      <p>The figures everyone reaches for come from the Standish <strong>CHAOS Report</strong> (first published 1994), whose 1994 data is widely quoted as roughly <strong>16% of projects successful, 53% challenged, 31% failed</strong>, with average cost overruns near <strong>189%</strong>. State them with their critics in the same breath: J&oslash;rgensen &amp; Mol&oslash;kken, and Eveleens &amp; Verhoef, argue the sample skewed toward failures and that the overrun figure is far higher than comparable surveys. CHAOS is a <strong>contested, self-reported dataset, not a clean verdict on waterfall</strong> &mdash; the gap between its influence and its rigour is the genuinely interesting part.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.1s">
+      <p>The <em>Manifesto for Agile Software Development</em> (2001) was the organised reaction to heavyweight up-front process. It is the antithesis of waterfall, not a proven cure for it &mdash; treating "agile succeeds more" as settled fact is Standish's own disputed framing, and this leaf declines to repeat it. What's true and duller: iterative delivery attacks waterfall's specific failure mode &mdash; late, concentrated feedback &mdash; by moving the feedback early and often.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 -->
+<section id="fits">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; Where it still fits</div>
+      <h2 class="section-title">Wrong by default in software. Right by exception.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Waterfall is the wrong default for software, and it is not wrong everywhere. It remains the rational choice when three things hold at once: requirements are genuinely fixed and externally specified, the cost of change mid-build is very high, and an auditable phase-gate trail is a hard external requirement rather than a nicety. Regulatory submissions, certified safety-critical systems, hardware with long-lead-time tooling, and fixed-scope / fixed-price contracts all sit in that shape &mdash; you cannot iterate a bridge or a medical device the way you iterate a web app.</p>
+    </div>
+    <div class="info-card green fade-up" style="transition-delay: 0.08s">
+      <h4>The South African cut: the phase gate is the audit artifact</h4>
+      <p>Fixed-price public-sector tenders and heavily regulated builds &mdash; POPIA/FSCA-audited, safety-certified &mdash; still contract on phase gates in South Africa, because the <strong>versioned phase sign-off is the change-control evidence the reviewer asks for</strong>. That is the same move the agent-ops leaves make with "the PR trail is the audit record" &mdash; here the artifact is a signed gate rather than a merged pull request. If your contract or your regulator demands a documented, approved sequence, a phase-gated method isn't nostalgia; it's the deliverable.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.1s">
+      <p>The agent era does not revive waterfall, but it changes one term of the trade. Thorough up-front specification &mdash; waterfall's one real virtue &mdash; just got cheap: an agent can draft the spec, the tests, and the plan in an afternoon. That is exactly the tension <a href="planning-with-agents.html">planning-with-agents</a> names when it says spec-driven development is <em>not</em> waterfall with extra YAML. The difference is that the spec is now living and cheap to change, not frozen and expensive to touch. Cheap specification is not the return of the frozen plan; it's the removal of the reason the plan had to freeze.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 -->
+<section id="tradeoffs">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; Honest tradeoffs</div>
+      <h2 class="section-title">When phase-gating is the wrong call.</h2>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.05s">
+      <h4>Skip it when</h4>
+      <ul>
+        <li><strong>Requirements are still being discovered.</strong> Exploratory or pre-PMF work has no fixed spec to gate on &mdash; a firm requirements document is just a confident guess you'll rewrite, at the cost of the ceremony to produce it.</li>
+        <li><strong>Feedback is cheap and change is expected.</strong> If you can ship and learn in days, front-loading a long design phase buys rigidity you're paying for and won't use.</li>
+        <li><strong>Integration risk is high and the unknowns are technical.</strong> Deferring all testing to the end concentrates the risk exactly where Royce warned it would land &mdash; the late, expensive surprise.</li>
+      </ul>
+    </div>
+    <div class="info-card green fade-up" style="transition-delay: 0.08s">
+      <h4>"So waterfall is just always wrong" &mdash; no</h4>
+      <p>The anti-hype position is not "waterfall bad, agile good." It's narrower and more useful: waterfall is wrong <em>by default in software</em>, and right <em>by exception</em> where change is genuinely expensive and requirements genuinely fixed. Naming that exception honestly &mdash; instead of declaring the method dead &mdash; is what separates an engineering judgement from a slogan.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 07 -->
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; Connections</div>
+      <h2 class="section-title">Where this links in the tree.</h2>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="planning-with-agents.html" class="connect-node">
+        <span class="tag">software/planning-with-agents</span>
+        <div class="skill">Planning with agents</div>
+        <div class="why">The modern counterpart. Waterfall is the antipattern it defines against &mdash; "spec-driven development is not waterfall with extra YAML."</div>
+      </a>
+      <a href="ci-cd.html" class="connect-node">
+        <span class="tag">software/ci-cd</span>
+        <div class="skill">CI/CD &amp; automation</div>
+        <div class="why">The direct structural answer to waterfall's end-loaded test risk &mdash; move the integration and testing early, and run it on every change.</div>
+      </a>
+      <a href="version-control.html" class="connect-node">
+        <span class="tag">software/version-control</span>
+        <div class="skill">Version control</div>
+        <div class="why">Continuous, diffable history versus discrete phase sign-offs &mdash; two different ways to make work auditable and reversible.</div>
+      </a>
+      <a href="software-for-agents.html" class="connect-node">
+        <span class="tag">software/software-for-agents</span>
+        <div class="skill">Software for agents</div>
+        <div class="why">The current alternative discipline &mdash; the repo-as-harness, where the gate is a reviewed PR and CI, not a signed phase document.</div>
+      </a>
+      <a href="orchestrating-agents.html" class="connect-node">
+        <span class="tag">software/orchestrating-agents</span>
+        <div class="skill">Orchestrating agents</div>
+        <div class="why">Running a fleet against a living backlog &mdash; the opposite of a frozen plan executed once, phase by phase.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 08 -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 &middot; Resources</div>
+      <h2 class="section-title">Primary sources only.</h2>
+      <p class="section-lede">Read Royce's actual paper before repeating what "waterfall" supposedly says. The Standish figures and the DoD standards are cited inline above with their dates; the primary anchors are below.</p>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://www.cs.umd.edu/class/spring2003/cmsc838p/Process/waterfall.pdf" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Paper &middot; 1970</span>
+        <span class="r-title">Royce &mdash; Managing the Development of Large Software Systems (reprint)</span>
+        <span class="r-url">cs.umd.edu &middot; royce1970 (reprint)</span>
+      </a>
+      <a href="https://agilemanifesto.org/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Primary &middot; 2001</span>
+        <span class="r-title">Manifesto for Agile Software Development</span>
+        <span class="r-url">agilemanifesto.org</span>
+      </a>
+      <a href="https://www.craiglarman.com/wiki/downloads/misc/history-of-iterative-larman-and-basili-ieee-computer.pdf" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Paper &middot; 2003</span>
+        <span class="r-title">Larman &amp; Basili &mdash; Iterative and Incremental Development: A Brief History (IEEE Computer)</span>
+        <span class="r-url">craiglarman.com &middot; history-of-iterative</span>
+      </a>
+      <a href="https://arxiv.org/abs/1512.04782" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Analysis</span>
+        <span class="r-title">A Brief History of the Waterfall Model (term origin: Bell &amp; Thayer, 1976)</span>
+        <span class="r-url">arxiv.org/abs/1512.04782</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../index.html">Skills tree</a>
+      <a href="./">Software hub</a>
+      <a href="planning-with-agents.html">Planning with agents</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant</p>
+  </div>
+</footer>
+<script>
+  function toggleTheme() { const html=document.documentElement; const cur=html.getAttribute('data-theme'); const next=cur==='dark'?'light':'dark'; html.setAttribute('data-theme',next); document.querySelector('.theme-toggle').textContent=next==='dark'?'☀️':'🌙'; localStorage.setItem('theme',next); }
+  const saved=localStorage.getItem('theme'); if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.theme-toggle').textContent=saved==='dark'?'☀️':'🌙';}
+  const observer=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'}); document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>
