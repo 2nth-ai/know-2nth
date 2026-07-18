@@ -3,11 +3,11 @@
   "description": "The public knowledge tree for the 2nth.ai ecosystem. Every leaf is both a human-readable reference and an agent-consumable context document.",
   "agent_fetch": "https://know.2nth.ai/api/context/<domain>/<leaf>",
   "mcp": "https://know.2nth.ai/mcp",
-  "count": 195,
+  "count": 196,
   "items": [
     {
       "title": "Agents — know.2nth.ai",
-      "description": "The Agents domain on know.2nth.ai — the agentic frameworks, protocols, models, inference platforms, and coding CLI agents that matter in 2026. Twenty-eight Live leaves across five bands: eight frameworks (Google ADK, Google Antigravity, LangGraph, CrewAI, OpenAI Agents SDK, Anthropic Agent SDK, AutoGen, AgentForce), three protocols (A2A, MCP, Agent Skills), nine models, four inference platforms, and four coding CLI agents (Claude Code, OpenAI Codex CLI, GitHub Copilot CLI plus a comparison). Built around the principle that agents are software, not prompt soup.",
+      "description": "The Agents domain on know.2nth.ai — the agentic frameworks, protocols, models, inference platforms, and coding CLI agents that matter in 2026. Twenty-nine Live leaves across five bands: eight frameworks (Google ADK, Google Antigravity, LangGraph, CrewAI, OpenAI Agents SDK, Anthropic Agent SDK, AutoGen, AgentForce), three protocols (A2A, MCP, Agent Skills), ten models, four inference platforms, and four coding CLI agents (Claude Code, OpenAI Codex CLI, GitHub Copilot CLI plus a comparison). Built around the principle that agents are software, not prompt soup.",
       "domain": "agents",
       "kind": "hub",
       "url": "https://know.2nth.ai/explainers/agents/",
@@ -172,6 +172,14 @@
       "kind": "leaf",
       "url": "https://know.2nth.ai/explainers/agents/gpt",
       "fetch": "agents/gpt"
+    },
+    {
+      "title": "Kimi K3 · Moonshot AI — know.2nth.ai",
+      "description": "Kimi K3 is Moonshot AI's 2.8-trillion-parameter model — the first open-weight model to reach the 3T class. 1M-token context, native vision, always-on reasoning, a Stable LatentMoE architecture (16 of 896 experts active). Launched hosted-only on 16 Jul 2026; open weights promised by 27 Jul under an expected Modified-MIT licence — not yet shipped. Priced as a quality play ($3/$15 per 1M tokens), not a budget one — the break from GLM's cheap-open-weight story. Near-frontier on the Artificial Analysis index; every coding benchmark is still vendor-reported.",
+      "domain": "agents",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/agents/kimi-k3",
+      "fetch": "agents/kimi-k3"
     },
     {
       "title": "LangGraph — know.2nth.ai",
