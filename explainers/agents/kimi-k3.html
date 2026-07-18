@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kimi K3 &middot; Moonshot AI &mdash; know.2nth.ai</title>
+<meta name="description" content="Kimi K3 is Moonshot AI's 2.8-trillion-parameter model — the first open-weight model to reach the 3T class. 1M-token context, native vision, always-on reasoning, a Stable LatentMoE architecture (16 of 896 experts active). Launched hosted-only on 16 Jul 2026; open weights promised by 27 Jul under an expected Modified-MIT licence — not yet shipped. Priced as a quality play ($3/$15 per 1M tokens), not a budget one — the break from GLM's cheap-open-weight story. Near-frontier on the Artificial Analysis index; every coding benchmark is still vendor-reported.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/agents/kimi-k3">
+<meta property="og:title" content="Kimi K3 &middot; Moonshot AI &mdash; know.2nth.ai">
+<meta property="og:description" content="Moonshot's 2.8T model — the first open-weight to reach the 3T class, but hosted-only with weights promised 27 Jul 2026, not yet shipped. Priced as a quality play, not a budget one — the break from GLM's cheap story.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Kimi K3 &middot; Moonshot AI &mdash; know.2nth.ai">
+<meta name="twitter:description" content="Moonshot's 2.8T model — first open-weight to reach the 3T class, but hosted-only with weights promised 27 Jul 2026, not yet shipped. Priced as a quality play, not a budget one.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12); --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-soft: rgba(99, 102, 241, 0.12); --bg: var(--ink); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(37, 99, 235, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(56, 189, 248, 0.3); --max-w: 1200px; --read-w: 760px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(37, 99, 235, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(37, 99, 235, 0.25); }
+  * { margin: 0; padding: 0; box-sizing: border-box; } html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.blue { width: 600px; height: 600px; background: var(--blue); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--sky); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--sky); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--sky); } .crumb-sep { opacity: 0.5; } .crumb-current { color: var(--text-secondary); }
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--indigo); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--indigo); box-shadow: 0 0 12px var(--indigo); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--blue-glow), var(--sky), var(--sky-muted)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.green { background: var(--green-soft); color: var(--green); border-color: rgba(16, 185, 129, 0.25); }
+  .pill.indigo { background: var(--indigo-soft); color: var(--indigo); border-color: rgba(99, 102, 241, 0.25); }
+  .pill.warn { background: var(--warm-soft); color: var(--warm-glow); border-color: rgba(245, 158, 11, 0.25); }
+  .pill.accent { background: rgba(37, 99, 235, 0.12); color: var(--blue-glow); border-color: rgba(37, 99, 235, 0.25); }
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--sky); margin-bottom: 14px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--sky); }
+  .prose ul, .prose ol { padding-left: 24px; margin-bottom: 18px; max-width: var(--read-w); }
+  .prose li { font-size: 15px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 8px; }
+  .prose li strong { color: var(--text-primary); font-weight: 600; }
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); margin-bottom: 20px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.indigo { border-left: 3px solid var(--indigo); }
+  .info-card.rose { border-left: 3px solid var(--rose); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .info-card p strong { color: var(--text-primary); }
+  .info-card code { font-family: 'JetBrains Mono', monospace; font-size: 0.86em; color: var(--sky); }
+  .stack-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; max-width: var(--read-w); margin-bottom: 20px; }
+  .stack-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--indigo); border-radius: var(--radius-md); padding: 18px 22px; }
+  .stack-cell .layer { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .stack-cell h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.3px; }
+  .stack-cell p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: var(--read-w); margin-bottom: 20px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--sky); background: rgba(37, 99, 235, 0.04); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); } .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--sky); }
+  .compare td strong { color: var(--text-primary); }
+  .decision-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: var(--read-w); }
+  @media (max-width: 720px) { .decision-grid { grid-template-columns: 1fr; } }
+  .decision-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 24px; }
+  .decision-card.use { border-left: 3px solid var(--green); } .decision-card.skip { border-left: 3px solid var(--rose); }
+  .decision-card h4 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 12px; }
+  .decision-card.use h4 { color: var(--green); } .decision-card.skip h4 { color: var(--rose); }
+  .decision-card ul { list-style: none; padding: 0; }
+  .decision-card li { font-size: 13px; color: var(--text-secondary); line-height: 1.6; padding: 6px 0; border-bottom: 1px solid var(--border); }
+  .decision-card li:last-child { border-bottom: none; }
+  .connect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .connect-node { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; transition: all 0.3s; text-decoration: none; color: inherit; display: block; }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node .tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--sky); word-break: break-all; }
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--sky); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+<div class="glow-orb blue"></div>
+<div class="glow-orb sky"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand"><span class="nav-brand-mark">know.2nth.ai</span><span class="nav-brand-sub">agents/kimi-k3</span></a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">&larr; Agents</a>
+      <a href="../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x1F319;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="./">Agents</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">Kimi K3 &middot; Moonshot AI</span>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> agents &middot; Kimi K3 &middot; Moonshot AI &middot; Model Leaf</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      The first open model at 3-trillion scale &mdash; <span class="gradient">once the weights actually ship.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      <strong>Kimi K3</strong> is Moonshot AI's flagship: a ~<strong>2.8-trillion-parameter</strong> Mixture-of-Experts model, the first openly-committed model to reach the 3-trillion class, with a <strong>1M-token context</strong>, native vision, and always-on reasoning. Two things make it worth a careful read rather than the hype. First, it launched <strong>hosted-only on 16 July 2026</strong> &mdash; the <strong>open weights are promised by 27 July, and are not shipped yet</strong>; until the repo, the licence, and the technical report land, K3 is open-weight in commitment, not in practice. Second, it is priced as a <strong>quality play, not a budget one</strong> ($3 / $15 per 1M tokens) &mdash; the deliberate break from the cheap-open-weight story its rivals tell. Where GLM competes on price, K3 went up-market and charges for it.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill warn">Hosted now &middot; weights promised 27 Jul 2026</span>
+      <span class="pill accent">Modified MIT (expected)</span>
+      <span class="pill indigo">2.8T &middot; 16 of 896 experts</span>
+      <span class="pill indigo">1M context &middot; native vision</span>
+      <span class="pill warn">&ge;64 accelerators to self-host</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 WHAT IT IS -->
+<section id="what">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; What it is</div>
+      <h2 class="section-title">Moonshot's flagship &mdash; the open-weight family that went up-market.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p><strong>Moonshot AI</strong> is a Beijing lab backed by Alibaba, Tencent, and Meituan &mdash; it has reportedly raised around $3.77B across four rounds and was in talks at a ~$30B valuation (per Bloomberg, June 2026; attribute, not settled). Its consumer <strong>Kimi</strong> app is one of China's most-used AI products, with ARR reportedly passing $200M in April 2026. The model lineage worth anchoring: K2 (Jul 2025, open-weight, 1T MoE) &rarr; K2.5 (Jan 2026, multimodal) &rarr; K2.6 (Apr 2026) &rarr; K2.7-Code (Jun 2026) &rarr; <strong>K3 (16 Jul 2026)</strong>.</p>
+      <p>Judge K3 the way this sub-tree judges every model: on tool-use reliability and agent-framework fit, not chat vibes. Its position in the Models band is specific &mdash; the <strong>frontier-adjacent open-weight flagship that went up-market</strong>. Where <a href="glm.html" style="color:var(--sky);text-decoration:none;">GLM-5.2</a> competes on price (roughly one-sixth of a Western frontier model), K3 competes on capability and prices itself alongside the Western frontier deliberately. That contrast &mdash; price-open-weight vs capability-open-weight &mdash; is the reason to read the two leaves as a pair.</p>
+    </div>
+    <div class="info-card indigo fade-up" style="transition-delay: 0.08s">
+      <h4>Where it sits in the Models band</h4>
+      <p>K3 is the tenth model story in this band and the fourth open-weight option, alongside <a href="glm.html" style="color:var(--sky);text-decoration:none;">GLM</a>, <a href="llama.html" style="color:var(--sky);text-decoration:none;">Llama</a>, and <a href="mistral-qwen.html" style="color:var(--sky);text-decoration:none;">Mistral / Qwen</a>. It is the one you reach for on the <em>hard tail</em> &mdash; long-horizon agentic coding, large-repo navigation, native-vision-plus-1M-context work &mdash; and can absorb premium per-task cost. It is <em>not</em> the cheap end of a barbell; that's GLM-5.2 or K2.7-Code. The catch, throughout: as of writing you cannot download it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 HOW IT WORKS -->
+<section id="how">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; How K3 works</div>
+      <h2 class="section-title">The architecture, and the three hard caveats.</h2>
+      <p class="section-lede">K3 is text-out multimodal-in, tuned for long-horizon agentic work with a single "max" reasoning effort that is always on. The architecture below is Moonshot-disclosed; the caveats are where the honest reading lives.</p>
+    </div>
+
+    <div class="stack-grid fade-up" style="transition-delay: 0.05s">
+      <div class="stack-cell">
+        <span class="layer">Architecture</span>
+        <h4>~2.8T total &middot; 16 of 896 experts</h4>
+        <p>Stable LatentMoE: only 16 of 896 routed experts fire per token &mdash; extreme sparsity, roughly 1.8% of parameters active, sparser than K2's 32-of-384. Quantile Balancing handles routing; a latent-space shared expert cuts deployment memory. (Exact active-param count awaits the model card.)</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Attention</span>
+        <h4>Kimi Delta Attention (KDA)</h4>
+        <p>A hybrid linear-attention scheme. Note: the widely-quoted "~6.3&times; faster decoding / 75% lower KV-cache" figures originate from Moonshot's earlier <em>Kimi Linear</em> research paper (a 48B/3B model), <strong>not</strong> from K3 measurements &mdash; don't attach them to K3.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Residuals</span>
+        <h4>Attention Residuals (AttnRes)</h4>
+        <p>A drop-in replacement for standard residual connections, which Moonshot claims gives consistent scaling gains. Both KDA and AttnRes were previously published as open research.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Context &amp; modality</span>
+        <h4>1M tokens &middot; native vision</h4>
+        <p>A 1M-token window and native multimodal input (image in, text out) &mdash; long enough to hold a whole repository plus visual context in one session.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Efficiency</span>
+        <h4>~2.5&times; scaling vs K2</h4>
+        <p>Moonshot claims a ~2.5&times; scaling-efficiency improvement over Kimi K2 (vendor-claimed). MXFP4 weights / MXFP8 activations, with quantization-aware training from the SFT stage &mdash; not post-training quant.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Interop</span>
+        <h4>OpenAI-SDK-compatible</h4>
+        <p>The API speaks the OpenAI format &mdash; model <code>kimi-k3</code> at <code>api.moonshot.ai/v1</code>. Note the difference from GLM, which is Anthropic-Messages-compatible: your retarget path depends on which SDK your harness already speaks.</p>
+      </div>
+    </div>
+
+    <div class="info-card amber fade-up" style="transition-delay: 0.08s">
+      <h4>Hard caveat #1 &mdash; the weights aren't out yet</h4>
+      <p>This is the single most important honesty point on the leaf. K3 launched <strong>hosted-only</strong>; the open weights are <strong>promised by 27 July 2026 and had not shipped</strong> as of writing. The <code>moonshotai</code> Hugging Face org still tops out at K2.7-Code. Any "download Kimi K3" link before the real repo, <code>LICENSE</code>, and technical report land is not the model. Every self-host, continuity-backstop, and residency argument below is therefore <em>conditional</em> on that drop actually happening and the licence being genuinely permissive.</p>
+    </div>
+
+    <div class="info-card amber fade-up" style="transition-delay: 0.1s">
+      <h4>Hard caveat #2 &mdash; the hardware reality</h4>
+      <p>Even once the weights ship, this is not a rack-in-the-office model. Moonshot recommends a <strong>supernode of &ge;64 accelerators</strong> to serve K3. For scale reference, the 1T K2.7-Code needs ~577GB VRAM at INT4; a 2.8T model needs considerably more. This is supernode-class inference &mdash; for most teams the honest answer is the hosted market or <a href="vllm.html" style="color:var(--sky);text-decoration:none;">vLLM</a> on serious infrastructure, not <a href="ollama.html" style="color:var(--sky);text-decoration:none;">Ollama</a> on a workstation.</p>
+    </div>
+
+    <div class="info-card rose fade-up" style="transition-delay: 0.12s">
+      <h4>Hard caveat #3 &mdash; the serving path, not the weights</h4>
+      <p>Moonshot is Beijing-based; call K3's hosted API and your prompts route through servers governed by China's National Intelligence Law &mdash; a real data-path consideration for regulated or sensitive workloads. As with GLM, <strong>the risk is in the serving path, not the weights</strong>: self-hosting the open weights (once they exist) or serving through a trusted non-Moonshot host removes the exposure. Hold the same honest tension: the export-control geopolitics that makes the hosted API a governance risk is also what makes <em>holding open weights you control</em> &mdash; from any lab &mdash; a continuity hedge. For K3 that hedge is, for now, a promise dated 27 July.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 WHERE IT LANDS -->
+<section id="benchmarks">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; Where it actually lands</div>
+      <h2 class="section-title">Top-5 on the independent index &mdash; the coding rows are all vendor's own.</h2>
+      <p class="section-lede">Read the rows honestly. Every coding benchmark in circulation is <strong>vendor-reported, max-effort, on Moonshot's own launch chart</strong> (which mixes harnesses &mdash; Kimi Code, Claude Code, Codex, mini-SWE-agent). The one independent anchor is the Artificial Analysis index. Both are below.</p>
+    </div>
+
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead><tr><th>Benchmark</th><th>Kimi K3</th><th>Comparison / note</th><th>Source</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Artificial Analysis Intelligence Index</strong></td><td><strong>57</strong></td><td>4th of 189; behind Claude Fable 5 and two GPT-5.6 Sol settings; ahead of Claude Opus 4.8, GPT-5.5 (xhigh), Sonnet 5, GLM-5.2</td><td>Independent (AA), Jul 2026</td></tr>
+          <tr><td><strong>Terminal-Bench 2.1</strong></td><td><strong>88.3</strong></td><td>2nd globally (GPT-5.6 Sol 88.8); first open-weight model in the Terminal-Bench top 2</td><td>Vendor-reported</td></tr>
+          <tr><td><strong>FrontierSWE</strong></td><td><strong>81.2</strong></td><td>&mdash;</td><td>Vendor-reported</td></tr>
+          <tr><td><strong>ProgramBench</strong></td><td><strong>77.8</strong></td><td>raw pass</td><td>Vendor-reported</td></tr>
+          <tr><td><strong>DeepSWE</strong></td><td><strong>67.5</strong></td><td>&mdash;</td><td>Vendor-reported</td></tr>
+          <tr><td><strong>SWE Marathon</strong></td><td><strong>42.0</strong></td><td>leads the field per Moonshot</td><td>Vendor-reported</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="info-card green fade-up" style="transition-delay: 0.08s">
+      <h4>The honest read</h4>
+      <p>By Moonshot's <em>own</em> disclosure, K3's overall performance <strong>trails Claude Fable 5 and GPT-5.6 Sol</strong>, while it "substantially outperformed" Claude Opus 4.8, GPT-5.5, and Sol on selected coding/agent rows. Independent Artificial Analysis corroborates the near-frontier placement (57, 4th of 189) but also flags <strong>high output-token use, slower-than-median generation, and premium pricing</strong>. The load-bearing claim is narrow and real: an open-weight model &mdash; once shipped &mdash; is now genuinely in the top-5 frontier conversation, and it's the first Chinese lab to price like it belongs there. Do not upgrade the vendor rows into flat facts; independent SWE-bench Verified / Terminal-Bench reruns on a comparable harness don't exist yet.</p>
+    </div>
+
+    <div class="info-card fade-up" style="transition-delay: 0.1s">
+      <h4>Cost &mdash; capability pricing, not budget pricing</h4>
+      <p>The API runs <strong>$3.00 / 1M input</strong> (cache miss), <strong>$0.30 / 1M input</strong> (cache hit), <strong>$15.00 / 1M output</strong> &mdash; the highest of any Chinese lab, deliberately aligned to Western pricing. Moonshot reports &gt;90% cache-hit rates on coding workloads (vendor-reported), which materially lowers effective input cost; consumer access is bundled in Kimi plans (~$19&ndash;$199/month). The GLM contrast is the point: this is <strong>not</strong> the "one-sixth the cost" story &mdash; it's roughly half the per-task cost of Claude Opus 4.8 by Moonshot's framing, but the always-on "max" reasoning inflates output tokens. Independent testers logged ~<strong>13,241 reasoning tokens for a single SVG generation (~$0.25/query)</strong>: the list price hides the real per-task bill. Capability and operating efficiency point in opposite directions.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 DECISION GUIDE -->
+<section id="decision">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; Decision guide</div>
+      <h2 class="section-title">The one open-weight flagship you buy for the hard tail, not the bulk.</h2>
+      <p class="section-lede">The economic frame is the same one the <a href="glm.html" style="color:var(--sky);text-decoration:none;">GLM leaf</a> lays out &mdash; audit your task distribution, count the harness-rewrite cost, route with a barbell, keep a sovereign-AI backstop. Three K3-specific adjustments change the conclusion.</p>
+    </div>
+
+    <div class="info-card indigo fade-up" style="transition-delay: 0.05s">
+      <h4>1 &middot; The budget-tier argument doesn't apply</h4>
+      <p>Unlike GLM, K3 is <strong>not the cheap end of a barbell</strong>. If you're routing center-of-distribution volume to save money, K3 is the wrong open-weight pick &mdash; reach for GLM-5.2 or K2.7-Code (roughly a quarter of the output cost). K3 earns its slot on the <em>hard tail</em>: long-horizon agentic coding, large-repo navigation that was pushing K2.7-Code's 256K limit, native-vision-plus-1M-context work. Buy it for capability on the difficult minority, not for price on the bulk.</p>
+    </div>
+
+    <div class="info-card amber fade-up" style="transition-delay: 0.07s">
+      <h4>2 &middot; K3's own disclosed limitations &mdash; they're harness constraints, not footnotes</h4>
+      <p>Moonshot named three, and honesty is a feature: <strong>(a) thinking-history sensitivity</strong> &mdash; harnesses that truncate or modify the chain-of-thought degrade quality badly, so preserve the full trace; <strong>(b) excessive proactiveness</strong> &mdash; in ambiguous cases K3 acts rather than asks, which needs guardrails; <strong>(c) heavy reasoning-token consumption</strong> &mdash; the always-on "max" effort is the cost driver. These are real harness-design requirements before you get the benchmark behaviour.</p>
+    </div>
+
+    <div class="info-card rose fade-up" style="transition-delay: 0.09s">
+      <h4>3 &middot; The weights-timing gate</h4>
+      <p>Any self-host or continuity-backstop reasoning is conditional on the <strong>27 July drop actually landing</strong> and the <code>LICENSE</code> being genuinely permissive (a Modified-MIT is expected on the K2.7-Code precedent &mdash; a single attribution clause triggered at &gt;100M MAU or &gt;$20M monthly revenue &mdash; but that is unconfirmed until the files ship). Until then the continuity hedge is a promise, not a capability, and the only access is the hosted Chinese API.</p>
+    </div>
+
+    <div class="decision-grid fade-up" style="transition-delay: 0.11s">
+      <div class="decision-card use">
+        <h4>Reach for K3 when</h4>
+        <ul>
+          <li>Long-horizon agentic coding or large-repo work that was pushing K2.7-Code's 256K context limit</li>
+          <li>You need native vision <em>and</em> 1M context in one open-weight model</li>
+          <li>You want a top-5-benchmark open-weight flagship and can absorb premium per-task cost</li>
+          <li>Your harness can preserve the full thinking history and gate the model's proactiveness</li>
+          <li>You're prepared to self-host supernode-class &mdash; once the weights actually ship</li>
+        </ul>
+      </div>
+      <div class="decision-card skip">
+        <h4>Skip when</h4>
+        <ul>
+          <li>You're cost-sensitive and center-of-distribution &mdash; K2.7-Code (~&frac14; the output cost) or GLM-5.2 wins</li>
+          <li>You need the weights <strong>today</strong> &mdash; they're not out; there is no self-host path yet</li>
+          <li>Your harness truncates or rewrites the chain-of-thought &mdash; K3 degrades badly</li>
+          <li>You want a laptop / load-shedding-resilient local model &mdash; wrong shape entirely (Gemma on Ollama)</li>
+          <li>The workload is too sensitive for a hosted Chinese API and you can't wait for self-host</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 SA CONTEXT -->
+<section id="sa-context">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; South African context</div>
+      <h2 class="section-title">The clean POPIA story is real &mdash; but dated 27 July, and supernode-sized.</h2>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.05s">
+      <h4>Self-host is a promise, not yet an option</h4>
+      <p>The tidy POPIA answer &mdash; "the data never leaves your rack" &mdash; is real for K3 <em>only after</em> the 27 July weights land <em>and</em> a permissive licence is confirmed, and even then it's <strong>&ge;64-accelerator supernode</strong> territory, not an on-prem box most SA teams have. For now there is no in-country self-host path for K3 at all.</p>
+    </div>
+    <div class="info-card rose fade-up" style="transition-delay: 0.07s">
+      <h4>Until then, the only access is a hosted Chinese API</h4>
+      <p>For POPIA-sensitive prompts, routing to Moonshot's hosted API is a cross-border transfer through servers under China's National Intelligence Law &mdash; a data path to treat with eyes open, and to run the section 72 test against (see the <a href="../leg/data-privacy" style="color:var(--sky);text-decoration:none;">Data privacy &amp; POPIA</a> leaf). It is not a clean residency answer.</p>
+    </div>
+    <div class="info-card green fade-up" style="transition-delay: 0.09s">
+      <h4>The pragmatic SA middle path</h4>
+      <p>Evaluate <code>kimi-k3</code> via API for the <strong>hard-tail coding</strong> where its capability earns the premium; keep <strong>K2.7-Code or GLM-5.2</strong> for the cheap, high-volume work; and re-assess the self-host case the moment the real repo and <code>LICENSE</code> land. Own the context layer regardless &mdash; that's the part no model choice rescues.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 CONNECTIONS -->
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; Connections</div>
+      <h2 class="section-title">Where Kimi K3 links in the tree.</h2>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="./" class="connect-node">
+        <span class="tag">agents</span>
+        <div class="skill">Agents hub</div>
+        <div class="why">The sub-tree landing. K3 sits in the Models band as the up-market open-weight flagship.</div>
+      </a>
+      <a href="glm.html" class="connect-node">
+        <span class="tag">agents/glm</span>
+        <div class="skill">GLM &middot; Z.ai</div>
+        <div class="why">The direct peer and contrast. GLM competes on price, K3 on capability and prices like it. Read them as the price-vs-capability pair.</div>
+      </a>
+      <a href="llama.html" class="connect-node">
+        <span class="tag">agents/llama</span>
+        <div class="skill">Llama</div>
+        <div class="why">The broad open-weights community workhorse &mdash; the other end of the open-weight spectrum from a supernode-class 2.8T flagship.</div>
+      </a>
+      <a href="mistral-qwen.html" class="connect-node">
+        <span class="tag">agents/mistral-qwen</span>
+        <div class="skill">Mistral / Qwen</div>
+        <div class="why">The second-tier open-weight families; Qwen Coder is the small-model code specialist to K3's heavy flagship.</div>
+      </a>
+      <a href="vllm.html" class="connect-node">
+        <span class="tag">agents/vllm</span>
+        <div class="skill">vLLM</div>
+        <div class="why">How you'd actually serve a 2.8T model once weights ship &mdash; supernode-class inference, not Ollama.</div>
+      </a>
+      <a href="openrouter.html" class="connect-node">
+        <span class="tag">agents/openrouter</span>
+        <div class="skill">OpenRouter</div>
+        <div class="why">Hosted access without a Moonshot billing relationship &mdash; <code>moonshotai/kimi-k3</code> &mdash; and the routing seam for a barbell.</div>
+      </a>
+      <a href="litellm.html" class="connect-node">
+        <span class="tag">agents/litellm</span>
+        <div class="skill">LiteLLM</div>
+        <div class="why">The routing layer to send hard-tail work to K3 and the bulk to a cheaper model, behind one interface.</div>
+      </a>
+      <a href="claude-code.html" class="connect-node">
+        <span class="tag">agents/claude-code</span>
+        <div class="skill">Claude Code</div>
+        <div class="why">K3's endpoint is OpenAI-SDK-compatible &mdash; a different retarget path from GLM's Anthropic-Messages compatibility. The SDK your harness speaks decides.</div>
+      </a>
+      <a href="mcp.html" class="connect-node">
+        <span class="tag">agents/mcp</span>
+        <div class="skill">Model Context Protocol</div>
+        <div class="why">How a K3-backed agent reaches tools and data &mdash; the surface it calls through.</div>
+      </a>
+      <a href="../data/" class="connect-node">
+        <span class="tag">data</span>
+        <div class="skill">Data domain</div>
+        <div class="why">Own your context layer. A premium model on the hard tail still needs owned, structured data to reason over.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 07 RESOURCES -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; Resources</div>
+      <h2 class="section-title">Primary sources only.</h2>
+      <p class="section-lede">Several statements here convert from "promised" to "measured" when the weights drop &mdash; watch the Hugging Face org for the real repo, the <code>LICENSE</code>, and the technical report.</p>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://www.kimi.com/blog/kimi-k3" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Blog &middot; Moonshot</span>
+        <span class="r-title">Kimi K3 launch &amp; architecture</span>
+        <span class="r-url">kimi.com/blog/kimi-k3</span>
+      </a>
+      <a href="https://platform.moonshot.ai" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">API &middot; Moonshot</span>
+        <span class="r-title">Moonshot platform &mdash; model <code>kimi-k3</code>, api.moonshot.ai/v1</span>
+        <span class="r-url">platform.moonshot.ai</span>
+      </a>
+      <a href="https://huggingface.co/moonshotai" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Weights &middot; watch this</span>
+        <span class="r-title">Moonshot AI on Hugging Face (weights + LICENSE expected 27 Jul)</span>
+        <span class="r-url">huggingface.co/moonshotai</span>
+      </a>
+      <a href="https://openlm.ai/kimi-k3/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Reference &middot; architecture</span>
+        <span class="r-title">OpenLM.ai &mdash; Kimi K3 architecture summary</span>
+        <span class="r-url">openlm.ai/kimi-k3</span>
+      </a>
+      <a href="https://kimi.com" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Product</span>
+        <span class="r-title">Kimi &mdash; the consumer app</span>
+        <span class="r-url">kimi.com</span>
+      </a>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.08s; margin-top: 8px;">
+      <p style="font-size: 13px; color: var(--text-muted);">As-of 18 July 2026: hosted-only, weights not yet shipped. Independent placement (Artificial Analysis index 57, 4th) is corroborated; every coding-benchmark row is vendor-reported, max-effort, mixed-harness. The Modified-MIT licence, the ratified active-parameter count, and the first independent SWE-bench / Terminal-Bench reruns all convert from expected to confirmed on the weights drop. Re-verify then.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../index.html">Skills tree</a>
+      <a href="./">Agents hub</a>
+      <a href="glm.html">GLM &middot; Z.ai</a>
+      <a href="https://www.kimi.com/blog/kimi-k3" target="_blank" rel="noopener">Moonshot &nearr;</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant</p>
+  </div>
+</footer>
+<script>
+  function toggleTheme(){const html=document.documentElement;const current=html.getAttribute('data-theme');const next=current==='dark'?'light':'dark';html.setAttribute('data-theme',next);document.querySelector('.theme-toggle').textContent=next==='dark'?'☀️':'🌙';localStorage.setItem('theme',next);}
+  const saved=localStorage.getItem('theme');if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.theme-toggle').textContent=saved==='dark'?'☀️':'🌙';}
+  const observer=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting)entry.target.classList.add('visible');});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>
