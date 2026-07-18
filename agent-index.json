@@ -3,11 +3,11 @@
   "description": "The public knowledge tree for the 2nth.ai ecosystem. Every leaf is both a human-readable reference and an agent-consumable context document.",
   "agent_fetch": "https://know.2nth.ai/api/context/<domain>/<leaf>",
   "mcp": "https://know.2nth.ai/mcp",
-  "count": 196,
+  "count": 197,
   "items": [
     {
       "title": "Agents — know.2nth.ai",
-      "description": "The Agents domain on know.2nth.ai — the agentic frameworks, protocols, models, inference platforms, and coding CLI agents that matter in 2026. Twenty-nine Live leaves across five bands: eight frameworks (Google ADK, Google Antigravity, LangGraph, CrewAI, OpenAI Agents SDK, Anthropic Agent SDK, AutoGen, AgentForce), three protocols (A2A, MCP, Agent Skills), ten models, four inference platforms, and four coding CLI agents (Claude Code, OpenAI Codex CLI, GitHub Copilot CLI plus a comparison). Built around the principle that agents are software, not prompt soup.",
+      "description": "The Agents domain on know.2nth.ai — the agentic frameworks, protocols, models, inference platforms, and coding CLI agents that matter in 2026. Thirty Live leaves across five bands: eight frameworks (Google ADK, Google Antigravity, LangGraph, CrewAI, OpenAI Agents SDK, Anthropic Agent SDK, AutoGen, AgentForce), four protocols (A2A, MCP, Agent Skills, OpenWiki + OKF), ten models, four inference platforms, and four coding CLI agents (Claude Code, OpenAI Codex CLI, GitHub Copilot CLI plus a comparison). Built around the principle that agents are software, not prompt soup.",
       "domain": "agents",
       "kind": "hub",
       "url": "https://know.2nth.ai/explainers/agents/",
@@ -260,6 +260,14 @@
       "kind": "leaf",
       "url": "https://know.2nth.ai/explainers/agents/openrouter",
       "fetch": "agents/openrouter"
+    },
+    {
+      "title": "OpenWiki & OKF — know.2nth.ai",
+      "description": "OpenWiki & the Open Knowledge Format (OKF) — Google Cloud's vendor-neutral markdown + YAML format for agent-readable knowledge, published 12 June 2026. Exactly one required field (type); everything else optional. OpenWiki is LangChain's CLI that reads a codebase and emits an OKF bundle for coding agents (v0.2, 16 July 2026). The honest line between what the spec requires and what a producer emits.",
+      "domain": "agents",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/agents/openwiki",
+      "fetch": "agents/openwiki"
     },
     {
       "title": "Owning AI · which slice you actually own — know.2nth.ai",
