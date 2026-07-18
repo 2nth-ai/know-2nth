@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenWiki &amp; OKF &mdash; know.2nth.ai</title>
+<meta name="description" content="OpenWiki &amp; the Open Knowledge Format (OKF) — Google Cloud's vendor-neutral markdown + YAML format for agent-readable knowledge, published 12 June 2026. Exactly one required field (type); everything else optional. OpenWiki is LangChain's CLI that reads a codebase and emits an OKF bundle for coding agents (v0.2, 16 July 2026). The honest line between what the spec requires and what a producer emits.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/agents/openwiki">
+<meta property="og:title" content="OpenWiki &amp; OKF &mdash; know.2nth.ai">
+<meta property="og:description" content="OKF — Google Cloud's vendor-neutral markdown + YAML format for agent-readable knowledge. One required field. OpenWiki (LangChain) is the CLI that emits OKF bundles for codebases.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="OpenWiki &amp; OKF &mdash; know.2nth.ai">
+<meta name="twitter:description" content="OKF: Google Cloud's markdown + YAML format for agent knowledge. One required field (type). OpenWiki is LangChain's CLI that emits OKF bundles for coding agents.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3Cline x1='16' y1='3' x2='16' y2='7' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='16' y1='25' x2='16' y2='29' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='3' y1='16' x2='7' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='25' y1='16' x2='29' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3C/svg%3E">
+<style>
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12); --violet: #8B5CF6; --violet-soft: rgba(139, 92, 246, 0.12); --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-soft: rgba(99, 102, 241, 0.12); --bg: var(--ink); --bg-raised: var(--navy); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(37, 99, 235, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(56, 189, 248, 0.3); --max-w: 1200px; --read-w: 760px; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-raised: #FFFFFF; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(37, 99, 235, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(37, 99, 235, 0.25); }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.blue { width: 600px; height: 600px; background: var(--blue); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--sky); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--sky); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .read { max-width: var(--read-w); }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--sky); }
+  .crumb-sep { opacity: 0.5; }
+  .crumb-current { color: var(--text-secondary); }
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--indigo); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--indigo); box-shadow: 0 0 12px var(--indigo); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--blue-glow), var(--sky), var(--sky-muted)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.accent { background: rgba(37, 99, 235, 0.12); color: var(--blue-glow); border-color: rgba(37, 99, 235, 0.25); }
+  .pill.green { background: var(--green-soft); color: var(--green); border-color: rgba(16, 185, 129, 0.25); }
+  .pill.indigo { background: var(--indigo-soft); color: var(--indigo); border-color: rgba(99, 102, 241, 0.25); }
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--sky); margin-bottom: 14px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--sky); }
+  .prose ul, .prose ol { padding-left: 24px; margin-bottom: 18px; max-width: var(--read-w); }
+  .prose li { font-size: 15px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 8px; }
+  .prose li strong { color: var(--text-primary); font-weight: 600; }
+  pre.code { background: var(--ink-deep); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px 22px; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.65; color: var(--mist); margin: 0 0 20px; max-width: var(--read-w); }
+  [data-theme="light"] pre.code { background: #0F172A; color: #E2E8F0; }
+  pre.code .k { color: var(--sky); }
+  pre.code .s { color: #A5F3B8; }
+  pre.code .c { color: var(--text-muted); font-style: italic; }
+  pre.code .h { color: var(--blue-glow); font-weight: 600; }
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); margin-bottom: 20px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.indigo { border-left: 3px solid var(--indigo); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: var(--read-w); margin-bottom: 20px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--sky); background: rgba(37, 99, 235, 0.04); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); }
+  .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--sky); }
+  .compare td strong { color: var(--text-primary); }
+  .stack-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; max-width: var(--read-w); margin-bottom: 20px; }
+  .stack-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--indigo); border-radius: var(--radius-md); padding: 18px 22px; }
+  .stack-cell .layer { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .stack-cell h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.3px; }
+  .stack-cell p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+  .connect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .connect-node { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; transition: all 0.3s; text-decoration: none; color: inherit; display: block; }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node.soon { cursor: default; opacity: 0.72; }
+  .connect-node .tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--sky); word-break: break-all; }
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--sky); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } pre.code { font-size: 11px; padding: 14px 16px; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+
+<div class="glow-orb blue"></div>
+<div class="glow-orb sky"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand"><span class="nav-brand-mark">know.2nth.ai</span><span class="nav-brand-sub">agents/openwiki</span></a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">&larr; Agents</a>
+      <a href="../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x1F319;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="./">Agents</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">OpenWiki &amp; OKF</span>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> agents &middot; OpenWiki + OKF &middot; Format Leaf</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      A directory of markdown, <span class="gradient">with just enough metadata to find it.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      The <strong>Open Knowledge Format (OKF)</strong> is Google Cloud's vendor-neutral spec &mdash; published 12&nbsp;June&nbsp;2026 &mdash; that formalises the "LLM-wiki" pattern into a portable format: a folder of markdown concept files, each with a little YAML frontmatter. <strong>OpenWiki</strong> is LangChain's CLI that reads a codebase and writes an OKF bundle a coding agent can navigate; version 0.2 (16&nbsp;July&nbsp;2026) is the release that adopted OKF. The spec's required surface is deliberately tiny &mdash; exactly one field.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill green">Live spec &middot; v0.1</span>
+      <span class="pill indigo">Google Cloud origin</span>
+      <span class="pill accent">Markdown + YAML</span>
+      <span class="pill">One required field</span>
+      <span class="pill">npm i -g openwiki</span>
+    </div>
+  </div>
+</section>
+
+<section id="what">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; What it is</div>
+      <h2 class="section-title">A knowledge format, and the tool that writes it.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Two things share this leaf because they shipped together, but they are not the same thing. <strong>OKF</strong> is the format: an open, vendor-neutral specification from Google Cloud for representing curated knowledge as a directory of markdown files, each carrying a small block of YAML frontmatter. <strong>OpenWiki</strong> is a <em>producer</em> of that format: a CLI from LangChain that scans a codebase and emits &mdash; and keeps updating &mdash; an OKF bundle that coding agents read. OKF is the durable thing; OpenWiki is one shipped implementation of it, the way <code>anthropics/skills</code> is one implementation of the Agent Skills spec.</p>
+      <p>This isn't a new runtime. <strong>It's a directory of markdown files, with a convention for the frontmatter and two reserved filenames.</strong> Google published OKF on 12&nbsp;June&nbsp;2026 and called it, in its own words, "a starting point, not a finished standard." LangChain's OpenWiki 0.2, on 16&nbsp;July&nbsp;2026, was the first widely-noted tool to adopt it &mdash; every wiki OpenWiki now generates or updates is written as an OKF bundle.</p>
+      <p>The reason a format like this earns a name at all: agents are only as good as the context they're handed. Point a coding agent at a large repository with no map and it discovers structure by open-ended file-system scraping &mdash; slow and token-expensive. OKF's bet is that a small, consistent layer of metadata &mdash; written once, kept in git next to the code &mdash; lets an agent find the right document without reading the whole tree first.</p>
+    </div>
+    <div class="info-card indigo fade-up" style="transition-delay: 0.08s">
+      <h4>The one required field</h4>
+      <p>OKF v0.1 requires exactly <strong>one</strong> frontmatter field: <code>type</code>, a non-empty short string the spec describes as identifying "the kind of concept &mdash; consumers use this for routing, filtering, and presentation." Everything else &mdash; <code>title</code>, <code>description</code>, <code>resource</code>, <code>tags</code>, <code>timestamp</code> &mdash; is <strong>optional</strong> (the spec calls them recommended). Producers may add their own keys, and consumers are told to preserve unknown keys and not reject documents that carry them. So minimal conformance is low: a directory of <code>.md</code> files, each with a non-empty <code>type</code>. Any characterisation of OKF as demanding five mandatory fields, or a rigid three-part structure, overstates what the spec actually asks for.</p>
+    </div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; How it works</div>
+      <h2 class="section-title">Concept files, six standard fields, two reserved documents.</h2>
+      <p class="section-lede">An OKF bundle is a directory. Most files are <em>concept documents</em> &mdash; ordinary markdown with a frontmatter block. Two filenames are reserved with special meaning. The frontmatter is where the retrieval leverage lives: one required field, five recommended ones, and room for producer extensions.</p>
+    </div>
+
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p><strong>The six standard frontmatter fields</strong> &mdash; only the first is required:</p>
+    </div>
+
+    <div class="compare-wrap fade-up" style="transition-delay: 0.07s">
+      <table class="compare">
+        <thead><tr><th>Field</th><th>Status</th><th>What it carries</th></tr></thead>
+        <tbody>
+          <tr><td><code>type</code></td><td><strong>Required</strong> (non-empty)</td><td>The kind of concept &mdash; used for routing, filtering, presentation.</td></tr>
+          <tr><td><code>title</code></td><td>Optional</td><td>Human-readable name for the concept.</td></tr>
+          <tr><td><code>description</code></td><td>Optional</td><td>One-line summary &mdash; the field an agent scans to decide relevance.</td></tr>
+          <tr><td><code>resource</code></td><td>Optional</td><td>A URL or identifier the concept points at (a table, an endpoint, a doc).</td></tr>
+          <tr><td><code>tags</code></td><td>Optional</td><td>Free-form labels for filtering.</td></tr>
+          <tr><td><code>timestamp</code></td><td>Optional</td><td>When the concept was last curated.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="prose fade-up" style="transition-delay: 0.1s">
+      <p><strong>A minimal OKF concept document</strong> &mdash; the required field, a few recommended ones, then markdown:</p>
+    </div>
+
+    <pre class="code fade-up" style="transition-delay: 0.13s"><span class="h">---</span>
+<span class="k">type</span>: table                        <span class="c"># REQUIRED &mdash; the only mandatory field</span>
+<span class="k">title</span>: orders
+<span class="k">description</span>: One row per customer order; grain is order_id.
+<span class="k">resource</span>: bigquery://sales.prod.orders
+<span class="k">tags</span>: [billing, revenue]
+<span class="k">timestamp</span>: <span class="s">"2026-07-16"</span>
+<span class="h">---</span>
+
+<span class="h"># orders</span>
+
+The canonical orders fact table. Join to `customers` on
+`customer_id`. `status` is one of draft / paid / refunded.
+Revenue reporting reads `total_ex_vat`, never `total`.</pre>
+
+    <div class="prose fade-up" style="transition-delay: 0.16s">
+      <p><strong>The directory shape.</strong> Concept files sit alongside two reserved documents &mdash; a directory listing and an update history:</p>
+    </div>
+
+    <pre class="code fade-up" style="transition-delay: 0.19s">sales-wiki/
+&#9500;&#9472;&#9472; index.md            <span class="c"># reserved: directory listing (spec &sect;6)</span>
+&#9500;&#9472;&#9472; log.md              <span class="c"># reserved: update history (spec &sect;7)</span>
+&#9500;&#9472;&#9472; orders.md           <span class="c"># concept document</span>
+&#9500;&#9472;&#9472; customers.md        <span class="c"># concept document</span>
+&#9492;&#9472;&#9472; billing/
+    &#9492;&#9472;&#9472; invoices.md     <span class="c"># concept document</span></pre>
+
+    <div class="info-card amber fade-up" style="transition-delay: 0.22s">
+      <h4>A naming discrepancy worth knowing</h4>
+      <p>OKF defines <strong>two</strong> reserved documents &mdash; not three structural elements. The change-log filename is where the sources disagree: the Google OKF <code>SPEC.md</code> names it <code>log.md</code> (singular), while LangChain's OpenWiki 0.2 blog post writes <code>logs.md</code> (plural) in its prose. It's a small inconsistency in the announcement, but a real one &mdash; if you're writing a validator or a reader, handle both spellings rather than trusting either source alone. The listing file, <code>index.md</code>, is consistent across sources.</p>
+    </div>
+
+    <div class="info-card green fade-up" style="transition-delay: 0.25s">
+      <h4>The retrieval shift &mdash; foundation, not yet shipped tooling</h4>
+      <p>The point of the metadata is deterministic filtering. Instead of an agent scraping the whole tree, structured frontmatter lets a reader filter &mdash; LangChain's example is "every doc tagged <code>billing</code>, or every doc in the <code>BigQuery&nbsp;tables</code> category" &mdash; rather than relying entirely on open-ended agentic search. <strong>Read the tense honestly:</strong> LangChain frames deterministic search as something the metadata <em>enables</em> for "future OpenWiki tooling," not a feature that ships in 0.2. What 0.2 delivers is the structured foundation; the fast deterministic reader on top of it is stated as forthcoming. Don't buy the retrieval speed-up as already built.</p>
+    </div>
+  </div>
+</section>
+
+<section id="ecosystem">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; The ecosystem</div>
+      <h2 class="section-title">One spec, a visualizer, and OpenWiki as producer.</h2>
+      <p class="section-lede">OKF is young &mdash; a v0.1 spec published in June 2026 &mdash; but it already has a reference implementation, a bundled viewer, and a real producer in OpenWiki. The origin use-case was data catalogs: describing BigQuery tables, metrics, and join paths so agents query the right thing.</p>
+    </div>
+
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead><tr><th>Piece</th><th>What it is</th><th>Where</th></tr></thead>
+        <tbody>
+          <tr><td><strong>OKF spec</strong></td><td>The <code>SPEC.md</code> + <code>README.md</code> defining the format, with sample bundles.</td><td><code>GoogleCloudPlatform/knowledge-catalog</code></td></tr>
+          <tr><td><strong>OKF visualizer</strong></td><td>An open-source static-HTML graph viewer for an OKF bundle, bundled in the reference repo.</td><td>same repo</td></tr>
+          <tr><td><strong>OpenWiki</strong></td><td>LangChain's CLI that generates and maintains an OKF bundle for a codebase, in code or personal mode.</td><td><code>langchain-ai/openwiki</code></td></tr>
+          <tr><td><strong>Agent surface</strong></td><td>OpenWiki exposes the wiki to agents by writing <code>AGENTS.md</code> / <code>CLAUDE.md</code> entry points.</td><td>generated in-repo</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="prose fade-up" style="transition-delay: 0.08s">
+      <p><strong>Getting an OKF bundle out of a repo</strong> is two commands &mdash; install the CLI, initialise it in the project:</p>
+    </div>
+
+    <pre class="code fade-up" style="transition-delay: 0.1s"><span class="c"># install the CLI globally</span>
+npm install -g openwiki@latest
+
+<span class="c"># scan the current repo and write an OKF bundle + AGENTS.md / CLAUDE.md</span>
+openwiki --init</pre>
+
+    <div class="info-card indigo fade-up" style="transition-delay: 0.13s">
+      <h4>Where it came from, and where it's going</h4>
+      <p>OKF grew out of Google Cloud's data-sharing work &mdash; the problem of handing an agent a warehouse it can actually reason about. Google is explicit that v0.1 is "a starting point, not a finished standard," which is the right frame for anyone adopting it: the field semantics may move. The wider ecosystem is early &mdash; a handful of community viewers and conformance checkers &mdash; and worth watching rather than betting a production pipeline on today.</p>
+    </div>
+  </div>
+</section>
+
+<section id="vs">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; OKF vs Skills vs MCP</div>
+      <h2 class="section-title">Knowledge, capability, access &mdash; three different layers.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>OKF sits in the same open-standards layer as Agent Skills and MCP, and it's easy to blur them. They solve different problems, and the difference is load-bearing once you're assembling a real agent system:</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.07s">
+      <table class="compare">
+        <thead><tr><th>Concern</th><th>OKF</th><th>Agent Skills</th><th>MCP</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Packages</strong></td><td>Curated <em>knowledge</em> / concepts</td><td>Reusable <em>capabilities</em></td><td>Live <em>access</em> to tools &amp; data</td></tr>
+          <tr><td><strong>Format</strong></td><td>Folder of <code>.md</code> + YAML frontmatter</td><td>Folder + <code>SKILL.md</code></td><td>JSON-RPC server</td></tr>
+          <tr><td><strong>Lifetime</strong></td><td>Static; in git next to the code</td><td>Static; in git</td><td>Long-running process</td></tr>
+          <tr><td><strong>Required surface</strong></td><td>One field (<code>type</code>)</td><td>Two fields (<code>name</code>, <code>description</code>)</td><td>Handshake + capability list</td></tr>
+          <tr><td><strong>Best fit</strong></td><td>Giving an agent a map of a codebase or a warehouse</td><td>Repeatable procedures, brand / policy adherence</td><td>Reading and writing live external systems</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="info-card indigo fade-up" style="transition-delay: 0.1s">
+      <h4>How they compose</h4>
+      <p>They stack rather than compete. An OKF bundle tells the agent <em>what exists and where</em> &mdash; the <code>orders</code> table lives in BigQuery, joins to <code>customers</code>. An MCP server gives it <em>live access</em> to actually run the query. A skill frames the <em>procedure</em> &mdash; how this team writes a revenue report. <strong>OKF is the map, MCP is the road, Skills is the route you always take.</strong></p>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.13s">
+      <h4>&#10007; Skip OKF when&hellip;</h4>
+      <p>&mdash; Your knowledge is small enough that letting the agent read the raw files is cheaper than maintaining frontmatter discipline. The format earns its keep at scale, not on a five-file repo.</p>
+      <p>&mdash; You need <strong>freshness guarantees</strong>. OKF v0.1 has no staleness enforcement &mdash; a concept doc can happily describe code that has since changed. Nothing in the format stops the map drifting from the territory.</p>
+      <p>&mdash; You're buying it for the deterministic-search speed-up today. That's a stated foundation in OpenWiki 0.2, not shipped tooling.</p>
+      <p>&mdash; You want to hard-code against field semantics. Google calls v0.1 "a starting point, not a finished standard" &mdash; treat the spec as movable.</p>
+    </div>
+  </div>
+</section>
+
+<section id="sa-context">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; South African context</div>
+      <h2 class="section-title">Institutional knowledge as a git-versioned, POPIA-safe bundle.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p><strong>The consultancy unlock.</strong> A delivery team's real asset is knowing how a client's systems actually fit together &mdash; which ERP module is the source of truth, how the chart of accounts maps to SARS categories, why the BBBEE scorecard pulls from two places. That knowledge usually lives in someone's head or a stale Confluence page. As an OKF bundle it becomes a folder of markdown in the client's git repo: agent-readable, human-editable, versioned alongside the code it describes. No new platform, no vendor lock-in, no FX exposure &mdash; it's a directory of text files.</p>
+      <p><strong>POPIA and the data boundary.</strong> An OKF bundle is static curated context &mdash; descriptions, join paths, table meanings. On its own it never reaches out to a database or an API, so it's safe to keep in a shared repo the way documentation is. The bits that touch personal information stay behind the MCP servers the bundle merely <em>points at</em> (via the <code>resource</code> field), and those servers stay on SA-hosted infrastructure. The map can be shared; the territory stays put.</p>
+      <p><strong>The honest caveat for SA teams.</strong> The value here is real but early. OKF is a v0.1 spec and OpenWiki's deterministic-search payoff isn't shipped yet, so the near-term win is modest: a consistent, agent-friendly documentation format you can adopt cheaply and grow into &mdash; not a finished retrieval engine. Adopt it for the discipline and the portability, not for a speed number that doesn't exist yet.</p>
+    </div>
+  </div>
+</section>
+
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; Connections</div>
+      <h2 class="section-title">Where OpenWiki &amp; OKF link in the tree.</h2>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="./" class="connect-node">
+        <span class="tag">agents</span>
+        <div class="skill">Agents hub</div>
+        <div class="why">OKF sits in the Protocols / open-standards band alongside MCP and Agent Skills &mdash; a format, not a runtime.</div>
+      </a>
+      <a href="skills.html" class="connect-node">
+        <span class="tag">agents/skills</span>
+        <div class="skill">Agent Skills</div>
+        <div class="why">The sibling format. Skills package <em>capabilities</em>; OKF packages <em>knowledge</em>. Both are folder + markdown + YAML with a tiny required surface.</div>
+      </a>
+      <a href="mcp.html" class="connect-node">
+        <span class="tag">agents/mcp</span>
+        <div class="skill">Model Context Protocol</div>
+        <div class="why">The complement. OKF is the static map of what exists; MCP is the live access that reads and writes it. The <code>resource</code> field often points at an MCP-served system.</div>
+      </a>
+      <a href="claude-code.html" class="connect-node">
+        <span class="tag">agents/claude-code</span>
+        <div class="skill">Claude Code</div>
+        <div class="why">A direct consumer &mdash; OpenWiki writes the <code>CLAUDE.md</code> / <code>AGENTS.md</code> entry points that coding CLI agents read on start-up.</div>
+      </a>
+      <a href="coding-cli-agents.html" class="connect-node">
+        <span class="tag">agents/coding-cli-agents</span>
+        <div class="skill">Coding CLI agents</div>
+        <div class="why">The band that benefits: an OKF bundle gives any codebase-navigating agent a map instead of a blind file-system crawl.</div>
+      </a>
+      <a href="../data/" class="connect-node">
+        <span class="tag">data</span>
+        <div class="skill">Data domain</div>
+        <div class="why">OKF's origin use-case &mdash; describing warehouse tables, metrics, and join paths so an agent queries the right thing.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; Resources</div>
+      <h2 class="section-title">Spec, repos, and the announcements.</h2>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Spec</span>
+        <span class="r-title">OKF SPEC.md &middot; the authoritative format</span>
+        <span class="r-url">github.com/GoogleCloudPlatform/knowledge-catalog/&hellip;/okf/SPEC.md</span>
+      </a>
+      <a href="https://github.com/GoogleCloudPlatform/knowledge-catalog/tree/main/okf" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Source</span>
+        <span class="r-title">knowledge-catalog/okf &middot; README, samples, visualizer</span>
+        <span class="r-url">github.com/GoogleCloudPlatform/knowledge-catalog/tree/main/okf</span>
+      </a>
+      <a href="https://cloud.google.com/blog/products/data-analytics/how-the-open-knowledge-format-can-improve-data-sharing/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Announcement &middot; 12 Jun 2026</span>
+        <span class="r-title">How the Open Knowledge Format can improve data sharing</span>
+        <span class="r-url">cloud.google.com/blog/&hellip;/open-knowledge-format&hellip;</span>
+      </a>
+      <a href="https://github.com/langchain-ai/openwiki" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Source</span>
+        <span class="r-title">langchain-ai/openwiki &middot; the CLI</span>
+        <span class="r-url">github.com/langchain-ai/openwiki</span>
+      </a>
+      <a href="https://www.langchain.com/blog/openwiki-0-2-adds-okf-support" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Announcement &middot; 16 Jul 2026</span>
+        <span class="r-title">OpenWiki 0.2 brings OKF to codebase documentation</span>
+        <span class="r-url">langchain.com/blog/openwiki-0-2-adds-okf-support</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../index.html">Skills tree</a>
+      <a href="./">Agents hub</a>
+      <a href="https://github.com/langchain-ai/openwiki" target="_blank" rel="noopener">langchain-ai/openwiki &nearr;</a>
+      <a href="https://github.com/GoogleCloudPlatform/knowledge-catalog/tree/main/okf" target="_blank" rel="noopener">OKF spec &nearr;</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme(){const html=document.documentElement;const current=html.getAttribute('data-theme');const next=current==='dark'?'light':'dark';html.setAttribute('data-theme',next);document.querySelector('.theme-toggle').textContent=next==='dark'?'☀️':'🌙';localStorage.setItem('theme',next);}
+  const saved=localStorage.getItem('theme');if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.theme-toggle').textContent=saved==='dark'?'☀️':'🌙';}
+  const observer=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting)entry.target.classList.add('visible');});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>
