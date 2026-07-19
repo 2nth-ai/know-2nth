@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ask Vince &mdash; know.2nth.ai</title>
-<meta name="description" content="Ask Vince — the on-site AI assistant for know.2nth.ai, running on Cloudflare Workers AI and grounded in the knowledge tree. Phase 1 proof of concept.">
+<title>Ask Vinci &mdash; know.2nth.ai</title>
+<meta name="description" content="Ask Vinci — the on-site AI assistant for know.2nth.ai, running on Cloudflare Workers AI and grounded in the knowledge tree. Phase 1 proof of concept.">
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -69,8 +69,8 @@
 </nav>
 
 <div class="wrap">
-  <div class="eyebrow"><span class="dot"></span> Vince &middot; on-site assistant &middot; Phase 1 PoC</div>
-  <h1>Ask <span class="g">Vince.</span></h1>
+  <div class="eyebrow"><span class="dot"></span> Vinci &middot; on-site assistant &middot; Phase 1 PoC</div>
+  <h1>Ask <span class="g">Vinci.</span></h1>
   <p class="lede">The know.2nth.ai guide, running on <strong>Cloudflare Workers AI</strong> at the edge and grounded in the knowledge tree. He answers from the leaves &mdash; and tells you which ones to read.</p>
   <div class="badge-row">
     <span class="badge on">Workers AI</span>
@@ -120,7 +120,7 @@
     $thread.appendChild(el('msg u', esc(question)));
     $q.value = ''; $q.style.height = 'auto'; $send.disabled = true;
 
-    const v = el('msg v', '<div class="who">Vince</div><div class="thinking"><span class="d"></span> reading the tree…</div>');
+    const v = el('msg v', '<div class="who">Vinci</div><div class="thinking"><span class="d"></span> reading the tree…</div>');
     $thread.appendChild(v);
     v.scrollIntoView({ behavior: 'smooth', block: 'end' });
 
@@ -132,7 +132,7 @@
       });
       const data = await r.json();
       if (data.error) {
-        v.innerHTML = '<div class="who">Vince</div><div class="err">' + esc(data.message || data.error) + '</div>';
+        v.innerHTML = '<div class="who">Vinci</div><div class="err">' + esc(data.message || data.error) + '</div>';
       } else {
         let srcHtml = '';
         if (data.sources && data.sources.length) {
@@ -140,13 +140,13 @@
             '<a class="src" href="' + esc(s.url) + '" target="_blank" rel="noopener">' + esc(s.title) + ' &nearr;</a>'
           ).join('') + '</div>';
         }
-        v.innerHTML = '<div class="who">Vince &middot; ' + esc((data.model || '').replace('@cf/', '')) + '</div>' +
+        v.innerHTML = '<div class="who">Vinci &middot; ' + esc((data.model || '').replace('@cf/', '')) + '</div>' +
           '<div class="body">' + esc(data.answer) + '</div>' + srcHtml;
         history.push({ role: 'user', content: question });
         history.push({ role: 'assistant', content: data.answer });
       }
     } catch (err) {
-      v.innerHTML = '<div class="who">Vince</div><div class="err">Request failed: ' + esc(err.message) + '</div>';
+      v.innerHTML = '<div class="who">Vinci</div><div class="err">Request failed: ' + esc(err.message) + '</div>';
     }
     $send.disabled = false;
     v.scrollIntoView({ behavior: 'smooth', block: 'end' });

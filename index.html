@@ -259,6 +259,32 @@
     font-weight: 500;
     letter-spacing: 1.8px;
   }
+  /* ── Vinci — the on-site agent (Cloudflare Workers AI) ── */
+  .vinci { margin: 44px auto 0; max-width: 620px; text-align: left; }
+  .vinci-label { display: flex; align-items: center; justify-content: center; gap: 12px; font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: 1.6px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 16px; }
+  .vinci-label strong { color: var(--text-secondary); font-weight: 500; }
+  .vinci-label .live { display: inline-flex; align-items: center; gap: 6px; color: var(--indigo); }
+  .vinci-label .live::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--indigo); box-shadow: 0 0 10px var(--indigo); }
+  .vinci-box { display: flex; gap: 8px; align-items: flex-end; background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 8px; transition: border-color 0.3s; }
+  .vinci-box:focus-within { border-color: rgba(99, 102, 241, 0.4); }
+  .vinci-box textarea { flex: 1; background: none; border: none; color: var(--text-primary); font-family: 'Outfit', sans-serif; font-size: 15.5px; resize: none; padding: 11px 14px; outline: none; max-height: 140px; line-height: 1.5; }
+  .vinci-box textarea::placeholder { color: var(--text-muted); }
+  .vinci-send { background: linear-gradient(135deg, var(--indigo), #818CF8); color: #fff; border: none; border-radius: var(--radius-md); padding: 11px 22px; font-family: 'Outfit', sans-serif; font-weight: 600; font-size: 14px; cursor: pointer; transition: opacity 0.2s, transform 0.2s; white-space: nowrap; }
+  .vinci-send:hover:not(:disabled) { transform: translateY(-1px); }
+  .vinci-send:disabled { opacity: 0.5; cursor: default; }
+  .vinci-chips { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-top: 14px; }
+  .vinci-chip { font-family: 'Outfit', sans-serif; font-size: 12.5px; color: var(--text-secondary); background: none; border: 1px solid var(--border); border-radius: var(--radius-pill); padding: 6px 14px; cursor: pointer; transition: all 0.2s; }
+  .vinci-chip:hover { border-color: rgba(99, 102, 241, 0.4); color: var(--indigo); }
+  .vinci-answer { margin-top: 16px; background: var(--bg-card); border: 1px solid var(--border); border-left: 3px solid var(--indigo); border-radius: var(--radius-md); padding: 20px 22px; display: none; }
+  .vinci-answer.show { display: block; }
+  .vinci-answer .who { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--indigo); margin-bottom: 10px; }
+  .vinci-answer .text { font-size: 15px; color: var(--text-secondary); line-height: 1.7; white-space: pre-wrap; }
+  .vinci-answer .srcs { margin-top: 14px; display: flex; gap: 8px; flex-wrap: wrap; }
+  .vinci-answer .srcs a { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--indigo); text-decoration: none; border: 1px solid var(--border); border-radius: var(--radius-pill); padding: 5px 12px; transition: all 0.2s; }
+  .vinci-answer .srcs a:hover { border-color: rgba(99, 102, 241, 0.4); }
+  .vinci-answer .think { color: var(--text-muted); font-size: 14px; display: inline-flex; align-items: center; gap: 9px; }
+  .vinci-answer .think::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--indigo); animation: vinci-pulse 1s infinite; }
+  @keyframes vinci-pulse { 0%,100% { opacity: 0.3; } 50% { opacity: 1; } }
   .hero-eyebrow {
     font-family: 'JetBrains Mono', monospace;
     font-size: 12px;
@@ -915,8 +941,18 @@
       <a href="#domains" class="btn btn-primary">Browse the domains ↓</a>
       <a href="#how" class="btn btn-ghost">How it works</a>
     </div>
-    <div class="fade-up" style="transition-delay: 0.4s">
-      <div class="leonardo-byline">Guided by <strong>Vinci</strong> · the 2nth knowledge partner</div>
+    <div class="vinci fade-up" style="transition-delay: 0.4s">
+      <div class="vinci-label"><span>Guided by <strong>Vinci</strong></span> <span class="live">live</span> <span>· ask the whole tree</span></div>
+      <div class="vinci-box">
+        <textarea id="vinci-q" rows="1" placeholder="Ask Vinci anything — e.g. which open-weight model is cheapest, or what is OKF…"></textarea>
+        <button class="vinci-send" id="vinci-send">Ask</button>
+      </div>
+      <div class="vinci-chips" id="vinci-chips">
+        <button class="vinci-chip">Deep Agents vs LangGraph?</button>
+        <button class="vinci-chip">What is the Open Knowledge Format?</button>
+        <button class="vinci-chip">Is Kimi K3 available yet?</button>
+      </div>
+      <div class="vinci-answer" id="vinci-answer"></div>
     </div>
   </div>
 </section>
@@ -1440,6 +1476,43 @@
   }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 
   document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+<script>
+  // Vinci — the on-site agent, backed by /api/ask (Cloudflare Workers AI).
+  (function () {
+    var q = document.getElementById('vinci-q');
+    var send = document.getElementById('vinci-send');
+    var ans = document.getElementById('vinci-answer');
+    var chips = document.getElementById('vinci-chips');
+    if (!q || !send || !ans) return;
+    var history = [];
+    function esc(s) { var d = document.createElement('div'); d.textContent = s == null ? '' : s; return d.innerHTML; }
+    q.addEventListener('input', function () { q.style.height = 'auto'; q.style.height = Math.min(q.scrollHeight, 140) + 'px'; });
+    q.addEventListener('keydown', function (e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); ask(); } });
+    send.addEventListener('click', ask);
+    chips.addEventListener('click', function (e) { if (e.target.classList.contains('vinci-chip')) { q.value = e.target.textContent; ask(); } });
+    function ask() {
+      var question = q.value.trim();
+      if (!question) return;
+      send.disabled = true;
+      ans.className = 'vinci-answer show';
+      ans.innerHTML = '<div class="who">Vinci</div><div class="think">reading the tree…</div>';
+      fetch('/api/ask', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ question: question, history: history }) })
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+          if (d.error) { ans.innerHTML = '<div class="who">Vinci</div><div class="text">' + esc(d.message || d.error) + '</div>'; return; }
+          var srcs = '';
+          if (d.sources && d.sources.length) {
+            srcs = '<div class="srcs">' + d.sources.map(function (s) { return '<a href="' + esc(s.url) + '">' + esc(s.title) + ' ↗</a>'; }).join('') + '</div>';
+          }
+          ans.innerHTML = '<div class="who">Vinci</div><div class="text">' + esc(d.answer) + '</div>' + srcs;
+          history.push({ role: 'user', content: question }); history.push({ role: 'assistant', content: d.answer });
+          if (history.length > 6) history = history.slice(-6);
+        })
+        .catch(function (err) { ans.innerHTML = '<div class="who">Vinci</div><div class="text">Something went wrong: ' + esc(err.message) + '</div>'; })
+        .then(function () { send.disabled = false; });
+    }
+  })();
 </script>
 <script src="/gate.js" defer></script>
 </body>
