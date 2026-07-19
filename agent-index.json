@@ -3,11 +3,11 @@
   "description": "The public knowledge tree for the 2nth.ai ecosystem. Every leaf is both a human-readable reference and an agent-consumable context document.",
   "agent_fetch": "https://know.2nth.ai/api/context/<domain>/<leaf>",
   "mcp": "https://know.2nth.ai/mcp",
-  "count": 197,
+  "count": 198,
   "items": [
     {
       "title": "Agents — know.2nth.ai",
-      "description": "The Agents domain on know.2nth.ai — the agentic frameworks, protocols, models, inference platforms, and coding CLI agents that matter in 2026. Thirty Live leaves across five bands: eight frameworks (Google ADK, Google Antigravity, LangGraph, CrewAI, OpenAI Agents SDK, Anthropic Agent SDK, AutoGen, AgentForce), four protocols (A2A, MCP, Agent Skills, OpenWiki + OKF), ten models, four inference platforms, and four coding CLI agents (Claude Code, OpenAI Codex CLI, GitHub Copilot CLI plus a comparison). Built around the principle that agents are software, not prompt soup.",
+      "description": "The Agents domain on know.2nth.ai — the agentic frameworks, protocols, models, inference platforms, and coding CLI agents that matter in 2026. Thirty-one Live leaves across five bands: nine frameworks (Google ADK, Google Antigravity, LangGraph, CrewAI, OpenAI Agents SDK, Anthropic Agent SDK, AutoGen, AgentForce, Deep Agents), four protocols (A2A, MCP, Agent Skills, OpenWiki + OKF), ten models, four inference platforms, and four coding CLI agents (Claude Code, OpenAI Codex CLI, GitHub Copilot CLI plus a comparison). Built around the principle that agents are software, not prompt soup.",
       "domain": "agents",
       "kind": "hub",
       "url": "https://know.2nth.ai/explainers/agents/",
@@ -100,6 +100,14 @@
       "kind": "leaf",
       "url": "https://know.2nth.ai/explainers/agents/crewai",
       "fetch": "agents/crewai"
+    },
+    {
+      "title": "Deep Agents — know.2nth.ai",
+      "description": "Deep Agents — LangChain's MIT-licensed, batteries-included agent harness for long-running, high-context work (deep research, whole-codebase engineering). Built on LangGraph, on top of create_agent. Planning, sub-agents, a virtual filesystem, and autonomous context compaction bundled in. Model-agnostic across any tool-calling LLM. Python (deepagents) + TypeScript (deepagentsjs). The Claude Code architecture, extracted into open source.",
+      "domain": "agents",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/agents/deep-agents",
+      "fetch": "agents/deep-agents"
     },
     {
       "title": "Gemini — know.2nth.ai",

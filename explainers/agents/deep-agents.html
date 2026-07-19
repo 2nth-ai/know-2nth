@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deep Agents &mdash; know.2nth.ai</title>
+<meta name="description" content="Deep Agents — LangChain's MIT-licensed, batteries-included agent harness for long-running, high-context work (deep research, whole-codebase engineering). Built on LangGraph, on top of create_agent. Planning, sub-agents, a virtual filesystem, and autonomous context compaction bundled in. Model-agnostic across any tool-calling LLM. Python (deepagents) + TypeScript (deepagentsjs). The Claude Code architecture, extracted into open source.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/agents/deep-agents">
+<meta property="og:title" content="Deep Agents &mdash; know.2nth.ai">
+<meta property="og:description" content="Deep Agents — LangChain's batteries-included agent harness for long-horizon work. Planning, sub-agents, filesystem, autonomous compaction. Built on LangGraph, model-agnostic. The Claude Code architecture in open source.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Deep Agents &mdash; know.2nth.ai">
+<meta name="twitter:description" content="Deep Agents — LangChain's agent harness: planning, sub-agents, filesystem, autonomous compaction. Built on LangGraph, model-agnostic. MIT, Python + TS.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3Cline x1='16' y1='3' x2='16' y2='7' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='16' y1='25' x2='16' y2='29' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='3' y1='16' x2='7' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='25' y1='16' x2='29' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3C/svg%3E">
+<style>
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12); --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-soft: rgba(99, 102, 241, 0.12); --bg: var(--ink); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(37, 99, 235, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(56, 189, 248, 0.3); --max-w: 1200px; --read-w: 760px; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(37, 99, 235, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(37, 99, 235, 0.25); }
+  * { margin: 0; padding: 0; box-sizing: border-box; } html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.blue { width: 600px; height: 600px; background: var(--blue); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--sky); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--sky); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--sky); } .crumb-sep { opacity: 0.5; } .crumb-current { color: var(--text-secondary); }
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--indigo); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--indigo); box-shadow: 0 0 12px var(--indigo); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--blue-glow), var(--sky), var(--sky-muted)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.accent { background: rgba(37, 99, 235, 0.12); color: var(--blue-glow); border-color: rgba(37, 99, 235, 0.25); }
+  .pill.green { background: var(--green-soft); color: var(--green); border-color: rgba(16, 185, 129, 0.25); }
+  .pill.indigo { background: var(--indigo-soft); color: var(--indigo); border-color: rgba(99, 102, 241, 0.25); }
+  .pill.warn { background: var(--warm-soft); color: var(--warm-glow); border-color: rgba(245, 158, 11, 0.25); }
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--sky); margin-bottom: 14px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--sky); }
+  .prose ul, .prose ol { padding-left: 24px; margin-bottom: 18px; max-width: var(--read-w); }
+  .prose li { font-size: 15px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 8px; }
+  .prose li strong { color: var(--text-primary); font-weight: 600; }
+  pre.code { background: var(--ink-deep); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px 22px; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.65; color: var(--mist); margin: 0 0 20px; max-width: var(--read-w); }
+  [data-theme="light"] pre.code { background: #0F172A; color: #E2E8F0; }
+  pre.code .k { color: var(--sky); } pre.code .s { color: #A5F3B8; } pre.code .c { color: var(--text-muted); font-style: italic; } pre.code .h { color: var(--blue-glow); font-weight: 600; }
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); margin-bottom: 20px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.indigo { border-left: 3px solid var(--indigo); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .stack-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; max-width: var(--read-w); margin-bottom: 20px; }
+  .stack-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--indigo); border-radius: var(--radius-md); padding: 18px 22px; }
+  .stack-cell .layer { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .stack-cell h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.3px; }
+  .stack-cell p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: var(--read-w); margin-bottom: 20px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--sky); background: rgba(37, 99, 235, 0.04); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); } .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--sky); }
+  .compare td strong { color: var(--text-primary); }
+  .decision-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: var(--read-w); }
+  @media (max-width: 720px) { .decision-grid { grid-template-columns: 1fr; } }
+  .decision-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 24px; }
+  .decision-card.use { border-left: 3px solid var(--green); } .decision-card.skip { border-left: 3px solid var(--rose); }
+  .decision-card h4 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 12px; }
+  .decision-card.use h4 { color: var(--green); } .decision-card.skip h4 { color: var(--rose); }
+  .decision-card ul { list-style: none; padding: 0; }
+  .decision-card li { font-size: 13px; color: var(--text-secondary); line-height: 1.6; padding: 6px 0; border-bottom: 1px solid var(--border); }
+  .decision-card li:last-child { border-bottom: none; }
+  .connect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .connect-node { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; transition: all 0.3s; text-decoration: none; color: inherit; display: block; }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node.soon { cursor: default; opacity: 0.72; }
+  .connect-node .tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--sky); word-break: break-all; }
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--sky); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } pre.code { font-size: 11px; padding: 14px 16px; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+
+<div class="glow-orb blue"></div>
+<div class="glow-orb sky"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand"><span class="nav-brand-mark">know.2nth.ai</span><span class="nav-brand-sub">agents/deep-agents</span></a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">&larr; Agents</a>
+      <a href="../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x1F319;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="./">Agents</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">Deep Agents</span>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> agents &middot; Deep Agents &middot; Skill Leaf</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      The Claude Code architecture, <span class="gradient">minus the model lock-in.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      Deep Agents is LangChain's batteries-included <strong>agent harness</strong> for long-running, high-context work &mdash; deep research, whole-codebase engineering, multi-step workflows that outrun a single context window. It bundles the scaffolding that makes tools like Claude Code and Codex effective &mdash; planning, sub-agents, a virtual filesystem, and context compaction &mdash; into one MIT-licensed library that runs on any tool-calling model. It is not a competitor to LangGraph; it is built on it. <code>pip install deepagents</code>, <code>create_deep_agent()</code>, done.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill green">MIT licensed</span>
+      <span class="pill indigo">Built on LangGraph</span>
+      <span class="pill accent">Python &middot; TypeScript</span>
+      <span class="pill">Provider-agnostic</span>
+      <span class="pill warn">pip install deepagents</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 WHAT IT IS -->
+<section id="what">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; What it is</div>
+      <h2 class="section-title">A harness, not a model &mdash; and not a new framework.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Deep Agents starts from a specific observation: the capability you feel when you use Claude Code or Codex doesn't come from the raw model. It comes from the <strong>scaffolding around it</strong> &mdash; the system prompt, a planning tool, a filesystem, the ability to spin up sub-agents, and a way to compress the conversation before it overflows. LangChain calls that scaffolding an <strong>agent harness</strong>, and Deep Agents is the open-source, model-agnostic extraction of exactly that pattern. Point it at any LLM that supports tool calling &mdash; frontier API, open-weight, or local &mdash; and you get the Claude Code shape without being tied to one vendor's runtime.</p>
+      <p>The most important thing to get right about Deep Agents is where it sits, because it is easy to mistake for a rival to its own foundation. LangChain states the stack plainly: <strong>LangGraph is the graph runtime; <code>create_agent</code> is a minimal agent harness on top of it; Deep Agents is a more opinionated harness on top of <code>create_agent</code>.</strong> Same building blocks all the way down &mdash; Deep Agents just makes the batteries-included choices so you don't have to assemble them yourself.</p>
+    </div>
+
+    <div class="stack-grid fade-up" style="transition-delay: 0.07s">
+      <div class="stack-cell">
+        <span class="layer">Layer 1 &middot; runtime</span>
+        <h4>LangGraph</h4>
+        <p>The graph runtime. Streaming, checkpointing, persistence, human-in-the-loop interrupts. Everything above inherits these for free.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Layer 2 &middot; minimal harness</span>
+        <h4><code>create_agent</code></h4>
+        <p>LangChain's lightweight tool-calling loop with middleware hooks. Enough to build a standard agent; you add the rest.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Layer 3 &middot; opinionated harness</span>
+        <h4>Deep Agents</h4>
+        <p>Planning, sub-agents, filesystem, and compaction wired in by default. The batteries-included choice for long-horizon tasks.</p>
+      </div>
+    </div>
+
+    <div class="info-card indigo fade-up" style="transition-delay: 0.09s">
+      <h4>What "harness" actually means</h4>
+      <p>A harness is everything wrapped around the core LLM-plus-tool-calling loop that turns a capable model into a capable <em>agent</em>: the system prompt, a way to plan and track steps, a place to write intermediate results, a mechanism to delegate sub-tasks, and a strategy for keeping the context window from overflowing on a long job. LangChain's own term of art &mdash; from its "Anatomy of an Agent Harness" post &mdash; and Deep Agents is a concrete, opinionated implementation of it. The word matters because it names the layer where the real engineering now lives: not in the model, in the scaffolding.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 HOW IT WORKS -->
+<section id="how">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; How it works</div>
+      <h2 class="section-title">Four mechanisms, delivered as middleware.</h2>
+      <p class="section-lede">Deep Agents is the sum of four harness mechanisms, each shipped as LangChain middleware you can inspect, swap, or disable: planning, sub-agents, a virtual filesystem, and context compaction. The two-line factory below wires all four in; everything after it is detail on what each one does.</p>
+    </div>
+
+    <pre class="code fade-up" style="transition-delay: 0.05s"><span class="h">from</span> deepagents <span class="h">import</span> create_deep_agent
+
+<span class="c"># any tool-calling model: frontier, open-weight, or local</span>
+agent = create_deep_agent(
+    <span class="h">model</span>=<span class="s">"anthropic:claude-sonnet-4-6"</span>,
+    <span class="h">tools</span>=[web_search],
+    <span class="h">system_prompt</span>=<span class="s">"You are an expert researcher."</span>,
+)
+
+result = agent.invoke({<span class="s">"messages"</span>: [(<span class="s">"user"</span>, <span class="s">"Brief me on OKF adoption."</span>)]})</pre>
+
+    <div class="prose fade-up" style="transition-delay: 0.08s">
+      <p><strong>1 &middot; Planning</strong> &mdash; the <code>write_todos</code> tool (TodoListMiddleware). The agent maintains a stateful todo list &mdash; each item <code>pending</code>, <code>in_progress</code>, or <code>completed</code> &mdash; persisted in agent state rather than left implicit in the chat history. On a long task, the plan survives context compaction and keeps the agent oriented.</p>
+      <p><strong>2 &middot; Sub-agents</strong> &mdash; the <code>task</code> tool (SubAgentMiddleware). The main agent spawns an ephemeral, stateless sub-agent with a fresh, isolated context to do one piece of work, then hands back a compact summary. The point is token economy: the noisy middle of a sub-task &mdash; dozens of tool calls, large intermediate results &mdash; never pollutes the parent's context. Only the conclusion returns.</p>
+      <p><strong>3 &middot; Filesystem</strong> &mdash; <code>ls</code>, <code>read_file</code>, <code>write_file</code>, <code>edit_file</code>, <code>glob</code>, <code>grep</code> (FilesystemMiddleware). A virtual filesystem the agent reads and writes, backed by in-memory state, a LangGraph store, or real local disk. Its load-bearing job is <strong>offloading</strong>: large tool results are written to a file and referenced by path instead of being kept inline, so a single big search result can't blow the context budget. The agent pulls back only the slice it needs, when it needs it.</p>
+      <p><strong>4 &middot; Context compaction</strong> &mdash; summarization middleware. Long threads get compressed: recent messages are retained, everything before is replaced with a summary. This is where a genuinely new capability shipped &mdash; and the distinction is worth being precise about.</p>
+    </div>
+
+    <div class="info-card green fade-up" style="transition-delay: 0.11s">
+      <h4>Two kinds of compaction &mdash; and why the second one matters</h4>
+      <p><strong>Threshold-based (the classic).</strong> The harness watches the context window and compacts when usage crosses a fixed line. It works, but it's blunt: it can fire in the middle of a delicate multi-step operation, or hold on too long right up to the limit.</p>
+      <p><strong>Autonomous (the newer mode).</strong> LangChain's autonomous context compression (announced March 2026) gives the model a <code>compact_conversation</code> tool and lets <em>it</em> decide when to compress &mdash; at a task boundary, after extracting results from a large context, before starting something complex. It's gated so it can't fire too early (eligibility kicks in around half the auto-summarization trigger) and retains roughly the last 10% of context while summarizing the rest. <strong>It is opt-in in the SDK and on by default in the deepagents CLI.</strong> The shift &mdash; from the harness deciding <em>when</em> to the model deciding &mdash; is the editorially interesting part; LangChain frames it as letting the reasoning model manage its own memory.</p>
+    </div>
+
+    <div class="info-card amber fade-up" style="transition-delay: 0.13s">
+      <h4>On the threshold number &mdash; sources don't agree, so don't quote one</h4>
+      <p>You'll see the classic threshold cited as "around 85% of the window" in some write-ups and as a "~170K-token auto-summarization trigger" in one Deep Agents configuration. These describe different mechanisms and different runs, not a single canonical figure. The honest statement is: fixed-threshold compaction fires at <em>some</em> configured point near the window's limit &mdash; and that bluntness is precisely the brittleness the autonomous tool was built to fix. Treat any specific percentage as configuration, not spec.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 ECOSYSTEM -->
+<section id="ecosystem">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; The ecosystem</div>
+      <h2 class="section-title">SDK, CLI, and the LangChain machinery underneath.</h2>
+      <p class="section-lede">Deep Agents inherits LangGraph's runtime (streaming, checkpointing, persistence) and LangSmith's tracing and evaluation. It ships in two shapes: a library you embed, and a CLI that adds the surrounding tooling a real agent workflow needs.</p>
+    </div>
+
+    <div class="stack-grid fade-up" style="transition-delay: 0.05s">
+      <div class="stack-cell">
+        <span class="layer">Library &middot; SDK</span>
+        <h4>deepagents / deepagentsjs</h4>
+        <p>The MIT-licensed harness itself, in Python and TypeScript. <code>create_deep_agent()</code> and the four middleware. Embed it in your own app.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Tool &middot; CLI</span>
+        <h4>deepagents CLI</h4>
+        <p>Adds web search, remote sandboxes, persistent memory, custom skills, and human-in-the-loop approval around the SDK. Autonomous compaction on by default here.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Runtime &middot; inherited</span>
+        <h4>LangGraph</h4>
+        <p>Streaming, checkpointing, persistence, interrupts. A Deep Agent is a LangGraph graph underneath &mdash; long jobs survive crashes and pauses.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">SaaS &middot; observability</span>
+        <h4>LangSmith</h4>
+        <p>Tracing and evaluation for agent runs. The autonomous-compaction work was validated against Terminal-Bench-2 via LangSmith. USD-billed at scale.</p>
+      </div>
+    </div>
+
+    <div class="prose fade-up" style="transition-delay: 0.08s">
+      <p><strong>Standards it speaks.</strong> Deep Agents brings your own tools or any <strong>MCP</strong> server, and it can load <strong>Agent Skills</strong> as reusable, on-demand behaviours &mdash; so the harness plugs into the same open-standards layer as the rest of the agents tree rather than reinventing it.</p>
+      <p><strong>Provenance, stated honestly.</strong> The middleware isn't all from one package: some ships in <code>deepagents</code>, some in <code>langchain</code> itself, and provider-specific pieces (Anthropic prompt caching, for instance) live in <code>langchain-anthropic</code>. That's normal for a LangChain-family library, but worth knowing when you go to pin versions &mdash; a "Deep Agents" behaviour may actually be governed by a dependency's release cadence.</p>
+      <p>One field note, clearly labelled as opinion: the LangChain engineers describe a <em>stated preference</em> for routing different models to different jobs &mdash; Gemini for multimodal, Claude for execution and SQL, a third for long prose. That's practitioner taste, not a benchmarked finding, and Deep Agents' model-agnosticism is what makes acting on it a one-line change rather than a rebuild.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 VS -->
+<section id="vs">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; Where it sits</div>
+      <h2 class="section-title">Deep Agents vs create_agent vs raw LangGraph.</h2>
+      <p class="section-lede">This is not a "who wins" table &mdash; all three are the same stack at different levels of opinion. The question is only how much harness you want handed to you versus how much control you want to keep. LangChain's own guidance runs top to bottom.</p>
+    </div>
+
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead><tr><th>Dimension</th><th>Deep Agents</th><th><code>create_agent</code></th><th>Raw LangGraph</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Harness level</strong></td><td>Full, opinionated</td><td>Minimal</td><td>None &mdash; you build it</td></tr>
+          <tr><td><strong>Out of the box</strong></td><td>Planning, sub-agents, filesystem, compaction</td><td>Tool-calling loop + middleware hooks</td><td>Nodes, edges, state, checkpointer</td></tr>
+          <tr><td><strong>Built on</strong></td><td><code>create_agent</code></td><td>LangGraph</td><td>&mdash;</td></tr>
+          <tr><td><strong>Best when</strong></td><td>Long-horizon, high-context tasks</td><td>A standard agent with light needs</td><td>A bespoke agent-loop shape</td></tr>
+          <tr><td><strong>Effort for deep work</strong></td><td>Lowest</td><td>Medium &mdash; you add the scaffolding</td><td>Highest &mdash; you design it all</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="info-card indigo fade-up" style="transition-delay: 0.08s">
+      <h4>The other axis: Deep Agents vs the proprietary harnesses</h4>
+      <p>The second comparison people actually mean is Deep Agents vs <strong>Claude Code</strong> or <strong>Codex</strong> &mdash; the closed harnesses it's modelled on. Those are polished, vendor-tuned, and tied to one model family. Deep Agents trades some of that polish for two things: it runs on <em>any</em> tool-calling model, and it's yours to modify &mdash; the middleware is open and swappable. If you're happy inside one vendor's tool and never need to change models, the proprietary harness is the smoother ride. If model-agnosticism or customisation is the point, Deep Agents is the reason to switch. There is no clean public benchmark pitting them head-to-head; don't trust one that claims to.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 USE CASES -->
+<section id="use">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; Use cases</div>
+      <h2 class="section-title">Where the full harness pays for itself.</h2>
+      <p class="section-lede">Deep Agents earns its overhead on tasks that are long, context-heavy, and decomposable &mdash; the patterns the primary sources actually name, not a customer-logo roster.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <ul>
+        <li><strong>Deep research</strong> &mdash; the canonical example. Plan the investigation, fan out sub-agents to chase separate threads in isolated contexts, offload the raw findings to the filesystem, compact along the way, synthesise at the end. No single context window ever holds all of it.</li>
+        <li><strong>Whole-codebase software engineering</strong> &mdash; navigate a large repo with <code>glob</code>/<code>grep</code>, read and edit files, run sub-agents for isolated changes, and keep a live todo list across a multi-file task. This is the Claude Code shape, model-agnostic.</li>
+        <li><strong>Long-horizon multi-step workflows</strong> &mdash; jobs with dozens of steps where the plan must persist and the context must be actively managed rather than allowed to overflow.</li>
+        <li><strong>Parallel sub-task fan-out</strong> &mdash; anything that decomposes into independent pieces whose noisy intermediate work should stay quarantined from the main thread.</li>
+      </ul>
+      <p><strong>An honest limit.</strong> Unlike LangGraph, Deep Agents doesn't yet have a public roster of named production case studies (the Klarna / Replit kind). It's a younger library. Treat the use cases above as the patterns it's designed for, not as claims about who's already running it at scale.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 DECISION -->
+<section id="decision">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; Decision guide</div>
+      <h2 class="section-title">Use Deep Agents when. Skip it when.</h2>
+      <p class="section-lede">The harness is a real cost &mdash; middleware, compaction, sub-agent spawns all add overhead. On the right task that overhead buys you a working long-horizon agent; on the wrong one it's dead weight. Honest two-sided guidance follows.</p>
+    </div>
+    <div class="decision-grid fade-up" style="transition-delay: 0.05s">
+      <div class="decision-card use">
+        <h4>Use Deep Agents when</h4>
+        <ul>
+          <li>The task is long-running and context-heavy &mdash; deep research, whole-codebase work</li>
+          <li>You want the Claude Code scaffolding but model-agnostic across vendors</li>
+          <li>You need planning, sub-agents, filesystem, and compaction out of the box, not hand-built</li>
+          <li>You're running a multi-model strategy and want to swap the model node freely</li>
+          <li>You already build on LangGraph and want the opinionated layer on top</li>
+          <li>You want MCP tools and Agent Skills loaded into the harness</li>
+        </ul>
+      </div>
+      <div class="decision-card skip">
+        <h4>Skip Deep Agents when</h4>
+        <ul>
+          <li>Single-shot calls or short ReAct loops &mdash; the full harness is overkill; use <code>create_agent</code></li>
+          <li>You need a bespoke agent-loop shape &mdash; drop to raw LangGraph and draw it yourself</li>
+          <li>You're happily locked to one vendor's own harness (Claude Code, Codex) &mdash; the model-agnostic pitch is moot for you</li>
+          <li>Very tight latency or cost budgets where compaction, offloading, and sub-agent spawns add overhead you can't absorb</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="info-card amber fade-up" style="transition-delay: 0.08s">
+      <h4>Version note</h4>
+      <p>Deep Agents is young and moving fast &mdash; autonomous compaction landed in early 2026 and the middleware surface is still settling. Pin your versions in production, and remember the provenance point: some behaviours are governed by <code>langchain</code> or <code>langchain-anthropic</code> releases, not <code>deepagents</code> alone. The durable artefact is your agent definition; expect to track runtime updates more actively than you would with a 1.0-stable framework.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 07 SA CONTEXT -->
+<section id="sa-context">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; South African context</div>
+      <h2 class="section-title">Model-agnostic is the POPIA feature.</h2>
+      <p class="section-lede">Deep Agents' model-agnosticism isn't just a portability nicety in SA delivery &mdash; it's the compliance and cost lever. Same harness, different model node, no rebuild.</p>
+    </div>
+    <div class="info-card indigo fade-up" style="transition-delay: 0.05s">
+      <h4>Residency &middot; swap the model, keep the harness</h4>
+      <p>The whole value of a model-agnostic harness under POPIA is that the model is one node you can move. Prototype against Claude (US), then swap to a local Ollama- or vLLM-hosted open-weight running in <code>africa-south1</code> or on-prem &mdash; the planning, sub-agents, filesystem, and compaction all stay identical. POPIA Section 72 cross-border-transfer becomes a per-deployment decision about one line of config, not an architecture rewrite. The harness is the durable asset; the model is the substitutable runtime.</p>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.07s">
+      <h4>Resilience &middot; long jobs survive load-shedding</h4>
+      <p>Because Deep Agents runs on LangGraph, a long-horizon job is checkpointed and its working state lives on the filesystem. A load-shedding interruption or a sandbox timeout mid-research doesn't cost the whole run &mdash; it resumes from the last checkpoint. For SA teams running multi-hour agent jobs on unreliable power, that durability is a practical, not theoretical, benefit.</p>
+    </div>
+    <div class="info-card green fade-up" style="transition-delay: 0.09s">
+      <h4>Cost &middot; free harness, watch the LangSmith line</h4>
+      <p>The harness itself is free MIT and self-hostable &mdash; no per-seat licence, no FX exposure on the library. The USD-billed piece is the same as the LangGraph leaf: LangSmith at production volume. Use the free tier through pilots; treat paid observability as a deliberate line item, or self-host an OpenTelemetry stack if FX exposure is the binding constraint. The model spend is yours to control precisely because you choose the model node.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 08 CONNECTIONS -->
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 &middot; Connections</div>
+      <h2 class="section-title">Where Deep Agents links in the tree.</h2>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="langgraph.html" class="connect-node">
+        <span class="tag">agents/langgraph</span>
+        <div class="skill">LangGraph</div>
+        <div class="why">The runtime Deep Agents is built on &mdash; the primary link. A Deep Agent is a LangGraph graph underneath; checkpointing and persistence come from here.</div>
+      </a>
+      <a href="claude-code.html" class="connect-node">
+        <span class="tag">agents/claude-code</span>
+        <div class="skill">Claude Code</div>
+        <div class="why">The proprietary harness Deep Agents mirrors. Same architecture &mdash; planning, filesystem, sub-agents &mdash; extracted into open source and made model-agnostic.</div>
+      </a>
+      <a href="anthropic-agent-sdk.html" class="connect-node">
+        <span class="tag">agents/anthropic-agent-sdk</span>
+        <div class="skill">Anthropic Agent SDK</div>
+        <div class="why">The Claude-first agent framework in the same design lineage. Deep Agents takes the harness idea vendor-neutral.</div>
+      </a>
+      <a href="effective-agents.html" class="connect-node">
+        <span class="tag">agents/effective-agents</span>
+        <div class="skill">Effective Agents</div>
+        <div class="why">The honest counterweight &mdash; Anthropic's "should this even be an agent?" taxonomy. Read it before reaching for the full harness.</div>
+      </a>
+      <a href="mcp.html" class="connect-node">
+        <span class="tag">agents/mcp</span>
+        <div class="skill">Model Context Protocol</div>
+        <div class="why">Deep Agents brings your own tools or any MCP server &mdash; the live tool/data layer the harness calls into.</div>
+      </a>
+      <a href="skills.html" class="connect-node">
+        <span class="tag">agents/skills</span>
+        <div class="skill">Agent Skills</div>
+        <div class="why">Deep Agents loads Agent Skills as reusable, on-demand behaviours &mdash; the capability format plugs straight into the harness.</div>
+      </a>
+      <a href="rearchitecture.html" class="connect-node">
+        <span class="tag">agents/rearchitecture</span>
+        <div class="skill">The re-architecture thesis</div>
+        <div class="why">LangChain's data-and-trust framing for why agent systems are being rebuilt around harnesses like this one.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 09 RESOURCES -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">09 &middot; Resources</div>
+      <h2 class="section-title">Primary sources.</h2>
+      <p class="section-lede">Authored from the canonical <code>langchain-ai/deepagents</code> repo, the Deep Agents documentation and reference, and LangChain Inc.'s harness and autonomous-compaction posts. Last reviewed 2026-07-19.</p>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://github.com/langchain-ai/deepagents" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Source &middot; Python</span>
+        <span class="r-title">langchain-ai/deepagents</span>
+        <span class="r-url">github.com/langchain-ai/deepagents</span>
+      </a>
+      <a href="https://github.com/langchain-ai/deepagentsjs" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Source &middot; TypeScript</span>
+        <span class="r-title">langchain-ai/deepagentsjs</span>
+        <span class="r-url">github.com/langchain-ai/deepagentsjs</span>
+      </a>
+      <a href="https://docs.langchain.com/oss/python/deepagents/overview" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs</span>
+        <span class="r-title">Deep Agents overview</span>
+        <span class="r-url">docs.langchain.com/oss/python/deepagents/overview</span>
+      </a>
+      <a href="https://reference.langchain.com/python/deepagents" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Reference</span>
+        <span class="r-title">deepagents API reference</span>
+        <span class="r-url">reference.langchain.com/python/deepagents</span>
+      </a>
+      <a href="https://www.langchain.com/deep-agents" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Site</span>
+        <span class="r-title">Deep Agents product page</span>
+        <span class="r-url">langchain.com/deep-agents</span>
+      </a>
+      <a href="https://www.langchain.com/blog/the-anatomy-of-an-agent-harness" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Blog</span>
+        <span class="r-title">The Anatomy of an Agent Harness</span>
+        <span class="r-url">langchain.com/blog/the-anatomy-of-an-agent-harness</span>
+      </a>
+      <a href="https://www.langchain.com/blog/autonomous-context-compression" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Blog &middot; Mar 2026</span>
+        <span class="r-title">Autonomous context compression</span>
+        <span class="r-url">langchain.com/blog/autonomous-context-compression</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../index.html">Skills tree</a>
+      <a href="./">Agents hub</a>
+      <a href="https://github.com/langchain-ai/deepagents" target="_blank" rel="noopener">langchain-ai/deepagents &nearr;</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme(){const html=document.documentElement;const current=html.getAttribute('data-theme');const next=current==='dark'?'light':'dark';html.setAttribute('data-theme',next);document.querySelector('.theme-toggle').textContent=next==='dark'?'☀️':'🌙';localStorage.setItem('theme',next);}
+  const saved=localStorage.getItem('theme');if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.theme-toggle').textContent=saved==='dark'?'☀️':'🌙';}
+  const observer=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting)entry.target.classList.add('visible');});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>
