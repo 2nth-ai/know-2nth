@@ -1,0 +1,16 @@
+# Cloudflare Pages configuration for know-2nth.
+#
+# Committed so every deploy (CI runs `wrangler pages deploy .`) attaches the
+# same bindings. `pages_build_output_dir` marks this as a Pages config, which
+# is what makes the `[ai]` binding apply to Pages Functions as `env.AI` —
+# the Workers AI binding that powers /api/ask ("Ask Vince").
+#
+# Values mirror the live project config (from `wrangler pages download config`):
+#   name = know-2nth, compatibility_date = 2026-04-14.
+name = "know-2nth"
+compatibility_date = "2026-04-14"
+pages_build_output_dir = "."
+
+# Workers AI — the edge LLM binding Vince calls via env.AI.run(...).
+[ai]
+binding = "AI"
