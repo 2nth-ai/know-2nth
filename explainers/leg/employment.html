@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Employment &amp; labour &mdash; know.2nth.ai</title>
+<meta name="description" content="Employment and labour law in South Africa for the AI era — high-volume, template-adjacent work that fits AI drafting, over a statutory floor a generic tool skips. The BCEA (Act 75 of 1997), the LRA (Act 66 of 1995) and the fair-dismissal test, the CCMA, and the Employment Equity Act with its 2025 sectoral-target overhaul. The one fact a US-trained model gets dangerously wrong: South Africa has no at-will employment.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/leg/employment">
+<meta property="og:title" content="Employment &amp; labour — know.2nth.ai">
+<meta property="og:description" content="SA employment law for the AI era. High-volume drafting fits AI; the statutory floor doesn't. BCEA, LRA and the fair-dismissal test, the CCMA, and the 2025 employment-equity overhaul. No at-will employment.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai — The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Employment &amp; labour — know.2nth.ai">
+<meta name="twitter:description" content="SA employment law for the AI era. BCEA, LRA, the CCMA, and the 2025 employment-equity overhaul. The trap: SA has no at-will employment.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%23F43F5E' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%23FB7185' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33;
+    --blue: #2563EB; --blue-glow: #3B82F6;
+    --sky: #38BDF8; --sky-muted: #7DD3FC;
+    --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8;
+    --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12);
+    --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12);
+    --violet: #8B5CF6; --violet-soft: rgba(139, 92, 246, 0.12);
+    --rose: #F43F5E; --rose-glow: #FB7185; --rose-soft: rgba(244, 63, 94, 0.12);
+    --bg: var(--ink); --bg-raised: var(--navy);
+    --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(244, 63, 94, 0.06);
+    --text-primary: var(--paper); --text-secondary: var(--slate);
+    --text-muted: #64748B;
+    --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(244, 63, 94, 0.3);
+    --max-w: 1200px; --read-w: 760px;
+    --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px;
+    --domain: var(--rose); --domain-glow: var(--rose-glow);
+  }
+  [data-theme="light"] {
+    --bg: #F1F5F9; --bg-raised: #FFFFFF;
+    --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(244, 63, 94, 0.04);
+    --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8;
+    --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(244, 63, 94, 0.25);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.rose { width: 600px; height: 600px; background: var(--rose); top: -200px; right: -100px; }
+  .glow-orb.warm { width: 500px; height: 500px; background: var(--warm); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--rose), var(--warm)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--rose-glow); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--rose-glow); }
+
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .read { max-width: var(--read-w); }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--rose-glow); }
+  .crumb-sep { opacity: 0.5; }
+  .crumb-current { color: var(--text-secondary); }
+
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--rose-glow); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--rose); box-shadow: 0 0 12px var(--rose); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--rose), var(--rose-glow), var(--warm)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.accent { background: var(--rose-soft); color: var(--rose-glow); border-color: rgba(244, 63, 94, 0.25); }
+
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--rose-glow); margin-bottom: 14px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--rose-glow); }
+
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); margin-bottom: 20px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.rose { border-left: 3px solid var(--rose); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+
+  .types-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; max-width: 1100px; }
+  .type-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px 22px; transition: all 0.3s; }
+  .type-card:hover { border-color: var(--border-hover); }
+  .type-card .num { font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 700; background: linear-gradient(135deg, var(--rose), var(--rose-glow)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1; margin-bottom: 8px; }
+  .type-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.2px; }
+  .type-card .triad { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; display: block; }
+  .type-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 8px; }
+  .type-card .arrows { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); padding-top: 8px; border-top: 1px solid var(--border); display: flex; gap: 14px; }
+  .type-card .arrows .grow { color: var(--green); }
+  .type-card .arrows .stress { color: var(--rose); }
+
+  .triad-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; max-width: var(--read-w); }
+  .triad { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 24px; }
+  .triad-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--rose-glow); margin-bottom: 8px; }
+  .triad h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+  .triad .types-list { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--rose-glow); margin-bottom: 12px; }
+  .triad p { font-size: 13px; color: var(--text-secondary); line-height: 1.65; }
+
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: var(--read-w); margin-bottom: 20px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--rose-glow); background: rgba(244, 63, 94, 0.04); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); }
+  .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--rose-glow); }
+
+  .gotcha-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 12px; }
+  .gotcha { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--rose); border-radius: var(--radius-md); padding: 18px 22px; }
+  .gotcha strong { display: block; color: var(--text-primary); font-weight: 600; font-size: 14px; margin-bottom: 6px; }
+  .gotcha p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+  .connect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .connect-node { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; transition: all 0.3s; text-decoration: none; color: inherit; display: block; }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node.soon { cursor: default; opacity: 0.72; }
+  .connect-node.soon:hover { border-color: var(--border); background: var(--bg-card); }
+  .connect-node .tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--rose-glow); word-break: break-all; }
+
+  .decision-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: var(--read-w); }
+  @media (max-width: 720px) { .decision-grid { grid-template-columns: 1fr; } }
+  .decision-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 24px; }
+  .decision-card.use { border-left: 3px solid var(--green); }
+  .decision-card.skip { border-left: 3px solid var(--rose); }
+  .decision-card h4 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 12px; }
+  .decision-card.use h4 { color: var(--green); }
+  .decision-card.skip h4 { color: var(--rose); }
+  .decision-card ul { list-style: none; padding: 0; }
+  .decision-card li { font-size: 13px; color: var(--text-secondary); line-height: 1.6; padding: 6px 0; border-bottom: 1px solid var(--border); }
+  .decision-card li:last-child { border-bottom: none; }
+
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--rose), var(--warm)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--rose-glow); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } .compare { font-size: 12px; } .compare th, .compare td { padding: 10px 12px; } }
+
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+<div class="glow-orb rose"></div>
+<div class="glow-orb warm"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand">
+      <span class="nav-brand-mark">know.2nth.ai</span>
+      <span class="nav-brand-sub">leg/employment</span>
+    </a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">&larr; Legal</a>
+      <a href="../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x2600;&#xFE0F;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="../../index.html#domains">Legal</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="./">leg</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">Employment &amp; labour</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> leg/employment &middot; Skill Leaf</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      High-volume work, <span class="gradient">over a floor you can't contract out of.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      Employment is the practice most naturally suited to AI drafting: contracts, handbooks, policies, warning letters and disciplinary charge sheets are <strong>high-volume and template-adjacent</strong>. But it sits on a statutory floor a generic tool doesn't know &mdash; the <strong>BCEA</strong>, the <strong>LRA</strong>, the <strong>CCMA</strong>, and an <strong>employment-equity</strong> regime that was overhauled in 2025. And it carries the one error a US-trained model makes most confidently and most dangerously: assuming <strong>at-will employment</strong>. South Africa has none. Every dismissal needs a fair reason and a fair process, or it lands at the CCMA. This leaf is the SA labour read for the AI era: where the drafting help is real, and where the statute it skips is the whole risk.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill accent">Live</span>
+      <span class="pill">BCEA 75 of 1997</span>
+      <span class="pill">LRA 66 of 1995</span>
+      <span class="pill">The CCMA</span>
+      <span class="pill">No at-will employment</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 -->
+<section id="what">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; What it is</div>
+      <h2 class="section-title">Four statutes you can't sign your way out of.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>South African employment law is statutory and largely <strong>non-derogable</strong> &mdash; a contract can be more generous than the law, never less. Four Acts carry the weight. The <strong>Basic Conditions of Employment Act 75 of 1997</strong> (BCEA) sets the floor: hours, overtime, leave, notice. The <strong>Labour Relations Act 66 of 1995</strong> (LRA) governs the rights that matter most in dispute &mdash; the right not to be unfairly dismissed, collective bargaining, and the machinery that enforces them. The <strong>Employment Equity Act 55 of 1998</strong> (EEA) governs non-discrimination and, for larger employers, affirmative action. And the <strong>National Minimum Wage Act 9 of 2018</strong> sets a wage floor revised annually.</p>
+      <p>The single most important thing to understand &mdash; and the thing a foreign tool gets wrong &mdash; is that <strong>there is no "at-will" employment in South Africa</strong>. An employer cannot simply end the relationship at will. A dismissal is only fair if there is a <strong>fair reason</strong> (substantive fairness) <em>and</em> a <strong>fair procedure</strong> (procedural fairness). Get either wrong and the employee can take it to the <strong>CCMA</strong> &mdash; cheaply, without a lawyer &mdash; where the remedy can be reinstatement with back pay. That asymmetry is the centre of gravity of the whole practice.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 -->
+<section id="floor">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; The statutory floor</div>
+      <h2 class="section-title">The BCEA minimums &mdash; the numbers a template must respect.</h2>
+      <p class="section-lede">These are the defaults the BCEA sets for most employees. A contract or an AI-drafted policy that dips below them is unlawful to that extent, whatever it says. Figures for minimum wage change annually &mdash; verify the current rate.</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead><tr><th>Condition</th><th>The floor (BCEA)</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Ordinary hours</strong></td><td>Max 45 hours/week &mdash; 9 hours/day if the employee works 5 days or fewer, 8 hours/day if more than 5.</td></tr>
+          <tr><td><strong>Overtime</strong></td><td>Voluntary, capped, and paid at 1.5&times; (or time off by agreement); a daily and weekly ceiling applies.</td></tr>
+          <tr><td><strong>Annual leave</strong></td><td>At least 21 consecutive days' paid leave per annual leave cycle (the "1 day per 17 worked" alternative aside).</td></tr>
+          <tr><td><strong>Sick leave</strong></td><td>A sick-leave cycle over 36 months &mdash; broadly, the days normally worked in a six-week period.</td></tr>
+          <tr><td><strong>Notice</strong></td><td>One week (first 6 months), two weeks (6&ndash;12 months), four weeks (one year or more).</td></tr>
+          <tr><td><strong>Minimum wage</strong></td><td>The National Minimum Wage Act rate per ordinary hour &mdash; revised each year by notice.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="info-card rose fade-up" style="transition-delay: 0.08s">
+      <h4>Why this is the AI trap in miniature</h4>
+      <p>Ask a generic model to "draft an employment contract" and it will happily produce a clean, professional document &mdash; built on assumptions from wherever its training data leans. It may set a 40-hour week, US-style at-will termination, or leave terms below the BCEA floor. It reads as correct because it's fluent. The BCEA doesn't care how fluent it is: the floor is the floor, and a term below it is simply void to that extent. Fluency is not compliance.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 -->
+<section id="dismissal">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; Dismissal</div>
+      <h2 class="section-title">Fair reason <em>and</em> fair process &mdash; both, every time.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Under the LRA, a dismissal is only fair if it is both <strong>substantively fair</strong> (a fair reason) and <strong>procedurally fair</strong> (a fair process to get there). There are three &mdash; and only three &mdash; potentially fair reasons: the employee's <strong>misconduct</strong>, the employee's <strong>incapacity</strong> (poor performance or ill health), and the employer's <strong>operational requirements</strong> (retrenchment). Each has its own process. Misconduct needs a fair hearing; incapacity needs counselling or an opportunity to improve; retrenchment needs a genuine <strong>consultation</strong> under s.189 (and s.189A for large-scale) before a single notice goes out.</p>
+      <p>Some dismissals are <strong>automatically unfair</strong> (s.187) &mdash; where the reason is a protected one: pregnancy, trade-union membership or activity, exercising a right under the LRA, a protected strike, or discrimination on a listed ground. These are the most serious category: they bypass the "was it fair" analysis, and the compensation ceiling is higher.</p>
+    </div>
+    <div class="triad-grid fade-up" style="transition-delay: 0.08s">
+      <div class="triad">
+        <div class="triad-label">Reason 1</div>
+        <h4>Misconduct</h4>
+        <div class="types-list">fair hearing</div>
+        <p>The employee did something wrong. Needs a fair, if informal, disciplinary process and a sanction that fits &mdash; dismissal is for serious or repeated misconduct, not a first minor slip.</p>
+      </div>
+      <div class="triad">
+        <div class="triad-label">Reason 2</div>
+        <h4>Incapacity</h4>
+        <div class="types-list">improve / accommodate</div>
+        <p>Poor performance or ill health. Needs counselling, an opportunity to improve, or reasonable accommodation &mdash; not a summary exit. Process is the whole game here.</p>
+      </div>
+      <div class="triad">
+        <div class="triad-label">Reason 3</div>
+        <h4>Operational requirements</h4>
+        <div class="types-list">s.189 consultation</div>
+        <p>Retrenchment for genuine business reasons. Needs a real, joint consensus-seeking consultation <em>before</em> the decision is final &mdash; on alternatives, selection criteria, and severance.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 -->
+<section id="ccma">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; The CCMA</div>
+      <h2 class="section-title">Where the dispute actually goes.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>The <strong>Commission for Conciliation, Mediation and Arbitration (CCMA)</strong> &mdash; created by the LRA &mdash; is where dismissed employees go, and its accessibility is the point. A dismissed employee must refer an unfair-dismissal dispute <strong>within 30 days</strong> of the dismissal (or of an internal appeal outcome). The CCMA first attempts <strong>conciliation</strong>; if that fails, most unfair-dismissal disputes proceed to <strong>arbitration</strong>, often on the same day (<strong>con-arb</strong>). It is designed to work <strong>without lawyers</strong> and at almost no cost to the employee.</p>
+      <p>Two routing rules matter. <strong>Automatically unfair</strong> dismissals and <strong>retrenchment</strong> disputes generally go to the <strong>Labour Court</strong>, not CCMA arbitration. And the remedies have teeth: for an unfair dismissal an arbitrator can order <strong>reinstatement</strong> (with back pay) or <strong>compensation of up to 12 months'</strong> remuneration &mdash; up to <strong>24 months'</strong> for an automatically unfair dismissal. For an employer, a procedurally sloppy dismissal of a genuinely poor performer can still cost a year's pay. That is why the process is not a formality.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 -->
+<section id="equity">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; Employment equity</div>
+      <h2 class="section-title">The 2025 overhaul a global tool has never heard of.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>The <strong>Employment Equity Act 55 of 1998</strong> was significantly changed by the <strong>Employment Equity Amendment Act</strong>, which came into effect on <strong>1 January 2025</strong>, with final regulations and sector targets published in April 2025. This is current, SA-specific, and consequential &mdash; and no foreign model models it:</p>
+      <ul style="list-style: none; padding: 0; max-width: var(--read-w);">
+        <li style="font-size: 15px; color: var(--text-secondary); line-height: 1.7; padding: 7px 0; border-bottom: 1px solid var(--border);"><strong style="color: var(--text-primary);">Designated employer redefined.</strong> Only employers with <strong>50 or more employees</strong> are now "designated" &mdash; the old turnover threshold for smaller firms fell away. Below 50, the affirmative-action duties no longer bite.</li>
+        <li style="font-size: 15px; color: var(--text-secondary); line-height: 1.7; padding: 7px 0; border-bottom: 1px solid var(--border);"><strong style="color: var(--text-primary);">Sectoral numerical targets.</strong> The Minister set five-year targets across <strong>18 economic sectors</strong> for the top four occupational levels, running <strong>1 September 2025 to 31 August 2030</strong>. Designated employers must align their EE plans to their sector's targets.</li>
+        <li style="font-size: 15px; color: var(--text-secondary); line-height: 1.7; padding: 7px 0; border-bottom: 1px solid var(--border);"><strong style="color: var(--text-primary);">Disability target raised.</strong> The workforce representation target for persons with disabilities moved from <strong>2% to 3%</strong>.</li>
+        <li style="font-size: 15px; color: var(--text-secondary); line-height: 1.7; padding: 7px 0;"><strong style="color: var(--text-primary);">EE Compliance Certificate.</strong> A new certificate is now required to do <strong>business with the State</strong>, valid 12 months &mdash; turning EE compliance into a commercial gate, not just a labour one.</li>
+      </ul>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.08s">
+      <h4>Verify before you rely</h4>
+      <p>The sector targets, thresholds, and the minimum wage all move by notice. Treat any figure here &mdash; and anything an AI tells you &mdash; as a pointer to check against the Department of Employment and Labour, not as the current number. The <em>shape</em> of the regime is stable; the <em>figures</em> are not.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 -->
+<section id="ai-fit">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; Where AI fits</div>
+      <h2 class="section-title">Strong on the volume, absent on the judgement.</h2>
+    </div>
+    <div class="decision-grid fade-up" style="transition-delay: 0.05s">
+      <div class="decision-card use">
+        <h4>AI does this well</h4>
+        <ul>
+          <li>First drafts of contracts, handbooks, and HR policies &mdash; on a compliant SA template.</li>
+          <li>Charge sheets, warning letters, and disciplinary-outcome documents from a verified precedent.</li>
+          <li>Summarising a CCMA bundle, a disciplinary record, or a long IR history.</li>
+          <li>Extracting terms across many employment contracts (notice, restraint, benefits).</li>
+          <li>Drafting consultation letters and severance calculations off a lawyer-checked framework.</li>
+        </ul>
+      </div>
+      <div class="decision-card skip">
+        <h4>AI must not do this</h4>
+        <ul>
+          <li><strong>Judge fairness.</strong> Whether a specific dismissal is substantively and procedurally fair is a legal call.</li>
+          <li><strong>Run the disciplinary.</strong> The hearing, the sanction, the chair's finding &mdash; process a person owns.</li>
+          <li><strong>Advise on a live dismissal.</strong> "Can I fire this person?" is legal advice with CCMA consequences.</li>
+          <li><strong>Set EE targets or plans.</strong> Sector targets and the equity plan are compliance decisions, not generated text.</li>
+          <li><strong>Assume at-will.</strong> Any output premised on at-will termination is wrong before you read it.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 07 -->
+<section id="gotchas">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; Gotchas</div>
+      <h2 class="section-title">Where AI on employment law goes wrong.</h2>
+    </div>
+    <div class="gotcha-list fade-up" style="transition-delay: 0.05s">
+      <div class="gotcha">
+        <strong>The at-will assumption</strong>
+        <p>The most dangerous default. A US-leaning model treats termination as an employer's prerogative. In SA that mindset produces unlawful dismissals as a matter of course &mdash; every exit needs a fair reason and a fair process. Wrong from the first sentence, delivered fluently.</p>
+      </div>
+      <div class="gotcha">
+        <strong>Fluent contracts below the floor</strong>
+        <p>An AI contract can look polished and still set hours, leave, or notice below the BCEA. A term below the floor is void to that extent, whatever the document says. Polish is not compliance; the statute wins.</p>
+      </div>
+      <div class="gotcha">
+        <strong>Procedure treated as a formality</strong>
+        <p>"There was a good reason" isn't enough. A fair reason with an unfair process is still an unfair dismissal. AI that drafts the charge sheet but skips the process is drafting the employer straight into a CCMA award.</p>
+      </div>
+      <div class="gotcha">
+        <strong>Missing the automatically-unfair trip-wires</strong>
+        <p>Pregnancy, union activity, whistle-blowing, a protected strike &mdash; dismiss on one of these and fairness analysis doesn't even start; it's automatically unfair, with a higher ceiling. A generic model won't flag the trigger it can't see.</p>
+      </div>
+      <div class="gotcha">
+        <strong>Employee data is POPIA data</strong>
+        <p>HR files hold ID numbers, health, disciplinary, and sometimes biometric information &mdash; much of it special personal information. Running an AI tool over employee records is a POPIA processing (and possibly a section 72 transfer) question before it's a productivity one. See the <a href="data-privacy" style="color: var(--rose-glow);">Data privacy &amp; POPIA</a> leaf.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 08 -->
+<section id="use-cases">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 &middot; Use cases</div>
+      <h2 class="section-title">Where this lands in SA practice.</h2>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.05s">
+      <h4>HR &amp; IR teams</h4>
+      <p>The highest-volume beneficiary: policy libraries, employment-contract packs, and the steady stream of warning letters and charge sheets. AI drafts fast off a compliant template &mdash; and the value is realised only if the template was built to the BCEA and LRA in the first place. Garbage floor in, unlawful policy out.</p>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.08s">
+      <h4>Law firms &amp; labour consultants</h4>
+      <p>CCMA-facing work: preparing bundles, summarising the record, first-drafting heads and consultation letters. The drudgery compresses; the strategy &mdash; is this dismissal defensible, do we settle, what's the exposure &mdash; stays with the practitioner who carries the risk.</p>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.11s">
+      <h4>In-house &amp; employers</h4>
+      <p>Where the EEA 2025 regime bites: designated employers aligning plans to sector targets, and the new compliance certificate as a gate to state business. AI can help assemble and summarise; the targets, the plan, and the certificate are compliance decisions a person signs.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 09 -->
+<section id="sa-context">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">09 &middot; South African context</div>
+      <h2 class="section-title">The labour system a global tool doesn't model.</h2>
+    </div>
+    <div class="info-card rose fade-up" style="transition-delay: 0.05s">
+      <h4>No at-will employment &mdash; the defining fact</h4>
+      <p>Everything downstream flows from this. Because there is no at-will termination, dismissal is a regulated event with a fairness test and an accessible enforcement forum. A model trained mostly on US material treats termination as easy; in SA it is the single most litigated thing in employment, and the mismatch is exactly where an unverified AI answer does the most damage.</p>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.08s">
+      <h4>The CCMA makes disputes cheap for the employee</h4>
+      <p>Unlike jurisdictions where litigation cost deters claims, the CCMA is free, fast, and lawyer-optional. The barrier to challenging a dismissal is low by design, so the employer's process discipline &mdash; not the employee's appetite for a fight &mdash; is what determines exposure. That raises the stakes on getting the drafting and the procedure right.</p>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.11s">
+      <h4>Employee records are a POPIA surface</h4>
+      <p>The HR file is dense with personal and special personal information. Any AI that reads it &mdash; screening CVs, summarising grievances, analysing performance &mdash; is a POPIA processing event, and if it processes offshore, a section 72 transfer question. The residency answer the rest of the tree gives applies here too: keep it in country and the question closes. See <a href="data-privacy" style="color: var(--rose-glow);">Data privacy &amp; POPIA</a>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 10 -->
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">10 &middot; 2&#x207F; Perspective</div>
+      <h2 class="section-title">How this node connects in the tree.</h2>
+      <p class="section-lede">Employment is the Legal branch's highest-volume, most template-friendly practice &mdash; and the one where a jurisdiction-blind model does the most quiet damage.</p>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="./" class="connect-node">
+        <span class="tag">leg/hub</span>
+        <div class="skill">Legal domain hub</div>
+        <div class="why">The parent domain &mdash; the practice areas and the verification bar this leaf is held to.</div>
+      </a>
+      <a href="legal-ai" class="connect-node">
+        <span class="tag">leg/legal-ai</span>
+        <div class="skill">Legal AI</div>
+        <div class="why">The tool. High-volume drafting is its comfort zone &mdash; this leaf is where that lands, and where the statutory floor limits it.</div>
+      </a>
+      <a href="data-privacy" class="connect-node">
+        <span class="tag">leg/data-privacy</span>
+        <div class="skill">Data privacy &amp; POPIA</div>
+        <div class="why">The HR file is full of special personal information. The s.72 test governs how AI can touch employee data.</div>
+      </a>
+      <a href="corporate" class="connect-node">
+        <span class="tag">leg/corporate</span>
+        <div class="skill">Corporate &amp; M&amp;A</div>
+        <div class="why">Employment liabilities are a diligence workstream, and public-interest employment effects sit inside merger control.</div>
+      </a>
+      <a href="../people/" class="connect-node">
+        <span class="tag">people</span>
+        <div class="skill">People domain</div>
+        <div class="why">The other side of the same coin &mdash; leadership, performance, and the human work that discipline and incapacity processes formalise.</div>
+      </a>
+      <a href="../biz/" class="connect-node">
+        <span class="tag">biz</span>
+        <div class="skill">Business domain</div>
+        <div class="why">Payroll, HR systems, and the systems-of-record that hold the employee data this practice governs.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 11 -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">11 &middot; Resources</div>
+      <h2 class="section-title">Primary sources only.</h2>
+      <p class="section-lede">The Acts and the CCMA &mdash; and note that the minimum wage, sector targets, and thresholds change by notice, so verify the current figures against the Department of Employment and Labour before relying on them.</p>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://www.gov.za/documents/basic-conditions-employment-act" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Statute &middot; ZA</span>
+        <span class="r-title">Basic Conditions of Employment Act 75 of 1997</span>
+        <span class="r-url">gov.za &middot; basic-conditions-employment-act</span>
+      </a>
+      <a href="https://www.gov.za/documents/labour-relations-act" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Statute &middot; ZA</span>
+        <span class="r-title">Labour Relations Act 66 of 1995</span>
+        <span class="r-url">gov.za &middot; labour-relations-act</span>
+      </a>
+      <a href="https://www.ccma.org.za/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Regulator &middot; ZA</span>
+        <span class="r-title">The CCMA</span>
+        <span class="r-url">ccma.org.za</span>
+      </a>
+      <a href="https://www.gov.za/documents/employment-equity-act" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Statute &middot; ZA</span>
+        <span class="r-title">Employment Equity Act 55 of 1998</span>
+        <span class="r-url">gov.za &middot; employment-equity-act</span>
+      </a>
+      <a href="https://www.labour.gov.za/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Regulator &middot; ZA</span>
+        <span class="r-title">Department of Employment and Labour &mdash; current notices</span>
+        <span class="r-url">labour.gov.za</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../index.html">Skills tree</a>
+      <a href="./">Legal domain</a>
+      <a href="legal-ai.html">Legal AI</a>
+      <a href="corporate.html">Corporate &amp; M&amp;A</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant</p>
+  </div>
+</footer>
+<script>
+  function toggleTheme() { const html=document.documentElement; const cur=html.getAttribute('data-theme'); const next=cur==='dark'?'light':'dark'; html.setAttribute('data-theme',next); document.querySelector('.theme-toggle').textContent=next==='dark'?'☀️':'🌙'; localStorage.setItem('theme',next); }
+  const saved=localStorage.getItem('theme'); if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.theme-toggle').textContent=saved==='dark'?'☀️':'🌙';}
+  const observer=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'}); document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>
