@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ask Vince &mdash; know.2nth.ai</title>
+<meta name="description" content="Ask Vince — the on-site AI assistant for know.2nth.ai, running on Cloudflare Workers AI and grounded in the knowledge tree. Phase 1 proof of concept.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root { --ink:#0B1120; --ink-deep:#060A14; --navy:#121D33; --blue:#2563EB; --blue-glow:#3B82F6; --sky:#38BDF8; --sky-muted:#7DD3FC; --paper:#F8FAFC; --mist:#E2E8F0; --slate:#94A3B8; --indigo:#6366F1; --indigo-soft:rgba(99,102,241,0.12); --green:#10B981; --bg:var(--ink); --bg-card:rgba(18,29,51,0.7); --border:rgba(148,163,184,0.12); --border-hover:rgba(56,189,248,0.3); --radius-md:12px; --radius-lg:20px; --radius-pill:100px; --max-w:820px; }
+  [data-theme="light"] { --bg:#F1F5F9; --bg-card:rgba(255,255,255,0.85); --paper:#0B1120; --mist:#0B1120; --slate:#475569; --border:rgba(15,23,42,0.08); }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Outfit',system-ui,sans-serif; background:var(--bg); color:var(--paper); line-height:1.6; -webkit-font-smoothing:antialiased; min-height:100vh; }
+  .glow { position:fixed; border-radius:50%; filter:blur(120px); opacity:0.08; pointer-events:none; z-index:0; }
+  .glow.a { width:600px; height:600px; background:var(--indigo); top:-200px; right:-100px; }
+  .glow.b { width:500px; height:500px; background:var(--sky); bottom:10%; left:-150px; }
+  nav { position:sticky; top:0; z-index:100; padding:0 24px; backdrop-filter:blur(20px); background:rgba(11,17,32,0.75); border-bottom:1px solid var(--border); }
+  [data-theme="light"] nav { background:rgba(241,245,249,0.8); }
+  .nav-inner { max-width:var(--max-w); margin:0 auto; display:flex; align-items:center; justify-content:space-between; height:60px; }
+  .brand { font-family:'JetBrains Mono',monospace; font-weight:600; font-size:15px; background:linear-gradient(135deg,var(--blue),var(--sky)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; text-decoration:none; }
+  .nav-link { font-size:13px; color:var(--slate); text-decoration:none; }
+  .nav-link:hover { color:var(--sky); }
+  .wrap { max-width:var(--max-w); margin:0 auto; padding:48px 24px 120px; position:relative; z-index:1; }
+  .eyebrow { font-family:'JetBrains Mono',monospace; font-size:12px; font-weight:500; letter-spacing:2px; text-transform:uppercase; color:var(--indigo); margin-bottom:18px; display:inline-flex; align-items:center; gap:10px; }
+  .eyebrow .dot { width:6px; height:6px; border-radius:50%; background:var(--indigo); box-shadow:0 0 12px var(--indigo); }
+  h1 { font-size:clamp(32px,5vw,52px); font-weight:800; letter-spacing:-1.5px; line-height:1.05; margin-bottom:16px; }
+  h1 .g { background:linear-gradient(135deg,var(--blue-glow),var(--sky),var(--sky-muted)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+  .lede { font-size:17px; color:var(--slate); font-weight:300; max-width:640px; margin-bottom:14px; }
+  .badge-row { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:36px; }
+  .badge { font-family:'JetBrains Mono',monospace; font-size:10px; padding:5px 12px; border-radius:var(--radius-pill); border:1px solid var(--border); color:var(--slate); letter-spacing:0.5px; }
+  .badge.on { background:var(--indigo-soft); color:var(--indigo); border-color:rgba(99,102,241,0.25); }
+  .ask-box { background:var(--bg-card); backdrop-filter:blur(10px); border:1px solid var(--border); border-radius:var(--radius-lg); padding:8px; display:flex; gap:8px; align-items:flex-end; }
+  .ask-box textarea { flex:1; background:none; border:none; color:var(--paper); font-family:'Outfit',sans-serif; font-size:16px; resize:none; padding:12px 14px; outline:none; max-height:160px; }
+  .ask-box textarea::placeholder { color:var(--slate); }
+  .send { background:linear-gradient(135deg,var(--blue),var(--sky)); color:#fff; border:none; border-radius:var(--radius-md); padding:12px 20px; font-family:'Outfit',sans-serif; font-weight:600; font-size:14px; cursor:pointer; transition:opacity 0.2s; white-space:nowrap; }
+  .send:disabled { opacity:0.5; cursor:default; }
+  .suggest { display:flex; gap:8px; flex-wrap:wrap; margin-top:14px; }
+  .chip { font-size:12px; color:var(--slate); background:none; border:1px solid var(--border); border-radius:var(--radius-pill); padding:6px 14px; cursor:pointer; font-family:'Outfit',sans-serif; transition:all 0.2s; }
+  .chip:hover { border-color:var(--border-hover); color:var(--sky); }
+  .thread { margin-top:32px; display:flex; flex-direction:column; gap:20px; }
+  .msg { border-radius:var(--radius-lg); padding:18px 22px; max-width:100%; }
+  .msg.u { background:var(--indigo-soft); border:1px solid rgba(99,102,241,0.2); align-self:flex-end; font-weight:500; }
+  .msg.v { background:var(--bg-card); border:1px solid var(--border); }
+  .msg.v .who { font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:1.5px; text-transform:uppercase; color:var(--indigo); margin-bottom:8px; }
+  .msg.v .body { font-size:15.5px; color:var(--mist); white-space:pre-wrap; }
+  .sources { margin-top:14px; display:flex; gap:8px; flex-wrap:wrap; }
+  .src { font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--sky); text-decoration:none; border:1px solid var(--border); border-radius:var(--radius-pill); padding:5px 12px; transition:all 0.2s; }
+  .src:hover { border-color:var(--border-hover); background:var(--bg-card); }
+  .thinking { color:var(--slate); font-size:14px; display:flex; align-items:center; gap:10px; }
+  .thinking .d { width:7px; height:7px; border-radius:50%; background:var(--indigo); animation:pulse 1s infinite; }
+  @keyframes pulse { 0%,100%{opacity:0.3;} 50%{opacity:1;} }
+  .err { color:#F43F5E; font-size:14px; }
+  .foot { margin-top:40px; font-size:12px; color:var(--slate); line-height:1.7; border-top:1px solid var(--border); padding-top:20px; }
+  .foot code { font-family:'JetBrains Mono',monospace; color:var(--sky); font-size:11px; }
+</style>
+</head>
+<body>
+<div class="glow a"></div>
+<div class="glow b"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="/index.html" class="brand">know.2nth.ai</a>
+    <a href="/index.html#domains" class="nav-link">&larr; The tree</a>
+  </div>
+</nav>
+
+<div class="wrap">
+  <div class="eyebrow"><span class="dot"></span> Vince &middot; on-site assistant &middot; Phase 1 PoC</div>
+  <h1>Ask <span class="g">Vince.</span></h1>
+  <p class="lede">The know.2nth.ai guide, running on <strong>Cloudflare Workers AI</strong> at the edge and grounded in the knowledge tree. He answers from the leaves &mdash; and tells you which ones to read.</p>
+  <div class="badge-row">
+    <span class="badge on">Workers AI</span>
+    <span class="badge">Edge LLM</span>
+    <span class="badge">Grounded in the tree</span>
+    <span class="badge">No data leaves Cloudflare</span>
+  </div>
+
+  <div class="ask-box">
+    <textarea id="q" rows="1" placeholder="Ask about anything in the tree — e.g. POPIA-safe agents, Deep Agents vs LangGraph, when to use OKF…"></textarea>
+    <button class="send" id="send">Ask</button>
+  </div>
+  <div class="suggest" id="suggest">
+    <button class="chip">What should I use for POPIA-safe agents?</button>
+    <button class="chip">Deep Agents vs raw LangGraph?</button>
+    <button class="chip">What is the Open Knowledge Format?</button>
+    <button class="chip">Which open-weight model is cheapest?</button>
+  </div>
+
+  <div class="thread" id="thread"></div>
+
+  <div class="foot">
+    Proof of concept on the Cloudflare edge AI stack. Endpoint: <code>POST /api/ask</code> &middot; model is a one-line swap in <code>functions/api/ask.ts</code>.
+    Retrieval is keyword today; Phase 2 upgrades it to semantic search (AutoRAG / Vectorize). Phase 3 adds stateful memory via the Agents SDK.
+  </div>
+</div>
+
+<script>
+  const $q = document.getElementById('q');
+  const $send = document.getElementById('send');
+  const $thread = document.getElementById('thread');
+  const history = [];
+
+  $q.addEventListener('input', () => { $q.style.height = 'auto'; $q.style.height = Math.min($q.scrollHeight, 160) + 'px'; });
+  $q.addEventListener('keydown', (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); ask(); } });
+  $send.addEventListener('click', ask);
+  document.getElementById('suggest').addEventListener('click', (e) => {
+    if (e.target.classList.contains('chip')) { $q.value = e.target.textContent; ask(); }
+  });
+
+  function el(cls, html) { const d = document.createElement('div'); d.className = cls; if (html !== undefined) d.innerHTML = html; return d; }
+  function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+  async function ask() {
+    const question = $q.value.trim();
+    if (!question) return;
+    $thread.appendChild(el('msg u', esc(question)));
+    $q.value = ''; $q.style.height = 'auto'; $send.disabled = true;
+
+    const v = el('msg v', '<div class="who">Vince</div><div class="thinking"><span class="d"></span> reading the tree…</div>');
+    $thread.appendChild(v);
+    v.scrollIntoView({ behavior: 'smooth', block: 'end' });
+
+    try {
+      const r = await fetch('/api/ask', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ question, history }),
+      });
+      const data = await r.json();
+      if (data.error) {
+        v.innerHTML = '<div class="who">Vince</div><div class="err">' + esc(data.message || data.error) + '</div>';
+      } else {
+        let srcHtml = '';
+        if (data.sources && data.sources.length) {
+          srcHtml = '<div class="sources">' + data.sources.map((s) =>
+            '<a class="src" href="' + esc(s.url) + '" target="_blank" rel="noopener">' + esc(s.title) + ' &nearr;</a>'
+          ).join('') + '</div>';
+        }
+        v.innerHTML = '<div class="who">Vince &middot; ' + esc((data.model || '').replace('@cf/', '')) + '</div>' +
+          '<div class="body">' + esc(data.answer) + '</div>' + srcHtml;
+        history.push({ role: 'user', content: question });
+        history.push({ role: 'assistant', content: data.answer });
+      }
+    } catch (err) {
+      v.innerHTML = '<div class="who">Vince</div><div class="err">Request failed: ' + esc(err.message) + '</div>';
+    }
+    $send.disabled = false;
+    v.scrollIntoView({ behavior: 'smooth', block: 'end' });
+  }
+</script>
+</body>
+</html>
