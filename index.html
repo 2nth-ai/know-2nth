@@ -261,10 +261,14 @@
   }
   /* ── Vinci — the on-site agent (Cloudflare Workers AI) ── */
   .vinci { margin: 44px auto 0; max-width: 620px; text-align: left; }
-  .vinci-label { display: flex; align-items: center; justify-content: center; gap: 12px; font-family: 'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing: 1.6px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 16px; }
-  .vinci-label strong { color: var(--text-secondary); font-weight: 500; }
-  .vinci-label .live { display: inline-flex; align-items: center; gap: 6px; color: var(--indigo); }
-  .vinci-label .live::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--indigo); box-shadow: 0 0 10px var(--indigo); }
+  .vinci-head { display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 20px; }
+  .vinci-avatar { width: 56px; height: 56px; flex: none; color: var(--text-muted); filter: drop-shadow(0 0 14px rgba(99, 102, 241, 0.4)); }
+  .vinci-avatar svg { width: 100%; height: 100%; display: block; }
+  .vinci-id { text-align: left; }
+  .vinci-id .nm { font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 18px; letter-spacing: -0.3px; color: var(--text-primary); display: flex; align-items: center; gap: 10px; }
+  .vinci-id .nm .live { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--indigo); display: inline-flex; align-items: center; gap: 5px; }
+  .vinci-id .nm .live::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--indigo); box-shadow: 0 0 10px var(--indigo); animation: vinci-pulse 1.6s infinite; }
+  .vinci-id .rl { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--text-muted); margin-top: 4px; }
   .vinci-box { display: flex; gap: 8px; align-items: flex-end; background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 8px; transition: border-color 0.3s; }
   .vinci-box:focus-within { border-color: rgba(99, 102, 241, 0.4); }
   .vinci-box textarea { flex: 1; background: none; border: none; color: var(--text-primary); font-family: 'Outfit', sans-serif; font-size: 15.5px; resize: none; padding: 11px 14px; outline: none; max-height: 140px; line-height: 1.5; }
@@ -284,6 +288,8 @@
   .vinci-answer .srcs a:hover { border-color: rgba(99, 102, 241, 0.4); }
   .vinci-answer .think { color: var(--text-muted); font-size: 14px; display: inline-flex; align-items: center; gap: 9px; }
   .vinci-answer .think::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--indigo); animation: vinci-pulse 1s infinite; }
+  .vinci-more { display: inline-block; margin-top: 16px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.8px; color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .vinci-more:hover { color: var(--indigo); }
   @keyframes vinci-pulse { 0%,100% { opacity: 0.3; } 50% { opacity: 1; } }
   .hero-eyebrow {
     font-family: 'JetBrains Mono', monospace;
@@ -942,9 +948,38 @@
       <a href="#how" class="btn btn-ghost">How it works</a>
     </div>
     <div class="vinci fade-up" style="transition-delay: 0.4s">
-      <div class="vinci-label"><span>Guided by <strong>Vinci</strong></span> <span class="live">live</span> <span>· ask the whole tree</span></div>
+      <div class="vinci-head">
+        <span class="vinci-avatar">
+          <svg viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Vinci">
+            <defs>
+              <linearGradient id="vinciG" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#818CF8"/><stop offset="1" stop-color="#38BDF8"/>
+              </linearGradient>
+            </defs>
+            <circle cx="48" cy="48" r="46" stroke="url(#vinciG)" stroke-width="1.6"/>
+            <circle cx="48" cy="48" r="39" stroke="currentColor" stroke-width="0.5" opacity="0.25"/>
+            <g stroke="currentColor" stroke-width="0.9" opacity="0.4">
+              <line x1="48" y1="4" x2="48" y2="10"/><line x1="48" y1="86" x2="48" y2="92"/>
+              <line x1="4" y1="48" x2="10" y2="48"/><line x1="86" y1="48" x2="92" y2="48"/>
+            </g>
+            <path d="M30 70 A24 24 0 0 1 66 70" stroke="url(#vinciG)" stroke-width="1.3" opacity="0.5" stroke-dasharray="2 4" fill="none"/>
+            <g stroke="url(#vinciG)" stroke-width="3" stroke-linecap="round" fill="none">
+              <line x1="48" y1="30" x2="31" y2="71"/>
+              <line x1="48" y1="30" x2="65" y2="71"/>
+            </g>
+            <circle cx="48" cy="28" r="4.5" fill="url(#vinciG)"/>
+            <circle cx="48" cy="28" r="1.5" fill="#fff" opacity="0.55"/>
+            <circle cx="31" cy="71" r="2" fill="#818CF8"/>
+            <circle cx="65" cy="71" r="2" fill="#38BDF8"/>
+          </svg>
+        </span>
+        <div class="vinci-id">
+          <div class="nm">Vinci <span class="live">live</span></div>
+          <div class="rl">the 2nth knowledge partner · ask the whole tree</div>
+        </div>
+      </div>
       <div class="vinci-box">
-        <textarea id="vinci-q" rows="1" placeholder="Ask Vinci anything — e.g. which open-weight model is cheapest, or what is OKF…"></textarea>
+        <textarea id="vinci-q" rows="1" placeholder="Ask Vinci anything about the tree — models, agents, POPIA, OKF…"></textarea>
         <button class="vinci-send" id="vinci-send">Ask</button>
       </div>
       <div class="vinci-chips" id="vinci-chips">
@@ -953,6 +988,7 @@
         <button class="vinci-chip">Is Kimi K3 available yet?</button>
       </div>
       <div class="vinci-answer" id="vinci-answer"></div>
+      <a href="/ask.html" class="vinci-more">Open the full conversation with Vinci &nearr;</a>
     </div>
   </div>
 </section>
