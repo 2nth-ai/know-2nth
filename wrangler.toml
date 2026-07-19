@@ -11,6 +11,16 @@ name = "know-2nth"
 compatibility_date = "2026-04-14"
 pages_build_output_dir = "."
 
-# Workers AI — the edge LLM binding Vince calls via env.AI.run(...).
+# Workers AI — the edge LLM + embeddings binding Vinci calls via env.AI.run(...).
 [ai]
 binding = "AI"
+
+# Vectorize — semantic retrieval index for Vinci (Phase 2). Populated by
+# /api/reindex (bge-base-en-v1.5, 768-dim), queried by /api/ask. Account-level,
+# so one populated index serves every deployment.
+[[vectorize]]
+binding = "VEC"
+index_name = "know-tree"
+
+# REINDEX_KEY is a Pages *secret* (not committed) that /api/reindex checks.
+# Set it with: npx wrangler pages secret put REINDEX_KEY --project-name=know-2nth

@@ -31,12 +31,16 @@ interface Env {
   ASSETS: Fetcher;
   // Workers AI binding. Loosely typed to avoid a hard dep on workers-types.
   AI?: { run: (model: string, input: unknown) => Promise<{ response?: string } & Record<string, unknown>> };
+  // Vectorize binding (Phase 2). Present once the index is bound; retrieval
+  // falls back to keyword search when absent.
+  VEC?: { query: (vector: number[], opts: Record<string, unknown>) => Promise<{ matches: Array<{ score: number; metadata?: Record<string, unknown> }> }> };
 }
 
 // The edge LLM. Llama 3.3 70B (fp8, fast) is the safe, well-supported default.
 // One-line swaps to test others: '@cf/z-ai/glm-4.7-flash' (131K ctx, our GLM
 // leaf's model), '@cf/meta/llama-4-scout-17b-16e-instruct' (multimodal).
 const MODEL = '@cf/meta/llama-3.3-70b-instruct-fp8-fast';
+const EMBED_MODEL = '@cf/baai/bge-base-en-v1.5'; // must match the reindex/index model
 
 const RETRIEVE = 3;      // leaves fed to the model as grounding context
 const PER_LEAF_CHARS = 3500; // truncate each leaf so several fit the window
@@ -157,7 +161,44 @@ const STOP = new Set(
     'how-to have has had not no yes if so as').split(/\s+/),
 );
 
+// Semantic retrieval (Phase 2): embed the query, ask Vectorize for the nearest
+// chunks, dedupe to distinct leaves. Falls back to keyword search when the VEC
+// binding is absent or returns nothing (e.g. index not yet populated).
 async function retrieve(query: string, env: Env, origin: string): Promise<IndexItem[]> {
+  if (env.VEC && env.AI) {
+    try {
+      const emb = await env.AI.run(EMBED_MODEL, { text: [query] });
+      const vector = ((emb as { data?: number[][] }).data || [])[0];
+      if (vector) {
+        const res = await env.VEC.query(vector, { topK: 12, returnMetadata: 'all' });
+        const seen = new Set<string>();
+        const out: IndexItem[] = [];
+        for (const m of res.matches || []) {
+          const md = m.metadata;
+          if (!md) continue;
+          const key = String(md.path || md.url || '');
+          if (!key || seen.has(key)) continue;
+          seen.add(key);
+          out.push({
+            title: String(md.title || ''),
+            description: String(md.text || ''),
+            domain: String(md.domain || ''),
+            kind: (md.kind as IndexItem['kind']) || 'leaf',
+            url: String(md.url || ''),
+            fetch: md.path ? String(md.path) : null,
+          });
+          if (out.length >= RETRIEVE) break;
+        }
+        if (out.length) return out;
+      }
+    } catch {
+      /* fall through to keyword */
+    }
+  }
+  return keywordRetrieve(query, env, origin);
+}
+
+async function keywordRetrieve(query: string, env: Env, origin: string): Promise<IndexItem[]> {
   const r = await env.ASSETS.fetch(new URL('/agent-index.json', origin).toString());
   if (!r.ok) return [];
   const items = ((await r.json()) as { items: IndexItem[] }).items;
