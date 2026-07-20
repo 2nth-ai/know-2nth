@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Commercial &amp; contracts &mdash; know.2nth.ai</title>
+<meta name="description" content="Commercial and contract law in South Africa for the AI era. Contract review and drafting is the top legal-AI use case — but SA gets two rules backwards from a US-trained model: penalty clauses are enforceable (Conventional Penalties Act 15 of 1962) and restraints of trade are prima facie enforceable (Magna Alloys). Plus the CPA, the NCA, ECTA e-signatures, and 3-year prescription. Where the tool drafts well, and where it is confidently wrong.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/leg/commercial">
+<meta property="og:title" content="Commercial &amp; contracts — know.2nth.ai">
+<meta property="og:description" content="SA commercial contracts for the AI era. Review and drafting fit AI; two SA rules the model gets backwards — enforceable penalties (Conventional Penalties Act) and prima facie enforceable restraints (Magna Alloys). Plus CPA, NCA, ECTA e-signatures.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai — The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Commercial &amp; contracts — know.2nth.ai">
+<meta name="twitter:description" content="SA commercial contracts for the AI era. Two rules the model gets backwards: enforceable penalties (Conventional Penalties Act) and prima facie enforceable restraints (Magna Alloys). Plus CPA, NCA, ECTA.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%23F43F5E' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%23FB7185' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33;
+    --blue: #2563EB; --blue-glow: #3B82F6;
+    --sky: #38BDF8; --sky-muted: #7DD3FC;
+    --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8;
+    --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12);
+    --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12);
+    --violet: #8B5CF6; --violet-soft: rgba(139, 92, 246, 0.12);
+    --rose: #F43F5E; --rose-glow: #FB7185; --rose-soft: rgba(244, 63, 94, 0.12);
+    --bg: var(--ink); --bg-raised: var(--navy);
+    --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(244, 63, 94, 0.06);
+    --text-primary: var(--paper); --text-secondary: var(--slate);
+    --text-muted: #64748B;
+    --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(244, 63, 94, 0.3);
+    --max-w: 1200px; --read-w: 760px;
+    --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px;
+    --domain: var(--rose); --domain-glow: var(--rose-glow);
+  }
+  [data-theme="light"] {
+    --bg: #F1F5F9; --bg-raised: #FFFFFF;
+    --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(244, 63, 94, 0.04);
+    --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8;
+    --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(244, 63, 94, 0.25);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.rose { width: 600px; height: 600px; background: var(--rose); top: -200px; right: -100px; }
+  .glow-orb.warm { width: 500px; height: 500px; background: var(--warm); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--rose), var(--warm)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--rose-glow); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--rose-glow); }
+
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .read { max-width: var(--read-w); }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--rose-glow); }
+  .crumb-sep { opacity: 0.5; }
+  .crumb-current { color: var(--text-secondary); }
+
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--rose-glow); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--rose); box-shadow: 0 0 12px var(--rose); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--rose), var(--rose-glow), var(--warm)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.accent { background: var(--rose-soft); color: var(--rose-glow); border-color: rgba(244, 63, 94, 0.25); }
+
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--rose-glow); margin-bottom: 14px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--rose-glow); }
+
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); margin-bottom: 20px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.rose { border-left: 3px solid var(--rose); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+
+  .types-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; max-width: 1100px; }
+  .type-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px 22px; transition: all 0.3s; }
+  .type-card:hover { border-color: var(--border-hover); }
+  .type-card .num { font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 700; background: linear-gradient(135deg, var(--rose), var(--rose-glow)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1; margin-bottom: 8px; }
+  .type-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.2px; }
+  .type-card .triad { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; display: block; }
+  .type-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 8px; }
+  .type-card .arrows { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); padding-top: 8px; border-top: 1px solid var(--border); display: flex; gap: 14px; }
+  .type-card .arrows .grow { color: var(--green); }
+  .type-card .arrows .stress { color: var(--rose); }
+
+  .triad-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; max-width: var(--read-w); }
+  .triad { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 24px; }
+  .triad-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--rose-glow); margin-bottom: 8px; }
+  .triad h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+  .triad .types-list { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--rose-glow); margin-bottom: 12px; }
+  .triad p { font-size: 13px; color: var(--text-secondary); line-height: 1.65; }
+
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: var(--read-w); margin-bottom: 20px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--rose-glow); background: rgba(244, 63, 94, 0.04); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); }
+  .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--rose-glow); }
+
+  .gotcha-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 12px; }
+  .gotcha { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--rose); border-radius: var(--radius-md); padding: 18px 22px; }
+  .gotcha strong { display: block; color: var(--text-primary); font-weight: 600; font-size: 14px; margin-bottom: 6px; }
+  .gotcha p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+  .connect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .connect-node { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; transition: all 0.3s; text-decoration: none; color: inherit; display: block; }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node.soon { cursor: default; opacity: 0.72; }
+  .connect-node.soon:hover { border-color: var(--border); background: var(--bg-card); }
+  .connect-node .tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--rose-glow); word-break: break-all; }
+
+  .decision-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: var(--read-w); }
+  @media (max-width: 720px) { .decision-grid { grid-template-columns: 1fr; } }
+  .decision-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 24px; }
+  .decision-card.use { border-left: 3px solid var(--green); }
+  .decision-card.skip { border-left: 3px solid var(--rose); }
+  .decision-card h4 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 12px; }
+  .decision-card.use h4 { color: var(--green); }
+  .decision-card.skip h4 { color: var(--rose); }
+  .decision-card ul { list-style: none; padding: 0; }
+  .decision-card li { font-size: 13px; color: var(--text-secondary); line-height: 1.6; padding: 6px 0; border-bottom: 1px solid var(--border); }
+  .decision-card li:last-child { border-bottom: none; }
+
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--rose), var(--warm)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--rose-glow); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } .compare { font-size: 12px; } .compare th, .compare td { padding: 10px 12px; } }
+
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+<div class="glow-orb rose"></div>
+<div class="glow-orb warm"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand">
+      <span class="nav-brand-mark">know.2nth.ai</span>
+      <span class="nav-brand-sub">leg/commercial</span>
+    </a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">&larr; Legal</a>
+      <a href="../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x2600;&#xFE0F;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="../../index.html#domains">Legal</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="./">leg</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">Commercial &amp; contracts</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> leg/commercial &middot; Skill Leaf</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      The tool drafts well. <span class="gradient">On two SA rules it's backwards.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      Contract review and drafting is the <strong>single biggest legal-AI use case</strong> &mdash; and for good reason: a lot of a commercial contract is standard, and extraction, redlining, and first drafts are exactly what the tool is good at. But South African contract law gets <strong>two things backwards</strong> from what a US- or English-trained model assumes. <strong>Penalty clauses are enforceable here</strong> (the Conventional Penalties Act), not void. And a <strong>restraint of trade is presumed enforceable</strong> (<em>Magna Alloys</em>), with the onus on the person trying to escape it &mdash; the opposite default. Add the CPA, the NCA, ECTA e-signatures, and a three-year prescription clock, and you have a practice where the drafting help is real and the confident wrong answer is a live risk.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill accent">Live</span>
+      <span class="pill">Conventional Penalties Act</span>
+      <span class="pill">Restraint of trade</span>
+      <span class="pill">CPA / NCA / ECTA</span>
+      <span class="pill">Prescription</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 -->
+<section id="what">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; What it is</div>
+      <h2 class="section-title">Common-law freedom of contract, on a statutory overlay.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>South African contract law is <strong>common law</strong> &mdash; Roman-Dutch in origin, developed by the courts &mdash; and its starting point is <strong>freedom of contract</strong>: parties may agree what they like, and the courts will hold them to it. As a general rule <strong>no writing is required</strong> for a valid contract; a handshake deal binds. But that freedom sits under an overlay of statute and distinctive common-law rules that a generic tool doesn't carry: the <strong>Consumer Protection Act 68 of 2008</strong> (CPA) where a consumer is involved, the <strong>National Credit Act 34 of 2005</strong> (NCA) where credit is granted, the <strong>Electronic Communications and Transactions Act 25 of 2002</strong> (ECTA) for e-signatures, the <strong>Conventional Penalties Act 15 of 1962</strong> for penalty clauses, and the <strong>Prescription Act 68 of 1969</strong> for how long a claim survives.</p>
+      <p>The exceptions to "no writing needed" matter: the <strong>sale of land</strong> must be in writing and signed (Alienation of Land Act 68 of 1981), a <strong>suretyship</strong> must be in writing, and long leases and a few other categories carry formalities. These are precisely the edges a fluent model rounds off.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 -->
+<section id="clauses">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; Two kinds of clause</div>
+      <h2 class="section-title">The boilerplate, and the clauses that carry the risk.</h2>
+      <p class="section-lede">Every commercial contract is a mix of standard machinery and a handful of clauses where the value and the risk actually live. AI is strong on the first and must not be trusted with the second.</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead><tr><th>Standard machinery</th><th>The negotiated risk clauses</th></tr></thead>
+        <tbody>
+          <tr><td>Definitions, interpretation, notices</td><td><strong>Limitation &amp; exclusion of liability</strong> &mdash; who carries what, and the cap</td></tr>
+          <tr><td>Term, renewal, general boilerplate</td><td><strong>Indemnities</strong> &mdash; the risk-shifting engine of the deal</td></tr>
+          <tr><td>Governing law, jurisdiction, severability</td><td><strong>Warranties &amp; representations</strong> &mdash; what's promised true</td></tr>
+          <tr><td>Force majeure, assignment, entire-agreement</td><td><strong>Restraint of trade &amp; IP assignment</strong> &mdash; what's protected and owned</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="info-card rose fade-up" style="transition-delay: 0.08s">
+      <h4>Where the practice actually is</h4>
+      <p>A contract negotiation is almost never about the definitions. It's about the cap on liability, the scope of the indemnity, and the reach of the restraint. Those are judgement, leverage, and risk appetite &mdash; a human's job. AI compresses the machinery so the lawyer's time moves to the four clauses that decide the deal. Used the other way round &mdash; trusting the model on the risk clauses &mdash; it's a liability, not a tool.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 -->
+<section id="ai-lands">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; Where AI earns its keep</div>
+      <h2 class="section-title">Review, extraction, and the contract lifecycle.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Contract work is the top-cited legal-AI use case because it's high-volume and pattern-heavy (<a href="legal-ai" style="color: var(--rose-glow);">see the Legal AI leaf</a>). The tool genuinely helps with <strong>review against a playbook</strong> (does this draft match our positions?), <strong>clause extraction across a portfolio</strong> (find every change-of-control, every auto-renew, every uncapped indemnity), <strong>first drafts from a precedent</strong>, and <strong>contract-lifecycle management</strong> &mdash; surfacing renewal dates, obligations, and expiries buried in a stack of signed agreements. This is real, measurable time saved on work that was always tedious.</p>
+    </div>
+    <div class="info-card rose fade-up" style="transition-delay: 0.08s">
+      <h4>Playbook in, verified draft out</h4>
+      <p>The pattern that works: give the model your <strong>house playbook and precedents</strong> as the ground truth, and use it to draft and check against them &mdash; not to invent the law from its training data. Grounded in your own approved templates, the output is a fast first pass a lawyer verifies. Ungrounded, it produces confident, plausible clauses that may be wrong for the jurisdiction &mdash; which is exactly the next section.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 -->
+<section id="backwards">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; What a global tool gets backwards</div>
+      <h2 class="section-title">Five SA rules where the confident answer is wrong.</h2>
+      <p class="section-lede">These aren't gaps in the model's knowledge &mdash; they're places where the default it learned is the <em>opposite</em> of the SA position. That's the dangerous kind of error: fluent, confident, and inverted.</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead><tr><th>Topic</th><th>What a US/English-trained model assumes</th><th>The SA position</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Penalty clauses</strong></td><td>Penalties are unenforceable &mdash; use "liquidated damages"</td><td><strong>Enforceable.</strong> The Conventional Penalties Act 15 of 1962 makes penalty stipulations enforceable; a court may only <em>reduce</em> one that's disproportionate to the prejudice.</td></tr>
+          <tr><td><strong>Restraint of trade</strong></td><td>Prima facie unenforceable unless the employer proves it's reasonable</td><td><strong>Prima facie enforceable.</strong> <em>Magna Alloys v Ellis</em> (1984): the onus is on the <em>employee</em> to show the restraint is unreasonable or against public policy.</td></tr>
+          <tr><td><strong>Consumer terms</strong></td><td>Freedom of contract; the terms are the terms</td><td>The CPA 68 of 2008 requires <strong>plain language</strong> and can strike <strong>unfair, unreasonable or unjust</strong> terms in consumer transactions.</td></tr>
+          <tr><td><strong>E-signatures</strong></td><td>Wet ink for anything important</td><td>ECTA 25 of 2002 gives electronic signatures legal validity &mdash; <em>except</em> land sales, leases over 20 years, bills of exchange, and suretyships.</td></tr>
+          <tr><td><strong>Time to sue</strong></td><td>A long, variable limitation period</td><td>The Prescription Act 68 of 1969: an ordinary contractual debt <strong>prescribes in three years</strong>. Miss it and the claim is dead.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 05 -->
+<section id="consumer-credit">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; The consumer &amp; credit overlay</div>
+      <h2 class="section-title">When the counterparty changes the rules.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Two statutes flip a commercial contract into a regulated one based on <em>who</em> you're dealing with. The <strong>Consumer Protection Act</strong> applies when the other side is a consumer (and, for smaller businesses, when they transact as one): it mandates plain language, regulates unfair terms, and gives cooling-off and disclosure rights &mdash; ECTA adds a seven-day cooling-off for distance selling on top. The <strong>National Credit Act</strong> applies whenever credit is granted: it demands affordability assessment, disclosure, and fairness, and it reaches ordinary commercial arrangements (deferred payment, instalments) that don't look like "credit" at first glance. A generic template that ignores which regime applies isn't just suboptimal &mdash; it can be unlawful and unenforceable in the parts that matter.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 -->
+<section id="ai-fit">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; Where AI fits</div>
+      <h2 class="section-title">Strong on volume, dangerous on the law.</h2>
+    </div>
+    <div class="decision-grid fade-up" style="transition-delay: 0.05s">
+      <div class="decision-card use">
+        <h4>AI does this well</h4>
+        <ul>
+          <li>Review a draft against your playbook and flag deviations.</li>
+          <li>Extract clauses and obligations across a whole contract portfolio.</li>
+          <li>First drafts and redlines from your approved precedents.</li>
+          <li>CLM: renewal dates, notice windows, expiries, obligation tracking.</li>
+          <li>Summarising long agreements and comparing versions.</li>
+        </ul>
+      </div>
+      <div class="decision-card skip">
+        <h4>AI must not do this</h4>
+        <ul>
+          <li><strong>Negotiate the risk clauses.</strong> Liability caps, indemnities, warranties are judgement and leverage.</li>
+          <li><strong>Rule on enforceability.</strong> Penalty, restraint, and unfair-term calls are SA-law specific.</li>
+          <li><strong>Assume the jurisdiction.</strong> An ungrounded model imports the wrong default rule.</li>
+          <li><strong>Draft the consumer/credit terms.</strong> CPA and NCA compliance is a legal decision.</li>
+          <li><strong>Be the final reviewer.</strong> The verified sign-off stays with a person who carries the risk.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 07 -->
+<section id="gotchas">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; Gotchas</div>
+      <h2 class="section-title">Where AI on contracts goes wrong.</h2>
+    </div>
+    <div class="gotcha-list fade-up" style="transition-delay: 0.05s">
+      <div class="gotcha">
+        <strong>The penalty-clause inversion</strong>
+        <p>A model will confidently rewrite an enforceable SA penalty clause into "liquidated damages" to avoid a rule that doesn't apply here &mdash; and may weaken the client's position in doing it. The Conventional Penalties Act means the penalty was fine.</p>
+      </div>
+      <div class="gotcha">
+        <strong>The restraint inversion</strong>
+        <p>Drafting a restraint on the assumption it's presumptively unenforceable produces weak, over-hedged wording. In SA the restraint is presumed valid; the drafting posture is different, and a foreign default gets it backwards.</p>
+      </div>
+      <div class="gotcha">
+        <strong>Hallucinated clauses and citations</strong>
+        <p>Ungrounded, a model invents plausible clauses and cites Acts or cases that don't say what it claims. In a contract, a confident wrong clause is a latent dispute. Ground it in your precedents, and verify.</p>
+      </div>
+      <div class="gotcha">
+        <strong>Missing the prescription clock</strong>
+        <p>Three years is short. A CLM or advice tool that doesn't surface the prescription risk on an unpaid or breached contract lets a live claim quietly die. The date is the point.</p>
+      </div>
+      <div class="gotcha">
+        <strong>The contract is full of personal information</strong>
+        <p>Counterparties, signatories, and often employees appear in the contract set. Running an AI tool over the portfolio is a POPIA processing &mdash; and a section 72 transfer question if it processes offshore. See the <a href="data-privacy" style="color: var(--rose-glow);">Data privacy &amp; POPIA</a> leaf.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 08 -->
+<section id="use-cases">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 &middot; Use cases</div>
+      <h2 class="section-title">Where this lands in SA practice.</h2>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.05s">
+      <h4>In-house legal &amp; procurement</h4>
+      <p>The clearest ROI: a high volume of recurring contracts &mdash; supply, services, NDAs, SLAs &mdash; reviewed against a house playbook. Extraction and playbook-review compress the queue; the team's time moves to the negotiated clauses and the CPA/NCA calls the template can't make.</p>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.08s">
+      <h4>Law firms &amp; CLM projects</h4>
+      <p>Portfolio-level work: due-diligence extraction (shared with the <a href="corporate" style="color: var(--rose-glow);">M&amp;A leaf</a>), lease and contract abstraction, and lifecycle migration into a CLM system. The tool reads and structures; the lawyer decides what the findings mean.</p>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.11s">
+      <h4>SMEs &amp; the plain-language duty</h4>
+      <p>Where the CPA's plain-language requirement bites hardest &mdash; consumer-facing terms that must be understandable. AI can help simplify and standardise, but the compliance judgement (is this term fair, is it enforceable, does the NCA apply) is a lawyer's, not a generator's.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 09 -->
+<section id="sa-context">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">09 &middot; South African context</div>
+      <h2 class="section-title">The rules a global tool has the wrong defaults for.</h2>
+    </div>
+    <div class="info-card rose fade-up" style="transition-delay: 0.05s">
+      <h4>Two inverted defaults, one lesson</h4>
+      <p>Penalties enforceable, restraints presumed valid &mdash; both are the reverse of the Anglo-American position a model most likely learned. The lesson generalises: on commercial contracts, the danger isn't the SA rule the tool doesn't know, it's the foreign rule it's <em>sure</em> of. Ground the tool in local precedent and treat every confident statement of law as a claim to verify.</p>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.08s">
+      <h4>The statutes decide who's in charge</h4>
+      <p>CPA, NCA, and ECTA don't just add clauses &mdash; they change which terms are even permissible, when a signature is valid, and how long a claim lives. An SA commercial contract is a common-law document policed by statute, and the policing is invisible to a jurisdiction-blind tool.</p>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.11s">
+      <h4>The portfolio is a POPIA surface</h4>
+      <p>A contract set is dense with personal information &mdash; signatories, counterparties, employees. Any AI that reads it is a POPIA processing event, and a section 72 question if it processes across the border. The residency answer is the tree's usual one: keep it in country. See <a href="data-privacy" style="color: var(--rose-glow);">Data privacy &amp; POPIA</a>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 10 -->
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">10 &middot; 2&#x207F; Perspective</div>
+      <h2 class="section-title">How this node connects in the tree.</h2>
+      <p class="section-lede">Commercial contracting is where legal AI is used most &mdash; and where the confident foreign default does the most quiet harm.</p>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="./" class="connect-node">
+        <span class="tag">leg/hub</span>
+        <div class="skill">Legal domain hub</div>
+        <div class="why">The parent domain &mdash; the practice areas and the verification bar this leaf is held to.</div>
+      </a>
+      <a href="legal-ai" class="connect-node">
+        <span class="tag">leg/legal-ai</span>
+        <div class="skill">Legal AI</div>
+        <div class="why">The tool. Contract review and drafting is its top use case &mdash; this leaf is where that lands, and where its confident errors show.</div>
+      </a>
+      <a href="corporate" class="connect-node">
+        <span class="tag">leg/corporate</span>
+        <div class="skill">Corporate &amp; M&amp;A</div>
+        <div class="why">The deal's contracts. Clause extraction is the shared workhorse between commercial review and M&amp;A due diligence.</div>
+      </a>
+      <a href="employment" class="connect-node">
+        <span class="tag">leg/employment</span>
+        <div class="skill">Employment &amp; labour</div>
+        <div class="why">Restraints of trade and employment contracts live at the seam of the two leaves &mdash; same clause, two lenses.</div>
+      </a>
+      <a href="data-privacy" class="connect-node">
+        <span class="tag">leg/data-privacy</span>
+        <div class="skill">Data privacy &amp; POPIA</div>
+        <div class="why">A contract portfolio is personal information at scale. The s.72 test governs how AI can read it.</div>
+      </a>
+      <a href="../agents/rearchitecture.html" class="connect-node">
+        <span class="tag">agents/rearchitecture</span>
+        <div class="skill">Agents, data &amp; trust</div>
+        <div class="why">Ground the contract agent in your real playbook and precedents, or it invents the clause it should have retrieved.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 11 -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">11 &middot; Resources</div>
+      <h2 class="section-title">Primary sources only.</h2>
+      <p class="section-lede">The Acts that overlay SA contract freedom &mdash; and note the leading restraint-of-trade authority is case law (<em>Magna Alloys v Ellis</em> 1984 (4) SA 874 (A)), so read it in a current practitioner text.</p>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://www.gov.za/documents/conventional-penalties-act-16-mar-1963-0000" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Statute &middot; ZA</span>
+        <span class="r-title">Conventional Penalties Act 15 of 1962</span>
+        <span class="r-url">gov.za &middot; conventional-penalties-act</span>
+      </a>
+      <a href="https://www.gov.za/documents/consumer-protection-act" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Statute &middot; ZA</span>
+        <span class="r-title">Consumer Protection Act 68 of 2008</span>
+        <span class="r-url">gov.za &middot; consumer-protection-act</span>
+      </a>
+      <a href="https://www.gov.za/documents/national-credit-act" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Statute &middot; ZA</span>
+        <span class="r-title">National Credit Act 34 of 2005</span>
+        <span class="r-url">gov.za &middot; national-credit-act</span>
+      </a>
+      <a href="https://www.gov.za/documents/electronic-communications-and-transactions-act" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Statute &middot; ZA</span>
+        <span class="r-title">Electronic Communications and Transactions Act 25 of 2002</span>
+        <span class="r-url">gov.za &middot; electronic-communications-and-transactions-act</span>
+      </a>
+      <a href="https://www.justice.gov.za/legislation/acts/1969-068.pdf" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Statute &middot; ZA</span>
+        <span class="r-title">Prescription Act 68 of 1969</span>
+        <span class="r-url">justice.gov.za &middot; 1969-068.pdf</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../index.html">Skills tree</a>
+      <a href="./">Legal domain</a>
+      <a href="legal-ai.html">Legal AI</a>
+      <a href="corporate.html">Corporate &amp; M&amp;A</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant</p>
+  </div>
+</footer>
+<script>
+  function toggleTheme() { const html=document.documentElement; const cur=html.getAttribute('data-theme'); const next=cur==='dark'?'light':'dark'; html.setAttribute('data-theme',next); document.querySelector('.theme-toggle').textContent=next==='dark'?'☀️':'🌙'; localStorage.setItem('theme',next); }
+  const saved=localStorage.getItem('theme'); if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.theme-toggle').textContent=saved==='dark'?'☀️':'🌙';}
+  const observer=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'}); document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>
