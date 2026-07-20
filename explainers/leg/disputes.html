@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Disputes &amp; litigation &mdash; know.2nth.ai</title>
+<meta name="description" content="Disputes and litigation in South Africa for the AI era. AI summarisation of the record is genuinely powerful — and litigation is also where the catastrophic failure mode lives: hallucinated case citations in front of a judge. Two SA courts have already acted (Mavundla, Northbound), with referrals to the Legal Practice Council. Rule 35 discovery, legal professional privilege, and why even an SA-trained tool still hallucinates.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/leg/disputes">
+<meta property="og:title" content="Disputes &amp; litigation — know.2nth.ai">
+<meta property="og:description" content="SA litigation for the AI era. Summarisation is powerful; the failure mode is catastrophic — hallucinated citations in court. Two SA courts have acted (Mavundla, Northbound). Rule 35 discovery, privilege, and why SA-trained tools still hallucinate.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai — The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Disputes &amp; litigation — know.2nth.ai">
+<meta name="twitter:description" content="SA litigation for the AI era. Summarisation is powerful; hallucinated citations in court are catastrophic. Two SA courts acted (Mavundla, Northbound). Rule 35, privilege.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%23F43F5E' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%23FB7185' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33;
+    --blue: #2563EB; --blue-glow: #3B82F6;
+    --sky: #38BDF8; --sky-muted: #7DD3FC;
+    --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8;
+    --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12);
+    --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12);
+    --violet: #8B5CF6; --violet-soft: rgba(139, 92, 246, 0.12);
+    --rose: #F43F5E; --rose-glow: #FB7185; --rose-soft: rgba(244, 63, 94, 0.12);
+    --bg: var(--ink); --bg-raised: var(--navy);
+    --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(244, 63, 94, 0.06);
+    --text-primary: var(--paper); --text-secondary: var(--slate);
+    --text-muted: #64748B;
+    --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(244, 63, 94, 0.3);
+    --max-w: 1200px; --read-w: 760px;
+    --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px;
+    --domain: var(--rose); --domain-glow: var(--rose-glow);
+  }
+  [data-theme="light"] {
+    --bg: #F1F5F9; --bg-raised: #FFFFFF;
+    --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(244, 63, 94, 0.04);
+    --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8;
+    --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(244, 63, 94, 0.25);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.rose { width: 600px; height: 600px; background: var(--rose); top: -200px; right: -100px; }
+  .glow-orb.warm { width: 500px; height: 500px; background: var(--warm); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--rose), var(--warm)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--rose-glow); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--rose-glow); }
+
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .read { max-width: var(--read-w); }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--rose-glow); }
+  .crumb-sep { opacity: 0.5; }
+  .crumb-current { color: var(--text-secondary); }
+
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--rose-glow); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--rose); box-shadow: 0 0 12px var(--rose); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--rose), var(--rose-glow), var(--warm)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.accent { background: var(--rose-soft); color: var(--rose-glow); border-color: rgba(244, 63, 94, 0.25); }
+
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--rose-glow); margin-bottom: 14px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--rose-glow); }
+
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); margin-bottom: 20px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.rose { border-left: 3px solid var(--rose); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+
+  .types-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; max-width: 1100px; }
+  .type-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px 22px; transition: all 0.3s; }
+  .type-card:hover { border-color: var(--border-hover); }
+  .type-card .num { font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 700; background: linear-gradient(135deg, var(--rose), var(--rose-glow)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1; margin-bottom: 8px; }
+  .type-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.2px; }
+  .type-card .triad { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; display: block; }
+  .type-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 8px; }
+  .type-card .arrows { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); padding-top: 8px; border-top: 1px solid var(--border); display: flex; gap: 14px; }
+  .type-card .arrows .grow { color: var(--green); }
+  .type-card .arrows .stress { color: var(--rose); }
+
+  .triad-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; max-width: var(--read-w); }
+  .triad { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 24px; }
+  .triad-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--rose-glow); margin-bottom: 8px; }
+  .triad h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+  .triad .types-list { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--rose-glow); margin-bottom: 12px; }
+  .triad p { font-size: 13px; color: var(--text-secondary); line-height: 1.65; }
+
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: var(--read-w); margin-bottom: 20px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--rose-glow); background: rgba(244, 63, 94, 0.04); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); }
+  .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--rose-glow); }
+
+  .gotcha-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 12px; }
+  .gotcha { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--rose); border-radius: var(--radius-md); padding: 18px 22px; }
+  .gotcha strong { display: block; color: var(--text-primary); font-weight: 600; font-size: 14px; margin-bottom: 6px; }
+  .gotcha p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+  .connect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .connect-node { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; transition: all 0.3s; text-decoration: none; color: inherit; display: block; }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node.soon { cursor: default; opacity: 0.72; }
+  .connect-node.soon:hover { border-color: var(--border); background: var(--bg-card); }
+  .connect-node .tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--rose-glow); word-break: break-all; }
+
+  .decision-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: var(--read-w); }
+  @media (max-width: 720px) { .decision-grid { grid-template-columns: 1fr; } }
+  .decision-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 24px; }
+  .decision-card.use { border-left: 3px solid var(--green); }
+  .decision-card.skip { border-left: 3px solid var(--rose); }
+  .decision-card h4 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 12px; }
+  .decision-card.use h4 { color: var(--green); }
+  .decision-card.skip h4 { color: var(--rose); }
+  .decision-card ul { list-style: none; padding: 0; }
+  .decision-card li { font-size: 13px; color: var(--text-secondary); line-height: 1.6; padding: 6px 0; border-bottom: 1px solid var(--border); }
+  .decision-card li:last-child { border-bottom: none; }
+
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--rose), var(--warm)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--rose-glow); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } .compare { font-size: 12px; } .compare th, .compare td { padding: 10px 12px; } }
+
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+<div class="glow-orb rose"></div>
+<div class="glow-orb warm"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand">
+      <span class="nav-brand-mark">know.2nth.ai</span>
+      <span class="nav-brand-sub">leg/disputes</span>
+    </a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">&larr; Legal</a>
+      <a href="../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x2600;&#xFE0F;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="../../index.html#domains">Legal</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="./">leg</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">Disputes &amp; litigation</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> leg/disputes &middot; Skill Leaf</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      Powerful on the record. <span class="gradient">Catastrophic on the citation.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      Litigation is where AI <strong>summarisation</strong> lands hardest &mdash; a discovery bundle of ten thousand pages, reduced to a chronology and an issues list, is real, measurable value on work that was always brutal. It is also the one practice with a <strong>catastrophic failure mode</strong>: a <strong>hallucinated case citation</strong> placed in front of a judge. This isn't hypothetical in South Africa. In <em>Mavundla</em> and <em>Northbound Processing</em>, our courts found fabricated AI citations in the papers and referred the lawyers to the <strong>Legal Practice Council</strong> &mdash; and in one, the tool was <em>trained on SA law</em> and hallucinated anyway. This leaf is the litigation read for the AI era: where the summarisation is gold, and where the generated citation is a professional-conduct event.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill accent">Live</span>
+      <span class="pill">Summarisation</span>
+      <span class="pill">Hallucinated citations</span>
+      <span class="pill">Rule 35 discovery</span>
+      <span class="pill">Privilege</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 -->
+<section id="what">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; What it is</div>
+      <h2 class="section-title">The record, the rules, and the officer of the court.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Civil litigation in South Africa runs through a court hierarchy &mdash; <strong>Magistrates' Courts</strong>, the <strong>High Court</strong>, the <strong>Supreme Court of Appeal</strong>, and the <strong>Constitutional Court</strong> &mdash; on a process of pleadings, <strong>discovery</strong>, and trial or motion. In the High Court, discovery is governed by <strong>Rule 35 of the Uniform Rules of Court</strong>: each side must disclose the relevant documents in its possession, with relevance measured against the pleadings. The volume of that record is exactly why AI summarisation is attractive here.</p>
+      <p>The thing that changes the AI calculus in litigation is the lawyer's status. A legal practitioner is an <strong>officer of the court</strong> with a duty of candour: what you put in the papers, you vouch for. A fabricated citation isn't a bad search result &mdash; it's a breach of that duty, governed by the <strong>Legal Practice Act 28 of 2014</strong> and enforced by the <strong>Legal Practice Council</strong>. That is why the same hallucination that's a shrug in a chatbot is a career event in a court file.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 -->
+<section id="summarisation">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; Where AI lands hardest</div>
+      <h2 class="section-title">Summarising the record is the real win.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>The genuine, defensible use of AI in litigation is reading and structuring the material that already exists. A <strong>discovery bundle</strong> too large to read in the time available, reduced to a chronology. A witness statement cross-checked against the documents. A long judgment or expert report summarised. A first-pass <strong>relevance review</strong> across thousands of discovered documents. This is document-grounded work: the model operates on the record in front of it, and a human verifies the output against the source. Used this way &mdash; on real documents, with the citation being a page in the bundle, not a case name &mdash; AI is one of the most valuable tools litigation has seen.</p>
+    </div>
+    <div class="info-card rose fade-up" style="transition-delay: 0.08s">
+      <h4>The line that keeps it safe</h4>
+      <p>Summarising a document you gave the model is <strong>retrieval</strong>: the answer is in the source, and you can check it. Asking the model for "the leading cases on X" is <strong>generation</strong>: the answer comes from its training, and it will invent a plausible one if it doesn't have a real one. The entire safety of AI in litigation is on the right side of that line &mdash; grounded in the record, never generating the law.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 -->
+<section id="hallucination">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; The failure mode</div>
+      <h2 class="section-title">Two SA courts, fabricated citations, real consequences.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>This is not a foreign cautionary tale. South African courts have already dealt with it, more than once.</p>
+      <p>In <strong><em>Mavundla v MEC: Department of Co-Operative Government and Traditional Affairs, KwaZulu-Natal</em></strong> (Case No. 7940/2024P), a legal team's application relied on <strong>nine cases &mdash; of which only two existed</strong>, and one of those was mis-cited. The advocate admitted she had not verified the authorities, relying on a junior's research from "an online tool"; the fabricated cases had been generated by ChatGPT. In <strong><em>Northbound Processing (Pty) Ltd v The South African Diamond and Precious Metals Regulator</em></strong> (Case No. 2025-072038, Gauteng High Court), the heads of argument again contained fictitious citations. The Acting Judge referred the lawyers to the <strong>Legal Practice Council</strong> for a misconduct investigation, holding that even without an intent to mislead, "the risks posed to the administration of justice if fake material is placed before a court are such that&hellip; admonishment alone is unlikely to be a sufficient response."</p>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.08s">
+      <h4>The cost is not the embarrassment</h4>
+      <p>The consequence of an AI-fabricated citation in SA is not a red face &mdash; it is a <strong>referral to the Legal Practice Council</strong>, potential <strong>adverse costs</strong>, and a judgment, on the public record, naming the practitioner. The failure mode is disciplinary, not merely reputational, and the courts have signalled they will treat it seriously.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 -->
+<section id="sa-trained">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; The dangerous comfort</div>
+      <h2 class="section-title">"But it's trained on SA law" is not the safeguard.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>The most important detail in <em>Northbound</em> is easy to miss: the lawyer said the platform was "exclusively trained on South African legal judgments and legislation." It hallucinated anyway. This is the trap to name plainly. <strong>A jurisdiction-specific model reduces the odds of a foreign wrong answer; it does not remove the mechanism of hallucination.</strong> A generative model produces the most probable next tokens, and a plausible-looking citation is exactly what that machinery is good at inventing. The safeguard is not a better-trained model &mdash; it is <strong>grounding</strong> (the tool retrieves and quotes a real, checkable source) plus <strong>verification</strong> (a human confirms every authority against the report). Trusting a tool because it's local is how a careful firm ends up in the second paragraph of a reported judgment.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 -->
+<section id="discovery-privilege">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; Discovery &amp; privilege</div>
+      <h2 class="section-title">The record AI reads is privileged and personal.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Two constraints govern how a model may touch the litigation record. First, <strong>legal professional privilege</strong> &mdash; South African law recognises two forms, <strong>legal advice privilege</strong> and <strong>litigation privilege</strong> &mdash; protects communications and work product from disclosure. Running privileged material through a third-party model, or into a tool whose terms allow training on inputs, can <strong>jeopardise the privilege</strong> the whole strategy depends on. Second, discovery bundles are dense with <strong>personal information</strong> &mdash; parties, witnesses, third parties &mdash; so processing them with AI is a POPIA event, and a <strong>section 72 transfer</strong> question if the tool processes offshore.</p>
+    </div>
+    <div class="info-card rose fade-up" style="transition-delay: 0.08s">
+      <h4>Design the tooling before the trial</h4>
+      <p>The residency and privilege answer has to be settled before the record goes near a model: a tool that keeps the data in country and does not train on inputs, used on documents the client owns. Get it right and AI is a discovery superpower; get it wrong and you've waived privilege or exported personal information to win a chronology. See the <a href="data-privacy" style="color: var(--rose-glow);">Data privacy &amp; POPIA</a> leaf.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 -->
+<section id="ai-fit">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; Where AI fits</div>
+      <h2 class="section-title">Read the record, never write the law.</h2>
+    </div>
+    <div class="decision-grid fade-up" style="transition-delay: 0.05s">
+      <div class="decision-card use">
+        <h4>AI does this well</h4>
+        <ul>
+          <li>Summarising the discovery bundle, judgments, and expert reports.</li>
+          <li>Building a chronology from dated documents in the record.</li>
+          <li>First-pass relevance review across large document sets.</li>
+          <li>Cross-checking a statement against the documents it references.</li>
+          <li>Drafting from your own precedents and the verified record.</li>
+        </ul>
+      </div>
+      <div class="decision-card skip">
+        <h4>AI must not do this</h4>
+        <ul>
+          <li><strong>Find "the cases."</strong> Any citation the model generates must be verified as real before it's used &mdash; every time.</li>
+          <li><strong>State the law unverified.</strong> A confident proposition of law is a claim to check, not an authority.</li>
+          <li><strong>Be the officer of the court.</strong> You vouch for the papers; a model can't hold the duty.</li>
+          <li><strong>Touch privileged material ungoverned.</strong> Privilege and POPIA are decided before the upload.</li>
+          <li><strong>Set strategy.</strong> What to run, what to concede, whether to settle is judgement.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 07 -->
+<section id="gotchas">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; Gotchas</div>
+      <h2 class="section-title">Where AI on litigation goes wrong.</h2>
+    </div>
+    <div class="gotcha-list fade-up" style="transition-delay: 0.05s">
+      <div class="gotcha">
+        <strong>The fabricated citation</strong>
+        <p>The signature failure. A plausible case name, a real-looking citation, and no such judgment. In SA it has produced LPC referrals and named practitioners. Verify every authority against a real report &mdash; SAFLII, the law reports &mdash; before it enters the papers.</p>
+      </div>
+      <div class="gotcha">
+        <strong>"It's trained on SA law" is not verification</strong>
+        <p>A local model narrows foreign errors; it does not stop hallucination. <em>Northbound</em> is the proof. Grounding and human checking are the safeguards, not the training set.</p>
+      </div>
+      <div class="gotcha">
+        <strong>Privilege waived to a third party</strong>
+        <p>Feeding privileged strategy or work product into a model whose terms permit training on inputs can jeopardise the privilege. The tooling decision is a legal one, made before the record is uploaded.</p>
+      </div>
+      <div class="gotcha">
+        <strong>The bundle is personal information</strong>
+        <p>Discovery is full of third-party personal data. Processing it with an offshore tool is a section 72 transfer question. Keep it in country and the question closes.</p>
+      </div>
+      <div class="gotcha">
+        <strong>Delegation without the duty</strong>
+        <p>In <em>Mavundla</em>, the authorities came from a junior's "online tool" and went in unverified. Delegating the search does not delegate the duty to verify &mdash; the practitioner who signs still vouches for every line.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 08 -->
+<section id="use-cases">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 &middot; Use cases</div>
+      <h2 class="section-title">Where this lands in SA practice.</h2>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.05s">
+      <h4>Litigation &amp; disputes teams</h4>
+      <p>The clearest value: taming the discovery bundle. Summaries, chronologies, and relevance review on documents the client owns, kept in country, with a human verifying against the source. The drudgery of the record compresses; the advocacy and the strategy stay with the practitioner.</p>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.08s">
+      <h4>In-house &amp; insurers</h4>
+      <p>High-volume, document-heavy matters &mdash; claims, recoveries, standard disputes &mdash; where triage and summarisation across many files is the win. The tool reads and structures; the lawyer decides exposure and approach, and checks every authority.</p>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.11s">
+      <h4>The verification workflow</h4>
+      <p>The practice pattern the SA cases demand: every AI-surfaced authority is opened and read in a real report before it's cited; every proposition of law is checked; the practitioner who signs the papers has personally confirmed the citations. Build the workflow so verification isn't optional &mdash; because the court has made clear it isn't.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 09 -->
+<section id="sa-context">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">09 &middot; South African context</div>
+      <h2 class="section-title">The duty a global tool doesn't carry.</h2>
+    </div>
+    <div class="info-card rose fade-up" style="transition-delay: 0.05s">
+      <h4>The court has already ruled &mdash; twice</h4>
+      <p><em>Mavundla</em> and <em>Northbound</em> mean SA practitioners can't claim the risk is theoretical or foreign. The judiciary has signalled that fabricated AI citations are a professional-conduct matter, with LPC referral and costs on the table even absent an intent to mislead. The bar is verification, and the courts are enforcing it.</p>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.08s">
+      <h4>Grounding is the whole answer</h4>
+      <p>Everything safe about AI in litigation reduces to one principle the rest of the tree keeps returning to: <strong>ground the tool in the real record and verify the output</strong>. A summariser pointed at the bundle is a superpower; a generator asked for the law is a liability. The <a href="../agents/rearchitecture.html" style="color: var(--rose-glow);">data-and-trust</a> thesis, applied where the stakes are a judge.</p>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.11s">
+      <h4>Privilege and POPIA sit under it all</h4>
+      <p>The record is privileged and personal. Where it's hosted, whether the tool trains on it, and whether it crosses the border are decisions made before the first upload &mdash; the residency answer the tree gives everywhere. See <a href="data-privacy" style="color: var(--rose-glow);">Data privacy &amp; POPIA</a>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 10 -->
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">10 &middot; 2&#x207F; Perspective</div>
+      <h2 class="section-title">How this node connects in the tree.</h2>
+      <p class="section-lede">Disputes is where the tree's grounding thesis stops being an engineering preference and becomes a professional-conduct rule.</p>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="./" class="connect-node">
+        <span class="tag">leg/hub</span>
+        <div class="skill">Legal domain hub</div>
+        <div class="why">The parent domain &mdash; the practice areas and the verification bar this leaf makes literal.</div>
+      </a>
+      <a href="legal-ai" class="connect-node">
+        <span class="tag">leg/legal-ai</span>
+        <div class="skill">Legal AI</div>
+        <div class="why">The tool. Summarisation is its strength and hallucination its signature risk &mdash; this leaf is where both meet a judge.</div>
+      </a>
+      <a href="data-privacy" class="connect-node">
+        <span class="tag">leg/data-privacy</span>
+        <div class="skill">Data privacy &amp; POPIA</div>
+        <div class="why">The record is privileged and personal. The s.72 test and privilege govern how AI may touch it.</div>
+      </a>
+      <a href="commercial" class="connect-node">
+        <span class="tag">leg/commercial</span>
+        <div class="skill">Commercial &amp; contracts</div>
+        <div class="why">The contract in dispute. The same hallucination risk applies to the law it cites, not just the litigation record.</div>
+      </a>
+      <a href="../agents/rearchitecture.html" class="connect-node">
+        <span class="tag">agents/rearchitecture</span>
+        <div class="skill">Agents, data &amp; trust</div>
+        <div class="why">Grounding as the design principle. Here the cost of an ungrounded answer is a referral to the Legal Practice Council.</div>
+      </a>
+      <a href="../../briefings/edge-first" class="connect-node">
+        <span class="tag">briefings/edge-first</span>
+        <div class="skill">Keep the Data Home</div>
+        <div class="why">The plain-language residency answer for a privileged, personal-information-heavy record.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 11 -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">11 &middot; Resources</div>
+      <h2 class="section-title">Primary sources only.</h2>
+      <p class="section-lede">The rules, the Act, the regulator, and the case-law database &mdash; read the <em>Mavundla</em> and <em>Northbound</em> judgments themselves on SAFLII rather than a summary.</p>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://www.justice.gov.za/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Rules &middot; ZA</span>
+        <span class="r-title">Dept of Justice — court rules &amp; legislation (Rule 35 discovery)</span>
+        <span class="r-url">justice.gov.za</span>
+      </a>
+      <a href="https://www.gov.za/documents/legal-practice-act" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Statute &middot; ZA</span>
+        <span class="r-title">Legal Practice Act 28 of 2014</span>
+        <span class="r-url">gov.za &middot; legal-practice-act</span>
+      </a>
+      <a href="https://lpc.org.za/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Regulator &middot; ZA</span>
+        <span class="r-title">Legal Practice Council</span>
+        <span class="r-url">lpc.org.za</span>
+      </a>
+      <a href="https://www.saflii.org/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Case law &middot; ZA</span>
+        <span class="r-title">SAFLII &mdash; verify every citation here</span>
+        <span class="r-url">saflii.org</span>
+      </a>
+      <a href="https://www.gov.za/documents/superior-courts-act" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Statute &middot; ZA</span>
+        <span class="r-title">Superior Courts Act 10 of 2013</span>
+        <span class="r-url">gov.za &middot; superior-courts-act</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../index.html">Skills tree</a>
+      <a href="./">Legal domain</a>
+      <a href="legal-ai.html">Legal AI</a>
+      <a href="commercial.html">Commercial &amp; contracts</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant</p>
+  </div>
+</footer>
+<script>
+  function toggleTheme() { const html=document.documentElement; const cur=html.getAttribute('data-theme'); const next=cur==='dark'?'light':'dark'; html.setAttribute('data-theme',next); document.querySelector('.theme-toggle').textContent=next==='dark'?'☀️':'🌙'; localStorage.setItem('theme',next); }
+  const saved=localStorage.getItem('theme'); if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.theme-toggle').textContent=saved==='dark'?'☀️':'🌙';}
+  const observer=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'}); document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>
