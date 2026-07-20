@@ -3,7 +3,7 @@
   "description": "The public knowledge tree for the 2nth.ai ecosystem. Every leaf is both a human-readable reference and an agent-consumable context document.",
   "agent_fetch": "https://know.2nth.ai/api/context/<domain>/<leaf>",
   "mcp": "https://know.2nth.ai/mcp",
-  "count": 199,
+  "count": 200,
   "items": [
     {
       "title": "Agents — know.2nth.ai",
@@ -804,6 +804,14 @@
       "kind": "hub",
       "url": "https://know.2nth.ai/explainers/leg/",
       "fetch": "leg"
+    },
+    {
+      "title": "Commercial & contracts — know.2nth.ai",
+      "description": "Commercial and contract law in South Africa for the AI era. Contract review and drafting is the top legal-AI use case — but SA gets two rules backwards from a US-trained model: penalty clauses are enforceable (Conventional Penalties Act 15 of 1962) and restraints of trade are prima facie enforceable (Magna Alloys). Plus the CPA, the NCA, ECTA e-signatures, and 3-year prescription. Where the tool drafts well, and where it is confidently wrong.",
+      "domain": "leg",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/leg/commercial",
+      "fetch": "leg/commercial"
     },
     {
       "title": "Corporate & M&A — know.2nth.ai",
