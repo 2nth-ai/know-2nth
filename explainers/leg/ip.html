@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Intellectual property &mdash; know.2nth.ai</title>
+<meta name="description" content="Intellectual property in South Africa for the AI era — the domain where AI collides with the law most sharply. SA is the only country to have granted an AI-inventor patent (DABUS, 2021) — but because it is a non-examining system, not a considered ruling. The Copyright Act's computer-generated-works authorship, the Copyright Amendment Bill's fair-use clause now before the Constitutional Court, and why training on copyrighted data is legally uncertain today. Where a global tool applies the wrong law.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/leg/ip">
+<meta property="og:title" content="Intellectual property — know.2nth.ai">
+<meta property="og:description" content="SA intellectual property for the AI era. The only country to grant an AI-inventor patent (DABUS) — because it doesn't examine. Computer-generated-works authorship, and the fair-use Bill before the Constitutional Court. Where a global tool applies the wrong law.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai — The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Intellectual property — know.2nth.ai">
+<meta name="twitter:description" content="SA IP for the AI era. World-first AI-inventor patent (DABUS) — because SA doesn't examine. Computer-generated-works authorship, and the fair-use Bill before the Constitutional Court.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%23F43F5E' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%23FB7185' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33;
+    --blue: #2563EB; --blue-glow: #3B82F6;
+    --sky: #38BDF8; --sky-muted: #7DD3FC;
+    --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8;
+    --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12);
+    --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12);
+    --violet: #8B5CF6; --violet-soft: rgba(139, 92, 246, 0.12);
+    --rose: #F43F5E; --rose-glow: #FB7185; --rose-soft: rgba(244, 63, 94, 0.12);
+    --bg: var(--ink); --bg-raised: var(--navy);
+    --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(244, 63, 94, 0.06);
+    --text-primary: var(--paper); --text-secondary: var(--slate);
+    --text-muted: #64748B;
+    --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(244, 63, 94, 0.3);
+    --max-w: 1200px; --read-w: 760px;
+    --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px;
+    --domain: var(--rose); --domain-glow: var(--rose-glow);
+  }
+  [data-theme="light"] {
+    --bg: #F1F5F9; --bg-raised: #FFFFFF;
+    --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(244, 63, 94, 0.04);
+    --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8;
+    --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(244, 63, 94, 0.25);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.rose { width: 600px; height: 600px; background: var(--rose); top: -200px; right: -100px; }
+  .glow-orb.warm { width: 500px; height: 500px; background: var(--warm); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--rose), var(--warm)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--rose-glow); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--rose-glow); }
+
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .read { max-width: var(--read-w); }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--rose-glow); }
+  .crumb-sep { opacity: 0.5; }
+  .crumb-current { color: var(--text-secondary); }
+
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--rose-glow); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--rose); box-shadow: 0 0 12px var(--rose); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--rose), var(--rose-glow), var(--warm)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.accent { background: var(--rose-soft); color: var(--rose-glow); border-color: rgba(244, 63, 94, 0.25); }
+
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--rose-glow); margin-bottom: 14px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--rose-glow); }
+
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); margin-bottom: 20px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.rose { border-left: 3px solid var(--rose); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+
+  .types-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; max-width: 1100px; }
+  .type-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px 22px; transition: all 0.3s; }
+  .type-card:hover { border-color: var(--border-hover); }
+  .type-card .num { font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 700; background: linear-gradient(135deg, var(--rose), var(--rose-glow)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1; margin-bottom: 8px; }
+  .type-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.2px; }
+  .type-card .triad { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; display: block; }
+  .type-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 8px; }
+  .type-card .arrows { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); padding-top: 8px; border-top: 1px solid var(--border); display: flex; gap: 14px; }
+  .type-card .arrows .grow { color: var(--green); }
+  .type-card .arrows .stress { color: var(--rose); }
+
+  .triad-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; max-width: var(--read-w); }
+  .triad { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 24px; }
+  .triad-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--rose-glow); margin-bottom: 8px; }
+  .triad h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+  .triad .types-list { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--rose-glow); margin-bottom: 12px; }
+  .triad p { font-size: 13px; color: var(--text-secondary); line-height: 1.65; }
+
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: var(--read-w); margin-bottom: 20px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--rose-glow); background: rgba(244, 63, 94, 0.04); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); }
+  .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--rose-glow); }
+
+  .gotcha-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 12px; }
+  .gotcha { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--rose); border-radius: var(--radius-md); padding: 18px 22px; }
+  .gotcha strong { display: block; color: var(--text-primary); font-weight: 600; font-size: 14px; margin-bottom: 6px; }
+  .gotcha p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+  .connect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .connect-node { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; transition: all 0.3s; text-decoration: none; color: inherit; display: block; }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node.soon { cursor: default; opacity: 0.72; }
+  .connect-node.soon:hover { border-color: var(--border); background: var(--bg-card); }
+  .connect-node .tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--rose-glow); word-break: break-all; }
+
+  .decision-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: var(--read-w); }
+  @media (max-width: 720px) { .decision-grid { grid-template-columns: 1fr; } }
+  .decision-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 24px; }
+  .decision-card.use { border-left: 3px solid var(--green); }
+  .decision-card.skip { border-left: 3px solid var(--rose); }
+  .decision-card h4 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 12px; }
+  .decision-card.use h4 { color: var(--green); }
+  .decision-card.skip h4 { color: var(--rose); }
+  .decision-card ul { list-style: none; padding: 0; }
+  .decision-card li { font-size: 13px; color: var(--text-secondary); line-height: 1.6; padding: 6px 0; border-bottom: 1px solid var(--border); }
+  .decision-card li:last-child { border-bottom: none; }
+
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--rose), var(--warm)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--rose-glow); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } .compare { font-size: 12px; } .compare th, .compare td { padding: 10px 12px; } }
+
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+<div class="glow-orb rose"></div>
+<div class="glow-orb warm"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand">
+      <span class="nav-brand-mark">know.2nth.ai</span>
+      <span class="nav-brand-sub">leg/ip</span>
+    </a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">&larr; Legal</a>
+      <a href="../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x2600;&#xFE0F;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="../../index.html#domains">Legal</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="./">leg</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">Intellectual property</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> leg/ip &middot; Skill Leaf</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      The only country to name an AI inventor. <span class="gradient">For the wrong reason.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      Intellectual property is where AI collides with the law most sharply &mdash; and where South Africa is genuinely, and confusingly, out in front. SA is the <strong>only country to have granted a patent naming an AI as the inventor</strong> (DABUS, 2021). But read the reason carefully: it happened <em>because</em> SA is a <strong>non-examining</strong> patent office, not because anyone ruled that a machine can invent. The same application was refused in the UK, the US, and at the EPO. That gap &mdash; between a headline and what it actually means &mdash; is the whole leaf: <strong>who owns AI output, whether you can train on protected works, and why a global tool will apply the wrong law to all of it</strong>.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill accent">Live</span>
+      <span class="pill">DABUS</span>
+      <span class="pill">Computer-generated works</span>
+      <span class="pill">Copyright Amendment Bill</span>
+      <span class="pill">Training data</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 -->
+<section id="what">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; What it is</div>
+      <h2 class="section-title">Four IP statutes, two questions AI forces.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>South African IP rests on four statutes: the <strong>Copyright Act 98 of 1978</strong>, the <strong>Patents Act 57 of 1978</strong>, the <strong>Trade Marks Act 194 of 1993</strong>, and the <strong>Designs Act 195 of 1993</strong>. Copyright is automatic on creation; patents, trade marks, and designs are registered through the <strong>Companies and Intellectual Property Commission (CIPC)</strong>. For most of their history these Acts asked human questions about human creations.</p>
+      <p>AI forces two new ones, and SA answers both differently from the jurisdictions a global tool learned from. <strong>Who owns what an AI produces?</strong> &mdash; a copyright-authorship and patent-inventorship question. And <strong>can you lawfully train a model on copyrighted works?</strong> &mdash; a text-and-data-mining question the current Act never contemplated. The SA answers are distinctive, unsettled, and exactly where a confident foreign model is most likely to mislead.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 -->
+<section id="dabus">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; AI as inventor</div>
+      <h2 class="section-title">DABUS: a world first, and a system artefact.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>On 28 July 2021 the CIPC published the acceptance of South African patent <strong>2021/03242</strong>, listing <strong>DABUS</strong> (Device for the Autonomous Bootstrapping of Unified Sentience) as the inventor, with its developer Dr Stephen Thaler as the patentee. It was the first time any patent office in the world had granted a patent naming an AI as inventor. Headlines followed; some read it as South Africa deciding that machines can invent.</p>
+      <p>That reading is wrong, and the honest version matters. South Africa runs a <strong>non-examining (formalities-only) patent system</strong>: the CIPC checks that the application is formally in order &mdash; the right forms, fees, and disclosures &mdash; but does <em>not</em> substantively examine whether the invention is novel, inventive, or whether an AI can lawfully be an inventor. The same DABUS application was <strong>refused in the UK, the US, and at the EPO</strong>, where examiners do decide those questions. The SA grant is a feature of the filing system, not a considered ruling of law.</p>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.08s">
+      <h4>The anti-hype read</h4>
+      <p>"SA recognises AI inventors" is the confident, shareable, wrong summary &mdash; and it's exactly what a generative tool will produce. The accurate statement is narrower: <strong>SA granted one AI-named patent because it doesn't examine for these things</strong>, the question remains legally untested in an SA court, and building a strategy on "AI can be an inventor here" is building on a headline. This is the leaf's warning in miniature: the flashiest AI-and-IP fact about SA is the one most often stated backwards.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 -->
+<section id="authorship">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; AI as author</div>
+      <h2 class="section-title">Who owns what the model makes.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>On copyright, SA has an unusually specific &mdash; and widely overlooked &mdash; rule. The Copyright Act provides that for a literary, dramatic, musical or artistic work (or computer program) that is <strong>computer-generated</strong>, the author is "<strong>the person by whom the arrangements necessary for the creation of the work were undertaken</strong>". SA is one of only a handful of jurisdictions with a statutory author for computer-generated works &mdash; where the US position, by contrast, is that a work with no human author gets no copyright at all.</p>
+      <p>But it isn't a blank cheque. The work must still be <strong>original</strong>, and there must be a real "person who made the arrangements" to be the author &mdash; a genuine human contribution, not a one-word prompt. For heavily autonomous AI output, whether those requirements are met is unsettled. The practical upshot: <strong>ownership of AI-assisted work in SA is more provided-for than elsewhere, but still fact-specific and contestable</strong> &mdash; and it needs to be nailed down in the contract, not assumed.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 -->
+<section id="training">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; Training data</div>
+      <h2 class="section-title">Can you train on copyrighted works? Not clearly, yet.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>The live global fight &mdash; is training a model on copyrighted works infringement? &mdash; has an uncomfortable SA answer today: <strong>probably not clearly permitted</strong>. The current Copyright Act's exceptions are narrow "fair dealing" categories, and using copyrighted content to train a model may fall <em>outside</em> them. There is no explicit text-and-data-mining exception. So an SA developer training on scraped or even lawfully-acquired protected works is on uncertain ground under the law as it stands.</p>
+      <p>That may change. The <strong>Copyright Amendment Bill</strong> (B13F-2017) proposes a US-style <strong>fair use</strong> clause (a four-factor test: purpose, nature, amount, market effect) that could open room for transformative training. The Bill has been passed by Parliament and is <strong>before the Constitutional Court on its constitutionality</strong> &mdash; so the rule that governs whether SA can build models on local data is, right now, undecided and in the highest court. That is a genuinely consequential open question a foreign tool won't even flag.</p>
+    </div>
+    <div class="info-card rose fade-up" style="transition-delay: 0.08s">
+      <h4>Verify the status before you rely</h4>
+      <p>The Copyright Amendment Bill has been in motion for years and its fate is in the Constitutional Court. Treat any statement about SA fair use &mdash; including a confident one from an AI &mdash; as a claim to check against the current status, not settled law. What's certain is the <em>shape</em> of the question; the answer is still being written.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 -->
+<section id="ai-helps">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; Where AI helps IP practice</div>
+      <h2 class="section-title">Search and draft, don't decide.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Set aside the AI-and-ownership questions and there's ordinary IP work AI genuinely speeds up: <strong>prior-art and patent search</strong> across large corpora, <strong>trademark screening</strong> for similar marks, drafting first passes of patent specifications and IP clauses, portfolio management (renewals, classifications, deadlines), and summarising long technical disclosures. As everywhere in the tree, the tool reads and drafts; the registrability call, the novelty judgement, and the infringement opinion stay with a person &mdash; and the CIPC filing still has to be right.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 -->
+<section id="ai-fit">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; Where AI fits</div>
+      <h2 class="section-title">Strong on the search, wrong on the law.</h2>
+    </div>
+    <div class="decision-grid fade-up" style="transition-delay: 0.05s">
+      <div class="decision-card use">
+        <h4>AI does this well</h4>
+        <ul>
+          <li>Prior-art and patent search across large document sets.</li>
+          <li>Trademark screening for confusingly similar marks.</li>
+          <li>First drafts of specifications, claims, and IP clauses.</li>
+          <li>Portfolio admin: renewals, classes, deadlines, summaries.</li>
+          <li>Summarising technical disclosures and long IP agreements.</li>
+        </ul>
+      </div>
+      <div class="decision-card skip">
+        <h4>AI must not do this</h4>
+        <ul>
+          <li><strong>State SA IP law from a US/EU default.</strong> DABUS, authorship, and fair use are all distinctively SA.</li>
+          <li><strong>Assume the output is yours.</strong> Ownership of AI work is fact-specific and contractual.</li>
+          <li><strong>Assume training is fine.</strong> TDM on protected works is legally uncertain in SA today.</li>
+          <li><strong>Judge registrability or novelty.</strong> Patentability and infringement are legal opinions.</li>
+          <li><strong>Treat "AI inventor" as settled.</strong> DABUS is a filing artefact, not a ruling.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 07 -->
+<section id="gotchas">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; Gotchas</div>
+      <h2 class="section-title">Where AI on IP goes wrong.</h2>
+    </div>
+    <div class="gotcha-list fade-up" style="transition-delay: 0.05s">
+      <div class="gotcha">
+        <strong>The DABUS overstatement</strong>
+        <p>The single most likely wrong answer: that SA law recognises AI inventors. It granted one AI-named patent because it doesn't examine. A strategy built on the headline is built on sand &mdash; the question is untested in an SA court.</p>
+      </div>
+      <div class="gotcha">
+        <strong>Assuming you own the output</strong>
+        <p>SA's computer-generated-works rule helps, but ownership still turns on a real human "arranger" and originality. For AI-assisted deliverables, who owns what must be set in the contract &mdash; not assumed because you ran the tool.</p>
+      </div>
+      <div class="gotcha">
+        <strong>Assuming training is permitted</strong>
+        <p>There's no TDM exception in the current Act, and fair dealing is narrow. Training a model on copyrighted works in SA is legally uncertain now &mdash; the fair-use Bill that might change it is still in the Constitutional Court.</p>
+      </div>
+      <div class="gotcha">
+        <strong>Foreign IP law, confidently applied</strong>
+        <p>An ungrounded model answers SA IP questions with US or EU rules. On authorship, inventorship, and fair use those are precisely the areas where SA differs. Confident, fluent, and jurisdictionally wrong.</p>
+      </div>
+      <div class="gotcha">
+        <strong>Trade secrets fed to a third party</strong>
+        <p>IP work involves unfiled inventions and confidential know-how. Putting them into a model whose terms allow training on inputs can destroy novelty or leak the secret. The tooling choice is an IP-protection decision. See the <a href="data-privacy" style="color: var(--rose-glow);">Data privacy &amp; POPIA</a> leaf on residency.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 08 -->
+<section id="use-cases">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 &middot; Use cases</div>
+      <h2 class="section-title">Where this lands in SA practice.</h2>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.05s">
+      <h4>IP attorneys &amp; patent practice</h4>
+      <p>Search and drafting: prior-art sweeps, trademark screening, specification first drafts. The tool compresses the research; the registrability opinion, the claim strategy, and the CIPC filing stay with the attorney who signs them.</p>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.08s">
+      <h4>Tech companies &amp; creators</h4>
+      <p>Where the ownership question bites: who owns the AI-assisted code, design, or content, and can it be protected. SA's computer-generated-works rule gives more to work with than most jurisdictions &mdash; but only if the arrangements and the contract are set up to claim it.</p>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.11s">
+      <h4>AI builders &amp; startups</h4>
+      <p>Where the training question decides the model: what data can lawfully be used, under an Act with no TDM exception and a fair-use Bill still in the Constitutional Court. The safe posture is lawfully-licensed data and a watching brief on the Bill &mdash; not a US fair-use assumption imported wholesale.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 09 -->
+<section id="sa-context">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">09 &middot; South African context</div>
+      <h2 class="section-title">Out in front, and easy to misread.</h2>
+    </div>
+    <div class="info-card rose fade-up" style="transition-delay: 0.05s">
+      <h4>The world-first that isn't what it looks like</h4>
+      <p>SA's IP-and-AI story is unusually rich &mdash; a world-first AI-inventor patent, a statutory author for computer-generated works, a fair-use Bill in the highest court. But every one of those facts is <em>narrower or more uncertain</em> than the headline. That's the SA context in a sentence: the country is genuinely ahead on the questions, and the confident answers a global tool gives are the ones most likely to be wrong.</p>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.08s">
+      <h4>The law here is being written now</h4>
+      <p>Unlike settled areas, AI-and-IP in SA is live: the DABUS question is untested in court, the authorship rule is under strain from autonomous output, and fair use is sub judice. Advice has a shelf life. The discipline is to state the current position, flag what's moving, and verify before relying &mdash; the opposite of a model's confident, timeless tone.</p>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.11s">
+      <h4>Confidentiality is an IP control</h4>
+      <p>Novelty can be destroyed by disclosure, and trade secrets by a leak. Feeding unfiled inventions or know-how into a model that trains on inputs is an IP risk before it's a privacy one &mdash; and the residency answer the tree gives applies: keep it in country, on a tool that doesn't train on your data. See <a href="data-privacy" style="color: var(--rose-glow);">Data privacy &amp; POPIA</a>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 10 -->
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">10 &middot; 2&#x207F; Perspective</div>
+      <h2 class="section-title">How this node connects in the tree.</h2>
+      <p class="section-lede">IP is the practice where the SA position is most distinctive &mdash; and where the confident foreign answer is most likely to be exactly wrong.</p>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="./" class="connect-node">
+        <span class="tag">leg/hub</span>
+        <div class="skill">Legal domain hub</div>
+        <div class="why">The parent domain &mdash; the practice areas and the verification bar this leaf is held to.</div>
+      </a>
+      <a href="legal-ai" class="connect-node">
+        <span class="tag">leg/legal-ai</span>
+        <div class="skill">Legal AI</div>
+        <div class="why">The tool. On IP it will confidently apply the wrong jurisdiction's law &mdash; this leaf is where that shows.</div>
+      </a>
+      <a href="commercial" class="connect-node">
+        <span class="tag">leg/commercial</span>
+        <div class="skill">Commercial &amp; contracts</div>
+        <div class="why">Ownership of AI output is a contract clause. IP assignment and licence terms are where it's settled or lost.</div>
+      </a>
+      <a href="data-privacy" class="connect-node">
+        <span class="tag">leg/data-privacy</span>
+        <div class="skill">Data privacy &amp; POPIA</div>
+        <div class="why">Trade secrets and unfiled inventions are confidential. Residency and no-training-on-inputs protect the IP as much as the data.</div>
+      </a>
+      <a href="../agents/rearchitecture.html" class="connect-node">
+        <span class="tag">agents/rearchitecture</span>
+        <div class="skill">Agents, data &amp; trust</div>
+        <div class="why">Ground the IP tool in SA law and your own portfolio, or it answers with US doctrine on distinctively SA questions.</div>
+      </a>
+      <a href="../design/" class="connect-node">
+        <span class="tag">design</span>
+        <div class="skill">Design domain</div>
+        <div class="why">Where the authorship-of-AI-output question is most alive &mdash; generated visuals, code, and content, and who owns them.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 11 -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">11 &middot; Resources</div>
+      <h2 class="section-title">Primary sources only.</h2>
+      <p class="section-lede">The Acts and the registry &mdash; and note the Copyright Amendment Bill is before the Constitutional Court, so verify its status before relying on the fair-use position.</p>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://www.gov.za/sites/default/files/gcis_document/201504/act-98-1978.pdf" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Statute &middot; ZA</span>
+        <span class="r-title">Copyright Act 98 of 1978</span>
+        <span class="r-url">gov.za &middot; act-98-1978.pdf</span>
+      </a>
+      <a href="https://www.gov.za/sites/default/files/gcis_document/201504/act-57-1978.pdf" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Statute &middot; ZA</span>
+        <span class="r-title">Patents Act 57 of 1978</span>
+        <span class="r-url">gov.za &middot; act-57-1978.pdf</span>
+      </a>
+      <a href="https://www.gov.za/documents/trade-marks-act" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Statute &middot; ZA</span>
+        <span class="r-title">Trade Marks Act 194 of 1993</span>
+        <span class="r-url">gov.za &middot; trade-marks-act</span>
+      </a>
+      <a href="https://www.cipc.co.za/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Registry &middot; ZA</span>
+        <span class="r-title">CIPC &mdash; Companies and Intellectual Property Commission</span>
+        <span class="r-url">cipc.co.za</span>
+      </a>
+      <a href="https://www.gov.za/documents/copyright-amendment-bill" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Bill &middot; ZA</span>
+        <span class="r-title">Copyright Amendment Bill (B13F-2017) &mdash; verify current status</span>
+        <span class="r-url">gov.za &middot; copyright-amendment-bill</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../index.html">Skills tree</a>
+      <a href="./">Legal domain</a>
+      <a href="legal-ai.html">Legal AI</a>
+      <a href="commercial.html">Commercial &amp; contracts</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant</p>
+  </div>
+</footer>
+<script>
+  function toggleTheme() { const html=document.documentElement; const cur=html.getAttribute('data-theme'); const next=cur==='dark'?'light':'dark'; html.setAttribute('data-theme',next); document.querySelector('.theme-toggle').textContent=next==='dark'?'☀️':'🌙'; localStorage.setItem('theme',next); }
+  const saved=localStorage.getItem('theme'); if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.theme-toggle').textContent=saved==='dark'?'☀️':'🌙';}
+  const observer=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'}); document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>
