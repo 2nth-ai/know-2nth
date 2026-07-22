@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rented in Dollars &mdash; know.2nth.ai Briefing</title>
+<meta name="description" content="Strip your software bill to what it is: rent on technology your provider doesn't own either, a services margin to configure and maintain it, and an FX line because it's priced in dollars. Your provider is not incentivised to help you own your stack — their business model is your dependence. A plain-language CEO briefing on why renting was rational until agents changed the cost of owning, and the honest barbell for taking your software back.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/briefings/rented-in-dollars">
+<meta property="og:title" content="Rented in Dollars — know.2nth.ai Briefing">
+<meta property="og:description" content="Your software bill is rent + a services margin + FX, on tech your provider doesn't own either — and they're not paid to set you free. Why renting was rational, until agents changed the cost of owning.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai — The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Rented in Dollars — know.2nth.ai">
+<meta name="twitter:description" content="Rent + services margin + FX, on tech your provider doesn't own — and they're not paid to set you free. Why renting was rational, until agents changed the cost of owning.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%2338BDF8' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%232563EB' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --ink: #0B1120; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6;
+    --sky: #38BDF8; --cyan: #22D3EE; --paper: #F8FAFC; --slate: #94A3B8;
+    --warm: #F59E0B; --warm-soft: rgba(245,158,11,0.12);
+    --green: #10B981; --green-soft: rgba(16,185,129,0.12);
+    --rose: #F43F5E; --rose-soft: rgba(244,63,94,0.12);
+    --indigo: #6366F1; --indigo-soft: rgba(99,102,241,0.12);
+    --max-w: 1080px; --read-w: 820px;
+    --radius-md: 14px; --radius-lg: 22px; --radius-pill: 100px;
+    --bg: #EEF4FB; --bg-soft: #E2ECF6; --card: #FFFFFF; --card-2: #F8FBFE;
+    --text: #0B1120; --text-2: #475569; --text-3: #8A97AB;
+    --border: rgba(15,23,42,0.10); --border-strong: rgba(15,23,42,0.16);
+    --shadow: 0 14px 40px rgba(15,23,42,0.08);
+  }
+  [data-theme="dark"] {
+    --bg: #07101D; --bg-soft: #0B1828; --card: #102033; --card-2: #0C1828;
+    --text: #F8FAFC; --text-2: #B6C2D6; --text-3: #6B7A92;
+    --border: rgba(148,163,184,0.14); --border-strong: rgba(148,163,184,0.24);
+    --shadow: 0 16px 48px rgba(0,0,0,0.5);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body {
+    font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+    background: radial-gradient(1100px 560px at 80% -120px, var(--bg-soft), var(--bg)) fixed;
+    color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  }
+  .wrap { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+  a { color: var(--blue); text-decoration: none; }
+
+  .topbar { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(14px);
+    background: color-mix(in srgb, var(--bg) 80%, transparent); border-bottom: 1px solid var(--border); }
+  .topbar-inner { max-width: var(--max-w); margin: 0 auto; padding: 12px 24px;
+    display: flex; align-items: center; justify-content: space-between; }
+  .brand-wrap { display: flex; align-items: center; }
+  .brand { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 14px;
+    background: linear-gradient(135deg, var(--blue), var(--sky));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; text-decoration: none; }
+  .brand-sub { font-size: 11px; color: var(--text-3); letter-spacing: 1.5px; text-transform: uppercase;
+    margin-left: 10px; padding-left: 10px; border-left: 1px solid var(--border); font-weight: 500; }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-2); text-decoration: none; font-weight: 500; }
+  .nav-link:hover { color: var(--sky); }
+  .toggle { background: none; border: 1px solid var(--border); color: var(--text-2);
+    width: 34px; height: 34px; border-radius: 50%; cursor: pointer; display: grid; place-items: center;
+    font-size: 15px; transition: all 0.2s; }
+  .toggle:hover { border-color: var(--border-strong); }
+
+  .hero { padding: 60px 0 8px; }
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500;
+    letter-spacing: 2.5px; text-transform: uppercase; color: var(--indigo);
+    display: inline-flex; align-items: center; gap: 10px; margin-bottom: 22px; }
+  .eyebrow .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--indigo); box-shadow: 0 0 12px var(--indigo); }
+  .hero h1 { font-size: clamp(36px, 6vw, 60px); font-weight: 800; line-height: 1.05;
+    letter-spacing: -1.8px; margin-bottom: 22px; max-width: 17ch; }
+  .hero h1 .hl { background: linear-gradient(135deg, var(--blue-glow), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .lede { font-size: 19px; color: var(--text-2); max-width: 720px; line-height: 1.6; font-weight: 300; }
+  .hero .lede .hl { color: var(--text); font-weight: 500; }
+  .meta-chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+  .chip { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.4px; color: var(--text-2);
+    border: 1px solid var(--border); padding: 8px 14px; border-radius: var(--radius-pill); background: var(--card-2); }
+
+  section { padding: 44px 0; }
+  .s-num { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--sky); font-weight: 600; margin-bottom: 12px; }
+  .s-title { font-size: clamp(26px, 4vw, 36px); font-weight: 700; letter-spacing: -0.8px; line-height: 1.15; margin-bottom: 16px; max-width: 24ch; }
+  .s-lede { font-size: 17px; color: var(--text-2); max-width: var(--read-w); line-height: 1.7; font-weight: 300; margin-bottom: 26px; }
+  .s-lede .hl { color: var(--text); font-weight: 600; }
+  .s-lede + .s-lede { margin-top: -8px; }
+
+  .defs { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 26px 0; }
+  @media (max-width: 720px){ .defs { grid-template-columns: 1fr; } }
+  .def { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 26px 28px; box-shadow: var(--shadow); }
+  .def.flow { border-top: 4px solid var(--warm); }
+  .def.agent { border-top: 4px solid var(--green); }
+  .def .dt { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; font-weight: 600; margin-bottom: 8px; }
+  .def.flow .dt { color: var(--warm); } .def.agent .dt { color: var(--green); }
+  .def h3 { font-size: 21px; font-weight: 800; letter-spacing: -0.4px; margin-bottom: 8px; }
+  .def p { font-size: 14.5px; color: var(--text-2); line-height: 1.6; margin-bottom: 10px; }
+  .def p:last-child { margin-bottom: 0; }
+  .def .tag { font-size: 13px; color: var(--text-3); font-style: italic; }
+
+  .callout { background: var(--card-2); border: 1px solid var(--border); border-left: 4px solid var(--sky); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); box-shadow: var(--shadow); }
+  .callout.warm { border-left-color: var(--warm); }
+  .callout.green { border-left-color: var(--green); }
+  .callout.indigo { border-left-color: var(--indigo); }
+  .callout .co-tag { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; font-weight: 600; color: var(--sky); margin-bottom: 10px; }
+  .callout.warm .co-tag { color: var(--warm); }
+  .callout.green .co-tag { color: var(--green); }
+  .callout.indigo .co-tag { color: var(--indigo); }
+  .callout p { font-size: 15.5px; color: var(--text-2); line-height: 1.7; }
+  .callout p strong { color: var(--text); }
+  .callout p + p { margin-top: 12px; }
+  .callout .more { font-family: 'JetBrains Mono', monospace; font-size: 12.5px; font-weight: 600; margin-top: 12px; display: inline-block; }
+
+  .checks { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: var(--read-w); }
+  @media (max-width: 720px){ .checks { grid-template-columns: 1fr; } }
+  .check { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 22px 24px; box-shadow: var(--shadow); }
+  .check .q { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+  .check p { font-size: 13.5px; color: var(--text-2); line-height: 1.55; }
+
+  .thread { display: grid; grid-template-columns: repeat(2,1fr); gap: 14px; }
+  @media (max-width: 760px){ .thread { grid-template-columns: 1fr; } }
+  .tcard { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px 26px; box-shadow: var(--shadow); text-decoration: none; color: inherit; display: block; transition: transform .25s, border-color .25s; border-top: 4px solid var(--sky); }
+  .tcard:hover { transform: translateY(-3px); border-color: var(--border-strong); }
+  .tcard .tt { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--sky); font-weight: 600; margin-bottom: 8px; }
+  .tcard h4 { font-size: 19px; font-weight: 800; letter-spacing: -0.4px; margin-bottom: 8px; }
+  .tcard p { font-size: 14px; color: var(--text-2); line-height: 1.55; margin-bottom: 10px; }
+  .tcard .go { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--sky); font-weight: 600; }
+
+  .finalbox { max-width: var(--read-w); margin: 0 auto; background: var(--card); border: 1px solid var(--border-strong); border-radius: var(--radius-lg); padding: 34px 36px; box-shadow: var(--shadow); text-align: center; }
+  .finalbox .tag { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.6px; text-transform: uppercase; color: var(--indigo); font-weight: 600; margin-bottom: 14px; }
+  .finalbox p { font-size: clamp(18px, 2.4vw, 22px); font-weight: 500; color: var(--text); line-height: 1.5; }
+
+  footer { padding: 54px 0 48px; border-top: 1px solid var(--border); text-align: center; margin-top: 36px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600;
+    background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tag { font-size: 13px; color: var(--text-3); margin-bottom: 18px; }
+  .footer-links { display: flex; justify-content: center; gap: 22px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-2); text-decoration: none; }
+  .footer-links a:hover { color: var(--sky); }
+  .footer-copy { font-size: 12px; color: var(--text-3); margin-top: 18px; }
+
+  .fade { opacity: 0; transform: translateY(22px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade.vis { opacity: 1; transform: translateY(0); }
+  @media (prefers-reduced-motion: reduce) { .fade { opacity: 1; transform: none; } }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand-wrap"><a href="/index.html" class="brand">know.2nth.ai</a><span class="brand-sub">CEO Briefing</span></div>
+    <div class="nav-right">
+      <a href="/briefings/" class="nav-link">All briefings</a>
+      <button class="toggle" onclick="toggleTheme()" aria-label="Toggle light/dark">🌙</button>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div class="eyebrow fade"><span class="dot"></span> Software &amp; ownership &middot; The incentive nobody mentions</div>
+    <h1 class="fade" style="transition-delay:.05s">You're renting someone else's software. <span class="hl">In someone else's currency.</span></h1>
+    <p class="lede fade" style="transition-delay:.1s">
+      Strip your software bill down to what it actually is: <span class="hl">rent</span> on technology your provider doesn't own either, a <span class="hl">services margin</span> to configure and maintain it, and an <span class="hl">FX line</span> because it's priced in dollars. Three layers of other people's margin between you and the systems that run your business. For decades that was simply how software worked &mdash; because building and owning it yourself cost more than renting. Agents just changed that number. And the one party who will never point it out is the provider whose whole model is your <span class="hl">dependence</span>.
+    </p>
+    <div class="meta-chips fade" style="transition-delay:.15s">
+      <span class="chip">Perspective &middot; the ownership series</span>
+      <span class="chip">5-min read</span>
+      <span class="chip">For decision-makers</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">01 &middot; What you're actually paying for</div>
+      <h2 class="s-title">A licence, a margin, and an exchange rate &mdash; none of it yours.</h2>
+      <p class="s-lede">Most enterprise software bills are three charges stacked on top of each other, and it's worth seeing them separately.</p>
+    </div>
+    <div class="defs fade" style="transition-delay:.05s">
+      <div class="def flow">
+        <div class="dt">Layer 1 &middot; the licence</div>
+        <h3>Rent on someone else's IP</h3>
+        <p>You don't buy the software; you rent access to it. The vendor keeps the code, the roadmap, and the right to change the price. Stop paying and it's gone &mdash; including, often, your ability to get your data out cleanly.</p>
+      </div>
+      <div class="def agent">
+        <div class="dt">Layer 2 &middot; the services</div>
+        <h3>A margin to make it fit</h3>
+        <p>The licence rarely works out of the box, so a partner or integrator configures, customises, and maintains it &mdash; on a retainer or a change-request pipeline. That's a second business taking a margin on the first one's product.</p>
+      </div>
+    </div>
+    <div class="callout warm fade" style="transition-delay:.08s">
+      <div class="co-tag">Layer 3 &middot; the currency</div>
+      <p>And it's almost always priced in <strong>US dollars</strong>. For a South African business, every renewal is an FX bet you didn't choose to make: the rand moves and your software cost moves with it, on a line item you can't renegotiate. You're carrying <strong>exchange-rate risk on a tool that encodes your own business logic</strong> &mdash; and exporting the rand to pay for it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">02 &middot; The incentive, stated plainly</div>
+      <h2 class="s-title">Nobody in that chain is paid to set you free.</h2>
+      <p class="s-lede">This isn't a conspiracy, and it isn't villainy. It's structure &mdash; and structure is more reliable than intent. Follow the money and ask a simple question: whose revenue depends on you <em>not</em> owning your software?</p>
+    </div>
+    <div class="callout indigo fade" style="transition-delay:.05s">
+      <div class="co-tag">The alignment test</div>
+      <p>The vendor's revenue is the <strong>renewal</strong>. The integrator's revenue is the <strong>next change request</strong>. The reseller's revenue is the <strong>seat count</strong>. Every one of them is worse off the day you become independent &mdash; so none of them is going to build you a path to independence. They will sell you more integration, more modules, more seats. What they structurally cannot sell you is the exit. <strong>The roadmap you're following was written to serve their interests, not yours</strong> &mdash; and that's true even when everyone in the chain is decent and doing good work.</p>
+    </div>
+    <p class="s-lede fade" style="transition-delay:.08s">You should still buy plenty of software. The point isn't that renting is wrong &mdash; it's that <span class="hl">you should know whose interest the default serves</span>, because for years the default was the only option.</p>
+  </div>
+</section>
+
+<!-- 03 -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">03 &middot; Why renting was rational</div>
+      <h2 class="s-title">Owning cost more than renting. That was the whole moat.</h2>
+      <p class="s-lede">The reason "just build it yourself" was never serious advice is that owning software was genuinely expensive: a team you had to hire and keep, months of build time, and a maintenance burden that never ends. Against that, a monthly licence looked like a bargain.</p>
+    </div>
+    <div class="callout fade" style="transition-delay:.05s">
+      <div class="co-tag">The hidden reason the model held</div>
+      <p>The high cost of <em>owning</em> is exactly what protected the business of <em>renting</em>. As long as building and maintaining custom software needed scarce, expensive engineers, renting someone else's was the sensible call for almost everyone. The moat around the software-rental model was never the software &mdash; it was the price of the alternative.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">04 &middot; What changed</div>
+      <h2 class="s-title">Agents move the cost of owning &mdash; and that was the moat.</h2>
+      <p class="s-lede">The new generation of coding agents &mdash; Claude among them &mdash; write software, test it, maintain it, and document it. Not toy scripts: real systems, built and kept running with a fraction of the team it used to take.</p>
+    </div>
+    <div class="callout green fade" style="transition-delay:.05s">
+      <div class="co-tag">The number that moved</div>
+      <p>The single input that made renting rational &mdash; the cost of building and maintaining your own software &mdash; is the input agents are collapsing. When a small team with agents can build and run the system that encodes <em>your</em> workflow, the calculation flips for a real class of software: the part that <strong>is</strong> your business. Owning the software that carries your logic, your data, and your customer relationships stops being a moonshot and becomes a project. <strong>The thing that protected the rental model is the thing that's falling.</strong></p>
+      <a class="more" href="/briefings/builder-is-the-operator">Featured: The Builder Is the Operator &rarr;</a>
+    </div>
+  </div>
+</section>
+
+<!-- 05 -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">05 &middot; The honest limit</div>
+      <h2 class="s-title">This is not "cancel everything and vibe-code your core."</h2>
+      <p class="s-lede">The provocation is real; the naive version of it is dangerous. Owning software you couldn't own before is a genuine opportunity &mdash; and owning it means you now own everything that comes with it.</p>
+    </div>
+    <div class="callout warm fade" style="transition-delay:.05s">
+      <div class="co-tag">What owning actually costs</div>
+      <p>When you own the software, you own the <strong>maintenance, the security, and the accountability</strong>. There's no vendor to blame and no support line to call &mdash; someone has to hold the outcome. And an agent that writes the code does not, by itself, run your business: the switch from rented to owned still has to be built and operated by people who own the result. Anyone selling "fire your vendors, the AI will handle it" is selling the same overconfidence in the opposite direction.</p>
+      <a class="more" href="/briefings/glm-open-weight-economics">Related: why you can't just switch &rarr;</a>
+    </div>
+    <div class="callout green fade" style="transition-delay:.08s">
+      <div class="co-tag">The barbell</div>
+      <p><strong>Own the differentiated; rent the commodity.</strong> Own the software that <em>is</em> your business &mdash; your workflows, your data layer, the logic your competitors don't have. Keep renting the genuine commodity: the frontier model that's obsolete by Christmas, the cloud primitives, the boring solved problems where someone else's scale beats your ownership. The mistake for years was renting <em>both</em>. The mistake now would be trying to own both.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">06 &middot; What to actually do</div>
+      <h2 class="s-title">Two moves, this quarter.</h2>
+    </div>
+    <div class="checks fade" style="transition-delay:.05s">
+      <div class="check"><div class="q">Audit the bill for rent + services + FX.</div><p>List the software where you pay a licence, <em>and</em> a services margin to keep it running, <em>and</em> carry it in dollars &mdash; on a system that encodes your own business logic. That overlap is your candidate list for ownership.</p></div>
+      <div class="check"><div class="q">Prototype one owned replacement.</div><p>Pick the single system on that list that most <em>is</em> your business, and have a small team build a working prototype with agents. Not to rip and replace tomorrow &mdash; to find out what owning it now actually costs, with real numbers instead of the vendor's.</p></div>
+    </div>
+    <div class="callout indigo fade" style="transition-delay:.08s">
+      <div class="co-tag">The one-line reframe</div>
+      <p>You will always rent something &mdash; that's fine. The question is whether you rent the <strong>commodity</strong>, or your own <strong>business logic</strong>. Your provider is paid for the second. For the first time, agents let you take it back.</p>
+    </div>
+  </div>
+</section>
+
+<!-- RELATED -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">Keep reading</div>
+      <h2 class="s-title">The ownership series</h2>
+    </div>
+    <div class="thread fade" style="transition-delay:.05s">
+      <a href="/briefings/own-vs-rent-ai" class="tcard">
+        <div class="tt">Briefing</div>
+        <h4>The Five Things You Can Own in AI</h4>
+        <p>The companion decision for the AI layer specifically: "own your AI" isn't one choice, it's five &mdash; and you only need two. Rent the frontier model; own the parts that compound.</p>
+        <span class="go">Read briefing &rarr;</span>
+      </a>
+      <a href="/briefings/strangle-the-licence" class="tcard">
+        <div class="tt">Briefing</div>
+        <h4>Strangle the Licence</h4>
+        <p>The how, not just the why: the pattern for replacing a rented system without a big-bang rewrite &mdash; wrap it, starve it, and route the work to what you own, one piece at a time.</p>
+        <span class="go">Read briefing &rarr;</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL -->
+<section>
+  <div class="wrap">
+    <div class="finalbox fade">
+      <div class="tag">The take</div>
+      <p>Your provider rents you someone else's technology, adds a services margin, and bills it in dollars &mdash; and none of that is malice, it's the incentive. What's new is that the cost of owning the software that <em>is</em> your business has finally fallen far enough to make the choice real. Rent the commodity. Own the rest.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tag">CEO briefings &middot; the plain-language layer over the knowledge tree</p>
+    <div class="footer-links">
+      <a href="/briefings/">All briefings</a>
+      <a href="/index.html">Knowledge tree</a>
+      <a href="/briefings/own-vs-rent-ai">The Five Things You Can Own</a>
+      <a href="https://2nth.ai" target="_blank" rel="noopener">2nth.ai</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme(){
+    const h=document.documentElement, cur=h.getAttribute('data-theme'), nxt=cur==='dark'?'light':'dark';
+    h.setAttribute('data-theme',nxt);
+    document.querySelector('.toggle').textContent = nxt==='dark' ? '☀️' : '🌙';
+    localStorage.setItem('brief-theme',nxt);
+  }
+  const saved=localStorage.getItem('brief-theme');
+  if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.toggle').textContent=saved==='dark'?'☀️':'🌙';}
+  const ob=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');});},{threshold:0.08,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.fade').forEach(el=>ob.observe(el));
+</script>
+</body>
+</html>
