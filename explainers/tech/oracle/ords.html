@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ORDS — Oracle REST Data Services &mdash; know.2nth.ai</title>
+<meta name="description" content="Oracle REST Data Services (ORDS) — the mid-tier that turns an Oracle database into REST, and from 26.2 the native MCP seam that lets agents reach an Oracle AI Database through ORDS-managed pools. AutoREST for tables, resource handlers for PL/SQL, ORDS_SECURITY for OAuth2. The honest read: no PATCH, AutoREST is OAuth2 client-credentials only, and the OAUTH package deprecation is a real migration.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/tech/oracle/ords">
+<meta property="og:title" content="ORDS — Oracle REST Data Services — know.2nth.ai">
+<meta property="og:description" content="ORDS — the REST tier over an Oracle database, and the native MCP seam for agents from 26.2. AutoREST, PL/SQL handlers, OAuth2. No PATCH — the honest read.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ORDS — Oracle REST Data Services — know.2nth.ai">
+<meta name="twitter:description" content="ORDS — the REST tier over an Oracle database, and the native MCP seam for agents from 26.2. AutoREST, PL/SQL handlers, OAuth2. No PATCH — the honest read.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12); --violet: #8B5CF6; --violet-soft: rgba(139, 92, 246, 0.12); --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-soft: rgba(99, 102, 241, 0.12); --sky-soft: rgba(56, 189, 248, 0.12); --bg: var(--ink); --bg-raised: var(--navy); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(37, 99, 235, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(56, 189, 248, 0.3); --max-w: 1200px; --read-w: 760px; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-raised: #FFFFFF; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(37, 99, 235, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(37, 99, 235, 0.25); }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.blue { width: 600px; height: 600px; background: var(--blue); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--blue-glow); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--blue-glow); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .read { max-width: var(--read-w); }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--blue-glow); }
+  .crumb-sep { opacity: 0.5; }
+  .crumb-current { color: var(--text-secondary); }
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--blue-glow); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--blue-glow); box-shadow: 0 0 12px var(--blue-glow); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--blue), var(--blue-glow), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.accent { background: rgba(37, 99, 235, 0.12); color: var(--blue-glow); border-color: rgba(37, 99, 235, 0.25); }
+  .pill.indigo { background: var(--indigo-soft); color: var(--indigo); border-color: rgba(99, 102, 241, 0.25); }
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--blue-glow); margin-bottom: 14px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--blue-glow); }
+  pre.code { background: var(--ink-deep); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px 22px; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.65; color: var(--mist); margin: 0 0 20px; max-width: var(--read-w); }
+  [data-theme="light"] pre.code { background: #0F172A; color: #E2E8F0; }
+  pre.code .k { color: var(--sky); }
+  pre.code .s { color: #A5F3B8; }
+  pre.code .c { color: var(--text-muted); font-style: italic; }
+  pre.code .h { color: var(--blue-glow); font-weight: 600; }
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); margin-bottom: 20px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.indigo { border-left: 3px solid var(--indigo); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: var(--read-w); margin-bottom: 20px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--blue-glow); background: rgba(37, 99, 235, 0.04); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); }
+  .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--blue-glow); }
+  .compare td strong { color: var(--text-primary); }
+  .compare td.name { font-weight: 600; color: var(--text-primary); white-space: nowrap; }
+  .stack-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; max-width: var(--read-w); margin-bottom: 20px; }
+  .stack-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--blue-glow); border-radius: var(--radius-md); padding: 18px 22px; }
+  .stack-cell .layer { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .stack-cell h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.3px; }
+  .stack-cell p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+  .connect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .connect-node { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; transition: all 0.3s; text-decoration: none; color: inherit; display: block; }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node.soon { cursor: default; opacity: 0.72; }
+  .connect-node .tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--blue-glow); word-break: break-all; }
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--blue-glow); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } pre.code { font-size: 11px; padding: 14px 16px; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+
+<div class="glow-orb blue"></div>
+<div class="glow-orb sky"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../../index.html" class="nav-brand"><span class="nav-brand-mark">know.2nth.ai</span><span class="nav-brand-sub">tech/oracle/ords</span></a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">&larr; Oracle</a>
+      <a href="../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x1F319;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="./">Tech</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">MuleSoft</span>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> tech &middot; ORDS &middot; Skill Leaf</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      The database, <span class="gradient">as REST &mdash; and now as an agent tool.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      Oracle REST Data Services (ORDS) is the mid-tier that turns an Oracle database into HTTP. It's how APEX talks REST, how other systems consume Oracle data over the web, and &mdash; from <strong>ORDS 26.2</strong> &mdash; how <strong>agents</strong> reach an Oracle AI Database natively over MCP, through ORDS-managed database pools. For an architect modernising a legacy Oracle estate, ORDS is the seam: no data moves, the database stays the system of record, and the same endpoints serve a web app, another system, and an agent. The honest read is in the constraints &mdash; no PATCH, AutoREST secured by OAuth2 client credentials only, and a security-package migration you can't skip.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill accent">ORDS 26.1 / 26.2</span>
+      <span class="pill">AutoREST</span>
+      <span class="pill indigo">MCP from 26.2</span>
+      <span class="pill">OAuth2</span>
+      <span class="pill">No PATCH</span>
+    </div>
+  </div>
+</section>
+
+<section id="what">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; What it is</div>
+      <h2 class="section-title">A mid-tier that speaks HTTP to the database.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>ORDS is a Java mid-tier that sits between HTTP clients and an Oracle database and maps database objects and PL/SQL to REST endpoints. It runs standalone (with a built-in web server) or inside Tomcat or WebLogic, and it is what APEX uses as its REST tier &mdash; so if you run APEX, you already run ORDS. Its job is narrow and useful: expose the database over the web, with authentication, without writing a web server.</p>
+      <p>There are two ways to publish. <strong>AutoREST</strong> declaratively enables a table, view, or PL/SQL object as a REST resource &mdash; no code, immediate CRUD-style access. <strong>Resource handlers</strong> (organised into modules, templates, and handlers) are hand-authored endpoints backed by SQL or PL/SQL, for when you want the shape of the API to differ from the shape of the table. AutoREST is the fast path; handlers are the controlled one.</p>
+    </div>
+    <div class="info-card indigo fade-up" style="transition-delay: 0.08s">
+      <h4>The version to care about</h4>
+      <p>ORDS ships on its own cadence; <strong>APEX 26.1 requires ORDS 26.1.1 or later</strong>, and Oracle now recommends installing ORDS <em>before</em> APEX on new installations. The 26.1 Installation and Configuration Guide adds deployment via the OCI Database API Gateway. The agent-relevant change is one release on: <strong>ORDS 26.2 adds native Model Context Protocol support</strong>, which is the line that turns ORDS from "REST tier" into "the way agents reach an Oracle database."</p>
+    </div>
+  </div>
+</section>
+
+<section id="agent-seam">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; The agent seam</div>
+      <h2 class="section-title">MCP over ORDS: the estate becomes agent-addressable.</h2>
+      <p class="section-lede">This is why ORDS belongs on a site about agents. The same mid-tier that has fronted Oracle databases for a decade becomes, in 26.2, the native bridge from an agent to the data.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Per Oracle's ORDS changelog, <strong>ORDS 26.2 enables MCP support for agentic AI database access</strong>: an agent connects to an Oracle AI Database through ORDS-managed database pools, over the Model Context Protocol. The significance for a legacy estate is that you don't build a bespoke integration per agent per workflow &mdash; you expose the database through ORDS once, and any MCP-speaking agent can reach it under the same authentication and pooling ORDS already enforces. The database stays the system of record; ORDS is the governed doorway.</p>
+    </div>
+    <div class="info-card green fade-up" style="transition-delay: 0.08s">
+      <h4>Read the version boundary honestly</h4>
+      <p>Native MCP is an <strong>ORDS 26.2</strong> capability &mdash; a release ahead of the APEX 26.1 baseline the rest of this cluster is written to. If you're planning against it, confirm your ORDS version and the current state of the MCP feature in Oracle's own docs before you design around it. The direction is clear and documented; the exact surface is new enough to verify rather than assume.</p>
+    </div>
+  </div>
+</section>
+
+<section id="expose">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; AutoREST vs handlers</div>
+      <h2 class="section-title">Two ways to publish, two risk profiles.</h2>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead><tr><th>Approach</th><th>What it is</th><th>The catch</th></tr></thead>
+        <tbody>
+          <tr><td class="name">AutoREST</td><td>Declaratively enable a table/view/PL-SQL object as REST &mdash; instant, no code.</td><td>Secured by the <strong>OAuth2 Client Credentials flow only</strong>. Convenient, but the API shape mirrors the table shape.</td></tr>
+          <tr><td class="name">Resource handlers</td><td>Hand-authored modules/templates/handlers backed by SQL or PL/SQL &mdash; the API shape is yours.</td><td>More to write and maintain; you own the SQL, the binds, and the pagination.</td></tr>
+          <tr><td class="name">HTTP methods</td><td>GET, POST, PUT, DELETE across both approaches.</td><td><strong>No PATCH.</strong> ORDS does not implement it &mdash; partial-update semantics need a PUT-with-full-body or a custom handler.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.08s">
+      <h4>The security-package migration you can't skip</h4>
+      <p>The classic <code>OAUTH</code> and <code>OAUTH_ADMIN</code> PL/SQL packages were <strong>deprecated in ORDS 24.3</strong> and replaced by <code>ORDS_SECURITY</code> and <code>ORDS_SECURITY_ADMIN</code>. If you're upgrading an older ORDS install, scripts that provisioned OAuth clients against the old packages need to move. It's not a headline feature; it's the kind of migration that quietly breaks a deployment pipeline if you don't plan for it.</p>
+    </div>
+  </div>
+</section>
+
+<section id="sa-context">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; South African context</div>
+      <h2 class="section-title">The seam runs where the database runs.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p><strong>Residency is inherited, not added.</strong> ORDS is a mid-tier in front of the database, typically deployed close to it. That means the REST surface &mdash; and, from 26.2, the agent surface &mdash; sits wherever the database sits. For a POPIA-sensitive Oracle estate, that's the useful property: exposing data to agents through ORDS doesn't move the data to a third-party API; it opens a governed door on infrastructure you already control. Keep ORDS and the database in-country and the residency question for the agent seam closes with them.</p>
+      <p><strong>The pragmatic path for a legacy estate.</strong> Most SA Oracle shops don't need a new platform to get agent access &mdash; they need to expose what they have, safely. ORDS is the lowest-drama way to do it: it's already there under APEX, it authenticates, it pools connections, and 26.2 gives it a native agent protocol. The work is in the governance &mdash; which objects to expose, under which OAuth clients, with which handlers &mdash; not in a migration.</p>
+    </div>
+  </div>
+</section>
+
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; Connections</div>
+      <h2 class="section-title">Where ORDS links in the tree.</h2>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="./" class="connect-node">
+        <span class="tag">tech/oracle</span>
+        <div class="skill">Oracle hub</div>
+        <div class="why">The estate as a stack — app layer, REST seam, system of record, and where it runs.</div>
+      </a>
+      <a href="apex.html" class="connect-node">
+        <span class="tag">tech/oracle/apex</span>
+        <div class="skill">Oracle APEX 26.1</div>
+        <div class="why">The app layer on the database — modern interfaces and APEXlang, the agent-writable .apx format.</div>
+      </a>
+      <a href="../mulesoft.html" class="connect-node">
+        <span class="tag">tech/mulesoft</span>
+        <div class="skill">MuleSoft</div>
+        <div class="why">The other legacy-integration surface — wraps backends as MCP for agents. Same problem, different house.</div>
+      </a>
+      <a href="../../agents/mcp.html" class="connect-node">
+        <span class="tag">agents/mcp</span>
+        <div class="skill">Model Context Protocol</div>
+        <div class="why">The agent-integration protocol ORDS 26.2 speaks natively — an Oracle DB as an agent-callable surface.</div>
+      </a>
+      <a href="../../software/software-for-agents.html" class="connect-node">
+        <span class="tag">software/software-for-agents</span>
+        <div class="skill">Software for agents</div>
+        <div class="why">The declarative, diffable formats that make an app agent-readable — APEXlang is Oracle's.</div>
+      </a>
+      <a href="../own-your-stack.html" class="connect-node">
+        <span class="tag">tech/own-your-stack</span>
+        <div class="skill">Own your stack</div>
+        <div class="why">The ownership lens on a vendor platform — readable is not the same as portable.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; Resources</div>
+      <h2 class="section-title">Primary sources only.</h2>
+      <p class="section-lede">Oracle's own ORDS docs and changelog &mdash; and note the MCP capability is new (26.2), so verify its current state before designing around it.</p>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://docs.oracle.com/en/database/oracle/oracle-rest-data-services/26.1/ordig/oracle-rest-data-services-installation-and-configuration-guide.pdf" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs</span>
+        <span class="r-title">ORDS 26.1 Installation &amp; Configuration Guide</span>
+        <span class="r-url">docs.oracle.com/en/database/oracle/oracle-rest-data-services/26.1</span>
+      </a>
+      <a href="https://www.oracle.com/tools/ords/ords-changelog.html" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Changelog</span>
+        <span class="r-title">ORDS Changelog (incl. 26.2 MCP support)</span>
+        <span class="r-url">oracle.com/tools/ords/ords-changelog.html</span>
+      </a>
+      <a href="https://www.oracle.com/database/technologies/appdev/rest.html" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Product</span>
+        <span class="r-title">Oracle REST Data Services</span>
+        <span class="r-url">oracle.com/database/technologies/appdev/rest.html</span>
+      </a>
+      <a href="https://docs.oracle.com/en/database/oracle/apex/26.1/installandupgrade.html" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs</span>
+        <span class="r-title">APEX 26.1 Install &amp; Upgrade (ORDS 26.1.1+ requirement)</span>
+        <span class="r-url">docs.oracle.com/en/database/oracle/apex/26.1/installandupgrade</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../../index.html">Skills tree</a>
+      <a href="../">Tech hub</a>
+      <a href="https://www.oracle.com/apex" target="_blank" rel="noopener">Oracle &nearr;</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme(){const html=document.documentElement;const current=html.getAttribute('data-theme');const next=current==='dark'?'light':'dark';html.setAttribute('data-theme',next);document.querySelector('.theme-toggle').textContent=next==='dark'?'☀️':'🌙';localStorage.setItem('theme',next);}
+  const saved=localStorage.getItem('theme');if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.theme-toggle').textContent=saved==='dark'?'☀️':'🌙';}
+  const observer=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting)entry.target.classList.add('visible');});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oracle APEX 26.1 &mdash; know.2nth.ai</title>
+<meta name="description" content="Oracle APEX 26.1 as a legacy-integration surface — the version chain (ORDS 26.1.1+, DB 19.18+ or 23.26.0+ on 26ai), REST Data Sources and ORDS as the seam to systems you won't rewrite, and APEXlang (.apx text) that makes an APEX app agent-writable. The honest read: whole-application import only, upgrades rename static IDs and break JavaScript.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/tech/oracle/apex">
+<meta property="og:title" content="Oracle APEX 26.1 — know.2nth.ai">
+<meta property="og:description" content="Oracle APEX 26.1 as a legacy-integration surface. ORDS + REST as the seam, APEXlang as the agent-writable format. Whole-app import only — the honest read.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Oracle APEX 26.1 — know.2nth.ai">
+<meta name="twitter:description" content="Oracle APEX 26.1 as a legacy-integration surface. ORDS + REST as the seam, APEXlang as the agent-writable format. Whole-app import only — the honest read.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12); --violet: #8B5CF6; --violet-soft: rgba(139, 92, 246, 0.12); --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-soft: rgba(99, 102, 241, 0.12); --sky-soft: rgba(56, 189, 248, 0.12); --bg: var(--ink); --bg-raised: var(--navy); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(37, 99, 235, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(56, 189, 248, 0.3); --max-w: 1200px; --read-w: 760px; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-raised: #FFFFFF; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(37, 99, 235, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(37, 99, 235, 0.25); }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.blue { width: 600px; height: 600px; background: var(--blue); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--blue-glow); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--blue-glow); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .read { max-width: var(--read-w); }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--blue-glow); }
+  .crumb-sep { opacity: 0.5; }
+  .crumb-current { color: var(--text-secondary); }
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--blue-glow); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--blue-glow); box-shadow: 0 0 12px var(--blue-glow); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--blue), var(--blue-glow), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.accent { background: rgba(37, 99, 235, 0.12); color: var(--blue-glow); border-color: rgba(37, 99, 235, 0.25); }
+  .pill.indigo { background: var(--indigo-soft); color: var(--indigo); border-color: rgba(99, 102, 241, 0.25); }
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--blue-glow); margin-bottom: 14px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--blue-glow); }
+  pre.code { background: var(--ink-deep); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px 22px; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.65; color: var(--mist); margin: 0 0 20px; max-width: var(--read-w); }
+  [data-theme="light"] pre.code { background: #0F172A; color: #E2E8F0; }
+  pre.code .k { color: var(--sky); }
+  pre.code .s { color: #A5F3B8; }
+  pre.code .c { color: var(--text-muted); font-style: italic; }
+  pre.code .h { color: var(--blue-glow); font-weight: 600; }
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); margin-bottom: 20px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.indigo { border-left: 3px solid var(--indigo); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: var(--read-w); margin-bottom: 20px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--blue-glow); background: rgba(37, 99, 235, 0.04); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); }
+  .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--blue-glow); }
+  .compare td strong { color: var(--text-primary); }
+  .compare td.name { font-weight: 600; color: var(--text-primary); white-space: nowrap; }
+  .stack-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; max-width: var(--read-w); margin-bottom: 20px; }
+  .stack-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--blue-glow); border-radius: var(--radius-md); padding: 18px 22px; }
+  .stack-cell .layer { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .stack-cell h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.3px; }
+  .stack-cell p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+  .connect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .connect-node { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; transition: all 0.3s; text-decoration: none; color: inherit; display: block; }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node.soon { cursor: default; opacity: 0.72; }
+  .connect-node .tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--blue-glow); word-break: break-all; }
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--blue-glow); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } pre.code { font-size: 11px; padding: 14px 16px; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+
+<div class="glow-orb blue"></div>
+<div class="glow-orb sky"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../../index.html" class="nav-brand"><span class="nav-brand-mark">know.2nth.ai</span><span class="nav-brand-sub">tech/oracle/apex</span></a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">&larr; Oracle</a>
+      <a href="../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x1F319;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="./">Tech</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">MuleSoft</span>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> tech &middot; Oracle APEX 26.1 &middot; Skill Leaf</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      Your Oracle estate, <span class="gradient">now agent-addressable.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      This is not a low-code product review. It's the practitioner read for an architect sitting on an Oracle estate asking one question: what does APEX 26.1 change about getting modern interfaces &mdash; and agent access &mdash; onto systems I am not going to rewrite? The short version: the integration surface to legacy is <strong>ORDS + REST Data Sources</strong>, not a migration; and <strong>APEXlang</strong> turns a two-decade-old platform into something an agent can read and write as text. The longer version is the honest read &mdash; whole-application import only, upgrades that rename static IDs and break JavaScript, and a validation pass stricter than the Builder you're used to.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill accent">APEX 26.1</span>
+      <span class="pill">ORDS + REST</span>
+      <span class="pill indigo">APEXlang &middot; .apx</span>
+      <span class="pill">On the database</span>
+      <span class="pill">No rewrite</span>
+    </div>
+  </div>
+</section>
+
+<section id="what">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; What it is</div>
+      <h2 class="section-title">The application layer on the database &mdash; and its version chain.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Oracle APEX is a low-code application platform that runs <em>inside</em> the Oracle Database, with <strong>ORDS</strong> (Oracle REST Data Services) as its REST tier. The database is the system of record; APEX is the UI and logic layer on top of it; ORDS is how both speak HTTP. That architecture is the whole reason this leaf is about integration rather than product features.</p>
+      <p>The version chain is the practitioner-relevant part, and it's exact. <strong>APEX 26.1</strong> was released on <strong>14 May 2026</strong> and re-released on <strong>25 May 2026</strong> to fix an installation failure (<code>ORA-439</code>, basic compression not enabled) on Oracle 19c SE2 &mdash; bug 39397271, both dates on Oracle's own downloads page. It requires <strong>ORDS 26.1.1 or later</strong>; on the newer Oracle AI Database 26ai it needs DB version <strong>23.26.0 (October 2025) or later</strong>, and on older databases <strong>19.18 (January 2023) or newer</strong>. Those constraints are not optional, and they decide whether an upgrade is an APEX project or a database project.</p>
+    </div>
+    <div class="info-card indigo fade-up" style="transition-delay: 0.08s">
+      <h4>Licensing and support, as Oracle states them</h4>
+      <p>Oracle states that APEX is <strong>included at no additional cost</strong> with all supported Oracle Database editions &mdash; there is no separate APEX licence fee; you are already entitled to it if you run a supported database. On support, Oracle's policy is <strong>18 months per release</strong>, covering the current release plus the two prior; the May 2026 timing of 26.1 triggered an extended-support period for the previous three releases. Both are vendor statements about vendor terms &mdash; verify against your contract, but they're the published position.</p>
+    </div>
+  </div>
+</section>
+
+<section id="integration">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; The integration surface</div>
+      <h2 class="section-title">REST is the seam. The database stays put.</h2>
+      <p class="section-lede">This is the section that justifies the leaf. The modernisation question for an Oracle estate is usually framed as rewrite-or-stay. APEX 26.1's answer is a third option: expose and consume over REST, and leave the system of record where it is.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p><strong>Two directions.</strong> <strong>REST Data Sources</strong> are the declarative <em>consumption</em> side &mdash; APEX pages bind to a remote API as if it were a local table. Supported source types include Simple HTTP, ORDS, REST Enabled SQL Query, and Oracle Cloud SaaS / OCI REST. <strong>ORDS</strong> is the <em>exposure</em> side &mdash; it turns PL/SQL and table assets into REST endpoints other systems (and agents) can call. Together they are the seam: no data migration, no rewrite of the backend, just a REST tier over what you already run.</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.07s">
+      <table class="compare">
+        <thead><tr><th>Surface</th><th>What it does</th><th>The constraint that bites</th></tr></thead>
+        <tbody>
+          <tr><td class="name">REST Data Sources</td><td>Declaratively consume a remote API as a data source for pages and reports.</td><td>Binds you to the remote system's availability &mdash; if that API is down, the dependent pages go with it.</td></tr>
+          <tr><td class="name">REST Enabled SQL</td><td>Query a remote Oracle database over REST, with filtering and pagination.</td><td><strong>Read-oriented: no DML.</strong> You can query and page; you cannot insert, update, or delete through it.</td></tr>
+          <tr><td class="name">ORDS endpoints</td><td>Expose PL/SQL and tables as REST for other systems and agents to call.</td><td>ORDS implements <strong>GET, POST, PUT, DELETE &mdash; but not PATCH</strong>. Partial-update semantics need a workaround.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="info-card green fade-up" style="transition-delay: 0.1s">
+      <h4>What 26.1 actually added here</h4>
+      <p>The REST Data Source enhancements in 26.1 are small but close real gaps, and Oracle documents them in the "What's New in REST Data Sources" post: native <strong>OAuth2 refresh-token</strong> support (an expired access token is silently exchanged, no re-login), <strong>token scope specified at invocation</strong> for the Client Credentials flow, and <strong>OAuth2 Password</strong> as a native Web Credential type. If you have been carrying a custom token-refresh workaround, that is the line item this release removes.</p>
+    </div>
+  </div>
+</section>
+
+<section id="apexlang">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; APEXlang &amp; the agent surface</div>
+      <h2 class="section-title">An app as diffable text &mdash; but only the declarative half.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>The reason this belongs on a site that covers agents is <strong>APEXlang</strong>: a format that represents an APEX application as a package of structured <code>.apx</code> text files &mdash; exportable, importable, diffable, and reviewable in standard developer tooling. Oracle positions APEXlang as capturing an application's <em>intent</em> rather than its implementation. That framing is Oracle's; take it as a design claim, not a measured one. What's concrete is the toolchain: APEXlang needs <strong>SQLcl 26.1.2+</strong>, <strong>Java 17 or 21</strong>, and a saved SQLcl connection and workspace name. Once you have those, an APEX app becomes something an agent can read, edit, and re-import as text &mdash; the practical unlock behind the headline.</p>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.08s">
+      <h4>The correction, in the same breath</h4>
+      <p>APEXlang structures the <strong>declarative</strong> layer &mdash; it does not turn your application into text. The code still lives where it always lived: SQL in report sources, LOVs, and conditions; PL/SQL in processes, validations, and computations; JavaScript and CSS in pages and static files. "Your APEX app is now just text files" is the wrong reading, and it's the one a confident summary reaches for. APEXlang makes the <em>structure</em> reviewable; it does not remove the code from APEX.</p>
+    </div>
+  </div>
+</section>
+
+<section id="ai">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; The AI features, precisely</div>
+      <h2 class="section-title">What the AI does &mdash; and what it deliberately doesn't.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Two AI capabilities in 26.1 are worth stating exactly, because the interesting thing about both is the boundary Oracle drew. In its own description of the release:</p>
+    </div>
+    <div class="stack-grid fade-up" style="transition-delay: 0.05s">
+      <div class="stack-cell">
+        <span class="layer">AI Interactive Reports</span>
+        <h4>No AI-generated SQL runs</h4>
+        <p>Oracle states APEX does <strong>not execute AI-generated SQL</strong>. The AI applies declarative Interactive Report settings &mdash; filters, sorts, highlights &mdash; <em>within</em> the existing report definition and its data-access rules. The query surface stays governed; the model configures, it doesn't author the SQL.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">AI Agents</span>
+        <h4>Scoped tools, explicit grants</h4>
+        <p>Oracle describes AI Agents that act only through <strong>AI Tools</strong> &mdash; data lookups, server-side PL/SQL, client-side JavaScript, REST calls &mdash; each explicitly granted by the developer, with declarative guardrails including user-approval dialogs for sensitive operations. The scoping model is the point; it's a vendor description, not an independent audit.</p>
+      </div>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.08s">
+      <p>The architecturally honest summary: 26.1's AI does not hand a model a blank cheque against your database. It configures governed surfaces and calls explicitly-granted tools. That's a defensible design &mdash; and it's Oracle's account of its own behaviour, which is where the attribution has to stay until someone measures it independently.</p>
+    </div>
+  </div>
+</section>
+
+<section id="honest">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; The honest read</div>
+      <h2 class="section-title">Where 26.1 costs you &mdash; unsoftened.</h2>
+      <p class="section-lede">This is the strongest section on the leaf, and it's not balanced by a reassuring closer. If you're planning an upgrade or an APEXlang-based workflow, these are the facts that shape the plan.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <ul>
+        <li><strong>Import is whole-application only.</strong> APEXlang does not support single-page import in 26.1 &mdash; you import the entire application or nothing. That shapes every review and deployment workflow you might build on it: there is no per-page promote. (Confirmed by Oracle and by multiple independent practitioners.)</li>
+        <li><strong>Upgrading breaks JavaScript.</strong> Page-level <code>staticId</code> / <code>regionStaticId</code> are renamed to <code>domId</code> / <code>regionDomId</code>, so existing JS that reaches for the old identifiers will break. Oracle ships a SQL query in the release notes to find the affected dynamic actions &mdash; budget the migration, don't discover it in production.</li>
+        <li><strong>APEXlang validation is stricter than the Builder.</strong> Applications that run correctly can still fail APEXlang export/validation &mdash; commented-out components with broken SQL, or dangling references, that the Builder tolerated. The upgrade is not a no-op; long-standing apps surface latent issues.</li>
+        <li><strong>26.1 shipped with APEXlang import bugs.</strong> Oracle's own known-issues list includes import failures for workflows, a UI error unable to find <code>install.sql</code> or <code>application.apx</code>, and importing an export into a working copy disassociating it from its base application. These are addressed in patch bundle <strong>39179920</strong> (product 26.1.1) &mdash; check the current known-issues page for the latest patch level before relying on it.</li>
+        <li><strong>No independent benchmark.</strong> There is no published third-party measurement of the 26.1 AI features &mdash; no latency, throughput, or accuracy figure that isn't Oracle's own description. Treat the AI claims as documented design, not verified performance.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="skip">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; Skip it when</div>
+      <h2 class="section-title">The disqualifiers, not softened caveats.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <ul>
+        <li><strong>Your estate is not on Oracle Database.</strong> There is no APEX without it. This is a tool for people who already run Oracle, full stop.</li>
+        <li><strong>You're below the version floor.</strong> On a database under 19.18 &mdash; or under 23.26.0 on 26ai &mdash; the upgrade is a <em>database</em> project first and an APEX project second. Scope it accordingly.</li>
+        <li><strong>You have heavy custom JavaScript against page-level static IDs.</strong> The <code>staticId</code> &rarr; <code>domId</code> rename will break it. Budget the migration before you commit to the upgrade.</li>
+        <li><strong>You need a per-page review-and-deploy workflow.</strong> APEXlang imports whole applications only. If per-page promotion is a hard requirement, 26.1 doesn't give it to you.</li>
+        <li><strong>Your integration is event-driven.</strong> REST Data Sources are a request/response surface. If you need event streaming or push, that's a different architecture &mdash; don't force it through REST.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="sa-context">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; South African context</div>
+      <h2 class="section-title">Oracle estates, and where the database sits.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p><strong>The estate is real and local.</strong> A large share of SA's banks, insurers, and public-sector bodies run substantial Oracle estates, and for them the modernisation question is a live budget line in Johannesburg: is this programme a rewrite, or a REST seam over what we already run? APEX 26.1 makes the second option concrete &mdash; modern interfaces and agent access via ORDS and REST Data Sources, with the database untouched as the system of record. That reframes a migration business case into an integration one.</p>
+      <p><strong>Data residency is the sharper hook, and it's structural.</strong> APEX runs <em>on</em> the database &mdash; so wherever the database sits, the application layer sits too. That is a genuine architectural difference from a SaaS low-code platform, where your app runs on the vendor's cloud regardless of where your data lives. For a POPIA-sensitive workload, an on-database application layer means the UI, the logic, and the data share one residency answer: if the database is in-country, so is the app. That property is worth being deliberate about &mdash; it's the kind of thing a foreign platform comparison never has to think about, and an SA architect can't afford not to.</p>
+    </div>
+  </div>
+</section>
+
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 &middot; Connections</div>
+      <h2 class="section-title">Where Oracle APEX links in the tree.</h2>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="./" class="connect-node">
+        <span class="tag">tech/oracle</span>
+        <div class="skill">Oracle hub</div>
+        <div class="why">The estate as a stack — app layer, REST seam, system of record, and where it runs.</div>
+      </a>
+      <a href="ords.html" class="connect-node">
+        <span class="tag">tech/oracle/ords</span>
+        <div class="skill">ORDS</div>
+        <div class="why">The REST and MCP seam. AutoREST for tables, handlers for PL/SQL, and native MCP from 26.2.</div>
+      </a>
+      <a href="../mulesoft.html" class="connect-node">
+        <span class="tag">tech/mulesoft</span>
+        <div class="skill">MuleSoft</div>
+        <div class="why">The other legacy-integration surface — wraps backends as MCP for agents. Same problem, different house.</div>
+      </a>
+      <a href="../../agents/mcp.html" class="connect-node">
+        <span class="tag">agents/mcp</span>
+        <div class="skill">Model Context Protocol</div>
+        <div class="why">The agent-integration protocol ORDS 26.2 speaks natively — an Oracle DB as an agent-callable surface.</div>
+      </a>
+      <a href="../../software/software-for-agents.html" class="connect-node">
+        <span class="tag">software/software-for-agents</span>
+        <div class="skill">Software for agents</div>
+        <div class="why">The declarative, diffable formats that make an app agent-readable — APEXlang is Oracle's.</div>
+      </a>
+      <a href="../own-your-stack.html" class="connect-node">
+        <span class="tag">tech/own-your-stack</span>
+        <div class="skill">Own your stack</div>
+        <div class="why">The ownership lens on a vendor platform — readable is not the same as portable.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">09 &middot; Resources</div>
+      <h2 class="section-title">Primary sources only.</h2>
+      <p class="section-lede">Oracle's own docs and the release artefacts &mdash; note that the known-issues page and patch level move, so check the current state before relying on a specific bundle.</p>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://docs.oracle.com/en/database/oracle/apex/26.1/htmrn/oracle-apex-release-notes.pdf" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Release notes</span>
+        <span class="r-title">Oracle APEX 26.1 Release Notes (G26650-03)</span>
+        <span class="r-url">docs.oracle.com/en/database/oracle/apex/26.1/htmrn</span>
+      </a>
+      <a href="https://docs.oracle.com/en/database/oracle/apex/26.1/installandupgrade.html" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs</span>
+        <span class="r-title">APEX 26.1 Install and Upgrade (version chain)</span>
+        <span class="r-url">docs.oracle.com/en/database/oracle/apex/26.1/installandupgrade</span>
+      </a>
+      <a href="https://www.oracle.com/tools/downloads/apex-downloads/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Downloads</span>
+        <span class="r-title">APEX Downloads (the 25 May re-release &amp; ORA-439)</span>
+        <span class="r-url">oracle.com/tools/downloads/apex-downloads</span>
+      </a>
+      <a href="https://blogs.oracle.com/apex/announcing-oracle-apex-261" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Vendor blog</span>
+        <span class="r-title">Announcing Oracle APEX 26.1 GA (APEXlang)</span>
+        <span class="r-url">blogs.oracle.com/apex/announcing-oracle-apex-261</span>
+      </a>
+      <a href="https://blogs.oracle.com/apex/whats-new-in-rest-data-sources-in-oracle-apex-26-1" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Vendor blog</span>
+        <span class="r-title">What's New in REST Data Sources in APEX 26.1</span>
+        <span class="r-url">blogs.oracle.com/apex/whats-new-in-rest-data-sources...</span>
+      </a>
+      <a href="https://www.oracle.com/apex/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Product</span>
+        <span class="r-title">oracle.com/apex (licensing &amp; support policy)</span>
+        <span class="r-url">oracle.com/apex</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../../index.html">Skills tree</a>
+      <a href="../">Tech hub</a>
+      <a href="https://www.oracle.com/apex" target="_blank" rel="noopener">Oracle &nearr;</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme(){const html=document.documentElement;const current=html.getAttribute('data-theme');const next=current==='dark'?'light':'dark';html.setAttribute('data-theme',next);document.querySelector('.theme-toggle').textContent=next==='dark'?'☀️':'🌙';localStorage.setItem('theme',next);}
+  const saved=localStorage.getItem('theme');if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.theme-toggle').textContent=saved==='dark'?'☀️':'🌙';}
+  const observer=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting)entry.target.classList.add('visible');});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>

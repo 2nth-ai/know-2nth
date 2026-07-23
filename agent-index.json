@@ -3,7 +3,7 @@
   "description": "The public knowledge tree for the 2nth.ai ecosystem. Every leaf is both a human-readable reference and an agent-consumable context document.",
   "agent_fetch": "https://know.2nth.ai/api/context/<domain>/<leaf>",
   "mcp": "https://know.2nth.ai/mcp",
-  "count": 203,
+  "count": 206,
   "items": [
     {
       "title": "Agents — know.2nth.ai",
@@ -1118,6 +1118,14 @@
       "fetch": "tech/microsoft"
     },
     {
+      "title": "Oracle — the estate, modernised — know.2nth.ai",
+      "description": "Oracle for the AI era, from the practitioner seat — how a big legacy Oracle estate becomes modern and agent-addressable without a rewrite. APEX 26.1 as the app layer, ORDS as the REST and (from 26.2) MCP seam to agents, Oracle AI Database 26ai as the converged system of record, and OCI with the Johannesburg region for POPIA residency. The map for an architect who runs Oracle and is not going to migrate off it.",
+      "domain": "tech",
+      "kind": "hub",
+      "url": "https://know.2nth.ai/explainers/tech/oracle/",
+      "fetch": "tech/oracle"
+    },
+    {
       "title": "Runtime — know.2nth.ai",
       "description": "The Runtime sub-domain of the 2nth.ai technology branch. JavaScript runtimes that matter in 2026 — Node.js (the safe default), Bun (the modern challenger), and Deno (the security-first alternative). The decision frame for which runtime to pick, and why the hybrid pattern (Bun for dev, Node for prod) wins for most teams.",
       "domain": "tech",
@@ -1492,6 +1500,22 @@
       "kind": "leaf",
       "url": "https://know.2nth.ai/explainers/tech/openid-connect",
       "fetch": "tech/openid-connect"
+    },
+    {
+      "title": "Oracle APEX 26.1 — know.2nth.ai",
+      "description": "Oracle APEX 26.1 as a legacy-integration surface — the version chain (ORDS 26.1.1+, DB 19.18+ or 23.26.0+ on 26ai), REST Data Sources and ORDS as the seam to systems you won't rewrite, and APEXlang (.apx text) that makes an APEX app agent-writable. The honest read: whole-application import only, upgrades rename static IDs and break JavaScript.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/oracle/apex",
+      "fetch": "tech/oracle/apex"
+    },
+    {
+      "title": "ORDS — Oracle REST Data Services — know.2nth.ai",
+      "description": "Oracle REST Data Services (ORDS) — the mid-tier that turns an Oracle database into REST, and from 26.2 the native MCP seam that lets agents reach an Oracle AI Database through ORDS-managed pools. AutoREST for tables, resource handlers for PL/SQL, ORDS_SECURITY for OAuth2. The honest read: no PATCH, AutoREST is OAuth2 client-credentials only, and the OAUTH package deprecation is a real migration.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/oracle/ords",
+      "fetch": "tech/oracle/ords"
     },
     {
       "title": "Own Your Stack — know.2nth.ai",
