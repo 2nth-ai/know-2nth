@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chonkie — know.2nth.ai</title>
+<meta name="description" content="Chonkie — the RAG chunking library, evaluated honestly. A Python/TypeScript API over a separate Rust SIMD core, with an eleven-chunker menu (only two in the default install). The honest read: the 100+ GB/s headline is a micro-benchmark of the Rust loop; the vendor's own end-to-end measure is 4.82 MB/s, and against LangChain the real gain is ~1.2x, not 33x. And a peer-reviewed NAACL 2025 finding that semantic chunking rarely earns its compute — so the cheap chunkers are the right default.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/data/engineering/chonkie">
+<meta property="og:title" content="Chonkie — know.2nth.ai">
+<meta property="og:description" content="Chonkie — the RAG chunking library, honestly. Python/TS over a Rust SIMD core; the 100+ GB/s headline vs a 4.82 MB/s end-to-end reality, ~1.2x over LangChain not 33x, and the NAACL finding that semantic chunking rarely earns its cost.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai — The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Chonkie — know.2nth.ai">
+<meta name="twitter:description" content="Chonkie — the RAG chunking library, honestly. Python/TS over a Rust SIMD core; the 100+ GB/s headline vs a 4.82 MB/s end-to-end reality, ~1.2x over LangChain not 33x, and the NAACL finding that semantic chunking rarely earns its cost.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3Cline x1='16' y1='3' x2='16' y2='7' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='16' y1='25' x2='16' y2='29' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='3' y1='16' x2='7' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='25' y1='16' x2='29' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33;
+    --blue: #2563EB; --blue-glow: #3B82F6;
+    --sky: #38BDF8; --sky-muted: #7DD3FC;
+    --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8;
+    --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12);
+    --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12);
+    --violet: #8B5CF6; --violet-soft: rgba(139, 92, 246, 0.12);
+    --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12);
+    --bg: var(--ink); --bg-raised: var(--navy);
+    --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(37, 99, 235, 0.06);
+    --text-primary: var(--paper); --text-secondary: var(--slate);
+    --text-muted: #64748B;
+    --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(56, 189, 248, 0.3);
+    --max-w: 1200px; --read-w: 760px;
+    --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px;
+  }
+  [data-theme="light"] {
+    --bg: #F1F5F9; --bg-raised: #FFFFFF;
+    --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(37, 99, 235, 0.04);
+    --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8;
+    --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(37, 99, 235, 0.25);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+    background: var(--bg); color: var(--text-primary);
+    line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased;
+  }
+  body::before {
+    content: ''; position: fixed; inset: 0; opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 9999;
+  }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.blue { width: 600px; height: 600px; background: var(--blue); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+
+  nav {
+    position: sticky; top: 0; z-index: 100; padding: 0 24px;
+    backdrop-filter: blur(20px) saturate(1.4);
+    background: rgba(11, 17, 32, 0.75);
+    border-bottom: 1px solid var(--border);
+  }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner {
+    max-width: var(--max-w); margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 60px;
+  }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark {
+    font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px;
+    background: linear-gradient(135deg, var(--blue), var(--sky));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+  }
+  .nav-brand-sub {
+    font-size: 12px; color: var(--text-muted);
+    letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500;
+    padding-left: 10px; border-left: 1px solid var(--border);
+  }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--sky); }
+  .theme-toggle {
+    background: none; border: 1px solid var(--border); color: var(--text-secondary);
+    width: 36px; height: 36px; border-radius: 50%; cursor: pointer;
+    display: grid; place-items: center; font-size: 16px; transition: all 0.2s;
+  }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--sky); }
+
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .read { max-width: var(--read-w); }
+
+  .crumb {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted);
+    letter-spacing: 0.5px; padding: 28px 0 0;
+    display: flex; gap: 10px; flex-wrap: wrap;
+  }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--sky); }
+  .crumb-sep { opacity: 0.5; }
+  .crumb-current { color: var(--text-secondary); }
+
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500;
+    letter-spacing: 2px; text-transform: uppercase; color: var(--sky);
+    margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px;
+  }
+  .hero .eyebrow .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--blue-glow); box-shadow: 0 0 12px var(--blue-glow);
+  }
+  .hero h1 {
+    font-size: clamp(40px, 6vw, 66px); font-weight: 800;
+    line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 14ch;
+  }
+  .hero h1 .gradient {
+    background: linear-gradient(135deg, var(--blue-glow), var(--sky), var(--sky-muted));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500;
+    padding: 6px 14px; border-radius: var(--radius-pill);
+    border: 1px solid var(--border); color: var(--text-secondary);
+    letter-spacing: 0.5px;
+  }
+  .pill.accent { background: rgba(37, 99, 235, 0.12); color: var(--blue-glow); border-color: rgba(37, 99, 235, 0.25); }
+
+  section { padding: 52px 0; position: relative; }
+  .section-label {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500;
+    letter-spacing: 2px; text-transform: uppercase; color: var(--sky);
+    margin-bottom: 14px;
+  }
+  .section-title {
+    font-size: clamp(26px, 3.4vw, 36px); font-weight: 700;
+    letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2;
+  }
+  .section-lede {
+    font-size: 16px; color: var(--text-secondary); max-width: var(--read-w);
+    line-height: 1.75; font-weight: 300; margin-bottom: 32px;
+  }
+  .prose p {
+    font-size: 16px; color: var(--text-secondary); line-height: 1.75;
+    max-width: var(--read-w); margin-bottom: 18px;
+  }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.88em;
+    background: var(--bg-card); border: 1px solid var(--border);
+    padding: 1px 6px; border-radius: 4px; color: var(--sky);
+  }
+
+  pre.code {
+    background: var(--ink-deep); border: 1px solid var(--border);
+    border-radius: var(--radius-md); padding: 20px 22px;
+    overflow-x: auto; font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px; line-height: 1.65; color: var(--mist);
+    margin: 0 0 20px; max-width: var(--read-w);
+  }
+  [data-theme="light"] pre.code { background: #0F172A; color: #E2E8F0; }
+  pre.code .k { color: var(--sky); }
+  pre.code .s { color: #A5F3B8; }
+  pre.code .c { color: var(--text-muted); font-style: italic; }
+  pre.code .n { color: #FCD34D; }
+
+  .info-card {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-lg);
+    padding: 28px 32px; max-width: var(--read-w);
+    margin-bottom: 20px;
+  }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+
+  .compare-wrap {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-lg);
+    overflow: hidden; max-width: var(--read-w);
+    margin-bottom: 20px;
+  }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td {
+    padding: 12px 16px; text-align: left;
+    border-bottom: 1px solid var(--border); vertical-align: top;
+  }
+  .compare thead th {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600;
+    letter-spacing: 1.2px; text-transform: uppercase; color: var(--sky);
+    background: rgba(37, 99, 235, 0.04);
+  }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); }
+  .compare td code {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.9em;
+    color: var(--sky);
+  }
+
+  .gotcha-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 12px;
+  }
+  .gotcha {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-left: 3px solid var(--rose);
+    border-radius: var(--radius-md);
+    padding: 18px 22px;
+  }
+  .gotcha strong { display: block; color: var(--text-primary); font-weight: 600; font-size: 14px; margin-bottom: 6px; }
+  .gotcha p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+  .connect-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 12px;
+  }
+  .connect-node {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    padding: 18px 22px; transition: all 0.3s;
+    text-decoration: none; color: inherit; display: block;
+  }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node.soon { cursor: default; opacity: 0.72; }
+  .connect-node.soon:hover { border-color: var(--border); background: var(--bg-card); }
+  .connect-node .tag {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    letter-spacing: 1px; text-transform: uppercase;
+    color: var(--text-muted); display: block; margin-bottom: 6px;
+  }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+
+  .resource-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 12px;
+  }
+  .resource {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    padding: 18px 22px; text-decoration: none; transition: all 0.3s;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--sky); word-break: break-all; }
+
+  .decision-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+    max-width: var(--read-w);
+  }
+  @media (max-width: 720px) { .decision-grid { grid-template-columns: 1fr; } }
+  .decision-card {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    padding: 22px 24px;
+  }
+  .decision-card.use { border-left: 3px solid var(--green); }
+  .decision-card.skip { border-left: 3px solid var(--rose); }
+  .decision-card h4 {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .decision-card.use h4 { color: var(--green); }
+  .decision-card.skip h4 { color: var(--rose); }
+  .decision-card ul { list-style: none; padding: 0; }
+  .decision-card li {
+    font-size: 13px; color: var(--text-secondary); line-height: 1.6;
+    padding: 6px 0; border-bottom: 1px solid var(--border);
+  }
+  .decision-card li:last-child { border-bottom: none; }
+
+  footer {
+    padding: 60px 0 40px; border-top: 1px solid var(--border);
+    text-align: center; margin-top: 40px;
+  }
+  .footer-brand {
+    font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600;
+    background: linear-gradient(135deg, var(--blue), var(--sky));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+  }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--sky); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+
+  .fade-up {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 768px) {
+    .nav-brand-sub { display: none; }
+    .nav-link { display: none; }
+    pre.code { font-size: 11px; padding: 14px 16px; }
+    .compare { font-size: 12px; }
+    .compare th, .compare td { padding: 10px 12px; }
+  }
+
+  *, *::before, *::after {
+    transition-property: background-color, border-color, color, box-shadow;
+    transition-duration: 0.3s; transition-timing-function: ease;
+  }
+</style>
+</head>
+<body>
+
+<div class="glow-orb blue"></div>
+<div class="glow-orb sky"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../../index.html" class="nav-brand">
+      <span class="nav-brand-mark">know.2nth.ai</span>
+      <span class="nav-brand-sub">data/engineering/chonkie</span>
+    </a>
+    <div class="nav-right">
+      <a href="../" class="nav-link">← Data</a>
+      <a href="../../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">🌙</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">›</span>
+    <a href="../../../index.html#domains">Data</a>
+    <span class="crumb-sep">›</span>
+    <a href="../">data</a>
+    <span class="crumb-sep">›</span>
+    <span class="crumb-current">engineering / chonkie</span>
+  </div>
+</div>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> data/engineering · Chonkie · Skill Leaf</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      Fast chunking.<br><span class="gradient">And where the numbers bend.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      Chonkie is a Python and TypeScript library for the chunking stage of a RAG pipeline — split a document, optionally embed and refine, push to a vector store. It is genuinely well-built, and its marketing numbers are genuinely misleading. This leaf is the honest read: what the Rust core actually buys you, why the headline throughput and the real throughput differ by four orders of magnitude, and a peer-reviewed reason to reach for the cheap chunkers, not the clever ones.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill accent">RAG chunking</span>
+      <span class="pill">Python · TypeScript</span>
+      <span class="pill">Rust SIMD core</span>
+      <span class="pill">MIT / dual-licence</span>
+      <span class="pill">v1.6.4</span>
+    </div>
+  </div>
+</section>
+
+<!-- ── 01 WHAT IT IS ── -->
+<section id="what">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 · What it is</div>
+      <h2 class="section-title">A thin Python layer over a separate Rust crate.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Chonkie handles ingestion-stage chunking: take a document, split it into passages a retriever can index, and optionally embed and refine them. It ships in Python (<code>chonkie</code>, MIT) and TypeScript, is actively developed (<code>v1.6.4</code>, April 2026), and is maintained by a small YC-backed company that also runs a hosted product.</p>
+      <p>The architecture is the thing to understand first, because it explains every number downstream. <strong>The Python package is a thin wrapper over a separate Rust crate.</strong> <code>chonkie-inc/chunk</code> (Rust, dual MIT/Apache-2.0) does the SIMD boundary detection; <code>chonkie-inc/chonkie</code> (Python) wraps it. Two repos, two licences, two release cadences — and the fast part lives on the far side of a foreign-function boundary from the code you call.</p>
+      <p>The chunker menu is broad: fixed-token, a byte-based SIMD chunker (<code>FastChunker</code>), sentence, recursive, semantic, late, code, a fine-tuned-BERT neural chunker, and an LLM-driven one ("Slumber"). Worth knowing before you plan a container build: only two of them — <code>FastChunker</code> and <code>TokenChunker</code> — are in the default install. The semantic, late, neural, and LLM chunkers each require extras.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── 02 WHAT YOU GET ── -->
+<section id="how">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 · What you actually get</div>
+      <h2 class="section-title">Speed comes from not tokenizing. That has a cost.</h2>
+      <p class="section-lede">The fastest chunker is fast because it never invokes a tokenizer — it counts bytes. That is the tradeoff, and it is stated plainly in Chonkie's own docs: it is the right default only if you don't need to know how many tokens a chunk holds.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p><strong>Byte size, not token count.</strong> <code>FastChunker</code> limits chunks by byte length, and its output reports <code>token_count = 0</code> — always. If you are fitting an LLM context window precisely, this chunker cannot tell you whether a chunk fits; you find out when the request overflows in production. Reach for <code>TokenChunker</code> when the token budget is the constraint.</p>
+    </div>
+    <pre class="code fade-up" style="transition-delay: 0.08s"><span class="k">from</span> chonkie <span class="k">import</span> FastChunker
+
+<span class="c"># chunk_size here is BYTES, not tokens — token_count in the output is always 0</span>
+chunker = FastChunker(chunk_size=<span class="n">2048</span>, delimiters=[<span class="s">". "</span>, <span class="s">"\n\n"</span>])
+chunks = chunker(text)
+
+<span class="c"># chunks[0].token_count == 0  — by design; use TokenChunker if you need real counts</span></pre>
+    <div class="prose fade-up" style="transition-delay: 0.1s">
+      <p><strong>The default-install boundary is where a build bites.</strong> <code>pip install chonkie</code> gives you the two cheap chunkers; the interesting ones pull in extras (model weights, an embedder, an LLM client). Decide which chunker you are shipping before you size the container, not after. And note one gap in the hosted path: <code>FastChunker</code>, the fastest one, is not available through the hosted API — you get it in Python and JS only.</p>
+      <p><strong>The FFI point, stated once.</strong> The SIMD throughput number describes the Rust boundary-detection loop in isolation. Every call from Python crosses the FFI boundary and returns Python <code>str</code> objects, and that crossing — allocation, decoding, object construction — is where the real per-call cost sits. The Rust core is fast; the pipeline around it is ordinary Python.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── 03 HONEST READ ── -->
+<section id="honest">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 · The honest read</div>
+      <h2 class="section-title">Where the numbers bend, and what to trust instead.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>The headline, attributed to Chonkie's own docs, is "SIMD-accelerated chunking at 100+ GB/s". The vendor's own end-to-end benchmark, on 100,000 Wikipedia articles, measures <strong>4.82 MB/s</strong>. That is roughly four orders of magnitude, and it is not dishonesty — it is the distance between a micro-benchmark of a Rust boundary-detection loop and a Python pipeline doing tokenization, allocation, and FFI crossing. State it plainly and let it sit. Note too that the same component is advertised at 1 TB/s in one repo and 100+ GB/s in the docs; when a vendor's two headline figures for one component differ tenfold, neither is a specification.</p>
+      <p>The honest comparison is against LangChain, the realistic alternative. On the same token-chunking task Chonkie is about <strong>1.18–1.21x</strong> faster — a real, defensible improvement, and a long way from the "33x" the README leads with (that figure is against LlamaIndex on the smallest dataset). Chonkie's genuine edge over LangChain is arguably footprint and dependency hygiene rather than raw speed — though even there its own two sources disagree about installed size (15 MiB in the benchmark file, 49 MB in the docs), so quote the direction, not the number.</p>
+      <p>The larger question is whether the expensive chunkers earn their compute at all. Qu, Tu and Bao (Findings of NAACL 2025) evaluated semantic chunking across document retrieval, evidence retrieval, and answer generation, and found the computational cost is not justified by consistent gains — fixed-size chunking often matched or beat it on realistically structured documents. That finding lands directly on <code>SemanticChunker</code>, <code>LateChunker</code>, <code>NeuralChunker</code>, and <code>SlumberChunker</code>. The practitioner reading is clean: the cheap chunkers are the right default, and the burden of proof is on the expensive ones for <em>your</em> corpus. Chonkie is a reasonable choice partly because its cheap chunkers are good — not because of its clever ones. Chunking is a component you should be able to swap and measure, not a strategy you commit to.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── 04 DECISION ── -->
+<section id="decision">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 · Decision guide</div>
+      <h2 class="section-title">Use it for, skip it for.</h2>
+      <p class="section-lede">Chonkie is a good small dependency for a specific job. The disqualifiers are real, not softened.</p>
+    </div>
+    <div class="decision-grid fade-up" style="transition-delay: 0.05s">
+      <div class="decision-card use">
+        <h4>Use Chonkie when</h4>
+        <ul>
+          <li>You want a small-footprint ingestion dependency with a clean, swappable chunker interface.</li>
+          <li>You are CPU-bound on tokenization in a LangChain pipeline and chunking is genuinely hot.</li>
+          <li>You need chunking in both Python and TypeScript with matching semantics.</li>
+          <li>You want to swap chunking strategies behind one interface to actually measure the difference on your corpus.</li>
+        </ul>
+      </div>
+      <div class="decision-card skip">
+        <h4>Skip Chonkie when</h4>
+        <ul>
+          <li>You need exact token counts and are reaching for <code>FastChunker</code> — it returns zero, and you won't notice until context overflows.</li>
+          <li>Your ingestion is not the bottleneck. A 1.2x gain on a stage that isn't hot doesn't earn a new dependency.</li>
+          <li>You need a hard support commitment on a critical path — this is a seed-stage two-person company, and the Rust core is a second repo with a much thinner contributor base. Vendor the pinned version or accept the risk knowingly.</li>
+          <li>You specifically wanted the semantic chunkers — read the NAACL paper and benchmark against fixed-size on your own corpus before paying for them.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 05 PERSPECTIVE ── -->
+<section id="perspective">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 · 2ⁿ Perspective</div>
+      <h2 class="section-title">Where this leaf sits in the pipeline.</h2>
+      <p class="section-lede">Chunking is one stage of RAG ingestion. It sits directly after parsing and directly before embedding — and it is the stage most often over-engineered.</p>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.08s">
+      <a href="liteparse.html" class="connect-node">
+        <span class="tag">data/engineering/liteparse</span>
+        <div class="skill">LiteParse</div>
+        <div class="why">The stage before this one. LiteParse turns documents into clean text; Chonkie splits that text into passages. Parse, then chunk — the same ingestion pipeline.</div>
+      </a>
+      <a href="../../software/rust.html" class="connect-node">
+        <span class="tag">software/rust</span>
+        <div class="skill">Rust</div>
+        <div class="why">Chonkie is a live instance of the pattern — a Rust SIMD core behind a Python API. The performance story only makes sense once you see the FFI boundary the calls cross.</div>
+      </a>
+      <a href="../../agents/deep-agents.html" class="connect-node">
+        <span class="tag">agents/deep-agents</span>
+        <div class="skill">Deep Agents</div>
+        <div class="why">Chunking sits upstream of every retrieval-augmented agent — and LangChain, the honest benchmark comparator here, is the framework this harness is built on.</div>
+      </a>
+      <a href="../../tech/cloudflare/vectorize.html" class="connect-node">
+        <span class="tag">tech/cloudflare/vectorize</span>
+        <div class="skill">Vectorize</div>
+        <div class="why">The stage after this one. Chonkie's chunks become embeddings that land in a vector store — the same local-parse, edge-embed pattern the LiteParse leaf describes.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── 06 RESOURCES ── -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 · Resources</div>
+      <h2 class="section-title">Primary sources — including the one that matters most.</h2>
+      <p class="section-lede">The two repos and the benchmark file let you check the vendor's numbers against themselves. The NAACL paper is the external anchor for the whole honest read.</p>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://github.com/chonkie-inc/chonkie" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Source · Python</span>
+        <span class="r-title">chonkie-inc/chonkie</span>
+        <span class="r-url">github.com/chonkie-inc/chonkie</span>
+      </a>
+      <a href="https://github.com/chonkie-inc/chunk" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Source · Rust core</span>
+        <span class="r-title">chonkie-inc/chunk (the SIMD crate)</span>
+        <span class="r-url">github.com/chonkie-inc/chunk</span>
+      </a>
+      <a href="https://github.com/chonkie-inc/chonkie/blob/main/BENCHMARKS.md" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Benchmark</span>
+        <span class="r-title">BENCHMARKS.md — check the numbers yourself</span>
+        <span class="r-url">github.com/chonkie-inc/chonkie/blob/main/BENCHMARKS.md</span>
+      </a>
+      <a href="https://docs.chonkie.ai/oss/chunkers/overview" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs</span>
+        <span class="r-title">Chonkie chunkers — availability matrix</span>
+        <span class="r-url">docs.chonkie.ai/oss/chunkers/overview</span>
+      </a>
+      <a href="https://aclanthology.org/2025.findings-naacl.114/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Paper · NAACL 2025</span>
+        <span class="r-title">Is Semantic Chunking Worth the Computational Cost?</span>
+        <span class="r-url">aclanthology.org/2025.findings-naacl.114</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../../index.html">Skills tree</a>
+      <a href="../">Data domain</a>
+      <a href="https://github.com/chonkie-inc/chonkie" target="_blank" rel="noopener">github.com/chonkie-inc/chonkie ↗</a>
+    </div>
+    <p class="footer-copy">© 2026 2nth.ai · Built in South Africa — Globally relevant</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme() {
+    const html = document.documentElement;
+    const current = html.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
+    localStorage.setItem('theme', next);
+  }
+  const saved = localStorage.getItem('theme');
+  if (saved) {
+    document.documentElement.setAttribute('data-theme', saved);
+    document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '☀️' : '🌙';
+  }
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>

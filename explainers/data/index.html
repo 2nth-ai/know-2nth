@@ -603,7 +603,7 @@
       </a>
 
       <a href="engineering/liteparse.html" class="hub-card">
-        <span class="state live">4 tools · 1 live</span>
+        <span class="state live">4 tools · 2 live</span>
         <h3>Engineering <span class="path">data/engineering</span></h3>
         <p>ETL/ELT pipelines, dbt transformations, orchestration with Airflow and Dagster — and document parsing via LiteParse. The plumbing that gets data (structured and unstructured) from source systems into warehouses and vector stores.</p>
         <div class="tags">
@@ -673,7 +673,7 @@
     <div class="fade-up">
       <div class="hub-label">02 · Start here</div>
       <h2 class="hub-title">Featured skill nodes</h2>
-      <p class="hub-lede">Apache Superset for the read layer. LiteParse for getting unstructured documents into the pipeline in the first place. Salesforce Data Cloud as the CDP / unified-profile layer behind AgentForce. More leaves landing as the data branch grows.</p>
+      <p class="hub-lede">Apache Superset for the read layer. LiteParse and Chonkie for the ingestion first mile — parse documents into clean text, then chunk that text for retrieval. Salesforce Data Cloud as the CDP / unified-profile layer behind AgentForce. More leaves landing as the data branch grows.</p>
     </div>
     <div class="featured-grid fade-up" style="transition-delay: 0.05s">
       <a href="analytics/superset.html" class="featured-card">
@@ -691,6 +691,14 @@
         </div>
         <h4>LiteParse</h4>
         <p>Local document parsing from LlamaIndex. PDFs, DOCX, PPTX, XLSX, images → clean text or JSON with bounding boxes. Runs in a client VPC or on a laptop — no cloud, no LLM, no per-page pricing. The POPIA-safe ingestion layer for RAG.</p>
+      </a>
+      <a href="engineering/chonkie.html" class="featured-card">
+        <div class="meta">
+          <span class="tag-mono live">Live</span>
+          <span class="tag-mono" style="background: var(--bg-card); border: 1px solid var(--border); color: var(--text-muted);">data/engineering/chonkie</span>
+        </div>
+        <h4>Chonkie</h4>
+        <p>The RAG chunking library — parse, then chunk. A Python/TS API over a Rust SIMD core, read honestly: the 100+ GB/s headline vs a 4.82 MB/s end-to-end reality, ~1.2x over LangChain not 33x, and the NAACL 2025 finding that semantic chunking rarely earns its compute. The cheap chunkers are the right default.</p>
       </a>
       <a href="data-cloud.html" class="featured-card">
         <div class="meta">

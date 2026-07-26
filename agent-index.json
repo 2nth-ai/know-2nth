@@ -3,7 +3,7 @@
   "description": "The public knowledge tree for the 2nth.ai ecosystem. Every leaf is both a human-readable reference and an agent-consumable context document.",
   "agent_fetch": "https://know.2nth.ai/api/context/<domain>/<leaf>",
   "mcp": "https://know.2nth.ai/mcp",
-  "count": 206,
+  "count": 207,
   "items": [
     {
       "title": "Agents — know.2nth.ai",
@@ -636,6 +636,14 @@
       "kind": "leaf",
       "url": "https://know.2nth.ai/explainers/data/analytics/superset",
       "fetch": "data/analytics/superset"
+    },
+    {
+      "title": "Chonkie — know.2nth.ai",
+      "description": "Chonkie — the RAG chunking library, evaluated honestly. A Python/TypeScript API over a separate Rust SIMD core, with an eleven-chunker menu (only two in the default install). The honest read: the 100+ GB/s headline is a micro-benchmark of the Rust loop; the vendor's own end-to-end measure is 4.82 MB/s, and against LangChain the real gain is ~1.2x, not 33x. And a peer-reviewed NAACL 2025 finding that semantic chunking rarely earns its compute — so the cheap chunkers are the right default.",
+      "domain": "data",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/data/engineering/chonkie",
+      "fetch": "data/engineering/chonkie"
     },
     {
       "title": "LiteParse — know.2nth.ai",
