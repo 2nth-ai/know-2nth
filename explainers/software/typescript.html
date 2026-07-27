@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TypeScript 7.0 &mdash; know.2nth.ai</title>
+<meta name="description" content="TypeScript 7.0 — the compiler and language service ported to Go, GA 8 July 2026. Roughly 8–12x faster full builds (Microsoft's figures), but it ships no programmatic compiler API — so React and Node app-code can upgrade now, while Vue, Svelte, Astro, Angular template-checking and typescript-eslint cannot until 7.1. The speed and the ecosystem breakage have the same cause. What changed, the honest read, and whether you can upgrade.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/software/typescript">
+<meta property="og:title" content="TypeScript 7.0 — know.2nth.ai">
+<meta property="og:description" content="TypeScript 7.0 (GA 8 Jul 2026) is the compiler ported to Go — ~8–12x faster, but ships no programmatic API. React/Node can upgrade now; Vue/Svelte/Astro/Angular and typescript-eslint must wait for 7.1. The speed and the breakage share one cause.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="TypeScript 7.0 — know.2nth.ai">
+<meta name="twitter:description" content="TypeScript 7.0 (GA 8 Jul 2026) is the compiler ported to Go — ~8–12x faster, but ships no programmatic API. React/Node can upgrade now; Vue/Svelte/Astro/Angular and typescript-eslint must wait for 7.1. The speed and the breakage share one cause.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%2314B8A6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12); --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-soft: rgba(99, 102, 241, 0.12); --code: #14B8A6; --code-soft: rgba(20, 184, 166, 0.12); --bg: var(--ink); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(20, 184, 166, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(20, 184, 166, 0.3); --max-w: 1200px; --read-w: 760px; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(20, 184, 166, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(20, 184, 166, 0.28); }
+  * { margin: 0; padding: 0; box-sizing: border-box; } html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.blue { width: 600px; height: 600px; background: var(--code); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--code), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--code); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--code); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--code); } .crumb-sep { opacity: 0.5; } .crumb-current { color: var(--text-secondary); }
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--code); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--code); box-shadow: 0 0 12px var(--code); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--code), var(--sky), var(--sky-muted)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.accent { background: rgba(37, 99, 235, 0.12); color: var(--blue-glow); border-color: rgba(37, 99, 235, 0.25); }
+  .pill.green { background: var(--green-soft); color: var(--green); border-color: rgba(16, 185, 129, 0.25); }
+  .pill.code { background: var(--code-soft); color: var(--code); border-color: rgba(20, 184, 166, 0.25); }
+  .pill.warn { background: var(--warm-soft); color: var(--warm-glow); border-color: rgba(245, 158, 11, 0.25); }
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--code); margin-bottom: 14px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--code); }
+  .prose ul, .prose ol { padding-left: 24px; margin-bottom: 18px; max-width: var(--read-w); }
+  .prose li { font-size: 15px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 8px; }
+  .prose li strong { color: var(--text-primary); font-weight: 600; }
+  pre.code { background: var(--ink-deep); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px 22px; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.65; color: var(--mist); margin: 0 0 20px; max-width: var(--read-w); }
+  [data-theme="light"] pre.code { background: #0F172A; color: #E2E8F0; }
+  pre.code .k { color: var(--sky); } pre.code .s { color: #A5F3B8; } pre.code .c { color: var(--text-muted); font-style: italic; } pre.code .h { color: var(--code); font-weight: 600; }
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); margin-bottom: 20px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.code { border-left: 3px solid var(--code); }
+  .info-card.rose { border-left: 3px solid var(--rose); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .info-card code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--code); }
+  .info-card strong { color: var(--text-primary); }
+  .info-card ul { padding-left: 20px; margin: 0; }
+  .info-card li { font-size: 14px; color: var(--text-secondary); line-height: 1.65; margin-bottom: 6px; }
+  .stack-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; max-width: var(--read-w); margin-bottom: 20px; }
+  .stack-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--code); border-radius: var(--radius-md); padding: 18px 22px; }
+  .stack-cell .layer { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .stack-cell h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.3px; }
+  .stack-cell p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: var(--read-w); margin-bottom: 20px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--code); background: var(--code-soft); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); } .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--code); }
+  .compare td strong { color: var(--text-primary); }
+  .decision-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: var(--read-w); }
+  @media (max-width: 720px) { .decision-grid { grid-template-columns: 1fr; } }
+  .decision-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 24px; }
+  .decision-card.use { border-left: 3px solid var(--green); } .decision-card.skip { border-left: 3px solid var(--rose); }
+  .decision-card h4 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 12px; }
+  .decision-card.use h4 { color: var(--green); } .decision-card.skip h4 { color: var(--rose); }
+  .decision-card ul { list-style: none; padding: 0; }
+  .decision-card li { font-size: 13px; color: var(--text-secondary); line-height: 1.6; padding: 6px 0; border-bottom: 1px solid var(--border); }
+  .decision-card li:last-child { border-bottom: none; }
+  .connect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .connect-node { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; transition: all 0.3s; text-decoration: none; color: inherit; display: block; }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node .tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--code); word-break: break-all; }
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--code), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--code); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } pre.code { font-size: 11px; padding: 14px 16px; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+
+<div class="glow-orb blue"></div>
+<div class="glow-orb sky"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand"><span class="nav-brand-mark">know.2nth.ai</span><span class="nav-brand-sub">software/typescript</span></a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">&larr; Software</a>
+      <a href="../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x2600;&#xFE0F;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="./">Software</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="languages.html">Languages</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">TypeScript 7.0</span>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> software &middot; Languages &middot; TypeScript 7.0</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      Ported to Go. <span class="gradient">And it broke your linter.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      TypeScript 7.0 reached GA on <strong>8 July 2026</strong>. It is the compiler and language service <strong>ported to Go</strong> &mdash; the type-checking semantics carry over from 6.0 by design; the implementation language is what changed. Microsoft reports full-build speedups <strong>typically between 8x and 12x</strong>. The catch is the same fact that made it fast: 7.0 ships <strong>no programmatic compiler API</strong>. If your app is React or Node, you can upgrade today. If your toolchain embeds the compiler &mdash; Vue, Svelte, Astro, Angular templates, <code>typescript-eslint</code> &mdash; you are waiting for 7.1. The speed and the breakage have one cause.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill code">Go port</span>
+      <span class="pill">GA 8 Jul 2026</span>
+      <span class="pill accent">8&ndash;12x builds</span>
+      <span class="pill warn">No compiler API</span>
+      <span class="pill"><code>tsc</code> &middot; npm</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 WHAT IT IS -->
+<section id="what">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; What it is</div>
+      <h2 class="section-title">The same compiler, rewritten in a different language.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>TypeScript 7.0, GA on 8 July 2026, is the TypeScript compiler and language service <strong>ported from TypeScript to Go</strong> (the effort Microsoft codenamed <em>Corsa</em>, succeeding the JavaScript-era <em>Strada</em>). It ships as the standard <code>typescript</code> package on npm, with a <code>tsc</code> binary &mdash; the RC-era <code>tsgo</code> name is retired. Crucially, this is a <strong>port, not a rewrite</strong>: Microsoft deliberately preserved the structure and logic of the original so that type-checking results stay consistent. Your types check the same; the thing under them runs on Go.</p>
+      <p>The immediate predecessor, TypeScript 6.0 (GA 23 March 2026), was the <strong>final release on the JavaScript codebase</strong>. 7.0 inherits 6.0's deprecations wholesale, which is why several long-standing options are now hard errors (below). Read 7.0 as "6.0's semantics, on a new engine, with the old escape hatches removed."</p>
+    </div>
+    <div class="info-card code fade-up" style="transition-delay: 0.08s">
+      <h4>The one fact that decides your upgrade</h4>
+      <p>7.0 ships with <strong>no programmatic compiler API at all</strong> &mdash; not an unstable one, none. Microsoft says a new and different API will arrive in <strong>7.1</strong>. If nothing in your stack calls the compiler as a library, that is a non-event. If something does &mdash; a linter, a template checker, a code transformer &mdash; it is the whole story. The <code>@typescript/typescript6</code> compatibility package ships a <code>tsc6</code> binary and re-exports the 6.0 API for side-by-side operation while you wait.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 WHAT CHANGED -->
+<section id="how">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; What actually changed</div>
+      <h2 class="section-title">Parallelism, new defaults, and a faster watch.</h2>
+      <p class="section-lede">The headline is speed, and it comes from parallelism the old single-threaded compiler couldn't do. But the defaults changed too, and two of them will break a working build before you notice the speed.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p><strong>Parallelism.</strong> A fixed pool of type-checker workers &mdash; default <strong>4</strong>, set with <code>--checkers</code> &mdash; divides the work deterministically (workers duplicate some shared work by design so the division stays reproducible). <code>--builders</code> parallelises project-reference builds and multiplies against it: <code>--checkers 4 --builders 4</code> permits 16 concurrent checkers. <code>--singleThreaded</code> turns it all off. <code>--checkers</code> and <code>--builders</code> are marked experimental.</p>
+      <p><strong>New defaults.</strong> 7.0 defaults <code>strict: true</code>, <code>module: esnext</code>, and &mdash; the two Microsoft flags as most surprising &mdash; <code>rootDir: ./</code> and <code>types: []</code>. Those two are the ones that break a working build silently. Several old options are now <strong>hard errors</strong>: <code>target: es5</code>, <code>downlevelIteration</code>, <code>moduleResolution: node/node10/classic</code>, <code>module: amd/umd/systemjs/none</code>, and <code>baseUrl</code>; <code>esModuleInterop</code> and <code>alwaysStrict</code> can no longer be set to false. <code>--watch</code> was rebuilt on a Go port of <code>@parcel/watcher</code>, because polling was too expensive at <code>node_modules</code> scale and the C++ original would have added a toolchain dependency.</p>
+      <p>Microsoft's own benchmark figures (July 2026, machine unspecified) put the VS Code codebase at <strong>125.7s &rarr; 10.6s</strong> (11.9x) at the default <code>--checkers 4</code>, and <strong>7.51s</strong> (16.7x) at <code>--checkers 8</code>; memory moves between &minus;6% and &minus;26% across their five test codebases. The gap between the two checker settings is the more useful engineering fact than either number alone.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.08s">
+      <p>The side-by-side install a team will actually paste &mdash; run 7.0 as <code>tsc</code>, keep the 6.0 API available for tools that still need it:</p>
+    </div>
+    <pre class="code fade-up" style="transition-delay: 0.1s"><span class="c">// package.json — 7.0 as the default, 6.0 kept for API-dependent tooling</span>
+{
+  <span class="k">"devDependencies"</span>: {
+    <span class="k">"typescript"</span>: <span class="s">"^7.0.0"</span>,
+    <span class="k">"@typescript/typescript6"</span>: <span class="s">"^6.0.0"</span>   <span class="c">// provides the tsc6 binary + 6.0 API</span>
+  }
+}
+<span class="c">// tsc   -> 7.0 (fast, Go, no API)</span>
+<span class="c">// tsc6  -> 6.0 (the programmatic API surface, until 7.1 ships a new one)</span></pre>
+  </div>
+</section>
+
+<!-- 03 HONEST READ -->
+<section id="honest">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; The honest read</div>
+      <h2 class="section-title">The speed and the ecosystem cost are the same decision.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>The port preserved type-checking and discarded the programmatic API. That is not an oversight &mdash; it is the direct consequence of moving to a language whose object model does not expose the same surface. Microsoft got the speed by giving up the thing the ecosystem was built on top of, and both follow from the one move.</p>
+      <p>What that means concretely depends on your stack. If it is React, Next.js, or plain Node services, app-code type-checking has no API dependency and the upgrade is <strong>available now</strong>. If it involves Vue, MDX, Astro, Svelte, or Angular template type-checking, the editor experience breaks &mdash; Microsoft says so in its own release notes, because Volar-class tools embed the compiler as a library. The sharpest case, and the one to check first because it needs no one's word, is <code>typescript-eslint</code>: issue <strong>#12518</strong>, filed on GA day, was closed as <em>not planned</em>, and the published peer range stops the install before anything runs &mdash; npm refuses it outright with an <code>ERESOLVE</code>. Microsoft made side-by-side operation a priority precisely for tools like this, and on day one npm still won't install it without an alias. Both are true; hold both.</p>
+      <p>One more trap for continuous integration. Because <code>--checkers</code> divides work across a variable number of workers, it can in rare cases <strong>surface order-dependent results</strong> &mdash; a flag that changes output as a function of worker count is a reproducibility concern, not just a tuning knob. Microsoft recommends pinning a fixed <code>--checkers</code> value across all build environments. Treat it as a lockfile-class setting, not a performance dial.</p>
+    </div>
+    <div class="decision-grid fade-up" style="transition-delay: 0.08s">
+      <div class="decision-card use">
+        <h4>Upgrade now when</h4>
+        <ul>
+          <li>Your app is React, Next.js, or plain Node/TS services</li>
+          <li>Type-checking is your CI bottleneck and you feel the minutes</li>
+          <li>Nothing in the toolchain reads types programmatically</li>
+          <li>You can pin <code>--checkers</code> across every build environment</li>
+        </ul>
+      </div>
+      <div class="decision-card skip">
+        <h4>Skip 7.0 (wait for 7.1) when</h4>
+        <ul>
+          <li>Anything embeds the compiler or walks the AST &mdash; <code>typescript-eslint</code>, <code>ts-morph</code>, custom transformers, <code>ts-jest</code> on the native package</li>
+          <li>You use Vue, Svelte, Astro, MDX, or Angular template type-checking</li>
+          <li>Your editor experience depends on a Volar-class language tool</li>
+          <li>A subtly-wrong AST result would be worse than a hard failure &mdash; and for some consumers it is silent, not a crash</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 PRACTITIONER -->
+<section id="ci">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; The CI-cost angle</div>
+      <h2 class="section-title">This is a runner-sizing decision, not a developer-experience one.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>The speed-up is easy to read as a nice-to-have. For a South African team billing CI in dollars against a rand budget, it is a line item. A type-check step that drops from minutes to seconds changes <strong>runner sizing</strong>, not just wall-clock: teams provisioning 8- or 16-core runners specifically to parallelise type-checking at the project level are paying for concurrency the compiler now does internally. Moving to 7.0 on the app-code path can let you drop to a smaller, cheaper runner and still finish faster &mdash; the saving compounds every push, every branch, every developer, every month. Weigh that against the blocker: if the same pipeline runs <code>typescript-eslint</code>, the linter stage still needs 6.0, so the win is on the type-check stage first and the lint stage only after 7.1. Cost the upgrade per pipeline stage, not per repo.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 SA / not needed; keep 4 as practitioner. 05 CONNECTIONS -->
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; Connections</div>
+      <h2 class="section-title">Where TypeScript 7.0 links in the tree.</h2>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="languages.html" class="connect-node">
+        <span class="tag">software/languages</span>
+        <div class="skill">Programming languages</div>
+        <div class="why">The overview this sits under &mdash; TypeScript-the-language is covered there; this leaf is the 7.0 compiler and toolchain event.</div>
+      </a>
+      <a href="rust.html" class="connect-node">
+        <span class="tag">software/rust</span>
+        <div class="skill">Rust</div>
+        <div class="why">The two-language pattern in miniature: a high-level ecosystem rewrites its hot path in a systems language and gains speed &mdash; TypeScript's cost for it was the programmatic API.</div>
+      </a>
+      <a href="go.html" class="connect-node">
+        <span class="tag">software/go</span>
+        <div class="skill">Go</div>
+        <div class="why">The language the compiler was ported to &mdash; chosen for fast compiles, easy concurrency, and a structure close enough to the original to keep the port faithful.</div>
+      </a>
+      <a href="ci-cd.html" class="connect-node">
+        <span class="tag">software/ci-cd</span>
+        <div class="skill">CI / CD</div>
+        <div class="why">Where the 8&ndash;12x lands as money: the type-check stage shrinks, but pin <code>--checkers</code> for reproducibility and keep 6.0 for the lint stage until 7.1.</div>
+      </a>
+      <a href="packages.html" class="connect-node">
+        <span class="tag">software/packages</span>
+        <div class="skill">Packages &amp; dependencies</div>
+        <div class="why">The upgrade is an npm-alias story &mdash; <code>@typescript/typescript6</code> side-by-side is why peer-range <code>ERESOLVE</code> errors decide whether you can install at all.</div>
+      </a>
+      <a href="software-for-agents.html" class="connect-node">
+        <span class="tag">software/software-for-agents</span>
+        <div class="skill">Software for agents</div>
+        <div class="why">A build step is now as likely to be triggered by an agent as a human; a type-check that drops from two minutes to ten seconds is the difference in a tight agent loop.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 06 RESOURCES -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; Resources</div>
+      <h2 class="section-title">Primary sources.</h2>
+      <p class="section-lede">Microsoft's own release notes and the Go repo &mdash; and one independent anchor (the typescript-eslint issue) you can check without taking the vendor's word. Last reviewed 2026-07-27; benchmark figures are Microsoft's own.</p>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Release notes &middot; 8 Jul 2026</span>
+        <span class="r-title">Announcing TypeScript 7.0</span>
+        <span class="r-url">devblogs.microsoft.com/typescript/announcing-typescript-7-0</span>
+      </a>
+      <a href="https://devblogs.microsoft.com/typescript/announcing-typescript-6-0/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Release notes &middot; 23 Mar 2026</span>
+        <span class="r-title">Announcing TypeScript 6.0 (final JS-codebase release)</span>
+        <span class="r-url">devblogs.microsoft.com/typescript/announcing-typescript-6-0</span>
+      </a>
+      <a href="https://github.com/microsoft/typescript-go" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Source</span>
+        <span class="r-title">microsoft/typescript-go (see CHANGES.md for the live delta)</span>
+        <span class="r-url">github.com/microsoft/typescript-go</span>
+      </a>
+      <a href="https://github.com/typescript-eslint/typescript-eslint/issues/12518" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Independent anchor</span>
+        <span class="r-title">typescript-eslint #12518 — "TypeScript 7.0 Support", closed not planned</span>
+        <span class="r-url">github.com/typescript-eslint/typescript-eslint/issues/12518</span>
+      </a>
+    </div>
+  </div>
+</section>
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../index.html">Knowledge tree</a>
+      <a href="./">Software hub</a>
+      <a href="https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/" target="_blank" rel="noopener">TypeScript 7.0 release notes &nearr;</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme(){const html=document.documentElement;const current=html.getAttribute('data-theme');const next=current==='dark'?'light':'dark';html.setAttribute('data-theme',next);document.querySelector('.theme-toggle').textContent=next==='dark'?'☀️':'🌙';localStorage.setItem('theme',next);}
+  const saved=localStorage.getItem('theme');if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.theme-toggle').textContent=saved==='dark'?'☀️':'🌙';}
+  const observer=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting)entry.target.classList.add('visible');});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>
