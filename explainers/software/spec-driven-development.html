@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spec-driven development &mdash; know.2nth.ai</title>
+<meta name="description" content="Spec-driven development — why formal specs (the IEEE 830 / ISO 29148 lineage) are re-entering practice in the agent era. The mechanism: a coding agent is a non-deterministic contractor, and unwritten intent now costs you on every regeneration, not once. The METR perception gap, GitHub Spec Kit, constitution files, and the part most write-ups skip: a spec without verification is just a longer prompt. With the over-specification antipattern stated honestly.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/software/spec-driven-development">
+<meta property="og:title" content="Spec-driven development — know.2nth.ai">
+<meta property="og:description" content="The spec is back — the agent made it necessary. A coding agent is a non-deterministic contractor; the spec is the contract, and the verification loop is what makes it enforceable. The METR perception gap, Spec Kit, and the over-specification antipattern, honestly.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Spec-driven development — know.2nth.ai">
+<meta name="twitter:description" content="The spec is back — the agent made it necessary. A coding agent is a non-deterministic contractor; the spec is the contract, and the verification loop is what makes it enforceable. The METR perception gap, Spec Kit, and the over-specification antipattern, honestly.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%2314B8A6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12); --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-soft: rgba(99, 102, 241, 0.12); --code: #14B8A6; --code-soft: rgba(20, 184, 166, 0.12); --bg: var(--ink); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(20, 184, 166, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(20, 184, 166, 0.3); --max-w: 1200px; --read-w: 760px; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(20, 184, 166, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(20, 184, 166, 0.28); }
+  * { margin: 0; padding: 0; box-sizing: border-box; } html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.blue { width: 600px; height: 600px; background: var(--code); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--code), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--code); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--code); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--code); } .crumb-sep { opacity: 0.5; } .crumb-current { color: var(--text-secondary); }
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--code); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--code); box-shadow: 0 0 12px var(--code); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--code), var(--sky), var(--sky-muted)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.accent { background: rgba(37, 99, 235, 0.12); color: var(--blue-glow); border-color: rgba(37, 99, 235, 0.25); }
+  .pill.green { background: var(--green-soft); color: var(--green); border-color: rgba(16, 185, 129, 0.25); }
+  .pill.code { background: var(--code-soft); color: var(--code); border-color: rgba(20, 184, 166, 0.25); }
+  .pill.warn { background: var(--warm-soft); color: var(--warm-glow); border-color: rgba(245, 158, 11, 0.25); }
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--code); margin-bottom: 14px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--code); }
+  .prose ul, .prose ol { padding-left: 24px; margin-bottom: 18px; max-width: var(--read-w); }
+  .prose li { font-size: 15px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 8px; }
+  .prose li strong { color: var(--text-primary); font-weight: 600; }
+  pre.code { background: var(--ink-deep); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px 22px; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.65; color: var(--mist); margin: 0 0 20px; max-width: var(--read-w); }
+  [data-theme="light"] pre.code { background: #0F172A; color: #E2E8F0; }
+  pre.code .k { color: var(--sky); } pre.code .s { color: #A5F3B8; } pre.code .c { color: var(--text-muted); font-style: italic; } pre.code .h { color: var(--code); font-weight: 600; }
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); margin-bottom: 20px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.code { border-left: 3px solid var(--code); }
+  .info-card.rose { border-left: 3px solid var(--rose); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .info-card code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--code); }
+  .info-card strong { color: var(--text-primary); }
+  .info-card ul { padding-left: 20px; margin: 0; }
+  .info-card li { font-size: 14px; color: var(--text-secondary); line-height: 1.65; margin-bottom: 6px; }
+  .stack-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; max-width: var(--read-w); margin-bottom: 20px; }
+  .stack-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--code); border-radius: var(--radius-md); padding: 18px 22px; }
+  .stack-cell .layer { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .stack-cell h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.3px; }
+  .stack-cell p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: var(--read-w); margin-bottom: 20px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--code); background: var(--code-soft); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); } .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--code); }
+  .compare td strong { color: var(--text-primary); }
+  .decision-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: var(--read-w); }
+  @media (max-width: 720px) { .decision-grid { grid-template-columns: 1fr; } }
+  .decision-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 24px; }
+  .decision-card.use { border-left: 3px solid var(--green); } .decision-card.skip { border-left: 3px solid var(--rose); }
+  .decision-card h4 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 12px; }
+  .decision-card.use h4 { color: var(--green); } .decision-card.skip h4 { color: var(--rose); }
+  .decision-card ul { list-style: none; padding: 0; }
+  .decision-card li { font-size: 13px; color: var(--text-secondary); line-height: 1.6; padding: 6px 0; border-bottom: 1px solid var(--border); }
+  .decision-card li:last-child { border-bottom: none; }
+  .connect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .connect-node { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; transition: all 0.3s; text-decoration: none; color: inherit; display: block; }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node .tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--code); word-break: break-all; }
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--code), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--code); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } pre.code { font-size: 11px; padding: 14px 16px; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+
+<div class="glow-orb blue"></div>
+<div class="glow-orb sky"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand"><span class="nav-brand-mark">know.2nth.ai</span><span class="nav-brand-sub">software/spec-driven-development</span></a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">&larr; Software</a>
+      <a href="../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x2600;&#xFE0F;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="./">Software</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">Spec-driven development</span>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> software &middot; Method &middot; Spec-driven development</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      The spec is back. <span class="gradient">The agent made it necessary.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      Formal requirements specs &mdash; the IEEE 830 / ISO 29148 lineage a generation of Agile culture learned to skip &mdash; are re-entering practice, and the reason is structural, not nostalgic. <strong>A coding agent is a non-deterministic contractor, and a spec is the contract.</strong> With human developers, an unstated assumption got resolved once, in conversation, and stuck. With an agent, every regeneration re-rolls the dice on every piece of intent you never wrote down &mdash; the cost of unwritten intent went from one-time to recurring. And the half most write-ups skip: the spec only becomes a contract when there's a <strong>verification loop</strong> to enforce it.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill code">Spec = contract</span>
+      <span class="pill">ISO/IEC/IEEE 29148</span>
+      <span class="pill accent">Spec Kit &middot; MIT</span>
+      <span class="pill green">Verify or it's a prompt</span>
+      <span class="pill warn">Over-spec is the antipattern</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 WHAT IT IS -->
+<section id="what">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; What it is</div>
+      <h2 class="section-title">A machine-readable statement of intent, written before the code.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Spec-driven development (SDD) puts a formal, machine-readable specification &mdash; written before implementation &mdash; at the centre of the workflow as the single source of truth. Code is generated and maintained <em>against</em> the spec; when intent changes, the spec changes first. The idea is old: its roots run through 1960s NASA workflows, Hoare's logic, Dijkstra's formal methods, and Meyer's design-by-contract, with an academic formalisation in 2004.</p>
+      <p>The standards lineage matters because it maps so cleanly onto the present. <strong>IEEE 830</strong> defined the software requirements specification; it was superseded by <strong>ISO/IEC/IEEE 29148</strong> in 2011 (current revision 2018). A BRS captures stakeholder intent &mdash; the <em>why</em>. An SRS pins down system behaviour an engineer can implement against &mdash; the <em>what</em>. Those two documents map almost exactly onto the two artifacts every serious agentic workflow now regenerates: intent capture and constrained task decomposition. What's returned is not the IEEE document itself &mdash; nobody is writing an 830-style SRS again &mdash; but its <strong>function</strong>, in new forms: markdown specs, constitution files, eval suites. The standard didn't go away. It waited for a consumer that couldn't infer intent from a hallway conversation.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 WHY NOW -->
+<section id="why">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; Why now</div>
+      <h2 class="section-title">Non-determinism changed the economics of ambiguity.</h2>
+      <p class="section-lede">The best evidence that something is off in unstructured AI-assisted work isn't a benchmark &mdash; it's a perception gap, measured under controlled conditions.</p>
+    </div>
+    <div class="stack-grid fade-up" style="transition-delay: 0.05s">
+      <div class="stack-cell">
+        <span class="layer">Measured</span>
+        <h4>19% slower with AI</h4>
+        <p>Sixteen experienced developers, 246 real tasks from repos they knew deeply. Allowed AI tools, they took 19% longer (METR RCT, July 2025 &mdash; early-2025 tools; METR labels the result historical, and a February 2026 follow-up showed some speedup).</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Predicted</span>
+        <h4>24% faster, beforehand</h4>
+        <p>The same developers predicted AI would speed them up by 24% before starting.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Felt</span>
+        <h4>20% faster, after</h4>
+        <p>Even after finishing slower, they estimated they'd been about 20% faster. The clock and the feeling pointed in opposite directions.</p>
+      </div>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.08s">
+      <p>Be precise about what that study proves and what it doesn't. It proves the <strong>perception gap</strong> is real &mdash; unstructured AI-assisted work feels faster than it is. It did <em>not</em> test spec-vs-no-spec, and METR attributed the slowdown to several factors, only some of which a spec addresses. The spec is the <strong>candidate</strong> fix, not the proven one &mdash; and the mechanism behind the candidacy is specific to how LLMs generate code. The same prompt produces functionally different output across invocations, so any gap in your intent resurfaces unpredictably every time the agent regenerates. A human resolves ambiguity once and remembers; an agent makes you pay for the same unwritten assumption on every run. Externalising intent into an artifact is the move that changes that cost curve.</p>
+      <p>This is also where the harness model earns its keep. <code>CLAUDE.md</code>, <code>AGENTS.md</code>, and a SKILL file tell the agent <em>how</em> to build; the spec tells it <em>what</em>. Skip the second and you're vibe coding with extra steps. The operator's real leverage isn't prompting faster &mdash; it's specifying tighter.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 THE TOOLCHAIN + VERIFICATION -->
+<section id="toolchain">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; The toolchain &mdash; and the half that makes it real</div>
+      <h2 class="section-title">Spec Kit, constitution files, and the verification loop.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p><strong>GitHub Spec Kit</strong> (September 2025, MIT-licensed) operationalises the workflow: intent capture, consistency analysis, task decomposition, implementation under governance &mdash; running across 30+ agents including Claude, Codex, Copilot, Cursor, and Gemini. A related strand puts a versioned <strong>constitution file</strong> &mdash; non-negotiable constraints, mapped to the CWE/MITRE Top 25 &mdash; above every generation: one arXiv case study of this "constitutional" SDD (Marri, February 2026) reports a 73% reduction in security vulnerabilities and 56% faster time to first secure build. Those numbers come from a single case study; weight them accordingly. The direction, corroborated by IBM, Microsoft, and Thoughtworks all publishing on the same pattern, is the signal.</p>
+    </div>
+    <div class="info-card code fade-up" style="transition-delay: 0.08s">
+      <h4>A spec without verification is a vibe with headers</h4>
+      <p>The part most SDD write-ups undersell: a spec an agent cannot be <em>checked against</em> is just a longer prompt. The contract is really two artifacts &mdash; the spec, and the <strong>verification loop</strong> that enforces it: acceptance tests generated from the spec, eval suites, CI gates, and constraint files the pipeline actually runs. That loop is what converts "I wrote down what I wanted" into "the agent provably built what I specified" &mdash; and it's what makes regeneration safe, because a re-rolled implementation that still passes the spec's checks is a non-event. Write the spec; then write (or generate) the checks that make it binding.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 DECISION -->
+<section id="decision">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; Decision guide</div>
+      <h2 class="section-title">Which builds earn the spec.</h2>
+      <p class="section-lede">The spec is not a productivity hack, and over-specification is the named antipattern &mdash; Thoughtworks put SDD on the Technology Radar and flagged the failure mode in the same breath: a bias toward heavy up-front specification and big-bang releases. Over-specify a throwaway prototype and you've built a cathedral to house a shed.</p>
+    </div>
+    <div class="decision-grid fade-up" style="transition-delay: 0.05s">
+      <div class="decision-card use">
+        <h4>Write the spec when</h4>
+        <ul>
+          <li>The system will be maintained &mdash; regeneration without a contract compounds drift</li>
+          <li>More than one agent (or agent-plus-humans) builds against the same intent</li>
+          <li>The domain is regulated &mdash; the spec doubles as the audit trail</li>
+          <li>Security constraints are non-negotiable &mdash; constitution-file territory</li>
+          <li>The cost of a subtly-wrong implementation exceeds the cost of writing intent down</li>
+        </ul>
+      </div>
+      <div class="decision-card skip">
+        <h4>Skip the ceremony when</h4>
+        <ul>
+          <li>It's a throwaway prototype or spike &mdash; the shed doesn't need a cathedral</li>
+          <li>You're still discovering the intent &mdash; explore first, specify what survives</li>
+          <li>The spec would just restate the code &mdash; specify behaviour, not implementation</li>
+          <li>There's no verification loop planned &mdash; an unenforced spec decays into documentation</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 SA CONTEXT -->
+<section id="sa-context">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; South African context</div>
+      <h2 class="section-title">Under POPIA, the spec is evidence.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>For anyone building under POPIA or GDPR, this stops being a style preference. Compliance reviews increasingly treat the specification as evidence: if an agent generated the code, the spec is the audit trail for what it was instructed to do and which constraints it was held to &mdash; the difference between "the model wrote it" and a defensible record of intent, constraint, and validation. In a regulated Johannesburg fintech, that record is the thing that survives a review. Keep the spec and its checks in the repo, run the agent on in-country infrastructure, and the governance story and the residency story become the same story.</p>
+      <p>The economics land locally too. The code was never the scarce thing &mdash; any agent can produce a thousand lines. What's scarce is a precise, verifiable statement of what those lines are supposed to do. For an SA team, that scarcity is good news: the durable, billable skill in agent-era delivery is exactly the one that doesn't depend on owning the biggest model &mdash; specifying tightly, and verifying what comes back.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 CONNECTIONS -->
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; Connections</div>
+      <h2 class="section-title">Where spec-driven development links in the tree.</h2>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="planning-with-agents.html" class="connect-node">
+        <span class="tag">software/planning-with-agents</span>
+        <div class="skill">Planning with agents</div>
+        <div class="why">The process view &mdash; its &sect;02 is "the spec is the ticket." This leaf is the deep dive under that section: the artifact, the evidence, and the verification half.</div>
+      </a>
+      <a href="waterfall.html" class="connect-node">
+        <span class="tag">software/waterfall</span>
+        <div class="skill">Waterfall</div>
+        <div class="why">The history rhyme, and the caution. Specs-as-phase-gates failed once already &mdash; the difference this time is a consumer that regenerates, and a loop that verifies.</div>
+      </a>
+      <a href="software-for-agents.html" class="connect-node">
+        <span class="tag">software/software-for-agents</span>
+        <div class="skill">Software for agents</div>
+        <div class="why">The how-side of the contract: CLAUDE.md, AGENTS.md, and skills tell the agent how to build. The spec is the what. You need both.</div>
+      </a>
+      <a href="ci-cd.html" class="connect-node">
+        <span class="tag">software/ci-cd</span>
+        <div class="skill">CI / CD</div>
+        <div class="why">Where the verification loop physically lives &mdash; the gates that make a spec binding instead of decorative.</div>
+      </a>
+      <a href="orchestrating-agents.html" class="connect-node">
+        <span class="tag">software/orchestrating-agents</span>
+        <div class="skill">Orchestrating agents</div>
+        <div class="why">Multi-agent work raises the stakes: several contractors, one contract. The spec is what keeps parallel agents building the same system.</div>
+      </a>
+      <a href="../agents/effective-agents.html" class="connect-node">
+        <span class="tag">agents/effective-agents</span>
+        <div class="skill">Effective Agents</div>
+        <div class="why">The upstream question &mdash; whether this should be an agent at all &mdash; asked before the spec decides what the agent must do.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 07 RESOURCES -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; Resources</div>
+      <h2 class="section-title">Primary sources.</h2>
+      <p class="section-lede">The RCT, the standard, the toolkit, and the case study &mdash; with the caveats carried inline where they belong. Last reviewed 2026-07-28.</p>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">RCT &middot; Jul 2025</span>
+        <span class="r-title">METR &mdash; AI impact on experienced OSS developers</span>
+        <span class="r-url">metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study</span>
+      </a>
+      <a href="https://github.com/github/spec-kit" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Toolkit &middot; MIT</span>
+        <span class="r-title">GitHub Spec Kit</span>
+        <span class="r-url">github.com/github/spec-kit</span>
+      </a>
+      <a href="https://www.iso.org/standard/72089.html" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Standard</span>
+        <span class="r-title">ISO/IEC/IEEE 29148:2018 &mdash; requirements engineering</span>
+        <span class="r-url">iso.org/standard/72089.html</span>
+      </a>
+      <a href="https://developer.microsoft.com/blog/spec-driven-development-ai-native-engineering/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Vendor &middot; Jun 2026</span>
+        <span class="r-title">Microsoft &mdash; Spec-Driven Development, a spec-first approach</span>
+        <span class="r-url">developer.microsoft.com/blog/spec-driven-development-ai-native-engineering</span>
+      </a>
+      <a href="https://arxiv.org/abs/2602.02584" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Paper &middot; single case study</span>
+        <span class="r-title">Marri &mdash; Constitutional Spec-Driven Development</span>
+        <span class="r-url">arxiv.org/abs/2602.02584</span>
+      </a>
+      <a href="https://www.ibm.com/think/topics/spec-driven-development" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Reference</span>
+        <span class="r-title">IBM &mdash; What is spec-driven development?</span>
+        <span class="r-url">ibm.com/think/topics/spec-driven-development</span>
+      </a>
+    </div>
+  </div>
+</section>
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../index.html">Knowledge tree</a>
+      <a href="./">Software hub</a>
+      <a href="https://github.com/github/spec-kit" target="_blank" rel="noopener">GitHub Spec Kit &nearr;</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme(){const html=document.documentElement;const current=html.getAttribute('data-theme');const next=current==='dark'?'light':'dark';html.setAttribute('data-theme',next);document.querySelector('.theme-toggle').textContent=next==='dark'?'☀️':'🌙';localStorage.setItem('theme',next);}
+  const saved=localStorage.getItem('theme');if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.theme-toggle').textContent=saved==='dark'?'☀️':'🌙';}
+  const observer=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting)entry.target.classList.add('visible');});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>
