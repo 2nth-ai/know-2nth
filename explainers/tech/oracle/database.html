@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oracle AI Database 26ai &mdash; know.2nth.ai</title>
+<meta name="description" content="Oracle AI Database 26ai — the converged system of record that added native vector search. A built-in VECTOR data type and AI Vector Search let you run similarity search inside the database instead of copying business data to a separate vector store; Select AI adds natural-language querying; ORDS 26.2 opens it to agents over MCP. The honest read: the win is when the data already lives in Oracle, not as a greenfield vector store.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/tech/oracle/database">
+<meta property="og:title" content="Oracle AI Database 26ai — know.2nth.ai">
+<meta property="og:description" content="Oracle AI Database 26ai — converged relational + JSON + native vector search in one engine. Run similarity search where the records already live. The honest read on converged-vs-specialised.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Oracle AI Database 26ai — know.2nth.ai">
+<meta name="twitter:description" content="Oracle AI Database 26ai — converged relational + JSON + native vector search in one engine. Run similarity search where the records already live. The honest read on converged-vs-specialised.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12); --violet: #8B5CF6; --violet-soft: rgba(139, 92, 246, 0.12); --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-soft: rgba(99, 102, 241, 0.12); --sky-soft: rgba(56, 189, 248, 0.12); --bg: var(--ink); --bg-raised: var(--navy); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(37, 99, 235, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(56, 189, 248, 0.3); --max-w: 1200px; --read-w: 760px; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-raised: #FFFFFF; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(37, 99, 235, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(37, 99, 235, 0.25); }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.blue { width: 600px; height: 600px; background: var(--blue); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--blue-glow); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--blue-glow); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .read { max-width: var(--read-w); }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--blue-glow); }
+  .crumb-sep { opacity: 0.5; }
+  .crumb-current { color: var(--text-secondary); }
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--blue-glow); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--blue-glow); box-shadow: 0 0 12px var(--blue-glow); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--blue), var(--blue-glow), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.accent { background: rgba(37, 99, 235, 0.12); color: var(--blue-glow); border-color: rgba(37, 99, 235, 0.25); }
+  .pill.indigo { background: var(--indigo-soft); color: var(--indigo); border-color: rgba(99, 102, 241, 0.25); }
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--blue-glow); margin-bottom: 14px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--blue-glow); }
+  pre.code { background: var(--ink-deep); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px 22px; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.65; color: var(--mist); margin: 0 0 20px; max-width: var(--read-w); }
+  [data-theme="light"] pre.code { background: #0F172A; color: #E2E8F0; }
+  pre.code .k { color: var(--sky); }
+  pre.code .s { color: #A5F3B8; }
+  pre.code .c { color: var(--text-muted); font-style: italic; }
+  pre.code .h { color: var(--blue-glow); font-weight: 600; }
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); margin-bottom: 20px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.indigo { border-left: 3px solid var(--indigo); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: var(--read-w); margin-bottom: 20px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--blue-glow); background: rgba(37, 99, 235, 0.04); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); }
+  .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--blue-glow); }
+  .compare td strong { color: var(--text-primary); }
+  .compare td.name { font-weight: 600; color: var(--text-primary); white-space: nowrap; }
+  .stack-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; max-width: var(--read-w); margin-bottom: 20px; }
+  .stack-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--blue-glow); border-radius: var(--radius-md); padding: 18px 22px; }
+  .stack-cell .layer { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .stack-cell h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.3px; }
+  .stack-cell p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+  .connect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .connect-node { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; transition: all 0.3s; text-decoration: none; color: inherit; display: block; }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node.soon { cursor: default; opacity: 0.72; }
+  .connect-node .tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--blue-glow); word-break: break-all; }
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--blue-glow); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } pre.code { font-size: 11px; padding: 14px 16px; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+
+<div class="glow-orb blue"></div>
+<div class="glow-orb sky"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../../index.html" class="nav-brand"><span class="nav-brand-mark">know.2nth.ai</span><span class="nav-brand-sub">tech/oracle/database</span></a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">&larr; Oracle</a>
+      <a href="../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x1F319;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="./">Tech</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">MuleSoft</span>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> tech &middot; Oracle AI Database 26ai &middot; Skill Leaf</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      The system of record <span class="gradient">that learned to search vectors.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      Oracle AI Database 26ai is the layer everything else in this cluster sits on &mdash; and its headline change is that the database you already run for transactions can now do <strong>vector similarity search natively</strong>, next to the rows. A built-in <code>VECTOR</code> data type, AI Vector Search, and Select AI mean the RAG substrate can live where the business data lives, rather than in a second system you copy into and keep in sync. The honest read is about <em>when</em> that converged bet pays &mdash; and when a purpose-built vector store still wins.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill accent">26ai &middot; LTS</span>
+      <span class="pill"><code>VECTOR</code> type</span>
+      <span class="pill indigo">AI Vector Search</span>
+      <span class="pill">Select AI</span>
+      <span class="pill">Converged</span>
+    </div>
+  </div>
+</section>
+
+<section id="what">
+  <div class="container">
+    <div class="fade-up"><div class="section-label">01 &middot; What it is</div>
+      <h2 class="section-title">One engine for relational, JSON, and vectors.</h2></div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Oracle AI Database 26ai is Oracle's current <strong>Long-Term Support</strong> release, generally available for Linux on-premises servers since January 2026 (the "23.x" release-update numbers you'll see &mdash; 23.6, 23.26.0 &mdash; run under the 26ai line). Its pitch is <strong>convergence</strong>: relational tables, JSON (with JSON-relational duality), and now vectors, queried through one SQL engine with one set of transactions, backups, and security.</p>
+      <p>For the rest of this cluster it is simply the ground: APEX runs inside it, ORDS exposes it, OCI decides where it sits. The 26ai-specific news is the vector work &mdash; and that is what makes an Oracle estate a plausible RAG substrate rather than just a source you extract from.</p>
+    </div>
+  </div>
+</section>
+
+<section id="vectors">
+  <div class="container">
+    <div class="fade-up"><div class="section-label">02 &middot; AI Vector Search</div>
+      <h2 class="section-title">Search embeddings where the records already are.</h2></div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>26ai introduces a native <code>VECTOR</code> data type (dense and sparse) and <strong>AI Vector Search</strong>: you store embeddings in a column alongside the business data and run similarity search in SQL, without moving anything to a separate vector database. Oracle documents the features as available in Release Update <strong>23.6 or later</strong> with <code>COMPATIBLE</code> set to 23.6. Because the vectors live next to the rows, a single query can combine a similarity search with an ordinary relational filter &mdash; hybrid retrieval without a second datastore to join across in application code.</p>
+    </div>
+    <div class="info-card indigo fade-up" style="transition-delay: 0.08s">
+      <h4>The argument, stated as Oracle states it</h4>
+      <p>Oracle's framing is that you should not have to copy business data into a standalone vector store to make it searchable &mdash; keep it in place, add a vector column, and the transactional guarantees, access controls, and backups you already have extend to the embeddings. That's a real operational simplification. Whether it's the right performance and cost choice is the next section, not this one.</p>
+    </div>
+  </div>
+</section>
+
+<section id="agent">
+  <div class="container">
+    <div class="fade-up"><div class="section-label">03 &middot; Select AI &amp; the agent path</div>
+      <h2 class="section-title">Natural-language query, and a native door for agents.</h2></div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p><strong>Select AI</strong> lets a user (or an agent) ask a question in natural language and have the database generate and run the SQL, with schema-metadata enrichment to make the schema legible to an LLM. Paired with <a href="ords.html" style="color: var(--blue-glow);">ORDS 26.2's native MCP support</a>, the picture for a legacy estate closes: the data stays put, gains a vector index and a natural-language surface, and becomes reachable by an agent through a governed REST/MCP door &mdash; no migration, no second system. That is the whole cluster's thesis, expressed at the data layer.</p>
+    </div>
+  </div>
+</section>
+
+<section id="honest">
+  <div class="container">
+    <div class="fade-up"><div class="section-label">04 &middot; The honest read</div>
+      <h2 class="section-title">Converged wins on gravity, not on being the fastest vector store.</h2></div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>The case for 26ai's vector search is <strong>data gravity</strong>, not raw benchmark supremacy. If your records already live in Oracle, keeping the embeddings there avoids an ETL pipeline, a second system to secure, and the consistency problems of two stores drifting apart &mdash; that is a genuine and often decisive operational win. If you are building greenfield, a purpose-built vector database, or Postgres with <code>pgvector</code> at modest scale, may be cheaper and faster for pure retrieval, and you are not paying Oracle Database licensing to get it.</p>
+      <p>Two more caveats worth stating plainly. The vector features are <strong>newer than the relational core</strong> that has been hardened for decades &mdash; benchmark them on your own corpus and recall targets rather than assuming parity with a specialist. And the licensing is Oracle's: the convergence saves you a second <em>system</em>, not necessarily a second <em>bill</em>. The decision is "is my data already here?" &mdash; if yes, 26ai's vector search is a strong default; if no, it has to win on merits against tools built only for this.</p>
+    </div>
+  </div>
+</section>
+
+<section id="sa-context">
+  <div class="container">
+    <div class="fade-up"><div class="section-label">05 &middot; South African context</div>
+      <h2 class="section-title">Vectors inherit the database's residency.</h2></div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>The residency argument that runs through this whole cluster gets sharper here. If the embeddings for a RAG system live in a separate vector store, that store is another place personal information sits &mdash; another residency and POPIA question to answer, often a foreign SaaS. Keep the vectors in the Oracle database that already holds the records, on infrastructure you already located, and there is <strong>one residency answer, not two</strong>. For a POPIA-sensitive estate, collapsing the RAG substrate back into the system of record is a compliance simplification as much as an engineering one.</p>
+    </div>
+  </div>
+</section>
+
+<section id="connect">
+  <div class="container">
+    <div class="fade-up"><div class="section-label">06 &middot; Connections</div>
+      <h2 class="section-title">Where the database links in the tree.</h2></div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="./" class="connect-node">
+        <span class="tag">tech/oracle</span>
+        <div class="skill">Oracle hub</div>
+        <div class="why">The estate as a stack — app layer, REST seam, system of record, and where it runs.</div>
+      </a>
+      <a href="apex.html" class="connect-node">
+        <span class="tag">tech/oracle/apex</span>
+        <div class="skill">Oracle APEX 26.1</div>
+        <div class="why">The app layer on the database — modern interfaces and the agent-writable .apx format.</div>
+      </a>
+      <a href="ords.html" class="connect-node">
+        <span class="tag">tech/oracle/ords</span>
+        <div class="skill">ORDS</div>
+        <div class="why">The REST + MCP seam that makes the estate agent-addressable.</div>
+      </a>
+      <a href="../../agents/mcp.html" class="connect-node">
+        <span class="tag">agents/mcp</span>
+        <div class="skill">Model Context Protocol</div>
+        <div class="why">The agent-integration protocol ORDS 26.2 speaks natively over an Oracle database.</div>
+      </a>
+      <a href="../" class="connect-node">
+        <span class="tag">tech</span>
+        <div class="skill">Tech hub</div>
+        <div class="why">The platform and integration domain Oracle sits in.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section id="resources">
+  <div class="container">
+    <div class="fade-up"><div class="section-label">07 &middot; Resources</div>
+      <h2 class="section-title">Primary sources only.</h2></div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://docs.oracle.com/en/database/oracle/oracle-database/26/vecse/overview-ai-vector-search.html" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs</span><span class="r-title">Oracle AI Vector Search User's Guide (26ai)</span><span class="r-url">docs.oracle.com/en/database/oracle/oracle-database/26/vecse</span></a>
+      <a href="https://www.oracle.com/database/ai-vector-search/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Product</span><span class="r-title">Oracle AI Vector Search</span><span class="r-url">oracle.com/database/ai-vector-search</span></a>
+      <a href="https://docs.oracle.com/en/database/oracle/oracle-database/26/cncpt/artificial-intelligence-oracle-database.html" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs</span><span class="r-title">Artificial Intelligence in the Oracle AI Database</span><span class="r-url">docs.oracle.com/en/database/oracle/oracle-database/26/cncpt</span></a>
+      <a href="https://www.oracle.com/database/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Product</span><span class="r-title">Oracle Database</span><span class="r-url">oracle.com/database</span></a>
+    </div>
+  </div>
+</section>
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../../index.html">Skills tree</a>
+      <a href="../">Tech hub</a>
+      <a href="https://www.oracle.com/apex" target="_blank" rel="noopener">Oracle &nearr;</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme(){const html=document.documentElement;const current=html.getAttribute('data-theme');const next=current==='dark'?'light':'dark';html.setAttribute('data-theme',next);document.querySelector('.theme-toggle').textContent=next==='dark'?'☀️':'🌙';localStorage.setItem('theme',next);}
+  const saved=localStorage.getItem('theme');if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.theme-toggle').textContent=saved==='dark'?'☀️':'🌙';}
+  const observer=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting)entry.target.classList.add('visible');});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>

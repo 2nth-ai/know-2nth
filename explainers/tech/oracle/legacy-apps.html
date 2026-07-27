@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Legacy apps: EBS, Forms &amp; PeopleSoft &mdash; know.2nth.ai</title>
+<meta name="description" content="Oracle's legacy application estate — E-Business Suite, Oracle Forms & Reports, PeopleSoft, JD Edwards, Siebel, Hyperion — and the honest options for modernising it. EBS 12.2 and the Applications Unlimited lines carry Premier Support through at least 2036, so the estate is not going anywhere; the pragmatic path is modern UIs and agent access on top (APEX, ORDS, REST), not a decade-long re-platform. Oracle's own steer is Fusion Cloud, which is a re-implementation — read the tradeoff plainly.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/tech/oracle/legacy-apps">
+<meta property="og:title" content="Legacy apps: EBS, Forms &amp; PeopleSoft — know.2nth.ai">
+<meta property="og:description" content="Oracle's legacy estate — EBS, Forms, PeopleSoft, JD Edwards — supported to at least 2036. Modernise on top (APEX, ORDS) rather than rewrite. The honest read on Fusion re-implementation.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Legacy apps: EBS, Forms &amp; PeopleSoft — know.2nth.ai">
+<meta name="twitter:description" content="Oracle's legacy estate — EBS, Forms, PeopleSoft, JD Edwards — supported to at least 2036. Modernise on top (APEX, ORDS) rather than rewrite. The honest read on Fusion re-implementation.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12); --violet: #8B5CF6; --violet-soft: rgba(139, 92, 246, 0.12); --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-soft: rgba(99, 102, 241, 0.12); --sky-soft: rgba(56, 189, 248, 0.12); --bg: var(--ink); --bg-raised: var(--navy); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(37, 99, 235, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(56, 189, 248, 0.3); --max-w: 1200px; --read-w: 760px; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-raised: #FFFFFF; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(37, 99, 235, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(37, 99, 235, 0.25); }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.blue { width: 600px; height: 600px; background: var(--blue); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--blue-glow); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--blue-glow); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .read { max-width: var(--read-w); }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--blue-glow); }
+  .crumb-sep { opacity: 0.5; }
+  .crumb-current { color: var(--text-secondary); }
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--blue-glow); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--blue-glow); box-shadow: 0 0 12px var(--blue-glow); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--blue), var(--blue-glow), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.accent { background: rgba(37, 99, 235, 0.12); color: var(--blue-glow); border-color: rgba(37, 99, 235, 0.25); }
+  .pill.indigo { background: var(--indigo-soft); color: var(--indigo); border-color: rgba(99, 102, 241, 0.25); }
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--blue-glow); margin-bottom: 14px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--blue-glow); }
+  pre.code { background: var(--ink-deep); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px 22px; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.65; color: var(--mist); margin: 0 0 20px; max-width: var(--read-w); }
+  [data-theme="light"] pre.code { background: #0F172A; color: #E2E8F0; }
+  pre.code .k { color: var(--sky); }
+  pre.code .s { color: #A5F3B8; }
+  pre.code .c { color: var(--text-muted); font-style: italic; }
+  pre.code .h { color: var(--blue-glow); font-weight: 600; }
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); margin-bottom: 20px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.indigo { border-left: 3px solid var(--indigo); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: var(--read-w); margin-bottom: 20px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--blue-glow); background: rgba(37, 99, 235, 0.04); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); }
+  .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--blue-glow); }
+  .compare td strong { color: var(--text-primary); }
+  .compare td.name { font-weight: 600; color: var(--text-primary); white-space: nowrap; }
+  .stack-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; max-width: var(--read-w); margin-bottom: 20px; }
+  .stack-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--blue-glow); border-radius: var(--radius-md); padding: 18px 22px; }
+  .stack-cell .layer { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .stack-cell h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.3px; }
+  .stack-cell p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+  .connect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .connect-node { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; transition: all 0.3s; text-decoration: none; color: inherit; display: block; }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node.soon { cursor: default; opacity: 0.72; }
+  .connect-node .tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--blue-glow); word-break: break-all; }
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--blue-glow); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } pre.code { font-size: 11px; padding: 14px 16px; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+
+<div class="glow-orb blue"></div>
+<div class="glow-orb sky"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../../index.html" class="nav-brand"><span class="nav-brand-mark">know.2nth.ai</span><span class="nav-brand-sub">tech/oracle/legacy-apps</span></a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">&larr; Oracle</a>
+      <a href="../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x1F319;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="./">Tech</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">MuleSoft</span>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> tech &middot; Oracle legacy apps &middot; Skill Leaf</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      The old estate <span class="gradient">isn't going anywhere until at least 2036.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      A large part of what runs South African enterprises is genuinely old Oracle software &mdash; <strong>E-Business Suite</strong>, <strong>Oracle Forms &amp; Reports</strong>, <strong>PeopleSoft</strong>, <strong>JD Edwards</strong>, Siebel, Hyperion. The reflex is to panic about end-of-life. The facts say otherwise: these lines carry Premier Support through at least <strong>2036</strong>. That changes the question from "when must we rip it out?" to "how do we put modern interfaces and agent access on top of it without a decade-long rewrite?" &mdash; which is exactly what the rest of this cluster is for.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill accent">EBS 12.2</span>
+      <span class="pill">PeopleSoft &middot; JDE</span>
+      <span class="pill indigo">Support &ge; 2036</span>
+      <span class="pill">Modernise on top</span>
+      <span class="pill">Forms &amp; Reports</span>
+    </div>
+  </div>
+</section>
+
+<section id="what">
+  <div class="container">
+    <div class="fade-up"><div class="section-label">01 &middot; What it is</div>
+      <h2 class="section-title">Applications Unlimited &mdash; the estate that predates the cloud.</h2></div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Under the banner Oracle calls <strong>Applications Unlimited</strong> sit the on-premises application suites many organisations still run their core operations on: <strong>E-Business Suite</strong> (financials, supply chain, HR), <strong>PeopleSoft</strong>, <strong>JD Edwards EnterpriseOne</strong>, <strong>Siebel CRM</strong>, and <strong>Hyperion</strong> &mdash; plus the older <strong>Oracle Forms &amp; Reports</strong> UI technology beneath a lot of custom EBS screens. These are systems of record with decades of embedded process and customisation, sitting on an Oracle database.</p>
+    </div>
+  </div>
+</section>
+
+<section id="supported">
+  <div class="container">
+    <div class="fade-up"><div class="section-label">02 &middot; Supported longer than you think</div>
+      <h2 class="section-title">The 2036 runway, and what it changes.</h2></div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Oracle has extended <strong>Premier Support for E-Business Suite 12.2 through at least 2036</strong>, aligning it with the other Applications Unlimited lines &mdash; JD Edwards EnterpriseOne, PeopleSoft, Siebel, Hyperion &mdash; which carry the same commitment. Since June 2018 EBS 12.2 has been on a <strong>Continuous Innovation</strong> model: ongoing updates without a forced major upgrade. The practical consequence is that the "you must re-platform now or lose support" pressure is largely manufactured &mdash; for these systems you have roughly a decade of runway, which is enough time to modernise deliberately rather than in a panic.</p>
+    </div>
+    <div class="info-card indigo fade-up" style="transition-delay: 0.08s">
+      <h4>What the runway is for</h4>
+      <p>A decade of support is a window to add value on top, not a reason to freeze. It buys time to put modern web UIs, REST integration, and agent access onto the estate incrementally &mdash; and to make any eventual move a considered one rather than a forced march. The runway is the opportunity; the mistake is treating it as permission to do nothing.</p>
+    </div>
+  </div>
+</section>
+
+<section id="modernise">
+  <div class="container">
+    <div class="fade-up"><div class="section-label">03 &middot; Modernise on top, don't rewrite</div>
+      <h2 class="section-title">The same seams the rest of this cluster describes.</h2></div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>The pragmatic path is to keep the transactional core and add modern surfaces over it, exactly as the other Oracle leaves lay out. <a href="apex.html" style="color: var(--blue-glow);">APEX</a> builds new web UIs on the same database &mdash; the standard answer for replacing a Forms screen without touching the data model. <a href="ords.html" style="color: var(--blue-glow);">ORDS</a> exposes the estate as REST and, from 26.2, as an MCP surface agents can call. Oracle's own Visual Builder (VBCS) and Oracle Integration Cloud sit in the same space for lower-code UIs and integrations. None of these require re-implementing the system of record; they wrap and extend it.</p>
+    </div>
+  </div>
+</section>
+
+<section id="honest">
+  <div class="container">
+    <div class="fade-up"><div class="section-label">04 &middot; The honest read</div>
+      <h2 class="section-title">Supported is not the same as strategic.</h2></div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Two things are true at once, and a good decision holds both. The estate is supported and modernisable on top &mdash; and Oracle's own long-term recommendation is to move to <strong>Fusion Cloud ERP</strong>, which is a re-implementation, not an upgrade: multi-year, expensive, and disruptive to embedded process. "Supported through 2036" is a <em>runway</em>, not an argument for never moving; a system frozen for a decade accrues its own risk in skills, security posture, and integration debt.</p>
+      <p>One component deserves singling out: <strong>Oracle Forms &amp; Reports</strong> is genuinely dated UI technology, and even if you keep the EBS database for years, the Forms front-end is the part worth modernising first &mdash; that is the clearest, highest-value APEX-on-top project in most estates. The honest position: use the runway to modernise the experience and open the estate to agents now, and make the bigger re-platform-vs-stay call as a deliberate strategy, not a deadline panic. And keep the ownership lens in view &mdash; a supported estate is still <a href="../../../briefings/rented-in-dollars" style="color: var(--blue-glow);">rent on someone else's technology, in dollars</a>.</p>
+    </div>
+  </div>
+</section>
+
+<section id="sa-context">
+  <div class="container">
+    <div class="fade-up"><div class="section-label">05 &middot; South African context</div>
+      <h2 class="section-title">Big estates, a real budget question, and residency.</h2></div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>SA banks, insurers, and government departments run large EBS and PeopleSoft estates, and the live budget question in Johannesburg is precisely the three-way one: modernise on top, re-implement on Fusion, or stay put. The 2036 runway means the honest default for most is "modernise on top now, decide the big move later" &mdash; it preserves optionality and defers the largest spend. Residency stays answerable throughout: these systems can run on-premises or in the OCI Johannesburg region, so opening them to agents via ORDS need not send anything offshore. The estate that felt like a liability is, read correctly, a decade-long asset you can make modern in place.</p>
+    </div>
+  </div>
+</section>
+
+<section id="connect">
+  <div class="container">
+    <div class="fade-up"><div class="section-label">06 &middot; Connections</div>
+      <h2 class="section-title">Where the legacy estate links in the tree.</h2></div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="./" class="connect-node">
+        <span class="tag">tech/oracle</span>
+        <div class="skill">Oracle hub</div>
+        <div class="why">The estate as a stack — app layer, REST seam, system of record, and where it runs.</div>
+      </a>
+      <a href="apex.html" class="connect-node">
+        <span class="tag">tech/oracle/apex</span>
+        <div class="skill">Oracle APEX 26.1</div>
+        <div class="why">The app layer on the database — modern interfaces and the agent-writable .apx format.</div>
+      </a>
+      <a href="ords.html" class="connect-node">
+        <span class="tag">tech/oracle/ords</span>
+        <div class="skill">ORDS</div>
+        <div class="why">The REST + MCP seam that makes the estate agent-addressable.</div>
+      </a>
+      <a href="../../../briefings/rented-in-dollars" class="connect-node">
+        <span class="tag">briefings/rented-in-dollars</span>
+        <div class="skill">Rented in Dollars</div>
+        <div class="why">The ownership lens: a supported legacy estate is still rent on someone else’s tech, in USD.</div>
+      </a>
+      <a href="../" class="connect-node">
+        <span class="tag">tech</span>
+        <div class="skill">Tech hub</div>
+        <div class="why">The platform and integration domain Oracle sits in.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section id="resources">
+  <div class="container">
+    <div class="fade-up"><div class="section-label">07 &middot; Resources</div>
+      <h2 class="section-title">Primary sources only.</h2></div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://blogs.oracle.com/ebs/oracle-ebusiness-suite-122-premier-support-extended-through-at-least-2036" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Vendor &middot; support</span><span class="r-title">EBS 12.2 Premier Support extended through at least 2036</span><span class="r-url">blogs.oracle.com/ebs/...premier-support...2036</span></a>
+      <a href="https://www.oracle.com/applications/unlimited/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Product</span><span class="r-title">Oracle Applications Unlimited</span><span class="r-url">oracle.com/applications/unlimited</span></a>
+      <a href="https://www.oracle.com/erp/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Product</span><span class="r-title">Oracle Fusion Cloud ERP (the re-implementation path)</span><span class="r-url">oracle.com/erp</span></a>
+      <a href="https://www.oracle.com/application-development/apex/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Product</span><span class="r-title">Oracle APEX (the modernise-on-top path)</span><span class="r-url">oracle.com/application-development/apex</span></a>
+    </div>
+  </div>
+</section>
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../../index.html">Skills tree</a>
+      <a href="../">Tech hub</a>
+      <a href="https://www.oracle.com/apex" target="_blank" rel="noopener">Oracle &nearr;</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme(){const html=document.documentElement;const current=html.getAttribute('data-theme');const next=current==='dark'?'light':'dark';html.setAttribute('data-theme',next);document.querySelector('.theme-toggle').textContent=next==='dark'?'☀️':'🌙';localStorage.setItem('theme',next);}
+  const saved=localStorage.getItem('theme');if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.theme-toggle').textContent=saved==='dark'?'☀️':'🌙';}
+  const observer=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting)entry.target.classList.add('visible');});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>

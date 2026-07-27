@@ -3,7 +3,7 @@
   "description": "The public knowledge tree for the 2nth.ai ecosystem. Every leaf is both a human-readable reference and an agent-consumable context document.",
   "agent_fetch": "https://know.2nth.ai/api/context/<domain>/<leaf>",
   "mcp": "https://know.2nth.ai/mcp",
-  "count": 207,
+  "count": 210,
   "items": [
     {
       "title": "Agents — know.2nth.ai",
@@ -1470,6 +1470,14 @@
       "fetch": "tech/hardware/kicad"
     },
     {
+      "title": "Legacy apps: EBS, Forms & PeopleSoft — know.2nth.ai",
+      "description": "Oracle's legacy application estate — E-Business Suite, Oracle Forms & Reports, PeopleSoft, JD Edwards, Siebel, Hyperion — and the honest options for modernising it. EBS 12.2 and the Applications Unlimited lines carry Premier Support through at least 2036, so the estate is not going anywhere; the pragmatic path is modern UIs and agent access on top (APEX, ORDS, REST), not a decade-long re-platform. Oracle's own steer is Fusion Cloud, which is a re-implementation — read the tradeoff plainly.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/oracle/legacy-apps",
+      "fetch": "tech/oracle/legacy-apps"
+    },
+    {
       "title": "Microsoft Copilot — In-Country LLM for South Africa · know.2nth.ai",
       "description": "Microsoft Copilot is the only major LLM stack with a South Africa inference region. Here's what each Copilot surface actually keeps in country, how to wire it up, and where it falls short.",
       "domain": "tech",
@@ -1502,12 +1510,28 @@
       "fetch": "tech/runtime/node"
     },
     {
+      "title": "OCI & the Johannesburg region — know.2nth.ai",
+      "description": "Oracle Cloud Infrastructure and the South Africa Central (Johannesburg) region — af-johannesburg-1, generally available since January 2022 as Oracle's first cloud region in Africa. What running Autonomous Database, APEX, and ORDS in-country means for POPIA residency, and the honest read: one availability domain, an Oracle-first cloud, and the usual lock-in and egress caveats.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/oracle/oci",
+      "fetch": "tech/oracle/oci"
+    },
+    {
       "title": "OpenID Connect · the identity layer on OAuth 2.0 — know.2nth.ai",
       "description": "OpenID Connect (OIDC) — the interoperable authentication protocol built on OAuth 2.0. What it is, how it differs from plain OAuth (authentication vs authorization), the three actors (relying party, OpenID provider, end user), the authorization-code-with-PKCE flow, the ID Token as a signed JWT, scopes and claims, the UserInfo and discovery endpoints, which flow to use in 2026, and the POPIA angle on delegating identity.",
       "domain": "tech",
       "kind": "leaf",
       "url": "https://know.2nth.ai/explainers/tech/openid-connect",
       "fetch": "tech/openid-connect"
+    },
+    {
+      "title": "Oracle AI Database 26ai — know.2nth.ai",
+      "description": "Oracle AI Database 26ai — the converged system of record that added native vector search. A built-in VECTOR data type and AI Vector Search let you run similarity search inside the database instead of copying business data to a separate vector store; Select AI adds natural-language querying; ORDS 26.2 opens it to agents over MCP. The honest read: the win is when the data already lives in Oracle, not as a greenfield vector store.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/oracle/database",
+      "fetch": "tech/oracle/database"
     },
     {
       "title": "Oracle APEX 26.1 — know.2nth.ai",
