@@ -42,8 +42,12 @@ interface Env {
 const MODEL = '@cf/meta/llama-3.3-70b-instruct-fp8-fast';
 const EMBED_MODEL = '@cf/baai/bge-base-en-v1.5'; // must match the reindex/index model
 
-const RETRIEVE = 3;      // leaves fed to the model as grounding context
-const PER_LEAF_CHARS = 3500; // truncate each leaf so several fit the window
+// 4 leaves × 8000 chars ≈ 9K tokens of grounding — well within the model's
+// window. Was 3 × 3500: brand-name queries lost the right leaf on the top-3
+// margin, and long leaves had their later sections (honest reads, decision
+// guides) truncated out of the context even when they ranked.
+const RETRIEVE = 4;      // leaves fed to the model as grounding context
+const PER_LEAF_CHARS = 8000; // truncate each leaf so several fit the window
 
 const cors: Record<string, string> = {
   'access-control-allow-origin': '*',
@@ -106,7 +110,13 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   const sources: { title: string; path: string; url: string }[] = [];
   for (const it of hits) {
     const md = it.fetch ? await fetchLeaf(it.fetch, env, origin) : null;
-    const excerpt = sanitize(md || it.description).slice(0, PER_LEAF_CHARS);
+    let excerpt = sanitize(md || it.description).slice(0, PER_LEAF_CHARS);
+    // For semantic hits, it.description carries the matched chunk's text. If a
+    // long leaf's truncation dropped it, append it — the passage that made the
+    // leaf rank must always reach the model.
+    if (md && it.description && !excerpt.includes(it.description.slice(0, 120))) {
+      excerpt += `\n\n[Most relevant passage from this leaf]\n${sanitize(it.description)}`;
+    }
     context.push(`### ${cleanTitle(it.title)}  (${it.domain} · ${it.url})\n${excerpt}`);
     sources.push({ title: cleanTitle(it.title), path: it.fetch || it.url, url: it.url });
   }
