@@ -27,7 +27,10 @@ interface Env {
 
 const EMBED_MODEL = '@cf/baai/bge-base-en-v1.5'; // 768-dim; must match the index
 const CHUNK_CHARS = 900;
-const MAX_CHUNKS_PER_ITEM = 6;
+// 16, not 6: long leaves (e.g. software/spec-driven-development at ~12.6KB of
+// markdown) produce 14-16 chunks, and a 6-chunk cap silently cut their later
+// sections out of the index — Vinci couldn't retrieve content past ~chunk 6.
+const MAX_CHUNKS_PER_ITEM = 16;
 
 const cors: Record<string, string> = {
   'access-control-allow-origin': '*',
