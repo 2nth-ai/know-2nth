@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Temporal &mdash; know.2nth.ai</title>
+<meta name="description" content="Temporal — the durable execution platform. Workflows as ordinary code with full state persisted at every step, so failures resume exactly where they left off; failure-prone calls (APIs, LLMs, tools) wrapped as Activities with automatic retries. MIT-licensed core from the Cadence/AWS-SWF lineage; Temporal Cloud is the commercial layer. The 2026 AI pivot read with maturity labels — OpenAI Agents SDK GA, Google ADK preview, Serverless Workers pre-release — and the honest read on operational weight vs Cloudflare Workflows.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/tech/temporal">
+<meta property="og:title" content="Temporal — know.2nth.ai">
+<meta property="og:description" content="Temporal — durable execution: workflows as code, state persisted at every step, failures resume exactly. The boring reliable layer under the agent hype, with the honest read on ops weight vs Cloudflare Workflows.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Temporal — know.2nth.ai">
+<meta name="twitter:description" content="Temporal — durable execution: workflows as code, state persisted at every step, failures resume exactly. The boring reliable layer under the agent hype, with the honest read on ops weight vs Cloudflare Workflows.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12); --violet: #8B5CF6; --violet-soft: rgba(139, 92, 246, 0.12); --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-soft: rgba(99, 102, 241, 0.12); --sky-soft: rgba(56, 189, 248, 0.12); --bg: var(--ink); --bg-raised: var(--navy); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(37, 99, 235, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(56, 189, 248, 0.3); --max-w: 1200px; --read-w: 760px; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-raised: #FFFFFF; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(37, 99, 235, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(37, 99, 235, 0.25); }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.blue { width: 600px; height: 600px; background: var(--blue); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--blue-glow); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--blue-glow); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .read { max-width: var(--read-w); }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--blue-glow); }
+  .crumb-sep { opacity: 0.5; }
+  .crumb-current { color: var(--text-secondary); }
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--blue-glow); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--blue-glow); box-shadow: 0 0 12px var(--blue-glow); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--blue), var(--blue-glow), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.accent { background: rgba(37, 99, 235, 0.12); color: var(--blue-glow); border-color: rgba(37, 99, 235, 0.25); }
+  .pill.indigo { background: var(--indigo-soft); color: var(--indigo); border-color: rgba(99, 102, 241, 0.25); }
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--blue-glow); margin-bottom: 14px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--blue-glow); }
+  pre.code { background: var(--ink-deep); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px 22px; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.65; color: var(--mist); margin: 0 0 20px; max-width: var(--read-w); }
+  [data-theme="light"] pre.code { background: #0F172A; color: #E2E8F0; }
+  pre.code .k { color: var(--sky); }
+  pre.code .s { color: #A5F3B8; }
+  pre.code .c { color: var(--text-muted); font-style: italic; }
+  pre.code .h { color: var(--blue-glow); font-weight: 600; }
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); margin-bottom: 20px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.indigo { border-left: 3px solid var(--indigo); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: var(--read-w); margin-bottom: 20px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--blue-glow); background: rgba(37, 99, 235, 0.04); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); }
+  .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--blue-glow); }
+  .compare td strong { color: var(--text-primary); }
+  .compare td.name { font-weight: 600; color: var(--text-primary); white-space: nowrap; }
+  .stack-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; max-width: var(--read-w); margin-bottom: 20px; }
+  .stack-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--blue-glow); border-radius: var(--radius-md); padding: 18px 22px; }
+  .stack-cell .layer { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .stack-cell h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.3px; }
+  .stack-cell p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+  .connect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .connect-node { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; transition: all 0.3s; text-decoration: none; color: inherit; display: block; }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node.soon { cursor: default; opacity: 0.72; }
+  .connect-node .tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--blue-glow); word-break: break-all; }
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--blue-glow); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } pre.code { font-size: 11px; padding: 14px 16px; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+
+<div class="glow-orb blue"></div>
+<div class="glow-orb sky"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand"><span class="nav-brand-mark">know.2nth.ai</span><span class="nav-brand-sub">tech/temporal</span></a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">&larr; Tech</a>
+      <a href="../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x1F319;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="./">Tech</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">Temporal</span>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> tech &middot; Temporal &middot; Skill Leaf</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      The boring, reliable layer <span class="gradient">under the agent hype.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      Temporal is a <strong>durable execution</strong> platform: you write workflows as ordinary code (Python, Go, TypeScript, Java, .NET), and the Temporal Service persists the full running state at every step &mdash; so when something fails, the workflow <strong>resumes exactly where it left off</strong>. No lost progress, no orphaned processes, no manual recovery. Failure-prone calls &mdash; APIs, LLM invocations, tools &mdash; are wrapped as <strong>Activities</strong> with automatic retries. It matters now because the agent reliability problem (an LLM call dies mid-loop, a tool times out, a human approval takes three days) is exactly the problem this lineage has been solving since Cadence in 2017. The engineering is real; the honest read is the operational weight.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill accent">Durable execution</span>
+      <span class="pill">MIT core &middot; Cloud commercial</span>
+      <span class="pill indigo">OpenAI SDK GA &middot; ADK preview</span>
+      <span class="pill">Cadence lineage</span>
+      <span class="pill">Self-host = real ops</span>
+    </div>
+  </div>
+</section>
+
+<section id="what">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; What it is</div>
+      <h2 class="section-title">Workflows that survive anything, written as ordinary code.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Most orchestration tools make you describe a process in YAML, a DAG, or a diagram. Temporal's bet is that a process is best described as <strong>the code you'd naturally write</strong> &mdash; loops, conditionals, try/catch &mdash; with the platform making that code durable. Every state transition is recorded as an <strong>event history</strong>; if the worker running your workflow dies, another worker replays the history and continues from the exact step where execution stopped. A workflow can sleep for thirty days waiting for a human approval and consume no resources doing it.</p>
+      <p>The pedigree is unusually deep and worth naming: Temporal's founders built <strong>AWS SQS and Simple Workflow (SWF)</strong>, worked on <strong>Azure Durable Functions</strong>, and created <strong>Cadence</strong> at Uber &mdash; the project Temporal forked from in 2019 and which still runs Uber-scale workloads. This is a third-generation take on a problem the same people have owned since the mid-2000s.</p>
+    </div>
+    <div class="info-card indigo fade-up" style="transition-delay: 0.08s">
+      <h4>The licence, stated honestly</h4>
+      <p>The Temporal server and SDKs are <strong>MIT-licensed</strong> and genuinely self-hostable &mdash; the core is open source in the full sense. The commercial layer is <strong>Temporal Cloud</strong>, the managed service, which is proprietary and USD-billed. That's the same honest split as LangGraph/LangSmith: the durable-execution engine is free; at production scale most teams end up paying for either the Cloud or the ops team that replaces it.</p>
+    </div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; How it works</div>
+      <h2 class="section-title">Workflows, Activities, and the determinism contract.</h2>
+      <p class="section-lede">Two primitives carry the model. A <strong>Workflow</strong> is the durable orchestration logic; an <strong>Activity</strong> is any failure-prone call the workflow makes. The split is the whole design &mdash; and it comes with one hard rule.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Workflow code must be <strong>deterministic</strong>, because recovery works by replaying the event history &mdash; the same inputs must take the same path. Anything non-deterministic (network calls, random numbers, clock reads, LLM invocations) lives in Activities, which are recorded once and never re-executed on replay. Activities get <strong>automatic retries with backoff</strong>, timeouts, and heartbeats; <strong>Signals and Updates</strong> let the outside world (a webhook, a human approval, another system) reach into a running workflow. Your code runs on <strong>your workers</strong>; the Temporal Service only schedules and records.</p>
+    </div>
+    <pre class="code fade-up" style="transition-delay: 0.08s"><span class="c"># Python — the shape of a durable agent step</span>
+<span class="h">@workflow.defn</span>
+<span class="h">class</span> ApprovalFlow:
+    <span class="h">@workflow.run</span>
+    <span class="h">async def</span> run(self, req: Request) -&gt; str:
+        <span class="c"># failure-prone call -> Activity with automatic retries</span>
+        draft = <span class="h">await</span> workflow.execute_activity(
+            call_llm, req, <span class="k">start_to_close_timeout</span>=timedelta(minutes=<span class="s">2</span>),
+            <span class="k">retry_policy</span>=RetryPolicy(maximum_attempts=<span class="s">5</span>),
+        )
+        <span class="c"># durable wait — human approval can take three days; costs nothing</span>
+        <span class="h">await</span> workflow.wait_condition(<span class="h">lambda</span>: self.approved)
+        <span class="h">return</span> <span class="h">await</span> workflow.execute_activity(publish, draft, ...)</pre>
+    <div class="info-card amber fade-up" style="transition-delay: 0.1s">
+      <h4>The operational anatomy &mdash; what self-hosting actually means</h4>
+      <p>A self-hosted deployment is three moving parts: the <strong>Temporal Service</strong> (the cluster), a <strong>persistence layer</strong> (PostgreSQL, MySQL, or Cassandra &mdash; plus optionally Elasticsearch for visibility), and <strong>your worker fleet</strong>. That is a real infrastructure commitment with upgrades, capacity, and on-call attached &mdash; not a container you forget about. It's the central trade in the decision section below.</p>
+    </div>
+  </div>
+</section>
+
+<section id="ai-pivot">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; The AI pivot, with maturity labels</div>
+      <h2 class="section-title">Agent reliability is durable execution &mdash; and Temporal knows it.</h2>
+      <p class="section-lede">Temporal's 2026 positioning is squarely "build AI apps and agents on an open foundation." The mechanism claim is sound &mdash; an agent loop is a long-running workflow full of failure-prone calls &mdash; but the pieces are at very different maturities, and the labels matter.</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead><tr><th>Piece</th><th>What it is</th><th>Maturity (as stated by Temporal, Jul 2026)</th></tr></thead>
+        <tbody>
+          <tr><td><strong>OpenAI Agents SDK integration</strong></td><td>Durable agent loops on the Python SDK &mdash; each model/tool call an Activity.</td><td><strong>GA</strong> since March 2026</td></tr>
+          <tr><td><strong>Vercel AI SDK integration</strong></td><td>Same pattern for the TypeScript world.</td><td>Shipped; check current status</td></tr>
+          <tr><td><strong>Google ADK integration</strong></td><td>Durable execution under ADK agents.</td><td><strong>Public preview</strong></td></tr>
+          <tr><td><strong>Serverless Workers</strong></td><td>Workers without managing worker infrastructure (incl. Lambda).</td><td><strong>Pre-release</strong></td></tr>
+          <tr><td><strong>Standalone Activities</strong></td><td>Activities as first-class jobs outside a workflow &mdash; durable job processing without the queue plumbing.</td><td>Announced at Replay 2026</td></tr>
+          <tr><td><strong>Workflow Streams</strong></td><td>Durable token streaming &mdash; LLM output through a workflow to a UI, with replay guarantees.</td><td>Announced at Replay 2026</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.08s">
+      <p>The honest framing: the <em>durable core</em> is nine years proven via the Cadence lineage; the <em>AI-specific surface</em> is one GA integration plus a set of previews and announcements. Build on the core with confidence; treat the Replay 2026 pieces as roadmap you verify before you depend on it. And note what this leaf deliberately doesn't cite as evidence: the customer logos and testimonial quotes on temporal.io are vendor marketing &mdash; the checkable facts are the MIT repo, the docs, and the integration release notes.</p>
+    </div>
+  </div>
+</section>
+
+<section id="vs">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; Where it sits</div>
+      <h2 class="section-title">Temporal vs the lighter and heavier alternatives.</h2>
+      <p class="section-lede">Two positioning notes before the table. The BPM-suite comparison &mdash; Temporal vs Camunda for business-process work &mdash; lives on the <a href="../biz/bpm/process-orchestration.html" style="color: var(--blue-glow);">Process orchestration</a> leaf; this leaf is the engine-under-agents lens. And the closest genuine alternative for a Cloudflare-native stack has its own leaf: <a href="cloudflare/workflows.html" style="color: var(--blue-glow);">Cloudflare Workflows</a>, which describes itself as Temporal-like semantics without running Temporal.</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead><tr><th>Concern</th><th>Temporal</th><th>Cloudflare Workflows</th><th>DIY (queues + cron + state table)</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Durability model</strong></td><td>Event-history replay; exact resume</td><td>Durable Objects; step-based resume</td><td>Whatever you build</td></tr>
+          <tr><td><strong>Infrastructure</strong></td><td>Service + persistence + workers (or Cloud)</td><td>Zero &mdash; runs on the edge</td><td>Yours, forever</td></tr>
+          <tr><td><strong>Language reach</strong></td><td>Python, Go, TS, Java, .NET, more</td><td>JS/TS on Workers</td><td>Any</td></tr>
+          <tr><td><strong>Maturity</strong></td><td>Cadence lineage since 2017; battle-proven at scale</td><td>GA 2025 &mdash; young, moving fast</td><td>As mature as your team makes it</td></tr>
+          <tr><td><strong>Long human-in-the-loop waits</strong></td><td>Native &mdash; sleep for a month, free</td><td>Supported, within platform limits</td><td>The part everyone gets wrong</td></tr>
+          <tr><td><strong>Best fit</strong></td><td>Must-not-fail, long-running, polyglot, complex compensation</td><td>Cloudflare-native stacks with moderate workflow needs</td><td>Simple, short, tolerable-loss jobs</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="decision-grid fade-up" style="transition-delay: 0.08s">
+      <div class="decision-card use">
+        <h4>Reach for Temporal when</h4>
+        <ul>
+          <li>The workflow is long-running and must not lose progress &mdash; days-long approvals, multi-step integrations</li>
+          <li>A dropped step has a real cost: a broken invoice, a half-completed saga needing compensation</li>
+          <li>Agent loops need durability &mdash; LLM calls, tool calls, and human gates as retryable, resumable steps</li>
+          <li>You're polyglot &mdash; the same platform serves Python, Go, and TypeScript teams</li>
+          <li>You have (or will buy, via Cloud) the operational capacity to run it properly</li>
+        </ul>
+      </div>
+      <div class="decision-card skip">
+        <h4>Skip it when</h4>
+        <ul>
+          <li>The work is request/response with no long-running state &mdash; durable execution is overhead, not safety</li>
+          <li>You're Cloudflare-native and lean &mdash; <a href="cloudflare/workflows.html" style="color:var(--sky);">Workflows</a> gives the semantics without the infrastructure</li>
+          <li>No platform team, no appetite for Cloud spend &mdash; the service + persistence + workers commitment is real</li>
+          <li>The determinism contract fights your team &mdash; workflow-vs-activity discipline is a genuine learning curve</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="sa-context">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; South African context</div>
+      <h2 class="section-title">Durability where interruption is a planning assumption.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p><strong>Interruption survival is a local feature, not a nicety.</strong> In an environment where load-shedding and connectivity drops are planning assumptions, a workflow engine that resumes exactly &mdash; rather than restarts or loses state &mdash; changes what you can safely automate. A multi-hour ERP integration run or document pipeline that survives a power event mid-flight is the difference between automation you trust and automation you babysit.</p>
+      <p><strong>The natural local workloads are human-in-the-loop and integration-shaped.</strong> Recruitment pipelines with days-long candidate and approval stages; ERP flows where a dropped step means a broken invoice; onboarding and compliance processes that wait on people. These are precisely the long-wait, must-not-fail shapes durable execution exists for &mdash; and where the "sleep for a month, free" property earns its keep.</p>
+      <p><strong>Residency and the FX line.</strong> Self-hosted Temporal runs wherever you put it &mdash; an in-country VPC or on-prem rack &mdash; so the POPIA residency answer is yours to make, and the workflow state (which will contain personal information) stays home. The trade is the usual one: <strong>Temporal Cloud is USD-billed</strong>; self-hosting swaps the FX line for an ops commitment. For most SA teams the honest sequence is: prototype against a local docker-compose stack, and make the Cloud-vs-self-host call only when a real workload proves the platform.</p>
+    </div>
+  </div>
+</section>
+
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; Connections</div>
+      <h2 class="section-title">Where Temporal links in the tree.</h2>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="../biz/bpm/process-orchestration.html" class="connect-node">
+        <span class="tag">biz/bpm/process-orchestration</span>
+        <div class="skill">Process orchestration</div>
+        <div class="why">The other lens on the same platform &mdash; Temporal vs Camunda and the BPM-suite field. That leaf is the business-process comparison; this one is the engine under agents.</div>
+      </a>
+      <a href="cloudflare/workflows.html" class="connect-node">
+        <span class="tag">tech/cloudflare/workflows</span>
+        <div class="skill">Cloudflare Workflows</div>
+        <div class="why">The lighter-weight alternative &mdash; Temporal-like semantics with zero infrastructure, for Cloudflare-native stacks. Younger, narrower, and often enough.</div>
+      </a>
+      <a href="../agents/deep-agents.html" class="connect-node">
+        <span class="tag">agents/deep-agents</span>
+        <div class="skill">Deep Agents</div>
+        <div class="why">The harness-level cousin: checkpointing and resumability inside one agent framework. Temporal is the same idea as infrastructure, beneath any framework.</div>
+      </a>
+      <a href="../software/orchestrating-agents.html" class="connect-node">
+        <span class="tag">software/orchestrating-agents</span>
+        <div class="skill">Orchestrating agents</div>
+        <div class="why">The process view of multi-agent work. Durable execution is what makes those orchestrations survivable in production.</div>
+      </a>
+      <a href="../agents/google-adk.html" class="connect-node">
+        <span class="tag">agents/google-adk</span>
+        <div class="skill">Google ADK</div>
+        <div class="why">One of the two headline agent-framework integrations &mdash; ADK agents on a durable substrate (public preview).</div>
+      </a>
+      <a href="./" class="connect-node">
+        <span class="tag">tech</span>
+        <div class="skill">Tech hub</div>
+        <div class="why">Sits alongside MuleSoft and the cloud platforms as an infrastructure entry in the tech domain.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; Resources</div>
+      <h2 class="section-title">Primary sources only.</h2>
+      <p class="section-lede">The repo, the docs, and the dated integration announcements &mdash; maturity labels move, so check current status before depending on the preview-stage pieces. Last reviewed 2026-07-30.</p>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://temporal.io" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Site</span>
+        <span class="r-title">temporal.io</span>
+        <span class="r-url">temporal.io</span>
+      </a>
+      <a href="https://github.com/temporalio/temporal" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Source &middot; MIT</span>
+        <span class="r-title">temporalio/temporal</span>
+        <span class="r-url">github.com/temporalio/temporal</span>
+      </a>
+      <a href="https://docs.temporal.io/integrations" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs</span>
+        <span class="r-title">Temporal integrations (agent SDKs, current status)</span>
+        <span class="r-url">docs.temporal.io/integrations</span>
+      </a>
+      <a href="https://temporal.io/blog/announcing-openai-agents-sdk-integration" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Announcement</span>
+        <span class="r-title">OpenAI Agents SDK integration (GA Mar 2026)</span>
+        <span class="r-url">temporal.io/blog/announcing-openai-agents-sdk-integration</span>
+      </a>
+      <a href="https://temporal.io/blog/google-adk-temporal-integration-bts" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Announcement</span>
+        <span class="r-title">Google ADK integration (public preview)</span>
+        <span class="r-url">temporal.io/blog/google-adk-temporal-integration-bts</span>
+      </a>
+      <a href="https://temporal.io/blog/replay-2026-product-announcements" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Announcement &middot; Replay 2026</span>
+        <span class="r-title">Serverless Workers, Standalone Activities, Workflow Streams</span>
+        <span class="r-url">temporal.io/blog/replay-2026-product-announcements</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../index.html">Skills tree</a>
+      <a href="./">Tech hub</a>
+      <a href="https://temporal.io" target="_blank" rel="noopener">temporal.io &nearr;</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme(){const html=document.documentElement;const current=html.getAttribute('data-theme');const next=current==='dark'?'light':'dark';html.setAttribute('data-theme',next);document.querySelector('.theme-toggle').textContent=next==='dark'?'☀️':'🌙';localStorage.setItem('theme',next);}
+  const saved=localStorage.getItem('theme');if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.theme-toggle').textContent=saved==='dark'?'☀️':'🌙';}
+  const observer=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting)entry.target.classList.add('visible');});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>

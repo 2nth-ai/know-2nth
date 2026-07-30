@@ -3,7 +3,7 @@
   "description": "The public knowledge tree for the 2nth.ai ecosystem. Every leaf is both a human-readable reference and an agent-consumable context document.",
   "agent_fetch": "https://know.2nth.ai/api/context/<domain>/<leaf>",
   "mcp": "https://know.2nth.ai/mcp",
-  "count": 212,
+  "count": 213,
   "items": [
     {
       "title": "Agents — know.2nth.ai",
@@ -1620,6 +1620,14 @@
       "kind": "leaf",
       "url": "https://know.2nth.ai/explainers/tech/architecture",
       "fetch": "tech/architecture"
+    },
+    {
+      "title": "Temporal — know.2nth.ai",
+      "description": "Temporal — the durable execution platform. Workflows as ordinary code with full state persisted at every step, so failures resume exactly where they left off; failure-prone calls (APIs, LLMs, tools) wrapped as Activities with automatic retries. MIT-licensed core from the Cadence/AWS-SWF lineage; Temporal Cloud is the commercial layer. The 2026 AI pivot read with maturity labels — OpenAI Agents SDK GA, Google ADK preview, Serverless Workers pre-release — and the honest read on operational weight vs Cloudflare Workflows.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/temporal",
+      "fetch": "tech/temporal"
     },
     {
       "title": "Tokenization — know.2nth.ai",
