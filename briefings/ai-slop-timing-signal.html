@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Slop Is a Timing Signal &mdash; know.2nth.ai Briefing</title>
+<meta name="description" content="Every new medium's first phase imitates the old one — 1890s film crews pointed cameras at stage plays, and critics correctly called it a grey copy of theatre. Jack Conte's SXSW 2026 argument: AI slop is the same imitation phase, which makes it a timing signal, not a verdict. A plain-language CEO briefing on reading slop as a phase marker — and the three decisions it changes: evaluating initiatives by phase, owning training-data provenance, and reading competitors' slop as intelligence.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/briefings/ai-slop-timing-signal">
+<meta property="og:title" content="AI Slop Is a Timing Signal — know.2nth.ai Briefing">
+<meta property="og:description" content="Slop is what a new medium looks like while it's copying the old one. Read it as a timestamp, not a verdict — and change three decisions on the desk: phase, provenance, and competitive timing.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai — The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AI Slop Is a Timing Signal — know.2nth.ai">
+<meta name="twitter:description" content="Slop is what a new medium looks like while it's copying the old one. Read it as a timestamp, not a verdict — and change three decisions on the desk: phase, provenance, and competitive timing.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%2338BDF8' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%232563EB' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --ink: #0B1120; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6;
+    --sky: #38BDF8; --cyan: #22D3EE; --paper: #F8FAFC; --slate: #94A3B8;
+    --warm: #F59E0B; --warm-soft: rgba(245,158,11,0.12);
+    --green: #10B981; --green-soft: rgba(16,185,129,0.12);
+    --rose: #F43F5E; --rose-soft: rgba(244,63,94,0.12);
+    --indigo: #6366F1; --indigo-soft: rgba(99,102,241,0.12);
+    --max-w: 1080px; --read-w: 820px;
+    --radius-md: 14px; --radius-lg: 22px; --radius-pill: 100px;
+    --bg: #EEF4FB; --bg-soft: #E2ECF6; --card: #FFFFFF; --card-2: #F8FBFE;
+    --text: #0B1120; --text-2: #475569; --text-3: #8A97AB;
+    --border: rgba(15,23,42,0.10); --border-strong: rgba(15,23,42,0.16);
+    --shadow: 0 14px 40px rgba(15,23,42,0.08);
+  }
+  [data-theme="dark"] {
+    --bg: #07101D; --bg-soft: #0B1828; --card: #102033; --card-2: #0C1828;
+    --text: #F8FAFC; --text-2: #B6C2D6; --text-3: #6B7A92;
+    --border: rgba(148,163,184,0.14); --border-strong: rgba(148,163,184,0.24);
+    --shadow: 0 16px 48px rgba(0,0,0,0.5);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body {
+    font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+    background: radial-gradient(1100px 560px at 80% -120px, var(--bg-soft), var(--bg)) fixed;
+    color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  }
+  .wrap { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+  a { color: var(--blue); text-decoration: none; }
+
+  .topbar { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(14px);
+    background: color-mix(in srgb, var(--bg) 80%, transparent); border-bottom: 1px solid var(--border); }
+  .topbar-inner { max-width: var(--max-w); margin: 0 auto; padding: 12px 24px;
+    display: flex; align-items: center; justify-content: space-between; }
+  .brand-wrap { display: flex; align-items: center; }
+  .brand { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 14px;
+    background: linear-gradient(135deg, var(--blue), var(--sky));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; text-decoration: none; }
+  .brand-sub { font-size: 11px; color: var(--text-3); letter-spacing: 1.5px; text-transform: uppercase;
+    margin-left: 10px; padding-left: 10px; border-left: 1px solid var(--border); font-weight: 500; }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-2); text-decoration: none; font-weight: 500; }
+  .nav-link:hover { color: var(--sky); }
+  .toggle { background: none; border: 1px solid var(--border); color: var(--text-2);
+    width: 34px; height: 34px; border-radius: 50%; cursor: pointer; display: grid; place-items: center;
+    font-size: 15px; transition: all 0.2s; }
+  .toggle:hover { border-color: var(--border-strong); }
+
+  .hero { padding: 60px 0 8px; }
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500;
+    letter-spacing: 2.5px; text-transform: uppercase; color: var(--indigo);
+    display: inline-flex; align-items: center; gap: 10px; margin-bottom: 22px; }
+  .eyebrow .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--indigo); box-shadow: 0 0 12px var(--indigo); }
+  .hero h1 { font-size: clamp(36px, 6vw, 60px); font-weight: 800; line-height: 1.05;
+    letter-spacing: -1.8px; margin-bottom: 22px; max-width: 17ch; }
+  .hero h1 .hl { background: linear-gradient(135deg, var(--blue-glow), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .lede { font-size: 19px; color: var(--text-2); max-width: 720px; line-height: 1.6; font-weight: 300; }
+  .hero .lede .hl { color: var(--text); font-weight: 500; }
+  .meta-chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+  .chip { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.4px; color: var(--text-2);
+    border: 1px solid var(--border); padding: 8px 14px; border-radius: var(--radius-pill); background: var(--card-2); }
+
+  section { padding: 44px 0; }
+  .s-num { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--sky); font-weight: 600; margin-bottom: 12px; }
+  .s-title { font-size: clamp(26px, 4vw, 36px); font-weight: 700; letter-spacing: -0.8px; line-height: 1.15; margin-bottom: 16px; max-width: 24ch; }
+  .s-lede { font-size: 17px; color: var(--text-2); max-width: var(--read-w); line-height: 1.7; font-weight: 300; margin-bottom: 26px; }
+  .s-lede .hl { color: var(--text); font-weight: 600; }
+  .s-lede + .s-lede { margin-top: -8px; }
+
+  .defs { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 26px 0; }
+  @media (max-width: 720px){ .defs { grid-template-columns: 1fr; } }
+  .def { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 26px 28px; box-shadow: var(--shadow); }
+  .def.flow { border-top: 4px solid var(--warm); }
+  .def.agent { border-top: 4px solid var(--green); }
+  .def .dt { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; font-weight: 600; margin-bottom: 8px; }
+  .def.flow .dt { color: var(--warm); } .def.agent .dt { color: var(--green); }
+  .def h3 { font-size: 21px; font-weight: 800; letter-spacing: -0.4px; margin-bottom: 8px; }
+  .def p { font-size: 14.5px; color: var(--text-2); line-height: 1.6; margin-bottom: 10px; }
+  .def p:last-child { margin-bottom: 0; }
+  .def .tag { font-size: 13px; color: var(--text-3); font-style: italic; }
+
+  .callout { background: var(--card-2); border: 1px solid var(--border); border-left: 4px solid var(--sky); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); box-shadow: var(--shadow); }
+  .callout.warm { border-left-color: var(--warm); }
+  .callout.green { border-left-color: var(--green); }
+  .callout.indigo { border-left-color: var(--indigo); }
+  .callout .co-tag { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; font-weight: 600; color: var(--sky); margin-bottom: 10px; }
+  .callout.warm .co-tag { color: var(--warm); }
+  .callout.green .co-tag { color: var(--green); }
+  .callout.indigo .co-tag { color: var(--indigo); }
+  .callout p { font-size: 15.5px; color: var(--text-2); line-height: 1.7; }
+  .callout p strong { color: var(--text); }
+  .callout p + p { margin-top: 12px; }
+  .callout .more { font-family: 'JetBrains Mono', monospace; font-size: 12.5px; font-weight: 600; margin-top: 12px; display: inline-block; }
+
+  .checks { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: var(--read-w); }
+  @media (max-width: 720px){ .checks { grid-template-columns: 1fr; } }
+  .check { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 22px 24px; box-shadow: var(--shadow); }
+  .check .q { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+  .check p { font-size: 13.5px; color: var(--text-2); line-height: 1.55; }
+
+  .thread { display: grid; grid-template-columns: repeat(2,1fr); gap: 14px; }
+  @media (max-width: 760px){ .thread { grid-template-columns: 1fr; } }
+  .tcard { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px 26px; box-shadow: var(--shadow); text-decoration: none; color: inherit; display: block; transition: transform .25s, border-color .25s; border-top: 4px solid var(--sky); }
+  .tcard:hover { transform: translateY(-3px); border-color: var(--border-strong); }
+  .tcard .tt { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--sky); font-weight: 600; margin-bottom: 8px; }
+  .tcard h4 { font-size: 19px; font-weight: 800; letter-spacing: -0.4px; margin-bottom: 8px; }
+  .tcard p { font-size: 14px; color: var(--text-2); line-height: 1.55; margin-bottom: 10px; }
+  .tcard .go { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--sky); font-weight: 600; }
+
+  .finalbox { max-width: var(--read-w); margin: 0 auto; background: var(--card); border: 1px solid var(--border-strong); border-radius: var(--radius-lg); padding: 34px 36px; box-shadow: var(--shadow); text-align: center; }
+  .finalbox .tag { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.6px; text-transform: uppercase; color: var(--indigo); font-weight: 600; margin-bottom: 14px; }
+  .finalbox p { font-size: clamp(18px, 2.4vw, 22px); font-weight: 500; color: var(--text); line-height: 1.5; }
+
+  footer { padding: 54px 0 48px; border-top: 1px solid var(--border); text-align: center; margin-top: 36px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600;
+    background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tag { font-size: 13px; color: var(--text-3); margin-bottom: 18px; }
+  .footer-links { display: flex; justify-content: center; gap: 22px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-2); text-decoration: none; }
+  .footer-links a:hover { color: var(--sky); }
+  .footer-copy { font-size: 12px; color: var(--text-3); margin-top: 18px; }
+
+  .fade { opacity: 0; transform: translateY(22px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade.vis { opacity: 1; transform: translateY(0); }
+  @media (prefers-reduced-motion: reduce) { .fade { opacity: 1; transform: none; } }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand-wrap"><a href="/index.html" class="brand">know.2nth.ai</a><span class="brand-sub">CEO Briefing</span></div>
+    <div class="nav-right">
+      <a href="/briefings/" class="nav-link">All briefings</a>
+      <button class="toggle" onclick="toggleTheme()" aria-label="Toggle light/dark">🌙</button>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div class="eyebrow fade"><span class="dot"></span> New media &amp; timing &middot; The imitation phase</div>
+    <h1 class="fade" style="transition-delay:.05s">AI slop isn't a verdict. <span class="hl">It's a timestamp.</span></h1>
+    <p class="lede fade" style="transition-delay:.1s">
+      In 1942 the musicians' union banned its members from all commercial recording &mdash; its answer to "canned music" destroying live work. In 1966 The Beatles released <em>Revolver</em>, an album built from studio techniques that <span class="hl">could not be performed live at all</span>. The medium the union tried to stop had become an instrument in its own right. Patreon co-founder Jack Conte's argument, made at SXSW in March 2026, is that this arc has now run <span class="hl">four times in 130 years</span> &mdash; and that "AI slop" is simply what the newest medium looks like while it's still <span class="hl">copying the formats of the old one</span>.
+    </p>
+    <div class="meta-chips fade" style="transition-delay:.15s">
+      <span class="chip">Source &middot; Jack Conte, SXSW &middot; Mar 2026</span>
+      <span class="chip">5-min read</span>
+      <span class="chip">For decision-makers</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">01 &middot; The pattern</div>
+      <h2 class="s-title">Every new medium starts by filming the stage play.</h2>
+      <p class="s-lede">Conte assembles the same arc across film, recorded music, sound cinema, and synthesizers. Phase one imitates the medium that came before &mdash; 1890s film crews pointed static cameras at stage plays, and critics correctly called the result a grey copy of theatre. Phase two begins when someone discovers what the medium does that <span class="hl">nothing before it could</span>. For film, Conte dates that moment to 1902: Georges M&eacute;li&egrave;s using cuts and effects in <em>A Trip to the Moon</em> to make something theatre could not stage.</p>
+    </div>
+    <div class="defs fade" style="transition-delay:.05s">
+      <div class="def flow">
+        <div class="dt">Phase 1 &middot; imitation</div>
+        <h3>The grey copy</h3>
+        <p>The new medium reproduces the old medium's formats, and is judged against them &mdash; and usually judged worse. Cheaper theatre. Canned music. Slop.</p>
+        <p class="tag">Necessary — it's how the medium gets learned.</p>
+      </div>
+      <div class="def agent">
+        <div class="dt">Phase 2 &middot; the native move</div>
+        <h3>The M&eacute;li&egrave;s moment</h3>
+        <p>Someone stops copying and builds around what the medium alone can do. The cut. The studio album. The synth line no instrument could play.</p>
+        <p class="tag">This is where the value was, every time.</p>
+      </div>
+    </div>
+    <div class="callout indigo fade" style="transition-delay:.08s">
+      <div class="co-tag">The redefinition</div>
+      <p><strong>Slop is the output of a new medium being used to copy the formats of the old one.</strong> That turns it from an aesthetic complaint into a timing signal: slop-dominance means the medium is in its imitation phase &mdash; which says <strong>nothing about its ceiling</strong> and everything about where it sits on the arc.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">02 &middot; The enterprise translation</div>
+      <h2 class="s-title">Most corporate AI is filming the stage play.</h2>
+      <p class="s-lede">The dominant deployment pattern is <span class="hl">substitution</span>: the same workflow, the same artifacts, the same org chart &mdash; with a model producing the document a person used to produce. Cheaper output in the old format, judged against the old format, and usually judged a grey copy. That is the enterprise imitation phase, and most organisations are in it.</p>
+    </div>
+    <div class="callout green fade" style="transition-delay:.05s">
+      <div class="co-tag">The M&eacute;li&egrave;s move is structural, not incremental</div>
+      <p>It means designing the operation around what the medium natively does &mdash; <strong>parallelism, persistence, tool use, and a marginal cost per unit of work approaching the cost of inference</strong> &mdash; rather than around the shape of the pre-AI workflow. The harness model is one candidate for that native form: a single operator commanding a fleet of agents, with human specialists in the loop for judgment, instead of headcount-shaped teams using AI as a faster typewriter.</p>
+      <a class="more" href="/briefings/builder-is-the-operator">Featured: The Builder Is the Operator &rarr;</a>
+    </div>
+    <div class="callout warm fade" style="transition-delay:.08s">
+      <div class="co-tag">The honest caveat</div>
+      <p>An organisation cannot skip the imitation phase &mdash; it is how teams learn the medium, and funding it <em>as a learning stage</em> is rational. The risk is mistaking it for the destination: automating the old workflow so thoroughly, and so expensively, that the native redesign never gets budget. Imitation locked in is just rented efficiency on yesterday's process.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">03 &middot; The rights exposure</div>
+      <h2 class="s-title">Provenance is a supply-chain question, not a creative one.</h2>
+      <p class="s-lede">Conte's second argument is a governance item: AI vendors are signing licensing agreements with large rights-holders while ingesting individual creators' work without consent or compensation, defended as fair use &mdash; his slogan for the fix is <span class="hl">consent, credit, and compensation</span>.</p>
+    </div>
+    <div class="callout fade" style="transition-delay:.05s">
+      <div class="co-tag">Both things are happening at once</div>
+      <p>The documented record cuts both ways, which is exactly the point. Major deals are real &mdash; Vox Media licensed its archive to OpenAI (2024), and Warner Music reached agreements with AI music firms after litigation. And so are the lawsuits &mdash; <strong>Disney's most prominent public move has been suing Midjourney</strong>, and voice professionals filed class actions against ElevenLabs and others in 2026. Rights-holders are licensing <em>and</em> litigating simultaneously, and the fair-use question is unresolved in most jurisdictions. For any company deploying generative output at scale, that makes <strong>training-data provenance a live legal and reputational exposure</strong> &mdash; on the same register as data residency and POPIA: an input-supply-chain question, answered before procurement, not after a claim.</p>
+      <a class="more" href="/explainers/leg/ip">Deeper: Intellectual property — training data &amp; the law &rarr;</a>
+    </div>
+  </div>
+</section>
+
+<!-- 04 -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">04 &middot; What to actually do</div>
+      <h2 class="s-title">Three items for the desk.</h2>
+    </div>
+    <div class="checks fade" style="transition-delay:.05s">
+      <div class="check"><div class="q">Evaluate AI initiatives by phase.</div><p>Is this substitution inside the old workflow, or a redesign around the medium's native properties? Substitution is fine — as a funded learning stage. The question to ask in every review: is anyone budgeting the native move, or has the stage-play film become the strategy?</p></div>
+      <div class="check"><div class="q">Assign an owner for provenance risk.</div><p>Every generative deployment gets a named owner for training-data and output-provenance exposure, with vendor licensing posture as a selection criterion — before procurement, the way residency already is.</p></div>
+    </div>
+    <div class="callout indigo fade" style="transition-delay:.08s">
+      <div class="co-tag">And read your competitors' slop</div>
+      <p>Slop in a competitor's output is <strong>timing intelligence</strong>: it marks where they sit on the arc &mdash; still in the imitation phase &mdash; and therefore how much room remains for the <strong>first native move in your sector</strong>. The pattern has run four times in 130 years. The imitation phase ends; the question is only who ends it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- RELATED -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">Keep reading</div>
+      <h2 class="s-title">Related</h2>
+    </div>
+    <div class="thread fade" style="transition-delay:.05s">
+      <a href="/briefings/own-vs-rent-ai" class="tcard">
+        <div class="tt">Briefing 11</div>
+        <h4>The Five Things You Can Own in AI</h4>
+        <p>Where durable ownership sits once the imitation phase closes — rent the frontier model, own the layers that compound.</p>
+        <span class="go">Read briefing &rarr;</span>
+      </a>
+      <a href="/briefings/builder-is-the-operator" class="tcard">
+        <div class="tt">Briefing</div>
+        <h4>The Builder Is the Operator</h4>
+        <p>The harness model in full — the candidate "native form" this briefing points at: one operator, a fleet of agents, specialists in the loop.</p>
+        <span class="go">Read briefing &rarr;</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL -->
+<section>
+  <div class="wrap">
+    <div class="finalbox fade">
+      <div class="tag">The take</div>
+      <p>Slop isn't the ceiling of the medium — it's the timestamp on the phase. Fund imitation as tuition, budget the native move, own your provenance, and read your competitors' slop for what it is: a market that hasn't had its M&eacute;li&egrave;s moment yet.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tag">CEO briefings &middot; the plain-language layer over the knowledge tree</p>
+    <div class="footer-links">
+      <a href="/briefings/">All briefings</a>
+      <a href="/index.html">Knowledge tree</a>
+      <a href="/briefings/own-vs-rent-ai">The Five Things You Can Own</a>
+      <a href="/briefings/builder-is-the-operator">The Builder Is the Operator</a>
+      <a href="https://2nth.ai" target="_blank" rel="noopener">2nth.ai</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme(){
+    const h=document.documentElement, cur=h.getAttribute('data-theme'), nxt=cur==='dark'?'light':'dark';
+    h.setAttribute('data-theme',nxt);
+    document.querySelector('.toggle').textContent = nxt==='dark' ? '☀️' : '🌙';
+    localStorage.setItem('brief-theme',nxt);
+  }
+  const saved=localStorage.getItem('brief-theme');
+  if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.toggle').textContent=saved==='dark'?'☀️':'🌙';}
+  const ob=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');});},{threshold:0.08,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.fade').forEach(el=>ob.observe(el));
+</script>
+</body>
+</html>
