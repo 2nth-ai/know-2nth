@@ -3,20 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>vLLM &mdash; know.2nth.ai</title>
-<meta name="description" content="vLLM — the production-grade open-source inference server for open-weights LLMs. Apache 2.0, originated at UC Berkeley's Sky Lab, now broadly adopted across hosting providers including Together AI, Fireworks, and many self-hosted deployments. PagedAttention for memory-efficient KV cache, continuous batching for high-throughput serving, OpenAI-compatible API surface, native CUDA / ROCm support. The default when you've outgrown Ollama and need real production throughput on dedicated GPUs.">
+<title>Test-time compute &mdash; know.2nth.ai</title>
+<meta name="description" content="Test-time compute — the third scaling axis, and why it's really a verification story. Repeated sampling scales coverage log-linearly over four orders of magnitude (Large Language Monkeys, Brown et al. 2024) and a small model sampled thousands of times can beat a frontier model's single attempt — but only where an automatic verifier exists. The generator-verifier gap, process vs outcome reward models, reasoning models as productised test-time search, and the sampling-vs-bigger-model economics.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="know.2nth.ai">
-<meta property="og:url" content="https://know.2nth.ai/explainers/agents/vllm">
-<meta property="og:title" content="vLLM &mdash; know.2nth.ai">
-<meta property="og:description" content="vLLM — production-grade inference server. PagedAttention, continuous batching, OpenAI-compatible API. The default when you've outgrown Ollama. Apache 2.0.">
+<meta property="og:url" content="https://know.2nth.ai/explainers/agents/test-time-compute">
+<meta property="og:title" content="Test-time compute — know.2nth.ai">
+<meta property="og:description" content="The third scaling axis is really a verification story: repeated sampling beats bigger models — but only where an automatic verifier exists. The generator-verifier gap, reasoning models as productised search, and the economics.">
 <meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="vLLM &mdash; know.2nth.ai">
-<meta name="twitter:description" content="vLLM — production-grade open-weights inference. PagedAttention + continuous batching. The Ollama-graduation path.">
+<meta name="twitter:title" content="Test-time compute — know.2nth.ai">
+<meta name="twitter:description" content="The third scaling axis is really a verification story: repeated sampling beats bigger models — but only where an automatic verifier exists. The generator-verifier gap, reasoning models as productised search, and the economics.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3C/svg%3E">
@@ -129,7 +129,7 @@
 
 <nav>
   <div class="nav-inner">
-    <a href="../../index.html" class="nav-brand"><span class="nav-brand-mark">know.2nth.ai</span><span class="nav-brand-sub">agents/vllm</span></a>
+    <a href="../../index.html" class="nav-brand"><span class="nav-brand-mark">know.2nth.ai</span><span class="nav-brand-sub">agents/test-time-compute</span></a>
     <div class="nav-right">
       <a href="./" class="nav-link">&larr; Agents</a>
       <a href="../../index.html#domains" class="nav-link">Tree</a>
@@ -144,255 +144,209 @@
     <span class="crumb-sep">&rsaquo;</span>
     <a href="./">Agents</a>
     <span class="crumb-sep">&rsaquo;</span>
-    <span class="crumb-current">vLLM</span>
+    <span class="crumb-current">Test-time compute</span>
   </div>
 </div>
 
 <section class="hero">
   <div class="container">
-    <div class="eyebrow fade-up"><span class="dot"></span> agents &middot; vLLM &middot; Skill Leaf</div>
+    <div class="eyebrow fade-up"><span class="dot"></span> agents &middot; Test-time compute &middot; Concept Leaf</div>
     <h1 class="fade-up" style="transition-delay: 0.05s">
-      Production-grade open-weights inference. <span class="gradient">PagedAttention. Continuous batching.</span>
+      The third scaling axis <span class="gradient">is really a verification story.</span>
     </h1>
     <p class="sub fade-up" style="transition-delay: 0.1s">
-      vLLM is the production-grade open-source inference server for open-weights LLMs. Originated at UC Berkeley's Sky Lab and released under Apache 2.0, vLLM is now the canonical inference engine for self-hosted production deployments and the under-the-hood serving layer for many hosted providers including Together AI and Fireworks. <strong>PagedAttention</strong> for memory-efficient KV cache management, <strong>continuous batching</strong> for high-throughput multi-user serving, OpenAI-compatible API surface, native CUDA / ROCm / TPU support. The default when you've outgrown Ollama and need real production throughput on dedicated GPUs.
+      For years, making models better meant scaling two things: parameters and data. <strong>Test-time compute</strong> is the third axis &mdash; spending more inference to get better answers from the <em>same</em> weights, by sampling many candidates, searching, and checking. The headline result is startling: a small model sampled thousands of times can out-solve a frontier model's single attempt. The catch is the whole story: <strong>those gains only convert into real performance where an automatic verifier exists</strong>. Reasoning models are this idea productised; the generator-verifier gap is its bottleneck; and the practical question for your stack is when sampling-plus-checking beats simply buying the bigger model.
     </p>
     <div class="hero-meta fade-up" style="transition-delay: 0.15s">
-      <span class="pill green">Live &middot; v0.6+</span>
-      <span class="pill indigo">Apache 2.0</span>
-      <span class="pill accent">Python &middot; CUDA / ROCm / TPU</span>
-      <span class="pill warn">UC Berkeley Sky Lab origin</span>
+      <span class="pill accent">Third scaling axis</span>
+      <span class="pill indigo">Repeated sampling</span>
+      <span class="pill green">Verifier-gated gains</span>
+      <span class="pill">Reasoning models</span>
+      <span class="pill warn">You pay per thought</span>
     </div>
   </div>
 </section>
 
+<!-- 01 -->
 <section id="what">
   <div class="container">
     <div class="fade-up">
       <div class="section-label">01 &middot; What it is</div>
-      <h2 class="section-title">An open-source inference engine, with two architectural breakthroughs.</h2>
+      <h2 class="section-title">Better answers from the same weights.</h2>
     </div>
     <div class="prose fade-up" style="transition-delay: 0.05s">
-      <p>vLLM is a Python library for high-throughput LLM inference. Released as an academic project from UC Berkeley's Sky Lab (formerly RISELab) in mid-2023 and now maintained as an open-source project with broad industry contribution, vLLM has become the de-facto serving layer for self-hosted open-weights LLMs and the hidden infrastructure behind many hosted-inference providers.</p>
-      <p>Two architectural ideas distinguish vLLM from earlier inference servers:</p>
-      <p><strong>PagedAttention</strong>, the original research contribution, applies virtual-memory-style paging to the KV cache. Conventional inference servers allocate KV cache contiguously, leaving large fragmented gaps when sequences finish at different times. PagedAttention stores KV in fixed-size blocks managed like virtual memory pages, dramatically reducing memory waste &mdash; typically 4&times; better memory utilisation, which translates directly to higher throughput on the same GPU.</p>
-      <p><strong>Continuous batching</strong> (sometimes called dynamic batching or in-flight batching) means new requests can join an in-progress batch instead of waiting for the current batch to finish. Combined with PagedAttention, this lets vLLM serve far more concurrent users on the same hardware than naive batching approaches. The result: hosted providers running vLLM can offer Llama / Qwen / Mistral inference at very competitive per-token prices because the per-GPU throughput is genuinely high.</p>
+      <p>The first two scaling axes are settled science: the 2020 scaling-laws work (Kaplan et al., OpenAI) showed loss falls predictably as you grow compute, parameters, and data, and Chinchilla (Hoffmann et al., DeepMind, 2022) refined the recipe &mdash; scale tokens with parameters. That era took models from BERT's ~340M parameters to the hundreds of billions, and unlocked in-context learning and, past roughly the 100B mark, the chain-of-thought reasoning gains Wei et al. documented in 2022.</p>
+      <p><strong>Test-time compute is the axis that doesn't touch the weights.</strong> Instead of training a better model, you spend more inference on the problem: sample many candidate answers in parallel, let the model think longer before answering, search over intermediate steps, and use a checker to pick the winner. Pre-training buys capability once; test-time compute rents extra performance per query &mdash; which is exactly why its economics, not just its accuracy curves, decide when it's the right tool.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 -->
+<section id="monkeys">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; The headline result</div>
+      <h2 class="section-title">Sampling scales like a law &mdash; and a small model can outsolve a big one.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>The cleanest evidence is <em>Large Language Monkeys: Scaling Inference Compute with Repeated Sampling</em> (Brown et al., 2024 &mdash; Stanford's Scaling Intelligence Lab). Sample a model repeatedly on the same problem and measure <strong>coverage</strong> &mdash; the fraction of problems where <em>any</em> sample is correct. Coverage keeps climbing across <strong>four orders of magnitude of samples</strong>, often log-linearly &mdash; an inference-time scaling law to sit beside the training-time ones. In their experiments, a small open model like Llama-3 8B, sampled up to 10,000 times per problem with an automatic checker, reaches coverage on hard math and coding benchmarks that exceeds a frontier model's <strong>single-attempt</strong> (pass@1) score.</p>
+      <p>Two practical notes travel with the result. Parallel sampling trades <strong>compute, not latency</strong> &mdash; the candidates generate concurrently, so wall-clock stays flat while the bill grows. And diversity has a ceiling: push sampling temperature much past ~1.2 and generations degrade into incoherence (a practitioner's bound worth knowing, from the CS329A lecture treatment of the paper).</p>
     </div>
     <div class="info-card indigo fade-up" style="transition-delay: 0.08s">
-      <h4>Why it's the production default</h4>
-      <p>By 2026, vLLM is the inference engine you'll find under the hood at most hosted-inference providers serving open-weights models. Together AI uses vLLM-derived infrastructure. Fireworks builds on vLLM. NVIDIA's TensorRT-LLM is the main alternative; SGLang and TGI are smaller competitors. <strong>If you're self-hosting open-weights models for production, vLLM is the path of least resistance and the broadest ecosystem.</strong> If you're consuming hosted inference, you're probably using vLLM-served endpoints whether you know it or not.</p>
+      <h4>A provenance note, per house discipline</h4>
+      <p>This leaf draws partly on Stanford's CS329A (Self-Improving AI Agents) course treatment of these results &mdash; and its co-instructor, Azalia Mirhoseini, is an author of the Monkeys paper itself. The lecture is a primary author explaining her own work: authoritative on what the paper says, not an independent replication of it. The paper and its public code are the checkable sources.</p>
     </div>
   </div>
 </section>
 
-<section id="how">
+<!-- 03 -->
+<section id="verifier">
   <div class="container">
     <div class="fade-up">
-      <div class="section-label">02 &middot; How it works</div>
-      <h2 class="section-title">Two ways to run it: server or library.</h2>
-      <p class="section-lede">vLLM exposes two surfaces. The <strong>API server</strong> mode launches an OpenAI-compatible HTTP endpoint at <code>localhost:8000</code> &mdash; drop-in replacement for OpenAI in any code that speaks the OpenAI SDK. The <strong>library</strong> mode embeds vLLM directly in your Python process for offline batched inference. Both modes share the same engine.</p>
+      <div class="section-label">03 &middot; The catch</div>
+      <h2 class="section-title">The generator-verifier gap: coverage is not correctness.</h2>
     </div>
-
     <div class="prose fade-up" style="transition-delay: 0.05s">
-      <p><strong>Server mode</strong> &mdash; the production default. Single command launches an OpenAI-compatible API:</p>
-    </div>
-
-    <pre class="code fade-up" style="transition-delay: 0.07s"><span class="c"># pip install vllm</span>
-<span class="c"># Start an OpenAI-compatible server</span>
-vllm serve meta-llama/Llama-3.3-70B-Instruct \
-  --tensor-parallel-size 2 \
-  --max-model-len 32768 \
-  --port 8000
-
-<span class="c"># Query it like OpenAI</span>
-curl http://localhost:8000/v1/chat/completions \
-  -H <span class="s">"Content-Type: application/json"</span> \
-  -d <span class="s">'{
-    "model": "meta-llama/Llama-3.3-70B-Instruct",
-    "messages": [{"role": "user", "content": "Hello"}]
-  }'</span></pre>
-
-    <div class="prose fade-up" style="transition-delay: 0.1s">
-      <p><strong>Library mode</strong> &mdash; for offline batch inference, evaluations, or embedding into a custom serving stack:</p>
-    </div>
-
-    <pre class="code fade-up" style="transition-delay: 0.13s"><span class="h">from</span> vllm <span class="h">import</span> LLM, SamplingParams
-
-llm = LLM(<span class="h">model</span>=<span class="s">"meta-llama/Llama-3.3-70B-Instruct"</span>, <span class="h">tensor_parallel_size</span>=2)
-prompts = [<span class="s">"Summarise SA fiscal policy in 2026."</span>, <span class="s">"What's stage 6 load shedding?"</span>]
-sampling = SamplingParams(<span class="h">temperature</span>=0.3, <span class="h">max_tokens</span>=512)
-
-outputs = llm.generate(prompts, sampling)
-<span class="h">for</span> output <span class="h">in</span> outputs:
-    <span class="k">print</span>(output.outputs[0].text)</pre>
-
-    <div class="info-card green fade-up" style="transition-delay: 0.16s">
-      <h4>The OpenAI compatibility shortcut</h4>
-      <p>vLLM's OpenAI-compatible mode means agent frameworks that speak OpenAI work unchanged. Point LangGraph's <code>ChatOpenAI</code> at <code>http://your-vllm-server:8000/v1</code>, set the model name, and your LangGraph stack runs against your self-hosted Llama 70B. Same trick works for the OpenAI Agents SDK, ADK via LiteLLM, CrewAI, and AutoGen. <strong>This is what makes vLLM operationally pragmatic</strong> &mdash; you can swap closed-frontier APIs for self-hosted vLLM by changing one config value.</p>
+      <p>Here is the part the headline hides. Coverage counts a problem "solved" if <em>any</em> of your 10,000 samples is right &mdash; but in production you have to <strong>pick one answer</strong>. The Monkeys authors are explicit: the gains convert into real performance <strong>in domains where answers can be automatically verified</strong> &mdash; code with unit tests, formal proofs, math with checkable answers. Where no such verifier exists, identifying the correct sample among thousands becomes the problem, and common tricks like majority voting or reward-model scoring plateau well below the coverage ceiling.</p>
+      <p>That is the <strong>generator-verifier gap</strong>: for many tasks, checking an answer is as hard as &mdash; or harder than &mdash; producing one, and verification, not generation, becomes the bottleneck. The research response is to build better checkers: <em>Let's Verify Step by Step</em> (Lightman et al., OpenAI, 2023) showed a <strong>process reward model</strong> &mdash; grading each reasoning step &mdash; substantially outperforms an outcome-only grader on hard math. The engineering response is the one this tree keeps arriving at from every direction: <strong>the same law that governs specs governs sampling</strong>. A spec without verification is a vibe with headers; ten thousand samples without a verifier are ten thousand vibes. Test-time compute is only as good as the check you can run against it.</p>
     </div>
   </div>
 </section>
 
-<section id="vs">
+<!-- 04 -->
+<section id="reasoning">
   <div class="container">
     <div class="fade-up">
-      <div class="section-label">03 &middot; vs Ollama, TensorRT-LLM, hosted</div>
-      <h2 class="section-title">Where vLLM fits.</h2>
-      <p class="section-lede">vLLM sits between Ollama (dev / single-user) and TensorRT-LLM (extreme NVIDIA-specific optimisation) in the inference stack. Hosted providers (Together / Fireworks / Groq) abstract everything below the API surface; vLLM is what you reach for when you want self-host control and broad model + hardware support.</p>
+      <div class="section-label">04 &middot; Reasoning models</div>
+      <h2 class="section-title">o1 and its successors are this idea, productised.</h2>
     </div>
-
-    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
-      <table class="compare">
-        <thead><tr><th>Layer</th><th>Best for</th><th>Trade-off</th></tr></thead>
-        <tbody>
-          <tr><td><strong>Ollama</strong></td><td>Dev, prototyping, single-user laptop / server</td><td>Single-tenant, lower throughput; not for production multi-user</td></tr>
-          <tr><td><strong>vLLM</strong></td><td>Production self-host, multi-user, broad model + HW support</td><td>More ops complexity than Ollama; less NVIDIA-specific tuning than TensorRT-LLM</td></tr>
-          <tr><td><strong>TensorRT-LLM</strong></td><td>Maximum throughput on NVIDIA hardware specifically</td><td>NVIDIA-only, more setup complexity, narrower model support</td></tr>
-          <tr><td><strong>Together AI / Fireworks</strong></td><td>Don't want to self-host; hosted inference simplicity</td><td>Per-token billing; less control; vendor lock-in on pricing</td></tr>
-          <tr><td><strong>Groq</strong></td><td>Extreme low-latency on a curated model set</td><td>LPU hardware-specific; narrower model catalogue</td></tr>
-        </tbody>
-      </table>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Chain-of-thought started as a prompting trick; modern reasoning models internalise it. OpenAI's o1 announcement showed accuracy on hard competition math (AIME) rising <strong>log-linearly with test-time compute</strong> &mdash; the same curve shape as the sampling law, now inside one model's "thinking." Instead of you orchestrating samples and verifiers externally, the model performs search, decomposition, hypothesis testing, self-evaluation, and backtracking natively before answering &mdash; trained into the weights with reinforcement learning, spent at inference as thinking tokens.</p>
+      <p>The consequence is on your invoice. A reasoning model converts the sampling bill into a <strong>thinking-token bill</strong> &mdash; the <a href="kimi-k3.html" style="color:var(--sky);text-decoration:none;">Kimi K3</a> leaf's ~13,000-token answer to a simple drawing prompt is what always-on test-time compute looks like as a line item. Test-time scaling didn't make intelligence cheaper; it made <em>extra</em> intelligence purchasable per query &mdash; which is precisely why routing easy work away from it matters.</p>
     </div>
   </div>
 </section>
 
-<section id="decision">
-  <div class="container">
+<!-- 05 -->
+<section id="economics">
+  <div class="container">    
     <div class="fade-up">
-      <div class="section-label">04 &middot; Decision guide</div>
-      <h2 class="section-title">Pick vLLM when. Skip when.</h2>
+      <div class="section-label">05 &middot; Decision guide &amp; the economics</div>
+      <h2 class="section-title">Sampling, reasoning model, or just a bigger model?</h2>
+      <p class="section-lede">Three ways to buy accuracy at inference. The verifier decides which one is rational &mdash; and for a rand-denominated budget, the difference is large.</p>
     </div>
     <div class="decision-grid fade-up" style="transition-delay: 0.05s">
       <div class="decision-card use">
-        <h4>Use vLLM when</h4>
+        <h4>Sample-and-verify wins when</h4>
         <ul>
-          <li>You self-host open-weights LLMs in production</li>
-          <li>You want OpenAI-compatible API on your own infrastructure</li>
-          <li>Multi-user / multi-tenant serving with continuous batching matters</li>
-          <li>You're on AMD ROCm or Google TPU and need broad hardware support</li>
-          <li>You're building hosted-inference infrastructure for others (vLLM is the standard engine)</li>
-          <li>You've outgrown Ollama's single-tenant performance</li>
-          <li>Your scale justifies the GPU + ops investment over hosted per-token billing</li>
+          <li>The domain auto-verifies: code with tests, math with checkable answers, extraction against a schema</li>
+          <li>Latency is loose but budget favours a cheap open model &mdash; many samples of small often undercut one call to frontier</li>
+          <li>You already run <a href="vllm.html" style="color:var(--sky);text-decoration:none;">vLLM</a>-class serving &mdash; batched parallel sampling is what its throughput is for</li>
+          <li>You want a measurable knob: coverage vs samples is a curve you can actually plot for your task</li>
         </ul>
       </div>
       <div class="decision-card skip">
-        <h4>Skip when</h4>
+        <h4>Don't reach for it when</h4>
         <ul>
-          <li>You're a single developer doing dev work &mdash; Ollama is simpler</li>
-          <li>You don't have GPUs and don't want them &mdash; use hosted inference</li>
-          <li>You need maximum NVIDIA-specific throughput &mdash; TensorRT-LLM may edge out vLLM</li>
-          <li>You're at low volume and per-token hosted billing is cheaper than ops + GPU rental</li>
-          <li>You only run closed-frontier APIs (Claude / GPT / Gemini) &mdash; vLLM is for open-weights</li>
-          <li>You don't have ops capacity to run a production inference stack</li>
+          <li>No automatic verifier exists &mdash; judgment, taste, and open-ended writing can't convert coverage into correctness</li>
+          <li>The task is interactive and latency-bound &mdash; thinking tokens and voting rounds sit in the user's wait</li>
+          <li>N samples of the small model costs more than one call to the better model &mdash; do the arithmetic per task</li>
+          <li>You'd be using an LLM-as-judge as the "verifier" for correctness-critical work &mdash; that's a softer check than it feels</li>
         </ul>
       </div>
     </div>
-  </div>
-</section>
-
-<section id="sa-context">
-  <div class="container">
-    <div class="fade-up">
-      <div class="section-label">05 &middot; South African context</div>
-      <h2 class="section-title">Where vLLM lands in SA delivery work.</h2>
-    </div>
-    <div class="info-card indigo fade-up" style="transition-delay: 0.05s">
-      <h4>Self-host vs hosted &middot; the SA volume question</h4>
-      <p>For most SA studios, <strong>hosted inference (Together AI, Fireworks, Groq) is the right answer until you cross meaningful volume</strong> &mdash; roughly 50M+ tokens / month on a single model. Below that, the per-token economics of hosted providers beat the ops cost of running vLLM on dedicated GPUs. Above that, self-hosted vLLM on dedicated hardware can structurally undercut hosted billing &mdash; particularly relevant when FX exposure on USD-billed hosted services is a concern.</p>
-    </div>
-    <div class="info-card fade-up" style="transition-delay: 0.07s">
-      <h4>SA hosting reality</h4>
-      <p>Hetzner doesn't have an SA region; their nearest GPU-equipped DC is Helsinki / Frankfurt. For genuinely SA-resident vLLM hosting, options narrow to: <strong>GCP Johannesburg</strong> with custom GPU instances (A100s available), <strong>AWS Cape Town</strong> with EC2 GPU SKUs, or <strong>local hosting providers</strong> with GPU infrastructure. None are as cheap as Hetzner Frankfurt, but all keep data SA-resident. A practical compromise for SA enterprise: vLLM on AWS Cape Town for residency-sensitive workloads, hosted Together AI for everything else.</p>
-    </div>
-    <div class="info-card amber fade-up" style="transition-delay: 0.09s">
-      <h4>POPIA-clean self-host</h4>
-      <p>For POPIA-sensitive workloads, vLLM on SA-region GPU instances is the cleanest open-weights inference path. Llama / Mistral / Qwen weights downloaded once, served from SA-region infrastructure, no inference data crossing borders. Audit trail flows into Cloud Logging or CloudWatch; IAM controls integrate with existing AWS / GCP enterprise posture.</p>
+    <div class="info-card green fade-up" style="transition-delay: 0.08s">
+      <h4>The SA read</h4>
+      <p>For a team paying for inference in dollars, sample-and-verify is the rare strategy that gets <em>better</em> as your model gets cheaper: a budget open-weight model plus a real verifier plus serving you control is a rand-friendly substitute for frontier calls &mdash; <strong>on verifiable work</strong>. It composes with the router argument from the ownership series: route easy work to cheap single-shot, verifiable hard work to cheap sample-and-verify, and reserve the premium reasoning model for the judgment tail no verifier covers. The investment that unlocks all of it is the same one the spec leaf argues for: <strong>build the checks</strong>.</p>
     </div>
   </div>
 </section>
 
+<!-- 06 -->
 <section id="connect">
   <div class="container">
     <div class="fade-up">
       <div class="section-label">06 &middot; Connections</div>
-      <h2 class="section-title">Where vLLM links in the tree.</h2>
+      <h2 class="section-title">Where test-time compute links in the tree.</h2>
     </div>
     <div class="connect-grid fade-up" style="transition-delay: 0.05s">
       <a href="./" class="connect-node">
         <span class="tag">agents</span>
         <div class="skill">Agents hub</div>
-        <div class="why">The sub-tree landing. vLLM in the Inference band as the production-grade self-host option alongside Ollama (dev), LiteLLM (proxy), and OpenRouter (hosted multiplexer).</div>
+        <div class="why">Sits in the Inference band &mdash; the concept leaf beside the serving platforms that execute it.</div>
       </a>
-      <a href="ollama.html" class="connect-node">
-        <span class="tag">agents/ollama</span>
-        <div class="skill">Ollama</div>
-        <div class="why">The dev-tier alternative. Ollama for laptop, vLLM for production. Same OpenAI-compatible API surface; same models work on both. The Ollama-to-vLLM graduation path.</div>
+      <a href="vllm.html" class="connect-node">
+        <span class="tag">agents/vllm</span>
+        <div class="skill">vLLM</div>
+        <div class="why">The serving layer sampling runs on &mdash; continuous batching is what makes 10,000 parallel candidates economically sane.</div>
       </a>
-      <a href="test-time-compute.html" class="connect-node">
-        <span class="tag">agents/test-time-compute</span>
-        <div class="skill">Test-time compute</div>
-        <div class="why">What high-throughput serving is increasingly for &mdash; batched parallel sampling with a verifier, the third scaling axis this platform executes.</div>
+      <a href="../software/spec-driven-development.html" class="connect-node">
+        <span class="tag">software/spec-driven-development</span>
+        <div class="skill">Spec-driven development</div>
+        <div class="why">The same law at the workflow layer: a spec without verification is a vibe with headers &mdash; and samples without a verifier are too.</div>
       </a>
-      <a href="litellm.html" class="connect-node">
-        <span class="tag">agents/litellm</span>
-        <div class="skill">LiteLLM</div>
-        <div class="why">Common pairing: vLLM serves the model, LiteLLM proxies multi-vendor traffic and adds observability. Both can sit between agents and any backend.</div>
+      <a href="effective-agents.html" class="connect-node">
+        <span class="tag">agents/effective-agents</span>
+        <div class="skill">Effective Agents</div>
+        <div class="why">The pattern taxonomy this plugs into &mdash; evaluator and verifier loops are where test-time compute meets agent design.</div>
       </a>
-      <a href="llama.html" class="connect-node">
-        <span class="tag">agents/llama</span>
-        <div class="skill">Llama</div>
-        <div class="why">The most-served open-weights family on vLLM. Llama 70B and Llama 4 variants are the canonical "production-grade self-hosted on vLLM" choices.</div>
+      <a href="kimi-k3.html" class="connect-node">
+        <span class="tag">agents/kimi-k3</span>
+        <div class="skill">Kimi K3</div>
+        <div class="why">Always-on reasoning as a product decision &mdash; what internalised test-time compute costs per answer.</div>
       </a>
-      <a href="gemma.html" class="connect-node">
-        <span class="tag">agents/gemma</span>
-        <div class="skill">Gemma</div>
-        <div class="why">vLLM has first-class Gemma 3 support including the multimodal variants. Vertex AI Model Garden's Gemma serving is built on vLLM-derived infrastructure.</div>
-      </a>
-      <a href="mistral-qwen.html" class="connect-node">
-        <span class="tag">agents/mistral-qwen</span>
-        <div class="skill">Mistral / Qwen</div>
-        <div class="why">vLLM serves both families well, including Mixtral MoE variants and Qwen Coder. Together AI's Mistral / Qwen hosting runs on vLLM-derived infrastructure.</div>
-      </a>
-      <a href="langgraph.html" class="connect-node">
-        <span class="tag">agents/langgraph</span>
-        <div class="skill">LangGraph</div>
-        <div class="why">Common pairing &mdash; LangGraph's <code>ChatOpenAI</code> works against any vLLM endpoint by setting <code>base_url</code>. Self-hosted Llama / Qwen behind LangGraph orchestration is a popular SA cost-optimised stack.</div>
+      <a href="../../briefings/own-vs-rent-ai" class="connect-node">
+        <span class="tag">briefings/own-vs-rent-ai</span>
+        <div class="skill">The Five Things You Can Own</div>
+        <div class="why">The router this leaf's economics feed: cheap single-shot, cheap sample-and-verify, premium reasoning &mdash; owned routing decides which.</div>
       </a>
     </div>
   </div>
 </section>
 
+<!-- 07 -->
 <section id="resources">
   <div class="container">
     <div class="fade-up">
       <div class="section-label">07 &middot; Resources</div>
-      <h2 class="section-title">Primary sources only.</h2>
+      <h2 class="section-title">Primary sources.</h2>
+      <p class="section-lede">The papers first, the course as the guided tour. GSM8K is Cobbe et al. (OpenAI, 2021) &mdash; often mis-attributed to the MATH paper. Last reviewed 2026-08-05.</p>
     </div>
     <div class="resource-grid fade-up" style="transition-delay: 0.05s">
-      <a href="https://docs.vllm.ai" class="resource" target="_blank" rel="noopener">
-        <span class="r-kind">Docs</span>
-        <span class="r-title">docs.vllm.ai</span>
-        <span class="r-url">docs.vllm.ai</span>
+      <a href="https://arxiv.org/abs/2407.21787" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Paper &middot; 2024</span>
+        <span class="r-title">Large Language Monkeys: Scaling Inference Compute with Repeated Sampling</span>
+        <span class="r-url">arxiv.org/abs/2407.21787</span>
       </a>
-      <a href="https://github.com/vllm-project/vllm" class="resource" target="_blank" rel="noopener">
-        <span class="r-kind">Source</span>
-        <span class="r-title">vllm-project/vllm</span>
-        <span class="r-url">github.com/vllm-project/vllm</span>
+      <a href="https://openai.com/index/learning-to-reason-with-llms/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Announcement &middot; o1</span>
+        <span class="r-title">OpenAI &mdash; Learning to reason with LLMs (the test-time curve)</span>
+        <span class="r-url">openai.com/index/learning-to-reason-with-llms</span>
       </a>
-      <a href="https://blog.vllm.ai" class="resource" target="_blank" rel="noopener">
-        <span class="r-kind">Blog</span>
-        <span class="r-title">vLLM engineering blog</span>
-        <span class="r-url">blog.vllm.ai</span>
+      <a href="https://arxiv.org/abs/2305.20050" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Paper &middot; 2023</span>
+        <span class="r-title">Let's Verify Step by Step (process reward models)</span>
+        <span class="r-url">arxiv.org/abs/2305.20050</span>
       </a>
-      <a href="https://arxiv.org/abs/2309.06180" class="resource" target="_blank" rel="noopener">
-        <span class="r-kind">Paper</span>
-        <span class="r-title">PagedAttention paper (SOSP 2023)</span>
-        <span class="r-url">arxiv.org/abs/2309.06180</span>
+      <a href="https://arxiv.org/abs/2201.11903" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Paper &middot; 2022</span>
+        <span class="r-title">Chain-of-Thought Prompting Elicits Reasoning (Wei et al.)</span>
+        <span class="r-url">arxiv.org/abs/2201.11903</span>
       </a>
-      <a href="https://docs.vllm.ai/en/latest/serving/openai_compatible_server.html" class="resource" target="_blank" rel="noopener">
-        <span class="r-kind">Guide</span>
-        <span class="r-title">OpenAI-compatible server guide</span>
-        <span class="r-url">docs.vllm.ai/.../openai_compatible_server</span>
+      <a href="https://arxiv.org/abs/2001.08361" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Paper &middot; 2020</span>
+        <span class="r-title">Scaling Laws for Neural Language Models (Kaplan et al.)</span>
+        <span class="r-url">arxiv.org/abs/2001.08361</span>
+      </a>
+      <a href="https://arxiv.org/abs/2110.14168" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Paper &middot; 2021</span>
+        <span class="r-title">GSM8K &mdash; Training Verifiers to Solve Math Word Problems (Cobbe et al.)</span>
+        <span class="r-url">arxiv.org/abs/2110.14168</span>
+      </a>
+      <a href="https://cs329a.stanford.edu" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Learn &middot; course</span>
+        <span class="r-title">Stanford CS329A &mdash; Self-Improving AI Agents</span>
+        <span class="r-url">cs329a.stanford.edu</span>
       </a>
     </div>
   </div>
@@ -405,7 +359,7 @@ outputs = llm.generate(prompts, sampling)
     <div class="footer-links">
       <a href="../../index.html">Skills tree</a>
       <a href="./">Agents hub</a>
-      <a href="https://docs.vllm.ai" target="_blank" rel="noopener">vLLM docs &nearr;</a>
+      <a href="https://arxiv.org/abs/2407.21787" target="_blank" rel="noopener">Large Language Monkeys &nearr;</a>
     </div>
     <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant</p>
   </div>
