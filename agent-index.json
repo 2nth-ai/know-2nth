@@ -3,11 +3,11 @@
   "description": "The public knowledge tree for the 2nth.ai ecosystem. Every leaf is both a human-readable reference and an agent-consumable context document.",
   "agent_fetch": "https://know.2nth.ai/api/context/<domain>/<leaf>",
   "mcp": "https://know.2nth.ai/mcp",
-  "count": 215,
+  "count": 216,
   "items": [
     {
       "title": "Agents — know.2nth.ai",
-      "description": "The Agents domain on know.2nth.ai — the agentic frameworks, protocols, models, inference platforms, and coding CLI agents that matter in 2026. Thirty-one Live leaves across five bands: nine frameworks (Google ADK, Google Antigravity, LangGraph, CrewAI, OpenAI Agents SDK, Anthropic Agent SDK, AutoGen, AgentForce, Deep Agents), four protocols (A2A, MCP, Agent Skills, OpenWiki + OKF), ten models, four inference platforms, and four coding CLI agents (Claude Code, OpenAI Codex CLI, GitHub Copilot CLI plus a comparison). Built around the principle that agents are software, not prompt soup.",
+      "description": "The Agents domain on know.2nth.ai — the agentic frameworks, protocols, models, inference platforms, and coding CLI agents that matter in 2026. Thirty-two Live leaves across five bands: nine frameworks (Google ADK, Google Antigravity, LangGraph, CrewAI, OpenAI Agents SDK, Anthropic Agent SDK, AutoGen, AgentForce, Deep Agents), four protocols (A2A, MCP, Agent Skills, OpenWiki + OKF), ten models, five inference leaves, and four coding CLI agents (Claude Code, OpenAI Codex CLI, GitHub Copilot CLI plus a comparison). Built around the principle that agents are software, not prompt soup.",
       "domain": "agents",
       "kind": "hub",
       "url": "https://know.2nth.ai/explainers/agents/",
@@ -284,6 +284,14 @@
       "kind": "leaf",
       "url": "https://know.2nth.ai/explainers/agents/owning-ai",
       "fetch": "agents/owning-ai"
+    },
+    {
+      "title": "Test-time compute — know.2nth.ai",
+      "description": "Test-time compute — the third scaling axis, and why it's really a verification story. Repeated sampling scales coverage log-linearly over four orders of magnitude (Large Language Monkeys, Brown et al. 2024) and a small model sampled thousands of times can beat a frontier model's single attempt — but only where an automatic verifier exists. The generator-verifier gap, process vs outcome reward models, reasoning models as productised test-time search, and the sampling-vs-bigger-model economics.",
+      "domain": "agents",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/agents/test-time-compute",
+      "fetch": "agents/test-time-compute"
     },
     {
       "title": "vLLM — know.2nth.ai",
