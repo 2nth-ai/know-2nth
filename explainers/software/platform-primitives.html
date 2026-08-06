@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Platform primitives &mdash; know.2nth.ai</title>
+<meta name="description" content="Platform primitives — the architecture that separates a high-margin platform company from a low-margin consulting shop. Three layers (a core-owned foundation, composable primitives, and a field-engineer sandbox), the upstream-generalisation harvest pipeline that turns bespoke client work into product, and the DX contract that keeps it stable. A house-method leaf in the documented Palantir FDE/Foundry lineage, with Frappe's doctypes as the living on-tree example — and the honest read on premature platformisation.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/software/platform-primitives">
+<meta property="og:title" content="Platform primitives — know.2nth.ai">
+<meta property="og:description" content="Three layers, one harvest pipeline: how a delivery company structures its platform so bespoke client work compounds into product margin — the Palantir-lineage FDE model, with the honest read on premature platformisation.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Platform primitives — know.2nth.ai">
+<meta name="twitter:description" content="Three layers, one harvest pipeline: how a delivery company structures its platform so bespoke client work compounds into product margin — the Palantir-lineage FDE model, with the honest read on premature platformisation.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%2314B8A6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12); --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-soft: rgba(99, 102, 241, 0.12); --code: #14B8A6; --code-soft: rgba(20, 184, 166, 0.12); --bg: var(--ink); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(20, 184, 166, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(20, 184, 166, 0.3); --max-w: 1200px; --read-w: 760px; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(20, 184, 166, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(20, 184, 166, 0.28); }
+  * { margin: 0; padding: 0; box-sizing: border-box; } html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.blue { width: 600px; height: 600px; background: var(--code); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--code), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--code); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--code); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--code); } .crumb-sep { opacity: 0.5; } .crumb-current { color: var(--text-secondary); }
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--code); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--code); box-shadow: 0 0 12px var(--code); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--code), var(--sky), var(--sky-muted)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.accent { background: rgba(37, 99, 235, 0.12); color: var(--blue-glow); border-color: rgba(37, 99, 235, 0.25); }
+  .pill.green { background: var(--green-soft); color: var(--green); border-color: rgba(16, 185, 129, 0.25); }
+  .pill.code { background: var(--code-soft); color: var(--code); border-color: rgba(20, 184, 166, 0.25); }
+  .pill.warn { background: var(--warm-soft); color: var(--warm-glow); border-color: rgba(245, 158, 11, 0.25); }
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--code); margin-bottom: 14px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--code); }
+  .prose ul, .prose ol { padding-left: 24px; margin-bottom: 18px; max-width: var(--read-w); }
+  .prose li { font-size: 15px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 8px; }
+  .prose li strong { color: var(--text-primary); font-weight: 600; }
+  pre.code { background: var(--ink-deep); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px 22px; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.65; color: var(--mist); margin: 0 0 20px; max-width: var(--read-w); }
+  [data-theme="light"] pre.code { background: #0F172A; color: #E2E8F0; }
+  pre.code .k { color: var(--sky); } pre.code .s { color: #A5F3B8; } pre.code .c { color: var(--text-muted); font-style: italic; } pre.code .h { color: var(--code); font-weight: 600; }
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); margin-bottom: 20px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.code { border-left: 3px solid var(--code); }
+  .info-card.rose { border-left: 3px solid var(--rose); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .info-card code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--code); }
+  .info-card strong { color: var(--text-primary); }
+  .info-card ul { padding-left: 20px; margin: 0; }
+  .info-card li { font-size: 14px; color: var(--text-secondary); line-height: 1.65; margin-bottom: 6px; }
+  .stack-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; max-width: var(--read-w); margin-bottom: 20px; }
+  .stack-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--code); border-radius: var(--radius-md); padding: 18px 22px; }
+  .stack-cell .layer { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .stack-cell h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.3px; }
+  .stack-cell p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: var(--read-w); margin-bottom: 20px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--code); background: var(--code-soft); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); } .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--code); }
+  .compare td strong { color: var(--text-primary); }
+  .decision-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: var(--read-w); }
+  @media (max-width: 720px) { .decision-grid { grid-template-columns: 1fr; } }
+  .decision-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 24px; }
+  .decision-card.use { border-left: 3px solid var(--green); } .decision-card.skip { border-left: 3px solid var(--rose); }
+  .decision-card h4 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 12px; }
+  .decision-card.use h4 { color: var(--green); } .decision-card.skip h4 { color: var(--rose); }
+  .decision-card ul { list-style: none; padding: 0; }
+  .decision-card li { font-size: 13px; color: var(--text-secondary); line-height: 1.6; padding: 6px 0; border-bottom: 1px solid var(--border); }
+  .decision-card li:last-child { border-bottom: none; }
+  .connect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .connect-node { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; transition: all 0.3s; text-decoration: none; color: inherit; display: block; }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node .tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--code); word-break: break-all; }
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--code), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--code); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } pre.code { font-size: 11px; padding: 14px 16px; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+
+<div class="glow-orb blue"></div>
+<div class="glow-orb sky"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand"><span class="nav-brand-mark">know.2nth.ai</span><span class="nav-brand-sub">software/platform-primitives</span></a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">&larr; Software</a>
+      <a href="../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x2600;&#xFE0F;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="./">Software</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">Platform primitives</span>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> software &middot; Method &middot; Platform primitives</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      The platform is the margin. <span class="gradient">The primitives are the platform.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      What separates a high-margin platform company from an expensive, low-margin consulting shop is not sales &mdash; it's <strong>architecture</strong>. Structure the platform as <strong>primitives</strong> &mdash; generic infrastructure abstracted once, centrally &mdash; and the engineers embedded with customers spend their time on <strong>domain logic</strong>, not plumbing. Then run a <strong>harvest pipeline</strong> that promotes repeated bespoke work back into the platform, and every client engagement compounds into product. This is the operating model behind the <a href="../people/ai-roles/forward-deployed-engineer.html" style="color:var(--code);">forward-deployed engineer</a>, in the lineage Palantir documented &mdash; with the honest read on when it's premature.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill code">3 layers</span>
+      <span class="pill green">Harvest pipeline</span>
+      <span class="pill">FDE sandbox</span>
+      <span class="pill accent">Palantir lineage</span>
+      <span class="pill warn">House method &middot; opinionated</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 WHAT IT IS -->
+<section id="what">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; What it is</div>
+      <h2 class="section-title">Abstract the generic once, so the field builds only the specific.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Every customer deployment needs storage, auth, state management, UI rendering, data connectors, and model routing &mdash; and none of those is what the customer is paying for. The platform-primitives pattern centralises all of that generic infrastructure into a shared engine, so that field engineers &mdash; the <a href="../people/ai-roles/forward-deployed-engineer.html" style="color:var(--code);">FDEs</a> embedded with customers &mdash; spend as close to all of their time as possible stitching together <strong>business logic and domain workflows</strong>. The goal is a division of labour: the platform team owns everything that repeats; the field owns everything that's specific.</p>
+      <p><strong>Lineage, named honestly.</strong> This is the operating model Palantir made famous and documents publicly &mdash; the vocabulary below ("ontology," entity registries, forward deployment) is Foundry's. It's also visible in every mature platform ecosystem: Salesforce and ServiceNow partner delivery, and &mdash; already on this tree &mdash; <a href="../tech/frappe/framework.html" style="color:var(--code);">Frappe's doctypes</a>, where declaring one metadata object yields a table, form, REST surface, and permissions for free. That is a Layer-2 composable primitive in production, and it's the cheapest way to feel the pattern before building your own.</p>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.08s">
+      <h4>Register note &mdash; this is a method leaf</h4>
+      <p>Unlike most of the tree, this leaf is <strong>opinionated operating method</strong>, not a sourced survey: the pattern's lineage is documented (Palantir, Frappe), but the harvest thresholds and DX rules below are house practice &mdash; positions we hold from delivery, stated so you can disagree with them precisely.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 THE THREE LAYERS -->
+<section id="layers">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; The three layers</div>
+      <h2 class="section-title">Foundation, primitives, sandbox &mdash; and who owns what.</h2>
+      <p class="section-lede">The architecture is an ownership diagram as much as a technical one. Stability comes from the boundary rules: the field never touches the foundation, and the platform team never blocks the sandbox.</p>
+    </div>
+    <pre class="code fade-up" style="transition-delay: 0.05s">+-------------------------------------------------------------------+
+| 3. EXTENSION LAYER <span class="c">(FDE sandbox — field-owned)</span>                    |
+|    custom UI layouts &middot; domain schemas &middot; custom agent tools        |
++-------------------------------------------------------------------+
+| 2. COMPOSABLE PRIMITIVES <span class="c">(shared engine — co-owned)</span>              |
+|    ontology / entity registry &middot; workflow &amp; DAG orchestrator      |
+|    agent &amp; tooling SDKs       &middot; headless UI components            |
++-------------------------------------------------------------------+
+| 1. FOUNDATION <span class="c">(core infrastructure — platform-owned, non-negotiable)</span> |
+|    multi-tenant auth &amp; RBAC   &middot; data ingestion &amp; connectors       |
+|    audit &amp; telemetry          &middot; model gateway &amp; guardrails        |
++-------------------------------------------------------------------+</pre>
+    <div class="stack-grid fade-up" style="transition-delay: 0.08s">
+      <div class="stack-cell">
+        <span class="layer">Layer 1 &middot; foundation</span>
+        <h4>FDEs never write here</h4>
+        <p>Connectors (SAP, Postgres, Salesforce, S3) with retry and schema conversion built in; multi-tenant RBAC, row-level security, immutable audit; a model gateway that owns LLM routing, token budgets, prompt caching, and safety guardrails. One implementation, every client.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Layer 2 &middot; primitives</span>
+        <h4>Configurable building blocks</h4>
+        <p>The ontology that turns raw tables into business objects (Customer, Claim, SupplyChainNode); state machines and DAG runners for long-running and human-in-the-loop work; standard interfaces for tool calling and retrieval; JSON-driven forms, tables, and chat UIs.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Layer 3 &middot; sandbox</span>
+        <h4>Where the field writes code</h4>
+        <p>FDEs build only inside predefined extension interfaces &mdash; plugins, hooks, custom actions: transformation scripts, system prompts, specialised views, bespoke integrations. Freedom inside a fence the platform can support.</p>
+      </div>
+    </div>
+    <div class="info-card code fade-up" style="transition-delay: 0.11s">
+      <h4>Why the boundary rules carry the whole model</h4>
+      <p>The margin argument lives in the boundaries. If field engineers can modify the foundation, every deployment forks the platform and you are a consulting shop with extra steps. If the sandbox is too small, the field routes around it and the same thing happens informally. The three-layer split works only when Layer 1 is genuinely closed, Layer 3 is genuinely open, and Layer 2 is where the two negotiate.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 HARVEST -->
+<section id="harvest">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; The harvest pipeline</div>
+      <h2 class="section-title">How consulting compounds into product.</h2>
+      <p class="section-lede">Without a strict process for pulling field code back into the platform, the codebase fragments into per-client forks and the margin never materialises. The pipeline is the mechanism &mdash; and it's the whole business model in four steps.</p>
+    </div>
+    <pre class="code fade-up" style="transition-delay: 0.05s">[Client A request] ──&gt; FDE builds a Layer-3 plugin
+                            │
+              same pattern needed by a 2nd client?
+                            │ yes
+                            ▼
+[Harvest ticket] ──&gt; core team refactors it into a
+                     Layer-2 primitive (clean API + tests)
+                            │
+                            ▼
+[Platform release] ──&gt; original FDE swaps custom code
+                       for the native primitive</pre>
+    <div class="prose fade-up" style="transition-delay: 0.08s">
+      <p>The trigger discipline matters more than the ceremony: <strong>one client is bespoke; two clients is a product signal.</strong> When a second team starts building a similar pattern, a harvest ticket is raised, core engineering generalises it, and &mdash; the step most shops skip &mdash; the original team <strong>deprecates its custom version</strong> in favour of the primitive. Every completed harvest moves revenue from billed hours to owned platform, which is the <a href="../../briefings/make-it-sell-it" style="color:var(--code);">margin story</a> told as an engineering process: the platform is the asset your client work keeps building, instead of the cost your client work keeps forking.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 DX CONTRACT -->
+<section id="dx">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; The DX contract</div>
+      <h2 class="section-title">Four rules that keep the field fast and the platform stable.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <ul>
+        <li><strong>Zero-infrastructure local setup.</strong> One CLI command spins up a client-shaped sandbox (<code>dev start --client=acme</code>). If an FDE needs a platform engineer to start working, the platform has failed its first test.</li>
+        <li><strong>Declarative over procedural.</strong> Configuration in schemas (YAML/JSON/typed configs) wherever possible, code only where the domain demands it &mdash; declared config is harvestable and diffable; bespoke procedure is neither.</li>
+        <li><strong>Strict SemVer on primitives.</strong> A client deployment must not break when the platform releases. Backward compatibility on Layer 2 is the trust that makes FDEs adopt primitives instead of forking them.</li>
+        <li><strong>Telemetry per primitive.</strong> Every primitive emits usage, latency, and error metrics &mdash; so the platform team knows which primitives carry the business and which cause the pain, and the harvest queue is prioritised by data, not by whoever shouts loudest.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 05 HONEST READ / DECISION -->
+<section id="decision">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; The honest read</div>
+      <h2 class="section-title">Premature platformisation is the failure mode.</h2>
+      <p class="section-lede">The pattern compounds beautifully &mdash; and it is also the most common way small delivery shops burn a year building product nobody asked for. The discipline cuts both ways: harvest late is fragmentation, harvest early is speculation.</p>
+    </div>
+    <div class="decision-grid fade-up" style="transition-delay: 0.05s">
+      <div class="decision-card use">
+        <h4>The model earns its cost when</h4>
+        <ul>
+          <li>You run two or more concurrent client deployments with visibly repeating patterns</li>
+          <li>Someone actually owns the platform &mdash; a person, not a standing agenda item</li>
+          <li>The harvest discipline is enforced, including the deprecation step</li>
+          <li>Compliance repeats per client &mdash; centralising auth, audit, and residency once pays immediately</li>
+        </ul>
+      </div>
+      <div class="decision-card skip">
+        <h4>Don't platformise when</h4>
+        <ul>
+          <li>You have one client &mdash; build the bespoke thing well and take notes; the second client is the signal, not the first idea</li>
+          <li>Primitives would be designed from imagination rather than harvested from repetition &mdash; that's speculative product work dressed as delivery</li>
+          <li>No one can own Layer 1 &mdash; an unowned foundation decays into everyone's fork</li>
+          <li>An existing primitive system (Frappe, a hyperscaler platform) already covers your Layer 1&ndash;2 &mdash; adopt before you build</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 SA CONTEXT -->
+<section id="sa-context">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; South African context</div>
+      <h2 class="section-title">The consultancy-to-product ladder, without a product bet.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p><strong>The margin problem is sharper here.</strong> An SA delivery shop bills hours in rand while its tooling costs run in dollars &mdash; the squeeze the <a href="../../briefings/rented-in-dollars" style="color:var(--code);">ownership series</a> describes. The harvest pipeline is the practical ladder out: you don't bet the company on a product; you let paid client work surface the product one primitive at a time, funded by engagements that were profitable anyway. The platform becomes the IP you own in a cost base you otherwise rent.</p>
+      <p><strong>The foundation layer is also the compliance layer.</strong> For POPIA-scoped delivery, centralising auth, RBAC, immutable audit, and data residency in Layer 1 means the compliance surface is built once and inherited by every client deployment &mdash; instead of re-argued per project. The model gateway does the same for AI governance: one place where routing, budgets, and guardrails are enforced, whichever model a client engagement uses. For a small team serving regulated SA clients, that centralisation is the difference between compliance as an asset and compliance as a recurring cost.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 07 CONNECTIONS -->
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; Connections</div>
+      <h2 class="section-title">Where platform primitives link in the tree.</h2>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="../people/ai-roles/forward-deployed-engineer.html" class="connect-node">
+        <span class="tag">people/ai-roles/forward-deployed-engineer</span>
+        <div class="skill">Forward Deployed Engineer</div>
+        <div class="why">The person this architecture exists for &mdash; the role leaf covers who; this leaf covers the platform they stand on. Cross-linked both ways.</div>
+      </a>
+      <a href="../tech/frappe/framework.html" class="connect-node">
+        <span class="tag">tech/frappe/framework</span>
+        <div class="skill">Frappe Framework</div>
+        <div class="why">A living Layer-2 primitive system: declare a doctype, get the table, form, REST surface, and permissions free. Adopt-before-build's best local example.</div>
+      </a>
+      <a href="../../briefings/make-it-sell-it" class="connect-node">
+        <span class="tag">briefings/make-it-sell-it</span>
+        <div class="skill">Make It, Sell It, See the Margin</div>
+        <div class="why">The margin thesis this leaf turns into an engineering process &mdash; the harvest pipeline is how hours become product.</div>
+      </a>
+      <a href="../../briefings/rented-in-dollars" class="connect-node">
+        <span class="tag">briefings/rented-in-dollars</span>
+        <div class="skill">Rented in Dollars</div>
+        <div class="why">The ownership argument underneath: the platform you harvest is the IP you own, in a cost base you otherwise rent.</div>
+      </a>
+      <a href="../tech/own-your-stack.html" class="connect-node">
+        <span class="tag">tech/own-your-stack</span>
+        <div class="skill">Own your stack</div>
+        <div class="why">The stack-level version of the same claim &mdash; what it means to actually own the settings, customisations, and data your delivery runs on.</div>
+      </a>
+      <a href="software-for-agents.html" class="connect-node">
+        <span class="tag">software/software-for-agents</span>
+        <div class="skill">Software for agents</div>
+        <div class="why">The agent-era foundation pieces &mdash; repo-as-context, SKILL files, CI gates &mdash; are Layer-1/2 primitives for fleets of agents rather than fleets of FDEs.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 08 RESOURCES -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 &middot; Resources</div>
+      <h2 class="section-title">The documented lineage.</h2>
+      <p class="section-lede">A method leaf cites its lineage rather than a literature: the pattern as Palantir documents it, and the primitive system you can try this week. Last reviewed 2026-08-06.</p>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://www.palantir.com/docs/foundry/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs &middot; lineage</span>
+        <span class="r-title">Palantir Foundry &mdash; the ontology &amp; platform model</span>
+        <span class="r-url">palantir.com/docs/foundry</span>
+      </a>
+      <a href="https://blog.palantir.com/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Blog</span>
+        <span class="r-title">Palantir blog &mdash; forward-deployed engineering writings</span>
+        <span class="r-url">blog.palantir.com</span>
+      </a>
+      <a href="https://frappeframework.com/docs" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs &middot; example</span>
+        <span class="r-title">Frappe Framework &mdash; doctypes as composable primitives</span>
+        <span class="r-url">frappeframework.com/docs</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../index.html">Knowledge tree</a>
+      <a href="./">Software hub</a>
+      <a href="https://www.palantir.com/docs/foundry/" target="_blank" rel="noopener">Palantir Foundry docs &nearr;</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme(){const html=document.documentElement;const current=html.getAttribute('data-theme');const next=current==='dark'?'light':'dark';html.setAttribute('data-theme',next);document.querySelector('.theme-toggle').textContent=next==='dark'?'☀️':'🌙';localStorage.setItem('theme',next);}
+  const saved=localStorage.getItem('theme');if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.theme-toggle').textContent=saved==='dark'?'☀️':'🌙';}
+  const observer=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting)entry.target.classList.add('visible');});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>
