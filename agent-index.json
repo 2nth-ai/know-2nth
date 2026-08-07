@@ -3,7 +3,7 @@
   "description": "The public knowledge tree for the 2nth.ai ecosystem. Every leaf is both a human-readable reference and an agent-consumable context document.",
   "agent_fetch": "https://know.2nth.ai/api/context/<domain>/<leaf>",
   "mcp": "https://know.2nth.ai/mcp",
-  "count": 217,
+  "count": 218,
   "items": [
     {
       "title": "Agents — know.2nth.ai",
@@ -1324,6 +1324,14 @@
       "kind": "leaf",
       "url": "https://know.2nth.ai/explainers/tech/cloudflare/kv",
       "fetch": "tech/cloudflare/kv"
+    },
+    {
+      "title": "Cloudflare OS — know.2nth.ai",
+      "description": "Cloudflare OS — the open-source agent platform Cloudflare ran internally from May 2026, released 5 August 2026 under Apache-2.0. Gatekeepers mediate every resource request, credentials never reach the agent, and an observation log records every resource an agent reads — so a second viewer is verified against what the agent saw before the output is shown. Authorization that follows the data, one step past MCP's tool-level permissions.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/cloudflare/cloudflare-os",
+      "fetch": "tech/cloudflare/cloudflare-os"
     },
     {
       "title": "Cloudflare Pages — know.2nth.ai",
