@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ambient AI scribes &mdash; know.2nth.ai</title>
+<meta name="description" content="Ambient AI scribes in the UK, read as a distribution war: Accurx Scribe (Tandem Health) riding a platform in 98% of England's GP practices, Tortus deploying Surgery Intellect through X-on Health's phone system across 3,500+ practices, and Heidi taking the individual clinician with a free tier, a clip-on mic, and the largest AI scribe procurement in NHS history. The thesis: the model is table stakes — the winner is whoever owns the path into existing clinical workflow. With the POPIA read for South African practices.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/health/ambient-scribes">
+<meta property="og:title" content="Ambient AI scribes — know.2nth.ai">
+<meta property="og:description" content="Ambient AI scribes in the UK, read as a distribution war: Accurx Scribe (Tandem Health) riding a platform in 98% of England's GP practices, Tortus deploying Surgery Intellect through X-on Health's phone system across 3,500+ practices, and Heidi taking the individual clinician with a free tier, a clip-on mic, and the largest AI scribe procurement in NHS history. The thesis: the model is table stakes — the winner is whoever owns the path into existing clinical workflow. With the POPIA read for South African practices.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai — The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Ambient AI scribes — know.2nth.ai">
+<meta name="twitter:description" content="Ambient AI scribes in the UK, read as a distribution war: Accurx Scribe (Tandem Health) riding a platform in 98% of England's GP practices, Tortus deploying Surgery Intellect through X-on Health's phone system across 3,500+ practices, and Heidi taking the individual clinician with a free tier, a clip-on mic, and the largest AI scribe procurement in NHS history. The thesis: the model is table stakes — the winner is whoever owns the path into existing clinical workflow. With the POPIA read for South African practices.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%23F43F5E' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%23FB7185' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33;
+    --blue: #2563EB; --blue-glow: #3B82F6;
+    --sky: #38BDF8; --sky-muted: #7DD3FC;
+    --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8;
+    --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12);
+    --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12);
+    --violet: #8B5CF6; --violet-soft: rgba(139, 92, 246, 0.12);
+    --violet: #8B5CF6; --violet-glow: #A78BFA; --violet-soft: rgba(139, 92, 246, 0.12);
+    --bg: var(--ink); --bg-raised: var(--navy);
+    --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(139, 92, 246, 0.06);
+    --text-primary: var(--paper); --text-secondary: var(--slate);
+    --text-muted: #64748B;
+    --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(139, 92, 246, 0.3);
+    --max-w: 1200px; --read-w: 760px;
+    --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px;
+    --domain: var(--violet); --domain-glow: var(--violet-glow);
+  }
+  [data-theme="light"] {
+    --bg: #F1F5F9; --bg-raised: #FFFFFF;
+    --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(139, 92, 246, 0.04);
+    --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8;
+    --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(139, 92, 246, 0.25);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.violet { width: 600px; height: 600px; background: var(--violet); top: -200px; right: -100px; }
+  .glow-orb.warm { width: 500px; height: 500px; background: var(--warm); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--violet), var(--warm)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--violet-glow); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--violet-glow); }
+
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .read { max-width: var(--read-w); }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--violet-glow); }
+  .crumb-sep { opacity: 0.5; }
+  .crumb-current { color: var(--text-secondary); }
+
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--violet-glow); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--violet); box-shadow: 0 0 12px var(--violet); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--violet), var(--violet-glow), var(--warm)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.accent { background: var(--violet-soft); color: var(--violet-glow); border-color: rgba(139, 92, 246, 0.25); }
+
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--violet-glow); margin-bottom: 14px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--violet-glow); }
+
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); margin-bottom: 20px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.violet { border-left: 3px solid var(--violet); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+
+  .types-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; max-width: 1100px; }
+  .type-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px 22px; transition: all 0.3s; }
+  .type-card:hover { border-color: var(--border-hover); }
+  .type-card .num { font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 700; background: linear-gradient(135deg, var(--violet), var(--violet-glow)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1; margin-bottom: 8px; }
+  .type-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.2px; }
+  .type-card .triad { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; display: block; }
+  .type-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 8px; }
+  .type-card .arrows { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); padding-top: 8px; border-top: 1px solid var(--border); display: flex; gap: 14px; }
+  .type-card .arrows .grow { color: var(--green); }
+  .type-card .arrows .stress { color: var(--violet); }
+
+  .triad-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; max-width: var(--read-w); }
+  .triad { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 24px; }
+  .triad-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--violet-glow); margin-bottom: 8px; }
+  .triad h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+  .triad .types-list { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--violet-glow); margin-bottom: 12px; }
+  .triad p { font-size: 13px; color: var(--text-secondary); line-height: 1.65; }
+
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: var(--read-w); margin-bottom: 20px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--violet-glow); background: rgba(139, 92, 246, 0.04); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); }
+  .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--violet-glow); }
+
+  .gotcha-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 12px; }
+  .gotcha { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--violet); border-radius: var(--radius-md); padding: 18px 22px; }
+  .gotcha strong { display: block; color: var(--text-primary); font-weight: 600; font-size: 14px; margin-bottom: 6px; }
+  .gotcha p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+  .connect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .connect-node { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; transition: all 0.3s; text-decoration: none; color: inherit; display: block; }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node.soon { cursor: default; opacity: 0.72; }
+  .connect-node.soon:hover { border-color: var(--border); background: var(--bg-card); }
+  .connect-node .tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--violet-glow); word-break: break-all; }
+
+  .decision-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: var(--read-w); }
+  @media (max-width: 720px) { .decision-grid { grid-template-columns: 1fr; } }
+  .decision-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 24px; }
+  .decision-card.use { border-left: 3px solid var(--green); }
+  .decision-card.skip { border-left: 3px solid var(--violet); }
+  .decision-card h4 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 12px; }
+  .decision-card.use h4 { color: var(--green); }
+  .decision-card.skip h4 { color: var(--violet); }
+  .decision-card ul { list-style: none; padding: 0; }
+  .decision-card li { font-size: 13px; color: var(--text-secondary); line-height: 1.6; padding: 6px 0; border-bottom: 1px solid var(--border); }
+  .decision-card li:last-child { border-bottom: none; }
+
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--violet), var(--warm)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--violet-glow); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } .compare { font-size: 12px; } .compare th, .compare td { padding: 10px 12px; } }
+
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+<div class="glow-orb violet"></div>
+<div class="glow-orb warm"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand">
+      <span class="nav-brand-mark">know.2nth.ai</span>
+      <span class="nav-brand-sub">health/ambient-scribes</span>
+    </a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">&larr; Legal</a>
+      <a href="../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x2600;&#xFE0F;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="./">Healthcare</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">Ambient scribes</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> health/ambient-scribes &middot; Skill Leaf</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      Distribution beats <span class="gradient">the model.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      An ambient scribe listens to the consultation and writes the note, the letters, and the codes &mdash; the clinician reviews and files. The technology is converging fast; the market isn't being won on transcription quality. It's being won on <strong>distribution into existing clinical workflow</strong>: one player rides a messaging platform already in 98% of England's GP practices, one rides the practice phone system, and one rides the individual clinician's pocket. The UK is the cleanest live experiment in how AI actually enters a regulated profession &mdash; and the lesson is not about models.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill accent">Live</span>
+      <span class="pill">Accurx &times; Tandem</span>
+      <span class="pill">Tortus &times; X-on</span>
+      <span class="pill">Heidi</span>      <span class="pill">MHRA &middot; DTAC</span>
+    </div>
+  </div>
+</section>
+
+<section id="what">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; What it is</div>
+      <h2 class="section-title">The note writes itself; the clinician signs it.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>An <strong>ambient AI scribe</strong> captures the audio of a consultation &mdash; face-to-face or telephone &mdash; and generates the structured clinical note, referral and patient letters, clinical coding, and follow-up tasks. The clinician reviews, edits, and files to the patient record. The consistent early evidence claim across vendors is minutes saved per consultation and, less measurably, a clinician who looks at the patient instead of the keyboard.</p>
+      <p>Why it matters beyond convenience: documentation is the <strong>highest-value daily habit</strong> in clinical software. Whoever owns the moment of writing the note owns the workflow &mdash; which is why this market is the flanking attack on <a href="practice-management.html" style="color: var(--violet-glow);">legacy practice management</a>, not a feature of it.</p>
+    </div>
+  </div>
+</section>
+
+<section id="players">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; The three distribution plays</div>
+      <h2 class="section-title">Same product category, three different rails in.</h2>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead><tr><th>Player</th><th>The rail</th><th>Verified shape</th></tr></thead>
+        <tbody>
+          <tr><td><code>Accurx Scribe</code><br>(engine: Tandem Health)</td><td>The comms platform</td><td>Accurx is used by 98% of GP practices in England and staff in 70% of NHS trusts; Scribe launched April 2025 to 200,000+ NHS staff on that installed base, writing back to EMIS and SystmOne. By March 2026: supplying a large-scale NHS hospital rollout, plus a four-year multi-trust agreement covering 10,000 clinicians.</td></tr>
+          <tr><td><code>Tortus</code><br>(Surgery Intellect)</td><td>The phone system</td><td>Strategic partnership with X-on Health (May 2025) embeds the scribe in Surgery Connect &mdash; the cloud telephony used by 3,500+ UK GP practices handling 40M+ calls a month &mdash; so it transcribes phone and front-desk conversations natively. MHRA Class I registered, Class IIa pending; early users report ~4 minutes saved per consultation.</td></tr>
+          <tr><td><code>Heidi</code></td><td>The clinician's pocket</td><td>Free tier for individual clinicians, then practice and enterprise plans; a clip-on wearable mic (Heidi Remote) that follows the doctor rather than the desk. States it powers "the largest AI scribe procurement in NHS history" &mdash; 70,000 clinicians, 15 NHS trusts, 1,200+ GP practices &mdash; and lists dental group Portman Dentex among its clients.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.08s">
+      <p><strong>Numbers are vendor- or partner-stated and dated here deliberately.</strong> Adoption figures in this market are announcements, not audits &mdash; useful for shape and momentum, not for precision. All figures above are as published April 2025 &ndash; March 2026.</p>
+    </div>
+  </div>
+</section>
+
+<section id="thesis">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; The thesis</div>
+      <h2 class="section-title">The model is table stakes. The rail is the moat.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>None of the three leaders is winning on a proprietary model &mdash; transcription and summarisation quality are converging across the category. What differs is the <strong>path into the workflow</strong>. Accurx didn't build a better scribe; it attached a scribe to a platform clinicians already had open. Tortus put the scribe inside the phone call that was already being handled. Heidi bypassed the institution entirely and recruited the individual clinician &mdash; free tier first, hardware next, procurement later.</p>
+      <p>This is the same finding the tree keeps hitting in legal AI and elsewhere: <strong>capability is becoming undifferentiated; distribution and workflow position are not.</strong> For anyone building or buying in this category, the question isn't "whose model is best" &mdash; it's "who is already inside the moment where the work happens."</p>
+    </div>
+  </div>
+</section>
+
+<section id="governance">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; The governance floor</div>
+      <h2 class="section-title">Regulated software, not a productivity app.</h2>
+    </div>
+    <div class="gotcha-list fade-up" style="transition-delay: 0.05s">
+      <div class="gotcha"><strong>Device classification</strong><p>UK scribes sit under MHRA medical-device rules &mdash; Tortus states Class I registered with Class IIa pending. Classification determines the evidence burden; ask any vendor for theirs.</p></div>
+      <div class="gotcha"><strong>The NHS compliance stack</strong><p>DTAC, clinical-safety standard DCB0129, the Data Security &amp; Protection Toolkit, Cyber Essentials Plus &mdash; the checklist that decides who can sell into the NHS at all. It's also a useful proxy checklist outside the UK.</p></div>
+      <div class="gotcha"><strong>Clinician-verified, always</strong><p>Every serious player files nothing without clinician review. The scribe drafts; the clinician remains the author of record. Any deployment that drifts from this has changed risk category.</p></div>
+      <div class="gotcha"><strong>Failure modes are clinical</strong><p>An omitted negative ("no chest pain") or a fabricated detail in a clinical note is not a typo &mdash; it's a patient-safety event. Review discipline is the control, and it erodes exactly as trust grows.</p></div>
+      <div class="gotcha"><strong>Consent and recording</strong><p>Recording consultations requires patient consent processes, retention rules for audio, and clarity on where processing happens &mdash; which is where the SA section picks up.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="sa">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; South African context</div>
+      <h2 class="section-title">POPIA first, then the missing rail.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p><strong>A consultation recording is special personal information under POPIA</strong> &mdash; health information, processed with explicit consent, with the section 72 cross-border test applying the moment a cloud scribe processes audio offshore. An SA practice adopting any of these tools needs the consent script in the room, the retention policy for audio, and a straight answer from the vendor on where transcription and summarisation actually run. That's the same residency discipline the tree applies to every AI workload &mdash; the stakes are just higher here.</p>
+      <p><strong>The distribution lesson transfers; the rail doesn't exist yet.</strong> South Africa has no Accurx &mdash; no single platform inside nearly every practice. The closest equivalents to a rail are the medical-aid claims switches, the incumbent practice systems, and, in reality, WhatsApp-first patient communication. Which means the UK's endgame &mdash; the scribe arriving through something you already use &mdash; hasn't been built here. For an SA builder, that's the actual opportunity this leaf points at: a POPIA-compliant scribe wired into local billing and communication rails, before an international player localises.</p>
+    </div>
+  </div>
+</section>
+
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; Connections</div>
+      <h2 class="section-title">Where this leaf connects.</h2>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="practice-management.html" class="connect-node">
+        <span class="tag">health/practice-management</span>
+        <div class="skill">Private practice management</div>
+        <div class="why">The market this one is flanking &mdash; the moat anatomy of the legacy systems the scribes route around.</div>
+      </a>
+      <a href="../media/text-to-speech.html" class="connect-node">
+        <span class="tag">media/text-to-speech</span>
+        <div class="skill">Text-to-speech engines</div>
+        <div class="why">The other half of the voice stack, and the same arena lesson: engine quality converges, workflow position decides.</div>
+      </a>
+      <a href="../leg/data-privacy.html" class="connect-node">
+        <span class="tag">leg/data-privacy</span>
+        <div class="skill">Data privacy &amp; POPIA</div>
+        <div class="why">Special personal information, consent, and the section 72 cross-border test every cloud scribe deployment runs through.</div>
+      </a>
+      <a href="../agents/rearchitecture.html" class="connect-node">
+        <span class="tag">agents/rearchitecture</span>
+        <div class="skill">Agents, Data &amp; Trust</div>
+        <div class="why">The general claim behind section 03: models are cheap, the bottleneck moves to data, distribution and trust architecture.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; Resources</div>
+      <h2 class="section-title">Primary sources.</h2>
+      <p class="section-lede">Vendor and partner announcements, plus independent trade coverage. Last reviewed 2026-08-12.</p>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://www.accurx.com/post/accurx-tandem-health-partner-accurx-scribe" class="resource" target="_blank" rel="noopener"><span class="r-kind">Announcement</span><span class="r-title">Accurx &times; Tandem Health &mdash; AI scribing for the NHS</span><span class="r-url">accurx.com</span></a>
+      <a href="https://www.digitalhealth.net/2026/03/accurx-to-supply-ai-scribing-for-large-scale-nhs-hospital-rollout/" class="resource" target="_blank" rel="noopener"><span class="r-kind">Coverage</span><span class="r-title">Accurx large-scale NHS hospital rollout (Mar 2026)</span><span class="r-url">digitalhealth.net</span></a>
+      <a href="https://www.x-on.co.uk/blog/x-on-health-and-tortus-ai-launch-ambient-scribe/" class="resource" target="_blank" rel="noopener"><span class="r-kind">Announcement</span><span class="r-title">X-on Health &times; Tortus &mdash; Surgery Intellect</span><span class="r-url">x-on.co.uk</span></a>
+      <a href="https://www.tandemhealth.ai/news-articles/tandem-has-teamed-up-with-accurx-to-deliver-our-ai-medical-scribe-to-200-000-nhs-staff" class="resource" target="_blank" rel="noopener"><span class="r-kind">Announcement</span><span class="r-title">Tandem Health &mdash; 200,000 NHS staff</span><span class="r-url">tandemhealth.ai</span></a>
+      <a href="https://www.heidihealth.com/uk" class="resource" target="_blank" rel="noopener"><span class="r-kind">Vendor</span><span class="r-title">Heidi &mdash; NHS procurement, Remote device</span><span class="r-url">heidihealth.com/uk</span></a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../index.html">Skills tree</a>
+      <a href="./">Healthcare domain</a>
+      <a href="practice-management.html">Practice management</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant</p>
+  </div>
+</footer>
+<script>
+  function toggleTheme() { const html=document.documentElement; const cur=html.getAttribute('data-theme'); const next=cur==='dark'?'light':'dark'; html.setAttribute('data-theme',next); document.querySelector('.theme-toggle').textContent=next==='dark'?'☀️':'🌙'; localStorage.setItem('theme',next); }
+  const saved=localStorage.getItem('theme'); if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.theme-toggle').textContent=saved==='dark'?'☀️':'🌙';}
+  const observer=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'}); document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Healthcare &mdash; know.2nth.ai</title>
+<meta name="description" content="The Healthcare domain of the 2nth knowledge tree — clinical software read as markets, not brochures. Opening with private practice: the legacy practice-management incumbents and their plumbing moats, and the ambient AI scribes winning on distribution into clinical workflow. POPIA and patient-outcome stakes throughout.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/health/">
+<meta property="og:title" content="Healthcare — know.2nth.ai">
+<meta property="og:description" content="The Healthcare domain of the 2nth knowledge tree — clinical software read as markets, not brochures. Opening with private practice: the legacy practice-management incumbents and their plumbing moats, and the ambient AI scribes winning on distribution into clinical workflow. POPIA and patient-outcome stakes throughout.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai — The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Healthcare — know.2nth.ai">
+<meta name="twitter:description" content="The Healthcare domain of the 2nth knowledge tree — clinical software read as markets, not brochures. Opening with private practice: the legacy practice-management incumbents and their plumbing moats, and the ambient AI scribes winning on distribution into clinical workflow. POPIA and patient-outcome stakes throughout.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%23F43F5E' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%23FB7185' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33;
+    --blue: #2563EB; --blue-glow: #3B82F6;
+    --sky: #38BDF8; --sky-muted: #7DD3FC;
+    --paper: #F8FAFC; --slate: #94A3B8;
+    --warm: #F59E0B; --warm-soft: rgba(245, 158, 11, 0.12);
+    --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12);
+    --violet: #8B5CF6; --violet-soft: rgba(139, 92, 246, 0.12);
+    --violet: #8B5CF6; --violet-glow: #A78BFA; --violet-soft: rgba(139, 92, 246, 0.12);
+    --bg: var(--ink); --bg-raised: var(--navy);
+    --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(139, 92, 246, 0.06);
+    --text-primary: var(--paper); --text-secondary: var(--slate);
+    --text-muted: #64748B;
+    --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(139, 92, 246, 0.3);
+    --max-w: 1200px;
+    --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px;
+    --domain: var(--violet); --domain-glow: var(--violet-glow);
+  }
+  [data-theme="light"] {
+    --bg: #F1F5F9; --bg-raised: #FFFFFF;
+    --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(139, 92, 246, 0.04);
+    --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8;
+    --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(139, 92, 246, 0.25);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.violet { width: 600px; height: 600px; background: var(--violet); top: -200px; right: -100px; }
+  .glow-orb.warm { width: 500px; height: 500px; background: var(--warm); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--violet), var(--warm)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--violet-glow); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--violet-glow); }
+
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--violet-glow); }
+  .crumb-sep { opacity: 0.5; }
+  .crumb-current { color: var(--text-secondary); }
+
+  .hub-hero { padding: 48px 0 64px; }
+  .hub-hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--violet-glow); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hub-hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--violet); box-shadow: 0 0 12px var(--violet); }
+  .hub-hero h1 { font-size: clamp(44px, 7vw, 72px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 24px; max-width: 14ch; }
+  .hub-hero h1 .gradient { background: linear-gradient(135deg, var(--violet), var(--violet-glow), var(--warm)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hub-hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.7; font-weight: 300; margin-bottom: 32px; }
+  .hub-stats { display: flex; gap: 32px; flex-wrap: wrap; }
+  .hub-stat { padding-right: 32px; border-right: 1px solid var(--border); }
+  .hub-stat:last-child { border-right: none; padding-right: 0; }
+  .hub-stat .num { font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 700; background: linear-gradient(135deg, var(--violet), var(--violet-glow)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1; margin-bottom: 6px; }
+  .hub-stat .label { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+
+  section.hub-section { padding: 48px 0 64px; position: relative; }
+  .hub-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--violet-glow); margin-bottom: 14px; }
+  .hub-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 14px; line-height: 1.2; }
+  .hub-lede { font-size: 16px; color: var(--text-secondary); max-width: 680px; line-height: 1.7; font-weight: 300; margin-bottom: 36px; }
+
+  .hub-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px; }
+  .hub-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 26px 28px; text-decoration: none; color: inherit; transition: all 0.3s; display: block; }
+  .hub-card:hover { border-color: var(--border-hover); transform: translateY(-2px); box-shadow: 0 10px 36px rgba(0, 0, 0, 0.08); }
+  .hub-card .state { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; padding: 3px 12px; border-radius: var(--radius-pill); display: inline-block; margin-bottom: 16px; font-weight: 600; }
+  .hub-card .state.live { background: var(--violet-soft); color: var(--violet-glow); }
+  .hub-card.soon { cursor: default; opacity: 0.72; }
+  .hub-card.soon:hover { transform: none; box-shadow: none; border-color: var(--border); }
+  .hub-card .state.soon { background: rgba(148, 163, 184, 0.12); color: var(--text-muted); }
+  .hub-card .state.stub { background: transparent; border: 1px dashed var(--border); color: var(--text-muted); }
+  .hub-card h3 { font-size: 19px; font-weight: 700; letter-spacing: -0.3px; margin-bottom: 10px; }
+  .hub-card h3 .path { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; color: var(--text-muted); margin-left: 8px; }
+  .hub-card p { font-size: 13.5px; color: var(--text-secondary); line-height: 1.65; margin-bottom: 16px; }
+  .hub-card .tags { display: flex; flex-wrap: wrap; gap: 5px; }
+  .hub-card .tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; padding: 3px 10px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-muted); }
+  .hub-card.soon { cursor: default; opacity: 0.72; }
+  .hub-card.soon:hover { transform: none; border-color: var(--border); box-shadow: none; }
+
+  .principle-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; max-width: 1000px; }
+  .principle { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 24px; }
+  .principle .num { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--violet-glow); letter-spacing: 1.5px; margin-bottom: 8px; }
+  .principle h4 { font-size: 16px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.2px; }
+  .principle p { font-size: 13px; color: var(--text-secondary); line-height: 1.65; }
+
+  .cross-links { display: flex; gap: 10px; flex-wrap: wrap; }
+  .cross-link { font-family: 'JetBrains Mono', monospace; font-size: 12px; padding: 10px 20px; border-radius: var(--radius-pill); border: 1px solid var(--border); background: var(--bg-card); text-decoration: none; color: var(--text-secondary); transition: all 0.3s; letter-spacing: 0.5px; }
+  .cross-link:hover { border-color: var(--border-hover); color: var(--violet-glow); transform: translateY(-1px); }
+  .cross-link.soon { opacity: 0.5; cursor: default; border-style: dashed; }
+  .cross-link.soon:hover { transform: none; color: var(--text-muted); border-color: var(--border); }
+
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 60px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--violet), var(--warm)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--violet-glow); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } .hub-stats { gap: 20px; } .hub-stat { padding-right: 20px; } }
+
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+<div class="glow-orb violet"></div>
+<div class="glow-orb warm"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand">
+      <span class="nav-brand-mark">know.2nth.ai</span>
+      <span class="nav-brand-sub">Healthcare</span>
+    </a>
+    <div class="nav-right">
+      <a href="../../index.html#domains" class="nav-link">&larr; Back to tree</a>
+      <a href="../../index.html#access" class="nav-link">Access</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x2600;&#xFE0F;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">Healthcare</span>
+  </div>
+</div>
+
+<!-- HUB HERO -->
+<section class="hub-hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> Healthcare &middot; Domain Hub &middot; 2 Live</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      The <span class="gradient">healthcare</span> branch.
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      Clinical software read as markets, not brochures &mdash; because in this domain the stakes are <strong>patient outcomes, not just revenue</strong>. The branch opens where the disruption is sharpest right now: private practice. One leaf maps the legacy practice-management incumbents and the plumbing moats that hold them in place; the other maps the ambient AI scribes taking the clinician's daily habit from the side &mdash; and why that market is being won on distribution, not model quality. POPIA runs through everything: health information is special personal information, and every cloud tool here runs the residency test first.
+    </p>
+    <div class="hub-stats fade-up" style="transition-delay: 0.15s">
+      <div class="hub-stat">
+        <div class="num">5</div>
+        <div class="label">Sub-categories</div>
+      </div>
+      <div class="hub-stat">
+        <div class="num">2</div>
+        <div class="label">Live explainers</div>
+      </div>
+      <div class="hub-stat">
+        <div class="num">14</div>
+        <div class="label">Domains in tree</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SUB-CATEGORIES -->
+<section class="hub-section">
+  <div class="container">
+    <div class="fade-up">
+      <div class="hub-label">01 &middot; Sub-categories</div>
+      <h2 class="hub-title">What's in this branch</h2>
+      <p class="hub-lede">Five sub-categories under <code style="font-family: 'JetBrains Mono', monospace; font-size: 0.88em; color: var(--violet-glow);">health/</code> &mdash; two live now (the private-practice pincer, read from both jaws), three being built: clinical interoperability, telehealth, and the SA practice stack.</p>
+    </div>
+    <div class="hub-grid fade-up" style="transition-delay: 0.05s">
+
+      <a href="practice-management.html" class="hub-card">
+        <span class="state live">Live</span>
+        <h3>Private practice management <span class="path">health/practice-management</span></h3>
+        <p>The moat was plumbing, not product. DGL Practice Manager (est. 1991, now inside the Lanas/TA Associates roll-up), the Healthcode billing rail, switching friction as the real lock-in &mdash; and the cloud replacements (Semble, Pabau, Medesk, MidexPRO) attacking every part of it. With the contract checklist and the SA read.</p>
+        <div class="tags">
+          <span class="tag">DGL &rarr; Lanas</span>
+          <span class="tag">Semble</span>
+          <span class="tag">Healthcode</span>
+          <span class="tag">Data-exit fees</span>
+        </div>
+      </a>
+
+      <a href="ambient-scribes.html" class="hub-card">
+        <span class="state live">Live</span>
+        <h3>Ambient AI scribes <span class="path">health/ambient-scribes</span></h3>
+        <p>Distribution beats the model. Accurx Scribe riding a platform in 98% of England's GP practices, Tortus inside the practice phone system, Heidi in the clinician's pocket with a free tier and a clip-on mic. The governance floor (MHRA, DTAC, clinician-verified), and the POPIA consent-and-residency read for SA.</p>
+        <div class="tags">
+          <span class="tag">Accurx &times; Tandem</span>
+          <span class="tag">Tortus</span>
+          <span class="tag">Heidi</span>
+          <span class="tag">POPIA s.72</span>
+        </div>
+      </a>
+
+      <div class="hub-card soon">
+        <span class="state soon">Planned</span>
+        <h3>Clinical interoperability <span class="path">health/interop</span></h3>
+        <p>HL7 FHIR, the standards that decide whether clinical data moves, and what "integrates with the EHR" actually means at the API level.</p>
+        <div class="tags">
+          <span class="tag">HL7 FHIR</span>
+          <span class="tag">EHR APIs</span>
+        </div>
+      </div>
+
+      <div class="hub-card soon">
+        <span class="state soon">Planned</span>
+        <h3>Telehealth &amp; remote care <span class="path">health/telehealth</span></h3>
+        <p>Video consultation platforms, remote monitoring, and the HPCSA telemedicine guidance that frames what SA practices may do.</p>
+        <div class="tags">
+          <span class="tag">Video consults</span>
+          <span class="tag">HPCSA</span>
+        </div>
+      </div>
+
+      <div class="hub-card soon">
+        <span class="state soon">Planned</span>
+        <h3>The SA practice stack <span class="path">health/sa-practice-stack</span></h3>
+        <p>The South African private-practice reality: medical-aid claims switching, the incumbent practice systems, and what a modern POPIA-native stack looks like.</p>
+        <div class="tags">
+          <span class="tag">Claims switching</span>
+          <span class="tag">Medical schemes</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PRINCIPLES -->
+<section class="hub-section">
+  <div class="container">
+    <div class="fade-up">
+      <div class="hub-label">02 &middot; Principles</div>
+      <h2 class="hub-title">The opinions every leaf starts from.</h2>
+      <p class="hub-lede">Five positions that hold across the branch. Healthcare tolerates hype even less than legal does &mdash; here a confident error is a patient-safety event.</p>
+    </div>
+    <div class="principle-grid fade-up" style="transition-delay: 0.05s">
+      <div class="principle">
+        <div class="num">01</div>
+        <h4>The stakes are patient outcomes</h4>
+        <p>Every tool gets judged on clinical-safety posture before features &mdash; review discipline, failure modes, and who signs the record.</p>
+      </div>
+      <div class="principle">
+        <div class="num">02</div>
+        <h4>Distribution beats the model</h4>
+        <p>Capability converges; the path into existing clinical workflow doesn't. The winner is whoever is already inside the moment where the work happens.</p>
+      </div>
+      <div class="principle">
+        <div class="num">03</div>
+        <h4>The moat is plumbing and records</h4>
+        <p>Billing rails and decades of patient data hold legacy systems in place, not features. Read every vendor through its rail and its exit clause.</p>
+      </div>
+      <div class="principle">
+        <div class="num">04</div>
+        <h4>POPIA before procurement</h4>
+        <p>Health information is special personal information. Consent, residency, and the section 72 transfer test come before any tool is trialled.</p>
+      </div>
+      <div class="principle">
+        <div class="num">05</div>
+        <h4>Adoption numbers are announcements</h4>
+        <p>This market reports momentum in press releases. Keep the structural argument, date the figures, asterisk the numbers.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CROSS-LINKS -->
+<section class="hub-section">
+  <div class="container">
+    <div class="fade-up">
+      <div class="hub-label">03 &middot; Related domains</div>
+      <h2 class="hub-title">Where the healthcare branch connects</h2>
+      <p class="hub-lede">Strongest links to Legal (POPIA and special personal information), Media (the voice stack behind the scribes), Agents (the data-and-trust rearchitecture), and the ownership briefings that generalise the roll-up economics.</p>
+    </div>
+    <div class="cross-links fade-up" style="transition-delay: 0.05s">
+      <a href="../leg/data-privacy.html" class="cross-link">leg &middot; Data privacy &amp; POPIA &rarr;</a>
+      <a href="../media/" class="cross-link">Media &rarr;</a>
+      <a href="../agents/" class="cross-link">Agents &rarr;</a>
+      <a href="../../briefings/rented-in-dollars" class="cross-link">Rented in Dollars &rarr;</a>
+      <a href="../leg/" class="cross-link">Legal &rarr;</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../index.html">Skills tree</a>
+      <a href="practice-management.html">Practice management</a>
+      <a href="https://2nth.ai" target="_blank" rel="noopener">2nth.ai</a>
+      <a href="https://imbila.ai" target="_blank" rel="noopener">Imbila.AI</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant</p>
+  </div>
+</footer>
+<script>
+  function toggleTheme() {
+    const html = document.documentElement;
+    const current = html.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
+    localStorage.setItem('theme', next);
+  }
+  const saved = localStorage.getItem('theme');
+  if (saved) { document.documentElement.setAttribute('data-theme', saved); document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '☀️' : '🌙'; }
+  const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); }); }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>
