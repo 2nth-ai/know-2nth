@@ -3,7 +3,7 @@
   "description": "The public knowledge tree for the 2nth.ai ecosystem. Every leaf is both a human-readable reference and an agent-consumable context document.",
   "agent_fetch": "https://know.2nth.ai/api/context/<domain>/<leaf>",
   "mcp": "https://know.2nth.ai/mcp",
-  "count": 218,
+  "count": 221,
   "items": [
     {
       "title": "Agents — know.2nth.ai",
@@ -828,6 +828,30 @@
       "kind": "leaf",
       "url": "https://know.2nth.ai/explainers/fin/compliance",
       "fetch": "fin/compliance"
+    },
+    {
+      "title": "Healthcare — know.2nth.ai",
+      "description": "The Healthcare domain of the 2nth knowledge tree — clinical software read as markets, not brochures. Opening with private practice: the legacy practice-management incumbents and their plumbing moats, and the ambient AI scribes winning on distribution into clinical workflow. POPIA and patient-outcome stakes throughout.",
+      "domain": "health",
+      "kind": "hub",
+      "url": "https://know.2nth.ai/explainers/health/",
+      "fetch": "health"
+    },
+    {
+      "title": "Ambient AI scribes — know.2nth.ai",
+      "description": "Ambient AI scribes in the UK, read as a distribution war: Accurx Scribe (Tandem Health) riding a platform in 98% of England's GP practices, Tortus deploying Surgery Intellect through X-on Health's phone system across 3,500+ practices, and Heidi taking the individual clinician with a free tier, a clip-on mic, and the largest AI scribe procurement in NHS history. The thesis: the model is table stakes — the winner is whoever owns the path into existing clinical workflow. With the POPIA read for South African practices.",
+      "domain": "health",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/health/ambient-scribes",
+      "fetch": "health/ambient-scribes"
+    },
+    {
+      "title": "Private practice management — know.2nth.ai",
+      "description": "Private practice management, read as a market: DGL Practice Manager (1991, UK/Ireland consultants, now inside the Lanas/TA Associates roll-up), why its moat was Healthcode billing plumbing and switching friction rather than product, the cloud replacements (Semble, Pabau, Medesk, MidexPRO), and the ambient-AI pincer taking the clinician's daily habit from the side. With the SA read: the same anatomy exists here — medical-aid switching rails, legacy desktop incumbents, and POPIA-era data portability.",
+      "domain": "health",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/health/practice-management",
+      "fetch": "health/practice-management"
     },
     {
       "title": "Legal — know.2nth.ai",

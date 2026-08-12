@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Private practice management &mdash; know.2nth.ai</title>
+<meta name="description" content="Private practice management, read as a market: DGL Practice Manager (1991, UK/Ireland consultants, now inside the Lanas/TA Associates roll-up), why its moat was Healthcode billing plumbing and switching friction rather than product, the cloud replacements (Semble, Pabau, Medesk, MidexPRO), and the ambient-AI pincer taking the clinician's daily habit from the side. With the SA read: the same anatomy exists here — medical-aid switching rails, legacy desktop incumbents, and POPIA-era data portability.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/health/practice-management">
+<meta property="og:title" content="Private practice management — know.2nth.ai">
+<meta property="og:description" content="Private practice management, read as a market: DGL Practice Manager (1991, UK/Ireland consultants, now inside the Lanas/TA Associates roll-up), why its moat was Healthcode billing plumbing and switching friction rather than product, the cloud replacements (Semble, Pabau, Medesk, MidexPRO), and the ambient-AI pincer taking the clinician's daily habit from the side. With the SA read: the same anatomy exists here — medical-aid switching rails, legacy desktop incumbents, and POPIA-era data portability.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai — The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Private practice management — know.2nth.ai">
+<meta name="twitter:description" content="Private practice management, read as a market: DGL Practice Manager (1991, UK/Ireland consultants, now inside the Lanas/TA Associates roll-up), why its moat was Healthcode billing plumbing and switching friction rather than product, the cloud replacements (Semble, Pabau, Medesk, MidexPRO), and the ambient-AI pincer taking the clinician's daily habit from the side. With the SA read: the same anatomy exists here — medical-aid switching rails, legacy desktop incumbents, and POPIA-era data portability.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%238B5CF6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%23A78BFA' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33;
+    --blue: #2563EB; --blue-glow: #3B82F6;
+    --sky: #38BDF8; --sky-muted: #7DD3FC;
+    --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8;
+    --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12);
+    --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12);
+    --violet: #8B5CF6; --violet-soft: rgba(139, 92, 246, 0.12);
+    --violet: #8B5CF6; --violet-glow: #A78BFA; --violet-soft: rgba(139, 92, 246, 0.12);
+    --bg: var(--ink); --bg-raised: var(--navy);
+    --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(139, 92, 246, 0.06);
+    --text-primary: var(--paper); --text-secondary: var(--slate);
+    --text-muted: #64748B;
+    --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(139, 92, 246, 0.3);
+    --max-w: 1200px; --read-w: 760px;
+    --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px;
+    --domain: var(--violet); --domain-glow: var(--violet-glow);
+  }
+  [data-theme="light"] {
+    --bg: #F1F5F9; --bg-raised: #FFFFFF;
+    --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(139, 92, 246, 0.04);
+    --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8;
+    --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(139, 92, 246, 0.25);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.violet { width: 600px; height: 600px; background: var(--violet); top: -200px; right: -100px; }
+  .glow-orb.warm { width: 500px; height: 500px; background: var(--warm); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--violet), var(--warm)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--violet-glow); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--violet-glow); }
+
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .read { max-width: var(--read-w); }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--violet-glow); }
+  .crumb-sep { opacity: 0.5; }
+  .crumb-current { color: var(--text-secondary); }
+
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--violet-glow); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--violet); box-shadow: 0 0 12px var(--violet); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--violet), var(--violet-glow), var(--warm)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.accent { background: var(--violet-soft); color: var(--violet-glow); border-color: rgba(139, 92, 246, 0.25); }
+
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--violet-glow); margin-bottom: 14px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--violet-glow); }
+
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); margin-bottom: 20px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.violet { border-left: 3px solid var(--violet); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+
+  .types-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; max-width: 1100px; }
+  .type-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px 22px; transition: all 0.3s; }
+  .type-card:hover { border-color: var(--border-hover); }
+  .type-card .num { font-family: 'JetBrains Mono', monospace; font-size: 28px; font-weight: 700; background: linear-gradient(135deg, var(--violet), var(--violet-glow)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1; margin-bottom: 8px; }
+  .type-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.2px; }
+  .type-card .triad { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; display: block; }
+  .type-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 8px; }
+  .type-card .arrows { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); padding-top: 8px; border-top: 1px solid var(--border); display: flex; gap: 14px; }
+  .type-card .arrows .grow { color: var(--green); }
+  .type-card .arrows .stress { color: var(--violet); }
+
+  .triad-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; max-width: var(--read-w); }
+  .triad { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 24px; }
+  .triad-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--violet-glow); margin-bottom: 8px; }
+  .triad h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+  .triad .types-list { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--violet-glow); margin-bottom: 12px; }
+  .triad p { font-size: 13px; color: var(--text-secondary); line-height: 1.65; }
+
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: var(--read-w); margin-bottom: 20px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--violet-glow); background: rgba(139, 92, 246, 0.04); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); }
+  .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--violet-glow); }
+
+  .gotcha-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 12px; }
+  .gotcha { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--violet); border-radius: var(--radius-md); padding: 18px 22px; }
+  .gotcha strong { display: block; color: var(--text-primary); font-weight: 600; font-size: 14px; margin-bottom: 6px; }
+  .gotcha p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+  .connect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .connect-node { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; transition: all 0.3s; text-decoration: none; color: inherit; display: block; }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node.soon { cursor: default; opacity: 0.72; }
+  .connect-node.soon:hover { border-color: var(--border); background: var(--bg-card); }
+  .connect-node .tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--violet-glow); word-break: break-all; }
+
+  .decision-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: var(--read-w); }
+  @media (max-width: 720px) { .decision-grid { grid-template-columns: 1fr; } }
+  .decision-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 24px; }
+  .decision-card.use { border-left: 3px solid var(--green); }
+  .decision-card.skip { border-left: 3px solid var(--violet); }
+  .decision-card h4 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 12px; }
+  .decision-card.use h4 { color: var(--green); }
+  .decision-card.skip h4 { color: var(--violet); }
+  .decision-card ul { list-style: none; padding: 0; }
+  .decision-card li { font-size: 13px; color: var(--text-secondary); line-height: 1.6; padding: 6px 0; border-bottom: 1px solid var(--border); }
+  .decision-card li:last-child { border-bottom: none; }
+
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--violet), var(--warm)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--violet-glow); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } .compare { font-size: 12px; } .compare th, .compare td { padding: 10px 12px; } }
+
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+<div class="glow-orb violet"></div>
+<div class="glow-orb warm"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand">
+      <span class="nav-brand-mark">know.2nth.ai</span>
+      <span class="nav-brand-sub">health/practice-management</span>
+    </a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">&larr; Legal</a>
+      <a href="../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x2600;&#xFE0F;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="./">Healthcare</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">Practice management</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> health/practice-management &middot; Skill Leaf</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      The moat was plumbing, <span class="gradient">not product.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      Private practice management software is where a whole generation of clinical IT went to retire: systems built in the 1990s, sold to consolidators, and held in place by <strong>billing rails and switching friction</strong> rather than by anything a clinician would choose today. The UK market is the cleanest case study &mdash; a 1991 incumbent inside a private-equity roll-up, a venture-funded replacement attacking it by name, and an AI pincer eating its highest-value workflow from the side. The pattern generalises: read it once in pounds, then again in rand.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill accent">Live</span>
+      <span class="pill">DGL &middot; est. 1991</span>
+      <span class="pill">Semble &middot; the replacement</span>
+      <span class="pill">Healthcode rail</span>
+      <span class="pill">Switching friction</span>
+    </div>
+  </div>
+</section>
+
+<section id="incumbent">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; The incumbent</div>
+      <h2 class="section-title">A 1991 system inside a roll-up, twice over.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p><strong>DGL Practice Manager</strong> &mdash; initially developed in 1991, by its own account &mdash; is the workhorse of UK and Ireland private consulting: billing, appointments, clinical letters and an electronic patient record for thousands of consultants and their secretaries. It is a Windows-era product whose own marketing lists data backups, automatic updates and &ldquo;Microsoft Word and Outlook licences&rdquo; among the peace-of-mind reasons to buy &mdash; which tells you what the value proposition became: bundled licences plus a support phone number.</p>
+      <p>The ownership chain tells you the rest. DGL passed through Helix into <strong>Clanwilliam</strong>, the Dublin health-software group &mdash; and in September 2025 Clanwilliam itself was acquired by private-equity firm <strong>TA Associates</strong> in a deal reported at roughly $450 million, relaunching in November 2025 as <strong>Lanas Healthcare Technologies</strong> with over $115 million of committed M&amp;A funding and a stated goal to triple the business through acquisition. DGL now sits in a portfolio of a dozen-plus practice and care brands. None of that is a criticism of Lanas; it is a description of incentives. A roll-up optimises for retention and cash extraction across a portfolio, not for out-innovating a venture-funded challenger on one ageing asset.</p>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.08s">
+      <p><strong>Customer-reported friction, attributed as such.</strong> Long-running public customer reviews of DGL describe per-invoice charges for insurer submissions, fees to extract your own data on leaving, and innovation slowing after successive acquisitions &mdash; no banking, video or mobile integration among the gaps named. These are customer reports, not audited findings; but they describe exactly the moat anatomy the next section maps.</p>
+    </div>
+    <div class="info-card violet fade-up" style="transition-delay: 0.1s">
+      <p><strong>The incumbent in its own words &mdash; DGL's 2019 sales booklet.</strong> We hold a copy, and it reads like a time capsule of the category. Access is secured by an RSA key fob generating a passcode every 60 seconds. &ldquo;Hosted users&rdquo; are given Microsoft Word and Outlook &mdash; the tell that the &ldquo;cloud&rdquo; is a hosted Windows desktop, not a web application. CCSD procedure schedules come preloaded for Bupa and Aviva, with EDI billing via Healthcode pitched as <em>free</em> &mdash; a detail worth holding against the per-invoice charges customers later report. GDPR compliance is sold as an add-on module (&ldquo;GDPR Sentinel&rdquo;). And the feature-comparison table benchmarks against three <em>unnamed</em> &ldquo;other systems&rdquo;, footnoted &ldquo;excludes additional pay-for modules&rdquo;. The records-depth moat appears as a testimonial: a consultant using the system since March 1999 &mdash; &ldquo;DGL Practice Manager IS my business.&rdquo;</p>
+    </div>
+  </div>
+</section>
+
+<section id="moat">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; The moat anatomy</div>
+      <h2 class="section-title">What actually holds a legacy system in place.</h2>
+      <p class="section-lede">Strip the feature list away and DGL's position rests on three things &mdash; none of which is a feature.</p>
+    </div>
+    <div class="gotcha-list fade-up" style="transition-delay: 0.05s">
+      <div class="gotcha"><strong>The billing rail</strong><p>UK private insurer billing &mdash; Bupa, AXA Health, Vitality &mdash; clears through <strong>Healthcode</strong>. A practice system without that integration can't invoice the payors, whatever else it does. For years this plumbing was the real product.</p></div>
+      <div class="gotcha"><strong>Switching friction</strong><p>Decades of patient records in a proprietary system, plus reported data-exit fees, make leaving a project rather than a decision. The moat is the cost of the door, not the quality of the room.</p></div>
+      <div class="gotcha"><strong>Habit</strong><p>The consultant's secretary has run the practice on this screen for twenty years. Workflow memory is a real asset &mdash; until the workflow itself gets replaced from outside the system.</p></div>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.08s">
+      <p>The strategic point: <strong>all three are now commoditised or under attack.</strong> Challengers ship Healthcode natively. At least one competitor markets its data-migration process as a headline feature &mdash; the moat, advertised as a service someone else will unpick. And the habit layer is being taken by ambient AI that never asks the practice to migrate anything.</p>
+    </div>
+  </div>
+</section>
+
+<section id="replacement">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; The direct replacement</div>
+      <h2 class="section-title">Semble: the challenger with the incumbent's plumbing.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p><strong>Semble</strong> (founded 2016 as HeyDoc) is the venture-scale attack on this market: a cloud platform claiming <strong>16,000 healthcare professionals</strong> across <strong>80+ specialties</strong>, 10 million patients treated, and a <strong>&pound;30 million Series C</strong> led by Revaia and Partech. It positions explicitly as the legacy-system replacement &mdash; and, critically, it holds the moat the incumbent relied on: native Healthcode integration for private insurer billing. Third-party buyer's guides put it at roughly &pound;50&ndash;80 per user per month, toward the premium end of the market.</p>
+      <p>The honest caveat from the same guides: practices that scale sometimes outgrow it &mdash; larger and multi-site groups get quoted individually, and adjacent vendors market themselves as the step up. No challenger is the end state; the point is that the rail is no longer exclusive.</p>
+    </div>
+  </div>
+</section>
+
+<section id="flankers">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; The flankers</div>
+      <h2 class="section-title">The rest of the market, by angle of attack.</h2>
+      <p class="section-lede">Nobody else attacks head-on; each flanker takes a segment. Pricing is quote-shaped across most of the market &mdash; treat published numbers as a starting point.</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead><tr><th>Vendor</th><th>Angle</th><th>What to know</th></tr></thead>
+        <tbody>
+          <tr><td><code>Pabau</code></td><td>Aesthetics &amp; wellness origin, moving clinical</td><td>Per-user tiers from solo to 16+ multi-location; monthly or annual (annual saves up to 20%). Pricing is region-dependent and quote-based &mdash; no longer published.</td></tr>
+          <tr><td><code>Medesk</code></td><td>Analytics-led</td><td>Positions on operational metrics and reporting; Healthcode integration. Publishes UK market pricing comparisons on its own blog &mdash; useful, with the obvious asterisk.</td></tr>
+          <tr><td><code>MidexPRO</code></td><td>Closest like-for-like on consultant workflow</td><td>Consultant and medico-legal practice focus, Healthcode eBilling plus Xero, nearly 30 years in the market &mdash; and a marketed migration process for moving your data off other systems. Claims 99% retention (vendor figure).</td></tr>
+          <tr><td><code>e-clinic</code></td><td>Multi-site clinics</td><td>The multi-practitioner, multi-location shape the solo tools don't serve.</td></tr>
+          <tr><td><code>WriteUpp / Cliniko</code></td><td>The solo end</td><td>Lightweight, affordable practice tools for single practitioners and small allied-health clinics.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="pincer">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; The pincer</div>
+      <h2 class="section-title">The real disruption isn't a practice management system.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>While the cloud systems take the record and the billing rail from below, <strong>ambient AI scribes are taking the clinician's daily habit from the side</strong> &mdash; dictation and correspondence, the highest-value part of the legacy workflow, captured on a phone or a clip-on mic without touching the practice system at all. A consultant using an ambient scribe for notes and letters and a cloud platform for billing has already replaced the 1991 system <em>without a migration project</em> &mdash; the moat never got the chance to bite.</p>
+      <p>That market has its own leaf: <a href="ambient-scribes.html" style="color: var(--violet-glow);">Ambient AI scribes &mdash; distribution beats the model</a>. Read the two together; the pincer is the point.</p>
+    </div>
+  </div>
+</section>
+
+<section id="gotchas">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; What to check before you sign</div>
+      <h2 class="section-title">The contract questions that are the actual product.</h2>
+    </div>
+    <div class="gotcha-list fade-up" style="transition-delay: 0.05s">
+      <div class="gotcha"><strong>Data-exit terms, in writing, before you join</strong><p>What format, what cost, what timeline to get every patient record out. The exit clause is the moat clause &mdash; negotiate it while you still have leverage.</p></div>
+      <div class="gotcha"><strong>Per-transaction fees</strong><p>Per-invoice or per-claim charges compound quietly against a subscription price. Model a year of your actual billing volume before comparing headline prices.</p></div>
+      <div class="gotcha"><strong>Billing-rail nativeness</strong><p>"Integrates with" spans everything from native clearing to a CSV export. For the payor rail, demand the native version &mdash; it's the whole point.</p></div>
+      <div class="gotcha"><strong>Vendor numbers are vendor numbers</strong><p>Retention rates, user counts and savings claims across this whole market are self-reported. Keep the structural argument, asterisk the figures.</p></div>
+      <div class="gotcha"><strong>Modern UI &ne; deep workflow</strong><p>The legacy system encodes twenty years of edge cases &mdash; medico-legal reporting, insurer quirks, letter conventions. Score challengers on your ten ugliest workflows, not the demo.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="sa">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; South African context</div>
+      <h2 class="section-title">Same anatomy, different rail.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>South African private practice runs on the same three-part moat with local names: claims clear to the medical schemes through <strong>switching intermediaries</strong> rather than Healthcode, the incumbent practice systems are similarly desktop-era with decades of records in them, and the switching friction is identical. When evaluating any SA practice system &mdash; incumbent or challenger &mdash; the checklist in section 06 transfers unchanged: the switch integration is the rail, and the data-exit clause is the moat.</p>
+      <p><strong>POPIA sharpens the exit question.</strong> Patient records are special personal information; a practice remains responsible for them across any migration, and reported-style data-exit fees sit awkwardly against a practice's obligations to keep records accessible. Contract the export format and cost upfront &mdash; it's a compliance posture, not just a negotiation. And the currency lens from the <a href="../../briefings/rented-in-dollars" style="color: var(--violet-glow);">ownership series</a> applies: rand-billed practices paying dollar- or pound-priced SaaS carry a quiet FX exposure that compounds exactly like the per-invoice fees above.</p>
+    </div>
+  </div>
+</section>
+
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 &middot; Connections</div>
+      <h2 class="section-title">Where this leaf connects.</h2>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="ambient-scribes.html" class="connect-node">
+        <span class="tag">health/ambient-scribes</span>
+        <div class="skill">Ambient AI scribes</div>
+        <div class="why">The other jaw of the pincer &mdash; the AI that takes the clinician's dictation habit without a migration project.</div>
+      </a>
+      <a href="../../briefings/rented-in-dollars" class="connect-node">
+        <span class="tag">briefings/rented-in-dollars</span>
+        <div class="skill">Rented in Dollars</div>
+        <div class="why">The general form of this leaf's thesis: incumbents charging rent on someone else's technology, with no incentive to disrupt themselves.</div>
+      </a>
+      <a href="../leg/data-privacy.html" class="connect-node">
+        <span class="tag">leg/data-privacy</span>
+        <div class="skill">Data privacy &amp; POPIA</div>
+        <div class="why">Patient records are special personal information &mdash; the legal substrate under every migration and data-exit clause here.</div>
+      </a>
+      <a href="../tech/own-your-stack.html" class="connect-node">
+        <span class="tag">tech/own-your-stack</span>
+        <div class="skill">Own your stack</div>
+        <div class="why">What it means to actually own your settings, customisations and data &mdash; the posture that makes the exit clause enforceable.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">09 &middot; Resources</div>
+      <h2 class="section-title">Primary sources.</h2>
+      <p class="section-lede">Vendor sites read as positioning statements; the deal coverage for the ownership chain. Last reviewed 2026-08-12.</p>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://dglpm.co.uk/about/" class="resource" target="_blank" rel="noopener"><span class="r-kind">Vendor</span><span class="r-title">DGL Practice Manager &mdash; about (est. 1991)</span><span class="r-url">dglpm.co.uk/about</span></a>
+      <a href="https://www.lanas.com/" class="resource" target="_blank" rel="noopener"><span class="r-kind">Vendor</span><span class="r-title">Lanas Healthcare Technologies &mdash; brand portfolio</span><span class="r-url">lanas.com</span></a>
+      <a href="https://www.digitalhealth.net/2025/11/lanas-healthcare-technology-launches-after-acquiring-clanwilliam/" class="resource" target="_blank" rel="noopener"><span class="r-kind">Coverage</span><span class="r-title">Lanas launches after acquiring Clanwilliam (Nov 2025)</span><span class="r-url">digitalhealth.net</span></a>
+      <a href="https://www.ta.com/news/lanas-healthcare-technologies-launches-with-over-115m-of-committed-ma-funding-following-clanwilliam-group-acquisition/" class="resource" target="_blank" rel="noopener"><span class="r-kind">Deal</span><span class="r-title">TA Associates &mdash; Lanas launch, $115m+ M&amp;A funding</span><span class="r-url">ta.com/news</span></a>
+      <a href="https://semble.io/" class="resource" target="_blank" rel="noopener"><span class="r-kind">Vendor</span><span class="r-title">Semble &mdash; platform &amp; Series C</span><span class="r-url">semble.io</span></a>
+      <a href="https://www.midexpro.com/" class="resource" target="_blank" rel="noopener"><span class="r-kind">Vendor</span><span class="r-title">MidexPRO &mdash; consultant practice management</span><span class="r-url">midexpro.com</span></a>
+      <a href="https://pabau.com/pricing/" class="resource" target="_blank" rel="noopener"><span class="r-kind">Vendor</span><span class="r-title">Pabau &mdash; pricing model</span><span class="r-url">pabau.com/pricing</span></a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../index.html">Skills tree</a>
+      <a href="./">Healthcare domain</a>
+      <a href="ambient-scribes.html">Ambient AI scribes</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant</p>
+  </div>
+</footer>
+<script>
+  function toggleTheme() { const html=document.documentElement; const cur=html.getAttribute('data-theme'); const next=cur==='dark'?'light':'dark'; html.setAttribute('data-theme',next); document.querySelector('.theme-toggle').textContent=next==='dark'?'☀️':'🌙'; localStorage.setItem('theme',next); }
+  const saved=localStorage.getItem('theme'); if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.theme-toggle').textContent=saved==='dark'?'☀️':'🌙';}
+  const observer=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'}); document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>
