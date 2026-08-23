@@ -3,21 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Spec-driven development &mdash; know.2nth.ai</title>
-<meta name="description" content="Spec-driven development — why formal specs (the IEEE 830 / ISO 29148 lineage) are re-entering practice in the agent era. The mechanism: a coding agent is a non-deterministic contractor, and unwritten intent now costs you on every regeneration, not once. The METR perception gap, GitHub Spec Kit, constitution files, and the part most write-ups skip: a spec without verification is just a longer prompt. With the over-specification antipattern stated honestly.">
+<title>Software 3.0 &mdash; know.2nth.ai</title>
+<meta name="description" content="Software 3.0 — Andrej Karpathy's three-paradigm frame, verified and read for practitioners. Software 1.0 is code compiled to binaries; 2.0 is datasets compiled to neural weights by an optimizer; 3.0 is natural-language prompts executed by an LLM. Prompts are programs with measurable performance — 'Let's think step by step' lifted MultiArith from 17.7% to 78.7% in 2022 — and the honest read: paradigms stack rather than replace, English is not a precise spec, and the mature response is spec-driven development.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="know.2nth.ai">
-<meta property="og:url" content="https://know.2nth.ai/explainers/software/spec-driven-development">
-<meta property="og:title" content="Spec-driven development — know.2nth.ai">
-<meta property="og:description" content="The spec is back — the agent made it necessary. A coding agent is a non-deterministic contractor; the spec is the contract, and the verification loop is what makes it enforceable. The METR perception gap, Spec Kit, and the over-specification antipattern, honestly.">
+<meta property="og:url" content="https://know.2nth.ai/explainers/software/software-3">
+<meta property="og:title" content="Software 3.0 — know.2nth.ai">
+<meta property="og:description" content="Code → weights → prompts: Karpathy's three software paradigms, with the verified numbers behind 'prompts are programs' and the honest read on what 3.0 doesn't mean.">
 <meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Spec-driven development — know.2nth.ai">
-<meta name="twitter:description" content="The spec is back — the agent made it necessary. A coding agent is a non-deterministic contractor; the spec is the contract, and the verification loop is what makes it enforceable. The METR perception gap, Spec Kit, and the over-specification antipattern, honestly.">
+<meta name="twitter:title" content="Software 3.0 — know.2nth.ai">
+<meta name="twitter:description" content="Code → weights → prompts: Karpathy's three software paradigms, with the verified numbers behind 'prompts are programs' and the honest read on what 3.0 doesn't mean.">
 <meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -137,7 +137,7 @@
 
 <nav>
   <div class="nav-inner">
-    <a href="../../index.html" class="nav-brand"><span class="nav-brand-mark">know.2nth.ai</span><span class="nav-brand-sub">software/spec-driven-development</span></a>
+    <a href="../../index.html" class="nav-brand"><span class="nav-brand-mark">know.2nth.ai</span><span class="nav-brand-sub">software/software-3</span></a>
     <div class="nav-right">
       <a href="./" class="nav-link">&larr; Software</a>
       <a href="../../index.html#domains" class="nav-link">Tree</a>
@@ -152,237 +152,237 @@
     <span class="crumb-sep">&rsaquo;</span>
     <a href="./">Software</a>
     <span class="crumb-sep">&rsaquo;</span>
-    <span class="crumb-current">Spec-driven development</span>
+    <span class="crumb-current">Software 3.0</span>
   </div>
 </div>
 
 <section class="hero">
   <div class="container">
-    <div class="eyebrow fade-up"><span class="dot"></span> software &middot; Method &middot; Spec-driven development</div>
+    <div class="eyebrow fade-up"><span class="dot"></span> software &middot; Concept &middot; Software 3.0</div>
     <h1 class="fade-up" style="transition-delay: 0.05s">
-      The spec is back. <span class="gradient">The agent made it necessary.</span>
+      Code, then weights, <span class="gradient">then words.</span>
     </h1>
     <p class="sub fade-up" style="transition-delay: 0.1s">
-      Formal requirements specs &mdash; the IEEE 830 / ISO 29148 lineage a generation of Agile culture learned to skip &mdash; are re-entering practice, and the reason is structural, not nostalgic. <strong>A coding agent is a non-deterministic contractor, and a spec is the contract.</strong> With human developers, an unstated assumption got resolved once, in conversation, and stuck. With an agent, every regeneration re-rolls the dice on every piece of intent you never wrote down &mdash; the cost of unwritten intent went from one-time to recurring. And the half most write-ups skip: the spec only becomes a contract when there's a <strong>verification loop</strong> to enforce it.
+      Andrej Karpathy's three-paradigm frame is the cleanest map of what just happened to programming. <strong>Software 1.0</strong> is source code compiled to binaries. <strong>Software 2.0</strong> is curated datasets compiled to neural-network weights by an optimizer. <strong>Software 3.0</strong> is natural-language prompts executed by a large language model &mdash; programs written in English, with measurably different performance depending on how they're written. This leaf is the frame, the verified numbers behind it, and the honest read on what it doesn't mean.
     </p>
     <div class="hero-meta fade-up" style="transition-delay: 0.15s">
-      <span class="pill code">Spec = contract</span>
-      <span class="pill">ISO/IEC/IEEE 29148</span>
-      <span class="pill accent">Spec Kit &middot; MIT</span>
-      <span class="pill green">Verify or it's a prompt</span>
-      <span class="pill warn">Over-spec is the antipattern</span>
+      <span class="pill code">1.0 &rarr; 2.0 &rarr; 3.0</span>
+      <span class="pill green">Numbers verified</span>
+      <span class="pill">Prompts are programs</span>
+      <span class="pill warn">Concept leaf &middot; Karpathy lineage</span>
     </div>
   </div>
 </section>
 
-<!-- 01 WHAT IT IS -->
-<section id="what">
+<!-- 01 THE THREE PARADIGMS -->
+<section id="paradigms">
   <div class="container">
     <div class="fade-up">
-      <div class="section-label">01 &middot; What it is</div>
-      <h2 class="section-title">A machine-readable statement of intent, written before the code.</h2>
+      <div class="section-label">01 &middot; The three paradigms</div>
+      <h2 class="section-title">Same job &mdash; specify behaviour &mdash; three different source materials.</h2>
     </div>
-    <div class="prose fade-up" style="transition-delay: 0.05s">
-      <p>Spec-driven development (SDD) puts a formal, machine-readable specification &mdash; written before implementation &mdash; at the centre of the workflow as the single source of truth. Code is generated and maintained <em>against</em> the spec; when intent changes, the spec changes first. The idea is old: its roots run through 1960s NASA workflows, Hoare's logic, Dijkstra's formal methods, and Meyer's design-by-contract, with an academic formalisation in 2004.</p>
-      <p>The standards lineage matters because it maps so cleanly onto the present. <strong>IEEE 830</strong> defined the software requirements specification; it was superseded by <strong>ISO/IEC/IEEE 29148</strong> in 2011 (current revision 2018). A BRS captures stakeholder intent &mdash; the <em>why</em>. An SRS pins down system behaviour an engineer can implement against &mdash; the <em>what</em>. Those two documents map almost exactly onto the two artifacts every serious agentic workflow now regenerates: intent capture and constrained task decomposition. What's returned is not the IEEE document itself &mdash; nobody is writing an 830-style SRS again &mdash; but its <strong>function</strong>, in new forms: markdown specs, constitution files, eval suites. The standard didn't go away. It waited for a consumer that couldn't infer intent from a hallway conversation.</p>
-    </div>
-  </div>
-</section>
-
-<!-- 02 WHY NOW -->
-<section id="why">
-  <div class="container">
-    <div class="fade-up">
-      <div class="section-label">02 &middot; Why now</div>
-      <h2 class="section-title">Non-determinism changed the economics of ambiguity.</h2>
-      <p class="section-lede">The best evidence that something is off in unstructured AI-assisted work isn't a benchmark &mdash; it's a perception gap, measured under controlled conditions.</p>
-    </div>
-    <div class="stack-grid fade-up" style="transition-delay: 0.05s">
-      <div class="stack-cell">
-        <span class="layer">Measured</span>
-        <h4>19% slower with AI</h4>
-        <p>Sixteen experienced developers, 246 real tasks from repos they knew deeply. Allowed AI tools, they took 19% longer (METR RCT, July 2025 &mdash; early-2025 tools; METR labels the result historical, and a February 2026 follow-up showed some speedup).</p>
-      </div>
-      <div class="stack-cell">
-        <span class="layer">Predicted</span>
-        <h4>24% faster, beforehand</h4>
-        <p>The same developers predicted AI would speed them up by 24% before starting.</p>
-      </div>
-      <div class="stack-cell">
-        <span class="layer">Felt</span>
-        <h4>20% faster, after</h4>
-        <p>Even after finishing slower, they estimated they'd been about 20% faster. The clock and the feeling pointed in opposite directions.</p>
-      </div>
-    </div>
+    <pre class="code fade-up" style="transition-delay: 0.05s">+--------------+------------------------+----------------------------------+
+| Paradigm     | Source material        | "Compiler"                       |
++--------------+------------------------+----------------------------------+
+| Software 1.0 | Explicit source code   | Compiler/interpreter -&gt; binary   |
+| Software 2.0 | Curated datasets       | Optimizer (SGD/Adam) -&gt; weights  |
+| Software 3.0 | Natural-language prompt| LLM inference -&gt; behaviour       |
++--------------+------------------------+----------------------------------+</pre>
     <div class="prose fade-up" style="transition-delay: 0.08s">
-      <p>Be precise about what that study proves and what it doesn't. It proves the <strong>perception gap</strong> is real &mdash; unstructured AI-assisted work feels faster than it is. It did <em>not</em> test spec-vs-no-spec, and METR attributed the slowdown to several factors, only some of which a spec addresses. The spec is the <strong>candidate</strong> fix, not the proven one &mdash; and the mechanism behind the candidacy is specific to how LLMs generate code. The same prompt produces functionally different output across invocations, so any gap in your intent resurfaces unpredictably every time the agent regenerates. A human resolves ambiguity once and remembers; an agent makes you pay for the same unwritten assumption on every run. Externalising intent into an artifact is the move that changes that cost curve.</p>
-      <p>This is also where the harness model earns its keep. <code>CLAUDE.md</code>, <code>AGENTS.md</code>, and a SKILL file tell the agent <em>how</em> to build; the spec tells it <em>what</em>. Skip the second and you're vibe coding with extra steps. The operator's real leverage isn't prompting faster &mdash; it's specifying tighter.</p>
+      <p>The point of the frame is not that each paradigm replaces the last &mdash; <strong>they stack</strong>. The Linux kernel is still 1.0. A driving perception stack is 2.0: nobody writes the lane-detection algorithm; a team curates the dataset that the optimizer compiles into weights. And an agent following a system prompt is 3.0: the behaviour was specified in English, and changing the English changes the program. Karpathy's one-liner &mdash; the hottest new programming language is English &mdash; is a claim about <em>where specification moved</em>, not about the death of code.</p>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.1s">
+      <h4>Provenance &amp; corrections</h4>
+      <p>Distilled from two Karpathy talks &mdash; the "Software 3.0" keynote and his Stanford CS25 transformer lecture &mdash; with every load-bearing claim chained to its paper. Two corrections applied to the source synthesis: Karpathy's famous ImageNet human-baseline exercise covered the challenge's <strong>1,000</strong> categories (not 10,000), and the in-context-learning-as-gradient-descent result in &sect;05 is stated as evidence in simplified settings, not the "proof" it is often inflated into.</p>
     </div>
   </div>
 </section>
 
-<!-- 03 THE TOOLCHAIN + VERIFICATION -->
-<section id="toolchain">
+<!-- 02 THE DATA ENGINE -->
+<section id="data-engine">
   <div class="container">
     <div class="fade-up">
-      <div class="section-label">03 &middot; The toolchain &mdash; and the half that makes it real</div>
-      <h2 class="section-title">Spec Kit, constitution files, and the verification loop.</h2>
+      <div class="section-label">02 &middot; Software 2.0 and the data engine</div>
+      <h2 class="section-title">When the dataset is the source code, iteration means data work.</h2>
     </div>
     <div class="prose fade-up" style="transition-delay: 0.05s">
-      <p><strong>GitHub Spec Kit</strong> (September 2025, MIT-licensed) is the reference implementation. The <code>specify</code> CLI bootstraps a project, and the workflow is a command chain where each phase produces artifacts the next consumes: <code>/speckit.constitution</code> (the non-negotiables) &rarr; <code>/speckit.specify</code> (intent) &rarr; <code>/speckit.clarify</code> &rarr; <code>/speckit.plan</code> (the tech decisions) &rarr; <code>/speckit.tasks</code> &rarr; <code>/speckit.analyze</code> (consistency) &rarr; <code>/speckit.implement</code>. It runs across 30+ agents including Claude Code, Copilot, Cursor, Gemini CLI, Windsurf, and Codex. The <strong>constitution file</strong> strand &mdash; versioned, non-negotiable constraints mapped to the CWE/MITRE Top 25, sitting above every generation &mdash; has one arXiv case study ("constitutional" SDD, Marri, February 2026) reporting a 73% reduction in security vulnerabilities and 56% faster time to first secure build. Single case study; weight accordingly. The direction, corroborated by IBM, Microsoft, and Thoughtworks publishing on the same pattern, is the signal.</p>
-    </div>
-    <div class="info-card amber fade-up" style="transition-delay: 0.07s">
-      <h4>The flagship tool, read honestly</h4>
-      <p>Spec Kit the <em>method demonstration</em> and Spec Kit the <em>dependency</em> are different bets. Eleven months after launch it is still on a 0.x version line (0.14.x as of late July 2026), moving fast enough that v0.10 removed the <code>--ai</code> flag family outright &mdash; tutorials written before June 2026 show commands that no longer work &mdash; and "is this actually maintained?" is a live thread on its own discussion board. Practitioner reviews are genuinely split: reports of a heavy ceremony cost ("a sea of markdown documents", a single plan phase generating 2,000+ lines), materially higher token consumption on the full pipeline, and at least one published review finding plain iterative prompting faster for their work.</p>
-      <p>The sharpest criticism &mdash; from Spec Kit's own community &mdash; is also the most instructive: <strong>the documents govern the code by convention, not enforcement.</strong> That is this leaf's verification point, made concrete by the flagship tool's critics. The honest posture: adopt the workflow <em>shape</em> (constitution &rarr; spec &rarr; plan &rarr; tasks &rarr; implement), treat the tool itself as a 0.x dependency you pin and expect to churn, and wire your own enforcement &mdash; tests generated from the spec, CI gates &mdash; regardless of which toolkit produced the markdown.</p>
-    </div>
-    <div class="info-card code fade-up" style="transition-delay: 0.09s">
-      <h4>A spec without verification is a vibe with headers</h4>
-      <p>The part most SDD write-ups undersell: a spec an agent cannot be <em>checked against</em> is just a longer prompt. The contract is really two artifacts &mdash; the spec, and the <strong>verification loop</strong> that enforces it: acceptance tests generated from the spec, eval suites, CI gates, and constraint files the pipeline actually runs. That loop is what converts "I wrote down what I wanted" into "the agent provably built what I specified" &mdash; and it's what makes regeneration safe, because a re-rolled implementation that still passes the spec's checks is a non-event. Write the spec; then write (or generate) the checks that make it binding.</p>
+      <p>Software 2.0's development loop &mdash; built at industrial scale in Karpathy's Tesla years &mdash; is the <strong>data engine</strong>: ship the model, harvest the failures, label the edge cases, retrain, repeat. The engineers' daily work is not authoring algorithms but curating the dataset that compiles into them. The 2017 "Software 2.0" essay called this shift before it was consensus: version control for datasets, test suites as labelled evaluation sets, and debugging as failure-mode triage.</p>
+      <p>Why it earned the "software" name: weights are a binary produced from source material by a deterministic build step. What changed is which artefact humans edit. That same move &mdash; asking "what do humans edit now?" &mdash; is exactly how to understand 3.0.</p>
     </div>
   </div>
 </section>
 
-<!-- 04 DECISION -->
-<section id="decision">
+<!-- 03 PROMPTS ARE PROGRAMS -->
+<section id="prompts">
   <div class="container">
     <div class="fade-up">
-      <div class="section-label">04 &middot; Decision guide</div>
-      <h2 class="section-title">Which builds earn the spec.</h2>
-      <p class="section-lede">The spec is not a productivity hack, and over-specification is the named antipattern &mdash; Thoughtworks put SDD on the Technology Radar and flagged the failure mode in the same breath: a bias toward heavy up-front specification and big-bang releases. Over-specify a throwaway prototype and you've built a cathedral to house a shed.</p>
+      <div class="section-label">03 &middot; Prompts are programs</div>
+      <h2 class="section-title">The evidence: changing the words changes the measured performance.</h2>
+      <p class="section-lede">The strongest argument that a prompt is a program, not a wish, is that its phrasing moves benchmark numbers the way an algorithm change would. The canonical result, verified at source:</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Kojima et al. (2022) added five words &mdash; <strong>"Let's think step by step"</strong> &mdash; before the answer, and accuracy on the MultiArith arithmetic benchmark went from <strong>17.7% to 78.7%</strong>; GSM8K went from 10.4% to 40.7% (text-davinci-002, so these are 2022-era numbers &mdash; the era matters). Zhou et al.'s Automatic Prompt Engineer then <em>searched</em> for a better program and found one: "Let's work this out in a step by step way to be sure we have the right answer" &mdash; <strong>82.0%</strong>. A machine optimising the wording of an English program for measurable performance: that is Software 3.0 in one experiment.</p>
+      <p>The mechanism is not mystical. A model spends a roughly fixed amount of compute per token, so a prompt that elicits intermediate reasoning tokens buys the computation more serial steps &mdash; a scratchpad. That thread runs forward directly into <a href="../agents/test-time-compute.html" style="color:var(--code);">test-time compute</a>: what began as five magic words in 2022 became reasoning models trained to do it natively, with verification as the binding constraint.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 THE SIMULATOR -->
+<section id="simulator">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; The LLM as simulator</div>
+      <h2 class="section-title">A runtime you reconfigure with a paragraph.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Two months after ChatGPT launched a thousand demos, Jonas Degrave's stood out because it made the paradigm concrete: he prompted the model into being <strong>a stateful Linux terminal</strong> &mdash; fake filesystem, command execution, believable network round-trips &mdash; no VM anywhere, the whole machine simulated in activations. The other early tell was Bing's "Sydney": when its system prompt leaked, it showed that an entire product persona &mdash; behavioural bounds, safety policy, tone &mdash; was instantiated as <strong>a page of English</strong>.</p>
+      <p>Together they define the 3.0 runtime: a general-purpose engine whose behaviour is configured, not compiled &mdash; which is why prompt files, system prompts and agent instructions deserve the treatment source code gets: versioned, reviewed, tested. That discipline has its own leaf: <a href="spec-driven-development.html" style="color:var(--code);">spec-driven development</a> is what Software 3.0 grows into when it stops being vibes.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 THE SUBSTRATE -->
+<section id="substrate">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; The substrate</div>
+      <h2 class="section-title">Why one architecture runs all three of Karpathy's eras.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>The 3.0 runtime exists because the field converged on one architecture. Before 2012, vision, speech and NLP each had bespoke, handcrafted features; AlexNet showed scale beats handcraft, and the 2017 transformer unified the architectures &mdash; vision (ViT), speech (Whisper), RL (Decision Transformer), structural biology (AlphaFold) all run attention-centric backbones. Karpathy's CS25 telling of the lineage is worth knowing: Bahdanau's soft attention (2014) solved the Seq2Seq bottleneck, and &mdash; by Bahdanau's own account &mdash; it was Bengio who suggested the name "attention" in revision. Transformers won on three axes at once: expressive (attention over sets), optimisable (residuals + LayerNorm), and <strong>shaped like the hardware</strong> (shallow-and-wide parallel graphs on GPUs).</p>
+      <p>Two grounding facts for the working engineer. First, the whole thing is readable: <strong>nanoGPT</strong> reproduces GPT-2 (124M) with a ~300-line model definition plus a ~300-line training loop &mdash; OpenWebText, one 8&times;A100 node, about four days, validation loss ~2.85. The mystique of the substrate does not survive a weekend with that repo. Second, the honest version of a widely inflated claim: research (von Oswald et al., 2022) shows that <em>linear</em> attention can implement gradient-descent-like updates on toy regression tasks in its forward pass &mdash; suggestive evidence that in-context learning is implicit optimisation, <strong>not a proof</strong> that production LLMs learn this way. The question is open; the leaf says so.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 HONEST READ -->
+<section id="honest">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; The honest read</div>
+      <h2 class="section-title">What Software 3.0 doesn't mean.</h2>
     </div>
     <div class="decision-grid fade-up" style="transition-delay: 0.05s">
       <div class="decision-card use">
-        <h4>Write the spec when</h4>
+        <h4>Take from the frame</h4>
         <ul>
-          <li>The system will be maintained &mdash; regeneration without a contract compounds drift</li>
-          <li>More than one agent (or agent-plus-humans) builds against the same intent</li>
-          <li>The domain is regulated &mdash; the spec doubles as the audit trail</li>
-          <li>Security constraints are non-negotiable &mdash; constitution-file territory</li>
-          <li>The cost of a subtly-wrong implementation exceeds the cost of writing intent down</li>
+          <li>Prompts, system prompts and agent instructions are programs &mdash; version, review and test them like source code</li>
+          <li>Benchmark-moving phrasing is real; so is its era-specificity &mdash; date every number you quote</li>
+          <li>The "what do humans edit now?" question locates the leverage in any AI system: code, data, or words</li>
+          <li>The CoT thread matured into test-time compute &mdash; read the two leaves as one arc</li>
         </ul>
       </div>
       <div class="decision-card skip">
-        <h4>Skip the ceremony when</h4>
+        <h4>Don't take from it</h4>
         <ul>
-          <li>It's a throwaway prototype or spike &mdash; the shed doesn't need a cathedral</li>
-          <li>You're still discovering the intent &mdash; explore first, specify what survives</li>
-          <li>The spec would just restate the code &mdash; specify behaviour, not implementation</li>
-          <li>There's no verification loop planned &mdash; an unenforced spec decays into documentation</li>
+          <li>"English replaces code" &mdash; paradigms stack; kernels stay 1.0, perception stays 2.0, and precise behaviour still wants precise specification</li>
+          <li>"Prompt engineering is the durable skill" &mdash; the 2022 magic-words era is over; the durable skill is specification and verification</li>
+          <li>"In-context learning is proven gradient descent" &mdash; evidence in toy settings, contested in the large</li>
+          <li>An unversioned prompt in a wiki is not Software 3.0 &mdash; it's technical debt in a new language</li>
         </ul>
       </div>
     </div>
   </div>
 </section>
 
-<!-- 05 SA CONTEXT -->
+<!-- 07 SA CONTEXT -->
 <section id="sa-context">
   <div class="container">
     <div class="fade-up">
-      <div class="section-label">05 &middot; South African context</div>
-      <h2 class="section-title">Under POPIA, the spec is evidence.</h2>
+      <div class="section-label">07 &middot; South African context</div>
+      <h2 class="section-title">The paradigm that favours small, disciplined teams.</h2>
     </div>
     <div class="prose fade-up" style="transition-delay: 0.05s">
-      <p>For anyone building under POPIA or GDPR, this stops being a style preference. Compliance reviews increasingly treat the specification as evidence: if an agent generated the code, the spec is the audit trail for what it was instructed to do and which constraints it was held to &mdash; the difference between "the model wrote it" and a defensible record of intent, constraint, and validation. In a regulated Johannesburg fintech, that record is the thing that survives a review. Keep the spec and its checks in the repo, run the agent on in-country infrastructure, and the governance story and the residency story become the same story.</p>
-      <p>The economics land locally too. The code was never the scarce thing &mdash; any agent can produce a thousand lines. What's scarce is a precise, verifiable statement of what those lines are supposed to do. For an SA team, that scarcity is good news: the durable, billable skill in agent-era delivery is exactly the one that doesn't depend on owning the biggest model &mdash; specifying tightly, and verifying what comes back.</p>
+      <p>Software 3.0 lowers the capital cost of capability: a small SA team with strong specification discipline now ships systems that used to need a frontend team, a data team and a research budget. But the frame cuts both ways &mdash; if the program is English, then <strong>vague English is a buggy program</strong>, and the differentiator shifts from who can code to who can specify and verify. That's the skills ladder worth building here: treat prompts and agent instructions as reviewed artefacts in the repo, date and re-test the behaviour claims your systems rest on, and let the 1.0/2.0/3.0 question &mdash; what are we actually editing? &mdash; drive where scarce engineering time goes.</p>
     </div>
   </div>
 </section>
 
-<!-- 06 CONNECTIONS -->
+<!-- 08 CONNECTIONS -->
 <section id="connect">
   <div class="container">
     <div class="fade-up">
-      <div class="section-label">06 &middot; Connections</div>
-      <h2 class="section-title">Where spec-driven development links in the tree.</h2>
+      <div class="section-label">08 &middot; Connections</div>
+      <h2 class="section-title">Where Software 3.0 links in the tree.</h2>
     </div>
     <div class="connect-grid fade-up" style="transition-delay: 0.05s">
-      <a href="planning-with-agents.html" class="connect-node">
-        <span class="tag">software/planning-with-agents</span>
-        <div class="skill">Planning with agents</div>
-        <div class="why">The process view &mdash; its &sect;02 is "the spec is the ticket." This leaf is the deep dive under that section: the artifact, the evidence, and the verification half.</div>
-      </a>
-      <a href="waterfall.html" class="connect-node">
-        <span class="tag">software/waterfall</span>
-        <div class="skill">Waterfall</div>
-        <div class="why">The history rhyme, and the caution. Specs-as-phase-gates failed once already &mdash; the difference this time is a consumer that regenerates, and a loop that verifies.</div>
-      </a>
-      <a href="software-for-agents.html" class="connect-node">
-        <span class="tag">software/software-for-agents</span>
-        <div class="skill">Software for agents</div>
-        <div class="why">The how-side of the contract: CLAUDE.md, AGENTS.md, and skills tell the agent how to build. The spec is the what. You need both.</div>
-      </a>
-      <a href="ci-cd.html" class="connect-node">
-        <span class="tag">software/ci-cd</span>
-        <div class="skill">CI / CD</div>
-        <div class="why">Where the verification loop physically lives &mdash; the gates that make a spec binding instead of decorative.</div>
-      </a>
-      <a href="orchestrating-agents.html" class="connect-node">
-        <span class="tag">software/orchestrating-agents</span>
-        <div class="skill">Orchestrating agents</div>
-        <div class="why">Multi-agent work raises the stakes: several contractors, one contract. The spec is what keeps parallel agents building the same system.</div>
-      </a>
-      <a href="../agents/effective-agents.html" class="connect-node">
-        <span class="tag">agents/effective-agents</span>
-        <div class="skill">Effective Agents</div>
-        <div class="why">The upstream question &mdash; whether this should be an agent at all &mdash; asked before the spec decides what the agent must do.</div>
+      <a href="spec-driven-development.html" class="connect-node">
+        <span class="tag">software/spec-driven-development</span>
+        <div class="skill">Spec-driven development</div>
+        <div class="why">What 3.0 grows into: if English is the program, the spec is the source file &mdash; versioned, reviewed, verified. The mature form of this leaf's thesis.</div>
       </a>
       <a href="../agents/test-time-compute.html" class="connect-node">
         <span class="tag">agents/test-time-compute</span>
         <div class="skill">Test-time compute</div>
-        <div class="why">The same verification law at the model layer &mdash; ten thousand samples without a verifier are ten thousand vibes.</div>
+        <div class="why">The CoT thread continued: from five magic words moving MultiArith 61 points to reasoning models trained to think natively &mdash; and verification as the constraint.</div>
       </a>
-      <a href="software-3.html" class="connect-node">
-        <span class="tag">software/software-3</span>
-        <div class="skill">Software 3.0</div>
-        <div class="why">The paradigm frame underneath this leaf: if prompts are programs, specs are their source files. Code &rarr; weights &rarr; words, with the verified numbers.</div>
+      <a href="software-for-agents.html" class="connect-node">
+        <span class="tag">software/software-for-agents</span>
+        <div class="skill">Software for agents</div>
+        <div class="why">The engineering practice of the 3.0 era: repo-as-context, skills, grounding &mdash; the toolchain for programs whose runtime reads English.</div>
+      </a>
+      <a href="../agents/claude-code.html" class="connect-node">
+        <span class="tag">agents/claude-code</span>
+        <div class="skill">Claude Code</div>
+        <div class="why">Software 3.0 in daily production use: natural-language intent driving 1.0 code through an agent &mdash; all three paradigms in one working loop.</div>
       </a>
     </div>
   </div>
 </section>
 
-<!-- 07 RESOURCES -->
+<!-- 09 RESOURCES -->
 <section id="resources">
   <div class="container">
     <div class="fade-up">
-      <div class="section-label">07 &middot; Resources</div>
-      <h2 class="section-title">Primary sources.</h2>
-      <p class="section-lede">The RCT, the standard, the toolkit, and the case study &mdash; with the caveats carried inline where they belong. Last reviewed 2026-07-28.</p>
+      <div class="section-label">09 &middot; Resources</div>
+      <h2 class="section-title">The papers behind the claims.</h2>
+      <p class="section-lede">Every number in this leaf chains to one of these. Last reviewed 2026-08-23.</p>
     </div>
     <div class="resource-grid fade-up" style="transition-delay: 0.05s">
-      <a href="https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/" class="resource" target="_blank" rel="noopener">
-        <span class="r-kind">RCT &middot; Jul 2025</span>
-        <span class="r-title">METR &mdash; AI impact on experienced OSS developers</span>
-        <span class="r-url">metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study</span>
+      <a href="https://arxiv.org/abs/2205.11916" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Paper</span>
+        <span class="r-title">Kojima et al. &mdash; LLMs are Zero-Shot Reasoners (17.7&rarr;78.7)</span>
+        <span class="r-url">arxiv.org/abs/2205.11916</span>
       </a>
-      <a href="https://github.com/github/spec-kit" class="resource" target="_blank" rel="noopener">
-        <span class="r-kind">Toolkit &middot; MIT</span>
-        <span class="r-title">GitHub Spec Kit</span>
-        <span class="r-url">github.com/github/spec-kit</span>
+      <a href="https://arxiv.org/abs/2211.01910" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Paper</span>
+        <span class="r-title">Zhou et al. &mdash; Automatic Prompt Engineer (82.0)</span>
+        <span class="r-url">arxiv.org/abs/2211.01910</span>
       </a>
-      <a href="https://www.iso.org/standard/72089.html" class="resource" target="_blank" rel="noopener">
-        <span class="r-kind">Standard</span>
-        <span class="r-title">ISO/IEC/IEEE 29148:2018 &mdash; requirements engineering</span>
-        <span class="r-url">iso.org/standard/72089.html</span>
+      <a href="https://arxiv.org/abs/1409.0473" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Paper</span>
+        <span class="r-title">Bahdanau et al. &mdash; the attention mechanism</span>
+        <span class="r-url">arxiv.org/abs/1409.0473</span>
       </a>
-      <a href="https://developer.microsoft.com/blog/spec-driven-development-ai-native-engineering/" class="resource" target="_blank" rel="noopener">
-        <span class="r-kind">Vendor &middot; Jun 2026</span>
-        <span class="r-title">Microsoft &mdash; Spec-Driven Development, a spec-first approach</span>
-        <span class="r-url">developer.microsoft.com/blog/spec-driven-development-ai-native-engineering</span>
+      <a href="https://arxiv.org/abs/1706.03762" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Paper</span>
+        <span class="r-title">Vaswani et al. &mdash; Attention Is All You Need</span>
+        <span class="r-url">arxiv.org/abs/1706.03762</span>
       </a>
-      <a href="https://arxiv.org/abs/2602.02584" class="resource" target="_blank" rel="noopener">
-        <span class="r-kind">Paper &middot; single case study</span>
-        <span class="r-title">Marri &mdash; Constitutional Spec-Driven Development</span>
-        <span class="r-url">arxiv.org/abs/2602.02584</span>
+      <a href="https://arxiv.org/abs/2212.07677" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Paper</span>
+        <span class="r-title">von Oswald et al. &mdash; in-context learning as GD (toy settings)</span>
+        <span class="r-url">arxiv.org/abs/2212.07677</span>
       </a>
-      <a href="https://www.ibm.com/think/topics/spec-driven-development" class="resource" target="_blank" rel="noopener">
-        <span class="r-kind">Reference</span>
-        <span class="r-title">IBM &mdash; What is spec-driven development?</span>
-        <span class="r-url">ibm.com/think/topics/spec-driven-development</span>
+      <a href="https://github.com/karpathy/nanoGPT" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Code</span>
+        <span class="r-title">nanoGPT &mdash; the readable reference implementation</span>
+        <span class="r-url">github.com/karpathy/nanoGPT</span>
+      </a>
+      <a href="https://karpathy.medium.com/software-2-0-a64152b37c35" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Essay</span>
+        <span class="r-title">Karpathy &mdash; Software 2.0 (2017)</span>
+        <span class="r-url">karpathy.medium.com</span>
+      </a>
+      <a href="https://www.engraved.blog/building-a-virtual-machine-inside/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Experiment</span>
+        <span class="r-title">Degrave &mdash; a virtual machine inside ChatGPT</span>
+        <span class="r-url">engraved.blog</span>
       </a>
     </div>
   </div>
 </section>
+
 <footer>
   <div class="container">
     <div class="footer-brand">know.2nth.ai</div>
@@ -390,7 +390,7 @@
     <div class="footer-links">
       <a href="../../index.html">Knowledge tree</a>
       <a href="./">Software hub</a>
-      <a href="https://github.com/github/spec-kit" target="_blank" rel="noopener">GitHub Spec Kit &nearr;</a>
+      <a href="https://www.palantir.com/docs/foundry/" target="_blank" rel="noopener">Palantir Foundry docs &nearr;</a>
     </div>
     <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant</p>
   </div>
