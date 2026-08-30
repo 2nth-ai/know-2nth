@@ -17,7 +17,7 @@
 <meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="The malleable workstation &mdash; know.2nth.ai">
-<meta name="twitter:description" content="Omarchy 4, DHH's malleable-computer thesis, and the desktop platform choice. Agents as system citizens, compared honestly against NixOS and immutable images. Member content.">
+<meta name="twitter:description" content="Omarchy 4, DHH's malleable-computer thesis, and the desktop platform choice. Agents as system citizens, compared honestly against NixOS and immutable images.">
 <meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -365,36 +365,34 @@
       <p class="section-lede">None of these are disqualifying on their own. All of them are things you would rather learn before the install than during it.</p>
     </div>
 
-    <div data-tier="member">
-      <div class="info-card rose fade-up" style="transition-delay: 0.04s">
-        <h4>1 &middot; It wants the whole disk, and the firmware relaxed</h4>
-        <p>The documented install shape is a dedicated drive with full-disk encryption. The v3 manual was blunt about the prerequisite: <span class="q">&ldquo;You must turn off Secure Boot and/or TPM in the BIOS.&rdquo;</span> The v4 manual has improved on this &mdash; there are now dedicated chapters for dual-boot and unattended installs &mdash; but the mental model is still one machine, one owner, one disk. In an estate where Secure Boot is a compliance control, this is where the conversation ends.</p>
-      </div>
+    <div class="info-card rose fade-up" style="transition-delay: 0.04s">
+      <h4>1 &middot; It wants the whole disk, and the firmware relaxed</h4>
+      <p>The documented install shape is a dedicated drive with full-disk encryption. The v3 manual was blunt about the prerequisite: <span class="q">&ldquo;You must turn off Secure Boot and/or TPM in the BIOS.&rdquo;</span> The v4 manual has improved on this &mdash; there are now dedicated chapters for dual-boot and unattended installs &mdash; but the mental model is still one machine, one owner, one disk. In an estate where Secure Boot is a compliance control, this is where the conversation ends.</p>
+    </div>
 
-      <div class="info-card amber fade-up" style="transition-delay: 0.06s">
-        <h4>2 &middot; It assumes an expensive screen</h4>
-        <p>Defaults target 2x retina-class displays &mdash; 218 PPI and up. On a standard 4K panel or a 1080p laptop you are adjusting scaling on day one. Ironic for a project whose economic pitch is that you do not need premium hardware.</p>
-      </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.06s">
+      <h4>2 &middot; It assumes an expensive screen</h4>
+      <p>Defaults target 2x retina-class displays &mdash; 218 PPI and up. On a standard 4K panel or a 1080p laptop you are adjusting scaling on day one. Ironic for a project whose economic pitch is that you do not need premium hardware.</p>
+    </div>
 
-      <div class="info-card amber fade-up" style="transition-delay: 0.08s">
-        <h4>3 &middot; Rolling release means upstream can ruin your Tuesday</h4>
-        <p>This is not hypothetical. After Hyprland 0.53 landed in January 2026, users hit config errors, broken themes, cursor sync problems and crashes that stopped the screen loading; 3.4.0 shipped to clean it up. The distro is downstream of a fast-moving compositor, and that is a structural property, not a bug that got fixed.</p>
-      </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.08s">
+      <h4>3 &middot; Rolling release means upstream can ruin your Tuesday</h4>
+      <p>This is not hypothetical. After Hyprland 0.53 landed in January 2026, users hit config errors, broken themes, cursor sync problems and crashes that stopped the screen loading; 3.4.0 shipped to clean it up. The distro is downstream of a fast-moving compositor, and that is a structural property, not a bug that got fixed.</p>
+    </div>
 
-      <div class="info-card rose fade-up" style="transition-delay: 0.1s">
-        <h4>4 &middot; Single-user by design, and no fleet story</h4>
-        <p>No MDM, no policy layer, no multi-user or server posture. Full-disk encryption on by default is a genuine POPIA-friendly starting point, but &ldquo;encrypted&rdquo; is not &ldquo;managed.&rdquo; If a client needs to demonstrate control of the endpoint, this does not do it.</p>
-      </div>
+    <div class="info-card rose fade-up" style="transition-delay: 0.1s">
+      <h4>4 &middot; Single-user by design, and no fleet story</h4>
+      <p>No MDM, no policy layer, no multi-user or server posture. Full-disk encryption on by default is a genuine POPIA-friendly starting point, but &ldquo;encrypted&rdquo; is not &ldquo;managed.&rdquo; If a client needs to demonstrate control of the endpoint, this does not do it.</p>
+    </div>
 
-      <div class="info-card indigo fade-up" style="transition-delay: 0.12s">
-        <h4>5 &middot; The governance got concentrated, fast</h4>
-        <p>The Omacom Foundation launched on 21 August 2026 with $10 million, Drew Houston and Peter Steinberger as founding patrons, and immediately became the exclusive sponsor of Hyprland, plus a funder of Quickshell and mise. Read it both ways. The upside is that the compositor and shell your desktop depends on are now funded rather than volunteer-burnout-limited. The risk is that one organisation now ships the distro and funds its two most important upstreams &mdash; Omarchy's opinions become the ecosystem's defaults with no friction in between.</p>
-      </div>
+    <div class="info-card indigo fade-up" style="transition-delay: 0.12s">
+      <h4>5 &middot; The governance got concentrated, fast</h4>
+      <p>The Omacom Foundation launched on 21 August 2026 with $10 million, Drew Houston and Peter Steinberger as founding patrons, and immediately became the exclusive sponsor of Hyprland, plus a funder of Quickshell and mise. Read it both ways. The upside is that the compositor and shell your desktop depends on are now funded rather than volunteer-burnout-limited. The risk is that one organisation now ships the distro and funds its two most important upstreams &mdash; Omarchy's opinions become the ecosystem's defaults with no friction in between.</p>
+    </div>
 
-      <div class="info-card cyan fade-up" style="transition-delay: 0.14s">
-        <h4>6 &middot; The non-technical objections are real objections</h4>
-        <p>It ships some closed-source applications, which sits awkwardly against the freedom argument. And DHH is a polarising figure &mdash; in some organisations that is a procurement conversation rather than a technical one. You do not have to agree it should matter to plan for the fact that it sometimes does.</p>
-      </div>
+    <div class="info-card cyan fade-up" style="transition-delay: 0.14s">
+      <h4>6 &middot; The non-technical objections are real objections</h4>
+      <p>It ships some closed-source applications, which sits awkwardly against the freedom argument. And DHH is a polarising figure &mdash; in some organisations that is a procurement conversation rather than a technical one. You do not have to agree it should matter to plan for the fact that it sometimes does.</p>
     </div>
   </div>
 </section>
@@ -408,31 +406,29 @@
       <p class="section-lede">The split is cleaner than most: it is about who owns the machine and what happens when it breaks on a Wednesday morning.</p>
     </div>
 
-    <div data-tier="member">
-      <div class="decision-grid fade-up" style="transition-delay: 0.04s">
-        <div class="decision-card use">
-          <h4>Run it when</h4>
-          <ul>
-            <li>It is your own development workstation and nobody else has to support it</li>
-            <li>You already live in a terminal and a tiling WM is an upgrade, not a tax</li>
-            <li>You want agents editing the machine &mdash; and you will keep the dotfiles in Git from day one</li>
-            <li>You are buying x86 hardware and would rather skip the Apple premium</li>
-            <li>Single-purpose builds: demo rigs, workshop machines, a dedicated agent box</li>
-            <li>You want the Linux desktop question answered by someone with taste instead of answering it yourself</li>
-          </ul>
-        </div>
-        <div class="decision-card skip">
-          <h4>Skip it when</h4>
-          <ul>
-            <li>The machine sits in a managed fleet with MDM, policy or audit requirements</li>
-            <li>Secure Boot is a control you are not allowed to turn off</li>
-            <li>You need one laptop dual-booting Windows off a single disk</li>
-            <li>Downtime is expensive and you cannot absorb a rolling-release bad day</li>
-            <li>You depend on Adobe, native Office, or a client's Windows-only line-of-business app</li>
-            <li>You are on Apple silicon &mdash; that is Asahi's problem space, not this one</li>
-            <li>You want reproducibility more than editability &mdash; go to NixOS instead</li>
-          </ul>
-        </div>
+    <div class="decision-grid fade-up" style="transition-delay: 0.04s">
+      <div class="decision-card use">
+        <h4>Run it when</h4>
+        <ul>
+          <li>It is your own development workstation and nobody else has to support it</li>
+          <li>You already live in a terminal and a tiling WM is an upgrade, not a tax</li>
+          <li>You want agents editing the machine &mdash; and you will keep the dotfiles in Git from day one</li>
+          <li>You are buying x86 hardware and would rather skip the Apple premium</li>
+          <li>Single-purpose builds: demo rigs, workshop machines, a dedicated agent box</li>
+          <li>You want the Linux desktop question answered by someone with taste instead of answering it yourself</li>
+        </ul>
+      </div>
+      <div class="decision-card skip">
+        <h4>Skip it when</h4>
+        <ul>
+          <li>The machine sits in a managed fleet with MDM, policy or audit requirements</li>
+          <li>Secure Boot is a control you are not allowed to turn off</li>
+          <li>You need one laptop dual-booting Windows off a single disk</li>
+          <li>Downtime is expensive and you cannot absorb a rolling-release bad day</li>
+          <li>You depend on Adobe, native Office, or a client's Windows-only line-of-business app</li>
+          <li>You are on Apple silicon &mdash; that is Asahi's problem space, not this one</li>
+          <li>You want reproducibility more than editability &mdash; go to NixOS instead</li>
+        </ul>
       </div>
     </div>
   </div>
