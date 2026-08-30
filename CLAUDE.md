@@ -134,16 +134,13 @@ Both work; pick whichever the surrounding hub uses. **Stubs use the `soon` modif
 - **Buttons**: Outfit, pill radius. Primary = blue→sky gradient. Ghost = transparent + 1px border.
 - **Fade-in**: `.fade-up` with IntersectionObserver, ~24px translate, 0.6s ease.
 
-## Tier-gating: active for opinionated decision content (from 2026-05-17)
+## Tier-gating: parked — the whole tree is open (from 2026-08-30)
 
-The membership flag system is in use. `gate.js` is loaded on every leaf and applies an overlay to any element carrying `data-tier="member"` for visitors without the `2nth-know-member` localStorage flag (set on successful HubSpot form submit from `/join.html`).
+**Everything on know.2nth.ai is public. Do not gate new content.** No `data-tier="member"` markers exist anywhere in `explainers/`, and new leaves must not add them — reference *and* opinionated decision content both ship open. We'd rather show the work than half-gate it behind a soft localStorage overlay that creates friction without delivering on the promise.
 
-**Policy as of 2026-05-17:**
-- **Reference content** (what a tool is, how it works, neutral explainers, hub leaves) stays **open**. That's the default for new leaves.
-- **Opinionated decision content** (why we picked X over Y, cost-of-being-wrong, partner gotchas, implications-to-plan-for) is **member-tier**. Wrap the section *bodies* in `<div data-tier="member">…</div>`; keep the section label + title + lede *outside* the gate so non-members see the table of contents and know what they're signing up for.
-- **First leaf using this pattern:** `/explainers/tools/runtime.html`. Use it as a template for future decision leaves.
+`gate.js` stays loaded on every leaf and is **inert**: it applies an overlay to any element carrying `data-tier="member"` for visitors without the `2nth-know-member` localStorage flag (set on successful HubSpot form submit from `/join.html`). Since nothing carries the marker, it does nothing. The hook is kept so gating can return without re-plumbing.
 
-Magic-link auth remains parked. The HubSpot-flag-in-localStorage is a soft signal — anyone who joined once stays a "member" forever (until they clear storage). That's intentional for the current low-stakes use; if we ever want hard auth we'll layer it on later. The conversion play remains the `/join` form.
+History: gating was switched on for decision leaves on 2026-05-17 (`/explainers/tools/runtime.html` was the only one using it, plus `tech/workstation.html` briefly) and removed again on 2026-08-30 — content reach beats the soft conversion signal while real auth doesn't exist. Magic-link auth remains parked. The `/join` form stays as the early-access signup and readership signal, not as a wall.
 
 ## Voice
 
