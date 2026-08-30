@@ -4,12 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Modern web stacks &middot; 2026 &mdash; know.2nth.ai</title>
-<meta name="description" content="The modern web stack in 2026 — the structured-content CMS layer (Sanity, Payload, Directus, Strapi), the islands-first framework layer (Astro, Next, SvelteKit), edge-rendered hosting (Cloudflare Pages, Vercel), and MCP as the agent-integration surface every credible CMS now ships natively. Why WordPress is being replaced (11,334 new CVEs in 2025) and what the top 5 MCP-ready web surfaces look like.">
+<meta name="description" content="The modern web stack, reviewed August 2026 — the structured-content CMS layer (Sanity, Payload, Directus, Strapi), the islands-first framework layer (Astro 7, Next.js 16), edge-rendered hosting (Cloudflare, Vercel, Netlify), and MCP as the agent-integration surface every credible CMS now ships built-in. Cloudflare acquired Astro in January 2026 and Figma acquired Payload; the delivery layer grew a crawler-policy dimension. Why WordPress is being replaced (11,334 new CVEs in 2025, 91% of them in plugins) and what the top 5 MCP-ready web surfaces look like.">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="know.2nth.ai">
 <meta property="og:url" content="https://know.2nth.ai/explainers/tech/web-stacks">
 <meta property="og:title" content="Modern web stacks &middot; 2026 &mdash; know.2nth.ai">
-<meta property="og:description" content="The 2026 modern web stack — structured-content CMS + islands framework + edge hosting + MCP-native agent integration. The top 5 MCP-ready web surfaces, and why WordPress is being replaced.">
+<meta property="og:description" content="The 2026 modern web stack — structured-content CMS + islands framework + edge hosting + MCP built in. Cloudflare now owns Astro, Figma owns Payload, and your robots.txt became a commercial document. The top 5 MCP-ready web surfaces, and why WordPress is being replaced.">
 <meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
@@ -17,7 +17,7 @@
 <meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Modern web stacks &middot; 2026">
-<meta name="twitter:description" content="Structured-content CMS + islands framework + edge hosting + MCP. The top 5 MCP-ready web surfaces, and why WordPress is being replaced.">
+<meta name="twitter:description" content="Structured-content CMS + islands framework + edge hosting + MCP. Cloudflare owns Astro now. The top 5 MCP-ready web surfaces, and why WordPress is being replaced.">
 <meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -68,6 +68,7 @@
   .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 28px; }
   .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
   .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .q { color: var(--text-primary); font-style: italic; }
   .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--sky); }
   .prose ul, .prose ol { padding-left: 24px; margin-bottom: 18px; max-width: var(--read-w); }
   .prose li { font-size: 15px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 8px; }
@@ -175,12 +176,13 @@
       The web stack, <span class="gradient">rebuilt for agents.</span>
     </h1>
     <p class="sub fade-up" style="transition-delay: 0.1s">
-      The 2024&ndash;26 reshuffle of the modern web: the monolith split into a structured-content CMS layer (Sanity, Payload, Directus, Strapi), an islands-first framework layer (Astro, Next, SvelteKit), and edge-rendered hosting (Cloudflare Pages, Vercel, Netlify). MCP became the integration surface every credible CMS now ships natively. WordPress logged <strong>11,334 new CVEs in 2025</strong> (up 42% YoY, mostly in plugins) and is being replaced for performance, security, and agent-readiness reasons that compound. This leaf maps the new baseline and the top 5 MCP-ready web surfaces.
+      The 2024&ndash;26 reshuffle of the modern web: the monolith split into a structured-content CMS layer (Sanity, Payload, Directus, Strapi), an islands-first framework layer (Astro, Next.js, SvelteKit), and edge-rendered hosting (Cloudflare, Vercel, Netlify). Three things changed in 2026 that the earlier version of this page could not have said. <strong>Cloudflare acquired Astro</strong> in January, collapsing the framework and hosting layers into one vendor. MCP stopped being a wrapper and became a <strong>shipped feature</strong> in every serious CMS. And the delivery layer grew a policy dimension &mdash; your <code>robots.txt</code> is now a commercial document. Meanwhile WordPress logged <strong>11,334 new CVEs in 2025</strong>, 91% of them in plugins. This leaf maps the current baseline and the top 5 MCP-ready web surfaces.
     </p>
     <div class="hero-meta fade-up" style="transition-delay: 0.15s">
-      <span class="pill accent">Modern web 2026</span>
+      <span class="pill accent">Reviewed Aug 2026</span>
       <span class="pill">Three-layer stack</span>
-      <span class="pill sky">MCP-native</span>
+      <span class="pill sky">MCP built-in</span>
+      <span class="pill sky">Astro 7</span>
       <span class="pill rose">Post-WordPress</span>
     </div>
   </div>
@@ -193,9 +195,14 @@
       <h2 class="section-title">The plugin attack surface caught up with the platform.</h2>
     </div>
     <div class="prose fade-up" style="transition-delay: 0.05s">
-      <p>WordPress still powers a sizeable share of the public web. The 2026 problem is not the core, which is mature and well-maintained &mdash; it is the plugin ecosystem that the platform's success was built on. Patchstack's <em>2026 State of WordPress Security</em> report logged 11,334 new vulnerabilities in 2025, up 42% year-over-year, with the overwhelming majority originating in plugins rather than core. Highly exploitable vulnerabilities climbed 113%. The weighted median time from public disclosure to first exploitation in the wild is now <strong>five hours</strong>.</p>
+      <p>WordPress still powers a sizeable share of the public web. The 2026 problem is not the core, which is mature and well-maintained &mdash; it is the plugin ecosystem that the platform's success was built on. Patchstack's <em>State of WordPress Security in 2026</em> report logged <strong>11,334 new vulnerabilities in 2025</strong>, up 42% year-over-year. The split is the part that matters: <strong>91% in plugins, 9% in themes, and six in core &mdash; all six rated low risk</strong>. More high-severity issues were found in 2025 than in the previous two years combined (1,966, or 17% of the total). The weighted median time from public disclosure to first exploitation in the wild is <strong>five hours</strong>, and close to half of the disclosed vulnerabilities had no patch available at the moment they went public.</p>
+      <p>The comforting assumption &mdash; "our host has a WAF" &mdash; does not survive the data either. In Patchstack's large-scale pentest of popular hosting companies, <strong>only 26% of vulnerability attacks were blocked</strong>. Managed hosting reduces the exposure; it does not remove it.</p>
       <p>The architectural story matches the security story. Traditional WordPress generates HTML on every request from PHP against MySQL; modern web stacks pre-build pages as static HTML or render them at the edge, delivering sub-100ms response times globally. Astro's homepage cites Core Web Vitals pass rates of <strong>66% for Astro sites vs. 48% for WordPress and 30% for Next.js</strong> &mdash; numbers that should be checked against current Chrome UX Report data, but that direction-of-travel is correct.</p>
       <p>The third problem is multi-channel. A WordPress install ships one website. A modern stack assembles content once in a structured CMS and renders it across web, mobile, kiosk, voice, and now agent surfaces &mdash; including via Model Context Protocol so an AI agent can read or update the same content store.</p>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.075s">
+      <h4>The compliance clock is the new argument</h4>
+      <p>The security case used to be a technical preference. In 2026 it acquired a regulatory edge: under the EU Cyber Resilience Act regime, commercial WordPress plugins need a vulnerability disclosure programme in place to be made available to European users. For an SA agency shipping sites for clients with EU customers, "we run 24 plugins from 19 vendors" becomes a question you have to answer with evidence rather than a shrug.</p>
     </div>
     <div class="info-card rose fade-up" style="transition-delay: 0.08s">
       <h4>Headless WordPress is the bridge, not the destination</h4>
@@ -231,8 +238,13 @@
     </div>
 
     <div class="info-card indigo fade-up" style="transition-delay: 0.08s">
-      <h4>MCP is the fourth (cross-cutting) layer</h4>
-      <p>The Model Context Protocol is not a separate layer of the stack &mdash; it is the integration surface that every credible CMS now ships natively. <strong>Sanity</strong> exposes content via an MCP server consumable from Claude Code, Cursor, and v0. <strong>Astro</strong> ships an official MCP server with context files for AI tools. <strong>Directus</strong> has native MCP built in. <strong>Payload</strong>, <strong>Strapi</strong>, and <strong>NomaCMS</strong> all have MCP integrations or wrappers. "MCP-ready" is the 2026 baseline for new builds.</p>
+      <h4>MCP is the fourth (cross-cutting) layer &mdash; and it stopped being a wrapper</h4>
+      <p>The Model Context Protocol is not a separate layer of the stack &mdash; it is the integration surface every credible CMS now ships. The status changed materially during 2026. <strong>Strapi</strong>'s MCP server went GA in v5.49.0 &mdash; built in, with every operation gated by admin-token permissions rather than bolted on by a community package. <strong>Directus 11</strong> ships native MCP plus an AI assistant wired to OpenAI, Anthropic and Gemini. <strong>Sanity</strong> exposes content via its own MCP server for Claude Code, Cursor and v0. <strong>Payload</strong> exposes one too. <strong>Astro</strong> ships an official MCP server and context files. A year ago "MCP-ready" meant somebody had written a wrapper; today it means the vendor ships and supports it. That is the difference between a demo and a dependency you can put in a proposal.</p>
+    </div>
+
+    <div class="info-card amber fade-up" style="transition-delay: 0.1s">
+      <h4>Two of the three layers just consolidated</h4>
+      <p>The clean separation above is still architecturally true, but the vendor map behind it shifted in 2026. <strong>Cloudflare acquired The Astro Technology Company on 16 January 2026</strong> &mdash; the framework layer and one of the three hosting options are now the same company. <strong>Figma acquired Payload</strong> (announced June 2025), putting a CMS inside a design tool. Composability survives; independence is thinner than the diagram suggests. Section 04 covers what that actually costs you.</p>
     </div>
   </div>
 </section>
@@ -251,6 +263,7 @@
         <li><strong>Sanity Studio</strong> &mdash; a customisable, multiplayer-capable editorial interface built on React. Same Studio binary; per-customer custom workflows.</li>
         <li><strong>API-first architecture</strong> &mdash; every operation goes through HTTP APIs, supporting real-time listening and webhook-driven automation.</li>
       </ul>
+      <p>Sanity has raised north of <strong>$51.8m</strong> and counts Linear and Anthropic among its published users &mdash; useful when the objection in the room is "nobody serious runs a headless CMS."</p>
       <p>The 2026 AI / agent positioning is the bigger story. Sanity ships <strong>Content Agent</strong> (transforms source materials into structured content; audits and edits at scale; supports visual editing via natural language), <strong>Agent Actions</strong> (schema-aware AI automations triggered by content mutations), and <strong>Agent Context</strong> (surfaces structured data for agentic reasoning). The <strong>Sanity MCP server</strong> integrates with Claude Code, Cursor, and v0 &mdash; an agent can read or write Sanity content through standard MCP without bespoke integration code.</p>
     </div>
     <div class="info-card green fade-up" style="transition-delay: 0.08s">
@@ -264,23 +277,32 @@
   <div class="container">
     <div class="fade-up">
       <div class="section-label">04 &middot; Astro</div>
-      <h2 class="section-title">Islands architecture, zero JS by default.</h2>
+      <h2 class="section-title">Islands architecture, zero JS by default &mdash; now owned by Cloudflare.</h2>
     </div>
     <div class="prose fade-up" style="transition-delay: 0.05s">
       <p>Astro is a JavaScript web framework optimised for fast, content-driven sites. Components render on the server and ship lightweight HTML to the browser with zero unnecessary JavaScript overhead. The defining feature is <strong>Islands Architecture</strong> &mdash; pages are static HTML by default, with hydration applied only to the interactive components ("islands") that need it. The rest of the page never ships its rendering JS to the client.</p>
+      <p><strong>The ownership changed on 16 January 2026.</strong> Cloudflare acquired The Astro Technology Company &mdash; Fred Schott and the core team &mdash; with a public commitment that <span class="q">"Astro will remain open source"</span> under Cloudflare's stewardship, and continued backing for the Astro Ecosystem Fund alongside Webflow, Netlify, Wix and Sentry. Astro 6 went into beta the same week and shipped stable in March; <strong>Astro 7 landed on 22 June 2026</strong> and is the current line (7.2 as of early August).</p>
       <p>Key technical traits:</p>
       <ul>
         <li><strong>Framework-agnostic UI</strong> &mdash; React, Vue, Preact, Svelte, and Solid all work in the same project. "Zero lock-in" is the positioning.</li>
         <li><strong>Content Collections</strong> &mdash; type-safe Markdown / MDX organisation with frontmatter validation. Schema in code; types flow through to the templates.</li>
         <li><strong>File-based routing</strong>, server-side endpoints, view transitions, image optimisation built in.</li>
         <li><strong>Actions</strong> &mdash; type-safe backend functions callable from frontend code, no separate API surface required.</li>
-        <li><strong>Hosting adapters</strong> for Vercel, Netlify, Cloudflare, AWS, and Deno &mdash; same code, different deploy target.</li>
+        <li><strong>Hosting adapters</strong> for Vercel, Netlify, Cloudflare, AWS, and Deno &mdash; same code, different deploy target. Route caching went stable in 7.0, with CDN cache providers for all three major hosts.</li>
+        <li><strong>Rust all the way down (7.0)</strong> &mdash; the <code>.astro</code> compiler rewritten in Rust, Markdown/MDX through a new Rust pipeline, queue-based rendering, and Vite 8 with the Rolldown bundler. Builds measured 15&ndash;61% faster than Astro 6.</li>
+        <li><strong>Advanced routing (7.0)</strong> &mdash; a <code>src/fetch.ts</code> entrypoint giving full control of the request pipeline, Hono-compatible.</li>
       </ul>
-      <p>The 2026 MCP story: Astro ships an <strong>official MCP server</strong> and context files for AI development tools. Cursor / Windsurf / Claude Code agents can introspect an Astro project's routes, content collections, and components through standard MCP. The combination of structured content (in a CMS like Sanity) and structured project metadata (via Astro's MCP) is what makes the modern stack genuinely agent-readable.</p>
+      <p>The agent story went past MCP in 7.0, and this is the part worth noticing. Astro ships an <strong>official MCP server</strong> and context files, so Claude Code / Cursor / Windsurf can introspect routes, content collections and components. But 7.0 added something more pointed: <strong>the dev server detects that a coding agent is driving it</strong>, runs itself in the background rather than holding a terminal, emits structured JSON logs instead of human-formatted output, and exposes a health endpoint at <code>/_astro/status</code>. The framework now has a different mode for machine operators. That is the same move Omarchy made at the OS layer &mdash; agent as a first-class user of the tool, not a visitor.</p>
     </div>
     <div class="info-card amber fade-up" style="transition-delay: 0.08s">
       <h4>Core Web Vitals as the headline pitch</h4>
-      <p>Astro's homepage claims <strong>66% of Astro sites pass Core Web Vitals</strong>, versus 48% for WordPress and 30% for Next.js. Direction-of-travel matches the architecture: less shipped JS &rarr; lower TBT and INP &rarr; more sites pass CWV. The specific numbers should be checked against the current Chrome UX Report before being quoted in a sales context &mdash; they shift quarterly &mdash; but the ranking is consistent: islands frameworks beat full-hydration frameworks on the metrics Google rewards.</p>
+      <p>The figure held through 2026: <strong>66% of real-world Astro sites record good Core Web Vitals</strong>, against 48% for WordPress, 47% for Gatsby, 30% for Next.js and 28% for Nuxt. Direction-of-travel matches the architecture: less shipped JS &rarr; lower TBT and INP &rarr; more sites pass. These are Chrome UX Report-derived and they shift quarterly, so re-check before putting a number in a proposal &mdash; but the ranking has been stable, and it is the ranking, not the decimal, that wins the argument.</p>
+    </div>
+
+    <div class="info-card rose fade-up" style="transition-delay: 0.1s">
+      <h4>The honest cost of the acquisition</h4>
+      <p>Cloudflare owning Astro is mostly good news: a framework that was funded by consultancy and sponsorship now has a balance sheet behind it, and the Astro-on-Cloudflare path becomes first-party rather than adapter-shaped. Astro 7's route caching and CDN providers still ship for Netlify and Vercel, and the licence is unchanged.</p>
+      <p>Plan for the direction anyway. A framework maintained by a hosting company optimises, over time, for that company's platform &mdash; not through malice but through where the maintainers' problems come from. If you pick Astro <em>and</em> Cloudflare you get a genuinely tight stack and you have concentrated two layers with one vendor. If you pick Astro on Vercel or Netlify, keep the adapter path in your regression tests rather than assuming it stays equally exercised. This is a watch-item, not a reason to switch.</p>
     </div>
   </div>
 </section>
@@ -316,14 +338,14 @@
           <h4>2. Astro</h4>
           <span class="s-tag">Framework &middot; islands</span>
         </div>
-        <span class="s-meta">Server-first, islands hydration, framework-agnostic &middot; <a href="https://astro.build" target="_blank" rel="noopener">astro.build</a></span>
-        <p>The reference islands-architecture framework. Zero-JS default, content collections with TypeScript validation, official MCP server with project-introspection context files. Hosting adapters for every major edge / serverless provider. The 2nth default front-end framework for content-driven sites.</p>
+        <span class="s-meta">Server-first, islands hydration, Cloudflare-owned &middot; <a href="https://astro.build" target="_blank" rel="noopener">astro.build</a></span>
+        <p>The reference islands-architecture framework, acquired by Cloudflare in January 2026 and still MIT-licensed. Astro 7 (June 2026) rewrote the compiler in Rust and moved to Vite 8 / Rolldown for 15&ndash;61% faster builds. Zero-JS default, content collections with TypeScript validation, official MCP server, and a dev server that detects coding agents and switches to JSON logs. The 2nth default front-end framework for content-driven sites.</p>
         <p><strong>Pick when:</strong> the site is content-led, performance is a buyer criterion, and the team can author in Markdown / MDX or query a headless CMS.</p>
         <div class="s-pillset">
           <span class="s-pill mcp">MCP native</span>
-          <span class="s-pill">Islands</span>
+          <span class="s-pill">Astro 7</span>
           <span class="s-pill">Zero JS default</span>
-          <span class="s-pill">React / Vue / Svelte / Solid</span>
+          <span class="s-pill">Cloudflare-owned</span>
         </div>
       </div>
 
@@ -332,14 +354,14 @@
           <h4>3. Payload CMS</h4>
           <span class="s-tag">CMS &middot; code-first</span>
         </div>
-        <span class="s-meta">TypeScript-native, Postgres / MongoDB, Next-friendly &middot; <a href="https://payloadcms.com" target="_blank" rel="noopener">payloadcms.com</a></span>
-        <p>Code-first headless CMS that runs in the same Next.js app as the front-end. TypeScript config, Postgres / MongoDB backends, full admin UI built in. MCP integration via community wrappers. The top choice for Next.js teams that want the CMS and the app deployed as one unit.</p>
+        <span class="s-meta">TypeScript-native, Postgres / MongoDB, Figma-owned &middot; <a href="https://payloadcms.com" target="_blank" rel="noopener">payloadcms.com</a></span>
+        <p>Code-first headless CMS that runs in the same Next.js app as the front-end. TypeScript config, Postgres / MongoDB backends, full admin UI built in, and its own MCP server for agent read/write. <strong>Acquired by Figma in June 2025</strong>; the MIT licence and the repo stayed put, and Payload 4.0 is the first release built on Figma's design system &mdash; the strategic direction is design-to-production, components in Figma bound to real Payload data. The top choice for Next.js teams that want the CMS and the app deployed as one unit.</p>
         <p><strong>Pick when:</strong> the team is Next.js-native and wants a single deployable. Avoids the headless-API-as-network-call latency.</p>
         <div class="s-pillset">
-          <span class="s-pill mcp">MCP integrations</span>
+          <span class="s-pill mcp">MCP server</span>
           <span class="s-pill">TypeScript</span>
           <span class="s-pill">Postgres / Mongo</span>
-          <span class="s-pill">Next.js-bundled</span>
+          <span class="s-pill">Figma-owned</span>
         </div>
       </div>
 
@@ -349,7 +371,7 @@
           <span class="s-tag">CMS &middot; SQL-first</span>
         </div>
         <span class="s-meta">Any SQL database, native MCP server, AI assistant &middot; <a href="https://directus.io" target="_blank" rel="noopener">directus.io</a></span>
-        <p>Connects to any existing SQL database (Postgres, MySQL, MS SQL, SQLite) and exposes it as a content API + admin app. Built-in AI Assistant; native MCP server; structured data layer that any agent or model can work with. The "uncompromising data ownership" pitch &mdash; the database stays where it lives; Directus wraps it.</p>
+        <p>Connects to any existing SQL database (Postgres, MySQL, MS SQL, SQLite) and exposes it as a content API + admin app. Directus 11 ships native MCP, an AI assistant wired to OpenAI / Anthropic / Gemini, and collaborative editing with live presence. The "uncompromising data ownership" pitch &mdash; the database stays where it lives; Directus wraps it.</p>
         <p><strong>Pick when:</strong> the data already lives in a SQL warehouse / OLTP store and the requirement is to expose it as a CMS without migrating.</p>
         <div class="s-pillset">
           <span class="s-pill mcp">MCP native</span>
@@ -365,10 +387,10 @@
           <span class="s-tag">CMS &middot; OSS default</span>
         </div>
         <span class="s-meta">Open-source Node.js headless CMS, largest plugin ecosystem &middot; <a href="https://strapi.io" target="_blank" rel="noopener">strapi.io</a></span>
-        <p>The open-source headless CMS with the broadest plugin ecosystem and the most mature self-hosting story. Node.js runtime; Postgres / MySQL / MongoDB backends; REST and GraphQL out of the box. MCP integration via the Strapi MCP wrapper; deep plugin coverage for auth, i18n, drafts, and more.</p>
+        <p>The open-source headless CMS with the broadest plugin ecosystem and the most mature self-hosting story. Node.js runtime; Postgres / MySQL / MongoDB backends; REST and GraphQL out of the box. The <strong>MCP server went GA in v5.49.0</strong> &mdash; agents can create, read, update, publish and unpublish through the Content Manager, with every operation gated by admin-token permissions. The March&ndash;June 2026 releases also brought a customisable Blocks editor and live media preview.</p>
         <p><strong>Pick when:</strong> open-source self-hosting is the hard requirement, and the team can absorb operating the CMS infra themselves.</p>
         <div class="s-pillset">
-          <span class="s-pill mcp">MCP wrapper</span>
+          <span class="s-pill mcp">MCP built-in (GA)</span>
           <span class="s-pill">Open source</span>
           <span class="s-pill">REST + GraphQL</span>
           <span class="s-pill">Plugin ecosystem</span>
@@ -379,7 +401,58 @@
 
     <div class="info-card fade-up" style="transition-delay: 0.08s">
       <h4>Honourable mentions, not yet on the top 5</h4>
-      <p><strong>Storyblok</strong> for visual editing of marketing pages; <strong>Contentful</strong> as the legacy enterprise option (mature but expensive, MCP support via partners); <strong>Builder.io</strong> for AI-native visual building (Builder Composable + Visual Copilot); <strong>Webstudio</strong> as the open-source visual builder; <strong>NomaCMS</strong> as the AI-first newcomer with native Claude Code / Cursor MCP. <strong>EmDash</strong> &mdash; Cloudflare's open-source WordPress challenger &mdash; is architecturally aligned but the ecosystem is still empty (early 2026).</p>
+      <p><strong>Storyblok</strong> for visual editing of marketing pages; <strong>Contentful</strong> as the legacy enterprise option (mature but expensive, MCP support via partners); <strong>Builder.io</strong> for AI-native visual building (Builder Composable + Visual Copilot); <strong>Webstudio</strong> as the open-source visual builder; <strong>NomaCMS</strong> as the AI-first newcomer with native Claude Code / Cursor MCP.</p>
+      <p><strong>EmDash</strong> deserves its own paragraph now. Cloudflare launched it on <strong>2 April 2026</strong> and called it the spiritual successor to WordPress &mdash; fully open-source, serverless, written in TypeScript, with a plugin model where extensions run in isolated sandboxes and can only do what they explicitly request. That is a direct, well-aimed answer to the Patchstack numbers in section 01. It is also a <code>v0.1.0</code> preview with a marketplace carrying fewer than a hundred plugins. Right architecture, empty ecosystem. Track it; do not stake a client engagement on it this year.</p>
+    </div>
+  </div>
+</section>
+
+<section id="crawl-policy">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; Who is allowed to read your site</div>
+      <h2 class="section-title">The delivery layer grew a policy dimension.</h2>
+      <p class="section-lede">For twenty years <code>robots.txt</code> was a politeness convention with one question in it: crawl this, or don't. In 2026 it became a commercial document, because "crawl" stopped meaning one thing. Indexing a page so a human can find it, reading a page to ground an answer that human never leaves the chatbot to verify, and ingesting a page to train a model are three different transactions &mdash; and until recently your site could not tell them apart.</p>
+    </div>
+
+    <div class="stack-grid fade-up" style="transition-delay: 0.05s">
+      <div class="stack-cell">
+        <span class="layer">Signal 1</span>
+        <h4>search</h4>
+        <p>Index it and send people to it. The bargain the web has always run on &mdash; you get traffic in exchange for being crawled. Almost every publisher says yes.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Signal 2</span>
+        <h4>ai-input</h4>
+        <p>Read it to answer a question right now, in someone else's interface. You supply the substance; the referral may never arrive. This is where opinion splits.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Signal 3</span>
+        <h4>ai-train</h4>
+        <p>Ingest it into a training set. No traffic, no attribution, no recurring relationship. The signal most publishers set to no the moment they can express it separately.</p>
+      </div>
+    </div>
+
+    <div class="prose fade-up" style="transition-delay: 0.07s">
+      <p>Those three are <strong>Content Signals</strong> &mdash; a machine-readable vocabulary Cloudflare added to <code>robots.txt</code>, each a plain yes or no. It is not a technical control; it is a stated preference, in a format a crawler operator can no longer claim was ambiguous. That matters mostly for what it does to the argument afterwards.</p>
+      <p>The enforcement sits alongside it. Cloudflare blocks AI crawlers by default on sites that opt in, and it set a deadline: from <strong>15 September 2026</strong>, AI companies that have not separated their search crawlers from their AI-training and agent crawlers get their mixed-use bots blocked by default on any page carrying ads. That is a structural push &mdash; it forces crawler operators to declare which of the three transactions they are actually doing.</p>
+      <p><strong>Pay per crawl</strong> is the third piece and the most speculative: a price mechanism built on HTTP <code>402 Payment Required</code>, with Cloudflare as merchant of record. Crawlers either declare a maximum price up front or respond to a 402 with one; publishers get paid per request. Early partners are Ceramic.ai and You.com, so this is a narrow market rather than a new revenue line. But it is the first time the exchange has had a number attached to it instead of an argument.</p>
+    </div>
+
+    <div class="info-card amber fade-up" style="transition-delay: 0.09s">
+      <h4>The llms.txt reality check</h4>
+      <p>Anti-hype, because this one is being sold hard. Analyses spanning hundreds of millions of bot events show GPTBot and its peers fetching ordinary HTML and <strong>largely ignoring <code>/llms.txt</code></strong>. The file's actual consumers today are agentic browsers, coding tools and Lighthouse &mdash; not the training crawlers it is usually pitched against.</p>
+      <p>Ship it anyway. It costs one generated file, it genuinely helps the agent surfaces that do read it, and this site publishes one alongside an MCP endpoint for exactly that reason. Just do not let anyone sell it to a client as an SEO product, and do not treat it as a substitute for the signals above &mdash; a preferences file nobody enforces is a wish, not a control.</p>
+    </div>
+
+    <div class="info-card indigo fade-up" style="transition-delay: 0.11s">
+      <h4>What to actually do, in order</h4>
+      <ul>
+        <li><strong>Decide the three answers before you write the file.</strong> Search yes is easy. The <code>ai-input</code> question is a business decision about whether being cited without a click is worth it &mdash; for a consultancy publishing to be found by buyers, usually yes; for a publisher selling ads against pageviews, usually not.</li>
+        <li><strong>Put the signals in <code>robots.txt</code> and the enforcement at the edge.</strong> The declaration is evidence; the WAF rule is the control. Neither substitutes for the other.</li>
+        <li><strong>Ship <code>llms.txt</code> and an MCP endpoint</strong> if you want to be readable by agents on purpose &mdash; that is the opt-in half of the same conversation.</li>
+        <li><strong>Re-check after 15 September 2026.</strong> The mixed-use deadline will move some crawler traffic into new user-agents; whatever you measured before it will not describe what happens after.</li>
+      </ul>
     </div>
   </div>
 </section>
@@ -387,8 +460,9 @@
 <section id="decisions">
   <div class="container">
     <div class="fade-up">
-      <div class="section-label">06 &middot; Decision guide</div>
+      <div class="section-label">07 &middot; Decision guide</div>
       <h2 class="section-title">Which combination for which job.</h2>
+      <p class="section-lede">Pick the CMS for the editorial workflow and the framework for the delivery constraint &mdash; in that order. The most common failure is choosing the front-end framework first because the developers had an opinion, then discovering the content model does not survive contact with the people who have to update it every week.</p>
     </div>
 
     <div class="compare-wrap wide fade-up" style="transition-delay: 0.05s">
@@ -405,7 +479,7 @@
             <td><strong>App with content + interactive features</strong></td>
             <td>Payload</td>
             <td>Next.js</td>
-            <td>Single deployable. Payload runs in the Next.js app; no separate CMS service to operate.</td>
+            <td>Single deployable. Payload runs in the Next.js app; no separate CMS service to operate. Now Figma-owned, so the design-to-production path is where the roadmap is pointed.</td>
           </tr>
           <tr>
             <td><strong>Internal tool over existing SQL data</strong></td>
@@ -426,6 +500,18 @@
             <td>Marketing teams that need in-place visual editing over a rendered page; not a code-first workflow.</td>
           </tr>
           <tr>
+            <td><strong>Publisher whose content is the product</strong></td>
+            <td>Sanity or Strapi</td>
+            <td>Astro on Cloudflare</td>
+            <td>The deciding factor is not the CMS &mdash; it is crawler policy at the edge (section 06). Put the site behind the host that can express and enforce the three content signals.</td>
+          </tr>
+          <tr>
+            <td><strong>Design-system-led team already living in Figma</strong></td>
+            <td>Payload</td>
+            <td>Next.js</td>
+            <td>The acquisition makes this pairing strategic rather than incidental &mdash; components designed in Figma bound to real Payload data is the stated direction.</td>
+          </tr>
+          <tr>
             <td><strong>Existing WordPress, no time for full rebuild</strong></td>
             <td>WordPress (as CMS only)</td>
             <td>Astro / Next.js</td>
@@ -440,13 +526,15 @@
 <section id="sa-context">
   <div class="container">
     <div class="fade-up">
-      <div class="section-label">07 &middot; South African context</div>
+      <div class="section-label">08 &middot; South African context</div>
       <h2 class="section-title">FX, POPIA, and the agency-landscape question.</h2>
     </div>
     <div class="prose fade-up" style="transition-delay: 0.05s">
       <p><strong>The WordPress install base is large &mdash; and creaking.</strong> Most SA SMB and mid-market websites are on WordPress. Many were built by agencies that no longer exist or no longer maintain them. The plugin-vulnerability surface is the most common single source of incidents the SA cybersecurity community sees. Replacing or hardening these sites is real work &mdash; budget the migration as a 4&ndash;12 week engagement, not a weekend.</p>
       <p><strong>POPIA fits modern stacks better than it fits WordPress.</strong> A headless CMS at <code>africa-south1</code> or <code>eu-west</code> + a static front-end deployed to Cloudflare's African edge means personal data (form submissions, user accounts) lives in one residency-controlled store and the public site never holds it. WordPress's "everything is in one MySQL on one host" model makes Section 19 evidence harder to assemble.</p>
       <p><strong>Edge hosting and FX.</strong> Cloudflare Pages, Vercel, and Netlify are USD-priced; Cloudflare's free tier covers most small sites end-to-end. Bandwidth-sensitive workloads benefit from Cloudflare's African POPs (Cape Town, Johannesburg, Lagos, Nairobi, Cairo, Casablanca and others &mdash; see <a href="cloudflare/edge-africa-me.html" style="color: var(--sky); text-decoration: none; border-bottom: 1px dotted rgba(56, 189, 248, 0.4);">tech/cloudflare/edge-africa-me</a>) over US-only Vercel routing for SA-resident readers.</p>
+      <p><strong>Crawler policy is now part of the brief, and it is cheap here.</strong> SA publishers and content-led businesses already sit behind Cloudflare more often than not. Setting the three content signals costs nothing and takes minutes, and it is the only version of the "AI is eating our traffic" conversation that produces an artefact instead of a complaint. For a media client, get the <code>ai-train</code> answer on record from the business before a developer picks a default. For a consultancy or a services firm, the calculus usually runs the other way &mdash; being read and cited by an assistant is distribution, not theft.</p>
+      <p><strong>Astro on Cloudflare is now a first-party path.</strong> That strengthens an argument this tree already makes: for SA-resident readers, serving from Cloudflare's African POPs beats US-routed hosting, and the framework layer is no longer a third-party adapter on top of it. The flip side is section 04's watch-item &mdash; if you standardise on Astro <em>and</em> Cloudflare, be honest in the risk register that you have consolidated two layers with one vendor.</p>
       <p><strong>Agency landscape shift.</strong> SA agencies that used to ship WordPress sites are migrating to "WordPress for editorial + Astro for the front-end" as the path of least client disruption. The Sanity / Payload / Directus conversation is happening with the technical-buyer cohort first; mainstream marketing teams catch up over the following 12&ndash;18 months.</p>
     </div>
   </div>
@@ -455,7 +543,7 @@
 <section id="connect">
   <div class="container">
     <div class="fade-up">
-      <div class="section-label">08 &middot; Connections</div>
+      <div class="section-label">09 &middot; Connections</div>
       <h2 class="section-title">Where modern web stacks link in the tree.</h2>
     </div>
     <div class="connect-grid fade-up" style="transition-delay: 0.05s">
@@ -479,6 +567,16 @@
         <div class="skill">Cloudflare African edge</div>
         <div class="why">Where these sites actually serve from for SA-resident readers. The latency / POPIA story benefits from in-region edge.</div>
       </a>
+      <a href="../../briefings/astro-cloudflare-github.html" class="connect-node">
+        <span class="tag">briefings/astro-cloudflare-github</span>
+        <div class="skill">Three Companies, One Publish Button</div>
+        <div class="why">The CEO-level version of this stack &mdash; what the Astro + Cloudflare + GitHub combination means commercially, now that two of the three are one company.</div>
+      </a>
+      <a href="cloudflare/" class="connect-node">
+        <span class="tag">tech/cloudflare</span>
+        <div class="skill">Cloudflare hub</div>
+        <div class="why">The vendor that now owns the framework layer as well as the delivery layer &mdash; and ships the crawler-policy controls in section 06.</div>
+      </a>
       <a href="../design/" class="connect-node">
         <span class="tag">design</span>
         <div class="skill">Design domain</div>
@@ -496,8 +594,9 @@
 <section id="resources">
   <div class="container">
     <div class="fade-up">
-      <div class="section-label">09 &middot; Resources</div>
+      <div class="section-label">10 &middot; Resources</div>
       <h2 class="section-title">Primary sources only.</h2>
+      <p class="section-lede">Vendor sites, release notes, press releases and the Patchstack whitepaper. Content reviewed <strong>August 2026</strong> against Astro 7.2, Strapi v5.49+, Directus 11, Payload 4 and the <em>State of WordPress Security in 2026</em> report.</p>
     </div>
     <div class="resource-grid fade-up" style="transition-delay: 0.05s">
       <a href="https://www.sanity.io" class="resource" target="_blank" rel="noopener">
@@ -525,10 +624,40 @@
         <span class="r-title">Strapi &middot; open-source Node.js headless CMS</span>
         <span class="r-url">strapi.io</span>
       </a>
-      <a href="https://patchstack.com/whitepaper/state-of-wordpress-security/" class="resource" target="_blank" rel="noopener">
+      <a href="https://patchstack.com/whitepaper/state-of-wordpress-security-in-2026/" class="resource" target="_blank" rel="noopener">
         <span class="r-kind">Security</span>
-        <span class="r-title">Patchstack &middot; State of WordPress Security 2026</span>
-        <span class="r-url">patchstack.com/whitepaper/state-of-wordpress-security</span>
+        <span class="r-title">Patchstack &middot; State of WordPress Security in 2026</span>
+        <span class="r-url">patchstack.com/whitepaper/state-of-wordpress-security-in-2026</span>
+      </a>
+      <a href="https://www.cloudflare.com/press/press-releases/2026/cloudflare-acquires-astro-to-accelerate-the-future-of-high-performance-web-development/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Announcement</span>
+        <span class="r-title">Cloudflare acquires Astro &middot; 16 Jan 2026</span>
+        <span class="r-url">cloudflare.com/press</span>
+      </a>
+      <a href="https://astro.build/blog/astro-7/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Release</span>
+        <span class="r-title">Astro 7.0 &middot; Rust compiler, Vite 8, agent-aware dev server</span>
+        <span class="r-url">astro.build/blog/astro-7</span>
+      </a>
+      <a href="https://www.figma.com/blog/payload-joins-figma/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Announcement</span>
+        <span class="r-title">Payload joins Figma</span>
+        <span class="r-url">figma.com/blog/payload-joins-figma</span>
+      </a>
+      <a href="https://developers.cloudflare.com/ai-crawl-control/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs</span>
+        <span class="r-title">Cloudflare AI Crawl Control &middot; content signals, pay per crawl</span>
+        <span class="r-url">developers.cloudflare.com/ai-crawl-control</span>
+      </a>
+      <a href="https://blog.cloudflare.com/introducing-pay-per-crawl/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Announcement</span>
+        <span class="r-title">Introducing pay per crawl &middot; HTTP 402 for crawlers</span>
+        <span class="r-url">blog.cloudflare.com/introducing-pay-per-crawl</span>
+      </a>
+      <a href="https://www.emdashcms.dev/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">CMS</span>
+        <span class="r-title">EmDash &middot; Cloudflare's WordPress challenger (v0.1.0)</span>
+        <span class="r-url">emdashcms.dev</span>
       </a>
       <a href="https://modelcontextprotocol.io" class="resource" target="_blank" rel="noopener">
         <span class="r-kind">Protocol</span>
