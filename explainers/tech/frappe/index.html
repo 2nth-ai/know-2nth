@@ -325,8 +325,8 @@
     </p>
     <div class="hub-stats fade-up" style="transition-delay: 0.15s">
       <div class="hub-stat"><div class="num">13</div><div class="label">Apps</div></div>
-      <div class="hub-stat"><div class="num">5</div><div class="label">Live explainers</div></div>
-      <div class="hub-stat"><div class="num">AGPL</div><div class="label">v3</div></div>
+      <div class="hub-stat"><div class="num">9</div><div class="label">Live explainers</div></div>
+      <div class="hub-stat"><div class="num">3</div><div class="label">Licences in play</div></div>
     </div>
   </div>
 </section>
@@ -337,7 +337,7 @@
     <div class="fade-up">
       <div class="hub-label">01 · The ecosystem</div>
       <h2 class="hub-title">Frappe, by what it builds.</h2>
-      <p class="hub-lede">Five bands — foundation, ERP &amp; finance, people &amp; CX, knowledge &amp; collaboration, and builders &amp; hosting. Each card maps to a leaf in <code style="font-family: 'JetBrains Mono', monospace; color: var(--sky);">tech/frappe/*</code>. The framework is the only one with a full explainer today; the rest land in sequence.</p>
+      <p class="hub-lede">Five bands — foundation, ERP &amp; finance, people &amp; CX, knowledge &amp; collaboration, and builders &amp; hosting. Each card maps to a leaf in <code style="font-family: 'JetBrains Mono', monospace; color: var(--sky);">tech/frappe/*</code>. Nine have full explainers today; the builders-and-hosting band lands next.</p>
     </div>
 
     <!-- Foundation -->
@@ -428,41 +428,41 @@
     </div>
     <div class="svc-grid fade-up" style="transition-delay: 0.03s">
 
-      <div class="svc-card soon">
+      <a href="lms.html" class="svc-card">
         <div class="svc-head">
-          <div class="svc-name">Frappe LMS</div>
-          <span class="svc-state stub">Stub</span>
+          <div class="svc-name">Frappe Learning</div>
+          <span class="svc-state live">Live</span>
         </div>
         <span class="svc-path">tech/frappe/lms</span>
-        <p>Open-source learning management — courses, lessons, quizzes, batches, certificates. The platform Frappe School itself runs on.</p>
-      </div>
+        <p>Open-source learning management — courses as chapters and lessons, learner batches, Zoom live classes, quizzes, assignments, certificates. Still <code>lms</code> on the bench. A teaching tool, not a mandatory-training compliance system.</p>
+      </a>
 
-      <div class="svc-card soon">
+      <a href="wiki.html" class="svc-card">
         <div class="svc-head">
           <div class="svc-name">Frappe Wiki</div>
-          <span class="svc-state stub">Stub</span>
+          <span class="svc-state live">Live</span>
         </div>
         <span class="svc-path">tech/frappe/wiki</span>
-        <p>Markdown-first internal knowledge base. Versioning, sidebar navigation, search, and the same role permissions every other Frappe app uses.</p>
-      </div>
+        <p>Markdown-first knowledge base with revision history, a change-approval queue, and RediSearch-backed search. MIT-licensed — the exception in this suite — and readable over REST for grounding an assistant.</p>
+      </a>
 
-      <div class="svc-card soon">
+      <a href="drive.html" class="svc-card">
         <div class="svc-head">
           <div class="svc-name">Frappe Drive</div>
-          <span class="svc-state stub">Stub</span>
+          <span class="svc-state live">Live</span>
         </div>
         <span class="svc-path">tech/frappe/drive</span>
-        <p>Self-hosted cloud file storage with sharing, previews, and folder ACLs. The Google Drive replacement for orgs that want files inside their own infra.</p>
-      </div>
+        <p>Self-hosted file storage with previews, video streaming, per-user quotas and real-time collaborative editing over Yjs. Still in beta, and the maintainers say plainly it should not be your only copy.</p>
+      </a>
 
-      <div class="svc-card soon">
+      <a href="raven.html" class="svc-card">
         <div class="svc-head">
           <div class="svc-name">Raven</div>
-          <span class="svc-state stub">Stub</span>
+          <span class="svc-state live">Live</span>
         </div>
         <span class="svc-path">tech/frappe/raven</span>
-        <p>Slack-style team chat — channels, threads, reactions, file uploads, bots. Talks to the rest of the Frappe stack natively, so a CRM event can become a chat message in one hook.</p>
-      </div>
+        <p>Slack-style team chat — channels, threads, reactions, file uploads, no-code agents. A document event becomes a chat message in one hook. Not a Frappe Technologies app, and AGPLv3.</p>
+      </a>
 
     </div>
 
@@ -500,6 +500,18 @@
         <p>The official managed hosting layer. Bench instances, automated backups, app marketplace, custom domains, regional sites. The fastest way to run any of the apps above without standing up your own infra.</p>
       </div>
 
+    </div>
+
+    <div class="pattern-card fade-up" style="transition-delay: 0.05s; border-left-color: var(--warm-glow); margin-top: 32px;">
+      <h4>Before you write "MIT-licensed open source" in a proposal</h4>
+      <p>The suite does not share one licence, and the assumption that it does is the most common expensive mistake made about Frappe. <strong>Frappe Framework itself is MIT</strong> — which is where the belief comes from — but almost nothing built on it is.</p>
+      <pre><span class="c"># Verified against each repository's own licence file</span>
+MIT      frappe (the framework), wiki, builder
+GPLv3    erpnext, hrms
+AGPLv3   helpdesk, crm, books, drive, lms,
+         print_designer, press (Frappe Cloud)
+AGPLv3   raven  <span class="c"># and maintained by The Commit Company, not Frappe</span></pre>
+      <p style="margin-top: 14px;">The distinction that bites is AGPL's network clause: modify one of those apps, put it in front of users over a network, and you owe them the modified source. Running any of this unmodified for your own organisation triggers nothing at all. Building a product on top of a fork is where it matters — and that is a conversation for proposal stage, not go-live.</p>
     </div>
 
   </div>

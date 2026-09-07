@@ -3,7 +3,7 @@
   "description": "The public knowledge tree for the 2nth.ai ecosystem. Every leaf is both a human-readable reference and an agent-consumable context document.",
   "agent_fetch": "https://know.2nth.ai/api/context/<domain>/<leaf>",
   "mcp": "https://know.2nth.ai/mcp",
-  "count": 224,
+  "count": 228,
   "items": [
     {
       "title": "Agents — know.2nth.ai",
@@ -71,7 +71,7 @@
     },
     {
       "title": "Claude — know.2nth.ai",
-      "description": "Claude — Anthropic's flagship model family. Four tiers in 2026: Fable 5 (Mythos-class, the new top tier above Opus) for the hardest, longest-horizon work, Opus 4.8 for hard reasoning, Sonnet 4.6 for everyday agent work, Haiku 4.5 for high-volume routing. 1M context on Fable/Opus/Sonnet, 200k on Haiku. Adaptive thinking, MCP-first tool layer, vision and computer use built in. The default for production agents that need long-context reasoning, reliable function-calling, and instruction-following beyond what open-weights models reach.",
+      "description": "Claude — Anthropic's flagship model family. Four current tiers: Fable 5.1 (Mythos-class, the top tier above Opus) for demanding reasoning and long-horizon agentic work, Opus 5 for complex agentic coding and enterprise work, Sonnet 5 for everyday production volume, Haiku 4.5 for high-volume routing. 1M context on Fable/Opus/Sonnet, 200k on Haiku. Adaptive thinking, MCP-first tool layer, vision and computer use built in. The default for production agents that need long-context reasoning, reliable function-calling, and instruction-following beyond what open-weights models reach.",
       "domain": "agents",
       "kind": "leaf",
       "url": "https://know.2nth.ai/explainers/agents/claude",
@@ -1494,6 +1494,14 @@
       "fetch": "tech/frappe/crm"
     },
     {
+      "title": "Frappe Drive — know.2nth.ai",
+      "description": "Frappe Drive — open-source file storage, sharing and real-time collaborative editing on the Frappe Framework. Multi-part uploads, previews, video streaming, per-user quotas, Yjs co-editing. Still in beta, with a maintainer warning not to make it your only copy.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/frappe/drive",
+      "fetch": "tech/frappe/drive"
+    },
+    {
       "title": "Frappe Framework — know.2nth.ai",
       "description": "The Frappe Framework — a metadata-driven Python full-stack where every business object is a doctype. Doctypes, hooks, REST + RPC, Bench, the desk, and the patterns that make the entire Frappe ecosystem coherent.",
       "domain": "tech",
@@ -1516,6 +1524,22 @@
       "kind": "leaf",
       "url": "https://know.2nth.ai/explainers/tech/frappe/hr",
       "fetch": "tech/frappe/hr"
+    },
+    {
+      "title": "Frappe Learning — know.2nth.ai",
+      "description": "Frappe Learning (frappe/lms) — open-source LMS on the Frappe Framework. Courses as chapters and lessons, learner batches, Zoom live classes, quizzes, assignments and certificates. A teaching tool, not a mandatory-training compliance system.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/frappe/lms",
+      "fetch": "tech/frappe/lms"
+    },
+    {
+      "title": "Frappe Wiki — know.2nth.ai",
+      "description": "Frappe Wiki — markdown-first documentation on the Frappe Framework, with revision history, a change-approval workflow, attachments, auto tables of contents and RediSearch-backed search. MIT-licensed, and readable over REST for grounding an assistant.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/frappe/wiki",
+      "fetch": "tech/frappe/wiki"
     },
     {
       "title": "Furniture Guild — Architecture & review — know.2nth.ai",
@@ -1668,6 +1692,14 @@
       "kind": "leaf",
       "url": "https://know.2nth.ai/explainers/tech/embedded/platformio",
       "fetch": "tech/embedded/platformio"
+    },
+    {
+      "title": "Raven — know.2nth.ai",
+      "description": "Raven — Slack-style team chat built on the Frappe Framework, with ERP document previews, workflow actions and no-code agents in the channel. Not a Frappe Technologies app, and AGPLv3 — both worth knowing before adoption.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/frappe/raven",
+      "fetch": "tech/frappe/raven"
     },
     {
       "title": "Redis — know.2nth.ai",

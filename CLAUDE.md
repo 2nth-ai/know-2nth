@@ -8,7 +8,10 @@ Sibling sites in the ecosystem:
 - **2nth.ai** — framework / GTM site (Human + AI = 2ⁿ)
 - **dev.2nth.ai** — partner / Gridline / openBUILD AI source content (Construction domain pulls from here)
 - **2nth.io** — compute infrastructure layer
+- **2nth.me**, **2nth.org**, **pay.2nth.ai** — further ecosystem properties that draw on leaves here as source material
 - **imbila.ai** — parent consultancy brand
+
+Leaves here are source material for those properties, so accuracy and voice matter beyond this site.
 
 ### Related repos that are NOT this one
 
@@ -43,26 +46,40 @@ Sibling sites in the ecosystem:
 ```
 know-2nth/
 ├── CLAUDE.md
-├── index.html                # root: 12 top-level domain cards
+├── index.html                # root: 14 top-level domain cards
 ├── about.html                # access model + how the site works
+├── ask.html                  # "Ask Vinci" — on-site assistant (Workers AI, Vectorize-backed)
 ├── join.html                 # HubSpot signup form (soft conversion play)
 ├── gate.js                   # tier-gate hook, loaded on every leaf, currently inert
-├── og-image.jpg              # 1200×630 OG / Twitter card
-├── og-image.svg              # source for the OG image
+├── agent-index.json          # GENERATED — machine index the MCP server searches
+├── llms.txt                  # GENERATED — plain-text index of the tree
+├── og-image.jpg / .svg       # 1200×630 OG / Twitter card, and its source
 ├── _redirects                # Cloudflare Pages redirects
-├── google-adk-explainer.md   # canonical source markdown for ADK leaf (PR #17)
+├── wrangler.toml             # Cloudflare Pages / Functions config
+├── scripts/                  # gen-agent-index.mjs and friends
+├── functions/                # Pages Functions: agent-fetch converter + MCP server
+├── briefings/                # CEO / perspective briefings (indexed alongside leaves)
+├── claude/                   # Claude-facing assets
+├── *.md, *.html (root)       # canonical source markdown for individual leaves
 └── explainers/
     ├── agents/        # Frameworks, Protocols, Models, Inference (the strategic priority)
-    ├── biz/           # ERP, CRM, HR — has erp/ and crm/ sub-hubs
+    ├── biz/           # ERP, CRM, HR, BPM, ECM — has erp/, crm/, hr/ sub-hubs
     ├── construction/  # openBIM + Gridline / openBUILD AI partner-anchored
     ├── data/          # analytics/, warehousing/, engineering/ sub-hubs
     ├── design/        # tokens, components, motion, AI-assisted design
+    ├── fin/           # compliance, consolidation, planning, reporting
+    ├── health/        # practice management, ambient scribes
+    ├── leg/           # legal AI, POPIA, commercial, corporate, employment, disputes, IP
+    ├── media/         # TTS, voice agents, ElevenLabs, landscape
     ├── partners/      # co-branded leaves (no hub yet, not on root grid)
-    ├── people/        # coaching, leadership, typologies/
-    └── tech/          # cloudflare/, google/, microsoft/, frappe/, runtime/, android-hce/, embedded/, frameworks/
+    ├── people/        # coaching, leadership, typologies/, ai-roles/
+    ├── software/      # languages, version control, CI/CD, SDD, agent-orchestration
+    ├── tech/          # cloudflare/, google/, microsoft/, oracle/, frappe/, runtime/,
+    │                  #   android-hce/, embedded/, frameworks/, hardware/, game-engines/
+    └── tools/         # runtime, architecture, example
 ```
 
-Five additional domains exist on the root grid as cards but have **no folder yet**: `edu`, `fin`, `health`, `iot`, `leg`. Building any of them out means: create `explainers/<domain>/index.html` hub, ship at least one Live leaf, then the root card becomes meaningful.
+Two domains exist on the root grid as cards but have **no folder yet**: `edu` and `iot`. Building either out means: create `explainers/<domain>/index.html` hub, ship at least one Live leaf, then the root card becomes meaningful. (`fin`, `health`, `leg`, `media` and `software` were all built out after this doc's first draft — trust the repo over this list, and correct it when you find it wrong.)
 
 ## How leaves are built
 
@@ -189,6 +206,24 @@ The local path of the main checkout varies per machine. On the primary Mac it's 
 - **Add a new top-level domain**: pick a unique colour + emoji → add CSS rule for `.domain-card[data-domain="X"]` in root `index.html` → add the card to `.domains-grid` → bump "N domains" count in the section title → build `explainers/X/index.html` hub → ship at least one Live leaf so the domain isn't empty on launch.
 - **Author from source markdown**: when a `*-explainer.md` file lands in the repo root (like `google-adk-explainer.md`), it's the canonical source — mine it for the rendered HTML leaf and preserve the primary-source-only discipline.
 - **OG / Twitter meta sweep**: every leaf needs the standard `og:title / og:description / og:image / twitter:card / twitter:title / twitter:description / twitter:image` block. The site's OG image is `/og-image.jpg` (source: `/og-image.svg`).
+- **Regenerate the agent index** after adding, removing or retitling any leaf or briefing: `node scripts/gen-agent-index.mjs`. Commit the regenerated `agent-index.json` and `llms.txt`. They drift silently otherwise.
+
+### Known source-URL moves
+
+Vendors relocate documentation and the old Resources links rot quietly. Ones already swept:
+
+- **Anthropic** — `docs.anthropic.com` → `platform.claude.com/docs/en/…` for API and model docs, and `code.claude.com/docs/en/…` for Claude Code and the Agent SDK. Don't add new `docs.anthropic.com` URLs.
+- **Google Cloud** — `cloud.google.com/<product>/docs/…` now 301s to `docs.cloud.google.com/…`. The old URLs still redirect, so this is cosmetic rather than broken; left alone for now.
+
+## Weekly maintenance
+
+A scheduled run audits a rotating slice of the tree for drift, then authors from the `soon` stub backlog. Model names, version numbers, pricing and context windows age fastest and cost the most credibility — verify against primary sources before changing anything, and state the audited slice in the PR so coverage rotates rather than repeating. Where a claim cannot be verified from a primary source, leave it and say so in the PR rather than guessing.
+
+Slices audited so far:
+
+| Date | Slice | Headline |
+|---|---|---|
+| 2026-09-07 | `agents/` Models band (Claude family) | Lineup had drifted a full generation; Sonnet mispriced |
 
 ## Pre-deploy sanity check
 
