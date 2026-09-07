@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Frappe Wiki &mdash; know.2nth.ai</title>
+<meta name="description" content="Frappe Wiki &mdash; markdown-first documentation on the Frappe Framework, with revision history, a change-approval workflow, attachments, auto tables of contents and RediSearch-backed search. MIT-licensed, and readable over REST for grounding an assistant.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/tech/frappe/wiki">
+<meta property="og:title" content="Frappe Wiki &mdash; know.2nth.ai">
+<meta property="og:description" content="Frappe Wiki &mdash; markdown-first documentation on the Frappe Framework, with revision history, a change-approval workflow, attachments, auto tables of contents and RediSearch-backed search. MIT-licensed, and readable over REST for grounding an assistant.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Frappe Wiki &mdash; know.2nth.ai">
+<meta name="twitter:description" content="Frappe Wiki &mdash; markdown-first documentation on the Frappe Framework, with revision history, a change-approval workflow, attachments, auto tables of contents and RediSearch-backed search. MIT-licensed, and readable over REST for grounding an assistant.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3Cline x1='16' y1='3' x2='16' y2='7' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='16' y1='25' x2='16' y2='29' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='3' y1='16' x2='7' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='25' y1='16' x2='29' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33;
+    --blue: #2563EB; --blue-glow: #3B82F6;
+    --sky: #38BDF8; --sky-muted: #7DD3FC;
+    --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8;
+    --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12);
+    --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12);
+    --violet: #8B5CF6; --violet-soft: rgba(139, 92, 246, 0.12);
+    --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12);
+    --bg: var(--ink); --bg-raised: var(--navy);
+    --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(37, 99, 235, 0.06);
+    --text-primary: var(--paper); --text-secondary: var(--slate);
+    --text-muted: #64748B;
+    --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(56, 189, 248, 0.3);
+    --max-w: 1200px; --read-w: 760px;
+    --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px;
+  }
+  [data-theme="light"] {
+    --bg: #F1F5F9; --bg-raised: #FFFFFF;
+    --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(37, 99, 235, 0.04);
+    --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8;
+    --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(37, 99, 235, 0.25);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+    background: var(--bg); color: var(--text-primary);
+    line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased;
+  }
+  body::before {
+    content: ''; position: fixed; inset: 0; opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 9999;
+  }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.blue { width: 600px; height: 600px; background: var(--blue); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+
+  nav {
+    position: sticky; top: 0; z-index: 100; padding: 0 24px;
+    backdrop-filter: blur(20px) saturate(1.4);
+    background: rgba(11, 17, 32, 0.75);
+    border-bottom: 1px solid var(--border);
+  }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner {
+    max-width: var(--max-w); margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 60px;
+  }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark {
+    font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px;
+    background: linear-gradient(135deg, var(--blue), var(--sky));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+  }
+  .nav-brand-sub {
+    font-size: 12px; color: var(--text-muted);
+    letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500;
+    padding-left: 10px; border-left: 1px solid var(--border);
+  }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--sky); }
+  .theme-toggle {
+    background: none; border: 1px solid var(--border); color: var(--text-secondary);
+    width: 36px; height: 36px; border-radius: 50%; cursor: pointer;
+    display: grid; place-items: center; font-size: 16px; transition: all 0.2s;
+  }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--sky); }
+
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .read { max-width: var(--read-w); }
+
+  .crumb {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted);
+    letter-spacing: 0.5px; padding: 28px 0 0;
+    display: flex; gap: 10px; flex-wrap: wrap;
+  }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--sky); }
+  .crumb-sep { opacity: 0.5; }
+  .crumb-current { color: var(--text-secondary); }
+
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500;
+    letter-spacing: 2px; text-transform: uppercase; color: var(--sky);
+    margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px;
+  }
+  .hero .eyebrow .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--blue-glow); box-shadow: 0 0 12px var(--blue-glow);
+  }
+  .hero h1 {
+    font-size: clamp(40px, 6vw, 66px); font-weight: 800;
+    line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 14ch;
+  }
+  .hero h1 .gradient {
+    background: linear-gradient(135deg, var(--blue-glow), var(--sky), var(--sky-muted));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500;
+    padding: 6px 14px; border-radius: var(--radius-pill);
+    border: 1px solid var(--border); color: var(--text-secondary);
+    letter-spacing: 0.5px;
+  }
+  .pill.accent { background: rgba(37, 99, 235, 0.12); color: var(--blue-glow); border-color: rgba(37, 99, 235, 0.25); }
+
+  section { padding: 52px 0; position: relative; }
+  .section-label {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500;
+    letter-spacing: 2px; text-transform: uppercase; color: var(--sky);
+    margin-bottom: 14px;
+  }
+  .section-title {
+    font-size: clamp(26px, 3.4vw, 36px); font-weight: 700;
+    letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2;
+  }
+  .section-lede {
+    font-size: 16px; color: var(--text-secondary); max-width: var(--read-w);
+    line-height: 1.75; font-weight: 300; margin-bottom: 32px;
+  }
+  .prose p {
+    font-size: 16px; color: var(--text-secondary); line-height: 1.75;
+    max-width: var(--read-w); margin-bottom: 18px;
+  }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.88em;
+    background: var(--bg-card); border: 1px solid var(--border);
+    padding: 1px 6px; border-radius: 4px; color: var(--sky);
+  }
+
+  pre.code {
+    background: var(--ink-deep); border: 1px solid var(--border);
+    border-radius: var(--radius-md); padding: 20px 22px;
+    overflow-x: auto; font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px; line-height: 1.65; color: var(--mist);
+    margin: 0 0 20px; max-width: var(--read-w);
+  }
+  [data-theme="light"] pre.code { background: #0F172A; color: #E2E8F0; }
+  pre.code .k { color: var(--sky); }
+  pre.code .s { color: #A5F3B8; }
+  pre.code .c { color: var(--text-muted); font-style: italic; }
+  pre.code .n { color: #FCD34D; }
+
+  .info-card {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-lg);
+    padding: 28px 32px; max-width: var(--read-w);
+    margin-bottom: 20px;
+  }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+
+  .compare-wrap {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-lg);
+    overflow: hidden; max-width: var(--read-w);
+    margin-bottom: 20px;
+  }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td {
+    padding: 12px 16px; text-align: left;
+    border-bottom: 1px solid var(--border); vertical-align: top;
+  }
+  .compare thead th {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600;
+    letter-spacing: 1.2px; text-transform: uppercase; color: var(--sky);
+    background: rgba(37, 99, 235, 0.04);
+  }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); }
+  .compare td code {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.9em;
+    color: var(--sky);
+  }
+
+  .gotcha-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 12px;
+  }
+  .gotcha {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-left: 3px solid var(--rose);
+    border-radius: var(--radius-md);
+    padding: 18px 22px;
+  }
+  .gotcha strong { display: block; color: var(--text-primary); font-weight: 600; font-size: 14px; margin-bottom: 6px; }
+  .gotcha p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+  .connect-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 12px;
+  }
+  .connect-node {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    padding: 18px 22px; transition: all 0.3s;
+    text-decoration: none; color: inherit; display: block;
+  }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node.soon { cursor: default; opacity: 0.72; }
+  .connect-node.soon:hover { border-color: var(--border); background: var(--bg-card); }
+  .connect-node .tag {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    letter-spacing: 1px; text-transform: uppercase;
+    color: var(--text-muted); display: block; margin-bottom: 6px;
+  }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+
+  .resource-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 12px;
+  }
+  .resource {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    padding: 18px 22px; text-decoration: none; transition: all 0.3s;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--sky); word-break: break-all; }
+
+  .decision-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+    max-width: var(--read-w);
+  }
+  @media (max-width: 720px) { .decision-grid { grid-template-columns: 1fr; } }
+  .decision-card {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    padding: 22px 24px;
+  }
+  .decision-card.use { border-left: 3px solid var(--green); }
+  .decision-card.skip { border-left: 3px solid var(--rose); }
+  .decision-card h4 {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .decision-card.use h4 { color: var(--green); }
+  .decision-card.skip h4 { color: var(--rose); }
+  .decision-card ul { list-style: none; padding: 0; }
+  .decision-card li {
+    font-size: 13px; color: var(--text-secondary); line-height: 1.6;
+    padding: 6px 0; border-bottom: 1px solid var(--border);
+  }
+  .decision-card li:last-child { border-bottom: none; }
+
+  footer {
+    padding: 60px 0 40px; border-top: 1px solid var(--border);
+    text-align: center; margin-top: 40px;
+  }
+  .footer-brand {
+    font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600;
+    background: linear-gradient(135deg, var(--blue), var(--sky));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+  }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--sky); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+
+  .fade-up {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 768px) {
+    .nav-brand-sub { display: none; }
+    .nav-link { display: none; }
+    pre.code { font-size: 11px; padding: 14px 16px; }
+    .compare { font-size: 12px; }
+    .compare th, .compare td { padding: 10px 12px; }
+  }
+
+  *, *::before, *::after {
+    transition-property: background-color, border-color, color, box-shadow;
+    transition-duration: 0.3s; transition-timing-function: ease;
+  }
+</style>
+</head>
+<body>
+
+<div class="glow-orb blue"></div>
+<div class="glow-orb sky"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../../index.html" class="nav-brand">
+      <span class="nav-brand-mark">know.2nth.ai</span>
+      <span class="nav-brand-sub">tech/frappe/wiki</span>
+    </a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">&larr; Frappe</a>
+      <a href="../../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#127769;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="../../../index.html#domains">Technology</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="../">tech</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="./">frappe</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">wiki</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> tech/frappe &middot; Wiki &middot; Skill Leaf</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      Documentation with<br><span class="gradient">an approval queue.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      Frappe Wiki is a markdown-first knowledge base built on the Frappe Framework &mdash; pages, revision history, a change-approval workflow, attachments, auto-generated tables of contents, and Redis-backed search. Its two distinguishing traits are that <strong>edits can require review before they publish</strong>, and that publishing a page or a fix happens live with no rebuild and no downtime. It is MIT-licensed, which in this suite is the exception rather than the rule.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill accent">Live</span>
+      <span class="pill">Frappe Framework app</span>
+      <span class="pill green">MIT</span>
+      <span class="pill">Markdown</span>
+      <span class="pill">RediSearch</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 WHAT IT IS -->
+<section id="what">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; What it is</div>
+      <h2 class="section-title">A wiki Frappe built because nothing else fit.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Frappe Wiki exists for an unglamorous reason: Frappe needed somewhere to write the ERPNext documentation, looked at the available open-source options, and did not like any of them enough to adopt one. So they wrote their own, and then kept using it for user manuals, company policies and general internal knowledge. That origin shows in the product &mdash; it is shaped around long-form, text-heavy, reviewed content rather than around freeform team note-taking.</p>
+      <p>The feature set is deliberately narrow. Pages are authored in <strong>markdown</strong>. Every page carries <strong>revision history</strong>. Edits can be routed through a <strong>change-approval workflow</strong>, so a contributor's change waits for a reviewer before it goes live. Pages take <strong>attachments</strong>. A <strong>table of contents</strong> is generated automatically from the heading structure. And behaviour can be extended with <strong>custom scripts</strong> configured in Wiki Settings, which is the standard Frappe escape hatch rather than a plugin marketplace.</p>
+      <p>Under the hood it is Frappe Framework, the <strong>Ace editor</strong> for the markdown editing surface, and <strong>RediSearch</strong> for indexing and search. RediSearch is the notable one: search is a real inverted index in Redis, not a <code>LIKE</code> query against a text column, which is why it stays usable as the page count grows.</p>
+    </div>
+    <div class="info-card green fade-up" style="transition-delay: 0.08s">
+      <h4>MIT, in a suite where that is unusual</h4>
+      <p>Frappe Wiki is MIT-licensed. So is Frappe Builder, and so is Frappe Framework itself. Almost everything else is not: ERPNext and Frappe HR are GPLv3; Helpdesk, CRM, Books, Drive, Learning and Print Designer are AGPLv3; Raven is AGPLv3 under a third-party maintainer. If you need to embed a knowledge base into a product you ship to customers, Wiki's licence is the one in this suite that does not put a network-copyleft obligation in your path. That is a real and underappreciated reason to reach for it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 THE APPROVAL WORKFLOW -->
+<section id="workflow">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; The approval workflow</div>
+      <h2 class="section-title">The feature that decides whether you want this.</h2>
+      <p class="section-lede">Most wikis optimise for frictionless contribution: anyone edits, anyone publishes, the history sorts out disputes afterwards. Frappe Wiki can work that way, but it also supports the opposite &mdash; a contributor proposes, a reviewer approves, and only then does the page change for readers.</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead>
+          <tr>
+            <th>You want</th>
+            <th>Frappe Wiki fits?</th>
+            <th>Why</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Reviewed public documentation</td><td>Strong fit</td><td>The approval queue is the point. Contributions from outside the core team land as proposals, not as live edits.</td></tr>
+          <tr><td>Policies and controlled procedures</td><td>Strong fit</td><td>Revision history plus review gives you an auditable answer to "who changed this and who signed it off".</td></tr>
+          <tr><td>Product or API documentation</td><td>Good fit</td><td>Markdown source, live publishing without a rebuild step, and search that scales.</td></tr>
+          <tr><td>Fast internal team notes</td><td>Weak fit</td><td>Review friction is wrong for a scratchpad. The team will stop using it and go back to chat.</td></tr>
+          <tr><td>Rich collaborative documents</td><td>Wrong tool</td><td>No real-time co-editing, no comment threads on selections. That is Frappe Drive's Writer, not this.</td></tr>
+          <tr><td>A structured course or curriculum</td><td>Wrong tool</td><td>No enrolment, progress tracking or assessment. That is Frappe Learning.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.08s">
+      <h4>Publishing without downtime is the underrated half</h4>
+      <p>Because pages are database records rendered on request, a typo fix or a whole new page goes live the moment it is approved. There is no static-site build, no CI pipeline, no deploy. Set against a docs-as-code stack &mdash; markdown in git, built by a generator, deployed on merge &mdash; you lose the reviewer's familiarity with pull requests and gain the ability to let a non-technical subject-matter expert correct their own page without touching a repository. Which of those you want is a real decision, and it mostly turns on who your authors are.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 HOW IT WORKS -->
+<section id="api">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; How it works</div>
+      <h2 class="section-title">Install, and read it from an agent.</h2>
+      <p class="section-lede">Pages are doctypes. That makes the wiki readable over the standard REST API, which is the property that matters if you intend to ground an assistant in it.</p>
+    </div>
+
+    <pre class="code fade-up" style="transition-delay: 0.05s"><span class="c"># Install on an existing bench</span>
+bench get-app https://github.com/frappe/wiki
+bench --site sitename install-app wiki</pre>
+
+    <pre class="code fade-up" style="transition-delay: 0.08s"><span class="c"># Pull published pages for indexing into a retrieval pipeline</span>
+GET /api/resource/Wiki Page
+  ?filters=[[<span class="s">"published"</span>,<span class="s">"="</span>,<span class="n">1</span>]]
+  &fields=[<span class="s">"name"</span>,<span class="s">"title"</span>,<span class="s">"route"</span>,<span class="s">"content"</span>,<span class="s">"modified"</span>]
+  &order_by=modified desc
+  &limit_page_length=<span class="n">0</span>
+
+<span class="c"># Because content is markdown, it needs no HTML-to-text conversion</span>
+<span class="c"># before chunking &mdash; which is one less lossy step than scraping</span>
+<span class="c"># a rendered docs site.</span></pre>
+
+    <div class="info-card fade-up" style="transition-delay: 0.1s">
+      <h4>A wiki an agent can actually use</h4>
+      <p>Markdown source over a REST API, with a <code>modified</code> timestamp on every page, is close to the ideal shape for grounding an assistant. You can pull only what changed since the last run, chunk clean markdown rather than stripped HTML, and rely on the same permission model the human readers are subject to. If part of why you are standing up a knowledge base is so that an internal agent can answer from it, this is a materially better starting point than a rendered documentation site you would otherwise have to scrape.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 GOTCHAS -->
+<section id="gotchas">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; Gotchas</div>
+      <h2 class="section-title">Where it gets tricky.</h2>
+    </div>
+    <div class="gotcha-list fade-up" style="transition-delay: 0.05s">
+      <div class="gotcha">
+        <strong>Search depends on RediSearch actually being present</strong>
+        <p>Frappe Wiki indexes through RediSearch. If the Redis instance backing the site does not have the module loaded &mdash; easy to hit on a hand-rolled deployment or a managed Redis that does not offer modules &mdash; search degrades or fails while the rest of the wiki works perfectly. Verify search on a populated site, not an empty one, because an empty wiki returns nothing either way.</p>
+      </div>
+      <div class="gotcha">
+        <strong>The approval workflow needs owners, not just configuration</strong>
+        <p>Turning on review is easy. Sustaining it is a staffing question. An approval queue with no committed reviewer becomes a backlog, contributors watch their edits sit unpublished, and within a month people stop contributing. If nobody owns the queue, do not turn it on &mdash; an unreviewed wiki that is current beats a reviewed one that is stale.</p>
+      </div>
+      <div class="gotcha">
+        <strong>Two docs URLs exist and they are not the same</strong>
+        <p>The project's own README links to <code>docs.frappe.io/wiki-v2/</code> in its header and <code>docs.frappe.io/wiki/</code> further down. They correspond to different versions. Check which one matches the app version you have installed before following a setup guide, and treat the repository itself as the authority when they disagree.</p>
+      </div>
+      <div class="gotcha">
+        <strong>Markdown means markdown</strong>
+        <p>The editing surface is the Ace code editor, not a WYSIWYG canvas. For engineers this is a feature. For the operations manager you need to own the standard operating procedures, it is a barrier &mdash; and the person who will not learn markdown syntax is the person whose knowledge you most needed to capture. Pilot with your actual intended authors before committing the organisation.</p>
+      </div>
+      <div class="gotcha">
+        <strong>Custom scripts are power and rope in equal measure</strong>
+        <p>Wiki Settings lets you extend behaviour with custom scripts. That is the standard Frappe extensibility story, and it means wiki behaviour can end up defined in a settings field that no code review ever sees and no backup obviously captures as code. Keep anything non-trivial in a versioned custom app instead.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 DECISION -->
+<section id="decision">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; Decision guide</div>
+      <h2 class="section-title">Use it for, skip it for.</h2>
+    </div>
+    <div class="decision-grid fade-up" style="transition-delay: 0.05s">
+      <div class="decision-card use">
+        <h4>Use Frappe Wiki when</h4>
+        <ul>
+          <li>Documentation accuracy matters enough that you want changes reviewed before readers see them.</li>
+          <li>You are already on Frappe and want the knowledge base under the same users, roles and API as everything else.</li>
+          <li>Your authors are comfortable in markdown &mdash; engineers, technical writers, product people.</li>
+          <li>You want an internal assistant grounded in your documentation, and would rather query clean markdown over REST than scrape a rendered site.</li>
+          <li>Licence matters. MIT is the loosest licence in this suite, and the only one here that will not complicate a product you ship.</li>
+          <li>Publishing needs to be immediate &mdash; a correction goes live when approved, with no build or deploy in between.</li>
+        </ul>
+      </div>
+      <div class="decision-card skip">
+        <h4>Skip Frappe Wiki when</h4>
+        <ul>
+          <li>You need real-time collaborative editing or comment threads. Reach for Frappe Drive's Writer, or a purpose-built docs tool.</li>
+          <li>Your authors will not write markdown. This is the most common reason internal wikis die, and no amount of enthusiasm at kickoff fixes it.</li>
+          <li>You want a general-purpose team workspace &mdash; databases, boards, embeds, freeform pages. This is a documentation tool with a narrow remit, by design.</li>
+          <li>Your team already works docs-as-code in git and is happy there. Pull-request review is a stronger workflow for engineers than an in-app approval queue.</li>
+          <li>You are not otherwise on Frappe. Standing up a bench for a wiki alone is disproportionate; the integration is most of the value.</li>
+          <li>You need a rich page-permission model. Frappe roles are capable but this is not a per-page-ACL product.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 SA CONTEXT -->
+<section id="sa-context">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; South African context</div>
+      <h2 class="section-title">Where this lands in SA delivery.</h2>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.05s">
+      <h4>Reviewed documentation is an audit artefact</h4>
+      <p>For organisations carrying real compliance load &mdash; financial services under the FSCA, anything touching the FIC Act, ISO-certified operations &mdash; "we document our procedures" is weaker than "our procedures are versioned, and each change has a named approver and a timestamp". Frappe Wiki's revision history plus approval queue produces that evidence as a by-product of ordinary work, rather than as a separate compliance exercise nobody maintains. That is worth more than the feature list suggests.</p>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.07s">
+      <h4>POPIA &middot; the wiki is where operational knowledge leaks</h4>
+      <p>Two habits to design against. First, examples: a page explaining how to process a claim gets written using a real claim, with a real name and a real ID number, and that personal information now lives permanently in the revision history where nobody thinks to look for it. Use synthetic data in documentation, and say so in the contribution guidance. Second, retention: revision history is by nature append-only, so anything published once persists. If a page must be scrubbed, understand that removing the current version does not remove the history.</p>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.09s">
+      <h4>Institutional memory in a market with real mobility</h4>
+      <p>Skilled technical people move &mdash; between employers, and offshore to remote roles paid in hard currency. The organisations that survive that well are the ones where the knowledge is written down rather than resident in whoever has been there longest. A wiki is the cheapest insurance available against that, and the review workflow is what stops it decaying into a graveyard of half-true pages. The tool is not the hard part; the practice is. Budget for someone to own it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 07 CONNECTIONS -->
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; Connections</div>
+      <h2 class="section-title">Where this leaf links.</h2>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="framework.html" class="connect-node">
+        <span class="tag">tech/frappe/framework</span>
+        <div class="skill">Frappe Framework</div>
+        <div class="why">The engine underneath. Wiki pages are doctypes, which is why they are queryable over REST and governed by the same roles as everything else.</div>
+      </a>
+      <a href="helpdesk.html" class="connect-node">
+        <span class="tag">tech/frappe/helpdesk</span>
+        <div class="skill">Frappe Helpdesk</div>
+        <div class="why">Helpdesk's built-in knowledge base is deliberately basic. Running Wiki alongside it is the standard answer when the KB needs to be serious.</div>
+      </a>
+      <a href="drive.html" class="connect-node">
+        <span class="tag">tech/frappe/drive</span>
+        <div class="skill">Frappe Drive</div>
+        <div class="why">The complement. Wiki holds reviewed, structured knowledge; Drive holds the files and the live-collaborative working documents.</div>
+      </a>
+      <a href="lms.html" class="connect-node">
+        <span class="tag">tech/frappe/lms</span>
+        <div class="skill">Frappe Learning</div>
+        <div class="why">The next step up in structure. When documentation needs enrolment, assessment and certificates, it has become a course.</div>
+      </a>
+      <a href="../../../explainers/agents/mcp.html" class="connect-node">
+        <span class="tag">agents/mcp</span>
+        <div class="skill">Model Context Protocol</div>
+        <div class="why">The obvious way to expose a wiki to an assistant &mdash; markdown over REST is already the right shape for a retrieval tool.</div>
+      </a>
+      <a href="./" class="connect-node">
+        <span class="tag">tech/frappe</span>
+        <div class="skill">Frappe sub-hub</div>
+        <div class="why">The hub listing the Frappe ecosystem apps. Wiki sits in the Knowledge &amp; Collaboration band.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 08 RESOURCES -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 &middot; Resources</div>
+      <h2 class="section-title">Primary sources only.</h2>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://github.com/frappe/wiki" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Source</span>
+        <span class="r-title">frappe/wiki on GitHub</span>
+        <span class="r-url">github.com/frappe/wiki</span>
+      </a>
+      <a href="https://frappe.io/wiki" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Project home</span>
+        <span class="r-title">Frappe Wiki</span>
+        <span class="r-url">frappe.io/wiki</span>
+      </a>
+      <a href="https://docs.frappe.io/wiki-v2/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs</span>
+        <span class="r-title">Frappe Wiki documentation (v2)</span>
+        <span class="r-url">docs.frappe.io/wiki-v2/</span>
+      </a>
+      <a href="https://github.com/frappe/wiki/blob/develop/LICENSE" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Licence</span>
+        <span class="r-title">MIT &mdash; the licence text itself</span>
+        <span class="r-url">github.com/frappe/wiki/blob/develop/LICENSE</span>
+      </a>
+      <a href="https://github.com/RediSearch/RediSearch" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Dependency</span>
+        <span class="r-title">RediSearch &mdash; the search index</span>
+        <span class="r-url">github.com/RediSearch/RediSearch</span>
+      </a>
+      <a href="https://frappecloud.com/marketplace/apps/wiki" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Hosting</span>
+        <span class="r-title">Frappe Cloud marketplace &mdash; Wiki</span>
+        <span class="r-url">frappecloud.com/marketplace/apps/wiki</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../../index.html">Skills tree</a>
+      <a href="./">Frappe sub-hub</a>
+      <a href="https://frappe.io/wiki" target="_blank" rel="noopener">Frappe Wiki &nearr;</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa &mdash; Globally relevant</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme() {
+    const html = document.documentElement;
+    const current = html.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    document.querySelector('.theme-toggle').textContent = next === 'dark' ? '\u2600\ufe0f' : '\ud83c\udf19';
+    localStorage.setItem('theme', next);
+  }
+  const saved = localStorage.getItem('theme');
+  if (saved) {
+    document.documentElement.setAttribute('data-theme', saved);
+    document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '\u2600\ufe0f' : '\ud83c\udf19';
+  }
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>
