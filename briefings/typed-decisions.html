@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Decision Layer &mdash; A CTO Briefing on System One Models &mdash; know.2nth.ai</title>
+<meta name="description" content="A CTO briefing on System One models: a new model class, launched with TypeSafe's Jev on 15 September 2026, that answers typed questions about a piece of state with calibrated probabilities instead of generating text. Why most of the calls inside a production agent are decisions, not writing; what five independent calibration tests found in the first week; where the probabilities are safe to route on and where they are not; why six open-source clones in two days means the interface is the asset; and the four moves to make this quarter.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/briefings/typed-decisions">
+<meta property="og:title" content="The Decision Layer — A CTO Briefing on System One Models — know.2nth.ai">
+<meta property="og:description" content="A new model class answers typed questions with calibrated probabilities instead of text, for a few thousandths of a cent. What holds up under independent testing, what doesn't, and the four moves for this quarter.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai — The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Decision Layer — A CTO Briefing — know.2nth.ai">
+<meta name="twitter:description" content="A new model class answers typed questions with calibrated probabilities instead of text. What holds up under independent testing, what doesn't, and the four moves for this quarter.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%2338BDF8' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%232563EB' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --ink: #0B1120; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6;
+    --sky: #38BDF8; --cyan: #22D3EE; --paper: #F8FAFC; --slate: #94A3B8;
+    --warm: #F59E0B; --warm-soft: rgba(245,158,11,0.12);
+    --green: #10B981; --green-soft: rgba(16,185,129,0.12);
+    --rose: #F43F5E; --rose-soft: rgba(244,63,94,0.12);
+    --indigo: #6366F1; --indigo-soft: rgba(99,102,241,0.12);
+    --max-w: 1080px; --read-w: 820px;
+    --radius-md: 14px; --radius-lg: 22px; --radius-pill: 100px;
+    --bg: #EEF4FB; --bg-soft: #E2ECF6; --card: #FFFFFF; --card-2: #F8FBFE;
+    --text: #0B1120; --text-2: #475569; --text-3: #8A97AB;
+    --border: rgba(15,23,42,0.10); --border-strong: rgba(15,23,42,0.16);
+    --shadow: 0 14px 40px rgba(15,23,42,0.08);
+  }
+  [data-theme="dark"] {
+    --bg: #07101D; --bg-soft: #0B1828; --card: #102033; --card-2: #0C1828;
+    --text: #F8FAFC; --text-2: #B6C2D6; --text-3: #6B7A92;
+    --border: rgba(148,163,184,0.14); --border-strong: rgba(148,163,184,0.24);
+    --shadow: 0 16px 48px rgba(0,0,0,0.5);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body {
+    font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+    background: radial-gradient(1100px 560px at 80% -120px, var(--bg-soft), var(--bg)) fixed;
+    color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  }
+  .wrap { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+  a { color: var(--blue); text-decoration: none; }
+
+  .topbar { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(14px);
+    background: color-mix(in srgb, var(--bg) 80%, transparent); border-bottom: 1px solid var(--border); }
+  .topbar-inner { max-width: var(--max-w); margin: 0 auto; padding: 12px 24px;
+    display: flex; align-items: center; justify-content: space-between; }
+  .brand-wrap { display: flex; align-items: center; }
+  .brand { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 14px;
+    background: linear-gradient(135deg, var(--blue), var(--sky));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; text-decoration: none; }
+  .brand-sub { font-size: 11px; color: var(--text-3); letter-spacing: 1.5px; text-transform: uppercase;
+    margin-left: 10px; padding-left: 10px; border-left: 1px solid var(--border); font-weight: 500; }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-2); text-decoration: none; font-weight: 500; }
+  .nav-link:hover { color: var(--sky); }
+  .toggle { background: none; border: 1px solid var(--border); color: var(--text-2);
+    width: 34px; height: 34px; border-radius: 50%; cursor: pointer; display: grid; place-items: center;
+    font-size: 15px; transition: all 0.2s; }
+  .toggle:hover { border-color: var(--border-strong); }
+
+  .hero { padding: 60px 0 8px; }
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500;
+    letter-spacing: 2.5px; text-transform: uppercase; color: var(--indigo);
+    display: inline-flex; align-items: center; gap: 10px; margin-bottom: 22px; }
+  .eyebrow .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--indigo); box-shadow: 0 0 12px var(--indigo); }
+  .hero h1 { font-size: clamp(36px, 6vw, 60px); font-weight: 800; line-height: 1.05;
+    letter-spacing: -1.8px; margin-bottom: 22px; max-width: 18ch; }
+  .hero h1 .hl { background: linear-gradient(135deg, var(--blue-glow), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .lede { font-size: 19px; color: var(--text-2); max-width: 720px; line-height: 1.6; font-weight: 300; }
+  .hero .lede .hl { color: var(--text); font-weight: 500; }
+  .meta-chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+  .chip { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.4px; color: var(--text-2);
+    border: 1px solid var(--border); padding: 8px 14px; border-radius: var(--radius-pill); background: var(--card-2); }
+
+  section { padding: 44px 0; }
+  .s-num { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--sky); font-weight: 600; margin-bottom: 12px; }
+  .s-title { font-size: clamp(26px, 4vw, 36px); font-weight: 700; letter-spacing: -0.8px; line-height: 1.15; margin-bottom: 16px; max-width: 24ch; }
+  .s-lede { font-size: 17px; color: var(--text-2); max-width: var(--read-w); line-height: 1.7; font-weight: 300; margin-bottom: 26px; }
+  .s-lede .hl { color: var(--text); font-weight: 600; }
+  .s-lede + .s-lede { margin-top: -8px; }
+
+  /* two-card contrast */
+  .defs { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 26px 0; }
+  @media (max-width: 720px){ .defs { grid-template-columns: 1fr; } }
+  .def { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 26px 28px; box-shadow: var(--shadow); }
+  .def.flow { border-top: 4px solid var(--sky); }
+  .def.agent { border-top: 4px solid var(--indigo); }
+  .def .dt { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; font-weight: 600; margin-bottom: 8px; }
+  .def.flow .dt { color: var(--sky); } .def.agent .dt { color: var(--indigo); }
+  .def h3 { font-size: 21px; font-weight: 800; letter-spacing: -0.4px; margin-bottom: 8px; }
+  .def p { font-size: 14.5px; color: var(--text-2); line-height: 1.6; margin-bottom: 10px; }
+  .def p:last-child { margin-bottom: 0; }
+  .def .tag { font-size: 13px; color: var(--text-3); font-style: italic; }
+
+  /* callout */
+  .callout { background: var(--card-2); border: 1px solid var(--border); border-left: 4px solid var(--sky); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); box-shadow: var(--shadow); }
+  .callout.warm { border-left-color: var(--warm); }
+  .callout.green { border-left-color: var(--green); }
+  .callout .co-tag { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; font-weight: 600; color: var(--sky); margin-bottom: 10px; }
+  .callout.warm .co-tag { color: var(--warm); }
+  .callout.green .co-tag { color: var(--green); }
+  .callout p { font-size: 15.5px; color: var(--text-2); line-height: 1.7; }
+  .callout p strong { color: var(--text); }
+  .callout p + p { margin-top: 12px; }
+
+  /* checklist */
+  .checks { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: var(--read-w); }
+  @media (max-width: 720px){ .checks { grid-template-columns: 1fr; } }
+  .check { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 22px 24px; box-shadow: var(--shadow); }
+  .check .q { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+  .check p { font-size: 13.5px; color: var(--text-2); line-height: 1.55; }
+
+  /* related */
+  .thread { display: grid; grid-template-columns: repeat(2,1fr); gap: 14px; }
+  @media (max-width: 760px){ .thread { grid-template-columns: 1fr; } }
+  .tcard { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px 26px; box-shadow: var(--shadow); text-decoration: none; color: inherit; display: block; transition: transform .25s, border-color .25s; border-top: 4px solid var(--sky); }
+  .tcard:hover { transform: translateY(-3px); border-color: var(--border-strong); }
+  .tcard .tt { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--sky); font-weight: 600; margin-bottom: 8px; }
+  .tcard h4 { font-size: 19px; font-weight: 800; letter-spacing: -0.4px; margin-bottom: 8px; }
+  .tcard p { font-size: 14px; color: var(--text-2); line-height: 1.55; margin-bottom: 10px; }
+  .tcard .go { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--sky); font-weight: 600; }
+
+  /* final */
+  .finalbox { max-width: var(--read-w); margin: 0 auto; background: var(--card); border: 1px solid var(--border-strong); border-radius: var(--radius-lg); padding: 34px 36px; box-shadow: var(--shadow); text-align: center; }
+  .finalbox .tag { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.6px; text-transform: uppercase; color: var(--indigo); font-weight: 600; margin-bottom: 14px; }
+  .finalbox p { font-size: clamp(18px, 2.4vw, 22px); font-weight: 500; color: var(--text); line-height: 1.5; }
+
+  footer { padding: 54px 0 48px; border-top: 1px solid var(--border); text-align: center; margin-top: 36px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600;
+    background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tag { font-size: 13px; color: var(--text-3); margin-bottom: 18px; }
+  .footer-links { display: flex; justify-content: center; gap: 22px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-2); text-decoration: none; }
+  .footer-links a:hover { color: var(--sky); }
+  .footer-copy { font-size: 12px; color: var(--text-3); margin-top: 18px; }
+
+  .fade { opacity: 0; transform: translateY(22px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade.vis { opacity: 1; transform: translateY(0); }
+  @media (prefers-reduced-motion: reduce) { .fade { opacity: 1; transform: none; } }
+
+  /* evidence table */
+  .tblwrap { max-width: var(--read-w); overflow-x: auto; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); box-shadow: var(--shadow); margin: 6px 0 22px; }
+  .tbl { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  .tbl th, .tbl td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; color: var(--text-2); }
+  .tbl thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--sky); font-weight: 600; }
+  .tbl tbody tr:last-child td { border-bottom: none; }
+  .tbl td strong { color: var(--text); }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand-wrap"><a href="/index.html" class="brand">know.2nth.ai</a><span class="brand-sub">CTO Briefing</span></div>
+    <div class="nav-right">
+      <a href="/briefings/" class="nav-link">All briefings</a>
+      <button class="toggle" onclick="toggleTheme()" aria-label="Toggle light/dark">🌙</button>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div class="eyebrow fade"><span class="dot"></span> AI architecture &middot; The decision layer</div>
+    <h1 class="fade" style="transition-delay:.05s">Most of what your agents do <span class="hl">is deciding, not writing.</span></h1>
+    <p class="lede fade" style="transition-delay:.1s">
+      Which queue. How urgent. Is this tool call safe. Does this answer break policy. Inside every production agent sit dozens of small, bounded decisions, and today each one goes to a frontier model that writes a paragraph you then parse. On 15 September 2026 a new model class arrived that answers <span class="hl">typed questions with calibrated probabilities</span>, in one pass, for a few thousandths of a cent. Six open-source clones followed within two days. Five independent teams have already measured whether the probabilities can be trusted. This is what they found, and what it changes for a technology leader this quarter.
+    </p>
+    <div class="meta-chips fade" style="transition-delay:.15s">
+      <span class="chip">Source &middot; TypeSafe docs + five independent evaluations</span>
+      <span class="chip">7-min read</span>
+      <span class="chip">For CTOs and heads of engineering</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">01 &middot; What changed</div>
+      <h2 class="s-title">A model that returns a decision, not a sentence.</h2>
+      <p class="s-lede">TypeSafe AI's <span class="hl">Jev</span> is the first of what the company calls System One models. You send it a piece of state (a ticket, a tool call, a claim form) and a set of questions, each with a declared answer type: pick one of these options, score this on a rubric, or is this statement true. It returns a probability for every allowed answer to every question, all evaluated in parallel. It cannot produce text, and it cannot produce an answer outside the options you declared.</p>
+    </div>
+    <div class="defs fade" style="transition-delay:.05s">
+      <div class="def flow">
+        <div class="dt">How it works today</div>
+        <h3>Generate, then parse</h3>
+        <p>The agent asks a frontier model "is this ticket urgent?" and gets a paragraph back. Your code extracts the answer, hopes the format held, and has no honest measure of how sure the model was.</p>
+        <p class="tag">Seconds of latency, cents per call, a schema that breaks a few percent of the time.</p>
+      </div>
+      <div class="def agent">
+        <div class="dt">What a System One model does</div>
+        <h3>Answer typed questions in one pass</h3>
+        <p>Ten questions about the same ticket, one call, a probability distribution for each. Roughly a quarter of a second. Roughly two thousandths of a cent. The output cannot fall outside the schema.</p>
+        <p class="tag">Independent tests recorded zero type errors across more than 13,000 calls.</p>
+      </div>
+    </div>
+    <div class="callout fade" style="transition-delay:.08s">
+      <div class="co-tag">Why it matters to you</div>
+      <p>The bill and the latency budget of most agent systems are dominated by decisions that never needed a paragraph. Moving them to a model built for decisions is not a model swap. It is a new layer in the architecture, sitting between your code and the expensive generative model, and it changes what the expensive model is for.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">02 &middot; The claim that matters</div>
+      <h2 class="s-title">Ignore the speed multipliers. The product is the probability.</h2>
+      <p class="s-lede">The launch numbers (193x faster, 444x cheaper) come from the vendor's own workflows against its own wrapper, and the vendor says so. The claim your architecture actually depends on is narrower: <span class="hl">when the model says 0.9, is it right about nine times in ten?</span> If yes, you can set a threshold, automate above it, and send the rest to a person. If no, you have built an escalation path on sand.</p>
+    </div>
+    <div class="tblwrap fade" style="transition-delay:.05s">
+      <table class="tbl">
+        <thead><tr><th>Independent test</th><th>Task</th><th>What it found</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Agent tool-call risk</strong></td><td>60 tool calls labelled readonly, destructive, privileged or exfiltration, including disguised ones</td><td>92% accurate. Never wrong when it said it was certain. Caught 11 of 12 disguised destructive calls.</td></tr>
+          <tr><td><strong>Pre-registered intent test</strong></td><td>Two public intent datasets, 150 and 77 classes</td><td>Well calibrated on one, systematically overconfident on the other.</td></tr>
+          <tr><td><strong>Unseen support tickets</strong></td><td>900 generated tickets the model cannot have trained on</td><td>Strong on queue and sentiment. Near chance on a priority rule that was not in the text, while claiming 74% confidence.</td></tr>
+          <tr><td><strong>Phishing shadow eval</strong></td><td>2,000 emails against Claude Haiku 4.5</td><td>Lost badly when asked one question. Won when the judgment was split into five narrow questions combined in code.</td></tr>
+          <tr><td><strong>Public leaderboard</strong></td><td>534 decisions, 42 systems</td><td>Jev leads. An open-weight clone on a 4B model trails by under one point.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout green fade" style="transition-delay:.08s">
+      <div class="co-tag">The verdict, in one line</div>
+      <p><strong>Calibration is real where the answer is in the text, and unreliable where it is not.</strong> On semantic judgments about content the model can see, the probabilities held up well enough to route on. On decisions that depend on your organisation's rules, it was confidently wrong. That is not a flaw to wait out. It is a design constraint: put the rule in the state or in the code, never in the model's imagination.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">03 &middot; The skill being sold</div>
+      <h2 class="s-title">The model is cheap. Question design is the work.</h2>
+      <p class="s-lede">The phishing result is the most important number in this briefing. The same model on the same emails went from <span class="hl">62.6% to 95.0%</span> accuracy, and from losing to a frontier model to matching it, with nothing changed except the questions. One fuzzy question became five narrow ones, and the answers were weighted in code by someone who understood phishing.</p>
+    </div>
+    <div class="defs fade" style="transition-delay:.05s">
+      <div class="def flow">
+        <div class="dt">The tempting way</div>
+        <h3>"Is this a good candidate?"</h3>
+        <p>One question, one number, no idea what drove it. Accuracy is mediocre and the model's confidence on the answer means little because the question itself was ambiguous.</p>
+      </div>
+      <div class="def agent">
+        <div class="dt">The way that works</div>
+        <h3>Five atomic questions, weighted in code</h3>
+        <p>Python depth, team leadership, system design, each as its own score. Your engineers own the weights, can audit them, and can change them without touching a model. The senior judgment moves from the prompt into the decomposition.</p>
+      </div>
+    </div>
+    <div class="callout fade" style="transition-delay:.08s">
+      <div class="co-tag">Why it matters to you</div>
+      <p>This rewards a specific kind of engineer: the one who can turn a domain expert's instinct into a set of questions a machine can answer honestly. That is the human-plus-AI seam this whole tree is about. The model does not replace the person who knows what "urgent" means for your business. It makes their definition run at ten thousand decisions a second.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">04 &middot; The moat question</div>
+      <h2 class="s-title">Six clones in two days. The interface is the asset, not the weights.</h2>
+      <p class="s-lede">Within 48 hours of launch there were six open-source reproductions. Within a week a public leaderboard ranked 42 systems against the same call shape, and the best open-weight entry, a 4-billion-parameter model that runs on one GPU, sat under a point behind Jev. Nobody has reproduced TypeSafe's training method, because it is unpublished. Everybody has reproduced the <span class="hl">interface</span>.</p>
+    </div>
+    <div class="callout warm fade" style="transition-delay:.05s">
+      <div class="co-tag">What that means for vendor risk</div>
+      <p>Design for portability from day one. Keep the call shape (state, questions, probabilities) as your internal contract. Keep thresholds and weights in your code, not in a vendor console. Keep an open-weight clone in the cascade as the backstop, the same spare-generator logic this tree applies to every rented model. TypeSafe's own launch post says it "cannot prove" the price is unsubsidised. Plan as if it is.</p>
+    </div>
+    <div class="callout fade" style="transition-delay:.08s">
+      <div class="co-tag">Where a fine-tuned classifier still wins</div>
+      <p>If you have a fixed label set and thousands of labelled historical decisions, a small fine-tuned encoder running on CPU will be cheaper and probably more accurate on your own labels. The System One model earns its place where labels shift, where you have no history, where you need many questions at once, or where the calibrated probability is the product. Do not rip out a working classifier to adopt a category.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">05 &middot; The South African read</div>
+      <h2 class="s-title">The cheap thing is also the well-tested thing. Two disciplines make it safe.</h2>
+      <p class="s-lede">The decisions that make or break service businesses here are exactly this shape: which adviser, is this claim complete, is this the document we asked for, does this message need a person today. At list price a decision costs a few hundredths of a cent in rand. The whole shadow evaluation your team should run first costs less than a coffee.</p>
+    </div>
+    <div class="defs fade" style="transition-delay:.05s">
+      <div class="def flow">
+        <div class="dt">Discipline one</div>
+        <h3>Filter the state</h3>
+        <p>Send the fields the question needs, not the customer record. The vendor recommends it for accuracy; POPIA requires it for a US-hosted API. The same design serves both. Where the state cannot be reduced to non-personal fields, run the open-weight clone in-country.</p>
+      </div>
+      <div class="def agent">
+        <div class="dt">Discipline two</div>
+        <h3>Shadow-evaluate before you route</h3>
+        <p>Replay a month of decisions your people already made. Measure accuracy and calibration per question, not per model, because yes/no questions ran underconfident and multiple-choice ran overconfident on the same inputs. Only then set thresholds, and pin the model version when you do.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">06 &middot; This quarter</div>
+      <h2 class="s-title">Six questions to take to your engineering leads.</h2>
+    </div>
+    <div class="checks fade" style="transition-delay:.05s">
+      <div class="check"><div class="q">Where are our hidden decisions?</div><p>List every place an agent or workflow asks a generative model a bounded question. Queue, priority, risk, relevance, policy. That list is the candidate set.</p></div>
+      <div class="check"><div class="q">Which three decisions do we shadow-run first?</div><p>Pick high-volume, low-blast-radius ones with a month of logged human outcomes. Measure before you route anything.</p></div>
+      <div class="check"><div class="q">Who owns question design?</div><p>Name the engineer who sits with the domain expert and turns "urgent" into five questions and a set of weights. This is the scarce skill, not API access.</p></div>
+      <div class="check"><div class="q">What is our threshold policy?</div><p>Per action, per question, tuned on our own logs, with an explicit "none of these" option and a human path for low confidence. Written down, in code.</p></div>
+      <div class="check"><div class="q">What data leaves the country?</div><p>Can each state be reduced to non-personal fields? If not, is the open-weight clone in-country the answer for that decision?</p></div>
+      <div class="check"><div class="q">What is our backstop?</div><p>If the vendor's price doubles or the API goes dark, does the cascade fall back to an open model we run? Have we tested that path once?</p></div>
+    </div>
+    <div class="callout warm fade" style="transition-delay:.08s">
+      <div class="co-tag">The honest default</div>
+      <p>For most mid-sized teams the move this quarter is <strong>not</strong> to put a one-week-old API on the safety path of a production agent. It is to run the shadow evaluation, learn the question-design skill on three real decisions, and build the cascade with the backstop in place. If the numbers hold on your traffic, promote it. If they do not, you have spent a few rand and learned exactly where your decisions live.</p>
+    </div>
+  </div>
+</section>
+
+<!-- RELATED -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">Keep reading</div>
+      <h2 class="s-title">Related</h2>
+    </div>
+    <div class="thread fade" style="transition-delay:.05s">
+      <a href="/explainers/agents/system-one-models" class="tcard">
+        <div class="tt">Technical version</div>
+        <h4>System One models</h4>
+        <p>The deep version for your engineers: the three primitives, the confidence formula, the four patterns, the full independent evidence table, the clones ranked, and the decision guide.</p>
+        <span class="go">Open the leaf &rarr;</span>
+      </a>
+      <a href="/briefings/ai-agents" class="tcard">
+        <div class="tt">Briefing</div>
+        <h4>AI Agents, Plainly</h4>
+        <p>The ladder of autonomy and the guardrails that move a task from red to green. A typed-decision model is the cheapest guardrail in that toolbox.</p>
+        <span class="go">Read briefing &rarr;</span>
+      </a>
+      <a href="/briefings/own-vs-rent-ai" class="tcard">
+        <div class="tt">Briefing</div>
+        <h4>The Five Things You Can Own</h4>
+        <p>The routing layer is one of the five. The decision model is what the router calls first, and the backstop logic applies to it too.</p>
+        <span class="go">Read briefing &rarr;</span>
+      </a>
+      <a href="/briefings/edge-first" class="tcard">
+        <div class="tt">Briefing</div>
+        <h4>Keep the Data Home</h4>
+        <p>The residency half of the state-filtering discipline: what may cross the border, what stays, and where the checkpoint lives.</p>
+        <span class="go">Read briefing &rarr;</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL -->
+<section>
+  <div class="wrap">
+    <div class="finalbox fade">
+      <div class="tag">The take</div>
+      <p>A model that returns honest probabilities instead of prose is a new layer in the stack, and it is already commodity at the weights. The value moved to the questions you ask it and the thresholds you own. Build those, keep a backstop, and let the expensive model do only the work that needs a paragraph.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tag">Briefings &middot; the plain-language layer over the knowledge tree</p>
+    <div class="footer-links">
+      <a href="/briefings/">All briefings</a>
+      <a href="/index.html">Knowledge tree</a>
+      <a href="/explainers/agents/system-one-models">System One models leaf</a>
+      <a href="https://2nth.ai" target="_blank" rel="noopener">2nth.ai</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme(){
+    const h=document.documentElement, cur=h.getAttribute('data-theme'), nxt=cur==='dark'?'light':'dark';
+    h.setAttribute('data-theme',nxt);
+    document.querySelector('.toggle').textContent = nxt==='dark' ? '☀️' : '🌙';
+    localStorage.setItem('brief-theme',nxt);
+  }
+  const saved=localStorage.getItem('brief-theme');
+  if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.toggle').textContent=saved==='dark'?'☀️':'🌙';}
+  const ob=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');});},{threshold:0.08,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.fade').forEach(el=>ob.observe(el));
+</script>
+</body>
+</html>

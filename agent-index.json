@@ -3,11 +3,11 @@
   "description": "The public knowledge tree for the 2nth.ai ecosystem. Every leaf is both a human-readable reference and an agent-consumable context document.",
   "agent_fetch": "https://know.2nth.ai/api/context/<domain>/<leaf>",
   "mcp": "https://know.2nth.ai/mcp",
-  "count": 224,
+  "count": 226,
   "items": [
     {
       "title": "Agents — know.2nth.ai",
-      "description": "The Agents domain on know.2nth.ai — the agentic frameworks, protocols, models, inference platforms, and coding CLI agents that matter in 2026. Thirty-two Live leaves across five bands: nine frameworks (Google ADK, Google Antigravity, LangGraph, CrewAI, OpenAI Agents SDK, Anthropic Agent SDK, AutoGen, AgentForce, Deep Agents), four protocols (A2A, MCP, Agent Skills, OpenWiki + OKF), ten models, five inference leaves, and four coding CLI agents (Claude Code, OpenAI Codex CLI, GitHub Copilot CLI plus a comparison). Built around the principle that agents are software, not prompt soup.",
+      "description": "The Agents domain on know.2nth.ai — the agentic frameworks, protocols, models, inference platforms, and coding CLI agents that matter in 2026. Thirty-two Live leaves across five bands: nine frameworks (Google ADK, Google Antigravity, LangGraph, CrewAI, OpenAI Agents SDK, Anthropic Agent SDK, AutoGen, AgentForce, Deep Agents), four protocols (A2A, MCP, Agent Skills, OpenWiki + OKF), ten models, six inference leaves, and four coding CLI agents (Claude Code, OpenAI Codex CLI, GitHub Copilot CLI plus a comparison). Built around the principle that agents are software, not prompt soup.",
       "domain": "agents",
       "kind": "hub",
       "url": "https://know.2nth.ai/explainers/agents/",
@@ -286,6 +286,14 @@
       "fetch": "agents/owning-ai"
     },
     {
+      "title": "System One models — know.2nth.ai",
+      "description": "System One models — a new model class that returns typed decisions with calibrated probabilities instead of text, in one forward pass. Anchored on TypeSafe's Jev (launched 15 Sep 2026): the three primitives (Choice, Score, Noul), probability vs confidence, the four patterns (speculative fan-out, confidence-gated routing, composite scoring, the cascade), what five independent calibration tests actually found, the six open-source clones and JevBench, pricing and the jagged edges, and a decision guide for when a fine-tuned encoder is enough.",
+      "domain": "agents",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/agents/system-one-models",
+      "fetch": "agents/system-one-models"
+    },
+    {
       "title": "Test-time compute — know.2nth.ai",
       "description": "Test-time compute — the third scaling axis, and why it's really a verification story. Repeated sampling scales coverage log-linearly over four orders of magnitude (Large Language Monkeys, Brown et al. 2024) and a small model sampled thousands of times can beat a frontier model's single attempt — but only where an automatic verifier exists. The generator-verifier gap, process vs outcome reward models, reasoning models as productised test-time search, and the sampling-vs-bigger-model economics.",
       "domain": "agents",
@@ -539,6 +547,14 @@
       "domain": "briefings",
       "kind": "briefing",
       "url": "https://know.2nth.ai/briefings/glm-open-weight-economics",
+      "fetch": null
+    },
+    {
+      "title": "The Decision Layer — A CTO Briefing on System One Models — know.2nth.ai",
+      "description": "A CTO briefing on System One models: a new model class, launched with TypeSafe's Jev on 15 September 2026, that answers typed questions about a piece of state with calibrated probabilities instead of generating text. Why most of the calls inside a production agent are decisions, not writing; what five independent calibration tests found in the first week; where the probabilities are safe to route on and where they are not; why six open-source clones in two days means the interface is the asset; and the four moves to make this quarter.",
+      "domain": "briefings",
+      "kind": "briefing",
+      "url": "https://know.2nth.ai/briefings/typed-decisions",
       "fetch": null
     },
     {
