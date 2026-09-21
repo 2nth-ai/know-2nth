@@ -329,7 +329,7 @@
     </p>
     <div class="hub-stats fade-up" style="transition-delay: 0.15s">
       <div class="hub-stat"><div class="num">5</div><div class="label">Databases</div></div>
-      <div class="hub-stat"><div class="num">1</div><div class="label">Live explainer</div></div>
+      <div class="hub-stat"><div class="num">2</div><div class="label">Live explainers</div></div>
     </div>
   </div>
 </section>
@@ -340,7 +340,7 @@
     <div class="fade-up">
       <div class="hub-label">01 · Databases</div>
       <h2 class="hub-title">The warehousing toolkit.</h2>
-      <p class="hub-lede">Five databases that cover different points on the OLTP-to-OLAP spectrum. PostgreSQL is live and is the default for new builds; the rest land as content ships.</p>
+      <p class="hub-lede">Five databases that cover different points on the OLTP-to-OLAP spectrum. PostgreSQL is the default for new builds and BigQuery is the serverless warehouse at the other end; the rest land as content ships.</p>
     </div>
 
     <div class="svc-grid fade-up" style="transition-delay: 0.03s">
@@ -372,14 +372,14 @@
         <p>In-process analytical SQL. The SQLite of OLAP — no server, just a library. Runs inside Python scripts, dbt, notebooks, and Cloudflare Workers (WASM build).</p>
       </div>
 
-      <div class="svc-card soon">
+      <a href="bigquery.html" class="svc-card">
         <div class="svc-head">
           <div class="svc-name">BigQuery</div>
-          <span class="svc-state stub">Stub</span>
+          <span class="svc-state live">Live</span>
         </div>
         <span class="svc-path">data/warehousing/bigquery</span>
-        <p>Google's serverless warehouse. Pay-per-query, petabyte-scale, zero infrastructure to manage. The warehouse of choice when the team wants SQL and nothing else.</p>
-      </div>
+        <p>Google's serverless warehouse. No cluster to size &mdash; you pay for bytes scanned. The two compute models, the logical-vs-physical storage choice, and how to stop a dashboard becoming a four-figure invoice. africa-south1 available.</p>
+      </a>
 
       <div class="svc-card soon">
         <div class="svc-head">

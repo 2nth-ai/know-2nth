@@ -3,7 +3,7 @@
   "description": "The public knowledge tree for the 2nth.ai ecosystem. Every leaf is both a human-readable reference and an agent-consumable context document.",
   "agent_fetch": "https://know.2nth.ai/api/context/<domain>/<leaf>",
   "mcp": "https://know.2nth.ai/mcp",
-  "count": 224,
+  "count": 225,
   "items": [
     {
       "title": "Agents — know.2nth.ai",
@@ -71,7 +71,7 @@
     },
     {
       "title": "Claude — know.2nth.ai",
-      "description": "Claude — Anthropic's flagship model family. Four tiers in 2026: Fable 5 (Mythos-class, the new top tier above Opus) for the hardest, longest-horizon work, Opus 4.8 for hard reasoning, Sonnet 4.6 for everyday agent work, Haiku 4.5 for high-volume routing. 1M context on Fable/Opus/Sonnet, 200k on Haiku. Adaptive thinking, MCP-first tool layer, vision and computer use built in. The default for production agents that need long-context reasoning, reliable function-calling, and instruction-following beyond what open-weights models reach.",
+      "description": "Claude — Anthropic's flagship model family. Four tiers in late 2026: Fable 5.1 (Mythos-class, the top tier above Opus) for the hardest, longest-horizon work, Opus 5 for complex agentic coding and enterprise work, Sonnet 5 for everyday agent work, Haiku 4.5 for high-volume routing. 1M context on Fable/Opus/Sonnet, 200k on Haiku. Adaptive thinking, MCP-first tool layer, vision and computer use built in. The default for production agents that need long-context reasoning, reliable function-calling, and instruction-following beyond what open-weights models reach.",
       "domain": "agents",
       "kind": "leaf",
       "url": "https://know.2nth.ai/explainers/agents/claude",
@@ -111,7 +111,7 @@
     },
     {
       "title": "Gemini — know.2nth.ai",
-      "description": "Gemini — Google's flagship multimodal model family. Mid-2026: the Gemini 3.x line — Gemini 3.1 Pro for the hardest reasoning and agentic coding, Gemini 3.5 Flash for frontier agentic/coding work, Gemini 3.1 Flash-Lite for high-volume routing. 1M+ token context (reportedly to ~2M on Pro) — the largest in the field. Native multimodal across text, image, video, and audio, native search grounding, and native media generation via Gemini Omni (conversational video + image creation). Hosted via Google AI Studio, Vertex AI (including africa-south1 in Johannesburg), and OpenRouter. The default for production agents that need extreme context length, Google search integration, voice via the Live API, or generative multimodal output.",
+      "description": "Gemini — Google's flagship multimodal model family. Late 2026: the Gemini 3.x line — Gemini 3.1 Pro (still Preview on Vertex) for the hardest reasoning and agentic coding, a fast-moving Flash tier now at 3.8, and Flash-Lite for high-volume routing. 1M+ token context (reportedly to ~2M on Pro) — the largest in the field. Native multimodal across text, image, video, and audio, native search grounding, and native media generation via Gemini Omni (conversational video + image creation). Hosted via Google AI Studio, Vertex AI (including africa-south1 in Johannesburg), and OpenRouter. The default for production agents that need extreme context length, Google search integration, voice via the Live API, or generative multimodal output.",
       "domain": "agents",
       "kind": "leaf",
       "url": "https://know.2nth.ai/explainers/agents/gemini",
@@ -135,7 +135,7 @@
     },
     {
       "title": "GitHub Copilot CLI — multi-model agentic terminal — know.2nth.ai",
-      "description": "GitHub Copilot CLI is Microsoft / GitHub's terminal-native agentic coding environment, GA in 2026. The only major coding CLI that switches between Claude (Sonnet/Opus 4.6) and GPT-5.2–5.5 from one tool, via /model. Worktree isolation, self-iterating code review, specialised Explore + Task agents, Plan and Autopilot modes. Bundled with Copilot Pro / Pro+ / Business / Enterprise; moves to usage-based AI Credits June 1 2026.",
+      "description": "GitHub Copilot CLI is Microsoft / GitHub's terminal-native agentic coding environment, GA in 2026. The only major coding CLI that switches between Claude (Sonnet/Opus 4.6) and GPT-5.2–5.5 from one tool, via /model. Worktree isolation, self-iterating code review, specialised Explore + Task agents, Plan and Autopilot modes. Bundled with Copilot Pro / Pro+ / Business / Enterprise; was scheduled to move to usage-based AI Credits on 1 June 2026.",
       "domain": "agents",
       "kind": "leaf",
       "url": "https://know.2nth.ai/explainers/agents/github-copilot-cli",
@@ -652,6 +652,14 @@
       "kind": "leaf",
       "url": "https://know.2nth.ai/explainers/data/analytics/superset",
       "fetch": "data/analytics/superset"
+    },
+    {
+      "title": "BigQuery — know.2nth.ai",
+      "description": "BigQuery — Google's serverless warehouse. You don't pay for a server, you pay for bytes scanned. The two compute models, the logical-vs-physical storage choice, and how to stop a SELECT * turning into a four-figure invoice. africa-south1 available.",
+      "domain": "data",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/data/warehousing/bigquery",
+      "fetch": "data/warehousing/bigquery"
     },
     {
       "title": "Chonkie — know.2nth.ai",
