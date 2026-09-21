@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>System One models &mdash; know.2nth.ai</title>
+<meta name="description" content="System One models — a new model class that returns typed decisions with calibrated probabilities instead of text, in one forward pass. Anchored on TypeSafe's Jev (launched 15 Sep 2026): the three primitives (Choice, Score, Noul), probability vs confidence, the four patterns (speculative fan-out, confidence-gated routing, composite scoring, the cascade), what five independent calibration tests actually found, the six open-source clones and JevBench, pricing and the jagged edges, and a decision guide for when a fine-tuned encoder is enough.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/agents/system-one-models">
+<meta property="og:title" content="System One models — know.2nth.ai">
+<meta property="og:description" content="Decisions, not text: models that answer typed questions with calibrated probabilities in one pass. Jev, the primitives, the patterns, what independent tests found, the clones, and when a fine-tuned encoder is enough.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="System One models — know.2nth.ai">
+<meta name="twitter:description" content="Decisions, not text: models that answer typed questions with calibrated probabilities in one pass. Jev, the primitives, the patterns, what independent tests found, the clones, and when a fine-tuned encoder is enough.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12); --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-soft: rgba(99, 102, 241, 0.12); --bg: var(--ink); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(37, 99, 235, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(56, 189, 248, 0.3); --max-w: 1200px; --read-w: 760px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(37, 99, 235, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(37, 99, 235, 0.25); }
+  * { margin: 0; padding: 0; box-sizing: border-box; } html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.blue { width: 600px; height: 600px; background: var(--blue); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--sky); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--sky); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--sky); } .crumb-sep { opacity: 0.5; } .crumb-current { color: var(--text-secondary); }
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--indigo); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--indigo); box-shadow: 0 0 12px var(--indigo); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--blue-glow), var(--sky), var(--sky-muted)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.green { background: var(--green-soft); color: var(--green); border-color: rgba(16, 185, 129, 0.25); }
+  .pill.indigo { background: var(--indigo-soft); color: var(--indigo); border-color: rgba(99, 102, 241, 0.25); }
+  .pill.warn { background: var(--warm-soft); color: var(--warm-glow); border-color: rgba(245, 158, 11, 0.25); }
+  .pill.accent { background: rgba(37, 99, 235, 0.12); color: var(--blue-glow); border-color: rgba(37, 99, 235, 0.25); }
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--sky); margin-bottom: 14px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--sky); }
+  .prose ul, .prose ol { padding-left: 24px; margin-bottom: 18px; max-width: var(--read-w); }
+  .prose li { font-size: 15px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 8px; }
+  .prose li strong { color: var(--text-primary); font-weight: 600; }
+  pre.code { background: var(--ink-deep); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px 22px; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.65; color: var(--mist); margin: 0 0 20px; max-width: var(--read-w); }
+  [data-theme="light"] pre.code { background: #0F172A; color: #E2E8F0; }
+  pre.code .k { color: var(--sky); } pre.code .s { color: #A5F3B8; } pre.code .c { color: var(--text-muted); font-style: italic; } pre.code .h { color: var(--blue-glow); font-weight: 600; }
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); margin-bottom: 20px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.indigo { border-left: 3px solid var(--indigo); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .stack-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; max-width: var(--read-w); margin-bottom: 20px; }
+  .stack-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--indigo); border-radius: var(--radius-md); padding: 18px 22px; }
+  .stack-cell .layer { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .stack-cell h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.3px; }
+  .stack-cell p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: var(--read-w); margin-bottom: 20px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--sky); background: rgba(37, 99, 235, 0.04); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); } .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--sky); }
+  .compare td strong { color: var(--text-primary); }
+  .decision-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: var(--read-w); }
+  @media (max-width: 720px) { .decision-grid { grid-template-columns: 1fr; } }
+  .decision-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 24px; }
+  .decision-card.use { border-left: 3px solid var(--green); } .decision-card.skip { border-left: 3px solid var(--rose); }
+  .decision-card h4 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 12px; }
+  .decision-card.use h4 { color: var(--green); } .decision-card.skip h4 { color: var(--rose); }
+  .decision-card ul { list-style: none; padding: 0; }
+  .decision-card li { font-size: 13px; color: var(--text-secondary); line-height: 1.6; padding: 6px 0; border-bottom: 1px solid var(--border); }
+  .decision-card li:last-child { border-bottom: none; }
+  .connect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .connect-node { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; transition: all 0.3s; text-decoration: none; color: inherit; display: block; }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node .tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--sky); word-break: break-all; }
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--sky); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } pre.code { font-size: 11px; padding: 14px 16px; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+<div class="glow-orb blue"></div>
+<div class="glow-orb sky"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand"><span class="nav-brand-mark">know.2nth.ai</span><span class="nav-brand-sub">agents/system-one-models</span></a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">&larr; Agents</a>
+      <a href="../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x1F319;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="./">Agents</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">System One models</span>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> agents &middot; System One models &middot; Concept Leaf</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      Decisions, not text. <span class="gradient">The model class your agent loop was missing.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      Most of the calls inside a production agent are not writing. They are deciding: which queue, how urgent, is this tool call safe, does this answer break policy. Today those decisions go to a frontier model that generates a paragraph, which you then parse. A <strong>System One model</strong> answers typed questions about a piece of state with <strong>calibrated probabilities</strong>, in one forward pass, for a few thousandths of a cent. TypeSafe's <strong>Jev</strong> launched the category on 15 September 2026, six open-source clones appeared within two days, and five independent calibration tests have already been published. This leaf is what they found, and what it changes.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill accent">Typed decisions</span>
+      <span class="pill indigo">Calibrated probabilities</span>
+      <span class="pill green">Independently tested</span>
+      <span class="pill">Jev &middot; TypeSafe AI</span>
+      <span class="pill warn">Six clones in two days</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 -->
+<section id="what">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; What it is</div>
+      <h2 class="section-title">State in, typed probabilities out. Nothing generated.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>An autoregressive LLM produces one token at a time, each conditioned on the last. Ask it "is this ticket urgent?" and it writes a sentence you then parse, hoping the format held. A System One model skips generation entirely. You send it a <strong>state</strong> (a support ticket, a tool call, a candidate profile, a game frame) and a set of <strong>questions</strong>, each with a declared answer type. It returns a probability distribution over the allowed answers for every question, in a single query. All questions are evaluated in parallel against the same state, so the tenth question costs tokens but almost no time.</p>
+      <p>The name is borrowed from Kahneman's fast, intuitive "System 1" thinking, and the vendor positioning is that the model "is more like code: reliable, fast, self-consistent, and type-safe." Strip the marketing and three properties survive contact with independent testing: <strong>schema conformance by construction</strong> (the output cannot fall outside the options you declared), <strong>parallel evaluation</strong> (latency does not grow with question count), and <strong>probabilities that are usable as a routing signal</strong> under conditions this leaf spells out in section 04.</p>
+    </div>
+    <div class="stack-grid fade-up" style="transition-delay: 0.08s">
+      <div class="stack-cell">
+        <span class="layer">Primitive</span>
+        <h4>Choice</h4>
+        <p>Pick one option from a bounded list of up to 255. Returns the chosen option, a probability per option, and a confidence statistic.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Primitive</span>
+        <h4>Score</h4>
+        <p>Place the state on an ordered rubric of 2 to 10 described levels. Returns a fractional position plus the distribution over levels.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Primitive</span>
+        <h4>Noul</h4>
+        <p>TypeSafe's name for a yes/no question. Returns the probability that the statement is true of the state, from 0 to 1.</p>
+      </div>
+    </div>
+    <div class="info-card indigo fade-up" style="transition-delay: 0.1s">
+      <h4>Jev, the reference product</h4>
+      <p>Jev is TypeSafe AI's first public System One model, API-only, trained with a method the company calls <strong>Reinforcement Learning for Calibrated Decisions (RLCD)</strong>. Where RLHF optimises for answers human raters prefer and RLVR for answers a program can verify, RLCD is described as optimising for "epistemically honest probabilities." The training details are unpublished. The public facts are the interface, the price, the limits, and the growing body of third-party measurements. Context limit is 64k tokens per call, with 32k for the state. Python and TypeScript SDKs wrap a single REST endpoint, and the model is also reachable through Vercel's AI Gateway and LangChain's integration.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 -->
+<section id="how">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; How it works</div>
+      <h2 class="section-title">Probability tells you what. Confidence tells you whether to act.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>A call is a state plus a dictionary of named questions. The keys are yours and should be descriptive, because the answer comes back under the same key. Instructions are read <em>literally</em>: the model answers the question you wrote, not the one you meant.</p>
+    </div>
+<pre class="code fade-up" style="transition-delay: 0.06s"><span class="c"># pip install typesafe-sdk</span>
+<span class="k">from</span> typesafe <span class="k">import</span> TypeSafe, Choice, Score, Noul
+
+client = TypeSafe()
+r = client.evaluate(
+    state=<span class="s">"Gold-tier customer. Third email this week. Order 4471 charged twice, no refund yet."</span>,
+    questions={
+        <span class="s">"queue"</span>: Choice(
+            instructions=<span class="s">"Which team should handle this ticket"</span>,
+            criteria={<span class="s">"billing"</span>: <span class="s">"Payments, refunds, double charges"</span>,
+                      <span class="s">"shipping"</span>: <span class="s">"Delivery status, damaged goods"</span>,
+                      <span class="s">"technical"</span>: <span class="s">"Login, app or integration faults"</span>,
+                      <span class="s">"none_of_these"</span>: <span class="s">"Does not fit any queue above"</span>}),
+        <span class="s">"angry"</span>: Noul(instructions=<span class="s">"The customer expresses anger or frustration"</span>),
+        <span class="s">"urgency"</span>: Score(instructions=<span class="s">"How time-sensitive the request is"</span>,
+                         criteria=[<span class="s">"Can wait a week"</span>, <span class="s">"This week"</span>, <span class="s">"Today"</span>, <span class="s">"Now"</span>]),
+    },
+)
+<span class="c"># r.queue.choice == "billing", r.queue.probabilities == {...}, r.queue.confidence == 0.97</span>
+<span class="c"># r.angry.probability == 0.91 ; r.urgency.score == 2.6 (fractional position on the rubric)</span></pre>
+    <div class="prose fade-up" style="transition-delay: 0.08s">
+      <p><strong>Two numbers come back, and they are not the same thing.</strong> The <code>probabilities</code> field is the distribution over options. The <code>confidence</code> field is a single statistic derived from the shape of that distribution: concentrated on one option means high, spread out means low. For a three-option Choice the docs give the formula as <code>(3 &times; p_max &minus; 1) / 2</code>. The docs recommend three bands: above 0.9 act automatically, 0.5 to 0.9 confirm or flag, below 0.5 route to a human, with the threshold set per action according to what a wrong answer costs. A read-only lookup can tolerate a lower bar than a refund.</p>
+      <p>Independent testers have a sharper recommendation, covered in section 04: <strong>threshold on the maximum probability, not on the confidence field</strong>, and calibrate per question on your own traffic before you trust either.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 -->
+<section id="patterns">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; The patterns</div>
+      <h2 class="section-title">Decomposition is the whole game.</h2>
+      <p class="section-lede">The model is the cheap part. The engineering skill being sold is question design: breaking one fuzzy judgment into atomic questions and combining the answers with weights you control in code.</p>
+    </div>
+    <div class="stack-grid fade-up" style="transition-delay: 0.05s">
+      <div class="stack-cell">
+        <span class="layer">Pattern 1</span>
+        <h4>Speculative fan-out</h4>
+        <p>Ask every question you might need in one call, including ones you may not use. Parallel evaluation makes the marginal question nearly free in latency. TypeSafe's own figure for a 13-question briefing is 12x cheaper and 10x faster than sequential calls.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Pattern 2</span>
+        <h4>Confidence-gated routing</h4>
+        <p>Use the answer as one axis and the probability as a second. High and clear: automate. Middling: confirm. Low: escalate. Different actions get different bars.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Pattern 3</span>
+        <h4>Composite scoring</h4>
+        <p>Never ask "is this a good candidate." Ask five narrow Scores and weight them in code. The weights are yours, auditable, and changeable without touching the model.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Pattern 4</span>
+        <h4>The cascade</h4>
+        <p>System One model classifies. Code handles the clear majority. A frontier model gets the hard minority. Humans get the low-confidence residue. TypeSafe's worked example: a million tickets for roughly $6,500 instead of $30,400.</p>
+      </div>
+    </div>
+    <div class="info-card green fade-up" style="transition-delay: 0.08s">
+      <h4>The result that proves the point</h4>
+      <p>An independent shadow evaluation on 2,000 phishing emails asked Jev a single question, "is this phishing?", and got <strong>62.6%</strong> accuracy against Claude Haiku 4.5's 81.3%. The same evaluator then decomposed the judgment into five narrow signals (shortened URLs, free hosting, sender domain mismatch, and so on), fitted logistic-regression weights on 1,000 labelled examples, and re-ran. Jev reached <strong>95.0%</strong>; Haiku on the same five signals reached 93.2%, a difference that was not statistically significant. Cost per thousand emails was $0.038 for Jev against $0.46 to $1.02 for Haiku. Same model, same data. The only thing that changed was the questions.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 -->
+<section id="evidence">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; What independent tests found</div>
+      <h2 class="section-title">Calibration holds in-distribution. It fails exactly where you would build the escalation path.</h2>
+      <p class="section-lede">TypeSafe's launch numbers (193.6x faster, 444.6x cheaper) come from its own workflows against its own LLM wrapper, and the company says so. What matters operationally is one narrower question: is the probability worth routing on? Five groups measured it within a week of launch. Expected calibration error (ECE) is the gap between stated probability and observed accuracy; lower is better, and a well-calibrated classifier sits near 0.02.</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead><tr><th>Test</th><th>Task</th><th>Finding</th></tr></thead>
+        <tbody>
+          <tr><td><strong>jev-benchmark</strong> (Portland, 2026-09-17)</td><td>Classify 60 agent tool calls as readonly / destructive / privileged / exfiltration, with adversarial wrappers</td><td>91.7% accurate. 100% on clear cases, 71% on ambiguous, 11 of 12 adversarial caught. <strong>Never wrong at confidence 1.0.</strong> ECE 0.05 to 0.07. No frontier baseline yet.</td></tr>
+          <tr><td><strong>ASSAY-001</strong> (pre-registered, sealed protocol)</td><td>Intent classification on CLINC150 (150 classes) and Banking77 (77 classes)</td><td>Calibrated on CLINC150 (ECE 0.020). <strong>Overconfident on Banking77</strong> (ECE 0.094). Zero type errors across 8,576 responses.</td></tr>
+          <tr><td><strong>jev-ood-calibration</strong> (900 synthetic tickets it cannot have seen)</td><td>Queue (Choice), anger (Noul), priority under an organisational rule absent from the text (Score)</td><td>89% on queue, 92% on anger. <strong>45% on the policy question while stating 0.74 average probability.</strong> Choice and Score overconfident, Noul underconfident, on the same inputs. Probabilities quantised to 0.01 and often exactly 0 or 1.</td></tr>
+          <tr><td><strong>Phishing shadow eval</strong> (2,000 emails)</td><td>Single question vs five decomposed signals, against Claude Haiku 4.5</td><td>62.6% asked once, 95.0% decomposed. Jev struggled with date comparison, double negatives, large irrelevant state, and prompt injection. Wrong criteria text pushed accuracy below the random floor.</td></tr>
+          <tr><td><strong>JevBench v1.2</strong> (534 decisions, 42 systems, 2026-09-21)</td><td>Geometric mean of accuracy, calibration, speed and cost</td><td>Jev 1.13.0 leads at 75.4. Open-weight SemIf on Qwen3.5-4B scores 74.7, faster and cheaper to run. Jev's calibration sub-score (82.7) is its widest lead.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.08s">
+      <h4>Three things every evaluator converged on</h4>
+      <p><strong>Calibrate per question, not per model.</strong> The direction of miscalibration flips by primitive: yes/no answers ran underconfident, choice and score answers ran overconfident. One global threshold is unsafe for Choice and Score.</p>
+      <p><strong>Threshold on the max probability, not the confidence field.</strong> On every set where both were measured, the confidence statistic was never better calibrated than the max probability and was sometimes much worse.</p>
+      <p><strong>It does not know what it cannot know.</strong> When the right answer depended on a rule that was not in the text (a tier bump in the priority policy), the model was near chance while stating high probability. That is the exact case a human-routing path depends on. The fix is structural: put the policy in the state or in code, and give every Choice an explicit "none of these" option.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.1s">
+      <p>Two claims deserve a plain reading. "Zero hallucinations" is true only in the narrow sense that output cannot fall outside the schema, and TypeSafe concedes the figure "is not empirical." Picking the wrong option inside the schema is measured above. And "cannot prove it isn't subsidised" is TypeSafe's own phrase about its price. Pin a model version (<code>jev-1.13.0</code>) when you tune thresholds; the vendor changes behaviour between releases.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 -->
+<section id="clones">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; The clones and the moat</div>
+      <h2 class="section-title">The interface is the standard. The weights are already commodity.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Within 48 hours of launch, six reproductions existed, and by day six a public leaderboard was ranking 42 systems against the same wire format. None reproduces RLCD, because the method is unpublished. All reproduce the interface: Choice, Score, Noul, probabilities per option, one forward pass. That tells you where the durable value sits. The training recipe is TypeSafe's edge for now; the <em>shape of the call</em> is becoming a de facto standard that LangChain, Vercel's gateway, and the open projects all speak.</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.08s">
+      <table class="compare">
+        <thead><tr><th>Project</th><th>Approach</th><th>Where it lands</th></tr></thead>
+        <tbody>
+          <tr><td><strong>SemIf</strong> (formerly OpenJev)</td><td>Qwen3.5-4B backbone with a small NLI classification head on the last token; no retraining of the base</td><td>JevBench 74.7 vs Jev's 75.4. The strongest open option; runs on one GPU in-country.</td></tr>
+          <tr><td><strong>Bespoke Nimble</strong></td><td>LoRA fine-tune of Qwen3.5-9B with contrastive data curation</td><td>Reported 90% against Jev's 93% on the same set, up from a 66% base.</td></tr>
+          <tr><td><strong>djev</strong></td><td>Diffusion-based on diffusion-gemma</td><td>Fastest on JevBench (91.4 speed), weakest calibration (65.4).</td></tr>
+          <tr><td><strong>Laya</strong></td><td>421M-parameter ModernBERT-large encoder with a decision head</td><td>ECE 0.466 as shipped, 0.081 after temperature fitting. Calibration is a post-processing step here, not a training property.</td></tr>
+          <tr><td><strong>NanoJev, Kev-0.5B, mini-jev</strong></td><td>Sub-1B models, LoRA adapters, or logit-reading over a frozen vocabulary</td><td>Laptop-class. Approximate the interface; trade accuracy for control.</td></tr>
+          <tr><td><strong>GLiNER, SetFit, OpenDecision</strong></td><td>Classical encoders, few-shot classifiers, 400M ModernBERT</td><td>CPU-only. Where you have a fixed label set and labelled history, a fine-tuned encoder is cheaper and likely more accurate on your own labels.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.1s">
+      <p>The honest reading is that Jev's moat on quality is real but thin, its moat on <strong>calibration</strong> is the widest and the least reproduced, and its moat on distribution is what it is actually racing to build. Vercel reported Jev in use by about 13% of teams on its gateway within a day. Design for portability: keep the call shape, keep thresholds in code, and keep an open model in the cascade as the backstop.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 -->
+<section id="pricing">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; Pricing reality and jagged edges</div>
+      <h2 class="section-title">A decision costs less than a hundredth of a cent. The limits are what you pay attention to.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>List price is <strong>$0.042 per million input tokens</strong>, and output is unmetered, which is honest given that output is a handful of floats. A typical tool-call classification runs about 400 input tokens, so a decision costs roughly $0.000017. In rand that is a few hundredths of a cent at any plausible exchange rate. Latency claimed is 70 to 500ms end to end; independent medians ran 240ms from France and 420ms from the US west coast. Rate limits as documented: 250k tokens per second and 1,200 requests per minute, both subject to change, and the free tier throttles to a handful of requests per minute, which broke one evaluator's concurrency.</p>
+      <p>The documented jagged edges of jev-1.13 are the ones that bite in production. <strong>Literal reading</strong>: negations, scoping words and implied conditions land at face value, so write the exact boundary condition. <strong>Counting and arithmetic</strong>: count in code, or ask one Noul per item. <strong>Dates</strong>: extract with a Choice over enumerated values plus a "not stated" option, then compare in code. <strong>Large irrelevant state</strong>: accuracy degrades with padding, so filter in code and send only the fields the question needs. <strong>Adversarial content</strong>: text engineered to argue for its own classification can move the answer. <strong>Contradictory instructions</strong>: a Noul mapped as "true means no" underperforms. None of these is exotic. All of them are the difference between a demo and a system.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 07 -->
+<section id="decide">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; Decision guide</div>
+      <h2 class="section-title">A System One model, a fine-tuned encoder, or just the LLM?</h2>
+      <p class="section-lede">Three ways to make a bounded decision inside software. Volume, label stability and the cost of a wrong answer decide which is rational.</p>
+    </div>
+    <div class="decision-grid fade-up" style="transition-delay: 0.05s">
+      <div class="decision-card use">
+        <h4>Reach for a System One model when</h4>
+        <ul>
+          <li>The decision is bounded, repeated, and high-volume: triage, routing, moderation, relevance filtering, scoring another model's output, tagging</li>
+          <li>It sits on a request path where a frontier call's latency or cost is the bottleneck</li>
+          <li>You need an escalation path and can validate the probability on your own logs first</li>
+          <li>The label set changes often or you have no labelled history, so a fine-tuned encoder would go stale</li>
+          <li>You are gating agent tool calls and want a fast, cheap risk check before execution</li>
+        </ul>
+      </div>
+      <div class="decision-card skip">
+        <h4>Don't reach for it when</h4>
+        <ul>
+          <li>You need generated text, code, summaries, or an auditable chain of reasoning</li>
+          <li>The answer depends on policy that is not in the state and cannot be put there</li>
+          <li>It involves arithmetic, counting, date maths, or multi-hop indirection</li>
+          <li>You have a fixed label set and thousands of labelled examples: a fine-tuned encoder on CPU is cheaper and likely more accurate on your labels</li>
+          <li>Data residency forbids a US-hosted API and you cannot filter the state down to non-personal fields; run SemIf-class open weights in-country instead</li>
+        </ul>
+      </div>
+    </div>
+    <div class="info-card green fade-up" style="transition-delay: 0.08s">
+      <h4>The SA read</h4>
+      <p>For a team paying for inference in dollars, this is the rare launch where the cheap thing is also the well-tested thing. The decisions that make or break South African service businesses are exactly this shape: which queue, which adviser, is this claim complete, is this document the one we asked for. Two disciplines make it safe. <strong>Filter the state</strong>: send the fields the question needs, not the customer record, which is both the accuracy-correct and the POPIA-correct design. <strong>Shadow-evaluate before you route</strong>: replay a month of decisions your people already made, measure accuracy and calibration per question, and only then set thresholds. The whole exercise costs a few rand in API calls.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 08 -->
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 &middot; Connections</div>
+      <h2 class="section-title">Where System One models link in the tree.</h2>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="./" class="connect-node">
+        <span class="tag">agents</span>
+        <div class="skill">Agents hub</div>
+        <div class="why">Sits in the Inference band beside test-time compute: the concept leaf for the decision layer under the serving platforms.</div>
+      </a>
+      <a href="../../briefings/typed-decisions" class="connect-node">
+        <span class="tag">briefings/typed-decisions</span>
+        <div class="skill">CTO briefing: The Decision Layer</div>
+        <div class="why">The leadership version of this leaf: what changed, what holds up, what to do this quarter.</div>
+      </a>
+      <a href="test-time-compute.html" class="connect-node">
+        <span class="tag">agents/test-time-compute</span>
+        <div class="skill">Test-time compute</div>
+        <div class="why">The opposite trade: spend more inference for a better answer. A System One model spends less for a bounded one. Both need a verifier.</div>
+      </a>
+      <a href="effective-agents.html" class="connect-node">
+        <span class="tag">agents/effective-agents</span>
+        <div class="skill">Effective Agents</div>
+        <div class="why">Routing and evaluator patterns are where a typed-decision model slots into the agent design taxonomy.</div>
+      </a>
+      <a href="claude-code.html" class="connect-node">
+        <span class="tag">agents/claude-code</span>
+        <div class="skill">Claude Code</div>
+        <div class="why">The auto-mode tool-call check that LangChain's Jev "harness" post copies. The tool-call benchmark above measures exactly that task.</div>
+      </a>
+      <a href="langgraph.html" class="connect-node">
+        <span class="tag">agents/langgraph</span>
+        <div class="skill">LangGraph</div>
+        <div class="why">LangChain ships a TypeSafeClassifier wrapper and two reference patterns: model routing and pre-execution risk checks.</div>
+      </a>
+      <a href="../../briefings/own-vs-rent-ai" class="connect-node">
+        <span class="tag">briefings/own-vs-rent-ai</span>
+        <div class="skill">The Five Things You Can Own</div>
+        <div class="why">The routing layer is one of the five. A System One model is what the router calls first.</div>
+      </a>
+      <a href="ollama.html" class="connect-node">
+        <span class="tag">agents/ollama</span>
+        <div class="skill">Ollama</div>
+        <div class="why">Where the sub-1B clones run when the decision has to stay on a laptop or in-country.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 09 -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">09 &middot; Resources</div>
+      <h2 class="section-title">Primary sources.</h2>
+      <p class="section-lede">Vendor documents for the interface and the claims; the independent repositories for the measurements, each publishing raw responses. Last reviewed 2026-09-21.</p>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://typesafe.ai/blog/introducing-system-one-models-and-jev" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Vendor &middot; launch post</span>
+        <span class="r-title">TypeSafe AI: Introducing System One Models and Jev</span>
+        <span class="r-url">typesafe.ai/blog/introducing-system-one-models-and-jev</span>
+      </a>
+      <a href="https://docs.typesafe.ai/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Vendor &middot; docs</span>
+        <span class="r-title">TypeSafe docs: primitives, confidence, patterns, API reference</span>
+        <span class="r-url">docs.typesafe.ai</span>
+      </a>
+      <a href="https://docs.typesafe.ai/model-jaggedness/jev-1.13.md" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Vendor &middot; limitations</span>
+        <span class="r-title">Jev 1.13 jaggedness: the documented failure modes</span>
+        <span class="r-url">docs.typesafe.ai/model-jaggedness/jev-1.13</span>
+      </a>
+      <a href="https://github.com/themsquared/jev-benchmark" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Independent &middot; tool-call risk</span>
+        <span class="r-title">jev-benchmark: agent tool-call classification, calibration held</span>
+        <span class="r-url">github.com/themsquared/jev-benchmark</span>
+      </a>
+      <a href="https://github.com/jourdanlabs/assay-001" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Independent &middot; pre-registered</span>
+        <span class="r-title">ASSAY-001: calibration and type safety on CLINC150 and Banking77</span>
+        <span class="r-url">github.com/jourdanlabs/assay-001</span>
+      </a>
+      <a href="https://github.com/scienthoon/jev-ood-calibration" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Independent &middot; out-of-distribution</span>
+        <span class="r-title">jev-ood-calibration: does Jev know when it doesn't know?</span>
+        <span class="r-url">github.com/scienthoon/jev-ood-calibration</span>
+      </a>
+      <a href="https://www.beri.net/article/typesafe-jev-typed-decision-model-calibration-decomposition-shadow-eval" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Independent &middot; shadow eval</span>
+        <span class="r-title">Phishing shadow eval: 62.6% asked once, 95% split five ways</span>
+        <span class="r-url">beri.net/article/typesafe-jev-typed-decision-model-calibration-decomposition-shadow-eval</span>
+      </a>
+      <a href="https://benchmarkheaven.com/jev-models" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Independent &middot; leaderboard</span>
+        <span class="r-title">JevBench v1.2: Jev-class decision models ranked</span>
+        <span class="r-url">benchmarkheaven.com/jev-models</span>
+      </a>
+      <a href="https://www.langchain.com/blog/building-a-harness-with-jev" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Integration &middot; LangChain</span>
+        <span class="r-title">LangChain: Building a harness with Jev (routing and auto-mode patterns)</span>
+        <span class="r-url">langchain.com/blog/building-a-harness-with-jev</span>
+      </a>
+      <a href="https://systemonemodels.org/examples/alternatives/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Community &middot; alternatives</span>
+        <span class="r-title">System One Models: open reproductions, local models and classifiers</span>
+        <span class="r-url">systemonemodels.org/examples/alternatives</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../index.html">Skills tree</a>
+      <a href="./">Agents hub</a>
+      <a href="../../briefings/typed-decisions">CTO briefing</a>
+      <a href="https://docs.typesafe.ai/" target="_blank" rel="noopener">TypeSafe docs &nearr;</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme(){const html=document.documentElement;const current=html.getAttribute('data-theme');const next=current==='dark'?'light':'dark';html.setAttribute('data-theme',next);document.querySelector('.theme-toggle').textContent=next==='dark'?'☀️':'🌙';localStorage.setItem('theme',next);}
+  const saved=localStorage.getItem('theme');if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.theme-toggle').textContent=saved==='dark'?'☀️':'🌙';}
+  const observer=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting)entry.target.classList.add('visible');});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>
