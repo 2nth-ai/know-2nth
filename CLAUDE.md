@@ -8,7 +8,10 @@ Sibling sites in the ecosystem:
 - **2nth.ai** — framework / GTM site (Human + AI = 2ⁿ)
 - **dev.2nth.ai** — partner / Gridline / openBUILD AI source content (Construction domain pulls from here)
 - **2nth.io** — compute infrastructure layer
+- **2nth.me**, **2nth.org**, **pay.2nth.ai** — further ecosystem properties that draw on leaves from this tree as source material. Their purpose is not documented here; ask before writing anything that asserts what they do.
 - **imbila.ai** — parent consultancy brand
+
+Leaves here are source material for all of the above, so accuracy and voice carry beyond this site.
 
 ### Related repos that are NOT this one
 
@@ -43,7 +46,13 @@ Sibling sites in the ecosystem:
 ```
 know-2nth/
 ├── CLAUDE.md
-├── index.html                # root: 12 top-level domain cards
+├── index.html                # root: 14 top-level domain cards
+├── ask.html                  # natural-language search over the tree
+├── wrangler.toml             # Cloudflare Pages / Functions config
+├── briefings/                # CEO briefings (indexed alongside leaves)
+├── claude/                   # Claude-facing assets
+├── functions/                # Cloudflare Pages Functions (agent-fetch + MCP)
+├── scripts/                  # gen-agent-index.mjs
 ├── about.html                # access model + how the site works
 ├── join.html                 # HubSpot signup form (soft conversion play)
 ├── gate.js                   # tier-gate hook, loaded on every leaf, currently inert
@@ -57,12 +66,22 @@ know-2nth/
     ├── construction/  # openBIM + Gridline / openBUILD AI partner-anchored
     ├── data/          # analytics/, warehousing/, engineering/ sub-hubs
     ├── design/        # tokens, components, motion, AI-assisted design
+    ├── fin/           # finance
+    ├── health/        # private practice management + ambient AI scribes
+    ├── leg/           # legal
+    ├── media/         # voice, TTS, generative media
     ├── partners/      # co-branded leaves (no hub yet, not on root grid)
-    ├── people/        # coaching, leadership, typologies/
-    └── tech/          # cloudflare/, google/, microsoft/, frappe/, runtime/, android-hce/, embedded/, frameworks/
+    ├── people/        # coaching, leadership, typologies/, ai-roles/
+    ├── software/      # engineering practice leaves
+    ├── tech/          # cloudflare/, google/, microsoft/, frappe/, runtime/, android-hce/, embedded/, frameworks/, oracle/, hardware/, game-engines/
+    └── tools/         # tooling leaves (no root card)
 ```
 
-Five additional domains exist on the root grid as cards but have **no folder yet**: `edu`, `fin`, `health`, `iot`, `leg`. Building any of them out means: create `explainers/<domain>/index.html` hub, ship at least one Live leaf, then the root card becomes meaningful.
+Two domains exist on the root grid as cards but have **no folder yet**: `edu` and `iot`. (`fin`, `health` and `leg` were built out after this doc was first written — they have folders and Live leaves.) Building a card out means: create `explainers/<domain>/index.html` hub, ship at least one Live leaf, then the root card becomes meaningful.
+
+Going the other way, `partners/` and `tools/` have folders but no root card.
+
+**Hub and root-card Live counts drift.** They are hand-maintained and are routinely wrong in both directions — `data` read "5 Live explainers" on the hub and "6 leaves" on the root card against an actual 7 before this week's leaf landed. When you touch a hub, recount with `find explainers/<domain> -name '*.html' ! -name index.html | wc -l` rather than trusting the number that is there.
 
 ## How leaves are built
 

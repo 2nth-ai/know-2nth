@@ -422,7 +422,7 @@ main = Agent(
     </div>
     <div class="info-card green fade-up" style="transition-delay: 0.09s">
       <h4>FX cost reality</h4>
-      <p>Claude is USD-billed and not cheap at frontier tier. Opus 4.7 input tokens are billed at frontier-tier rates; output tokens cost ~5x input; extended thinking burns thinking-tokens at the same rate as output. For SA studios watching FX, the practical path is: <strong>Sonnet 4.6 as the default</strong> (much cheaper than Opus, very close in quality), promote to Opus only for hard reasoning, use Haiku 4.5 for high-volume routing tasks. The SDK supports this routing trivially &mdash; sub-agents can run on different model tiers.</p>
+      <p>Claude is USD-billed and not cheap at frontier tier. Opus 5 is <code>$5 / $25</code> per million tokens; output costs 5&times; input; thinking tokens bill at the output rate. For SA studios watching FX, the practical path is: <strong>Sonnet 5 as the default</strong> at <code>$2 / $10</code> (much cheaper than Opus, very close in quality), promote to Opus 5 only for hard reasoning, use Haiku 4.5 at <code>$1 / $5</code> for high-volume routing. The SDK supports this routing trivially &mdash; sub-agents can run on different model tiers.</p>
     </div>
   </div>
 </section>
@@ -443,7 +443,7 @@ main = Agent(
       <a href="claude.html" class="connect-node">
         <span class="tag">agents/claude</span>
         <div class="skill">Claude</div>
-        <div class="why">The model the SDK is built around. Read this leaf for the family detail (Opus 4.7, Sonnet 4.6, Haiku 4.5), pricing, and tier routing strategy.</div>
+        <div class="why">The model the SDK is built around. Read this leaf for the family detail (Fable 5.1, Opus 5, Sonnet 5, Haiku 4.5), pricing, and tier routing strategy.</div>
       </a>
       <a href="mcp.html" class="connect-node">
         <span class="tag">agents/mcp</span>
@@ -482,10 +482,10 @@ main = Agent(
       <h2 class="section-title">Primary sources only.</h2>
     </div>
     <div class="resource-grid fade-up" style="transition-delay: 0.05s">
-      <a href="https://docs.anthropic.com/en/api/agent-sdk" class="resource" target="_blank" rel="noopener">
+      <a href="https://code.claude.com/docs/en/agent-sdk" class="resource" target="_blank" rel="noopener">
         <span class="r-kind">Docs</span>
         <span class="r-title">Anthropic Agent SDK documentation</span>
-        <span class="r-url">docs.anthropic.com/en/api/agent-sdk</span>
+        <span class="r-url">code.claude.com/docs/en/agent-sdk</span>
       </a>
       <a href="https://github.com/anthropics/claude-agent-sdk-python" class="resource" target="_blank" rel="noopener">
         <span class="r-kind">Source &middot; Python</span>
@@ -497,20 +497,20 @@ main = Agent(
         <span class="r-title">anthropics/claude-agent-sdk-typescript</span>
         <span class="r-url">github.com/anthropics/claude-agent-sdk-typescript</span>
       </a>
-      <a href="https://docs.anthropic.com/en/docs/claude-code/overview" class="resource" target="_blank" rel="noopener">
+      <a href="https://code.claude.com/docs/en/overview" class="resource" target="_blank" rel="noopener">
         <span class="r-kind">CLI</span>
         <span class="r-title">Claude Code documentation</span>
-        <span class="r-url">docs.anthropic.com/en/docs/claude-code</span>
+        <span class="r-url">code.claude.com/docs/en/overview</span>
       </a>
-      <a href="https://docs.anthropic.com/en/docs/build-with-claude/extended-thinking" class="resource" target="_blank" rel="noopener">
+      <a href="https://platform.claude.com/docs/en/build-with-claude/extended-thinking" class="resource" target="_blank" rel="noopener">
         <span class="r-kind">Feature</span>
         <span class="r-title">Extended thinking docs</span>
-        <span class="r-url">docs.anthropic.com/.../extended-thinking</span>
+        <span class="r-url">platform.claude.com/.../extended-thinking</span>
       </a>
-      <a href="https://docs.anthropic.com/en/docs/build-with-claude/computer-use" class="resource" target="_blank" rel="noopener">
+      <a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/computer-use-tool" class="resource" target="_blank" rel="noopener">
         <span class="r-kind">Feature</span>
         <span class="r-title">Computer use docs</span>
-        <span class="r-url">docs.anthropic.com/.../computer-use</span>
+        <span class="r-url">platform.claude.com/.../computer-use-tool</span>
       </a>
       <a href="https://github.com/anthropics/skills" class="resource" target="_blank" rel="noopener">
         <span class="r-kind">Skills</span>
@@ -533,7 +533,7 @@ main = Agent(
     <div class="footer-links">
       <a href="../../index.html">Skills tree</a>
       <a href="./">Agents hub</a>
-      <a href="https://docs.anthropic.com/en/api/agent-sdk" target="_blank" rel="noopener">Agent SDK docs &nearr;</a>
+      <a href="https://code.claude.com/docs/en/agent-sdk" target="_blank" rel="noopener">Agent SDK docs &nearr;</a>
     </div>
     <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant</p>
   </div>

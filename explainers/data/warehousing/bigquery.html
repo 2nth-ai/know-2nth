@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BigQuery — know.2nth.ai</title>
+<meta name="description" content="BigQuery — Google's serverless warehouse. You don't pay for a server, you pay for bytes scanned. The two compute models, the logical-vs-physical storage choice, and how to stop a SELECT * turning into a four-figure invoice. africa-south1 available.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/data/warehousing/bigquery">
+<meta property="og:title" content="BigQuery — know.2nth.ai">
+<meta property="og:description" content="BigQuery — Google's serverless warehouse. You don't pay for a server, you pay for bytes scanned. The two compute models, the logical-vs-physical storage choice, and how to stop a SELECT * turning into a four-figure invoice. africa-south1 available.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai — The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="BigQuery — know.2nth.ai">
+<meta name="twitter:description" content="BigQuery — Google's serverless warehouse. You don't pay for a server, you pay for bytes scanned. The two compute models, the logical-vs-physical storage choice, and how to stop a SELECT * turning into a four-figure invoice. africa-south1 available.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3Cline x1='16' y1='3' x2='16' y2='7' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='16' y1='25' x2='16' y2='29' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='3' y1='16' x2='7' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='25' y1='16' x2='29' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33;
+    --blue: #2563EB; --blue-glow: #3B82F6;
+    --sky: #38BDF8; --sky-muted: #7DD3FC;
+    --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8;
+    --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12);
+    --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12);
+    --violet: #8B5CF6; --violet-soft: rgba(139, 92, 246, 0.12);
+    --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12);
+    --bg: var(--ink); --bg-raised: var(--navy);
+    --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(56, 189, 248, 0.06);
+    --text-primary: var(--paper); --text-secondary: var(--slate);
+    --text-muted: #64748B;
+    --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(56, 189, 248, 0.3);
+    --max-w: 1200px; --read-w: 760px;
+    --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px;
+  }
+  [data-theme="light"] {
+    --bg: #F1F5F9; --bg-raised: #FFFFFF;
+    --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(56, 189, 248, 0.04);
+    --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8;
+    --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(56, 189, 248, 0.25);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+    background: var(--bg); color: var(--text-primary);
+    line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased;
+  }
+  body::before {
+    content: ''; position: fixed; inset: 0; opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 9999;
+  }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.sky { width: 600px; height: 600px; background: var(--sky); top: -200px; right: -100px; }
+  .glow-orb.blue { width: 500px; height: 500px; background: var(--blue); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+
+  nav {
+    position: sticky; top: 0; z-index: 100; padding: 0 24px;
+    backdrop-filter: blur(20px) saturate(1.4);
+    background: rgba(11, 17, 32, 0.75);
+    border-bottom: 1px solid var(--border);
+  }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner {
+    max-width: var(--max-w); margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 60px;
+  }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark {
+    font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px;
+    background: linear-gradient(135deg, var(--blue), var(--sky));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+  }
+  .nav-brand-sub {
+    font-size: 12px; color: var(--text-muted);
+    letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500;
+    padding-left: 10px; border-left: 1px solid var(--border);
+  }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--sky); }
+  .theme-toggle {
+    background: none; border: 1px solid var(--border); color: var(--text-secondary);
+    width: 36px; height: 36px; border-radius: 50%; cursor: pointer;
+    display: grid; place-items: center; font-size: 16px; transition: all 0.2s;
+  }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--sky); }
+
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .read { max-width: var(--read-w); }
+
+  .crumb {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted);
+    letter-spacing: 0.5px; padding: 28px 0 0;
+    display: flex; gap: 10px; flex-wrap: wrap;
+  }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--sky); }
+  .crumb-sep { opacity: 0.5; }
+  .crumb-current { color: var(--text-secondary); }
+
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500;
+    letter-spacing: 2px; text-transform: uppercase; color: var(--sky);
+    margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px;
+  }
+  .hero .eyebrow .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--sky); box-shadow: 0 0 12px var(--sky);
+  }
+  .hero h1 {
+    font-size: clamp(40px, 6vw, 66px); font-weight: 800;
+    line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 14ch;
+  }
+  .hero h1 .gradient {
+    background: linear-gradient(135deg, var(--sky), var(--sky-muted), var(--blue-glow));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500;
+    padding: 6px 14px; border-radius: var(--radius-pill);
+    border: 1px solid var(--border); color: var(--text-secondary);
+    letter-spacing: 0.5px;
+  }
+  .pill.accent { background: rgba(56, 189, 248, 0.12); color: var(--sky); border-color: rgba(56, 189, 248, 0.25); }
+
+  section { padding: 52px 0; position: relative; }
+  .section-label {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500;
+    letter-spacing: 2px; text-transform: uppercase; color: var(--sky);
+    margin-bottom: 14px;
+  }
+  .section-title {
+    font-size: clamp(26px, 3.4vw, 36px); font-weight: 700;
+    letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2;
+  }
+  .section-lede {
+    font-size: 16px; color: var(--text-secondary); max-width: var(--read-w);
+    line-height: 1.75; font-weight: 300; margin-bottom: 32px;
+  }
+  .prose p {
+    font-size: 16px; color: var(--text-secondary); line-height: 1.75;
+    max-width: var(--read-w); margin-bottom: 18px;
+  }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.88em;
+    background: var(--bg-card); border: 1px solid var(--border);
+    padding: 1px 6px; border-radius: 4px; color: var(--sky);
+  }
+
+  pre.code {
+    background: var(--ink-deep); border: 1px solid var(--border);
+    border-radius: var(--radius-md); padding: 20px 22px;
+    overflow-x: auto; font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px; line-height: 1.65; color: var(--mist);
+    margin: 0 0 20px; max-width: var(--read-w);
+  }
+  [data-theme="light"] pre.code { background: #0F172A; color: #E2E8F0; }
+  pre.code .k { color: var(--sky); }
+  pre.code .s { color: #A5F3B8; }
+  pre.code .c { color: var(--text-muted); font-style: italic; }
+  pre.code .n { color: #FCD34D; }
+
+  .info-card {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-lg);
+    padding: 28px 32px; max-width: var(--read-w);
+    margin-bottom: 20px;
+  }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.warm { border-left: 3px solid var(--warm); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+
+  .compare-wrap {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-lg);
+    overflow: hidden; max-width: var(--read-w);
+    margin-bottom: 20px;
+  }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td {
+    padding: 12px 16px; text-align: left;
+    border-bottom: 1px solid var(--border); vertical-align: top;
+  }
+  .compare thead th {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600;
+    letter-spacing: 1.2px; text-transform: uppercase; color: var(--sky);
+    background: rgba(56, 189, 248, 0.04);
+  }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td .yes { color: var(--green); font-weight: 600; }
+  .compare td .partial { color: var(--warm-glow); font-style: italic; }
+  .compare td { color: var(--text-secondary); }
+  .compare td code {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.9em;
+    color: var(--sky);
+  }
+
+  .gotcha-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 12px;
+  }
+  .gotcha {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-left: 3px solid var(--rose);
+    border-radius: var(--radius-md);
+    padding: 18px 22px;
+  }
+  .gotcha strong { display: block; color: var(--text-primary); font-weight: 600; font-size: 14px; margin-bottom: 6px; }
+  .gotcha p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+  .connect-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 12px;
+  }
+  .connect-node {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    padding: 18px 22px; transition: all 0.3s;
+    text-decoration: none; color: inherit; display: block;
+  }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node.soon { cursor: default; opacity: 0.72; }
+  .connect-node.soon:hover { border-color: var(--border); background: var(--bg-card); }
+  .connect-node .tag {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    letter-spacing: 1px; text-transform: uppercase;
+    color: var(--text-muted); display: block; margin-bottom: 6px;
+  }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+
+  .resource-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 12px;
+  }
+  .resource {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    padding: 18px 22px; text-decoration: none; transition: all 0.3s;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--sky); word-break: break-all; }
+
+  /* Decision split */
+  .decision-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+    max-width: var(--read-w);
+  }
+  @media (max-width: 720px) { .decision-grid { grid-template-columns: 1fr; } }
+  .decision-card {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    padding: 22px 24px;
+  }
+  .decision-card.use { border-left: 3px solid var(--green); }
+  .decision-card.skip { border-left: 3px solid var(--rose); }
+  .decision-card h4 {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .decision-card.use h4 { color: var(--green); }
+  .decision-card.skip h4 { color: var(--rose); }
+  .decision-card ul { list-style: none; padding: 0; }
+  .decision-card li {
+    font-size: 13px; color: var(--text-secondary); line-height: 1.6;
+    padding: 6px 0; border-bottom: 1px solid var(--border);
+  }
+  .decision-card li:last-child { border-bottom: none; }
+
+  footer {
+    padding: 60px 0 40px; border-top: 1px solid var(--border);
+    text-align: center; margin-top: 40px;
+  }
+  .footer-brand {
+    font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600;
+    background: linear-gradient(135deg, var(--blue), var(--sky));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+  }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--sky); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+
+  .fade-up {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 768px) {
+    .nav-brand-sub { display: none; }
+    .nav-link { display: none; }
+    pre.code { font-size: 11px; padding: 14px 16px; }
+    .compare { font-size: 12px; }
+    .compare th, .compare td { padding: 10px 12px; }
+  }
+
+  *, *::before, *::after {
+    transition-property: background-color, border-color, color, box-shadow;
+    transition-duration: 0.3s; transition-timing-function: ease;
+  }
+</style>
+</head>
+<body>
+
+<div class="glow-orb sky"></div>
+<div class="glow-orb blue"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../../index.html" class="nav-brand">
+      <span class="nav-brand-mark">know.2nth.ai</span>
+      <span class="nav-brand-sub">data/warehousing/bigquery</span>
+    </a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">← Warehousing</a>
+      <a href="../../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">🌙</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">›</span>
+    <a href="../../../index.html#domains">Data</a>
+    <span class="crumb-sep">›</span>
+    <a href="../">data</a>
+    <span class="crumb-sep">›</span>
+    <a href="./">warehousing</a>
+    <span class="crumb-sep">›</span>
+    <span class="crumb-current">bigquery</span>
+  </div>
+</div>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> data/warehousing · BigQuery · Skill Leaf</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      You don't pay for a server.<br><span class="gradient">You pay for bytes scanned.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      Google's serverless warehouse. There is no instance to size, no vacuum to tune, no replica to fail over. What replaces all of that is a cost model that bills you for how much data each query touches — which is a much better deal than a server, right up until somebody writes <code>SELECT *</code> against a 4 TB table on a dashboard that refreshes every minute.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill accent">Live</span>
+      <span class="pill">Serverless</span>
+      <span class="pill">$6.25 / TiB scanned</span>
+      <span class="pill">africa-south1</span>
+      <span class="pill">Proprietary</span>
+    </div>
+  </div>
+</section>
+
+<!-- ── 01 WHAT IT IS ── -->
+<section id="what">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 · What it is</div>
+      <h2 class="section-title">A warehouse with the operations removed.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>BigQuery is Google Cloud's analytical data warehouse. The defining property is that <strong>there is no cluster</strong>. You do not choose a node type, you do not pick a disk size, you do not schedule a maintenance window. You create a dataset, load data into it, and run SQL. Google supplies the compute out of a shared pool and bills you afterwards.</p>
+      <p>Under the surface it is a columnar store with compute and storage fully separated. Storage sits in Google's distributed file system and is billed by the gibibyte-month; compute is measured in <strong>slots</strong> — units of virtual CPU — and is billed either by how many bytes your queries read or by how many slot-hours you reserve. Those two billing routes are genuinely different products wearing one name, and choosing between them is most of the skill in running BigQuery well. Section 02 covers that choice.</p>
+      <p>What you get for accepting a proprietary engine: queries over hundreds of terabytes that return in seconds without anyone provisioning anything, batch loading and table copies that cost nothing, and a default concurrency ceiling of about 2,000 slots per project that most teams never reach. What you give up: portability, per-query cost predictability until you have learned the model, and the ability to tune the engine when it makes a choice you disagree with.</p>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.08s">
+      <h4>The honest one-line summary</h4>
+      <p>BigQuery is the right answer when your analytical data is large, your query volume is spiky, and nobody on the team wants to be a database administrator. It is the wrong answer when your data is small enough to fit on one machine, or when your queries are so predictable and constant that a reserved cluster would be cheaper. Both of those are common, which is why this leaf spends more time on cost than on features.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── 02 THE TWO COMPUTE MODELS ── -->
+<section id="compute">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 · The two compute models</div>
+      <h2 class="section-title">On-demand or capacity. Pick deliberately.</h2>
+      <p class="section-lede">Every BigQuery cost conversation reduces to this fork. On-demand bills per byte read; capacity bills per slot-hour reserved. The crossover point is where your organisation's money is.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p><strong>On-demand (per TiB).</strong> The default. You are charged <code>$6.25</code> per tebibyte of data your queries process, and the first <strong>1 TiB per month is free</strong> per billing account. You generally get up to 2,000 concurrent slots, shared across every query in the project, with occasional bursting above that. No commitment, no floor, and no bill at all in a month where nobody queries anything.</p>
+      <p><strong>Capacity (per slot-hour).</strong> You reserve compute through BigQuery editions and pay for the slots whether or not you use them. Slots are sold with a <strong>50-slot minimum in increments of 50</strong>, billed per second with a one-minute minimum, and a commitment bought in one region cannot be used in another. Three editions, at list price:</p>
+      <ul>
+        <li><strong>Standard</strong> — <code>$0.04</code> per slot-hour pay-as-you-go, <code>$0.036</code> on a one-year commitment, <code>$0.032</code> on three years.</li>
+        <li><strong>Enterprise</strong> — <code>$0.06</code> / <code>$0.054</code> / <code>$0.048</code>. Adds the features most organisations actually need, and is the edition available on AWS and Azure regions as well as Google's own.</li>
+        <li><strong>Enterprise Plus</strong> — <code>$0.10</code> / <code>$0.09</code> / <code>$0.08</code>. The compliance-and-resilience tier.</li>
+      </ul>
+      <p>The arithmetic that matters: 100 Enterprise slots running continuously for a month costs roughly <code>$4,380</code> at pay-as-you-go rates. At <code>$6.25</code> per TiB, the same money buys about <strong>700 TiB of scanned data</strong>. If your team is not plausibly scanning that much, on-demand is cheaper and you should stay there. Reservations are not a discount you unlock by being serious — they are a bet that you will keep the slots busy.</p>
+    </div>
+    <div class="info-card green fade-up" style="transition-delay: 0.08s">
+      <h4>The sequencing that works</h4>
+      <p>Start on on-demand. Let it run for two or three full months and read the actual bytes-scanned figures out of Cloud Billing rather than estimating them. Only move to a reservation once the spend is both large and <em>steady</em> — spiky workloads waste reserved slots by definition, because you pay for the trough as well as the peak. Plenty of teams buy capacity early because it feels more grown-up, then quietly pay more than they did before.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── 03 STORAGE ── -->
+<section id="storage">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 · Storage</div>
+      <h2 class="section-title">Logical or physical, active or long-term.</h2>
+      <p class="section-lede">Storage is the boring half of the bill and the half most teams never revisit. There are two decisions in it, and one of them is made for you automatically.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p><strong>Active versus long-term is automatic.</strong> Any table or partition modified in the last 90 days is billed as active storage. Go 90 consecutive days without modifying it and the price drops by roughly half, with <strong>no change to performance, durability, or availability</strong>. Reads do not reset the clock — querying a table, creating a view over it, exporting it, or copying it all leave the timer running. Only writes reset it. This is free money for historical partitions and nobody has to do anything to collect it.</p>
+      <p><strong>Logical versus physical is your choice.</strong> Logical billing charges for the uncompressed size of your data. Physical billing charges for what is actually on disk after compression, at double the per-gibibyte rate — but it also bills you for time travel and fail-safe storage, which logical billing does not.</p>
+      </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.07s">
+      <table class="compare">
+        <thead><tr><th>Billing model</th><th>Active</th><th>Long-term</th><th>Time travel &amp; fail-safe</th></tr></thead>
+        <tbody>
+          <tr><td>Logical (uncompressed)</td><td><span class="yes">~$0.02 / GiB / month</span></td><td><span class="yes">~$0.016 / GiB / month</span></td><td><span class="yes">Not charged</span></td></tr>
+          <tr><td>Physical (compressed)</td><td><span class="partial">~$0.04 / GiB / month</span></td><td><span class="partial">~$0.02 / GiB / month</span></td><td><span class="partial">Charged</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.09s">
+      <p>The rule of thumb that falls out: physical wins when your data compresses better than roughly 2:1 <em>and</em> you are not carrying a lot of time-travel overhead from high-churn tables. Well-structured analytical data — repetitive, columnar, lots of low-cardinality strings — frequently compresses 4:1 or better, so physical is often the cheaper choice for exactly the tables that dominate the bill. Test it on your own data before switching; the ratio is a property of your schema, not a general fact.</p>
+      <p>The first <strong>10 GiB of storage each month is free</strong>, and Google publishes these rates per gibibyte-<em>hour</em>, prorated per mebibyte per second. The monthly figures above are those hourly rates multiplied out.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── 04 KEEPING QUERIES CHEAP ── -->
+<section id="cost">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 · Keeping queries cheap</div>
+      <h2 class="section-title">The bill is a function of columns, not rows.</h2>
+      <p class="section-lede">On-demand BigQuery charges for the bytes in the columns a query reads. Almost every surprise invoice traces back to somebody not internalising that sentence.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Because the store is columnar, you are billed on the total data in the columns you select — not on the rows you get back. Four consequences worth memorising:</p>
+      <ul>
+        <li><strong><code>LIMIT</code> does not reduce cost.</strong> <code>SELECT * FROM events LIMIT 10</code> reads every byte of every column in the table. The limit applies to what is returned, not to what is scanned.</li>
+        <li><strong>Partitioning and clustering do reduce cost.</strong> A filter on the partitioning column prunes whole partitions before they are read. This is the single highest-leverage change available on most tables.</li>
+        <li><strong>Failed and cached queries are free.</strong> You are not charged for a query that errors, nor for one served from cached results. Cancelling a running query, however, can still cost the full amount if it was near completion.</li>
+        <li><strong>There is a floor.</strong> Charges round up to the nearest megabyte, with a minimum of 10 MB per table referenced and 10 MB per query. Thousands of tiny queries are not free.</li>
+      </ul>
+      <p>Several operations cost nothing at all when they use the shared slot pool: <strong>batch loading</strong> data, <strong>copying</strong> a table, <strong>exporting</strong> to Cloud Storage with an extract job, and <strong>deleting</strong> datasets or tables. You still pay to store whatever those operations produce. Streaming ingestion through the Storage Write API is the exception — that is billed, and <code>EXPORT DATA</code> bills as a query because it runs one.</p>
+    </div>
+    <pre class="code fade-up" style="transition-delay: 0.08s"><span class="c">-- Expensive: reads every column, every partition. LIMIT changes nothing.</span>
+<span class="k">SELECT</span> * <span class="k">FROM</span> `proj.analytics.events` <span class="k">LIMIT</span> <span class="n">10</span>;
+
+<span class="c">-- Cheap: two columns, one day of a partitioned table.</span>
+<span class="k">SELECT</span> user_id, event_name
+<span class="k">FROM</span> `proj.analytics.events`
+<span class="k">WHERE</span> event_date = <span class="s">'2026-09-20'</span>;
+
+<span class="c">-- Partition on the column you filter by; cluster on what you group by.</span>
+<span class="k">CREATE TABLE</span> `proj.analytics.events`
+<span class="k">PARTITION BY</span> event_date
+<span class="k">CLUSTER BY</span> tenant_id, event_name
+<span class="k">AS SELECT</span> * <span class="k">FROM</span> `proj.staging.events_raw`;
+
+<span class="c">-- Cap the damage: reject any query that would scan more than 10 GB.</span>
+<span class="c">-- bq query --maximum_bytes_billed=10000000000 ...</span></pre>
+    <div class="info-card warm fade-up" style="transition-delay: 0.1s">
+      <h4>Set <code>maximum_bytes_billed</code> before you need it</h4>
+      <p>A per-query byte ceiling makes an over-broad query fail instead of succeeding expensively. Set it in the BI tool's connection, in the service account's default job configuration, and in any notebook that a junior analyst can reach. It is a five-minute change that converts the worst-case BigQuery incident from a four-figure invoice into an error message. Pair it with custom cost controls at the project level so a runaway scheduled query cannot run all weekend.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── 05 SA CONTEXT ── -->
+<section id="sa">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 · SA context</div>
+      <h2 class="section-title">Running BigQuery from South Africa.</h2>
+      <p class="section-lede">Residency is solved; the currency exposure is not. Both need to be in the business case.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p><strong>africa-south1 is a supported BigQuery location.</strong> The Johannesburg region appears in Google's pricing tables for on-demand queries, all three editions, and storage — so a POPIA-sensitive warehouse can be created with its data physically resident in South Africa. That removes the Section 72 cross-border transfer question for the warehouse itself, which is usually the hardest part of the compliance conversation.</p>
+      <p><strong>Datasets are region-locked, and that has teeth.</strong> A BigQuery dataset lives in one location and you cannot join across locations. If some of your data sits in <code>africa-south1</code> and some in <code>europe-west1</code>, the join does not silently work more slowly — it does not work. Decide the region before the first dataset is created, because moving one later means a copy, a re-point of every downstream tool, and cross-region data-replication charges along the way. The same applies to slot commitments: capacity bought in one region cannot be used in another.</p>
+      <p><strong>Regional pricing is not US pricing.</strong> Google publishes per-region rates, and the non-US regions are generally higher than the <code>us-central1</code> figures quoted throughout this leaf. Pull the <code>africa-south1</code> column from the pricing page for your own numbers rather than assuming the headline rate. Budget on the region you will actually run in.</p>
+      <p><strong>FX exposure is the line item nobody models.</strong> BigQuery is billed in USD. A warehouse whose cost is genuinely usage-linked has a rand cost that moves with both your query volume and the exchange rate, and those are uncorrelated. If you pay in a currency other than USD, Google applies the rates published on the Cloud Platform SKUs page for that currency. For an SA organisation this argues for the same discipline as any dollar-priced service: budget with headroom, review quarterly, and keep the <code>maximum_bytes_billed</code> ceilings tight so a bad month is bounded in dollars before it is converted.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── 06 GOTCHAS ── -->
+<section id="gotchas">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 · Gotchas</div>
+      <h2 class="section-title">Things that only bite once you ship.</h2>
+      <p class="section-lede">Six failure modes that are obvious in hindsight and expensive in advance.</p>
+    </div>
+    <div class="gotcha-list fade-up" style="transition-delay: 0.05s">
+      <div class="gotcha">
+        <strong>A dashboard on a live query is a recurring charge</strong>
+        <p>A BI dashboard that re-runs its query on every load, for every viewer, is a scan multiplied by traffic. Materialise the aggregate into a small table on a schedule and point the dashboard at that. The pattern that hurts most is auto-refresh on a wall-mounted screen nobody is watching.</p>
+      </div>
+      <div class="gotcha">
+        <strong><code>SELECT *</code> is a cost bug, not a style issue</strong>
+        <p>In a row store, <code>SELECT *</code> is untidy. In a columnar store billed by bytes read, it is the difference between scanning two columns and scanning two hundred. List the columns you need, every time, including in the exploratory query you were "only going to run once".</p>
+      </div>
+      <div class="gotcha">
+        <strong>Unpartitioned tables scan in full, forever</strong>
+        <p>A table created without a partitioning column has no way to prune, so every query reads all of it and the cost grows linearly with the table for the life of the table. Partition at creation. Retrofitting means rewriting the table.</p>
+      </div>
+      <div class="gotcha">
+        <strong>Streaming ingestion is not free; batch loading is</strong>
+        <p>Batch loads through the shared slot pool cost nothing. The Storage Write API is billed. Teams reach for streaming because it feels modern, then discover the ingestion line on the bill. If a five-minute delay is acceptable, batch it.</p>
+      </div>
+      <div class="gotcha">
+        <strong>Reserved slots are billed whether you use them or not</strong>
+        <p>Capacity pricing is a commitment, not a discount. A 100-slot reservation used two hours a day is 100 slots paid for twenty-four. Check utilisation before renewing, and remember that a commitment is locked to its region.</p>
+      </div>
+      <div class="gotcha">
+        <strong>Physical storage bills time travel and fail-safe</strong>
+        <p>Switching to physical storage billing to save on compressed data also starts charging you for time travel and fail-safe, which logical billing does not. On high-churn tables that overhead can erase the compression saving entirely. Measure per dataset, not once for the project.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 07 DECISION ── -->
+<section id="decision">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 · Decision guide</div>
+      <h2 class="section-title">Use it for, skip it for.</h2>
+      <p class="section-lede">BigQuery is excellent at a specific shape of problem and a poor fit for several adjacent ones. The skip list is the more useful half.</p>
+    </div>
+    <div class="decision-grid fade-up" style="transition-delay: 0.05s">
+      <div class="decision-card use">
+        <h4>Use BigQuery when</h4>
+        <ul>
+          <li>Analytical data is large and growing, and nobody on the team wants to operate a cluster.</li>
+          <li>Query volume is spiky — the serverless model charges nothing while you are idle.</li>
+          <li>You are already on Google Cloud and want IAM, VPC controls, and billing in one place.</li>
+          <li>POPIA requires South African residency and you can commit to <code>africa-south1</code> up front.</li>
+          <li>The team's skill is SQL rather than infrastructure, and you would rather buy operations than hire them.</li>
+          <li>Workloads are batch and analytical: reporting, aggregation, historical analysis over columnar data.</li>
+        </ul>
+      </div>
+      <div class="decision-card skip">
+        <h4>Skip BigQuery when</h4>
+        <ul>
+          <li>You need transactional writes, row-level updates, or sub-100ms point lookups — that is PostgreSQL's job, not this one.</li>
+          <li>Your data fits comfortably on one machine. DuckDB or Postgres will be faster, cheaper, and easier to reason about.</li>
+          <li>Load is constant and predictable enough that a right-sized cluster genuinely costs less — run the slot-hour arithmetic in section 02 before assuming otherwise.</li>
+          <li>Vendor lock-in is a stated architectural constraint. The engine is proprietary and the SQL dialect is not portable without work.</li>
+          <li>You need sub-second interactive analytics on high-cardinality data — ClickHouse is built for that query shape.</li>
+          <li>You cannot commit to a single region, or you need to join data that is already spread across regions.</li>
+          <li>Cost predictability matters more than cost efficiency. Usage-based billing is cheaper on average and harder to forecast; a fixed cluster is the opposite trade.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 08 2ⁿ PERSPECTIVE ── -->
+<section id="perspective">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 · 2ⁿ Perspective</div>
+      <h2 class="section-title">How this leaf compounds in the tree.</h2>
+      <p class="section-lede">BigQuery is where the operational databases go to be analysed. Its value in the tree is as a destination, not as a replacement.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>The stack pattern that recurs across 2nth builds: PostgreSQL holds the operational truth, a transformation layer moves it, and the warehouse answers questions that would be unkind to ask of production. BigQuery fits the third slot cleanly, and because it is serverless it fits there for organisations too small to justify a data platform team.</p>
+      <p>There is an agent angle worth noting. A warehouse billed per byte scanned is a warehouse where an agent writing its own SQL is a financial risk as well as a correctness one — an agent that writes <code>SELECT *</code> in a retry loop is a distinctive kind of incident. The mitigations are the same ones in section 04, applied to the service account the agent runs as: a hard <code>maximum_bytes_billed</code> ceiling, read-only access to views rather than base tables, and partition filters required at the table level.</p>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.08s">
+      <a href="postgresql.html" class="connect-node">
+        <span class="tag">data/warehousing/postgresql</span>
+        <div class="skill">PostgreSQL</div>
+        <div class="why">The operational database on the other side of the pipeline. Postgres holds the transactional truth; BigQuery answers the analytical questions you would not want to run against production.</div>
+      </a>
+      <a href="./" class="connect-node">
+        <span class="tag">data/warehousing</span>
+        <div class="skill">Warehousing sub-hub</div>
+        <div class="why">The parent sub-hub. BigQuery covers serverless cloud-scale OLAP; the other nodes cover the shapes it is wrong for.</div>
+      </a>
+      <div class="connect-node soon">
+        <span class="tag">data/warehousing/duckdb</span>
+        <div class="skill">DuckDB</div>
+        <div class="why">The honest alternative when the data is smaller than the pitch suggests. If a dataset fits on one machine, DuckDB does the same analytical work with no bill and no region lock.</div>
+      </div>
+      <div class="connect-node soon">
+        <span class="tag">data/warehousing/clickhouse</span>
+        <div class="skill">ClickHouse</div>
+        <div class="why">The alternative at the other end. When queries must return in well under a second on high-cardinality data, ClickHouse's engine is the better fit than BigQuery's shared slot pool.</div>
+      </div>
+      <a href="../../tech/google/compute.html" class="connect-node">
+        <span class="tag">tech/google/compute</span>
+        <div class="skill">Google Cloud compute</div>
+        <div class="why">The surrounding platform. IAM, VPC controls, billing, and the africa-south1 region story are shared with the rest of the Google Cloud estate.</div>
+      </a>
+      <div class="connect-node soon">
+        <span class="tag">data/engineering</span>
+        <div class="skill">Data Engineering</div>
+        <div class="why">dbt, Airbyte, and the transformation layer that fills the warehouse. The partitioning and clustering decisions in section 04 are made in this layer, not in the warehouse.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 09 RESOURCES ── -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">09 · Resources</div>
+      <h2 class="section-title">Go deeper.</h2>
+      <p class="section-lede">The pricing page is the document to read properly — it is where the cost model is actually defined, and it carries the per-region tables this leaf quotes the us-central1 column of.</p>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://cloud.google.com/bigquery" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Product home</span>
+        <span class="r-title">BigQuery</span>
+        <span class="r-url">cloud.google.com/bigquery</span>
+      </a>
+      <a href="https://cloud.google.com/bigquery/pricing" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Pricing</span>
+        <span class="r-title">BigQuery pricing — compute, storage, editions, per region</span>
+        <span class="r-url">cloud.google.com/bigquery/pricing</span>
+      </a>
+      <a href="https://cloud.google.com/bigquery/docs" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs</span>
+        <span class="r-title">BigQuery documentation</span>
+        <span class="r-url">cloud.google.com/bigquery/docs</span>
+      </a>
+      <a href="https://cloud.google.com/bigquery/docs/best-practices-costs" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs</span>
+        <span class="r-title">Controlling and optimising query costs</span>
+        <span class="r-url">cloud.google.com/bigquery/docs/best-practices-costs</span>
+      </a>
+      <a href="https://cloud.google.com/bigquery/docs/partitioned-tables" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs</span>
+        <span class="r-title">Partitioned tables</span>
+        <span class="r-url">cloud.google.com/bigquery/docs/partitioned-tables</span>
+      </a>
+      <a href="https://cloud.google.com/bigquery/docs/locations" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs</span>
+        <span class="r-title">BigQuery locations — including africa-south1</span>
+        <span class="r-url">cloud.google.com/bigquery/docs/locations</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../../index.html">Skills tree</a>
+      <a href="./">Warehousing sub-hub</a>
+      <a href="https://cloud.google.com/bigquery" target="_blank" rel="noopener">cloud.google.com/bigquery ↗</a>
+    </div>
+    <p class="footer-copy">© 2026 2nth.ai · Built in South Africa — Globally relevant</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme() {
+    const html = document.documentElement;
+    const current = html.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
+    localStorage.setItem('theme', next);
+  }
+  const saved = localStorage.getItem('theme');
+  if (saved) {
+    document.documentElement.setAttribute('data-theme', saved);
+    document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '☀️' : '🌙';
+  }
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>
