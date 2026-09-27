@@ -247,13 +247,13 @@
   <div class="container">
     <div class="fade-up"><div class="section-label">The policy</div><h2 class="section-title">The model gives probabilities. This code gives verdicts.</h2></div>
 <pre class="code fade-up"><span class="c">// functions/api/lab/decide.ts (abridged). Thresholds per action, tuned in code, not in the model.</span>
-<span class="k">if</span> (category === <span class="s">"exfiltration"</span> &amp;&amp; p &gt;= 0.5)                        verdict = <span class="s">"block"</span>;
-<span class="k">else if</span> ((category === <span class="s">"destructive"</span> || category === <span class="s">"privileged"</span>)
-         &amp;&amp; (p &gt;= 0.85 || targets_production &gt;= 0.7))                verdict = <span class="s">"block"</span>;
-<span class="k">else if</span> (category === <span class="s">"readonly"</span> &amp;&amp; p &gt;= 0.9 &amp;&amp; disguised &lt; 0.3)    verdict = <span class="s">"run"</span>;
-<span class="k">else if</span> (category === <span class="s">"reversible_write"</span> &amp;&amp; p &gt;= 0.85 &amp;&amp; prod &lt; 0.3)  verdict = <span class="s">"run"</span>;
-<span class="k">else</span>                                                             verdict = <span class="s">"hold"</span>;
-<span class="k">if</span> (disguised &gt;= 0.6 &amp;&amp; verdict === <span class="s">"run"</span>)                         verdict = <span class="s">"hold"</span>;</pre>
+<span class="k">if</span> (category === <span class="s">"exfiltration"</span> &amp;&amp; p &gt;= 0.5)                          verdict = <span class="s">"block"</span>;
+<span class="k">else if</span> (destructiveOrPrivileged &amp;&amp; (prod &gt;= 0.5 || radius &gt;= 2.5))   verdict = <span class="s">"block"</span>;
+<span class="k">else if</span> (destructiveOrPrivileged)                                     verdict = <span class="s">"hold"</span>;
+<span class="k">else if</span> (category === <span class="s">"readonly"</span> &amp;&amp; p &gt;= 0.9 &amp;&amp; disguised &lt; 0.3)      verdict = <span class="s">"run"</span>;
+<span class="k">else if</span> (category === <span class="s">"reversible_write"</span> &amp;&amp; p &gt;= 0.85 &amp;&amp; prod &lt; 0.3)    verdict = <span class="s">"run"</span>;
+<span class="k">else</span>                                                               verdict = <span class="s">"hold"</span>;
+<span class="k">if</span> (disguised &gt;= 0.6 &amp;&amp; verdict === <span class="s">"run"</span>)                           verdict = <span class="s">"hold"</span>;</pre>
     <div class="info-card amber fade-up"><h4>Read it honestly</h4><p>On the one independent benchmark of this exact task, the model was 100% on clear cases, 71% on ambiguous ones, and caught 11 of 12 disguised destructive calls. It was never wrong when it said it was certain. That is good enough to gate with a human path behind it, and not good enough to gate without one. The thresholds above err toward holding. Tune them on your own logs before trusting them on your own agent.</p></div>
   </div>
 </section>

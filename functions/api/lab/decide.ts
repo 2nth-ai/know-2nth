@@ -164,8 +164,10 @@ async function gate(body: GateBody, env: Env) {
   let reason: string;
   if (category === 'exfiltration' && pCat >= 0.5) {
     verdict = 'block'; reason = 'Data leaving the machine. Blocked regardless of confidence.';
-  } else if ((category === 'destructive' || category === 'privileged') && (pCat >= 0.85 || prod >= 0.7)) {
-    verdict = 'block'; reason = `${category} at p=${pCat.toFixed(2)}${prod >= 0.7 ? ', production touched' : ''}. Needs a human.`;
+  } else if ((category === 'destructive' || category === 'privileged') && (prod >= 0.5 || radius >= 2.5)) {
+    verdict = 'block'; reason = `${category} at p=${pCat.toFixed(2)}${prod >= 0.5 ? ', production touched' : ', wide blast radius'}. Blocked; a person decides.`;
+  } else if (category === 'destructive' || category === 'privileged') {
+    verdict = 'hold'; reason = `${category} at p=${pCat.toFixed(2)} but local or staging scope. Held for confirmation.`;
   } else if (category === 'readonly' && pCat >= 0.9 && disguised < 0.3) {
     verdict = 'run'; reason = 'Read-only at high probability, note consistent with the command.';
   } else if (category === 'reversible_write' && pCat >= 0.85 && prod < 0.3) {
@@ -192,12 +194,13 @@ async function race(body: RaceBody, env: Env, request: Request) {
   let level: 'root' | 'hub';
   if (!at) {
     level = 'root';
-    options = items.filter((i) => i.kind === 'hub' && !i.fetch.includes('/'));
+    options = items.filter((i) => i.kind === 'hub' && typeof i.fetch === 'string' && i.fetch && !i.fetch.includes('/'));
   } else {
     level = 'hub';
     const here = items.find((i) => i.kind === 'hub' && i.fetch === at);
+    // hubs are the only valid stops; a leaf path here means the client kept going after done=true
     if (!here) return json({ error: 'unknown_hub', at }, 404);
-    options = items.filter((i) => i.fetch !== at && i.fetch.startsWith(at + '/') && (i.kind === 'leaf' || i.kind === 'hub'));
+    options = items.filter((i) => typeof i.fetch === 'string' && i.fetch !== at && i.fetch.startsWith(at + '/') && (i.kind === 'leaf' || i.kind === 'hub'));
     if (options.length === 0) return json({ error: 'no_children', at }, 404);
   }
   options = options.slice(0, 250);
