@@ -200,10 +200,10 @@
 
 <span class="c"># Same call, four different providers — model string changes</span>
 resp = completion(<span class="h">model</span>=<span class="s">"gpt-5"</span>,                       <span class="h">messages</span>=msgs)
-resp = completion(<span class="h">model</span>=<span class="s">"claude-sonnet-4-6"</span>,          <span class="h">messages</span>=msgs)
+resp = completion(<span class="h">model</span>=<span class="s">"claude-sonnet-5"</span>,          <span class="h">messages</span>=msgs)
 resp = completion(<span class="h">model</span>=<span class="s">"gemini/gemini-2.5-flash"</span>,    <span class="h">messages</span>=msgs)
 resp = completion(<span class="h">model</span>=<span class="s">"ollama/llama3.3"</span>,           <span class="h">messages</span>=msgs)
-resp = completion(<span class="h">model</span>=<span class="s">"bedrock/anthropic.claude-sonnet-4-6"</span>, <span class="h">messages</span>=msgs)
+resp = completion(<span class="h">model</span>=<span class="s">"bedrock/anthropic.claude-sonnet-5"</span>, <span class="h">messages</span>=msgs)
 
 <span class="c"># Response shape is OpenAI's for all of them</span>
 <span class="k">print</span>(resp.choices[0].message.content)</pre>
