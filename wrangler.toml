@@ -24,3 +24,9 @@ index_name = "know-tree"
 
 # REINDEX_KEY is a Pages *secret* (not committed) that /api/reindex checks.
 # Set it with: npx wrangler pages secret put REINDEX_KEY --project-name=know-2nth
+
+# Jev (System One model) for the /lab/ demos, called from functions/api/lab/decide.ts.
+# JEV_API_KEY is a Pages *secret* (not committed):
+#   npx wrangler pages secret put JEV_API_KEY --project-name=know-2nth
+# The Function calls TypeSafe's official endpoint by default. JEV_ENDPOINT and
+# JEV_MODEL are optional overrides set in the Pages environment, never here.

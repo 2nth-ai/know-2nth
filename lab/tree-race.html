@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The tree race &mdash; know.2nth.ai Lab</title>
+<meta name="description" content="Ask the knowledge tree a question. A System One model picks which link to follow at every hop, scoring every option on the page in one call, until it lands on the leaf that answers.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/lab/tree-race">
+<meta property="og:title" content="The tree race — know.2nth.ai Lab">
+<meta property="og:description" content="Ask the knowledge tree a question and watch a System One model choose the path, one call per hop, every option's probability on screen.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The tree race — know.2nth.ai Lab">
+<meta name="twitter:description" content="Ask the knowledge tree a question and watch a System One model choose the path, one call per hop, every option's probability on screen.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12); --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-soft: rgba(99, 102, 241, 0.12); --bg: var(--ink); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(37, 99, 235, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(56, 189, 248, 0.3); --max-w: 1200px; --read-w: 760px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(37, 99, 235, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(37, 99, 235, 0.25); }
+  * { margin: 0; padding: 0; box-sizing: border-box; } html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.blue { width: 600px; height: 600px; background: var(--blue); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--sky); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--sky); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--sky); } .crumb-sep { opacity: 0.5; } .crumb-current { color: var(--text-secondary); }
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--indigo); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--indigo); box-shadow: 0 0 12px var(--indigo); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--blue-glow), var(--sky), var(--sky-muted)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.green { background: var(--green-soft); color: var(--green); border-color: rgba(16, 185, 129, 0.25); }
+  .pill.indigo { background: var(--indigo-soft); color: var(--indigo); border-color: rgba(99, 102, 241, 0.25); }
+  .pill.warn { background: var(--warm-soft); color: var(--warm-glow); border-color: rgba(245, 158, 11, 0.25); }
+  .pill.accent { background: rgba(37, 99, 235, 0.12); color: var(--blue-glow); border-color: rgba(37, 99, 235, 0.25); }
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--sky); margin-bottom: 14px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--sky); }
+  .prose ul, .prose ol { padding-left: 24px; margin-bottom: 18px; max-width: var(--read-w); }
+  .prose li { font-size: 15px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 8px; }
+  .prose li strong { color: var(--text-primary); font-weight: 600; }
+  pre.code { background: var(--ink-deep); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px 22px; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.65; color: var(--mist); margin: 0 0 20px; max-width: var(--read-w); }
+  [data-theme="light"] pre.code { background: #0F172A; color: #E2E8F0; }
+  pre.code .k { color: var(--sky); } pre.code .s { color: #A5F3B8; } pre.code .c { color: var(--text-muted); font-style: italic; } pre.code .h { color: var(--blue-glow); font-weight: 600; }
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); margin-bottom: 20px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.indigo { border-left: 3px solid var(--indigo); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .stack-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; max-width: var(--read-w); margin-bottom: 20px; }
+  .stack-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--indigo); border-radius: var(--radius-md); padding: 18px 22px; }
+  .stack-cell .layer { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .stack-cell h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.3px; }
+  .stack-cell p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: var(--read-w); margin-bottom: 20px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--sky); background: rgba(37, 99, 235, 0.04); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); } .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--sky); }
+  .compare td strong { color: var(--text-primary); }
+  .decision-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: var(--read-w); }
+  @media (max-width: 720px) { .decision-grid { grid-template-columns: 1fr; } }
+  .decision-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 24px; }
+  .decision-card.use { border-left: 3px solid var(--green); } .decision-card.skip { border-left: 3px solid var(--rose); }
+  .decision-card h4 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 12px; }
+  .decision-card.use h4 { color: var(--green); } .decision-card.skip h4 { color: var(--rose); }
+  .decision-card ul { list-style: none; padding: 0; }
+  .decision-card li { font-size: 13px; color: var(--text-secondary); line-height: 1.6; padding: 6px 0; border-bottom: 1px solid var(--border); }
+  .decision-card li:last-child { border-bottom: none; }
+  .connect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .connect-node { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; transition: all 0.3s; text-decoration: none; color: inherit; display: block; }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node .tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--sky); word-break: break-all; }
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--sky); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } pre.code { font-size: 11px; padding: 14px 16px; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+  /* lab additions */
+  .lab-bar { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin: 0 0 22px; }
+  .btn { font-family: 'Outfit', sans-serif; font-weight: 600; font-size: 14px; padding: 11px 20px; border-radius: var(--radius-pill); border: 1px solid transparent; cursor: pointer; transition: all .2s; }
+  .btn.primary { background: linear-gradient(135deg, var(--blue), var(--sky)); color: #fff; }
+  .btn.primary:hover { filter: brightness(1.1); transform: translateY(-1px); }
+  .btn.ghost { background: transparent; border-color: var(--border); color: var(--text-secondary); }
+  .btn.ghost:hover { border-color: var(--border-hover); color: var(--sky); }
+  .btn:disabled { opacity: .5; cursor: default; transform: none; }
+  .notice { background: var(--warm-soft); border: 1px solid rgba(245,158,11,.35); color: var(--warm-glow); border-radius: var(--radius-md); padding: 14px 18px; font-size: 14px; max-width: var(--read-w); margin-bottom: 20px; }
+  .notice code { font-family: 'JetBrains Mono', monospace; font-size: .9em; }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; max-width: var(--read-w); margin-bottom: 22px; }
+  .stat { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 14px 16px; }
+  .stat .v { font-family: 'JetBrains Mono', monospace; font-size: 22px; font-weight: 600; color: var(--text-primary); line-height: 1.1; }
+  .stat .l { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-muted); margin-top: 6px; }
+  .feed { display: flex; flex-direction: column; gap: 10px; max-width: 900px; }
+  .call { display: grid; grid-template-columns: 34px 1fr 190px; gap: 14px; align-items: start; background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--border); border-radius: var(--radius-md); padding: 14px 18px; opacity: .45; transition: all .35s; }
+  .call.pending { opacity: 1; border-left-color: var(--sky); }
+  .call.run { opacity: 1; border-left-color: var(--green); }
+  .call.hold { opacity: 1; border-left-color: var(--warm); }
+  .call.block { opacity: 1; border-left-color: var(--rose); box-shadow: 0 0 0 1px rgba(244,63,94,.25), 0 10px 30px rgba(244,63,94,.12); }
+  .call .n { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); padding-top: 4px; }
+  .call .note { font-size: 13px; color: var(--text-secondary); margin-bottom: 6px; }
+  .call .note em { color: var(--text-primary); font-style: normal; font-weight: 600; }
+  .call pre { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--mist); background: var(--ink-deep); border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; white-space: pre-wrap; word-break: break-all; margin: 0; }
+  [data-theme="light"] .call pre { background: #0F172A; }
+  .call .out { font-family: 'JetBrains Mono', monospace; font-size: 11px; display: flex; flex-direction: column; gap: 5px; }
+  .verdict { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; font-size: 10px; padding: 4px 10px; border-radius: var(--radius-pill); width: max-content; }
+  .verdict.run { background: var(--green-soft); color: var(--green); }
+  .verdict.hold { background: var(--warm-soft); color: var(--warm-glow); }
+  .verdict.block { background: var(--rose-soft); color: var(--rose); }
+  .verdict.pending { background: rgba(56,189,248,.12); color: var(--sky); }
+  .bar { height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+  .bar i { display: block; height: 100%; background: linear-gradient(90deg, var(--blue), var(--sky)); width: 0; transition: width .5s ease; }
+  .kv { color: var(--text-muted); } .kv b { color: var(--text-primary); font-weight: 600; }
+  .reason { font-size: 11.5px; color: var(--text-secondary); grid-column: 2 / span 2; margin-top: 2px; }
+  .try { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 22px 26px; max-width: 900px; display: grid; gap: 10px; }
+  .try label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-muted); }
+  .try input, .try textarea { width: 100%; font-family: 'JetBrains Mono', monospace; font-size: 13px; background: var(--ink-deep); color: var(--mist); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; }
+  [data-theme="light"] .try input, [data-theme="light"] .try textarea { background: #fff; color: var(--ink); }
+  .try textarea { min-height: 64px; resize: vertical; }
+  .chips { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0 18px; }
+  .chip { font-family: 'JetBrains Mono', monospace; font-size: 11px; padding: 6px 12px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); background: var(--bg-card); cursor: pointer; }
+  .chip:hover { border-color: var(--border-hover); color: var(--sky); }
+  .hops { display: flex; flex-direction: column; gap: 14px; max-width: 900px; }
+  .hop { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 18px 22px; }
+  .hop .h { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; align-items: baseline; margin-bottom: 12px; }
+  .hop .h .t { font-weight: 700; font-size: 15px; }
+  .hop .h .m { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); }
+  .opt { display: grid; grid-template-columns: 1fr 120px 52px; gap: 12px; align-items: center; padding: 6px 0; border-top: 1px solid var(--border); font-size: 13px; }
+  .opt:first-of-type { border-top: none; }
+  .opt .nm { color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .opt.pick .nm { color: var(--text-primary); font-weight: 600; }
+  .opt .p { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); text-align: right; }
+  .opt.pick .p { color: var(--sky); }
+  .final { border-left: 3px solid var(--green); }
+  .final a { color: var(--sky); text-decoration: none; font-weight: 600; }
+  .clock { font-family: 'JetBrains Mono', monospace; font-size: 40px; font-weight: 600; letter-spacing: -1px; background: linear-gradient(135deg, var(--blue-glow), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; line-height: 1; }
+  @media (max-width: 800px) { .call { grid-template-columns: 28px 1fr; } .call .out { grid-column: 2; } .reason { grid-column: 2; } .opt { grid-template-columns: 1fr 80px 48px; } }
+</style>
+</head>
+<body>
+<div class="glow-orb blue"></div>
+<div class="glow-orb sky"></div>
+<nav>
+  <div class="nav-inner">
+    <a href="/index.html" class="nav-brand"><span class="nav-brand-mark">know.2nth.ai</span><span class="nav-brand-sub">lab/tree-race</span></a>
+    <div class="nav-right">
+      <a href="/lab/" class="nav-link">&larr; Lab</a>
+      <a href="/explainers/agents/system-one-models" class="nav-link">The leaf</a>
+      <a href="/briefings/typed-decisions" class="nav-link">CTO briefing</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x1F319;</button>
+    </div>
+  </div>
+</nav>
+<div class="container">
+  <div class="crumb"><a href="/index.html">know.2nth.ai</a><span class="crumb-sep">&rsaquo;</span><a href="/lab/">Lab</a><span class="crumb-sep">&rsaquo;</span><span class="crumb-current">The tree race</span></div>
+</div>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> lab &middot; opener</div>
+    <h1 class="fade-up" style="transition-delay:.05s">Ask the tree. <span class="gradient">Watch it choose the path.</span></h1>
+    <p class="sub fade-up" style="transition-delay:.1s">know.2nth.ai has fourteen sections and over two hundred pages. Type a question and Jev navigates: at the root it scores every section in one call, in the section it scores every page, and it keeps going until it lands on a leaf or says none of these. Every option's probability is on screen, along with the wall clock and the cost. This is intent routing you can watch.</p>
+    <div class="hero-meta fade-up" style="transition-delay:.15s">
+      <span class="pill accent">One call per hop</span><span class="pill indigo">Every option scored at once</span><span class="pill green">Live over the real index</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div id="notice" class="notice" hidden></div>
+    <div class="try fade-up" style="max-width:900px">
+      <label>Reader question</label>
+      <input id="q" value="How do I keep customer data inside South Africa while still using a US-hosted AI model?">
+      <div class="chips" id="chips"></div>
+      <div class="lab-bar" style="margin:0"><button class="btn primary" id="go">Race</button><span class="clock" id="clock">0.00s</span><span class="kv" style="font-family:'JetBrains Mono',monospace;font-size:11px" id="meta"></span></div>
+    </div>
+    <div class="hops" id="hops" style="margin-top:20px"></div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <div class="info-card amber fade-up"><h4>Read it honestly</h4><p>Each hop is one Choice question over every child of the current page, with each page's description as the option text, plus an explicit "none of these". A second yes/no question asks whether any listed page answers directly. The model only sees titles and descriptions, so it is routing on the index, not reading the leaves. The wall clock includes fetching the index and the network hop to the model. On tasks like this, TypeSafe itself notes the speedup over a chat model is smaller than on pure decisions, because fetches dominate. The point is to watch it decide, not to time it.</p></div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">Lab &middot; live demonstrations over the knowledge tree</p>
+    <div class="footer-links">
+      <a href="/index.html">Skills tree</a>
+      <a href="/lab/">Lab</a>
+      <a href="/explainers/agents/system-one-models">System One models leaf</a>
+      <a href="/briefings/typed-decisions">CTO briefing</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant</p>
+  </div>
+</footer>
+
+<script>
+const PRESETS = [
+  "How do I keep customer data inside South Africa while still using a US-hosted AI model?",
+  "Which agent framework should a Python team pick if they already use LangGraph?",
+  "What does it cost to self-host an open-weight model instead of renting a frontier one?",
+  "How do I connect Shopify to ERPNext so stock and margin are real?",
+  "Is Cloudflare Workers a good fit for an API that needs low latency in Johannesburg?",
+  "What is a private practice management system and which ones work in SA?",
+];
+const $ = (id) => document.getElementById(id);
+function esc(s){return String(s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));}
+const chips = $("chips"); PRESETS.forEach(p=>{ const b=document.createElement("button"); b.className="chip"; b.textContent=p.length>60?p.slice(0,58)+"…":p; b.title=p; b.onclick=()=>{$("q").value=p;}; chips.appendChild(b); });
+let timer=null, t0=0;
+function tick(){ $("clock").textContent = ((performance.now()-t0)/1000).toFixed(2)+"s"; }
+function title(i){ return i ? i.title.replace(/\s+[—-]\s+know\.2nth\.ai$/,"") : "none of these"; }
+async function hop(question, at){
+  const res = await fetch("/api/lab/decide", { method:"POST", headers:{"content-type":"application/json"}, body: JSON.stringify({ mode:"race", question, at }) });
+  const j = await res.json(); if(!res.ok) throw new Error(j.message||j.error||res.status); return j;
+}
+function renderHop(n, r){
+  const el=document.createElement("div"); el.className="hop fade-up visible";
+  const where = r.level==="root" ? "root of the tree" : r.at;
+  const opts = r.ranked.map(o=>`<div class="opt ${o.key===r.pick?"pick":""}"><span class="nm">${esc(o.item?title(o.item):"none of these")}${o.item&&o.item.kind==="hub"?' <span class="kv">[section]</span>':""}</span><div class="bar"><i style="width:${Math.round(o.p*100)}%"></i></div><span class="p">${o.p.toFixed(2)}</span></div>`).join("");
+  el.innerHTML = `<div class="h"><span class="t">Hop ${n} &middot; at ${esc(where)}</span><span class="m">${r.option_count} options scored &middot; ${r.latency_ms} ms &middot; ${r.usage?.input_tokens??"?"} tok &middot; $${r.cost_usd.toFixed(5)} &middot; answerable here ${r.answerable_here.toFixed(2)}</span></div>${opts}`;
+  $("hops").appendChild(el); el.scrollIntoView({behavior:"smooth",block:"nearest"});
+}
+function renderFinal(r, hops, ms, cost){
+  const el=document.createElement("div"); el.className="hop final fade-up visible";
+  if (r.picked && r.picked.kind==="leaf") el.innerHTML = `<div class="h"><span class="t">Landed: <a href="${esc(r.picked.url)}">${esc(title(r.picked))}</a></span><span class="m">${hops} hops &middot; ${(ms/1000).toFixed(2)}s wall &middot; $${cost.toFixed(5)}</span></div><p style="font-size:13px;color:var(--text-secondary)">Chosen at p=${r.p_pick.toFixed(2)}. Open it and judge whether the tree answered you.</p>`;
+  else el.innerHTML = `<div class="h"><span class="t">Stopped: none of these</span><span class="m">${hops} hops &middot; ${(ms/1000).toFixed(2)}s</span></div><p style="font-size:13px;color:var(--text-secondary)">The model did not think any page here answers the question. That is the honest outcome when the tree has a gap, and it is the signal that tells us what to write next.</p>`;
+  $("hops").appendChild(el);
+}
+$("go").onclick = async ()=>{
+  const q=$("q").value.trim(); if(!q) return;
+  $("go").disabled=true; $("hops").innerHTML=""; $("meta").textContent=""; t0=performance.now(); timer=setInterval(tick,50);
+  let at="", n=0, cost=0, last=null;
+  try {
+    while(n<4){ n++; const r=await hop(q, at); cost+=r.cost_usd; renderHop(n,r); last=r; if(r.credits_remaining_usd!=null) $("meta").textContent=`credits left $${r.credits_remaining_usd.toFixed(2)}`; if(r.done) break; at=r.picked.fetch; }
+    clearInterval(timer); tick(); renderFinal(last, n, performance.now()-t0, cost);
+  } catch(e){ clearInterval(timer); const el=document.createElement("div"); el.className="hop"; el.innerHTML=`<span class="verdict hold">error</span> <span class="kv">${esc(e.message)}</span>`; $("hops").appendChild(el); }
+  $("go").disabled=false;
+};
+fetch("/api/lab/decide").then(r=>r.json()).then(j=>{ if(!j.configured){ const n=$("notice"); n.hidden=false; n.innerHTML="This deployment has no Jev key configured, so calls will fail. Set <code>JEV_API_KEY</code> on the Pages project."; } }).catch(()=>{});
+function toggleTheme(){const html=document.documentElement;const current=html.getAttribute("data-theme");const next=current==="dark"?"light":"dark";html.setAttribute("data-theme",next);document.querySelector(".theme-toggle").textContent=next==="dark"?"☀️":"🌙";localStorage.setItem("theme",next);}
+const saved=localStorage.getItem("theme");if(saved){document.documentElement.setAttribute("data-theme",saved);document.querySelector(".theme-toggle").textContent=saved==="dark"?"☀️":"🌙";}
+const observer=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting)entry.target.classList.add("visible");});},{threshold:0.1,rootMargin:"0px 0px -40px 0px"});document.querySelectorAll(".fade-up").forEach(el=>observer.observe(el));
+</script>
+</body>
+</html>
