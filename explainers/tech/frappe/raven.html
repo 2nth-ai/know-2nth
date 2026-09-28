@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Raven — know.2nth.ai</title>
+<meta name="description" content="Raven — open-source team messaging built on the Frappe Framework. Channels, threads, files and a React Native mobile app, running inside the same site as ERPNext and Frappe HR, so a message can carry a live document preview, fire on a document event or run a workflow action. Raven AI adds no-code agents inside the existing permission boundary. AGPL v3, and the honest gotchas: Expo dev builds, Firebase in the push path, and chat as a POPIA records surface.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/tech/frappe/raven">
+<meta property="og:title" content="Raven — know.2nth.ai">
+<meta property="og:description" content="Raven — open-source team messaging built on the Frappe Framework. Channels, threads, files and a React Native mobile app, running inside the same site as ERPNext and Frappe HR, so a message can carry a live document preview, fire on a document event or run a workflow action. Raven AI adds no-code agents inside the existing permission boundary. AGPL v3, and the honest gotchas: Expo dev builds, Firebase in the push path, and chat as a POPIA records surface.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai — The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Raven — know.2nth.ai">
+<meta name="twitter:description" content="Raven — open-source team messaging built on the Frappe Framework. Channels, threads, files and a React Native mobile app, running inside the same site as ERPNext and Frappe HR, so a message can carry a live document preview, fire on a document event or run a workflow action. Raven AI adds no-code agents inside the existing permission boundary. AGPL v3, and the honest gotchas: Expo dev builds, Firebase in the push path, and chat as a POPIA records surface.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3Cline x1='16' y1='3' x2='16' y2='7' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='16' y1='25' x2='16' y2='29' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='3' y1='16' x2='7' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='25' y1='16' x2='29' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33;
+    --blue: #2563EB; --blue-glow: #3B82F6;
+    --sky: #38BDF8; --sky-muted: #7DD3FC;
+    --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8;
+    --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12);
+    --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12);
+    --violet: #8B5CF6; --violet-soft: rgba(139, 92, 246, 0.12);
+    --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12);
+    --bg: var(--ink); --bg-raised: var(--navy);
+    --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(37, 99, 235, 0.06);
+    --text-primary: var(--paper); --text-secondary: var(--slate);
+    --text-muted: #64748B;
+    --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(56, 189, 248, 0.3);
+    --max-w: 1200px; --read-w: 760px;
+    --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px;
+  }
+  [data-theme="light"] {
+    --bg: #F1F5F9; --bg-raised: #FFFFFF;
+    --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(37, 99, 235, 0.04);
+    --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8;
+    --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(37, 99, 235, 0.25);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+    background: var(--bg); color: var(--text-primary);
+    line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased;
+  }
+  body::before {
+    content: ''; position: fixed; inset: 0; opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 9999;
+  }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.blue { width: 600px; height: 600px; background: var(--blue); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+
+  nav {
+    position: sticky; top: 0; z-index: 100; padding: 0 24px;
+    backdrop-filter: blur(20px) saturate(1.4);
+    background: rgba(11, 17, 32, 0.75);
+    border-bottom: 1px solid var(--border);
+  }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner {
+    max-width: var(--max-w); margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 60px;
+  }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark {
+    font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px;
+    background: linear-gradient(135deg, var(--blue), var(--sky));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+  }
+  .nav-brand-sub {
+    font-size: 12px; color: var(--text-muted);
+    letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500;
+    padding-left: 10px; border-left: 1px solid var(--border);
+  }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--sky); }
+  .theme-toggle {
+    background: none; border: 1px solid var(--border); color: var(--text-secondary);
+    width: 36px; height: 36px; border-radius: 50%; cursor: pointer;
+    display: grid; place-items: center; font-size: 16px; transition: all 0.2s;
+  }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--sky); }
+
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .read { max-width: var(--read-w); }
+
+  .crumb {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted);
+    letter-spacing: 0.5px; padding: 28px 0 0;
+    display: flex; gap: 10px; flex-wrap: wrap;
+  }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--sky); }
+  .crumb-sep { opacity: 0.5; }
+  .crumb-current { color: var(--text-secondary); }
+
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500;
+    letter-spacing: 2px; text-transform: uppercase; color: var(--sky);
+    margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px;
+  }
+  .hero .eyebrow .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--blue-glow); box-shadow: 0 0 12px var(--blue-glow);
+  }
+  .hero h1 {
+    font-size: clamp(40px, 6vw, 66px); font-weight: 800;
+    line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 14ch;
+  }
+  .hero h1 .gradient {
+    background: linear-gradient(135deg, var(--blue-glow), var(--sky), var(--sky-muted));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500;
+    padding: 6px 14px; border-radius: var(--radius-pill);
+    border: 1px solid var(--border); color: var(--text-secondary);
+    letter-spacing: 0.5px;
+  }
+  .pill.accent { background: rgba(37, 99, 235, 0.12); color: var(--blue-glow); border-color: rgba(37, 99, 235, 0.25); }
+
+  section { padding: 52px 0; position: relative; }
+  .section-label {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500;
+    letter-spacing: 2px; text-transform: uppercase; color: var(--sky);
+    margin-bottom: 14px;
+  }
+  .section-title {
+    font-size: clamp(26px, 3.4vw, 36px); font-weight: 700;
+    letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2;
+  }
+  .section-lede {
+    font-size: 16px; color: var(--text-secondary); max-width: var(--read-w);
+    line-height: 1.75; font-weight: 300; margin-bottom: 32px;
+  }
+  .prose p {
+    font-size: 16px; color: var(--text-secondary); line-height: 1.75;
+    max-width: var(--read-w); margin-bottom: 18px;
+  }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.88em;
+    background: var(--bg-card); border: 1px solid var(--border);
+    padding: 1px 6px; border-radius: 4px; color: var(--sky);
+  }
+
+  pre.code {
+    background: var(--ink-deep); border: 1px solid var(--border);
+    border-radius: var(--radius-md); padding: 20px 22px;
+    overflow-x: auto; font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px; line-height: 1.65; color: var(--mist);
+    margin: 0 0 20px; max-width: var(--read-w);
+  }
+  [data-theme="light"] pre.code { background: #0F172A; color: #E2E8F0; }
+  pre.code .k { color: var(--sky); }
+  pre.code .s { color: #A5F3B8; }
+  pre.code .c { color: var(--text-muted); font-style: italic; }
+  pre.code .n { color: #FCD34D; }
+
+  .info-card {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-lg);
+    padding: 28px 32px; max-width: var(--read-w);
+    margin-bottom: 20px;
+  }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+
+  .compare-wrap {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-lg);
+    overflow: hidden; max-width: var(--read-w);
+    margin-bottom: 20px;
+  }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td {
+    padding: 12px 16px; text-align: left;
+    border-bottom: 1px solid var(--border); vertical-align: top;
+  }
+  .compare thead th {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600;
+    letter-spacing: 1.2px; text-transform: uppercase; color: var(--sky);
+    background: rgba(37, 99, 235, 0.04);
+  }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); }
+  .compare td code {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.9em;
+    color: var(--sky);
+  }
+
+  .gotcha-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 12px;
+  }
+  .gotcha {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-left: 3px solid var(--rose);
+    border-radius: var(--radius-md);
+    padding: 18px 22px;
+  }
+  .gotcha strong { display: block; color: var(--text-primary); font-weight: 600; font-size: 14px; margin-bottom: 6px; }
+  .gotcha p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+  .connect-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 12px;
+  }
+  .connect-node {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    padding: 18px 22px; transition: all 0.3s;
+    text-decoration: none; color: inherit; display: block;
+  }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node.soon { cursor: default; opacity: 0.72; }
+  .connect-node.soon:hover { border-color: var(--border); background: var(--bg-card); }
+  .connect-node .tag {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    letter-spacing: 1px; text-transform: uppercase;
+    color: var(--text-muted); display: block; margin-bottom: 6px;
+  }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+
+  .resource-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 12px;
+  }
+  .resource {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    padding: 18px 22px; text-decoration: none; transition: all 0.3s;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--sky); word-break: break-all; }
+
+  .decision-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+    max-width: var(--read-w);
+  }
+  @media (max-width: 720px) { .decision-grid { grid-template-columns: 1fr; } }
+  .decision-card {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    padding: 22px 24px;
+  }
+  .decision-card.use { border-left: 3px solid var(--green); }
+  .decision-card.skip { border-left: 3px solid var(--rose); }
+  .decision-card h4 {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .decision-card.use h4 { color: var(--green); }
+  .decision-card.skip h4 { color: var(--rose); }
+  .decision-card ul { list-style: none; padding: 0; }
+  .decision-card li {
+    font-size: 13px; color: var(--text-secondary); line-height: 1.6;
+    padding: 6px 0; border-bottom: 1px solid var(--border);
+  }
+  .decision-card li:last-child { border-bottom: none; }
+
+  footer {
+    padding: 60px 0 40px; border-top: 1px solid var(--border);
+    text-align: center; margin-top: 40px;
+  }
+  .footer-brand {
+    font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600;
+    background: linear-gradient(135deg, var(--blue), var(--sky));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+  }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--sky); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+
+  .fade-up {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 768px) {
+    .nav-brand-sub { display: none; }
+    .nav-link { display: none; }
+    pre.code { font-size: 11px; padding: 14px 16px; }
+    .compare { font-size: 12px; }
+    .compare th, .compare td { padding: 10px 12px; }
+  }
+
+  *, *::before, *::after {
+    transition-property: background-color, border-color, color, box-shadow;
+    transition-duration: 0.3s; transition-timing-function: ease;
+  }
+</style>
+</head>
+<body>
+
+<div class="glow-orb blue"></div>
+<div class="glow-orb sky"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../../index.html" class="nav-brand">
+      <span class="nav-brand-mark">know.2nth.ai</span>
+      <span class="nav-brand-sub">tech/frappe/raven</span>
+    </a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">← Frappe</a>
+      <a href="../../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">🌙</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">›</span>
+    <a href="../../../index.html#domains">Technology</a>
+    <span class="crumb-sep">›</span>
+    <a href="../">tech</a>
+    <span class="crumb-sep">›</span>
+    <a href="./">frappe</a>
+    <span class="crumb-sep">›</span>
+    <span class="crumb-current">raven</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> tech/frappe · Raven · Skill Leaf</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      Team chat that can<br><span class="gradient">read your ERP.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      Raven is an open-source messaging platform built on the Frappe Framework — channels, direct messages, threads, reactions, file sharing, and a React Native mobile app. The chat is the ordinary part. What makes it worth a leaf is that Raven runs <em>inside the same site</em> as ERPNext and Frappe HR, so a message can carry a live document preview, fire on a document event, run a workflow action, or hand work to an agent — without a webhook, a bot token, or a second system of record.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill accent">Live</span>
+      <span class="pill">Frappe Framework app</span>
+      <span class="pill">AGPL v3</span>
+      <span class="pill">React + React Native</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 WHAT IT IS -->
+<section id="what">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 · What it is</div>
+      <h2 class="section-title">Slack's shape, your database.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Raven does what Slack, Teams, and Mattermost do — channels organised by topic or project, direct messages, rich-text composition with mentions and code blocks, drag-and-drop file sharing, reactions with custom emoji, inline replies and threads. If you have used any team chat tool in the last decade, there is nothing to learn.</p>
+      <p>The difference is where it sits. Raven is a Frappe app, so it installs onto an existing bench alongside ERPNext, Frappe HR, or Frappe CRM. Users are the same users. Permissions are the same permissions. And because every business record on that site is already a doctype with a REST surface, Raven can share an ERPNext document into a channel with a customisable preview, raise a notification when a document event fires, run a workflow action from the chat, and print a document without leaving the conversation.</p>
+      <p>That is the whole argument. Chat next to your ERP is a tab you alt-tab to. Chat inside your ERP is a place where the conversation and the record are the same object graph.</p>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.08s">
+      <h4>Provenance worth knowing</h4>
+      <p>Raven was built by <strong>The Commit Company</strong> and now lives in the <code>frappe</code> GitHub organisation. The lineage still shows: the production Docker image is published as <code>ghcr.io/the-commit-company/raven</code>, and the community forum runs at <code>community.ravenapp.cloud</code> rather than on the main Frappe discuss instance. Nothing sinister — it is simply a community-origin app that got adopted, and it is worth knowing which door to knock on when you need support.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 UNDER THE HOOD -->
+<section id="stack">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 · Under the hood</div>
+      <h2 class="section-title">Two frontends, one Frappe backend.</h2>
+      <p class="section-lede">Raven is a Frappe backend with two separately-built clients. This matters more than it sounds — it is the single biggest driver of how much work self-hosting actually is.</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead><tr><th>Layer</th><th>What it's built on</th><th>What that means for you</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Backend</strong></td><td>Frappe Framework — Python, MariaDB or Postgres, Redis, <code>socket.io</code></td><td>Same bench, same doctypes, same REST API and hooks as every other Frappe app. Realtime is Frappe's existing socket layer, not a new service.</td></tr>
+          <tr><td><strong>Web client</strong></td><td>React, built with Vite; Radix UI for components, TipTap for the composer, <code>emoji-mart</code> for the picker</td><td>A single-page app served from the site, not a Frappe Desk page. Styling is Tailwind. Data access goes through <code>frappe-react-sdk</code>.</td></tr>
+          <tr><td><strong>Mobile client</strong></td><td>React Native on Expo, NativeWind, Reanimated, Gesture Handler, Zeego</td><td>A real native app — and a real release pipeline. See the gotchas.</td></tr>
+          <tr><td><strong>Push &amp; telemetry</strong></td><td>Firebase — push notifications, crash analytics, performance monitoring</td><td>A third-party data path out of your otherwise self-hosted stack. Worth naming explicitly in a POPIA assessment.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.08s">
+      <h4>Authentication is the grown-up part</h4>
+      <p>Raven inherits Frappe's auth stack and exposes it properly: all the popular OAuth providers plus custom OAuth, login via email link, two-factor over email, SMS or an authenticator app, and LDAP. For an organisation that already runs directory-backed identity, this is the difference between "we could try it" and "it passes the security review".</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 RAVEN AI -->
+<section id="ai">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 · Raven AI</div>
+      <h2 class="section-title">Agents built where the records already are.</h2>
+      <p class="section-lede">Raven ships an agent layer: automate tasks, extract data from files and images, and execute multi-step processes by messaging an agent. Agents are configurable from the UI without writing code.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Read that carefully, because the interesting claim is not "AI in chat" — every chat tool has that now. The interesting claim is that the agent is <em>already inside the permissions boundary of your system of record</em>. An agent that can read a Sales Order does not need an integration, an API key, or a synced copy of your data. It needs a role.</p>
+      <p>That is also the risk. "No code" means the blast radius of an agent is decided by whoever configured its role and its tools, not by a developer reading a diff. Before you let one loose on a production site, be specific about three things: which doctypes it can read, which it can write, and which channels it is reachable from. Frappe's role and permission model is expressive enough to answer all three — but it will not answer them for you, and the default of "it works" is rarely the default of "it is scoped".</p>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.08s">
+      <h4>The honest positioning against a general agent framework</h4>
+      <p>If your agent's job is "look at this invoice attachment and raise a Purchase Invoice", Raven AI is the short path — the data, the permissions, and the human who approves it are all in one place. If your agent's job spans systems your ERP does not own, you want a real orchestration layer (<a href="../../agents/langgraph.html" style="color:var(--sky); text-decoration:none;">LangGraph</a>, the <a href="../../agents/anthropic-agent-sdk.html" style="color:var(--sky); text-decoration:none;">Agent SDK</a>) talking to Frappe over REST or <a href="../../agents/mcp.html" style="color:var(--sky); text-decoration:none;">MCP</a>, with Raven as the human-in-the-loop surface rather than the runtime. Choosing Raven AI for the second job is how you end up rebuilding an orchestrator inside a chat app.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 GOTCHAS -->
+<section id="gotchas">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 · Gotchas</div>
+      <h2 class="section-title">Where it gets tricky.</h2>
+    </div>
+    <div class="gotcha-list fade-up" style="transition-delay: 0.05s">
+      <div class="gotcha">
+        <strong>The mobile app needs an Expo development build, not Expo Go</strong>
+        <p>Raven's mobile client will not run in Expo Go. Developing against it requires Xcode and/or Android Studio locally plus the EAS CLI, and shipping a branded build to your own staff means your own Apple Developer and Play Console accounts, your own signing keys, and your own review cycles. Budget this as a small mobile project, not a checkbox. A team that only needs the web client can ignore all of it.</p>
+      </div>
+      <div class="gotcha">
+        <strong>Firebase is in the path for push</strong>
+        <p>Push notifications, crash analytics, and performance monitoring go through Firebase. On a self-hosted deployment chosen specifically for data residency, that is an external dependency that carries message metadata off your infrastructure. Either accept and document it, or run web-only and lose push.</p>
+      </div>
+      <div class="gotcha">
+        <strong>AGPLv3, and the client code is part of it</strong>
+        <p>Raven is AGPL v3. If you modify it and offer it over a network to third parties, the licence obliges you to offer the corresponding source. Internal use by your own organisation is fine. Embedding a customised Raven in a product you sell to clients is a licensing conversation, not an engineering one — and note that <em>other apps in the same ecosystem are licensed differently</em>: Frappe Builder and Frappe Wiki are MIT. Do not assume the licence by association.</p>
+      </div>
+      <div class="gotcha">
+        <strong>Chat becomes a records surface the moment you install it</strong>
+        <p>The instant staff start discussing customers, employees, or salaries in Raven, those messages are records — discoverable, subject to retention policy, and in scope for POPIA. Frappe gives you the storage and the permissions; it does not give you a retention policy. Write one before rollout, not after the first subject access request.</p>
+      </div>
+      <div class="gotcha">
+        <strong>Sizing is on you</strong>
+        <p>A chat app is a persistent-connection, high-write workload bolted onto a bench that was sized for ERP traffic. Socket.io connections, message volume, and file uploads all land on the same server as your month-end close. Put Raven on its own bench, or size the shared one deliberately.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 DECISION -->
+<section id="decision">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 · Decision guide</div>
+      <h2 class="section-title">Use it for, skip it for.</h2>
+    </div>
+    <div class="decision-grid fade-up" style="transition-delay: 0.05s">
+      <div class="decision-card use">
+        <h4>Use Raven when</h4>
+        <ul>
+          <li>You already run ERPNext, Frappe HR, or Frappe CRM and want conversations attached to the records they are about.</li>
+          <li>Per-seat chat licensing in USD is a real line item and your headcount is growing.</li>
+          <li>Data residency rules out a US-hosted SaaS chat tool for internal discussion of customer or employee data.</li>
+          <li>You want an agent that can act on business documents inside an existing permissions boundary, with a human approving in the same thread.</li>
+          <li>Your identity stack is LDAP or OAuth-backed and you need chat to honour it.</li>
+        </ul>
+      </div>
+      <div class="decision-card skip">
+        <h4>Skip Raven when</h4>
+        <ul>
+          <li>You are not on Frappe. Running a whole bench to get a chat app is the wrong trade — take Mattermost or Zulip instead.</li>
+          <li>You need the integration marketplace. Slack has thousands of connectors; Raven has the Frappe ecosystem and whatever you write.</li>
+          <li>You need voice or video calling, huddles, or screen sharing. Raven is text, files, and threads.</li>
+          <li>You need external collaboration with clients and suppliers at scale — Slack Connect and Teams federation have no equivalent here.</li>
+          <li>You cannot accept Firebase in the push path and your users will not tolerate web-only.</li>
+          <li>Your organisation needs eDiscovery, legal hold, and DLP tooling out of the box. You would be building all three.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 SA CONTEXT -->
+<section id="sa-context">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 · South African context</div>
+      <h2 class="section-title">Where Raven earns its place in SA delivery.</h2>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.05s">
+      <h4>POPIA · chat is personal information</h4>
+      <p>Internal chat about customers, candidates, patients, or employees is processing of personal information under POPIA, whatever the tool. Self-hosting Raven on an SA region (<code>af-south-1</code>, <code>africa-south1</code>, <code>southafricanorth</code>) keeps the message store and the attachments in-country, which removes the Section 72 cross-border question for the bulk of it. Two caveats that a residency claim has to survive: <strong>Firebase push metadata leaves the country</strong>, and any <strong>agent that calls a hosted model</strong> sends whatever you put in the prompt to that model's region. Name both in the assessment rather than discovering them in an audit.</p>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.07s">
+      <h4>FX · the arithmetic that actually decides this</h4>
+      <p>Per-seat chat is USD-billed and re-prices against the rand every year without you doing anything. Raven's cost is your infrastructure plus your time, billed in rand. For a fifteen-person studio the saving is real but small, and the self-hosting effort probably eats it. At a hundred-plus seats the arithmetic flips hard, and it keeps flipping further every time the rand moves. Run the number at <em>your</em> headcount and your own hourly rate before treating "open source" as "cheaper".</p>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.09s">
+      <h4>Bandwidth and the mobile reality</h4>
+      <p>A meaningful share of SA staff are on mobile data, not fibre, for part of the week. A chat app that streams attachment previews and keeps a socket open is a data-cost decision for those users. Raven's mobile client is a real native app rather than a wrapped web view, which helps — but test it on a throttled connection before you roll it out to a field team, and check what your file-sharing culture does to a 2GB monthly bundle.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 07 CONNECTIONS -->
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 · Connections</div>
+      <h2 class="section-title">Where this leaf links.</h2>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="framework.html" class="connect-node">
+        <span class="tag">tech/frappe/framework</span>
+        <div class="skill">Frappe Framework</div>
+        <div class="why">The engine underneath. Raven's channels, messages, and agents are doctypes with the same REST surface, permission model, and hook system as everything else on the bench.</div>
+      </a>
+      <a href="../../biz/erp/erpnext.html" class="connect-node">
+        <span class="tag">biz/erp/erpnext</span>
+        <div class="skill">ERPNext</div>
+        <div class="why">The system of record Raven is designed to sit inside. Document previews, event-triggered notifications, and workflow actions in chat all point here.</div>
+      </a>
+      <a href="helpdesk.html" class="connect-node">
+        <span class="tag">tech/frappe/helpdesk</span>
+        <div class="skill">Frappe Helpdesk</div>
+        <div class="why">The customer-facing counterpart. Helpdesk handles the ticket queue with SLAs; Raven handles the internal conversation about it.</div>
+      </a>
+      <a href="../../agents/mcp.html" class="connect-node">
+        <span class="tag">agents/mcp</span>
+        <div class="skill">Model Context Protocol</div>
+        <div class="why">The cleaner path when an agent's work spans systems Frappe does not own. Raven becomes the approval surface; the orchestration lives outside.</div>
+      </a>
+      <a href="../../biz/bpm/process-orchestration.html" class="connect-node">
+        <span class="tag">biz/bpm/process-orchestration</span>
+        <div class="skill">Process orchestration</div>
+        <div class="why">Workflow actions from a chat message are process orchestration with a human in the loop. This leaf frames when that pattern is the right one.</div>
+      </a>
+      <a href="./" class="connect-node">
+        <span class="tag">tech/frappe</span>
+        <div class="skill">Frappe sub-hub</div>
+        <div class="why">The hub listing the Frappe ecosystem apps. Raven sits in the collaboration band alongside Drive and Wiki.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 08 RESOURCES -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 · Resources</div>
+      <h2 class="section-title">Go deeper.</h2>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://frappe.io/products/raven" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Project home</span>
+        <span class="r-title">Raven</span>
+        <span class="r-url">frappe.io/products/raven</span>
+      </a>
+      <a href="https://github.com/frappe/raven" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Source</span>
+        <span class="r-title">frappe/raven on GitHub — README, licence, install paths</span>
+        <span class="r-url">github.com/frappe/raven</span>
+      </a>
+      <a href="https://github.com/frappe/raven/blob/main/LICENSE" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Licence</span>
+        <span class="r-title">AGPL v3 — the full text</span>
+        <span class="r-url">github.com/frappe/raven/blob/main/LICENSE</span>
+      </a>
+      <a href="https://community.ravenapp.cloud" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Community</span>
+        <span class="r-title">Raven community forum &amp; support</span>
+        <span class="r-url">community.ravenapp.cloud</span>
+      </a>
+      <a href="https://github.com/frappe/frappe-react-sdk" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Library</span>
+        <span class="r-title">frappe-react-sdk — the hooks layer both clients use</span>
+        <span class="r-url">github.com/frappe/frappe-react-sdk</span>
+      </a>
+      <a href="https://frappecloud.com" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Hosting</span>
+        <span class="r-title">Frappe Cloud — managed hosting</span>
+        <span class="r-url">frappecloud.com</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../../index.html">Skills tree</a>
+      <a href="./">Frappe sub-hub</a>
+      <a href="https://frappe.io/products/raven" target="_blank" rel="noopener">Raven ↗</a>
+    </div>
+    <p class="footer-copy">© 2026 2nth.ai · Built in South Africa — Globally relevant</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme() {
+    const html = document.documentElement;
+    const current = html.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
+    localStorage.setItem('theme', next);
+  }
+  const saved = localStorage.getItem('theme');
+  if (saved) {
+    document.documentElement.setAttribute('data-theme', saved);
+    document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '☀️' : '🌙';
+  }
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>

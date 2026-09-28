@@ -325,8 +325,8 @@
     </p>
     <div class="hub-stats fade-up" style="transition-delay: 0.15s">
       <div class="hub-stat"><div class="num">13</div><div class="label">Apps</div></div>
-      <div class="hub-stat"><div class="num">5</div><div class="label">Live explainers</div></div>
-      <div class="hub-stat"><div class="num">AGPL</div><div class="label">v3</div></div>
+      <div class="hub-stat"><div class="num">9</div><div class="label">Live explainers</div></div>
+      <div class="hub-stat"><div class="num">Mixed</div><div class="label">AGPL v3 &amp; MIT</div></div>
     </div>
   </div>
 </section>
@@ -337,7 +337,7 @@
     <div class="fade-up">
       <div class="hub-label">01 · The ecosystem</div>
       <h2 class="hub-title">Frappe, by what it builds.</h2>
-      <p class="hub-lede">Five bands — foundation, ERP &amp; finance, people &amp; CX, knowledge &amp; collaboration, and builders &amp; hosting. Each card maps to a leaf in <code style="font-family: 'JetBrains Mono', monospace; color: var(--sky);">tech/frappe/*</code>. The framework is the only one with a full explainer today; the rest land in sequence.</p>
+      <p class="hub-lede">Five bands — foundation, ERP &amp; finance, people &amp; CX, knowledge &amp; collaboration, and builders &amp; hosting. Each card maps to a leaf in <code style="font-family: 'JetBrains Mono', monospace; color: var(--sky);">tech/frappe/*</code>. Nine have full explainers today; the rest land in sequence.</p>
     </div>
 
     <!-- Foundation -->
@@ -437,32 +437,32 @@
         <p>Open-source learning management — courses, lessons, quizzes, batches, certificates. The platform Frappe School itself runs on.</p>
       </div>
 
-      <div class="svc-card soon">
+      <a href="wiki.html" class="svc-card">
         <div class="svc-head">
           <div class="svc-name">Frappe Wiki</div>
-          <span class="svc-state stub">Stub</span>
+          <span class="svc-state live">Live</span>
         </div>
         <span class="svc-path">tech/frappe/wiki</span>
-        <p>Markdown-first internal knowledge base. Versioning, sidebar navigation, search, and the same role permissions every other Frappe app uses.</p>
-      </div>
+        <p>Markdown docs with revision history and an optional change-approval queue. MIT licensed, RediSearch-backed, published without a build step — and the real choice is database-resident docs versus docs-as-code.</p>
+      </a>
 
-      <div class="svc-card soon">
+      <a href="drive.html" class="svc-card">
         <div class="svc-head">
           <div class="svc-name">Frappe Drive</div>
-          <span class="svc-state stub">Stub</span>
+          <span class="svc-state live">Live</span>
         </div>
         <span class="svc-path">tech/frappe/drive</span>
-        <p>Self-hosted cloud file storage with sharing, previews, and folder ACLs. The Google Drive replacement for orgs that want files inside their own infra.</p>
-      </div>
+        <p>Self-hosted file storage and sharing, plus Writer — a Yjs-backed collaborative editor. The residency answer to Google Drive, and still in beta by its maintainers' own README.</p>
+      </a>
 
-      <div class="svc-card soon">
+      <a href="raven.html" class="svc-card">
         <div class="svc-head">
           <div class="svc-name">Raven</div>
-          <span class="svc-state stub">Stub</span>
+          <span class="svc-state live">Live</span>
         </div>
         <span class="svc-path">tech/frappe/raven</span>
-        <p>Slack-style team chat — channels, threads, reactions, file uploads, bots. Talks to the rest of the Frappe stack natively, so a CRM event can become a chat message in one hook.</p>
-      </div>
+        <p>Slack-style team chat with a React Native mobile app, running inside the same site as your ERP — document previews, event-triggered notifications, workflow actions, and no-code Raven AI agents inside the existing permission boundary.</p>
+      </a>
 
     </div>
 
@@ -473,14 +473,14 @@
     </div>
     <div class="svc-grid fade-up" style="transition-delay: 0.03s">
 
-      <div class="svc-card soon">
+      <a href="builder.html" class="svc-card">
         <div class="svc-head">
           <div class="svc-name">Frappe Builder</div>
-          <span class="svc-state stub">Stub</span>
+          <span class="svc-state live">Live</span>
         </div>
         <span class="svc-path">tech/frappe/builder</span>
-        <p>Visual website builder — drag pages onto a canvas, bind to Frappe doctypes, publish. The no-code surface for marketing pages and customer portals on top of an existing Frappe site.</p>
-      </div>
+        <p>Visual website builder with direct doctype access, so pages are data-driven without a headless CMS. Typed block props, four scripting surfaces, and an AI site builder with approval gates and revertable edits. MIT.</p>
+      </a>
 
       <div class="svc-card soon">
         <div class="svc-head">

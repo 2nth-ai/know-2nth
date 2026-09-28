@@ -8,7 +8,12 @@ Sibling sites in the ecosystem:
 - **2nth.ai** — framework / GTM site (Human + AI = 2ⁿ)
 - **dev.2nth.ai** — partner / Gridline / openBUILD AI source content (Construction domain pulls from here)
 - **2nth.io** — compute infrastructure layer
+- **2nth.me** — personal / practitioner surface
+- **2nth.org** — non-commercial / community surface
+- **pay.2nth.ai** — payments surface
 - **imbila.ai** — parent consultancy brand
+
+Leaves here are source material those properties draw on, so a factual error does not stay contained to this site.
 
 ### Related repos that are NOT this one
 
@@ -43,26 +48,44 @@ Sibling sites in the ecosystem:
 ```
 know-2nth/
 ├── CLAUDE.md
-├── index.html                # root: 12 top-level domain cards
+├── index.html                # root: the top-level domain cards
 ├── about.html                # access model + how the site works
 ├── join.html                 # HubSpot signup form (soft conversion play)
+├── ask.html                  # Ask Vinci — on-site grounded assistant (Workers AI)
 ├── gate.js                   # tier-gate hook, loaded on every leaf, currently inert
-├── og-image.jpg              # 1200×630 OG / Twitter card
-├── og-image.svg              # source for the OG image
+├── agent-index.json          # GENERATED — machine index the MCP server searches
+├── llms.txt                  # GENERATED — plain-text index of the tree
+├── og-image.jpg / .svg       # 1200×630 OG / Twitter card + source
 ├── _redirects                # Cloudflare Pages redirects
-├── google-adk-explainer.md   # canonical source markdown for ADK leaf (PR #17)
+├── wrangler.toml
+├── *-explainer.md, *.md      # canonical source markdown for specific leaves
+├── scripts/
+│   └── gen-agent-index.mjs   # regenerates agent-index.json + llms.txt from the HTML
+├── functions/                # Cloudflare Pages Functions (agent-fetch, MCP, ask, lab)
+├── briefings/                # CEO/CTO briefings — own hub, indexed alongside leaves
+├── lab/                      # interactive demos (decision-gate, tree-race)
+├── claude/                   # Claude-specific landing surface
 └── explainers/
     ├── agents/        # Frameworks, Protocols, Models, Inference (the strategic priority)
-    ├── biz/           # ERP, CRM, HR — has erp/ and crm/ sub-hubs
+    ├── biz/           # bpm/, crm/, ecm/, erp/, hr/ sub-folders
     ├── construction/  # openBIM + Gridline / openBUILD AI partner-anchored
-    ├── data/          # analytics/, warehousing/, engineering/ sub-hubs
+    ├── data/          # analytics/, warehousing/, engineering/
     ├── design/        # tokens, components, motion, AI-assisted design
+    ├── fin/           # Financial services
+    ├── health/        # Healthcare — private practice, ambient AI scribes
+    ├── leg/           # Legal — POPIA, commercial, employment, disputes, IP, M&A
+    ├── media/         # voice agents, TTS, the media landscape
     ├── partners/      # co-branded leaves (no hub yet, not on root grid)
-    ├── people/        # coaching, leadership, typologies/
-    └── tech/          # cloudflare/, google/, microsoft/, frappe/, runtime/, android-hce/, embedded/, frameworks/
+    ├── people/        # coaching, leadership, typologies/, ai-roles/
+    ├── software/      # the craft layer — languages, SDD, version control, agents-as-software
+    ├── tech/          # android-hce/, cloudflare/, embedded/, frameworks/, frappe/, game-engines/,
+    │                  # google/, hardware/, microsoft/, oracle/, runtime/
+    └── tools/         # runtime and architecture tooling
 ```
 
-Five additional domains exist on the root grid as cards but have **no folder yet**: `edu`, `fin`, `health`, `iot`, `leg`. Building any of them out means: create `explainers/<domain>/index.html` hub, ship at least one Live leaf, then the root card becomes meaningful.
+Two domains exist on the root grid as cards but have **no folder yet**: `edu` and `iot`. Building either out means: create `explainers/<domain>/index.html` hub, ship at least one Live leaf, then the root card becomes meaningful. (`fin`, `health` and `leg` were in this list historically — all three now have folders and Live leaves.)
+
+**Sub-folders with no `index.html` hub** (leaves reachable only by direct link or from a parent hub's cards): `biz/bpm`, `biz/ecm`, `data/engineering`, `people/typologies`, `tech/embedded`, `tech/frameworks`, `partners`. This is a known inconsistency, not a convention — if you add a leaf to one of these, consider adding the hub at the same time.
 
 ## How leaves are built
 
@@ -189,6 +212,14 @@ The local path of the main checkout varies per machine. On the primary Mac it's 
 - **Add a new top-level domain**: pick a unique colour + emoji → add CSS rule for `.domain-card[data-domain="X"]` in root `index.html` → add the card to `.domains-grid` → bump "N domains" count in the section title → build `explainers/X/index.html` hub → ship at least one Live leaf so the domain isn't empty on launch.
 - **Author from source markdown**: when a `*-explainer.md` file lands in the repo root (like `google-adk-explainer.md`), it's the canonical source — mine it for the rendered HTML leaf and preserve the primary-source-only discipline.
 - **OG / Twitter meta sweep**: every leaf needs the standard `og:title / og:description / og:image / twitter:card / twitter:title / twitter:description / twitter:image` block. The site's OG image is `/og-image.jpg` (source: `/og-image.svg`).
+
+## Before every PR: regenerate the agent index
+
+```bash
+node scripts/gen-agent-index.mjs
+```
+
+`llms.txt` and `agent-index.json` are generated from the HTML and committed. They drift the moment a leaf or briefing is added, removed, or has its `<title>` / `<meta name="description">` changed. Regenerate and commit them in the same PR. This is not yet enforced in CI.
 
 ## Pre-deploy sanity check
 
