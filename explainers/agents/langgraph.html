@@ -214,7 +214,7 @@
     messages: Annotated[<span class="k">list</span>, add_messages]
 
 <span class="h">def</span> chatbot(state: State):
-    llm = ChatAnthropic(<span class="h">model</span>=<span class="s">"claude-sonnet-4-6"</span>)
+    llm = ChatAnthropic(<span class="h">model</span>=<span class="s">"claude-sonnet-5"</span>)
     <span class="h">return</span> {<span class="s">"messages"</span>: [llm.invoke(state[<span class="s">"messages"</span>])]}
 
 graph = StateGraph(State)

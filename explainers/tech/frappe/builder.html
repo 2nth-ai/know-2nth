@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Frappe Builder — know.2nth.ai</title>
+<meta name="description" content="Frappe Builder — a low-code visual website builder with direct access to Frappe doctypes, so pages can be data-driven without a headless CMS. Figma-like canvas, typed block props, four scripting surfaces, one-click publishing, built-in analytics, and an AI site builder with permission-respecting reads, approval gates and revertable edits. MIT licensed. The gotchas: shared blast radius with your ERP, public routes running database queries, and pages that live outside version control.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/tech/frappe/builder">
+<meta property="og:title" content="Frappe Builder — know.2nth.ai">
+<meta property="og:description" content="Frappe Builder — a low-code visual website builder with direct access to Frappe doctypes, so pages can be data-driven without a headless CMS. Figma-like canvas, typed block props, four scripting surfaces, one-click publishing, built-in analytics, and an AI site builder with permission-respecting reads, approval gates and revertable edits. MIT licensed. The gotchas: shared blast radius with your ERP, public routes running database queries, and pages that live outside version control.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai — The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Frappe Builder — know.2nth.ai">
+<meta name="twitter:description" content="Frappe Builder — a low-code visual website builder with direct access to Frappe doctypes, so pages can be data-driven without a headless CMS. Figma-like canvas, typed block props, four scripting surfaces, one-click publishing, built-in analytics, and an AI site builder with permission-respecting reads, approval gates and revertable edits. MIT licensed. The gotchas: shared blast radius with your ERP, public routes running database queries, and pages that live outside version control.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3Cline x1='16' y1='3' x2='16' y2='7' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='16' y1='25' x2='16' y2='29' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='3' y1='16' x2='7' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='25' y1='16' x2='29' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33;
+    --blue: #2563EB; --blue-glow: #3B82F6;
+    --sky: #38BDF8; --sky-muted: #7DD3FC;
+    --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8;
+    --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12);
+    --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12);
+    --violet: #8B5CF6; --violet-soft: rgba(139, 92, 246, 0.12);
+    --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12);
+    --bg: var(--ink); --bg-raised: var(--navy);
+    --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(37, 99, 235, 0.06);
+    --text-primary: var(--paper); --text-secondary: var(--slate);
+    --text-muted: #64748B;
+    --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(56, 189, 248, 0.3);
+    --max-w: 1200px; --read-w: 760px;
+    --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px;
+  }
+  [data-theme="light"] {
+    --bg: #F1F5F9; --bg-raised: #FFFFFF;
+    --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(37, 99, 235, 0.04);
+    --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8;
+    --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(37, 99, 235, 0.25);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+    background: var(--bg); color: var(--text-primary);
+    line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased;
+  }
+  body::before {
+    content: ''; position: fixed; inset: 0; opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 9999;
+  }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.blue { width: 600px; height: 600px; background: var(--blue); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+
+  nav {
+    position: sticky; top: 0; z-index: 100; padding: 0 24px;
+    backdrop-filter: blur(20px) saturate(1.4);
+    background: rgba(11, 17, 32, 0.75);
+    border-bottom: 1px solid var(--border);
+  }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner {
+    max-width: var(--max-w); margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 60px;
+  }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark {
+    font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px;
+    background: linear-gradient(135deg, var(--blue), var(--sky));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+  }
+  .nav-brand-sub {
+    font-size: 12px; color: var(--text-muted);
+    letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500;
+    padding-left: 10px; border-left: 1px solid var(--border);
+  }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--sky); }
+  .theme-toggle {
+    background: none; border: 1px solid var(--border); color: var(--text-secondary);
+    width: 36px; height: 36px; border-radius: 50%; cursor: pointer;
+    display: grid; place-items: center; font-size: 16px; transition: all 0.2s;
+  }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--sky); }
+
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .read { max-width: var(--read-w); }
+
+  .crumb {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted);
+    letter-spacing: 0.5px; padding: 28px 0 0;
+    display: flex; gap: 10px; flex-wrap: wrap;
+  }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--sky); }
+  .crumb-sep { opacity: 0.5; }
+  .crumb-current { color: var(--text-secondary); }
+
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500;
+    letter-spacing: 2px; text-transform: uppercase; color: var(--sky);
+    margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px;
+  }
+  .hero .eyebrow .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--blue-glow); box-shadow: 0 0 12px var(--blue-glow);
+  }
+  .hero h1 {
+    font-size: clamp(40px, 6vw, 66px); font-weight: 800;
+    line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 14ch;
+  }
+  .hero h1 .gradient {
+    background: linear-gradient(135deg, var(--blue-glow), var(--sky), var(--sky-muted));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500;
+    padding: 6px 14px; border-radius: var(--radius-pill);
+    border: 1px solid var(--border); color: var(--text-secondary);
+    letter-spacing: 0.5px;
+  }
+  .pill.accent { background: rgba(37, 99, 235, 0.12); color: var(--blue-glow); border-color: rgba(37, 99, 235, 0.25); }
+
+  section { padding: 52px 0; position: relative; }
+  .section-label {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500;
+    letter-spacing: 2px; text-transform: uppercase; color: var(--sky);
+    margin-bottom: 14px;
+  }
+  .section-title {
+    font-size: clamp(26px, 3.4vw, 36px); font-weight: 700;
+    letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2;
+  }
+  .section-lede {
+    font-size: 16px; color: var(--text-secondary); max-width: var(--read-w);
+    line-height: 1.75; font-weight: 300; margin-bottom: 32px;
+  }
+  .prose p {
+    font-size: 16px; color: var(--text-secondary); line-height: 1.75;
+    max-width: var(--read-w); margin-bottom: 18px;
+  }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.88em;
+    background: var(--bg-card); border: 1px solid var(--border);
+    padding: 1px 6px; border-radius: 4px; color: var(--sky);
+  }
+
+  pre.code {
+    background: var(--ink-deep); border: 1px solid var(--border);
+    border-radius: var(--radius-md); padding: 20px 22px;
+    overflow-x: auto; font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px; line-height: 1.65; color: var(--mist);
+    margin: 0 0 20px; max-width: var(--read-w);
+  }
+  [data-theme="light"] pre.code { background: #0F172A; color: #E2E8F0; }
+  pre.code .k { color: var(--sky); }
+  pre.code .s { color: #A5F3B8; }
+  pre.code .c { color: var(--text-muted); font-style: italic; }
+  pre.code .n { color: #FCD34D; }
+
+  .info-card {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-lg);
+    padding: 28px 32px; max-width: var(--read-w);
+    margin-bottom: 20px;
+  }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+
+  .compare-wrap {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-lg);
+    overflow: hidden; max-width: var(--read-w);
+    margin-bottom: 20px;
+  }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td {
+    padding: 12px 16px; text-align: left;
+    border-bottom: 1px solid var(--border); vertical-align: top;
+  }
+  .compare thead th {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600;
+    letter-spacing: 1.2px; text-transform: uppercase; color: var(--sky);
+    background: rgba(37, 99, 235, 0.04);
+  }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); }
+  .compare td code {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.9em;
+    color: var(--sky);
+  }
+
+  .gotcha-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 12px;
+  }
+  .gotcha {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-left: 3px solid var(--rose);
+    border-radius: var(--radius-md);
+    padding: 18px 22px;
+  }
+  .gotcha strong { display: block; color: var(--text-primary); font-weight: 600; font-size: 14px; margin-bottom: 6px; }
+  .gotcha p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+  .connect-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 12px;
+  }
+  .connect-node {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    padding: 18px 22px; transition: all 0.3s;
+    text-decoration: none; color: inherit; display: block;
+  }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node.soon { cursor: default; opacity: 0.72; }
+  .connect-node.soon:hover { border-color: var(--border); background: var(--bg-card); }
+  .connect-node .tag {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    letter-spacing: 1px; text-transform: uppercase;
+    color: var(--text-muted); display: block; margin-bottom: 6px;
+  }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+
+  .resource-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 12px;
+  }
+  .resource {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    padding: 18px 22px; text-decoration: none; transition: all 0.3s;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--sky); word-break: break-all; }
+
+  .decision-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+    max-width: var(--read-w);
+  }
+  @media (max-width: 720px) { .decision-grid { grid-template-columns: 1fr; } }
+  .decision-card {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    padding: 22px 24px;
+  }
+  .decision-card.use { border-left: 3px solid var(--green); }
+  .decision-card.skip { border-left: 3px solid var(--rose); }
+  .decision-card h4 {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .decision-card.use h4 { color: var(--green); }
+  .decision-card.skip h4 { color: var(--rose); }
+  .decision-card ul { list-style: none; padding: 0; }
+  .decision-card li {
+    font-size: 13px; color: var(--text-secondary); line-height: 1.6;
+    padding: 6px 0; border-bottom: 1px solid var(--border);
+  }
+  .decision-card li:last-child { border-bottom: none; }
+
+  footer {
+    padding: 60px 0 40px; border-top: 1px solid var(--border);
+    text-align: center; margin-top: 40px;
+  }
+  .footer-brand {
+    font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600;
+    background: linear-gradient(135deg, var(--blue), var(--sky));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+  }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--sky); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+
+  .fade-up {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 768px) {
+    .nav-brand-sub { display: none; }
+    .nav-link { display: none; }
+    pre.code { font-size: 11px; padding: 14px 16px; }
+    .compare { font-size: 12px; }
+    .compare th, .compare td { padding: 10px 12px; }
+  }
+
+  *, *::before, *::after {
+    transition-property: background-color, border-color, color, box-shadow;
+    transition-duration: 0.3s; transition-timing-function: ease;
+  }
+</style>
+</head>
+<body>
+
+<div class="glow-orb blue"></div>
+<div class="glow-orb sky"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../../index.html" class="nav-brand">
+      <span class="nav-brand-mark">know.2nth.ai</span>
+      <span class="nav-brand-sub">tech/frappe/builder</span>
+    </a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">← Frappe</a>
+      <a href="../../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">🌙</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">›</span>
+    <a href="../../../index.html#domains">Technology</a>
+    <span class="crumb-sep">›</span>
+    <a href="../">tech</a>
+    <span class="crumb-sep">›</span>
+    <a href="./">frappe</a>
+    <span class="crumb-sep">›</span>
+    <span class="crumb-current">builder</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> tech/frappe · Builder · Skill Leaf</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      Drag a page onto a canvas,<br><span class="gradient">bind it to a doctype.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      Frappe Builder is a low-code website builder with a Figma-like visual editor, one-click publishing, and — this is the part that separates it from every other page builder — direct access to the Frappe database underneath. Pages can be data-driven against real doctypes without a headless CMS or a separate backend. It ships an AI site-building agent with permission-respecting reads, approval gates on sensitive changes, and revertable edits. MIT licensed, and <code>frappe.io</code> itself runs on it.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill accent">Live</span>
+      <span class="pill">Frappe Framework app</span>
+      <span class="pill">MIT</span>
+      <span class="pill">Vue · Frappe UI</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 WHAT IT IS -->
+<section id="what">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 · What it is</div>
+      <h2 class="section-title">The page builder that can see your data.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Most page builders solve layout and stop. You get a canvas, some blocks, and a publish button, and the moment you need a page driven by real records — a product catalogue, a branch locator, a careers list that reflects open positions — you are wiring a headless CMS to a frontend framework and the "no-code" promise quietly expires.</p>
+      <p>Frappe Builder's premise is that if your business data already lives in Frappe doctypes, the builder should be able to read them. It uses Frappe Framework's built-in CMS to manage structured content, pull dynamic data from the database, and power data-driven pages with no separate backend. A block's property or style can be bound to a value sourced from a script, from page data, or from a query parameter. Dynamic detail pages — one route pattern, many records — are a first-class thing rather than a workaround.</p>
+      <p>Around that sits the expected surface: an intuitive visual editor, responsive views for different device widths, dark mode with system-preference detection and a manual override, one-click publishing, and a built-in analytics dashboard covering page views, unique visitors, and top referrers. The maintainers' stated priority from day one was performance — not bloating pages with unnecessary scripts and styles — and the proof point they offer is that <code>frappe.io</code> is itself built on Builder.</p>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.08s">
+      <h4>MIT, not AGPL</h4>
+      <p>Frappe Builder is MIT licensed, which puts it in a different category from most of the ecosystem around it — Raven, Drive, LMS and Print Designer are all AGPL v3. If you are building something you intend to embed, fork, or ship inside a commercial product, that distinction is the whole conversation. Check the licence file per app; do not infer it from the organisation.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 THE SCRIPTING SURFACE -->
+<section id="scripting">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 · The scripting surface</div>
+      <h2 class="section-title">Where "low-code" becomes code.</h2>
+      <p class="section-lede">Builder is honest about being low-code rather than no-code. There are four distinct places to put logic, and knowing which is which is most of the learning curve.</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead><tr><th>Surface</th><th>Scope</th><th>Reach for it when</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Global scripts</strong></td><td>Every page on the site</td><td>Analytics tags, a consent banner, anything that must be everywhere. Also the easiest place to slow the whole site down.</td></tr>
+          <tr><td><strong>Client scripts</strong></td><td>A single page</td><td>Page-specific interactivity that is not worth a component.</td></tr>
+          <tr><td><strong>Per-block data scripts</strong></td><td>One block</td><td>Fetching or shaping the data a specific section renders. The workhorse for data-driven sections.</td></tr>
+          <tr><td><strong>Typed block props</strong></td><td>A reusable block</td><td>Turning a hand-built section into something a non-technical editor can safely configure. This is the one that decides whether your site is maintainable in a year.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.08s">
+      <h4>The maintainability trap, said plainly</h4>
+      <p>Every property and style can be bound to a dynamic value from a script, page data, or a query parameter. That is powerful and it is exactly how a "marketing can edit this themselves" site becomes a site only one developer understands. Decide early which parts are editor-facing — typed props, structured content — and which are developer-facing, and resist binding a colour to a script because you can.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 THE AI SITE BUILDER -->
+<section id="ai">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 · The AI site builder</div>
+      <h2 class="section-title">Grounded, gated, revertable — the interesting part isn't the model.</h2>
+      <p class="section-lede">Builder ships an agent, Bob, that builds and edits pages through conversation. The feature list is worth reading closely, because the design decisions in it are more transferable than the feature itself.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>By the maintainers' description, Bob grounds itself in your site rather than guessing: it reads existing pages and follows their design language by default, reuses your components and theme tokens, fits new pages into your route structure including dynamic detail pages, wires forms and data-driven sections to real doctypes, and researches facts online instead of inventing them. Reads respect your permissions. Sensitive changes wait for your approval. Every AI edit is revertable.</p>
+      <p>Those last three clauses are the ones to steal. Most "AI builds your page" features are a text-to-HTML call with no relationship to the system they are editing, which is why the output looks generic and why nobody trusts it near production. Grounding the agent in the existing design tokens and route structure is what makes the output fit; running its reads through the existing permission model is what makes it safe to point at a live site; and revertability is what makes a wrong answer cheap. Whether Bob is <em>good</em> depends on the model behind it and on how disciplined your existing pages are — an agent that follows your design language will faithfully follow a bad one. But the harness design is correct, and it is a reasonable template for any agent you build against your own stack.</p>
+      <p>The honest caveat: an agent that reads your site and researches online is making outbound calls and sending your page content somewhere. Before pointing it at a client site, know which model provider is in the path and what leaves the building.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 GOTCHAS -->
+<section id="gotchas">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 · Gotchas</div>
+      <h2 class="section-title">Where it gets tricky.</h2>
+    </div>
+    <div class="gotcha-list fade-up" style="transition-delay: 0.05s">
+      <div class="gotcha">
+        <strong>Your marketing site now shares a blast radius with your ERP</strong>
+        <p>Builder pages are served from a Frappe bench. If that bench is the one running ERPNext, a launch-day traffic spike on the homepage and month-end close are contending for the same resources, and a public-facing surface is now attached to your system of record. Either give the website its own bench, or be deliberate about sizing, caching and the edge in front of it.</p>
+      </div>
+      <div class="gotcha">
+        <strong>Data-driven pages are database queries on a public route</strong>
+        <p>Binding a section to a doctype is convenient, and it means an anonymous visitor's page view runs a query against your business database. Check what the Guest role can read, cache aggressively, and think about what an enumerable query parameter exposes before you ship a dynamic detail route.</p>
+      </div>
+      <div class="gotcha">
+        <strong>It is a Frappe site, so SEO and edge behaviour are yours to own</strong>
+        <p>Builder produces lean, Lighthouse-friendly pages — that is a stated design goal and it is real. What you still own is everything a marketing team will ask for: redirects, canonical URLs, sitemaps, structured data, and a CDN in front. None of that is automatic.</p>
+      </div>
+      <div class="gotcha">
+        <strong>Visual builders and version control do not naturally agree</strong>
+        <p>Pages live in the database, not in your repository. That means no pull-request review of a page change, no branch-per-campaign, and staging-to-production promotion is a data-migration question rather than a deploy. Frappe Cloud and bench tooling give you answers; you have to pick one deliberately rather than assuming your usual git workflow applies.</p>
+      </div>
+      <div class="gotcha">
+        <strong>Built-in analytics is not a replacement for analytics</strong>
+        <p>Page views, unique visitors, and top referrers are enough to answer "is anyone reading this". They are not enough to answer "which campaign converted". If attribution matters, you are still adding a proper analytics tool — and then you are back to a consent banner and a POPIA question about it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 DECISION -->
+<section id="decision">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 · Decision guide</div>
+      <h2 class="section-title">Use it for, skip it for.</h2>
+    </div>
+    <div class="decision-grid fade-up" style="transition-delay: 0.05s">
+      <div class="decision-card use">
+        <h4>Use Frappe Builder when</h4>
+        <ul>
+          <li>Your site needs to render live business data that already lives in Frappe doctypes — catalogue, locations, listings, availability.</li>
+          <li>You want customer-facing portal pages on the same site as the records behind them, under the same permissions.</li>
+          <li>You are already on a bench and adding a website should not mean adding a stack.</li>
+          <li>You want a visual editor a designer can work in, with a typed-props escape hatch for the parts that must stay safe.</li>
+          <li>MIT licensing matters because you intend to fork, embed, or ship it.</li>
+        </ul>
+      </div>
+      <div class="decision-card skip">
+        <h4>Skip Frappe Builder when</h4>
+        <ul>
+          <li>The site is pure marketing with no relationship to your operational data. Astro, Next.js or a static site on the edge is faster to build and cheaper to run.</li>
+          <li>You need the plugin ecosystem — WordPress has thirty thousand of them and you want six.</li>
+          <li>Your content team needs editorial workflow: drafts, scheduled publishing, multi-stage approval, granular per-field permissions. That is a CMS feature set Builder does not target.</li>
+          <li>Your organisation requires page changes to go through code review. Database-resident pages fight that workflow rather than fitting it.</li>
+          <li>You do not run Frappe and have no plans to. Standing up a bench to get a page builder is the wrong trade.</li>
+          <li>You need multi-language content management as a product feature rather than as duplicated routes.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 SA CONTEXT -->
+<section id="sa-context">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 · South African context</div>
+      <h2 class="section-title">Where Builder fits SA delivery.</h2>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.05s">
+      <h4>Latency is the decision nobody makes until launch week</h4>
+      <p>A Frappe bench in Johannesburg or Cape Town serves local visitors well and international visitors poorly. A bench in Europe does the reverse. Builder produces lean pages, which helps, but it cannot fix a 180ms round trip. If the site matters commercially outside SA, put a CDN in front and cache the static parts hard — and remember that the data-driven sections are the ones that will not cache, so design which parts of the page are dynamic with that in mind.</p>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.07s">
+      <h4>POPIA · forms are collection points</h4>
+      <p>Builder wires forms to real doctypes, which means a contact form on a public page writes personal information straight into your operational database with no integration step. That is the convenience and the obligation in one sentence. Each form needs a stated purpose, a lawful basis, a retention rule, and a consent mechanism that matches what you actually do with the submission. The ease of wiring it up is precisely why this gets skipped.</p>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.09s">
+      <h4>FX · the quiet win</h4>
+      <p>A website built on a bench you already run adds no new USD subscription. No page-builder SaaS, no headless CMS seat, no separate hosting plan. For an SA studio running client sites, that is a margin question as much as a technical one — the recurring cost stays in rand and stays yours. Weigh it against the maintenance you are taking on: one more surface to patch, back up, and keep up with upstream.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 07 CONNECTIONS -->
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 · Connections</div>
+      <h2 class="section-title">Where this leaf links.</h2>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="framework.html" class="connect-node">
+        <span class="tag">tech/frappe/framework</span>
+        <div class="skill">Frappe Framework</div>
+        <div class="why">The CMS, the doctypes, and the permission model Builder's data-driven pages read through.</div>
+      </a>
+      <a href="../../design/design-systems.html" class="connect-node">
+        <span class="tag">design/design-systems</span>
+        <div class="skill">Design systems</div>
+        <div class="why">Theme tokens and reusable components are what Bob grounds itself in. A site with a real design system gets better AI output than one without.</div>
+      </a>
+      <a href="../../design/ai-design.html" class="connect-node">
+        <span class="tag">design/ai-design</span>
+        <div class="skill">AI-assisted design</div>
+        <div class="why">The wider pattern Bob is one instance of — grounded generation, approval gates, revertable edits.</div>
+      </a>
+      <a href="../../biz/erp/erpnext.html" class="connect-node">
+        <span class="tag">biz/erp/erpnext</span>
+        <div class="skill">ERPNext</div>
+        <div class="why">The most common source of the live data a Builder page renders — and the reason to think hard about bench separation.</div>
+      </a>
+      <a href="../cloudflare/workers.html" class="connect-node">
+        <span class="tag">tech/cloudflare/workers</span>
+        <div class="skill">Cloudflare Workers</div>
+        <div class="why">The edge layer that fixes Builder's latency problem for international visitors, and where the caching strategy lives.</div>
+      </a>
+      <a href="./" class="connect-node">
+        <span class="tag">tech/frappe</span>
+        <div class="skill">Frappe sub-hub</div>
+        <div class="why">The hub listing the Frappe ecosystem apps. Builder sits in the developer-tools band.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 08 RESOURCES -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 · Resources</div>
+      <h2 class="section-title">Go deeper.</h2>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://frappe.io/builder" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Project home</span>
+        <span class="r-title">Frappe Builder</span>
+        <span class="r-url">frappe.io/builder</span>
+      </a>
+      <a href="https://github.com/frappe/builder" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Source</span>
+        <span class="r-title">frappe/builder on GitHub — README, releases, licence</span>
+        <span class="r-url">github.com/frappe/builder</span>
+      </a>
+      <a href="https://docs.frappe.io/builder" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs</span>
+        <span class="r-title">Frappe Builder documentation</span>
+        <span class="r-url">docs.frappe.io/builder</span>
+      </a>
+      <a href="https://github.com/frappe/builder/blob/develop/LICENSE" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Licence</span>
+        <span class="r-title">MIT — the full text</span>
+        <span class="r-url">github.com/frappe/builder/blob/develop/LICENSE</span>
+      </a>
+      <a href="https://github.com/frappe/builder/releases" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Releases</span>
+        <span class="r-title">Release notes — check before upgrading a live site</span>
+        <span class="r-url">github.com/frappe/builder/releases</span>
+      </a>
+      <a href="https://frappecloud.com" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Hosting</span>
+        <span class="r-title">Frappe Cloud — managed hosting</span>
+        <span class="r-url">frappecloud.com</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../../index.html">Skills tree</a>
+      <a href="./">Frappe sub-hub</a>
+      <a href="https://frappe.io/builder" target="_blank" rel="noopener">Frappe Builder ↗</a>
+    </div>
+    <p class="footer-copy">© 2026 2nth.ai · Built in South Africa — Globally relevant</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme() {
+    const html = document.documentElement;
+    const current = html.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
+    localStorage.setItem('theme', next);
+  }
+  const saved = localStorage.getItem('theme');
+  if (saved) {
+    document.documentElement.setAttribute('data-theme', saved);
+    document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '☀️' : '🌙';
+  }
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>

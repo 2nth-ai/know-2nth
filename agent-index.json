@@ -3,7 +3,7 @@
   "description": "The public knowledge tree for the 2nth.ai ecosystem. Every leaf is both a human-readable reference and an agent-consumable context document.",
   "agent_fetch": "https://know.2nth.ai/api/context/<domain>/<leaf>",
   "mcp": "https://know.2nth.ai/mcp",
-  "count": 226,
+  "count": 230,
   "items": [
     {
       "title": "Agents — know.2nth.ai",
@@ -71,7 +71,7 @@
     },
     {
       "title": "Claude — know.2nth.ai",
-      "description": "Claude — Anthropic's flagship model family. Four tiers in 2026: Fable 5 (Mythos-class, the new top tier above Opus) for the hardest, longest-horizon work, Opus 4.8 for hard reasoning, Sonnet 4.6 for everyday agent work, Haiku 4.5 for high-volume routing. 1M context on Fable/Opus/Sonnet, 200k on Haiku. Adaptive thinking, MCP-first tool layer, vision and computer use built in. The default for production agents that need long-context reasoning, reliable function-calling, and instruction-following beyond what open-weights models reach.",
+      "description": "Claude — Anthropic's flagship model family. Four current tiers: Fable 5.1 (Mythos-class, the top tier above Opus) for demanding reasoning and long-horizon agentic work, Opus 5.5 for long-running agentic coding and knowledge work, Sonnet 5 for everyday agent work, Haiku 4.5 for high-volume routing. 1M context on Fable/Opus/Sonnet, 200k on Haiku. Adaptive thinking, MCP-first tool layer, vision and computer use built in. The default for production agents that need long-context reasoning, reliable function-calling, and instruction-following beyond what open-weights models reach.",
       "domain": "agents",
       "kind": "leaf",
       "url": "https://know.2nth.ai/explainers/agents/claude",
@@ -1502,12 +1502,28 @@
       "fetch": "tech/frappe/books"
     },
     {
+      "title": "Frappe Builder — know.2nth.ai",
+      "description": "Frappe Builder — a low-code visual website builder with direct access to Frappe doctypes, so pages can be data-driven without a headless CMS. Figma-like canvas, typed block props, four scripting surfaces, one-click publishing, built-in analytics, and an AI site builder with permission-respecting reads, approval gates and revertable edits. MIT licensed. The gotchas: shared blast radius with your ERP, public routes running database queries, and pages that live outside version control.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/frappe/builder",
+      "fetch": "tech/frappe/builder"
+    },
+    {
       "title": "Frappe CRM — know.2nth.ai",
       "description": "Frappe CRM — lead-to-deal pipeline built on the Frappe Framework. Vue 3 frontend, kanban boards, email integration, call logs. The 2024 rebuild that replaced the old ERPNext CRM module.",
       "domain": "tech",
       "kind": "leaf",
       "url": "https://know.2nth.ai/explainers/tech/frappe/crm",
       "fetch": "tech/frappe/crm"
+    },
+    {
+      "title": "Frappe Drive — know.2nth.ai",
+      "description": "Frappe Drive — open-source file storage, sharing and collaboration on the Frappe Framework, plus Writer, a Yjs-backed real-time document editor. The self-hosted answer to Google Drive when data residency is the requirement and feature parity is not. Still in beta per upstream, which shapes how you use it. S3-compatible storage, LibreOffice previews, video streaming, guest access, and an honest POPIA read for South African delivery.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/frappe/drive",
+      "fetch": "tech/frappe/drive"
     },
     {
       "title": "Frappe Framework — know.2nth.ai",
@@ -1532,6 +1548,14 @@
       "kind": "leaf",
       "url": "https://know.2nth.ai/explainers/tech/frappe/hr",
       "fetch": "tech/frappe/hr"
+    },
+    {
+      "title": "Frappe Wiki — know.2nth.ai",
+      "description": "Frappe Wiki — a deliberately small markdown documentation app on the Frappe Framework. Revision history, an optional change-approval workflow, attachments, auto table of contents and RediSearch-backed search, publishing without a build step. MIT licensed. The real decision is structural: database-resident docs versus docs-as-code, and who actually writes them. Includes the RediSearch managed-Redis trap and the SA compliance-documentation case.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/frappe/wiki",
+      "fetch": "tech/frappe/wiki"
     },
     {
       "title": "Furniture Guild — Architecture & review — know.2nth.ai",
@@ -1684,6 +1708,14 @@
       "kind": "leaf",
       "url": "https://know.2nth.ai/explainers/tech/embedded/platformio",
       "fetch": "tech/embedded/platformio"
+    },
+    {
+      "title": "Raven — know.2nth.ai",
+      "description": "Raven — open-source team messaging built on the Frappe Framework. Channels, threads, files and a React Native mobile app, running inside the same site as ERPNext and Frappe HR, so a message can carry a live document preview, fire on a document event or run a workflow action. Raven AI adds no-code agents inside the existing permission boundary. AGPL v3, and the honest gotchas: Expo dev builds, Firebase in the push path, and chat as a POPIA records surface.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/frappe/raven",
+      "fetch": "tech/frappe/raven"
     },
     {
       "title": "Redis — know.2nth.ai",
