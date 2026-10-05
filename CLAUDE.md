@@ -6,6 +6,9 @@
 
 Sibling sites in the ecosystem:
 - **2nth.ai** — framework / GTM site (Human + AI = 2ⁿ)
+- **2nth.me** — personal / practitioner surface
+- **2nth.org** — non-profit / community surface
+- **pay.2nth.ai** — payments surface
 - **dev.2nth.ai** — partner / Gridline / openBUILD AI source content (Construction domain pulls from here)
 - **2nth.io** — compute infrastructure layer
 - **imbila.ai** — parent consultancy brand
@@ -43,26 +46,44 @@ Sibling sites in the ecosystem:
 ```
 know-2nth/
 ├── CLAUDE.md
-├── index.html                # root: 12 top-level domain cards
+├── index.html                # root: 14 top-level domain cards
 ├── about.html                # access model + how the site works
 ├── join.html                 # HubSpot signup form (soft conversion play)
 ├── gate.js                   # tier-gate hook, loaded on every leaf, currently inert
 ├── og-image.jpg              # 1200×630 OG / Twitter card
 ├── og-image.svg              # source for the OG image
 ├── _redirects                # Cloudflare Pages redirects
-├── google-adk-explainer.md   # canonical source markdown for ADK leaf (PR #17)
+├── ask.html                  # Ask Vinci — on-site AI assistant (Workers AI, edge, grounded)
+├── llms.txt                  # GENERATED — do not hand-edit
+├── agent-index.json          # GENERATED — do not hand-edit
+├── *-explainer.md            # canonical source markdown for specific leaves (e.g. google-adk)
+├── briefings/                # CEO / CTO briefings (indexed alongside leaves)
+├── lab/                      # demos and experiments
+├── claude/                   # Claude-specific reference pages
+├── functions/                # Cloudflare Pages Functions (agent-fetch converter, MCP server)
+├── scripts/                  # gen-agent-index.mjs and friends
 └── explainers/
     ├── agents/        # Frameworks, Protocols, Models, Inference (the strategic priority)
-    ├── biz/           # ERP, CRM, HR — has erp/ and crm/ sub-hubs
+    ├── biz/           # ERP, CRM, HR — has bpm/, crm/, ecm/, erp/, hr/ sub-hubs
     ├── construction/  # openBIM + Gridline / openBUILD AI partner-anchored
     ├── data/          # analytics/, warehousing/, engineering/ sub-hubs
     ├── design/        # tokens, components, motion, AI-assisted design
+    ├── fin/           # financial services
+    ├── health/        # private practice management + ambient AI scribes
+    ├── leg/           # SA legal — POPIA, commercial, employment, disputes, IP, corporate
+    ├── media/         # TTS, voice agents, the media landscape
     ├── partners/      # co-branded leaves (no hub yet, not on root grid)
-    ├── people/        # coaching, leadership, typologies/
-    └── tech/          # cloudflare/, google/, microsoft/, frappe/, runtime/, android-hce/, embedded/, frameworks/
+    ├── people/        # coaching, leadership, typologies/, ai-roles/
+    ├── software/      # software engineering practice — SDD, waterfall, TypeScript, software-3
+    ├── tech/          # cloudflare/, google/, microsoft/, frappe/, oracle/, runtime/, android-hce/, embedded/, frameworks/
+    └── tools/         # runtime and tooling leaves
 ```
 
-Five additional domains exist on the root grid as cards but have **no folder yet**: `edu`, `fin`, `health`, `iot`, `leg`. Building any of them out means: create `explainers/<domain>/index.html` hub, ship at least one Live leaf, then the root card becomes meaningful.
+**Two root-grid domains have no folder yet**: `edu` and `iot`. Building either out means: create `explainers/<domain>/index.html` hub, ship at least one Live leaf, then the root card becomes meaningful. (`fin`, `health` and `leg` were previously listed here as folder-less — they have all since been built out. `tools/` and `partners/` are the reverse case: folders that are not on the root grid.)
+
+### Live counts live in two places
+
+A domain's "N Live" count is duplicated: once on the sub-hub itself (`explainers/tech/frappe/index.html`) and once on the parent hub's card for it (`explainers/tech/index.html`). Both drift silently. When you flip a stub to Live, grep for the old number in **both** files — the parent-hub count is the one that gets forgotten.
 
 ## How leaves are built
 

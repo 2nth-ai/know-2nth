@@ -3,7 +3,7 @@
   "description": "The public knowledge tree for the 2nth.ai ecosystem. Every leaf is both a human-readable reference and an agent-consumable context document.",
   "agent_fetch": "https://know.2nth.ai/api/context/<domain>/<leaf>",
   "mcp": "https://know.2nth.ai/mcp",
-  "count": 226,
+  "count": 230,
   "items": [
     {
       "title": "Agents — know.2nth.ai",
@@ -71,7 +71,7 @@
     },
     {
       "title": "Claude — know.2nth.ai",
-      "description": "Claude — Anthropic's flagship model family. Four tiers in 2026: Fable 5 (Mythos-class, the new top tier above Opus) for the hardest, longest-horizon work, Opus 4.8 for hard reasoning, Sonnet 4.6 for everyday agent work, Haiku 4.5 for high-volume routing. 1M context on Fable/Opus/Sonnet, 200k on Haiku. Adaptive thinking, MCP-first tool layer, vision and computer use built in. The default for production agents that need long-context reasoning, reliable function-calling, and instruction-following beyond what open-weights models reach.",
+      "description": "Claude — Anthropic's flagship model family. Four tiers in late 2026: Fable 5.1 (Mythos-class, the top tier above Opus) for the hardest, longest-horizon work, Opus 5.5 for hard reasoning, Sonnet 5.5 for everyday agent work, Haiku 4.5 for high-volume routing. 1M context on Fable/Opus/Sonnet, 200k on Haiku. Adaptive thinking, MCP-first tool layer, vision and computer use built in. The default for production agents that need long-context reasoning, reliable function-calling, and instruction-following beyond what open-weights models reach.",
       "domain": "agents",
       "kind": "leaf",
       "url": "https://know.2nth.ai/explainers/agents/claude",
@@ -175,7 +175,7 @@
     },
     {
       "title": "GPT · OpenAI — know.2nth.ai",
-      "description": "GPT — OpenAI's flagship model family. Mid-2026: GPT-5.5 the flagship with built-in reasoning (~1M context), GPT-5.4 plus mini and nano for cost-tiered production, and o3 as the dedicated reasoning model. Native multimodal, leading function-calling, hosted via OpenAI Platform and Azure OpenAI. The default for production agents on OpenAI infrastructure — and the most-used closed frontier model family in the world by deployed count.",
+      "description": "GPT — OpenAI's flagship model family. Late 2026: the GPT-5.6 series (Sol, Terra, Luna) is the frontier, with Sol for long-horizon agentic work; GPT-5.5 and the GPT-5.4 mini/nano line are the previous generation, and o3 remains the dedicated reasoning model. Native multimodal, leading function-calling, hosted via OpenAI Platform and Azure OpenAI. The default for production agents on OpenAI infrastructure — and the most-used closed frontier model family in the world by deployed count.",
       "domain": "agents",
       "kind": "leaf",
       "url": "https://know.2nth.ai/explainers/agents/gpt",
@@ -1191,7 +1191,7 @@
     },
     {
       "title": "Frappe — know.2nth.ai",
-      "description": "The Frappe platform in the 2nth skill tree. A metadata-driven Python framework with a thirteen-app ecosystem — ERPNext, HRMS, CRM, Helpdesk, LMS, Builder, Drive, Books, Insights, Raven, Wiki, and Frappe Cloud.",
+      "description": "The Frappe platform in the 2nth skill tree. A metadata-driven Python framework with a thirteen-app ecosystem — ERPNext, HRMS, CRM, Helpdesk, Learning, Builder, Suite, Books, Insights, Raven, Wiki, and Frappe Cloud.",
       "domain": "tech",
       "kind": "hub",
       "url": "https://know.2nth.ai/explainers/tech/frappe/",
@@ -1502,6 +1502,14 @@
       "fetch": "tech/frappe/books"
     },
     {
+      "title": "Frappe Builder — know.2nth.ai",
+      "description": "Frappe Builder — a low-code visual website builder that publishes to your own Frappe site, binding pages directly to live doctypes with no headless CMS in between. MIT-licensed (unlike the AGPL rest of the ecosystem), ships no runtime to visitors, and its Bob agent routes model calls through LiteLLM so you choose the provider. Honest on where Webflow is still the better tool.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/frappe/builder",
+      "fetch": "tech/frappe/builder"
+    },
+    {
       "title": "Frappe CRM — know.2nth.ai",
       "description": "Frappe CRM — lead-to-deal pipeline built on the Frappe Framework. Vue 3 frontend, kanban boards, email integration, call logs. The 2024 rebuild that replaced the old ERPNext CRM module.",
       "domain": "tech",
@@ -1532,6 +1540,22 @@
       "kind": "leaf",
       "url": "https://know.2nth.ai/explainers/tech/frappe/hr",
       "fetch": "tech/frappe/hr"
+    },
+    {
+      "title": "Frappe Learning — know.2nth.ai",
+      "description": "Frappe Learning (Frappe LMS) — open-source LMS on the Frappe Framework. Courses, chapters, lessons, cohort batches, Zoom and Google Meet live classes, certificates, plus two things Moodle lacks: auto-marked in-browser coding exercises with hidden test cases, and certification backed by a booked human evaluator. AGPL v3, v2.64.0. Honest on SCORM, accreditation and the Indian-tax billing model.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/frappe/lms",
+      "fetch": "tech/frappe/lms"
+    },
+    {
+      "title": "Frappe Suite — know.2nth.ai",
+      "description": "Frappe Suite — seven collaboration products (Drive, Writer, Sheets, Slides, Meet, Mail, Calendar) consolidated into one Frappe app, and the successor to the now-archived standalone Frappe Drive. Version 0.0.1 with no release tags. Mail is a JMAP client in front of an external Stalwart cluster, administration needs a second app, and migrating off the standalone apps deletes their data first. AGPL v3.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/frappe/suite",
+      "fetch": "tech/frappe/suite"
     },
     {
       "title": "Furniture Guild — Architecture & review — know.2nth.ai",
@@ -1684,6 +1708,14 @@
       "kind": "leaf",
       "url": "https://know.2nth.ai/explainers/tech/embedded/platformio",
       "fetch": "tech/embedded/platformio"
+    },
+    {
+      "title": "Raven — know.2nth.ai",
+      "description": "Raven — open-source team chat built on the Frappe Framework. Channels, threads, and a mobile app, but the real differentiator is that messages and ERP documents share a database: document events post to channels, approvals happen in the conversation, and the permission model is the one your ERP already uses. AGPL v3, v3.0.0, React frontend. Honest on where Slack still wins.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/frappe/raven",
+      "fetch": "tech/frappe/raven"
     },
     {
       "title": "Redis — know.2nth.ai",
