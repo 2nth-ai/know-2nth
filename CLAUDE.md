@@ -4,11 +4,16 @@
 
 **know.2nth.ai** is the public knowledge tree for the 2nth.ai ecosystem — a static HTML portal of explainer "leaves" grouped under top-level domains. Every leaf is both a human-readable reference and an agent-consumable context document.
 
+know.2nth.ai is the **content engine for the whole ecosystem** — a leaf here is source
+material the other properties draw on, not just a page on this site.
+
 Sibling sites in the ecosystem:
 - **2nth.ai** — framework / GTM site (Human + AI = 2ⁿ)
 - **dev.2nth.ai** — partner / Gridline / openBUILD AI source content (Construction domain pulls from here)
 - **2nth.io** — compute infrastructure layer
-- **imbila.ai** — parent consultancy brand
+- **2nth.me**, **2nth.org** — personal / investor-relations properties
+- **pay.2nth.ai** — payments knowledge base + research agent
+- **imbila.ai** — the AI consultancy the 2nth build factory grew out of (imbila came first)
 
 ### Related repos that are NOT this one
 
@@ -62,7 +67,16 @@ know-2nth/
     └── tech/          # cloudflare/, google/, microsoft/, frappe/, runtime/, android-hce/, embedded/, frameworks/
 ```
 
-Five additional domains exist on the root grid as cards but have **no folder yet**: `edu`, `fin`, `health`, `iot`, `leg`. Building any of them out means: create `explainers/<domain>/index.html` hub, ship at least one Live leaf, then the root card becomes meaningful.
+Two domains exist on the root grid as inert `soon` cards with **no folder yet**: `edu` and `iot`.
+Building either out means: create `explainers/<domain>/index.html` hub, ship at least one Live leaf,
+then flip the card and it becomes meaningful.
+
+`fin`, `health` and `leg` **do** have folders. `fin`'s hub is still empty, so its root card was made
+inert on 2026-09-05 — it had been a live link advertising "4 Live" leaves that did not exist. Flip it
+back to an anchor only once the hub has at least one Live leaf.
+
+`explainers/tools/` has a folder and an empty hub but **no root card**, and `llms.txt` still carries a
+`## Tools` section — it needs a decision: build it out, or remove the folder and regenerate.
 
 ## How leaves are built
 
