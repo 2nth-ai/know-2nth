@@ -4,12 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Frappe — know.2nth.ai</title>
-<meta name="description" content="The Frappe platform in the 2nth skill tree. A metadata-driven Python framework with a thirteen-app ecosystem — ERPNext, HRMS, CRM, Helpdesk, LMS, Builder, Drive, Books, Insights, Raven, Wiki, and Frappe Cloud.">
+<meta name="description" content="The Frappe platform in the 2nth skill tree. A metadata-driven Python framework with a thirteen-app ecosystem — ERPNext, HRMS, CRM, Helpdesk, Learning, Builder, Suite, Books, Insights, Raven, Wiki, and Frappe Cloud.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="know.2nth.ai">
 <meta property="og:url" content="https://know.2nth.ai/explainers/tech/frappe/">
 <meta property="og:title" content="Frappe — know.2nth.ai">
-<meta property="og:description" content="The Frappe platform in the 2nth skill tree. A metadata-driven Python framework with a thirteen-app ecosystem — ERPNext, HRMS, CRM, Helpdesk, LMS, Builder, Drive, Books, Insights, Raven, Wiki, and Frappe Cloud.">
+<meta property="og:description" content="The Frappe platform in the 2nth skill tree. A metadata-driven Python framework with a thirteen-app ecosystem — ERPNext, HRMS, CRM, Helpdesk, Learning, Builder, Suite, Books, Insights, Raven, Wiki, and Frappe Cloud.">
 <meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
@@ -17,7 +17,7 @@
 <meta property="og:image:alt" content="know.2nth.ai — The Knowledge Tree">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Frappe — know.2nth.ai">
-<meta name="twitter:description" content="The Frappe platform in the 2nth skill tree. A metadata-driven Python framework with a thirteen-app ecosystem — ERPNext, HRMS, CRM, Helpdesk, LMS, Builder, Drive, Books, Insights, Raven, Wiki, and Frappe Cloud.">
+<meta name="twitter:description" content="The Frappe platform in the 2nth skill tree. A metadata-driven Python framework with a thirteen-app ecosystem — ERPNext, HRMS, CRM, Helpdesk, Learning, Builder, Suite, Books, Insights, Raven, Wiki, and Frappe Cloud.">
 <meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -325,7 +325,7 @@
     </p>
     <div class="hub-stats fade-up" style="transition-delay: 0.15s">
       <div class="hub-stat"><div class="num">13</div><div class="label">Apps</div></div>
-      <div class="hub-stat"><div class="num">5</div><div class="label">Live explainers</div></div>
+      <div class="hub-stat"><div class="num">9</div><div class="label">Live explainers</div></div>
       <div class="hub-stat"><div class="num">AGPL</div><div class="label">v3</div></div>
     </div>
   </div>
@@ -428,14 +428,14 @@
     </div>
     <div class="svc-grid fade-up" style="transition-delay: 0.03s">
 
-      <div class="svc-card soon">
+      <a href="lms.html" class="svc-card">
         <div class="svc-head">
-          <div class="svc-name">Frappe LMS</div>
-          <span class="svc-state stub">Stub</span>
+          <div class="svc-name">Frappe Learning</div>
+          <span class="svc-state live">Live</span>
         </div>
         <span class="svc-path">tech/frappe/lms</span>
-        <p>Open-source learning management — courses, lessons, quizzes, batches, certificates. The platform Frappe School itself runs on.</p>
-      </div>
+        <p>Open-source learning management — courses, chapters, lessons, cohort batches, certificates. Two things Moodle lacks: coding exercises auto-marked against hidden test cases, and certification booked with a live human evaluator. The platform Frappe School itself runs on.</p>
+      </a>
 
       <div class="svc-card soon">
         <div class="svc-head">
@@ -446,23 +446,23 @@
         <p>Markdown-first internal knowledge base. Versioning, sidebar navigation, search, and the same role permissions every other Frappe app uses.</p>
       </div>
 
-      <div class="svc-card soon">
+      <a href="suite.html" class="svc-card">
         <div class="svc-head">
-          <div class="svc-name">Frappe Drive</div>
-          <span class="svc-state stub">Stub</span>
+          <div class="svc-name">Frappe Suite</div>
+          <span class="svc-state live">Live</span>
         </div>
-        <span class="svc-path">tech/frappe/drive</span>
-        <p>Self-hosted cloud file storage with sharing, previews, and folder ACLs. The Google Drive replacement for orgs that want files inside their own infra.</p>
-      </div>
+        <span class="svc-path">tech/frappe/suite</span>
+        <p>Drive, Writer, Sheets, Slides, Meet, Mail and Calendar folded into one app — and the successor to standalone Frappe Drive, which is now archived upstream. Version 0.0.1 with no release tags, so read the leaf before planning anything on it.</p>
+      </a>
 
-      <div class="svc-card soon">
+      <a href="raven.html" class="svc-card">
         <div class="svc-head">
           <div class="svc-name">Raven</div>
-          <span class="svc-state stub">Stub</span>
+          <span class="svc-state live">Live</span>
         </div>
         <span class="svc-path">tech/frappe/raven</span>
-        <p>Slack-style team chat — channels, threads, reactions, file uploads, bots. Talks to the rest of the Frappe stack natively, so a CRM event can become a chat message in one hook.</p>
-      </div>
+        <p>Slack-style team chat — channels, threads, reactions, file uploads, bots, plus a React Native mobile app. Talks to the rest of the Frappe stack natively, so a purchase order can be approved inside the conversation. The one Frappe app with a React rather than Vue frontend.</p>
+      </a>
 
     </div>
 
@@ -473,14 +473,14 @@
     </div>
     <div class="svc-grid fade-up" style="transition-delay: 0.03s">
 
-      <div class="svc-card soon">
+      <a href="builder.html" class="svc-card">
         <div class="svc-head">
           <div class="svc-name">Frappe Builder</div>
-          <span class="svc-state stub">Stub</span>
+          <span class="svc-state live">Live</span>
         </div>
         <span class="svc-path">tech/frappe/builder</span>
-        <p>Visual website builder — drag pages onto a canvas, bind to Frappe doctypes, publish. The no-code surface for marketing pages and customer portals on top of an existing Frappe site.</p>
-      </div>
+        <p>Visual website builder — drag pages onto a canvas, bind to live doctypes, publish. MIT-licensed rather than AGPL, ships no runtime to visitors, and its Bob agent routes model calls through LiteLLM so the provider is yours to choose.</p>
+      </a>
 
       <div class="svc-card soon">
         <div class="svc-head">

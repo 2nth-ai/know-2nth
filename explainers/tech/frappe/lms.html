@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Frappe Learning — know.2nth.ai</title>
+<meta name="description" content="Frappe Learning (Frappe LMS) — open-source LMS on the Frappe Framework. Courses, chapters, lessons, cohort batches, Zoom and Google Meet live classes, certificates, plus two things Moodle lacks: auto-marked in-browser coding exercises with hidden test cases, and certification backed by a booked human evaluator. AGPL v3, v2.64.0. Honest on SCORM, accreditation and the Indian-tax billing model.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/tech/frappe/lms">
+<meta property="og:title" content="Frappe Learning — know.2nth.ai">
+<meta property="og:description" content="Frappe Learning (Frappe LMS) — open-source LMS on the Frappe Framework. Courses, chapters, lessons, cohort batches, Zoom and Google Meet live classes, certificates, plus two things Moodle lacks: auto-marked in-browser coding exercises with hidden test cases, and certification backed by a booked human evaluator. AGPL v3, v2.64.0. Honest on SCORM, accreditation and the Indian-tax billing model.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai — The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Frappe Learning — know.2nth.ai">
+<meta name="twitter:description" content="Frappe Learning (Frappe LMS) — open-source LMS on the Frappe Framework. Courses, chapters, lessons, cohort batches, Zoom and Google Meet live classes, certificates, plus two things Moodle lacks: auto-marked in-browser coding exercises with hidden test cases, and certification backed by a booked human evaluator. AGPL v3, v2.64.0. Honest on SCORM, accreditation and the Indian-tax billing model.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3Cline x1='16' y1='3' x2='16' y2='7' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='16' y1='25' x2='16' y2='29' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='3' y1='16' x2='7' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='25' y1='16' x2='29' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33;
+    --blue: #2563EB; --blue-glow: #3B82F6;
+    --sky: #38BDF8; --sky-muted: #7DD3FC;
+    --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8;
+    --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12);
+    --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12);
+    --violet: #8B5CF6; --violet-soft: rgba(139, 92, 246, 0.12);
+    --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12);
+    --bg: var(--ink); --bg-raised: var(--navy);
+    --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(37, 99, 235, 0.06);
+    --text-primary: var(--paper); --text-secondary: var(--slate);
+    --text-muted: #64748B;
+    --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(56, 189, 248, 0.3);
+    --max-w: 1200px; --read-w: 760px;
+    --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px;
+  }
+  [data-theme="light"] {
+    --bg: #F1F5F9; --bg-raised: #FFFFFF;
+    --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(37, 99, 235, 0.04);
+    --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8;
+    --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(37, 99, 235, 0.25);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+    background: var(--bg); color: var(--text-primary);
+    line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased;
+  }
+  body::before {
+    content: ''; position: fixed; inset: 0; opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 9999;
+  }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.blue { width: 600px; height: 600px; background: var(--blue); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+
+  nav {
+    position: sticky; top: 0; z-index: 100; padding: 0 24px;
+    backdrop-filter: blur(20px) saturate(1.4);
+    background: rgba(11, 17, 32, 0.75);
+    border-bottom: 1px solid var(--border);
+  }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner {
+    max-width: var(--max-w); margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 60px;
+  }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark {
+    font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px;
+    background: linear-gradient(135deg, var(--blue), var(--sky));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+  }
+  .nav-brand-sub {
+    font-size: 12px; color: var(--text-muted);
+    letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500;
+    padding-left: 10px; border-left: 1px solid var(--border);
+  }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--sky); }
+  .theme-toggle {
+    background: none; border: 1px solid var(--border); color: var(--text-secondary);
+    width: 36px; height: 36px; border-radius: 50%; cursor: pointer;
+    display: grid; place-items: center; font-size: 16px; transition: all 0.2s;
+  }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--sky); }
+
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .read { max-width: var(--read-w); }
+
+  .crumb {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted);
+    letter-spacing: 0.5px; padding: 28px 0 0;
+    display: flex; gap: 10px; flex-wrap: wrap;
+  }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--sky); }
+  .crumb-sep { opacity: 0.5; }
+  .crumb-current { color: var(--text-secondary); }
+
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500;
+    letter-spacing: 2px; text-transform: uppercase; color: var(--sky);
+    margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px;
+  }
+  .hero .eyebrow .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--blue-glow); box-shadow: 0 0 12px var(--blue-glow);
+  }
+  .hero h1 {
+    font-size: clamp(40px, 6vw, 66px); font-weight: 800;
+    line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 14ch;
+  }
+  .hero h1 .gradient {
+    background: linear-gradient(135deg, var(--blue-glow), var(--sky), var(--sky-muted));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500;
+    padding: 6px 14px; border-radius: var(--radius-pill);
+    border: 1px solid var(--border); color: var(--text-secondary);
+    letter-spacing: 0.5px;
+  }
+  .pill.accent { background: rgba(37, 99, 235, 0.12); color: var(--blue-glow); border-color: rgba(37, 99, 235, 0.25); }
+
+  section { padding: 52px 0; position: relative; }
+  .section-label {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500;
+    letter-spacing: 2px; text-transform: uppercase; color: var(--sky);
+    margin-bottom: 14px;
+  }
+  .section-title {
+    font-size: clamp(26px, 3.4vw, 36px); font-weight: 700;
+    letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2;
+  }
+  .section-lede {
+    font-size: 16px; color: var(--text-secondary); max-width: var(--read-w);
+    line-height: 1.75; font-weight: 300; margin-bottom: 32px;
+  }
+  .prose p {
+    font-size: 16px; color: var(--text-secondary); line-height: 1.75;
+    max-width: var(--read-w); margin-bottom: 18px;
+  }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.88em;
+    background: var(--bg-card); border: 1px solid var(--border);
+    padding: 1px 6px; border-radius: 4px; color: var(--sky);
+  }
+
+  pre.code {
+    background: var(--ink-deep); border: 1px solid var(--border);
+    border-radius: var(--radius-md); padding: 20px 22px;
+    overflow-x: auto; font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px; line-height: 1.65; color: var(--mist);
+    margin: 0 0 20px; max-width: var(--read-w);
+  }
+  [data-theme="light"] pre.code { background: #0F172A; color: #E2E8F0; }
+  pre.code .k { color: var(--sky); }
+  pre.code .s { color: #A5F3B8; }
+  pre.code .c { color: var(--text-muted); font-style: italic; }
+  pre.code .n { color: #FCD34D; }
+
+  .info-card {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-lg);
+    padding: 28px 32px; max-width: var(--read-w);
+    margin-bottom: 20px;
+  }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+
+  .compare-wrap {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-lg);
+    overflow: hidden; max-width: var(--read-w);
+    margin-bottom: 20px;
+  }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td {
+    padding: 12px 16px; text-align: left;
+    border-bottom: 1px solid var(--border); vertical-align: top;
+  }
+  .compare thead th {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600;
+    letter-spacing: 1.2px; text-transform: uppercase; color: var(--sky);
+    background: rgba(37, 99, 235, 0.04);
+  }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); }
+  .compare td code {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.9em;
+    color: var(--sky);
+  }
+
+  .gotcha-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 12px;
+  }
+  .gotcha {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-left: 3px solid var(--rose);
+    border-radius: var(--radius-md);
+    padding: 18px 22px;
+  }
+  .gotcha strong { display: block; color: var(--text-primary); font-weight: 600; font-size: 14px; margin-bottom: 6px; }
+  .gotcha p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+  .connect-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 12px;
+  }
+  .connect-node {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    padding: 18px 22px; transition: all 0.3s;
+    text-decoration: none; color: inherit; display: block;
+  }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node.soon { cursor: default; opacity: 0.72; }
+  .connect-node.soon:hover { border-color: var(--border); background: var(--bg-card); }
+  .connect-node .tag {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    letter-spacing: 1px; text-transform: uppercase;
+    color: var(--text-muted); display: block; margin-bottom: 6px;
+  }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+
+  .resource-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 12px;
+  }
+  .resource {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    padding: 18px 22px; text-decoration: none; transition: all 0.3s;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--sky); word-break: break-all; }
+
+  .decision-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+    max-width: var(--read-w);
+  }
+  @media (max-width: 720px) { .decision-grid { grid-template-columns: 1fr; } }
+  .decision-card {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    padding: 22px 24px;
+  }
+  .decision-card.use { border-left: 3px solid var(--green); }
+  .decision-card.skip { border-left: 3px solid var(--rose); }
+  .decision-card h4 {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .decision-card.use h4 { color: var(--green); }
+  .decision-card.skip h4 { color: var(--rose); }
+  .decision-card ul { list-style: none; padding: 0; }
+  .decision-card li {
+    font-size: 13px; color: var(--text-secondary); line-height: 1.6;
+    padding: 6px 0; border-bottom: 1px solid var(--border);
+  }
+  .decision-card li:last-child { border-bottom: none; }
+
+  footer {
+    padding: 60px 0 40px; border-top: 1px solid var(--border);
+    text-align: center; margin-top: 40px;
+  }
+  .footer-brand {
+    font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600;
+    background: linear-gradient(135deg, var(--blue), var(--sky));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+  }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--sky); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+
+  .fade-up {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 768px) {
+    .nav-brand-sub { display: none; }
+    .nav-link { display: none; }
+    pre.code { font-size: 11px; padding: 14px 16px; }
+    .compare { font-size: 12px; }
+    .compare th, .compare td { padding: 10px 12px; }
+  }
+
+  *, *::before, *::after {
+    transition-property: background-color, border-color, color, box-shadow;
+    transition-duration: 0.3s; transition-timing-function: ease;
+  }
+</style>
+</head>
+<body>
+
+<div class="glow-orb blue"></div>
+<div class="glow-orb sky"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../../index.html" class="nav-brand">
+      <span class="nav-brand-mark">know.2nth.ai</span>
+      <span class="nav-brand-sub">tech/frappe/lms</span>
+    </a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">&larr; Frappe</a>
+      <a href="../../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#127769;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="../../../index.html#domains">Technology</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="../">tech</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="./">frappe</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">lms</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> tech/frappe · Learning · Skill Leaf</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      Course, cohort,<br><span class="gradient">and a human at the end.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      Frappe Learning is an open-source LMS on the Frappe Framework. Courses organised into chapters and lessons, learners grouped into time-boxed batches, live classes via Zoom or Google Meet, and certificates. Two things set it apart: coding exercises marked automatically against hidden test cases, and certification that books a real evaluator rather than reading a completion percentage.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill accent">Live</span>
+      <span class="pill">Frappe Framework app</span>
+      <span class="pill">AGPL v3</span>
+      <span class="pill">v2.64.0</span>
+      <span class="pill">Vue 3 + frappe-ui</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 · What it is -->
+<section id="what">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 · What it is</div>
+      <h2 class="section-title">An LMS that started as a real school.</h2>
+      <p class="section-lede">Simpler than Moodle by design, with a few capabilities Moodle does not have at all.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Frappe Learning is an open-source learning management system built on the Frappe Framework. Courses organised into chapters and lessons, learners grouped into batches, quizzes and assignments, live classes, and certificates at the end.</p>
+      <p>Its origin explains its shape. In 2021 the Frappe team needed an LMS to launch Mon.School for FOSS United, looked at Moodle, and found the forms too long and the interface confusing. So they built one &mdash; and it became a product. That lineage shows: it is noticeably simpler to put a course online here than in Moodle, and correspondingly less configurable when you need something Moodle would let you bend.</p>
+      <p>Licensed <strong>AGPL v3</strong>, with the latest tagged release at the time of writing being <strong>v2.64.0</strong>. The app is mature by release count and genuinely in production &mdash; Frappe School runs on it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 · The learning model -->
+<section id="model">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 · The learning model</div>
+      <h2 class="section-title">Three levels, then batches on top.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Content is a three-level hierarchy: a <code>LMS Course</code> contains <code>Course Chapter</code> records, each containing <code>Course Lesson</code> records. The chapter exists to set context for its lessons rather than to carry content itself. Above courses, <code>LMS Program</code> groups several courses into a longer pathway.</p>
+      <p>Delivery is separate from content, which is the design decision that makes the rest work. A <code>LMS Batch</code> is a cohort of learners taking a course over a defined period, with its own timetable, its own live classes and its own feedback. The same course can run as a dozen batches over two years without duplicating a single lesson.</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.08s">
+      <table class="compare">
+        <thead>
+          <tr>
+            <th>Doctype</th>
+            <th>Purpose</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><code>LMS Course</code></td><td>The content container</td><td>Carries categories, reviews, instructors and mentors</td></tr>
+          <tr><td><code>Course Chapter</code> / <code>Course Lesson</code></td><td>The two content levels below a course</td><td>Chapters group lessons and set their context</td></tr>
+          <tr><td><code>LMS Program</code></td><td>A pathway spanning several courses</td><td>With <code>LMS Program Member</code> for enrolment</td></tr>
+          <tr><td><code>LMS Batch</code></td><td>A time-boxed cohort</td><td>Has a timetable, live classes and batch feedback</td></tr>
+          <tr><td><code>LMS Quiz</code> / <code>LMS Question</code></td><td>Assessment</td><td>Single-choice, multiple-choice and open-ended questions</td></tr>
+          <tr><td><code>LMS Quiz Violation Log</code></td><td>Proctoring events during a quiz</td><td>Records <code>event_type</code>, <code>severity</code> and timestamp</td></tr>
+          <tr><td><code>LMS Programming Exercise</code></td><td>An in-browser coding problem</td><td>Problem statement, starter code, language, test cases</td></tr>
+          <tr><td><code>LMS Test Case</code></td><td>One check against an exercise</td><td><code>input</code>, <code>expected_output</code>, and a <code>hidden</code> flag</td></tr>
+          <tr><td><code>LMS Assignment</code></td><td>File-submission task</td><td>Learners submit PDFs or documents for marking</td></tr>
+          <tr><td><code>LMS Certificate</code></td><td>Proof of completion</td><td>Built-in template or your own</td></tr>
+          <tr><td><code>LMS Certificate Evaluation</code></td><td>A booked live assessment</td><td>With <code>Course Evaluator</code> and <code>Evaluator Schedule</code></td></tr>
+          <tr><td><code>LMS Video Watch Duration</code></td><td>Per-learner video progress</td><td>The substrate for genuine completion tracking</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 03 · What it does that Moodle does not -->
+<section id="standout">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 · What it does that Moodle does not</div>
+      <h2 class="section-title">Coding exercises and booked evaluations.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Two capabilities here are unusual enough to be the reason you pick this over a more established LMS.</p>
+      <p>The first is <strong>in-browser programming exercises with automated marking</strong>. A <code>LMS Programming Exercise</code> holds a problem statement, starter code and a language; <code>LMS Test Case</code> records hold input and expected output, and critically carry a <code>hidden</code> flag so learners cannot simply code to the visible cases. Submissions run against the full set. For teaching development &mdash; which is a large share of what SA skills programmes actually need &mdash; this removes the usual choice between manual marking and bolting on a separate platform.</p>
+      <p>The second is <strong>evaluator scheduling for certification</strong>. Rather than a certificate falling out of a completion percentage, a learner can request certification, and <code>Course Evaluator</code> plus <code>Evaluator Schedule</code> books them into a live assessment slot with a human. That is a meaningfully more defensible certificate, and the booking machinery is in the box.</p>
+      <p>Live classes are handled through either <strong>Zoom</strong> or <strong>Google Meet</strong>, each with its own settings doctype, created directly from a batch. There is also a learner-profile and jobs layer &mdash; <code>User Skill</code>, <code>Work Experience</code>, <code>Education Detail</code>, <code>Job Opportunity</code> and <code>LMS Job Application</code> &mdash; which turns the platform into a small talent marketplace. Whether you want that is a different question, but it is there and it is coherent: learners who complete courses have profiles employers can post against.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 · Gotchas -->
+<section id="gotchas">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 · Gotchas</div>
+      <h2 class="section-title">Where it gets tricky.</h2>
+    </div>
+    <div class="gotcha-list fade-up" style="transition-delay: 0.05s">
+      <div class="gotcha">
+        <strong>Billing is built around Indian tax law</strong>
+        <p><code>LMS Payment</code> carries <code>gstin</code>, <code>pan</code> and <code>amount_with_gst</code> &mdash; Indian GST registration, Indian permanent account number, and GST-inclusive totals. There is no SA VAT equivalent in the payment doctype. If you intend to sell courses in South Africa, treat the built-in payment flow as a starting point you will extend, and plan to raise tax invoices from your accounting system rather than from the LMS.</p>
+      </div>
+      <div class="gotcha">
+        <strong>Proctoring is a log, not an invigilator</strong>
+        <p><code>LMS Quiz Violation Log</code> records events with a severity, which is useful evidence. It is not proctoring in the sense an accrediting body may mean &mdash; no identity verification, no video capture, no lockdown browser. Do not describe an assessment as proctored on the strength of this field.</p>
+      </div>
+      <div class="gotcha">
+        <strong>Accreditation is entirely on you</strong>
+        <p>Nothing in the app makes a course SETA-aligned, NQF-registered or accredited by anyone. It gives you the record-keeping substrate &mdash; enrolments, progress, assessments, certificates, evaluator sign-off &mdash; and the mapping to a qualification, the moderation, and the reporting format are work you still do. Anyone promising otherwise has not read the doctypes.</p>
+      </div>
+      <div class="gotcha">
+        <strong>Simplicity is a ceiling as well as a feature</strong>
+        <p>The three-level hierarchy is deliberately rigid. No arbitrary nesting, no conditional release rules of real depth, no learning-path branching on assessment outcome. If your pedagogy needs adaptive sequencing, this is the wrong tool and Moodle's complexity is the price of what you want.</p>
+      </div>
+      <div class="gotcha">
+        <strong>No SCORM, no xAPI</strong>
+        <p>There is no support for importing SCORM packages or emitting xAPI statements. Existing bought-in course libraries will not load, and your LMS data will not flow into an LRS. For organisations with an existing content investment this is often the deciding constraint.</p>
+      </div>
+      <div class="gotcha">
+        <strong>Video hosting is your problem</strong>
+        <p><code>LMS Video Watch Duration</code> tracks progress, but the platform is not a video pipeline &mdash; no transcoding, no adaptive bitrate, no CDN. On South African last-mile connections that matters more than it does elsewhere: either host video somewhere that does adaptive streaming, or accept that rural learners will struggle.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 · Decision guide -->
+<section id="decision">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 · Decision guide</div>
+      <h2 class="section-title">Use it for, skip it for.</h2>
+    </div>
+    <div class="decision-grid fade-up" style="transition-delay: 0.05s">
+      <div class="decision-card use">
+        <h4>Use Frappe Learning when</h4>
+        <ul>
+          <li>You are teaching technical skills and want automated marking of coding exercises without a second platform.</li>
+          <li>You want certificates backed by a booked human evaluation rather than a completion percentage.</li>
+          <li>You already run Frappe and want learners, employees and courses on one site with one permission model.</li>
+          <li>You are running cohort-based training &mdash; batches with timetables and live classes &mdash; rather than purely self-paced content.</li>
+          <li>Moodle's configurability has become the problem rather than the solution, and you want something a subject expert can actually publish into.</li>
+        </ul>
+      </div>
+      <div class="decision-card skip">
+        <h4>Skip Frappe Learning when</h4>
+        <ul>
+          <li>You have an existing SCORM content library. It will not import, and there is no xAPI path out either.</li>
+          <li>Your programme needs adaptive learning paths that branch on assessment results.</li>
+          <li>You need accredited-provider features out of the box &mdash; moderation workflows, NQF mapping, statutory reporting formats.</li>
+          <li>Selling courses with compliant SA VAT invoicing is central and you do not want to extend the payment doctype.</li>
+          <li>You need serious proctoring for high-stakes assessment.</li>
+          <li>You are not on Frappe and the LMS is the only reason you would be. Moodle and the hosted platforms are a shorter path.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 · South African context -->
+<section id="sa">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 · South African context</div>
+      <h2 class="section-title">Where this lands in SA delivery.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>South African organisations have a structural reason to care about an LMS that most markets do not. The <strong>Skills Development Levy</strong> is payable by employers above the payroll threshold, and the skills-development element of <strong>B-BBEE</strong> scorecards rewards verifiable training spend and learner throughput. Both reward being able to show who was trained, on what, for how long, and with what outcome &mdash; which is a record-keeping problem before it is a pedagogy problem.</p>
+      <p>That is where Frappe Learning is genuinely well suited. Enrolments, progress, video watch duration, assessment submissions, evaluator sign-off and issued certificates are all queryable doctypes on a site you control. If payroll already runs on <a href="hr.html" style="color:var(--sky)">Frappe HR</a> on the same instance, the join between employee and training record is a link field rather than a reconciliation exercise. Pulling together an audit pack stops being a quarterly scramble.</p>
+      <p>The caveat is the one worth repeating: none of that makes the training accredited. Alignment to a qualification, moderation, and the specific report formats a SETA or verification agency wants are work the tool does not do for you. What it gives you is clean, exportable evidence &mdash; which is the part organisations usually get wrong.</p>
+      <p>Two practical notes. <strong>POPIA</strong> applies squarely here: assessment results, and anything in the learner-profile layer, are personal information, and some of it is arguably special personal information once disability accommodations or health-related absence enter the picture. Self-hosting keeps that on-shore, but set retention deliberately &mdash; there is no reason to keep a failed quiz attempt from 2021. And on bandwidth: because video hosting is yours to solve, test the learner experience on a constrained mobile connection before you commit to a video-heavy curriculum.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 07 · Connections -->
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 · Connections</div>
+      <h2 class="section-title">Where this leaf links.</h2>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="framework.html" class="connect-node">
+        <span class="tag">tech/frappe/framework</span>
+        <div class="skill">Frappe Framework</div>
+        <div class="why">The engine. Courses, batches, quizzes and certificates are ordinary doctypes with the standard API and permission model.</div>
+      </a>
+      <a href="hr.html" class="connect-node">
+        <span class="tag">tech/frappe/hr</span>
+        <div class="skill">Frappe HR</div>
+        <div class="why">The highest-value pairing in SA: employees in HR, their training record in Learning, one site, one join for the B-BBEE audit pack.</div>
+      </a>
+      <a href="helpdesk.html" class="connect-node">
+        <span class="tag">tech/frappe/helpdesk</span>
+        <div class="skill">Frappe Helpdesk</div>
+        <div class="why">A knowledge base answers a question once; a course changes what staff know. Teams often run both and route repeat tickets into training.</div>
+      </a>
+      <a href="../../people/index.html" class="connect-node">
+        <span class="tag">people</span>
+        <div class="skill">People domain</div>
+        <div class="why">Learning is the delivery mechanism; the People branch covers coaching, leadership and how adults actually change behaviour.</div>
+      </a>
+      <a href="../../leg/data-privacy.html" class="connect-node">
+        <span class="tag">leg/data-privacy</span>
+        <div class="skill">POPIA</div>
+        <div class="why">Assessment results and learner profiles are personal information. Retention and lawful basis are decisions this leaf cannot make for you.</div>
+      </a>
+      <a href="./" class="connect-node">
+        <span class="tag">tech/frappe</span>
+        <div class="skill">Frappe sub-hub</div>
+        <div class="why">The hub listing the Frappe ecosystem apps. Learning sits in the Collaboration band.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 08 · Resources -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 · Resources</div>
+      <h2 class="section-title">Go deeper.</h2>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://frappe.io/learning" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Project home</span>
+        <span class="r-title">Frappe Learning</span>
+        <span class="r-url">frappe.io/learning</span>
+      </a>
+      <a href="https://github.com/frappe/lms" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Source</span>
+        <span class="r-title">frappe/lms on GitHub</span>
+        <span class="r-url">github.com/frappe/lms</span>
+      </a>
+      <a href="https://docs.frappe.io/learning" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs</span>
+        <span class="r-title">Frappe Learning documentation</span>
+        <span class="r-url">docs.frappe.io/learning</span>
+      </a>
+      <a href="https://github.com/frappe/lms/releases" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Releases</span>
+        <span class="r-title">Frappe Learning release tags</span>
+        <span class="r-url">github.com/frappe/lms/releases</span>
+      </a>
+      <a href="https://github.com/frappe/lms/blob/develop/license.txt" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Licence</span>
+        <span class="r-title">GNU AGPL v3</span>
+        <span class="r-url">github.com/frappe/lms · license.txt</span>
+      </a>
+      <a href="https://frappecloud.com" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Hosting</span>
+        <span class="r-title">Frappe Cloud — managed hosting</span>
+        <span class="r-url">frappecloud.com</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../../index.html">Skills tree</a>
+      <a href="./">Frappe sub-hub</a>
+      <a href="https://frappe.io/learning" target="_blank" rel="noopener">Frappe Learning &#8599;</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai · Built in South Africa — Globally relevant</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme() {
+    const html = document.documentElement;
+    const current = html.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
+    localStorage.setItem('theme', next);
+  }
+  const saved = localStorage.getItem('theme');
+  if (saved) {
+    document.documentElement.setAttribute('data-theme', saved);
+    document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '☀️' : '🌙';
+  }
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>

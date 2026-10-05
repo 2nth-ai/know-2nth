@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Frappe Builder — know.2nth.ai</title>
+<meta name="description" content="Frappe Builder — a low-code visual website builder that publishes to your own Frappe site, binding pages directly to live doctypes with no headless CMS in between. MIT-licensed (unlike the AGPL rest of the ecosystem), ships no runtime to visitors, and its Bob agent routes model calls through LiteLLM so you choose the provider. Honest on where Webflow is still the better tool.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/tech/frappe/builder">
+<meta property="og:title" content="Frappe Builder — know.2nth.ai">
+<meta property="og:description" content="Frappe Builder — a low-code visual website builder that publishes to your own Frappe site, binding pages directly to live doctypes with no headless CMS in between. MIT-licensed (unlike the AGPL rest of the ecosystem), ships no runtime to visitors, and its Bob agent routes model calls through LiteLLM so you choose the provider. Honest on where Webflow is still the better tool.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai — The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Frappe Builder — know.2nth.ai">
+<meta name="twitter:description" content="Frappe Builder — a low-code visual website builder that publishes to your own Frappe site, binding pages directly to live doctypes with no headless CMS in between. MIT-licensed (unlike the AGPL rest of the ecosystem), ships no runtime to visitors, and its Bob agent routes model calls through LiteLLM so you choose the provider. Honest on where Webflow is still the better tool.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3Cline x1='16' y1='3' x2='16' y2='7' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='16' y1='25' x2='16' y2='29' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='3' y1='16' x2='7' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='25' y1='16' x2='29' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33;
+    --blue: #2563EB; --blue-glow: #3B82F6;
+    --sky: #38BDF8; --sky-muted: #7DD3FC;
+    --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8;
+    --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12);
+    --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12);
+    --violet: #8B5CF6; --violet-soft: rgba(139, 92, 246, 0.12);
+    --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12);
+    --bg: var(--ink); --bg-raised: var(--navy);
+    --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(37, 99, 235, 0.06);
+    --text-primary: var(--paper); --text-secondary: var(--slate);
+    --text-muted: #64748B;
+    --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(56, 189, 248, 0.3);
+    --max-w: 1200px; --read-w: 760px;
+    --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px;
+  }
+  [data-theme="light"] {
+    --bg: #F1F5F9; --bg-raised: #FFFFFF;
+    --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(37, 99, 235, 0.04);
+    --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8;
+    --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(37, 99, 235, 0.25);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+    background: var(--bg); color: var(--text-primary);
+    line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased;
+  }
+  body::before {
+    content: ''; position: fixed; inset: 0; opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 9999;
+  }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.blue { width: 600px; height: 600px; background: var(--blue); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+
+  nav {
+    position: sticky; top: 0; z-index: 100; padding: 0 24px;
+    backdrop-filter: blur(20px) saturate(1.4);
+    background: rgba(11, 17, 32, 0.75);
+    border-bottom: 1px solid var(--border);
+  }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner {
+    max-width: var(--max-w); margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 60px;
+  }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark {
+    font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px;
+    background: linear-gradient(135deg, var(--blue), var(--sky));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+  }
+  .nav-brand-sub {
+    font-size: 12px; color: var(--text-muted);
+    letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500;
+    padding-left: 10px; border-left: 1px solid var(--border);
+  }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--sky); }
+  .theme-toggle {
+    background: none; border: 1px solid var(--border); color: var(--text-secondary);
+    width: 36px; height: 36px; border-radius: 50%; cursor: pointer;
+    display: grid; place-items: center; font-size: 16px; transition: all 0.2s;
+  }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--sky); }
+
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .read { max-width: var(--read-w); }
+
+  .crumb {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted);
+    letter-spacing: 0.5px; padding: 28px 0 0;
+    display: flex; gap: 10px; flex-wrap: wrap;
+  }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--sky); }
+  .crumb-sep { opacity: 0.5; }
+  .crumb-current { color: var(--text-secondary); }
+
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500;
+    letter-spacing: 2px; text-transform: uppercase; color: var(--sky);
+    margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px;
+  }
+  .hero .eyebrow .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--blue-glow); box-shadow: 0 0 12px var(--blue-glow);
+  }
+  .hero h1 {
+    font-size: clamp(40px, 6vw, 66px); font-weight: 800;
+    line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 14ch;
+  }
+  .hero h1 .gradient {
+    background: linear-gradient(135deg, var(--blue-glow), var(--sky), var(--sky-muted));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500;
+    padding: 6px 14px; border-radius: var(--radius-pill);
+    border: 1px solid var(--border); color: var(--text-secondary);
+    letter-spacing: 0.5px;
+  }
+  .pill.accent { background: rgba(37, 99, 235, 0.12); color: var(--blue-glow); border-color: rgba(37, 99, 235, 0.25); }
+
+  section { padding: 52px 0; position: relative; }
+  .section-label {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500;
+    letter-spacing: 2px; text-transform: uppercase; color: var(--sky);
+    margin-bottom: 14px;
+  }
+  .section-title {
+    font-size: clamp(26px, 3.4vw, 36px); font-weight: 700;
+    letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2;
+  }
+  .section-lede {
+    font-size: 16px; color: var(--text-secondary); max-width: var(--read-w);
+    line-height: 1.75; font-weight: 300; margin-bottom: 32px;
+  }
+  .prose p {
+    font-size: 16px; color: var(--text-secondary); line-height: 1.75;
+    max-width: var(--read-w); margin-bottom: 18px;
+  }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.88em;
+    background: var(--bg-card); border: 1px solid var(--border);
+    padding: 1px 6px; border-radius: 4px; color: var(--sky);
+  }
+
+  pre.code {
+    background: var(--ink-deep); border: 1px solid var(--border);
+    border-radius: var(--radius-md); padding: 20px 22px;
+    overflow-x: auto; font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px; line-height: 1.65; color: var(--mist);
+    margin: 0 0 20px; max-width: var(--read-w);
+  }
+  [data-theme="light"] pre.code { background: #0F172A; color: #E2E8F0; }
+  pre.code .k { color: var(--sky); }
+  pre.code .s { color: #A5F3B8; }
+  pre.code .c { color: var(--text-muted); font-style: italic; }
+  pre.code .n { color: #FCD34D; }
+
+  .info-card {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-lg);
+    padding: 28px 32px; max-width: var(--read-w);
+    margin-bottom: 20px;
+  }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+
+  .compare-wrap {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-lg);
+    overflow: hidden; max-width: var(--read-w);
+    margin-bottom: 20px;
+  }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td {
+    padding: 12px 16px; text-align: left;
+    border-bottom: 1px solid var(--border); vertical-align: top;
+  }
+  .compare thead th {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600;
+    letter-spacing: 1.2px; text-transform: uppercase; color: var(--sky);
+    background: rgba(37, 99, 235, 0.04);
+  }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); }
+  .compare td code {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.9em;
+    color: var(--sky);
+  }
+
+  .gotcha-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 12px;
+  }
+  .gotcha {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-left: 3px solid var(--rose);
+    border-radius: var(--radius-md);
+    padding: 18px 22px;
+  }
+  .gotcha strong { display: block; color: var(--text-primary); font-weight: 600; font-size: 14px; margin-bottom: 6px; }
+  .gotcha p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+  .connect-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 12px;
+  }
+  .connect-node {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    padding: 18px 22px; transition: all 0.3s;
+    text-decoration: none; color: inherit; display: block;
+  }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node.soon { cursor: default; opacity: 0.72; }
+  .connect-node.soon:hover { border-color: var(--border); background: var(--bg-card); }
+  .connect-node .tag {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    letter-spacing: 1px; text-transform: uppercase;
+    color: var(--text-muted); display: block; margin-bottom: 6px;
+  }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+
+  .resource-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 12px;
+  }
+  .resource {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    padding: 18px 22px; text-decoration: none; transition: all 0.3s;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--sky); word-break: break-all; }
+
+  .decision-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+    max-width: var(--read-w);
+  }
+  @media (max-width: 720px) { .decision-grid { grid-template-columns: 1fr; } }
+  .decision-card {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    padding: 22px 24px;
+  }
+  .decision-card.use { border-left: 3px solid var(--green); }
+  .decision-card.skip { border-left: 3px solid var(--rose); }
+  .decision-card h4 {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .decision-card.use h4 { color: var(--green); }
+  .decision-card.skip h4 { color: var(--rose); }
+  .decision-card ul { list-style: none; padding: 0; }
+  .decision-card li {
+    font-size: 13px; color: var(--text-secondary); line-height: 1.6;
+    padding: 6px 0; border-bottom: 1px solid var(--border);
+  }
+  .decision-card li:last-child { border-bottom: none; }
+
+  footer {
+    padding: 60px 0 40px; border-top: 1px solid var(--border);
+    text-align: center; margin-top: 40px;
+  }
+  .footer-brand {
+    font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600;
+    background: linear-gradient(135deg, var(--blue), var(--sky));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+  }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--sky); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+
+  .fade-up {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 768px) {
+    .nav-brand-sub { display: none; }
+    .nav-link { display: none; }
+    pre.code { font-size: 11px; padding: 14px 16px; }
+    .compare { font-size: 12px; }
+    .compare th, .compare td { padding: 10px 12px; }
+  }
+
+  *, *::before, *::after {
+    transition-property: background-color, border-color, color, box-shadow;
+    transition-duration: 0.3s; transition-timing-function: ease;
+  }
+</style>
+</head>
+<body>
+
+<div class="glow-orb blue"></div>
+<div class="glow-orb sky"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../../index.html" class="nav-brand">
+      <span class="nav-brand-mark">know.2nth.ai</span>
+      <span class="nav-brand-sub">tech/frappe/builder</span>
+    </a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">&larr; Frappe</a>
+      <a href="../../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#127769;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="../../../index.html#domains">Technology</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="../">tech</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="./">frappe</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">builder</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> tech/frappe · Builder · Skill Leaf</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      Drag a page onto<br><span class="gradient">your own live data.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      Frappe Builder is a visual, low-code website builder that publishes routes on your own Frappe site. Pages bind straight to doctypes &mdash; including dynamic detail routes &mdash; so a product catalogue reads real stock and a careers page reads real job openings. MIT-licensed, no builder runtime shipped to visitors, and an AI editor whose model provider is yours to choose.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill accent">Live</span>
+      <span class="pill">Frappe Framework app</span>
+      <span class="pill">MIT licence</span>
+      <span class="pill">v1.35.1</span>
+      <span class="pill">Vue 3 + frappe-ui</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 · What it is -->
+<section id="what">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 · What it is</div>
+      <h2 class="section-title">A visual page builder that publishes to your own site.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Frappe Builder is a low-code website builder: you drag blocks onto a canvas in a Figma-like editor, bind them to data already in your Frappe site, and publish with one click. The output is a route on your own domain, served by your own Frappe instance &mdash; not a page hosted by a builder vendor.</p>
+      <p>The pitch that distinguishes it from Webflow or Framer is the data binding. A Frappe site already holds your products, your team, your job openings, your case studies as doctypes. Builder lets a page read those directly, including dynamic detail routes &mdash; one template that renders every product &mdash; without a headless CMS, an API layer, or a build step in between.</p>
+      <p>The credibility check most tools cannot offer: <strong>frappe.io itself is built on Frappe Builder</strong>. That is not marketing copy from the README so much as a load-bearing commitment &mdash; the vendor's own primary web presence is the test case.</p>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.08s">
+      <h4>The licence is the quiet headline</h4>
+      <p>Frappe Builder is <strong>MIT</strong>. Almost everything else in the Frappe ecosystem &mdash; ERPNext, Raven, Frappe Learning, Frappe Suite &mdash; is AGPL v3. For an agency, that difference is commercial, not academic: AGPL's network-copyleft provision is a conversation you have to have with a client's legal team when you modify and host the software for them. MIT is not that conversation. If you build client websites for a living, Builder is the one piece of this stack you can fork, white-label and ship without a licensing discussion.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 · How it works -->
+<section id="arch">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 · How it works</div>
+      <h2 class="section-title">Blocks, routes, and real doctypes.</h2>
+      <p class="section-lede">Pages are documents. Data binding is server-side. Published output carries no builder runtime.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>A <code>Builder Page</code> is a document holding a block tree, a route, and a publish state. Blocks are the visual primitives; components are reusable block groups; the theme carries your tokens. Because the page is a document, it versions, permissions and backs up exactly like an invoice does.</p>
+      <p>Data gets in three ways, in increasing order of power. A <strong>page data script</strong> runs server-side and returns the context a page renders against. <strong>Client scripts</strong> attach behaviour in the browser, globally or per page. <strong>Per-block data scripts and typed block props</strong> let an individual block compute its own values, and any property or style can be bound to a dynamic expression sourced from page data, a script, or a query parameter.</p>
+      <p>The performance claim is unusually specific for this category and worth repeating because it is checkable: Builder does not inject a framework runtime into published pages, which is why they score well on Lighthouse. Most visual builders ship their own JavaScript to every visitor. This one ships markup and your own scripts.</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.08s">
+      <table class="compare">
+        <thead>
+          <tr>
+            <th>Doctype</th>
+            <th>Purpose</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><code>Builder Page</code></td><td>A page: block tree, route, publish state</td><td>Carries <code>dynamic_route</code>, <code>draft_blocks</code> and a <code>staging</code> flag</td></tr>
+          <tr><td><code>Builder Component</code></td><td>A reusable block group</td><td>The unit of design reuse across pages</td></tr>
+          <tr><td><code>Builder Client Script</code></td><td>Browser-side JS or CSS</td><td>Attachable globally or per page</td></tr>
+          <tr><td><code>Builder Snapshot</code></td><td>A point-in-time capture of a page</td><td>The undo of last resort after a bad edit</td></tr>
+          <tr><td><code>Builder Project Folder</code></td><td>Grouping for pages</td><td>Useful once a site outgrows a flat page list</td></tr>
+          <tr><td><code>Builder Page Click</code></td><td>Raw analytics event</td><td>Feeds the built-in traffic dashboard</td></tr>
+          <tr><td><code>Builder AI Provider</code></td><td>A model endpoint Bob may use</td><td>Holds <code>api_base</code>, <code>api_key</code> and a <code>litellm_provider</code> key</td></tr>
+          <tr><td><code>Builder AI Model</code></td><td>A specific model on a provider</td><td>Flags <code>supports_vision</code> and a <code>max_tokens</code> ceiling</td></tr>
+          <tr><td><code>Builder AI Session</code></td><td>One conversation with Bob against a page</td><td>Tracks selected model and run state</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 03 · Bob, the AI site builder -->
+<section id="ai">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 · Bob, the AI site builder</div>
+      <h2 class="section-title">Grounded in your site, not guessing.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Builder ships an agent called <strong>Bob</strong> that edits pages conversationally. What makes it worth more than a novelty is the grounding: per the project's own description, Bob reads your existing pages and follows their design language by default, reuses your components and theme tokens, fits new pages into your route structure including dynamic detail routes, and wires forms and data-driven sections to real doctypes rather than inventing placeholder content.</p>
+      <p>The guardrails are explicit, and they are the right three. Bob's reads respect the acting user's permissions, so it cannot surface data that user could not already see. Sensitive changes wait for approval rather than applying themselves. And every AI edit is revertable &mdash; which, combined with <code>Builder Snapshot</code>, means the failure mode is an undo rather than a restore from backup.</p>
+      <p>The architecture underneath is the interesting part for anyone already running an LLM gateway. <code>Builder AI Provider</code> carries a <code>litellm_provider</code> field alongside <code>api_base</code> and <code>api_key</code>, which means model access is routed through <strong>LiteLLM</strong>'s provider abstraction rather than hardcoded to one vendor. You point it at your own endpoint, your own key, and your own choice of model &mdash; and <code>Builder AI Model</code> records per-model vision support and token ceilings so the editor knows what it is talking to.</p>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.08s">
+      <h4>What this means for data residency</h4>
+      <p>Because the provider is yours to configure, Bob is one of the few AI features in this ecosystem where you genuinely control where inference happens. Point it at a model in a region you are comfortable with &mdash; or at a self-hosted endpoint &mdash; and the cross-border question largely goes away. That is a meaningfully better posture than a feature wired to a single vendor's API, and worth checking against the <a href="../../leg/data-privacy.html" style="color:var(--sky)">POPIA</a> position you have already taken for the rest of the stack.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 · Gotchas -->
+<section id="gotchas">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 · Gotchas</div>
+      <h2 class="section-title">Where it gets tricky.</h2>
+    </div>
+    <div class="gotcha-list fade-up" style="transition-delay: 0.05s">
+      <div class="gotcha">
+        <strong>It is a page builder, not a design tool</strong>
+        <p>The editor is Figma-<em>like</em>, which is not the same as Figma. There is no component variant system of real depth, no auto-layout equivalence, and no designer handoff workflow. Designers used to Figma will find it constraining; the tool is aimed at getting a designed page onto a live route, not at doing the design.</p>
+      </div>
+      <div class="gotcha">
+        <strong>Pages couple to your doctypes</strong>
+        <p>Data binding is the feature and also the lock-in. A page wired to <code>Item</code> and <code>Website Item</code> is a page that only makes sense on a Frappe site. There is no meaningful export path to static HTML or another CMS, so treat Builder pages as part of the application, not as portable content.</p>
+      </div>
+      <div class="gotcha">
+        <strong>Dynamic routes need thought up front</strong>
+        <p>Dynamic detail routes are powerful and easy to get subtly wrong &mdash; route collisions, missing canonical URLs, and pages that render for unpublished or permission-restricted records. Set <code>canonical_url</code> deliberately and test what an anonymous visitor sees, not just what you see as Administrator.</p>
+      </div>
+      <div class="gotcha">
+        <strong>Analytics is a counter, not an analytics product</strong>
+        <p>The built-in dashboard gives page views, unique visitors and top referrers off <code>Builder Page Click</code>. That is genuinely useful and genuinely minimal. No funnels, no segments, no attribution, no consent management &mdash; if marketing needs any of that, you are still installing something else, and that something else brings its own POPIA consent obligations.</p>
+      </div>
+      <div class="gotcha">
+        <strong>Scripting escapes the no-code promise fast</strong>
+        <p>The moment a page needs real logic you are writing page data scripts, client scripts and per-block data scripts. That is a strength &mdash; the escape hatch exists &mdash; but it means a Builder site can accumulate script in several places with no central view of it. Decide where logic lives before three people have each chosen differently.</p>
+      </div>
+      <div class="gotcha">
+        <strong>Bob is only as safe as the provider you point it at</strong>
+        <p>The permission and approval guardrails are real, but they govern Bob's access to your site, not what your chosen model provider does with the prompt. Page content, component names and bound field names go to whatever endpoint you configured. Choose that endpoint as deliberately as you would any other processor.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 · Decision guide -->
+<section id="decision">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 · Decision guide</div>
+      <h2 class="section-title">Use it for, skip it for.</h2>
+    </div>
+    <div class="decision-grid fade-up" style="transition-delay: 0.05s">
+      <div class="decision-card use">
+        <h4>Use Frappe Builder when</h4>
+        <ul>
+          <li>You already run a Frappe site and need marketing pages, a customer portal or a careers page that reads live data from it.</li>
+          <li>You want one template to render many records &mdash; products, listings, team members &mdash; without building a headless CMS.</li>
+          <li>Page-load performance matters and you do not want a builder's runtime shipped to every visitor.</li>
+          <li>You are an agency: MIT licensing lets you fork, white-label and host for clients without an AGPL conversation.</li>
+          <li>You want an AI editing surface whose model provider you choose and control, rather than one wired to a single vendor.</li>
+        </ul>
+      </div>
+      <div class="decision-card skip">
+        <h4>Skip Frappe Builder when</h4>
+        <ul>
+          <li>You are not on Frappe. The data binding is the entire value proposition and it does not travel.</li>
+          <li>Your site is content-heavy editorial work. This is not a CMS for a newsroom &mdash; use a CMS.</li>
+          <li>You need a mature designer workflow, a design-token pipeline from Figma, or real component variants.</li>
+          <li>Marketing owns the site and needs A/B testing, personalisation, consent management and attribution out of the box.</li>
+          <li>You need the page content to be portable to another platform later. Plan for a rebuild, not an export.</li>
+          <li>Your team has no Frappe capability at all. The editor is approachable; debugging a dynamic route on a Frappe site is not.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 · South African context -->
+<section id="sa">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 · South African context</div>
+      <h2 class="section-title">Where this lands in SA delivery.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>For SA agencies and in-house teams, the honest comparison is against Webflow and WordPress, and Builder wins or loses on a narrow question: does the site need to show live business data?</p>
+      <p>If it does, Builder is unusually well placed. A distributor who wants a public catalogue backed by real ERPNext stock levels, a recruiter who wants job listings that are actually <code>Job Opening</code> records, a practice that wants a booking form writing straight into the system &mdash; those are projects where Webflow means building and maintaining an integration layer, and where WordPress means a plugin stack you will be patching for years. Builder removes the integration because there is nothing to integrate.</p>
+      <p>If it does not &mdash; if it is a brochure site &mdash; then Webflow is a better tool and the sensible answer is to say so. Running a Frappe instance to serve five static pages is not a saving.</p>
+      <p>The cost picture favours it either way. Webflow is dollar-priced per site and per seat, and that cost compounds across a client portfolio while the rand moves against you. Builder's licence is free and MIT, so an agency's exposure is hosting plus labour, both of which can be rand-denominated. And because published pages carry no vendor runtime, they survive the agency relationship ending &mdash; which is a thing SA clients have learned to ask about.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 07 · Connections -->
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 · Connections</div>
+      <h2 class="section-title">Where this leaf links.</h2>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="framework.html" class="connect-node">
+        <span class="tag">tech/frappe/framework</span>
+        <div class="skill">Frappe Framework</div>
+        <div class="why">The engine. Builder Page is a doctype, and the CMS the pages read from is the framework's own document store.</div>
+      </a>
+      <a href="../../agents/litellm.html" class="connect-node">
+        <span class="tag">agents/litellm</span>
+        <div class="skill">LiteLLM</div>
+        <div class="why">The provider abstraction Bob routes model calls through. If you already run LiteLLM as a gateway, Builder plugs into it rather than around it.</div>
+      </a>
+      <a href="../../design/design-systems.html" class="connect-node">
+        <span class="tag">design/design-systems</span>
+        <div class="skill">Design systems</div>
+        <div class="why">Builder's theme tokens and components are where a design system either gets enforced or quietly diverges across pages.</div>
+      </a>
+      <a href="crm.html" class="connect-node">
+        <span class="tag">tech/frappe/crm</span>
+        <div class="skill">Frappe CRM</div>
+        <div class="why">The usual wiring: a Builder landing page's form creates a CRM lead on the same site, with no connector in between.</div>
+      </a>
+      <a href="../../leg/data-privacy.html" class="connect-node">
+        <span class="tag">leg/data-privacy</span>
+        <div class="skill">POPIA</div>
+        <div class="why">Forms on public pages collect personal information. Consent wording, retention and the processor you point Bob at are all POPIA decisions.</div>
+      </a>
+      <a href="./" class="connect-node">
+        <span class="tag">tech/frappe</span>
+        <div class="skill">Frappe sub-hub</div>
+        <div class="why">The hub listing the Frappe ecosystem apps. Builder sits in the Builders and Hosting band.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 08 · Resources -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 · Resources</div>
+      <h2 class="section-title">Go deeper.</h2>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://frappe.io/builder" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Project home</span>
+        <span class="r-title">Frappe Builder</span>
+        <span class="r-url">frappe.io/builder</span>
+      </a>
+      <a href="https://github.com/frappe/builder" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Source</span>
+        <span class="r-title">frappe/builder on GitHub</span>
+        <span class="r-url">github.com/frappe/builder</span>
+      </a>
+      <a href="https://docs.frappe.io/builder" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs</span>
+        <span class="r-title">Frappe Builder documentation</span>
+        <span class="r-url">docs.frappe.io/builder</span>
+      </a>
+      <a href="https://github.com/frappe/builder/releases" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Releases</span>
+        <span class="r-title">Builder release tags</span>
+        <span class="r-url">github.com/frappe/builder/releases</span>
+      </a>
+      <a href="https://github.com/frappe/builder/blob/develop/LICENSE" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Licence</span>
+        <span class="r-title">MIT Licence</span>
+        <span class="r-url">github.com/frappe/builder · LICENSE</span>
+      </a>
+      <a href="https://frappecloud.com" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Hosting</span>
+        <span class="r-title">Frappe Cloud — managed hosting</span>
+        <span class="r-url">frappecloud.com</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../../index.html">Skills tree</a>
+      <a href="./">Frappe sub-hub</a>
+      <a href="https://frappe.io/builder" target="_blank" rel="noopener">Frappe Builder &#8599;</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai · Built in South Africa — Globally relevant</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme() {
+    const html = document.documentElement;
+    const current = html.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
+    localStorage.setItem('theme', next);
+  }
+  const saved = localStorage.getItem('theme');
+  if (saved) {
+    document.documentElement.setAttribute('data-theme', saved);
+    document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '☀️' : '🌙';
+  }
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>
