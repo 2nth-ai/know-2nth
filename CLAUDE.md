@@ -8,7 +8,13 @@ Sibling sites in the ecosystem:
 - **2nth.ai** — framework / GTM site (Human + AI = 2ⁿ)
 - **dev.2nth.ai** — partner / Gridline / openBUILD AI source content (Construction domain pulls from here)
 - **2nth.io** — compute infrastructure layer
+- **2nth.me** — personal / practitioner surface
+- **2nth.org** — non-profit / community surface
+- **pay.2nth.ai** — payments surface
 - **imbila.ai** — parent consultancy brand
+
+Leaves here are source material the other properties draw on, so a factual error
+propagates. Accuracy and voice matter beyond this site.
 
 ### Related repos that are NOT this one
 
@@ -43,26 +49,53 @@ Sibling sites in the ecosystem:
 ```
 know-2nth/
 ├── CLAUDE.md
-├── index.html                # root: 12 top-level domain cards
+├── index.html                # root: 14 top-level domain cards
 ├── about.html                # access model + how the site works
 ├── join.html                 # HubSpot signup form (soft conversion play)
+├── ask.html                  # "Ask Vince" — on-site grounded AI assistant (see below)
 ├── gate.js                   # tier-gate hook, loaded on every leaf, currently inert
 ├── og-image.jpg              # 1200×630 OG / Twitter card
 ├── og-image.svg              # source for the OG image
 ├── _redirects                # Cloudflare Pages redirects
-├── google-adk-explainer.md   # canonical source markdown for ADK leaf (PR #17)
+├── wrangler.toml             # Pages config — Workers AI + Vectorize bindings
+├── agent-index.json          # generated machine index (see scripts/)
+├── llms.txt                  # generated plain-text tree index (see scripts/)
+├── *.md / *.html (root)      # canonical source markdown + one-off pages
+├── scripts/
+│   └── gen-agent-index.mjs   # regenerates agent-index.json + llms.txt from the HTML
+├── functions/                # Cloudflare Pages Functions (see "What's NOT in this repo")
+├── briefings/                # CEO briefings — own hub at /briefings/, extensionless URLs
 └── explainers/
     ├── agents/        # Frameworks, Protocols, Models, Inference (the strategic priority)
-    ├── biz/           # ERP, CRM, HR — has erp/ and crm/ sub-hubs
+    ├── biz/           # has erp/, crm/, hr/ sub-hubs; bpm/ and ecm/ dirs too
     ├── construction/  # openBIM + Gridline / openBUILD AI partner-anchored
-    ├── data/          # analytics/, warehousing/, engineering/ sub-hubs
+    ├── data/          # analytics/ and warehousing/ sub-hubs; engineering/ has leaves, no hub
     ├── design/        # tokens, components, motion, AI-assisted design
-    ├── partners/      # co-branded leaves (no hub yet, not on root grid)
-    ├── people/        # coaching, leadership, typologies/
-    └── tech/          # cloudflare/, google/, microsoft/, frappe/, runtime/, android-hce/, embedded/, frameworks/
+    ├── fin/           # Financial services
+    ├── health/        # Healthcare — practice management + ambient AI scribes
+    ├── leg/           # Legal
+    ├── media/         # TTS, voice agents, the speech arena
+    ├── partners/      # co-branded leaves (no hub, not on root grid — unlisted by design)
+    ├── people/        # ai-roles/ and typologies/ sub-hubs
+    ├── software/      # software engineering practice
+    ├── tech/          # android-hce/, cloudflare/, frappe/, game-engines/, google/,
+    │                  # hardware/, microsoft/, oracle/, runtime/ have hubs;
+    │                  # embedded/ and frameworks/ have leaves but no hub
+    └── tools/         # tooling leaves
 ```
 
-Five additional domains exist on the root grid as cards but have **no folder yet**: `edu`, `fin`, `health`, `iot`, `leg`. Building any of them out means: create `explainers/<domain>/index.html` hub, ship at least one Live leaf, then the root card becomes meaningful.
+Two domains exist on the root grid as cards but have **no folder yet**: `edu` and `iot`. Building either out means: create `explainers/<domain>/index.html` hub, ship at least one Live leaf, then the root card becomes meaningful. (`fin`, `health` and `leg` were built out — this doc previously said otherwise.)
+
+Conversely, `partners/` and `tools/` are folders with **no root domain card**.
+
+### Directories with leaves but no hub
+
+`explainers/data/engineering/`, `explainers/tech/embedded/` and `explainers/tech/frameworks/` hold leaves but have no `index.html`. Convention in that case (see `data/engineering/chonkie.html`):
+
+- The breadcrumb links up to the *parent* hub and folds the hubless directory into the current crumb — `… › data › engineering / chonkie` — rather than linking the directory.
+- Nothing else should link to `…/<dir>/` — link the leaf directly, as `data/index.html` does for `engineering/liteparse.html`.
+
+Adding a hub for any of these is a fine improvement; just remember it changes the "N Live" counts on the parent hub and the root card.
 
 ## How leaves are built
 
@@ -208,4 +241,8 @@ Confirm latest commit is the one just merged, working tree is clean, on `main`. 
   - **`/mcp`** — a stateless Model Context Protocol server over Streamable HTTP, at `functions/mcp.ts`. Read-only, public, no auth (Phase 0). Tools: `search_tree(query, limit?)`, `list_domains()`, `get_leaf(path)`. `get_leaf` reuses the agent-fetch converter via a same-origin subrequest to `/api/context/...`. Discoverable from Claude (custom connector / Connectors Directory) and ChatGPT (Developer Mode) by pointing them at `https://know.2nth.ai/mcp`.
   - **`/llms.txt`** — the emerging-standard plain-text index of the tree (per-domain leaf links + descriptions, then briefings). Helps Claude / ChatGPT / Perplexity discover content even without the MCP connector.
   - **`/agent-index.json`** — the machine index the MCP server searches. Both `llms.txt` and `agent-index.json` are **generated from the HTML** by `scripts/gen-agent-index.mjs` and committed. **Regenerate after adding/removing any leaf or briefing:** `node scripts/gen-agent-index.mjs`. (Phase 1 will run this in CI before deploy so it can't drift, and add semantic search via AutoRAG/Vectorize + OAuth-gated member/partner tools.)
-- Two Functions live in `functions/` (the agent-fetch converter and the MCP server). Both are built and deployed by Cloudflare Pages automatically when `functions/` is present — no extra build step is needed in the workflow.
+- **"Ask Vince" — the on-site AI assistant** (`ask.html` + `functions/api/ask.ts`, Phase 1 added 2026-08; Phase 2 semantic retrieval added in PR #109). A Cloudflare Workers AI model answers questions grounded *only* in the knowledge tree: retrieve the relevant leaves, fetch them as markdown through the existing `/api/context` converter, answer in the 2nth voice with citations, and refuse rather than invent when the answer isn't in the retrieved leaves. All inference stays on the Cloudflare network — a clean POPIA story.
+  - `POST /api/ask` — `{ question, history? }` → `{ answer, sources[], model }`.
+  - `POST /api/reindex?key=<REINDEX_KEY>&offset=&limit=` — populates the account-level `know-tree` Vectorize index (bge-base-en-v1.5, 768-dim) that powers semantic retrieval. Processes a slice per call; the caller loops until `done: true`. **Re-run after adding leaves** or Vinci won't retrieve them.
+  - Bindings are committed in `wrangler.toml` (`[ai]` → `AI`, `[[vectorize]]` → `VEC`). `REINDEX_KEY` is a Pages secret, not committed.
+- **Four** Functions live in `functions/`: `api/context/[[path]].ts` (agent-fetch converter), `mcp.ts` (MCP server), `api/ask.ts` and `api/reindex.ts` (Vinci). All are built and deployed by Cloudflare Pages automatically when `functions/` is present — no extra build step is needed in the workflow.
