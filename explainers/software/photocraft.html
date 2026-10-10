@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PhotoCraft &mdash; a Photoshop clone built by agents in ten days &middot; know.2nth.ai</title>
+<meta name="description" content="A case study in agent-built software at scale. PhotoCraft is an open-source, pure-Rust reimplementation of Photoshop: ~378k lines, 25 crates and 1,000+ commits in its first ten days, most of them co-authored by coding agents. What the velocity actually bought, the harness (AGENTS.md, enforced layering, never-panic lints, corpus oracles) that kept it coherent, the project's own honest parity numbers, the MCP control surface, and when to use it versus skip it.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/software/photocraft">
+<meta property="og:title" content="PhotoCraft &mdash; a Photoshop clone built by agents in ten days &middot; know.2nth.ai">
+<meta property="og:description" content="378k lines of Rust in ten days, mostly agent-written. What the velocity bought, the harness that held it together, the project's own honest parity numbers, and when to use it.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="PhotoCraft &mdash; a Photoshop clone built by agents in ten days">
+<meta name="twitter:description" content="378k lines of Rust in ten days, mostly agent-written. What the velocity bought, the harness that held it together, and the project's own honest parity numbers.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3Cline x1='16' y1='3' x2='16' y2='7' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='16' y1='25' x2='16' y2='29' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='3' y1='16' x2='7' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='25' y1='16' x2='29' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3C/svg%3E">
+<style>
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12); --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-soft: rgba(99, 102, 241, 0.12); --code: #14B8A6; --code-soft: rgba(20, 184, 166, 0.12); --bg: var(--ink); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(20, 184, 166, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(20, 184, 166, 0.3); --max-w: 1200px; --read-w: 760px; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(20, 184, 166, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(20, 184, 166, 0.28); }
+  * { margin: 0; padding: 0; box-sizing: border-box; } html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.blue { width: 600px; height: 600px; background: var(--code); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--code), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--code); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--code); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--code); } .crumb-sep { opacity: 0.5; } .crumb-current { color: var(--text-secondary); }
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--code); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--code); box-shadow: 0 0 12px var(--code); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--code), var(--sky), var(--sky-muted)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.accent { background: rgba(37, 99, 235, 0.12); color: var(--blue-glow); border-color: rgba(37, 99, 235, 0.25); }
+  .pill.green { background: var(--green-soft); color: var(--green); border-color: rgba(16, 185, 129, 0.25); }
+  .pill.code { background: var(--code-soft); color: var(--code); border-color: rgba(20, 184, 166, 0.25); }
+  .pill.warn { background: var(--warm-soft); color: var(--warm-glow); border-color: rgba(245, 158, 11, 0.25); }
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--sky); margin-bottom: 14px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--code); }
+  .prose ul, .prose ol { padding-left: 24px; margin-bottom: 18px; max-width: var(--read-w); }
+  .prose li { font-size: 15px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 8px; }
+  .prose li strong { color: var(--text-primary); font-weight: 600; }
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); margin-bottom: 20px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.code { border-left: 3px solid var(--code); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .info-card code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--code); }
+  .info-card strong { color: var(--text-primary); }
+  .stack-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; max-width: var(--read-w); margin-bottom: 20px; }
+  .stack-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--code); border-radius: var(--radius-md); padding: 18px 22px; }
+  .stack-cell .layer { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .stack-cell h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.3px; }
+  .stack-cell p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: var(--read-w); margin-bottom: 20px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--sky); background: rgba(37, 99, 235, 0.04); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); } .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--code); }
+  .compare td strong { color: var(--text-primary); }
+  .connect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .connect-node { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; transition: all 0.3s; text-decoration: none; color: inherit; display: block; }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node.soon { cursor: default; opacity: 0.72; }
+  .connect-node .tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--code); word-break: break-all; }
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--code), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--code); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+
+  .codeblock { background: var(--ink-deep); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 20px; max-width: var(--read-w); margin-bottom: 20px; overflow-x: auto; }
+  .codeblock .cb-cap { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; display: block; }
+  .codeblock pre { font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.65; color: var(--mist); white-space: pre; }
+  .codeblock pre .k { color: var(--code); }
+  .info-card ul { margin: 6px 0 0; padding-left: 20px; }
+  .info-card li { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 8px; }
+  .info-card li:last-child { margin-bottom: 0; }
+  .info-card li strong { color: var(--text-primary); }
+  .prose ol { padding-left: 22px; margin-bottom: 18px; max-width: var(--read-w); }
+  .prose ol li { font-size: 15px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 10px; }
+  .prose ol li strong { color: var(--text-primary); }
+</style>
+</head>
+<body>
+
+<div class="glow-orb blue"></div>
+<div class="glow-orb sky"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand"><span class="nav-brand-mark">know.2nth.ai</span><span class="nav-brand-sub">software/photocraft</span></a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">&larr; Software</a>
+      <a href="../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x1F319;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="./">Software</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">PhotoCraft</span>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> software &middot; PhotoCraft &middot; Case study</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      378k lines in ten days. <span class="gradient">What did it buy?</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      PhotoCraft is an open-source, pure-Rust reimplementation of Photoshop. Its second commit is titled <em>&ldquo;one-shot&rdquo;</em> and adds 42,000 lines. Ten days later it had ~378,000 lines of Rust, 1,089 commits, eight releases and 36,000 GitHub stars &mdash; with more than a thousand commits carrying an AI co-author trailer. It is the clearest public look yet at <strong>what agent-built software looks like at scale</strong>: real architecture, real tests, an unusually honest roadmap &mdash; and, by its own measurement, well under half of Photoshop. This leaf reads it as a case study, not a product pitch.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill code">Agent-built at scale</span>
+      <span class="pill accent">Rust &middot; egui &middot; wgpu &middot; WASM</span>
+      <span class="pill green">MIT / Apache-2.0</span>
+      <span class="pill warn">Early alpha</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 WHAT IT IS -->
+<section id="what">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; What it is</div>
+      <h2 class="section-title">A Photoshop-shaped editor, written only in Rust.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>PhotoCraft (<code>github.com/storytold/photocraft</code>) is a native raster image editor whose stated goal is <strong>1:1 Photoshop parity</strong> &mdash; same menus, shortcuts, behaviour and file fidelity &mdash; with every feature drivable by agents. It ships under the ArtCraft brand as one of a planned family of &ldquo;Craft&rdquo; apps, dual-licensed MIT or Apache-2.0, and runs on macOS, Windows, Linux, FreeBSD and the browser.</p>
+      <ul>
+        <li><strong>No web shell.</strong> The desktop app is native <code>egui</code>/<code>eframe</code> on <code>wgpu</code> (Metal, Vulkan, DX12). The web build is the same Rust compiled to WebAssembly &mdash; no Electron, no Tauri, no JavaScript UI.</li>
+        <li><strong>Real document model.</strong> Layers, masks, adjustment layers, layer styles, live type, vector shapes, smart objects with smart filters, a brush engine with pen pressure, colour management through ICC profiles, 8/16/32-bit and non-RGB modes.</li>
+        <li><strong>Real files.</strong> Layered PSD open and save, plus TIFF, EXR, HEIF, several camera RAW formats and Paint.NET import.</li>
+        <li><strong>Everything is a command.</strong> Every user action is a registered engine command with an id and parameter docs, dispatched identically from the menus, a headless CLI, a JSON control channel and an MCP server.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 02 THE VELOCITY -->
+<section id="velocity">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; How it was built</div>
+      <h2 class="section-title">The numbers are the story.</h2>
+      <p class="section-lede">Measured from a clone of <code>main</code> at commit <code>0c72d95</code> on 10 October 2026, plus the GitHub API the same day.</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead><tr><th>Measure</th><th>Value</th><th>What it tells you</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Age</strong></td><td>10 days (repo created 30 Sep 2026)</td><td>Everything below happened in under two weeks.</td></tr>
+          <tr><td><strong>Size</strong></td><td>~378k lines of Rust; 25 crates, 3 apps, ~1,370 tracked files</td><td>Comparable to a mature open-source editor that took humans years.</td></tr>
+          <tr><td><strong>Seed</strong></td><td>Commit 2, &ldquo;one-shot&rdquo;: +42,241 lines across 241 files. Commit 3: +37,990</td><td>The skeleton was generated, not grown.</td></tr>
+          <tr><td><strong>Commits</strong></td><td>1,089 total; 363 on 9 October alone</td><td>Throughput no human review process reads line-by-line.</td></tr>
+          <tr><td><strong>Agent trailers</strong></td><td>1,000+ <code>Co-authored-by</code> trailers naming Claude models; Copilot and others too</td><td>A lower bound on agent involvement &mdash; says nothing about review depth.</td></tr>
+          <tr><td><strong>Tests</strong></td><td>~5,200 <code>#[test]</code> functions</td><td>Tests were the gate, not an afterthought.</td></tr>
+          <tr><td><strong>Releases</strong></td><td>v0.1.0 (2 Oct) &rarr; v0.6.0 (10 Oct), eight tagged</td><td>Signed and notarised builds on a near-daily cadence.</td></tr>
+          <tr><td><strong>Attention</strong></td><td>36.3k stars, 5.2k forks; 413 open issues, 144 open PRs</td><td>Launch-hype demand, and a triage load to match.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.07s">
+      <h4>Velocity is not maturity</h4>
+      <p>Lines of code and commit counts measure <strong>output</strong>, not correctness. The project says so itself: most post-release fixes &ldquo;passed our tests but have not yet been validated by users&rdquo;, and its first public users found 214 broken shortcuts, an immovable crop frame and panels resizing themselves &mdash; all of which counted as &ldquo;live&rdquo; in the menu-parity report. Agents compress the time to a plausible feature; they don't compress the time it takes real users to find out whether it works.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 THE HARNESS -->
+<section id="harness">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; The harness that held it together</div>
+      <h2 class="section-title">The transferable part is <code>AGENTS.md</code>, not the editor.</h2>
+      <p class="section-lede">Hundreds of agent commits a day would normally produce mush. What keeps this codebase coherent is a set of rules the agents read first &mdash; and, more importantly, <strong>tooling that enforces them</strong> whether or not the agent remembered.</p>
+    </div>
+    <div class="stack-grid fade-up" style="transition-delay: 0.05s">
+      <div class="stack-cell">
+        <span class="layer">Architecture</span>
+        <h4>Enforced layering</h4>
+        <p>Crates sit in layers L0&ndash;L6 (geometry and pixels up to the UI shell). A crate may depend only on lower layers, and <code>cargo xtask layers</code> fails the build if one doesn't. Nothing below the UI may touch egui.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Reliability</span>
+        <h4>Never panic, by lint</h4>
+        <p>Production code may not <code>unwrap</code>, <code>expect</code>, <code>panic!</code> or index unchecked &mdash; clippy denies it on every crate. A <code>panic_hunt</code> test fuzzes every command with hostile parameters. <code>unsafe</code> is forbidden except in one isolated tablet-input crate.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Fidelity</span>
+        <h4>Corpus oracles with floors</h4>
+        <p>PSD rendering is checked against Photoshop-authored files and public corpora (psd-tools, ag-psd, PngSuite). Each has a pass-count floor in the test suite: raise it, never lower it.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Portability</span>
+        <h4>WASM on every PR</h4>
+        <p>Every engine layer must compile for <code>wasm32</code>, and CI checks the browser build and its size budget on each pull request. The web build can't silently rot.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Honesty</span>
+        <h4>A generated scorecard</h4>
+        <p><code>cargo xtask scorecard</code> regenerates performance budgets, corpus floors, per-area checklists and a count of settings that do nothing. CI fails if the committed copy is stale. Agents are told to prefer it to estimates.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Interface</span>
+        <h4>One seam for everything</h4>
+        <p>New behaviour must be an engine command with id, label, menu path, shortcut, params doc and tests. The UI stays thin, so agents can't hide logic in widgets that the CLI and MCP can't reach.</p>
+      </div>
+    </div>
+    <div class="info-card green fade-up" style="transition-delay: 0.07s">
+      <h4>The lesson for your own repos</h4>
+      <p>None of this is exotic &mdash; it's the <a href="software-for-agents.html">agent-legible codebase</a> and <a href="spec-driven-development.html">verify-or-it's-a-prompt</a> discipline from this branch, applied hard. The pattern worth copying: <strong>every rule that matters is a failing check, not a sentence</strong>. Prose in <code>AGENTS.md</code> tells the agent what good looks like; the layering check, the lints, the corpus floors and the scorecard diff are what stop it shipping anything else.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 HONEST SCORECARD -->
+<section id="scorecard">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; The honest scorecard</div>
+      <h2 class="section-title">By its own numbers: well under half of Photoshop.</h2>
+      <p class="section-lede">The project's <code>docs/roadmap.md</code> carries an &ldquo;Honest parity assessment&rdquo; and its generated scorecard. These are their figures, not ours &mdash; which is exactly why they're worth quoting.</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead><tr><th>Dimension</th><th>Their measurement</th><th>Read</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Overall</strong></td><td>Feature surface 60&ndash;70% of what a typical user touches; &ldquo;a professional could switch for daily work&rdquo; 25&ndash;35%; true parity &ldquo;many months&rdquo; away</td><td>Broad, shallow.</td></tr>
+          <tr><td><strong>Menu wiring</strong></td><td>627 of 627 menu items dispatch a command</td><td>Says nothing about behaviour &mdash; they flag this themselves.</td></tr>
+          <tr><td><strong>PSD rendering</strong></td><td>Floors: 146/170 own corpus, 236/309 psd-tools, 133/256 Photoshop-authored oracles</td><td>Good on simple files, weaker on complex layouts.</td></tr>
+          <tr><td><strong>PSD round trip</strong></td><td>307/309 psd-tools files re-save with the same render</td><td>The strongest number &mdash; within the corpus.</td></tr>
+          <tr><td><strong>Smart filters</strong></td><td>Re-rendering Photoshop's smart filters matches 5 of 30</td><td>Filter maths still diverges.</td></tr>
+          <tr><td><strong>Performance</strong></td><td>3 of 56 scenarios within budget (baseline 5 Oct); layer-with-styles drag p95 535 ms vs 25 ms target</td><td>Fast on big rasters; interactive layout work still laggy.</td></tr>
+          <tr><td><strong>Settings</strong></td><td>48 of 146 preferences do nothing</td><td>UI ahead of implementation.</td></tr>
+          <tr><td><strong>AI / generative</strong></td><td>None &mdash; deferred by decision</td><td>The feature Photoshop users most notice is absent.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="info-card code fade-up" style="transition-delay: 0.07s">
+      <h4>Credit where it's due</h4>
+      <p>Most projects with 36k stars in ten days would let the stars speak. This one publishes the number of settings that do nothing, the scenarios that blow their budget, and the admission that &ldquo;our tests miss what users hit&rdquo;. <strong>A self-measuring, self-critical roadmap is the second transferable lesson</strong>: when agents can generate features faster than anyone can check them, the scorecard is what stops the menu count from becoming the story.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 AGENT SURFACE -->
+<section id="agents">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; Built for agents</div>
+      <h2 class="section-title">An image editor you can drive over MCP.</h2>
+      <p class="section-lede">Because every action is an engine command, the same registry is exposed four ways: menus, a headless CLI (<code>photocraft-cli</code>: convert, info, run, batch), a JSON control channel to a running app, and an MCP server.</p>
+    </div>
+    <div class="codeblock fade-up" style="transition-delay: 0.05s">
+      <span class="cb-cap">Headless MCP session, filesystem scoped to one folder (from docs/mcp.md)</span>
+<pre><span class="k"># without a root, the server has no filesystem authority at all</span>
+photocraft-cli mcp \
+  --automation-read-root  /work/project \
+  --automation-write-root /work/project
+
+<span class="k"># tools: command_list, command_run, command_batch, doc_inspect,</span>
+<span class="k">#        render_preview, ui_inspect, ui_screenshot (bridge mode)</span></pre>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.07s">
+      <p>The design choices are sensible: <strong>read and write roots are separate and opt-in</strong>, unknown tool arguments are rejected before execution, a worker panic becomes a tool error rather than a dead session, and <code>render_preview</code> returns a bounded PNG so an agent can look at its own work. <code>command_batch</code> records one history step per command &mdash; it is <strong>not</strong> an atomic transaction, so a failed step mid-batch leaves earlier steps applied.</p>
+      <p>This is the genuinely new part. Scriptable image editing isn't new (ImageMagick, GIMP's Script-Fu, Photoshop's own ExtendScript and UXP), but a layered, PSD-aware editor with a first-class MCP surface means an agent can open a designer's layered file, change a type layer, swap a smart object and export variants &mdash; and show you a preview of each.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 RISKS -->
+<section id="risks">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; Risks &amp; open questions</div>
+      <h2 class="section-title">What to weigh before you depend on it.</h2>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.05s">
+      <h4>Read these first</h4>
+      <ul>
+        <li><strong>Review debt.</strong> Hundreds of agent commits a day can't all get careful human review. The gates catch crashes, layering and regressions on the corpus; they don't catch a feature that's subtly wrong in a way no test encodes. Expect a long tail of behaviour bugs.</li>
+        <li><strong>Not fully open in practice.</strong> <code>AGENTS.md</code> points contributors at a shared standards repo, <code>craftrules</code>, that &ldquo;is not public&rdquo; &mdash; outside contributors must ask a maintainer for the rules that govern their own PRs. The code is open-source; the process isn't entirely.</li>
+        <li><strong>Trademark and IP exposure.</strong> It positions itself as a &ldquo;reimplementation of Adobe Photoshop&rdquo;, mirrors the menu structure, imports Photoshop <code>.kys</code> shortcut sets and adopts an installed Photoshop's live set on first launch. The clean-room rules are explicit (behaviour and public specs only, no copied code or assets), and US case law such as <em>Lotus v. Borland</em> (1st Cir. 1995) has treated menu hierarchies as uncopyrightable &mdash; but leaning on a competitor's name is the kind of thing that draws legal attention. Not legal advice; watch for changes in naming.</li>
+        <li><strong>Hype-driven attention.</strong> 36k stars in ten days measures launch reach, not adoption. 557 open issues and PRs on day ten is a triage load that has to be sustained after the novelty fades.</li>
+        <li><strong>Bus factor and funding.</strong> One company's org, one brand family. Read the governance and release cadence again in six months before building a workflow on top of it.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 07 DECISION GUIDE -->
+<section id="decide">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; Decision guide</div>
+      <h2 class="section-title">Use it for automation and study. Not yet for production retouching.</h2>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead><tr><th>Use it when</th><th>Skip it when</th></tr></thead>
+        <tbody>
+          <tr><td>You want an <strong>agent to drive layered image edits</strong> &mdash; batch variants, type swaps, exports &mdash; through MCP or a CLI, on your own machine.</td><td>Client deliverables depend on <strong>pixel-exact PSD fidelity</strong> with complex layouts, effects or smart filters.</td></tr>
+          <tr><td>You need a <strong>free, offline, cross-platform</strong> layered editor for light work, teaching or a browser-delivered tool.</td><td>The team lives on <strong>generative fill</strong>, Adobe libraries, actions (<code>.atn</code>) or third-party <code>.8BF</code> plug-ins.</td></tr>
+          <tr><td>You're studying <strong>how to run an agent-built codebase</strong> &mdash; the <code>AGENTS.md</code>, the xtask gates, the scorecard.</td><td>You need <strong>stable behaviour across months</strong>: v0.x with near-daily releases will move under you.</td></tr>
+          <tr><td>You'd embed a Rust imaging engine (PSD, colour management, compositor) in your own product, under a permissive licence.</td><td>You need a vendor to call when it breaks.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 08 SA CONTEXT -->
+<section id="sa-context">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 &middot; South African context</div>
+      <h2 class="section-title">Licence-free, offline &mdash; and a lesson in method.</h2>
+    </div>
+    <div class="info-card code fade-up" style="transition-delay: 0.05s">
+      <h4>Where it lands here</h4>
+      <p>For SA studios, schools and small agencies paying dollar-priced creative subscriptions, a permissive, offline editor that runs in a browser tab is worth tracking &mdash; but at today's PSD fidelity it complements Photoshop rather than replacing it, especially where files go back and forth with agencies abroad. The nearer-term fit is <strong>automation</strong>: retailers and e-commerce teams generating catalogue and promo variants from a layered template, run locally with no image data leaving the building (useful when POPIA questions come up about third-party processing). The bigger takeaway isn't the editor at all. It's proof that a small team with agents and <strong>hard, automated gates</strong> can stand up a serious codebase fast &mdash; and that the scorecard, not the commit count, is what tells you whether it's any good.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 09 CONNECTIONS -->
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">09 &middot; Connections</div>
+      <h2 class="section-title">Where this links in the tree.</h2>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="software-for-agents.html" class="connect-node">
+        <span class="tag">software/software-for-agents</span>
+        <div class="skill">Software for agents</div>
+        <div class="why">The agent-legible codebase in general &mdash; PhotoCraft's AGENTS.md is a worked example at extreme scale.</div>
+      </a>
+      <a href="orchestrating-agents.html" class="connect-node">
+        <span class="tag">software/orchestrating-agents</span>
+        <div class="skill">Orchestrating agents</div>
+        <div class="why">Running many agents against one codebase &mdash; and why humans stay on the diff when throughput hits hundreds of commits a day.</div>
+      </a>
+      <a href="spec-driven-development.html" class="connect-node">
+        <span class="tag">software/spec-driven-development</span>
+        <div class="skill">Spec-driven development</div>
+        <div class="why">A spec without verification is a vibe with headers. PhotoCraft's corpus floors and scorecard are the verification half.</div>
+      </a>
+      <a href="rust.html" class="connect-node">
+        <span class="tag">software/rust</span>
+        <div class="skill">Rust</div>
+        <div class="why">Why the language choice matters here: compile-time safety, forbidden <code>unsafe</code>, one codebase for native and WASM.</div>
+      </a>
+      <a href="ci-cd.html" class="connect-node">
+        <span class="tag">software/ci-cd</span>
+        <div class="skill">CI/CD &amp; automation</div>
+        <div class="why">Tests as gates &mdash; the layering check, lints, wasm build and scorecard diff are all CI-enforced.</div>
+      </a>
+      <a href="../agents/mcp.html" class="connect-node">
+        <span class="tag">agents/mcp</span>
+        <div class="skill">Model Context Protocol</div>
+        <div class="why">The protocol behind PhotoCraft's agent surface &mdash; and why scoped filesystem roots matter for any MCP server you connect.</div>
+      </a>
+      <a href="../agents/coding-cli-agents.html" class="connect-node">
+        <span class="tag">agents/coding-cli-agents</span>
+        <div class="skill">Coding CLI agents</div>
+        <div class="why">The tools that wrote most of these commits, and their plan / worktree / headless modes.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 10 RESOURCES -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">10 &middot; Resources</div>
+      <h2 class="section-title">Primary sources &mdash; the repo is moving daily.</h2>
+      <p class="section-lede">Every figure in this leaf comes from the project's own repository and the GitHub API. Last reviewed 2026-10-10.</p>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://github.com/storytold/photocraft" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Repo</span>
+        <span class="r-title">storytold/photocraft</span>
+        <span class="r-url">github.com/storytold/photocraft</span>
+      </a>
+      <a href="https://github.com/storytold/photocraft/blob/main/AGENTS.md" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Repo &middot; agent guide</span>
+        <span class="r-title">AGENTS.md &mdash; rules for agents and contributors</span>
+        <span class="r-url">github.com/storytold/photocraft/blob/main/AGENTS.md</span>
+      </a>
+      <a href="https://github.com/storytold/photocraft/blob/main/docs/roadmap.md" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Repo &middot; roadmap</span>
+        <span class="r-title">Roadmap &amp; honest parity assessment</span>
+        <span class="r-url">github.com/storytold/photocraft/blob/main/docs/roadmap.md</span>
+      </a>
+      <a href="https://github.com/storytold/photocraft/blob/main/docs/scorecard.md" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Repo &middot; generated</span>
+        <span class="r-title">Scorecard &mdash; budgets, corpus floors, checklists</span>
+        <span class="r-url">github.com/storytold/photocraft/blob/main/docs/scorecard.md</span>
+      </a>
+      <a href="https://github.com/storytold/photocraft/blob/main/docs/mcp.md" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Repo &middot; docs</span>
+        <span class="r-title">MCP conventions</span>
+        <span class="r-url">github.com/storytold/photocraft/blob/main/docs/mcp.md</span>
+      </a>
+      <a href="https://github.com/storytold/photocraft/releases" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Releases</span>
+        <span class="r-title">PhotoCraft releases (v0.1.0 &rarr; v0.6.0)</span>
+        <span class="r-url">github.com/storytold/photocraft/releases</span>
+      </a>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.08s; margin-top: 8px;">
+      <p style="font-size: 13px; color: var(--text-muted);">Provenance: line, commit, trailer and test counts were measured by us from a clone of <code>main</code> at <code>0c72d95</code> on 10 October 2026; stars, forks, issues and releases from the GitHub API the same day. Parity, corpus and performance figures are <strong>the project's own published measurements</strong>, quoted as such &mdash; we did not build or benchmark it. Co-author trailers are a lower bound on agent involvement and don't indicate how much human review each change received.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../index.html">Skills tree</a>
+      <a href="./">Software hub</a>
+      <a href="software-for-agents.html">Software for agents</a>
+      <a href="orchestrating-agents.html">Orchestrating agents</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant</p>
+  </div>
+</footer>
+<script>
+  function toggleTheme() {
+    const html = document.documentElement;
+    const current = html.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
+    localStorage.setItem('theme', next);
+  }
+  const saved = localStorage.getItem('theme');
+  if (saved) {
+    document.documentElement.setAttribute('data-theme', saved);
+    document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '☀️' : '🌙';
+  }
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>
