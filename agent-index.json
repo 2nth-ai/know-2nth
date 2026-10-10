@@ -3,7 +3,7 @@
   "description": "The public knowledge tree for the 2nth.ai ecosystem. Every leaf is both a human-readable reference and an agent-consumable context document.",
   "agent_fetch": "https://know.2nth.ai/api/context/<domain>/<leaf>",
   "mcp": "https://know.2nth.ai/mcp",
-  "count": 226,
+  "count": 227,
   "items": [
     {
       "title": "Agents — know.2nth.ai",
@@ -1076,6 +1076,14 @@
       "kind": "leaf",
       "url": "https://know.2nth.ai/explainers/software/packages",
       "fetch": "software/packages"
+    },
+    {
+      "title": "PhotoCraft — a Photoshop clone built by agents in ten days · know.2nth.ai",
+      "description": "A case study in agent-built software at scale. PhotoCraft is an open-source, pure-Rust reimplementation of Photoshop: ~378k lines, 25 crates and 1,000+ commits in its first ten days, most of them co-authored by coding agents. What the velocity actually bought, the harness (AGENTS.md, enforced layering, never-panic lints, corpus oracles) that kept it coherent, the project's own honest parity numbers, the MCP control surface, and when to use it versus skip it.",
+      "domain": "software",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/software/photocraft",
+      "fetch": "software/photocraft"
     },
     {
       "title": "Planning with agents — know.2nth.ai",
