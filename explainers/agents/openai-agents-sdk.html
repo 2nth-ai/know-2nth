@@ -445,7 +445,7 @@ agent = Agent(<span class="h">name</span>=<span class="s">"Public Assistant"</sp
     </div>
     <div class="info-card indigo fade-up" style="transition-delay: 0.05s">
       <h4>Enterprise &middot; Azure OpenAI in <code>South Africa North</code></h4>
-      <p>The Azure OpenAI Service hosts GPT models in <strong>Azure South Africa North</strong> (Johannesburg) for SA-resident inference, with Microsoft enterprise contracting and POPIA-compliant data handling. For SA banks, insurers, and telcos with existing Microsoft / Azure relationships, this is the structurally clean answer for OpenAI-on-OpenAI workloads. Caveats: not every model is available in every region (newest GPT releases sometimes lag US regions by weeks or months), and Azure pricing differs from OpenAI Platform pricing.</p>
+      <p>The Azure OpenAI Service runs GPT models from <strong>Azure South Africa North</strong> (Johannesburg) under Microsoft enterprise contracting, with data at rest in country. For SA banks, insurers, and telcos with existing Microsoft / Azure relationships, it's the natural home for OpenAI-on-OpenAI workloads. Be precise about residency, though: current GPT models in SA North run as Global deployments, which process prompts outside the country. The only in-country option is gpt-4o (2024-05-13) on Regional PTU, scheduled to retire on 9 December 2026 &mdash; see <a href="../../sa-llm-residency-validation.html">where LLM inference runs in SA</a>. Azure pricing also differs from OpenAI Platform pricing.</p>
     </div>
     <div class="info-card fade-up" style="transition-delay: 0.07s">
       <h4>Studio &middot; OpenAI Platform direct</h4>
@@ -504,7 +504,7 @@ agent = Agent(<span class="h">name</span>=<span class="s">"Public Assistant"</sp
       <a href="../tech/microsoft/" class="connect-node">
         <span class="tag">tech/microsoft</span>
         <div class="skill">Microsoft / Azure</div>
-        <div class="why">Azure OpenAI Service in <code>South Africa North</code> is the SA-residency-clean path for GPT workloads.</div>
+        <div class="why">Azure OpenAI Service in <code>South Africa North</code> &mdash; the enterprise home for GPT workloads in SA. In-country inference is gpt-4o on Regional PTU only.</div>
       </a>
     </div>
   </div>

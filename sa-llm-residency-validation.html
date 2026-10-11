@@ -3,21 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SA LLM Residency &mdash; Validation Memo &mdash; know.2nth.ai</title>
-<meta name="description" content="Cross-page validation memo for know.2nth.ai — correcting three overstated SA-residency claims on /explainers/agents/gpt and /explainers/tech/microsoft. Claude on Bedrock af-south-1 is endpoint + logs only (inference routes globally via cross-Region inference). Azure OpenAI in southafricanorth keeps inference in country only on Regional PTU, not the default Global Standard SKU. And the 'only major LLM vendor in SA' framing is contradicted by Google Vertex africa-south1 and AWS Bedrock af-south-1. May 2026, primary sources cited.">
+<title>Where LLM Inference Runs in South Africa &mdash; know.2nth.ai</title>
+<meta name="description" content="Where your prompts are actually processed on AWS Bedrock af-south-1, Azure OpenAI southafricanorth and Google Vertex AI africa-south1. Short answer, October 2026: no major vendor runs a current frontier model in country. Decision guide and primary sources.">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="know.2nth.ai">
 <meta property="og:url" content="https://know.2nth.ai/sa-llm-residency-validation.html">
-<meta property="og:title" content="SA LLM Residency &mdash; Validation Memo">
-<meta property="og:description" content="Cross-page validation memo correcting three SA-residency claims on know.2nth.ai. Bedrock af-south-1 routes globally; Azure southafricanorth is in country only on Regional PTU; Vertex africa-south1 contradicts the 'only major' framing.">
+<meta property="og:title" content="Where LLM inference actually runs in South Africa">
+<meta property="og:description" content="AWS, Microsoft and Google all have SA regions. Here is where each one actually processes your prompts &mdash; checked against vendor documentation, October 2026.">
 <meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="SA LLM Residency &mdash; Validation Memo">
-<meta name="twitter:description" content="Cross-page audit. Bedrock af-south-1 routes globally; Azure southafricanorth is in country only on Regional PTU; Vertex africa-south1 contradicts the 'only major' framing.">
+<meta name="twitter:title" content="Where LLM inference actually runs in South Africa">
+<meta name="twitter:description" content="Bedrock af-south-1, Azure southafricanorth, Vertex africa-south1: where your prompts are processed on each. October 2026, primary sources.">
 <meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -121,6 +121,27 @@
   .fade-up.visible { opacity: 1; transform: translateY(0); }
   @media (max-width: 768px) { .nav-brand-sub { display: none; } .compare { font-size: 12px; } .compare th, .compare td { padding: 10px 12px; } }
   *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+  .compare td .status-good { color: var(--green); font-weight: 600; }
+  .compare-wrap.wide { max-width: 960px; overflow-x: auto; }
+  .compare-wrap.wide .compare { min-width: 680px; }
+  .compare td .region { display: block; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--sky); font-weight: 500; margin-top: 2px; }
+  .path-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; max-width: 960px; }
+  .path-grid .info-card { margin-bottom: 0; max-width: none; }
+  .info-card ul { padding-left: 20px; margin: 4px 0 0; }
+  .info-card li { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 6px; }
+  .info-card li strong, .info-card p strong { color: var(--text-primary); }
+  .info-card a { color: var(--sky); text-decoration: none; border-bottom: 1px dotted rgba(56, 189, 248, 0.4); }
+  .log { max-width: var(--read-w); border-left: 1px solid var(--border); padding-left: 22px; }
+  .log-entry { margin-bottom: 26px; }
+  .log-date { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1px; color: var(--rose); margin-bottom: 6px; }
+  .log-entry p, .log-entry li { font-size: 15px; color: var(--text-secondary); line-height: 1.7; }
+  .log-entry ul { padding-left: 20px; margin-top: 6px; }
+  .log-entry strong { color: var(--text-primary); }
+  .log-entry code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; color: var(--sky); }
+  details.diffs { margin-top: 14px; }
+  details.diffs summary { cursor: pointer; font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--sky); letter-spacing: 0.5px; margin-bottom: 14px; }
+  .sub-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-muted); margin: 32px 0 12px; }
+  @media (prefers-reduced-motion: reduce) { .fade-up { opacity: 1; transform: none; transition: none; } html { scroll-behavior: auto; } }
 </style>
 </head>
 <body>
@@ -130,7 +151,7 @@
 
 <nav>
   <div class="nav-inner">
-    <a href="./" class="nav-brand"><span class="nav-brand-mark">know.2nth.ai</span><span class="nav-brand-sub">validation memo</span></a>
+    <a href="./" class="nav-brand"><span class="nav-brand-mark">know.2nth.ai</span><span class="nav-brand-sub">SA residency</span></a>
     <div class="nav-right">
       <a href="./" class="nav-link">&larr; Home</a>
       <a href="./#domains" class="nav-link">Tree</a>
@@ -143,36 +164,100 @@
   <div class="crumb">
     <a href="./">know.2nth.ai</a>
     <span class="crumb-sep">&rsaquo;</span>
-    <span class="crumb-current">SA LLM residency &mdash; validation memo</span>
+    <span class="crumb-current">Where LLM inference runs in South Africa</span>
   </div>
 </div>
 
 <section class="hero">
   <div class="container">
-    <div class="eyebrow fade-up"><span class="dot"></span> Validation &middot; cross-page audit &middot; 2026-05-14</div>
+    <div class="eyebrow fade-up"><span class="dot"></span> Reference &middot; SA data residency &middot; verified 2026-10-11</div>
     <h1 class="fade-up" style="transition-delay: 0.05s">
-      SA LLM residency<br>&mdash; <span class="gradient">what's actually true.</span>
+      Where LLM inference<br>actually runs <span class="gradient">in South Africa.</span>
     </h1>
     <p class="sub fade-up" style="transition-delay: 0.1s">
-      A cross-page audit. Two <code style="font-family: 'JetBrains Mono', monospace; font-size: 0.88em; color: var(--sky);">know.2nth.ai</code> explainers tell different stories about Claude on AWS in South Africa, and the Microsoft hub overstates Azure's residency position. Below: what's actually true as of May 2026, with primary sources, plus the line-edits that bring both pages into agreement with the facts.
+      AWS, Microsoft and Google all have South African cloud regions. Having a region is not the same as running the model there. This page shows where each vendor actually processes your prompts, checked against their own documentation on 11 October 2026.
     </p>
     <div class="hero-meta fade-up" style="transition-delay: 0.15s">
-      <span class="pill accent">Validation update</span>
-      <span class="pill">3 claims corrected</span>
+      <span class="pill accent">Reference</span>
       <span class="pill sky">Primary sources</span>
-      <span class="pill">2026-05-14</span>
+      <span class="pill">Last verified 2026-10-11</span>
     </div>
   </div>
 </section>
 
-<section id="short">
+<section id="answer">
   <div class="container">
     <div class="fade-up">
-      <div class="section-label">01 &middot; The short version</div>
-      <h2 class="section-title">What's wrong, in one paragraph.</h2>
+      <div class="section-label">01 &middot; The answer</div>
+      <h2 class="section-title">Where your prompts are processed.</h2>
+      <p class="section-lede">&ldquo;In country&rdquo; here means the GPU that runs the model is in South Africa, not just the API endpoint, the logs or the stored data.</p>
     </div>
-    <div class="prose fade-up" style="transition-delay: 0.05s">
-      <p><code>agents/gpt</code> says Claude has "Bedrock <code>af-south-1</code> for SA residency." <code>tech/microsoft</code> says "Microsoft is the only major LLM vendor with a South Africa inference region" and that "Azure OpenAI in <code>southafricanorth</code> is fully in country &mdash; both the resource and the inference compute are in Joburg." All three claims need tightening. AWS Bedrock in Cape Town is a regional endpoint, but Claude 4.5 inference itself routes globally via cross-Region inference &mdash; only logs stay in country. Azure OpenAI in <code>southafricanorth</code> only keeps inference in country on <strong>Regional PTU</strong> deployments &mdash; the default <strong>Global Standard</strong> SKU processes prompts globally. And Google Vertex AI's <code>africa-south1</code> (Johannesburg) is also a major-vendor SA inference region &mdash; so "only" is overstated either way.</p>
+
+    <div class="compare-wrap wide fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead><tr><th>Vendor &middot; SA region</th><th>Models you can call</th><th>Where inference runs</th><th>In country?</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="name">AWS Bedrock<span class="region">af-south-1 &middot; Cape Town</span></td>
+            <td>Claude, current line (Sonnet 5.5, Opus 5.5) and earlier</td>
+            <td>Global cross-Region only: any AWS region with capacity. The endpoint and CloudWatch/CloudTrail logs stay in Cape Town.</td>
+            <td><span class="status-bad">No</span></td>
+          </tr>
+          <tr>
+            <td class="name">Azure OpenAI<span class="region">southafricanorth &middot; Johannesburg</span></td>
+            <td>Current GPT line (GPT-5.x, GPT-6) on Global Standard and Global Provisioned</td>
+            <td>Global types run in any Azure region. Regional (in-country) inference covers <strong>gpt-4o 2024-05-13 on Provisioned only</strong>, plus two embedding models.</td>
+            <td><span class="status-half">gpt-4o PTU only</span>, and that version is scheduled to retire on 9 Dec 2026</td>
+          </tr>
+          <tr>
+            <td class="name">Google Vertex AI<span class="region">africa-south1 &middot; Johannesburg</span></td>
+            <td>Gemini is not listed for africa-south1</td>
+            <td>Gemini is served from other regions or the global endpoint. The region does support custom model inference.</td>
+            <td><span class="status-bad">No</span> for Gemini; <span class="status-good">yes</span> for models you deploy yourself</td>
+          </tr>
+          <tr>
+            <td class="name">Open-weights, self-hosted<span class="region">any SA region or on-prem</span></td>
+            <td>Llama, Qwen, Gemma, GLM, Mistral and others</td>
+            <td>On the compute you choose, served with e.g. vLLM or Ollama</td>
+            <td><span class="status-good">Yes</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="info-card green fade-up" style="transition-delay: 0.08s">
+      <h4>Bottom line</h4>
+      <p>As of October 2026, <strong>no major vendor runs a current frontier model in South Africa.</strong> The only managed in-country option is Azure&rsquo;s gpt-4o (2024-05-13) on Regional Provisioned Throughput, and that version is scheduled to retire on 9 December 2026. If prompts must stay in the country, plan on open-weights models running on South African compute. Otherwise, get a written regional-capacity commitment from Microsoft before you build on the PTU path.</p>
+    </div>
+  </div>
+</section>
+
+<section id="decide">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; Decision guide</div>
+      <h2 class="section-title">Start with where the data is allowed to go.</h2>
+      <p class="section-lede">The vendor question comes second. First decide whether prompts and grounding data may cross the border. That&rsquo;s a legal call for your information officer, not an architecture preference.</p>
+    </div>
+    <div class="path-grid fade-up" style="transition-delay: 0.05s">
+      <div class="info-card green">
+        <h4>Prompts may leave South Africa</h4>
+        <p>This covers most workloads where a POPIA section 72 transfer basis applies, for example an adequate level of protection at the destination or the data subject&rsquo;s consent.</p>
+        <ul>
+          <li><strong>Use any of the three vendors.</strong> Pick on model quality, price and the cloud you already run.</li>
+          <li>An SA endpoint (<code>af-south-1</code>, <code>southafricanorth</code>) still helps: logs and data at rest stay local, and latency to the endpoint is lower.</li>
+          <li>Record the transfer in your POPIA documentation. AWS itself tells Cape Town customers to &ldquo;evaluate alignment with regulatory obligations such as POPIA.&rdquo;</li>
+        </ul>
+      </div>
+      <div class="info-card rose">
+        <h4>Prompts must stay in South Africa</h4>
+        <p>Typical cases are bank offshoring rules, public-sector and sovereign data, client PII in FAIS-regulated advice, and contracts that name the country.</p>
+        <ul>
+          <li><strong>Open-weights on SA compute</strong> is the durable path. See <a href="explainers/agents/vllm.html">vLLM</a> and <a href="explainers/agents/owning-ai.html">Owning AI</a>.</li>
+          <li><strong>Azure gpt-4o on Regional PTU</strong> works today but has a retirement date. Treat it as a bridge.</li>
+          <li><strong>Redact before you send.</strong> Strip or tokenise personal information so the frontier call carries none of it. This only works when the task doesn&rsquo;t need the PII itself.</li>
+        </ul>
+      </div>
     </div>
   </div>
 </section>
@@ -180,20 +265,18 @@
 <section id="bedrock">
   <div class="container">
     <div class="fade-up">
-      <div class="section-label">02 &middot; AWS Bedrock af-south-1</div>
-      <h2 class="section-title">What <code style="font-family: 'JetBrains Mono', monospace; color: var(--sky);">af-south-1</code> actually delivers for Claude.</h2>
+      <div class="section-label">03 &middot; AWS Bedrock af-south-1</div>
+      <h2 class="section-title">Endpoint and logs in Cape Town. The model runs elsewhere.</h2>
     </div>
     <div class="prose fade-up" style="transition-delay: 0.05s">
-      <p>Amazon Bedrock went GA in Africa (Cape Town) alongside Canada West, Mexico Central, and Bahrain in November 2025. The regional endpoint is real. But the access pattern for Anthropic's Claude 4.5 family from <code>af-south-1</code> is <strong>global cross-Region inference only</strong>.</p>
-      <p>Per AWS's own announcement on the Machine Learning blog:</p>
+      <p>Bedrock went GA in Cape Town in November 2025. You can call Claude from <code>af-south-1</code>, but only through <strong>global cross-Region inference</strong>. AWS&rsquo;s own model cards for the current Claude line list <code>af-south-1</code> as Global only: In-Region and Geo are both marked not supported. There is no Africa geo profile, so global routing is the only option from Cape Town.</p>
     </div>
     <blockquote class="quote fade-up" style="transition-delay: 0.08s">
-      "You can now invoke models from the Cape Town Region while Amazon Bedrock automatically routes requests to Regions with available capacity. Your applications get consistent response times, your users get reliable experiences, and your Amazon CloudWatch and AWS CloudTrail logs stay centralized in <code style="font-family: 'JetBrains Mono', monospace; color: var(--sky); font-style: normal;">af-south-1</code>."
-      <span class="src">&mdash; AWS ML Blog, Jan 2026</span>
+      &ldquo;You can now invoke models from the Cape Town Region while Amazon Bedrock automatically routes requests to Regions with available capacity&hellip; your Amazon CloudWatch and AWS CloudTrail logs stay centralized in af-south-1.&rdquo;
+      <span class="src">&mdash; AWS Machine Learning Blog, Jan 2026</span>
     </blockquote>
     <div class="prose fade-up" style="transition-delay: 0.1s">
-      <p>In plain English: the API endpoint and the audit logs are in Cape Town. The GPU running Claude is somewhere else &mdash; US East, EU West, APAC &mdash; depending on capacity routing. AWS itself flags POPIA explicitly: customers "should evaluate alignment with regulatory obligations such as POPIA." That guidance only makes sense because customer prompts and completions leave the country.</p>
-      <p>For workloads where customer content can lawfully leave South Africa (most POPIA s.72 cases), this is fine and you get the latency benefit of an in-country endpoint plus useful regional logging. For workloads where prompts and grounding data must stay in country (SARB Directive 6, sovereign workloads, FAIS advisory containing client PII), <code>af-south-1</code> for Claude is <strong>not</strong> in-country inference.</p>
+      <p>In plain terms, the API endpoint and the audit logs are in Cape Town. The GPU running Claude is wherever AWS has capacity at that moment.</p>
     </div>
   </div>
 </section>
@@ -201,49 +284,31 @@
 <section id="azure">
   <div class="container">
     <div class="fade-up">
-      <div class="section-label">03 &middot; Azure OpenAI in southafricanorth</div>
-      <h2 class="section-title">What "in country" actually means on Azure.</h2>
-      <p class="section-lede">Microsoft's data residency commitment splits into deployment-type buckets, and the difference is the whole story. Same resource type; very different processing boundaries.</p>
+      <div class="section-label">04 &middot; Azure OpenAI in southafricanorth</div>
+      <h2 class="section-title">The deployment type decides where inference runs.</h2>
+      <p class="section-lede">Every Azure OpenAI deployment keeps data at rest in your Azure geography. Where the prompt is processed depends on the deployment type you choose.</p>
     </div>
 
     <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
       <table class="compare">
-        <thead><tr><th>Deployment type</th><th>Data at rest</th><th>Inference compute</th></tr></thead>
+        <thead><tr><th>Deployment type</th><th>Where inference runs</th><th>Available in southafricanorth</th></tr></thead>
         <tbody>
-          <tr><td class="name">Global Standard</td><td>In customer-selected Geo</td><td>Any Microsoft Foundry region worldwide</td></tr>
-          <tr><td class="name">DataZone Standard</td><td>In customer-selected Geo</td><td>Within US data zone or EU data zone (no SA data zone exists)</td></tr>
-          <tr><td class="name">Standard (Regional)</td><td>In customer-selected Geo</td><td>Only in the deployment region</td></tr>
-          <tr><td class="name">Provisioned Throughput (Regional PTU)</td><td>In customer-selected Geo</td><td>Only in the deployment region</td></tr>
+          <tr><td class="name">Global Standard / Provisioned</td><td>Any Azure region where the model is deployed</td><td>Current GPT line, incl. GPT-5.x and GPT-6</td></tr>
+          <tr><td class="name">Data Zone</td><td>Within the US, EU or APAC zone</td><td>None. There is no Africa data zone</td></tr>
+          <tr><td class="name">Standard (Regional)</td><td>Only in the deployment region</td><td><code>text-embedding-3-large</code>, <code>text-embedding-ada-002</code>. No chat models</td></tr>
+          <tr><td class="name">Provisioned (Regional PTU)</td><td>Only in the deployment region</td><td><code>gpt-4o</code> 2024-05-13 only</td></tr>
         </tbody>
       </table>
     </div>
 
-    <div class="prose fade-up" style="transition-delay: 0.08s">
-      <p>Source: Azure data residency page &mdash; Microsoft's verbatim contract language:</p>
-    </div>
-
-    <blockquote class="quote fade-up" style="transition-delay: 0.1s">
-      "[For] any model deployment type labeled as 'Global,' may process prompts and completions sent to and output by that deployment, for inferencing or fine-tuning, in any Microsoft Foundry region globally."
-      <span class="src">&mdash; Azure data residency, May 2026</span>
+    <blockquote class="quote fade-up" style="transition-delay: 0.08s">
+      &ldquo;Global types: Might be processed in any Azure region where the model is deployed&hellip; Standard/Regional types: Processed in the region associated with your deployment.&rdquo;
+      <span class="src">&mdash; Microsoft Learn &middot; Region availability for Foundry Models, Sep 2026</span>
     </blockquote>
 
-    <div class="prose fade-up" style="transition-delay: 0.12s">
-      <p>So the question for <code>southafricanorth</code> is which deployment types are available there for current GPT models. Microsoft's Foundry Models retirement document (Apr 2026) tells us where Standard SKU lives today for the GPT line:</p>
-    </div>
-
-    <blockquote class="quote fade-up" style="transition-delay: 0.14s">
-      "gpt-5.1 Standard was added to all eight regions that previously had those gpt-4o versions (<code style="font-family: 'JetBrains Mono', monospace; color: var(--sky); font-style: normal;">centralus, eastus, eastus2, northcentralus, southcentralus, swedencentral, westus, westus3</code>)."
-      <span class="src">&mdash; Microsoft Learn &middot; Foundry Models lifecycle</span>
-    </blockquote>
-
-    <div class="prose fade-up" style="transition-delay: 0.16s">
-      <p><strong>South Africa North is not in that list.</strong> Pay-as-you-go Standard (Regional) for current GPT models does not run in country. The pay-as-you-go default &mdash; Global Standard &mdash; does not keep inference in country either.</p>
-      <p>What does work: <strong>Regional Provisioned Throughput Units (PTU)</strong> in <code>southafricanorth</code> for select GPT models. Microsoft confirmed the pattern in the parallel UAE North thread: <em>"When you provision Azure OpenAI PTUs in [the region], inference (prompt and response processing) is designed to occur within the [regional] datacenter."</em> Same architecture applies to SA North. The caveats also apply &mdash; abuse monitoring and telemetry may sample metadata cross-border.</p>
-    </div>
-
-    <div class="info-card rose fade-up" style="transition-delay: 0.18s">
-      <h4>The honest claim</h4>
-      <p>Azure OpenAI offers in-country inference in <code>southafricanorth</code> <strong>only via Regional PTU</strong> for the GPT models that have local capacity. The Global Standard SKU does not. This is still a stronger SA residency story than AWS or Google currently offer for frontier models, but it requires the PTU path &mdash; and PTU has a meaningful minimum spend that filters out smaller workloads.</p>
+    <div class="prose fade-up" style="transition-delay: 0.1s">
+      <p>Microsoft lists gpt-4o 2024-05-13 for retirement on <strong>9 December 2026</strong>. Standard deployments auto-upgrade to the replacement (gpt-5.6-sol), but <strong>provisioned deployments are not auto-upgraded</strong>, and Microsoft&rsquo;s documentation doesn&rsquo;t yet show a successor in Regional PTU for South Africa North. Until it does, the in-country Azure path has an end date.</p>
+      <p>PTU also carries a meaningful minimum commitment, which rules it out for smaller workloads regardless of the model question.</p>
     </div>
   </div>
 </section>
@@ -251,95 +316,61 @@
 <section id="vertex">
   <div class="container">
     <div class="fade-up">
-      <div class="section-label">04 &middot; Google Vertex AI in africa-south1</div>
-      <h2 class="section-title">The other major-vendor SA region.</h2>
+      <div class="section-label">05 &middot; Google Vertex AI in africa-south1</div>
+      <h2 class="section-title">The region is real. Gemini isn&rsquo;t served from it.</h2>
     </div>
     <div class="prose fade-up" style="transition-delay: 0.05s">
-      <p>The GPT explainer already names this in its competitor row: "Gemini (Google) ... JHB Vertex region." Vertex AI in <code>africa-south1</code> (Johannesburg) is a real GCP region. So the Microsoft page's "<strong>only</strong> major LLM vendor with a South Africa inference region" framing is contestable on its face &mdash; your own other explainer already contradicts it.</p>
-      <p>Gemini availability and residency from <code>africa-south1</code> has the same deployment-type nuance as Azure (some models are regional, some route globally), and a full audit of which Gemini SKUs run locally is a separate research task. The point for this memo: the "only" framing has to go.</p>
+      <p>Google&rsquo;s generative AI locations page (updated 10 October 2026) does not list <code>africa-south1</code> for any Gemini model. Calls from South Africa go to another region or to the global endpoint, which Google says &ldquo;doesn&rsquo;t support data residency requirements.&rdquo;</p>
+      <p>Johannesburg does support Vertex AI <strong>custom model inference</strong>, along with Model Registry and Pipelines. So open-weights models you deploy yourself, such as Gemma or Llama on a Vertex endpoint, can serve from inside the country. That&rsquo;s the in-country route on GCP.</p>
     </div>
   </div>
 </section>
 
-<section id="contradiction">
+<section id="log">
   <div class="container">
     <div class="fade-up">
-      <div class="section-label">05 &middot; The contradiction</div>
-      <h2 class="section-title">Side-by-side, what each page currently says.</h2>
+      <div class="section-label">06 &middot; Corrections log</div>
+      <h2 class="section-title">What changed, and when.</h2>
+      <p class="section-lede">This page started as an audit of our own overstated residency claims. We keep the record here because the facts move and the tree is held to the same standard.</p>
     </div>
-    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
-      <table class="compare">
-        <thead><tr><th>Claim</th><th>Page</th><th>Status</th></tr></thead>
-        <tbody>
-          <tr>
-            <td>"Bedrock <code>af-south-1</code> for SA residency" (Claude row)</td>
-            <td><code>agents/gpt</code> &sect; 03</td>
-            <td><span class="status-bad">Misleading.</span> Regional endpoint + in-country logs only; Claude 4.5 inference routes globally via cross-Region inference.</td>
-          </tr>
-          <tr>
-            <td>"Microsoft is the only major LLM vendor with a South Africa inference region"</td>
-            <td><code>tech/microsoft</code> hero copy</td>
-            <td><span class="status-bad">Overstated.</span> Google Vertex AI has <code>africa-south1</code>; AWS Bedrock has <code>af-south-1</code>. Microsoft has the strongest <em>frontier-model</em> residency story via Regional PTU, but is not the only vendor with an SA region.</td>
-          </tr>
-          <tr>
-            <td>"Azure OpenAI in <code>southafricanorth</code> is fully in country &mdash; both the resource and the inference compute are in Joburg"</td>
-            <td><code>tech/microsoft</code> &sect; 02 footnote</td>
-            <td><span class="status-half">Half right.</span> True for Regional PTU deployments where the specific model has local capacity. False for the default Global Standard SKU, which is what most teams provision first.</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</section>
-
-<section id="edits">
-  <div class="container">
-    <div class="fade-up">
-      <div class="section-label">06 &middot; Recommended edits</div>
-      <h2 class="section-title">Exact text replacements.</h2>
-    </div>
-
-    <div class="diff-card fade-up" style="transition-delay: 0.05s">
-      <div class="diff-label target"><code>agents/gpt</code> &mdash; comparison table, Claude row</div>
-      <div class="diff-label before">Before</div>
-      <div class="diff-body">Best instruction-following, native extended thinking, MCP-native, Bedrock <code>af-south-1</code> for SA residency</div>
-      <div class="diff-label after">After</div>
-      <div class="diff-body">Best instruction-following, native extended thinking, MCP-native, Bedrock <code>af-south-1</code> endpoint with in-country logs (Claude 4.5 inference itself routes globally via cross-Region inference &mdash; not strict residency)</div>
-    </div>
-
-    <div class="diff-card fade-up" style="transition-delay: 0.08s">
-      <div class="diff-label target"><code>tech/microsoft</code> &mdash; hero copy</div>
-      <div class="diff-label before">Before</div>
-      <div class="diff-body">Microsoft is the only major LLM vendor with a South Africa inference region. For the regulated workloads that have to keep prompts and grounding data in country &mdash; banking, healthcare, public sector, FAIS-covered advisory &mdash; that single fact is the deciding architectural input.</div>
-      <div class="diff-label after">After</div>
-      <div class="diff-body">Microsoft offers the most mature path to in-country frontier-model inference in South Africa via Azure OpenAI Regional PTU in <code>southafricanorth</code>. Google Vertex AI's <code>africa-south1</code> and AWS Bedrock's <code>af-south-1</code> are also present in country, but for current frontier closed models neither matches Azure's Regional PTU residency guarantee. For regulated workloads that have to keep prompts and grounding data in country &mdash; banking, healthcare, public sector, FAIS-covered advisory &mdash; that asymmetry is the deciding architectural input.</div>
-    </div>
-
-    <div class="diff-card fade-up" style="transition-delay: 0.11s">
-      <div class="diff-label target"><code>tech/microsoft</code> &mdash; &sect; 02 residency footnote</div>
-      <div class="diff-label before">Before</div>
-      <div class="diff-body"><strong>Azure OpenAI in <code>southafricanorth</code></strong> is fully in country &mdash; both the resource and the inference compute are in Joburg.</div>
-      <div class="diff-label after">After</div>
-      <div class="diff-body"><strong>Azure OpenAI in <code>southafricanorth</code></strong> keeps inference in country only on <strong>Regional PTU</strong> deployments &mdash; and currently only for the GPT model versions with local capacity. The default <strong>Global Standard</strong> SKU keeps data at rest in country but processes prompts and completions in any Microsoft Foundry region globally. The strict-residency path is Regional PTU; the pragmatic path is Global Standard with the M365 Geo data-at-rest commitment. Confirm specific model availability with Microsoft before architectural decisions &mdash; current GPT Standard SKU is documented in eight US/Sweden regions only, with SA North coverage via PTU.</div>
-    </div>
-  </div>
-</section>
-
-<section id="why">
-  <div class="container">
-    <div class="fade-up">
-      <div class="section-label">07 &middot; Why the original wording crept in</div>
-      <h2 class="section-title">A note on how this kind of drift happens.</h2>
-    </div>
-    <div class="prose fade-up" style="transition-delay: 0.05s">
-      <p>The "only LLM in country" framing is true <em>if you read it narrowly enough</em> &mdash; Microsoft does have the most defensible frontier-model residency story among the majors via Regional PTU. But the unqualified version overstates the case in three ways:</p>
-      <ol>
-        <li>It glosses the deployment-type distinction that decides whether inference actually stays in country.</li>
-        <li>It uses "only" when at least Google and AWS also have SA regions, even if their frontier-model residency posture is weaker.</li>
-        <li>It frames Azure as a single product when it's really three different products (Global, DataZone, Regional) sharing one resource type.</li>
-      </ol>
-      <p>The same drift hit the Claude / Bedrock line on the GPT page &mdash; "Bedrock <code>af-south-1</code> for SA residency" is a fair shorthand only if your reader treats "residency" as covering the endpoint and logs. For SARB Directive 6 or strict POPIA s.72 use, it's not residency at all.</p>
-      <p>The fix is to keep the asymmetry &mdash; Microsoft really is the best frontier-model residency story in SA right now &mdash; while being honest that "in country" depends on deployment type and that Microsoft is not the only vendor with an SA inference region.</p>
+    <div class="log fade-up" style="transition-delay: 0.05s">
+      <div class="log-entry">
+        <div class="log-date">2026-10-11 &middot; Re-verified and rewritten as a reference</div>
+        <ul>
+          <li><strong>Azure:</strong> Regional PTU in southafricanorth has narrowed to gpt-4o 2024-05-13, which is scheduled to retire on 9 Dec 2026. The May version said &ldquo;select GPT models&rdquo; and called Azure the strongest SA residency story.</li>
+          <li><strong>Google:</strong> Gemini is not listed for africa-south1. The May version treated it as an SA inference region for Gemini.</li>
+          <li><strong>AWS:</strong> unchanged. Still Global only from Cape Town, now confirmed for the Claude 5.5 models.</li>
+          <li><strong>Tree updated to match:</strong> <code>agents/claude</code>, <code>gemini</code>, <code>gemini-omni</code>, <code>google-adk</code>, <code>llama</code>, <code>gpt</code>, <code>openai-agents-sdk</code>, the agents and tech hubs, <code>tech/aws</code>, and the Microsoft hub, <code>copilot-sa</code> and <code>azure-openai-workers</code> pages.</li>
+        </ul>
+      </div>
+      <div class="log-entry">
+        <div class="log-date">2026-05-14 &middot; Three claims corrected on two explainers</div>
+        <p>We corrected <code>agents/gpt</code> (Claude on Bedrock &ldquo;for SA residency&rdquo;) and <code>tech/microsoft</code> (&ldquo;the only major LLM vendor with a South Africa inference region&rdquo;; &ldquo;fully in country&rdquo;). Applied in PR #32, commit <code>ba8725a</code>.</p>
+        <details class="diffs">
+          <summary>Show the exact before / after edits</summary>
+          <div class="diff-card">
+            <div class="diff-label target"><code>agents/gpt</code> &mdash; comparison table, Claude row</div>
+            <div class="diff-label before">Before</div>
+            <div class="diff-body">Best instruction-following, native extended thinking, MCP-native, Bedrock <code>af-south-1</code> for SA residency</div>
+            <div class="diff-label after">After</div>
+            <div class="diff-body">Best instruction-following, native extended thinking, MCP-native, Bedrock <code>af-south-1</code> endpoint with in-country logs (Claude 4.5 inference itself routes globally via cross-Region inference &mdash; not strict residency)</div>
+          </div>
+          <div class="diff-card">
+            <div class="diff-label target"><code>tech/microsoft</code> &mdash; hero copy</div>
+            <div class="diff-label before">Before</div>
+            <div class="diff-body">Microsoft is the only major LLM vendor with a South Africa inference region. For the regulated workloads that have to keep prompts and grounding data in country &mdash; banking, healthcare, public sector, FAIS-covered advisory &mdash; that single fact is the deciding architectural input.</div>
+            <div class="diff-label after">After</div>
+            <div class="diff-body">Microsoft offers the most mature path to in-country frontier-model inference in South Africa via Azure OpenAI Regional PTU in <code>southafricanorth</code>. Google Vertex AI's <code>africa-south1</code> and AWS Bedrock's <code>af-south-1</code> are also present in country, but for current frontier closed models neither matches Azure's Regional PTU residency guarantee. For regulated workloads that have to keep prompts and grounding data in country &mdash; banking, healthcare, public sector, FAIS-covered advisory &mdash; that asymmetry is the deciding architectural input.</div>
+          </div>
+          <div class="diff-card">
+            <div class="diff-label target"><code>tech/microsoft</code> &mdash; &sect; 02 residency footnote</div>
+            <div class="diff-label before">Before</div>
+            <div class="diff-body"><strong>Azure OpenAI in <code>southafricanorth</code></strong> is fully in country &mdash; both the resource and the inference compute are in Joburg.</div>
+            <div class="diff-label after">After</div>
+            <div class="diff-body"><strong>Azure OpenAI in <code>southafricanorth</code></strong> keeps inference in country only on <strong>Regional PTU</strong> deployments &mdash; and currently only for the GPT model versions with local capacity. The default <strong>Global Standard</strong> SKU keeps data at rest in country but processes prompts and completions in any Microsoft Foundry region globally. The strict-residency path is Regional PTU; the pragmatic path is Global Standard with the M365 Geo data-at-rest commitment. Confirm specific model availability with Microsoft before architectural decisions &mdash; current GPT Standard SKU is documented in eight US/Sweden regions only, with SA North coverage via PTU.</div>
+          </div>
+        </details>
+      </div>
     </div>
   </div>
 </section>
@@ -347,90 +378,74 @@
 <section id="resources">
   <div class="container">
     <div class="fade-up">
-      <div class="section-label">08 &middot; Resources</div>
+      <div class="section-label">07 &middot; Resources</div>
       <h2 class="section-title">Primary sources.</h2>
     </div>
     <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://docs.aws.amazon.com/bedrock/latest/userguide/model-card-anthropic-claude-sonnet-5-5.html" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">AWS docs &middot; checked Oct 2026</span>
+        <span class="r-title">Claude Sonnet 5.5 model card &mdash; regional availability (af-south-1: Global only)</span>
+        <span class="r-url">docs.aws.amazon.com/bedrock/.../model-card-anthropic-claude-sonnet-5-5</span>
+      </a>
+      <a href="https://docs.aws.amazon.com/bedrock/latest/userguide/models-region-compatibility.html" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">AWS docs</span>
+        <span class="r-title">Regional availability by model</span>
+        <span class="r-url">docs.aws.amazon.com/bedrock/.../models-region-compatibility</span>
+      </a>
       <a href="https://aws.amazon.com/blogs/machine-learning/scale-ai-in-south-africa-using-amazon-bedrock-global-cross-region-inference-with-anthropic-claude-4-5-models/" class="resource" target="_blank" rel="noopener">
         <span class="r-kind">AWS &middot; Jan 2026</span>
-        <span class="r-title">Scale AI in South Africa using Bedrock global cross-Region inference with Claude 4.5</span>
+        <span class="r-title">Scale AI in South Africa using Bedrock global cross-Region inference</span>
         <span class="r-url">aws.amazon.com/blogs/machine-learning/.../scale-ai-in-south-africa</span>
       </a>
-      <a href="https://aws.amazon.com/about-aws/whats-new/2025/11/amazon-bedrock-available-in-additional-regions/" class="resource" target="_blank" rel="noopener">
-        <span class="r-kind">AWS &middot; Nov 2025</span>
-        <span class="r-title">Amazon Bedrock is now available in additional Regions</span>
-        <span class="r-url">aws.amazon.com/about-aws/whats-new/.../bedrock-additional-regions</span>
+      <a href="https://learn.microsoft.com/en-us/azure/foundry/foundry-models/concepts/models-sold-directly-by-azure-region-availability" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">MS Learn &middot; Sep 2026</span>
+        <span class="r-title">Region availability for Foundry Models sold by Azure</span>
+        <span class="r-url">learn.microsoft.com/.../models-sold-directly-by-azure-region-availability</span>
       </a>
-      <a href="https://azure.microsoft.com/en-us/explore/global-infrastructure/data-residency" class="resource" target="_blank" rel="noopener">
-        <span class="r-kind">Azure</span>
-        <span class="r-title">Data residency &middot; global infrastructure</span>
-        <span class="r-url">azure.microsoft.com/.../data-residency</span>
+      <a href="https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/model-retirements" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">MS Learn &middot; Jul 2026</span>
+        <span class="r-title">Foundry Models lifecycle &mdash; gpt-4o 2024-05-13 retirement, PTU upgrades</span>
+        <span class="r-url">learn.microsoft.com/.../openai/concepts/model-retirements</span>
       </a>
       <a href="https://learn.microsoft.com/en-us/azure/foundry/foundry-models/concepts/deployment-types" class="resource" target="_blank" rel="noopener">
         <span class="r-kind">MS Learn</span>
         <span class="r-title">Foundry Models &mdash; deployment types</span>
         <span class="r-url">learn.microsoft.com/.../foundry-models/concepts/deployment-types</span>
       </a>
-      <a href="https://learn.microsoft.com/en-us/azure/foundry/foundry-models/concepts/models-sold-directly-by-azure" class="resource" target="_blank" rel="noopener">
-        <span class="r-kind">MS Learn</span>
-        <span class="r-title">Foundry Models sold directly by Azure</span>
-        <span class="r-url">learn.microsoft.com/.../models-sold-directly-by-azure</span>
+      <a href="https://docs.cloud.google.com/vertex-ai/generative-ai/docs/learn/locations" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Google Cloud &middot; Oct 2026</span>
+        <span class="r-title">Generative AI on Vertex AI &mdash; locations</span>
+        <span class="r-url">docs.cloud.google.com/vertex-ai/generative-ai/docs/learn/locations</span>
       </a>
-      <a href="https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/model-retirements" class="resource" target="_blank" rel="noopener">
-        <span class="r-kind">MS Learn</span>
-        <span class="r-title">Foundry Models lifecycle &middot; Standard SKU regions</span>
-        <span class="r-url">learn.microsoft.com/.../foundry/openai/.../model-retirements</span>
-      </a>
-      <a href="https://learn.microsoft.com/en-us/answers/questions/5634629/" class="resource" target="_blank" rel="noopener">
-        <span class="r-kind">MS Q&amp;A &middot; Nov 2025</span>
-        <span class="r-title">UAE North PTU residency clarification (parallel architecture to SA North)</span>
-        <span class="r-url">learn.microsoft.com/en-us/answers/questions/5634629</span>
-      </a>
-      <a href="https://learn.microsoft.com/en-us/answers/questions/5786353/" class="resource" target="_blank" rel="noopener">
-        <span class="r-kind">MS Q&amp;A &middot; Feb 2026</span>
-        <span class="r-title">Model availability in Canada with strict data residency (same logic)</span>
-        <span class="r-url">learn.microsoft.com/en-us/answers/questions/5786353</span>
+      <a href="https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/general/locations" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Google Cloud</span>
+        <span class="r-title">Locations for machine learning services (africa-south1 feature list)</span>
+        <span class="r-url">docs.cloud.google.com/.../machine-learning/general/locations</span>
       </a>
     </div>
-  </div>
-</section>
 
-<section id="standards">
-  <div class="container">
-    <div class="fade-up">
-      <div class="section-label">09 &middot; GitHub references for working standards</div>
-      <h2 class="section-title">Open frameworks for residency-aware deployments.</h2>
-    </div>
+    <div class="sub-label fade-up">Tools for enforcing residency</div>
     <div class="resource-grid fade-up" style="transition-delay: 0.05s">
       <a href="https://docs.aws.amazon.com/bedrock/latest/userguide/cross-region-inference.html" class="resource" target="_blank" rel="noopener">
         <span class="r-kind">AWS docs</span>
         <span class="r-title">Bedrock cross-Region inference profiles</span>
         <span class="r-url">docs.aws.amazon.com/.../cross-region-inference</span>
       </a>
-      <a href="https://github.com/MicrosoftDocs/azure-docs/tree/main/articles/ai-services/openai" class="resource" target="_blank" rel="noopener">
+      <a href="https://github.com/open-policy-agent/opa" class="resource" target="_blank" rel="noopener">
         <span class="r-kind">GitHub</span>
-        <span class="r-title">Azure OpenAI deployment types &mdash; public docs source</span>
-        <span class="r-url">github.com/MicrosoftDocs/azure-docs/.../openai</span>
+        <span class="r-title">Open Policy Agent &mdash; enforce region and SKU constraints</span>
+        <span class="r-url">github.com/open-policy-agent/opa</span>
       </a>
       <a href="https://github.com/cloudflare/ai-gateway-docs" class="resource" target="_blank" rel="noopener">
         <span class="r-kind">GitHub</span>
         <span class="r-title">Cloudflare AI Gateway &mdash; provider-agnostic routing</span>
         <span class="r-url">github.com/cloudflare/ai-gateway-docs</span>
       </a>
-      <a href="https://github.com/open-policy-agent/opa" class="resource" target="_blank" rel="noopener">
-        <span class="r-kind">GitHub</span>
-        <span class="r-title">Open Policy Agent &mdash; enforce RequestedRegion and SKU constraints</span>
-        <span class="r-url">github.com/open-policy-agent/opa</span>
+      <a href="explainers/agents/vllm.html" class="resource">
+        <span class="r-kind">know.2nth.ai</span>
+        <span class="r-title">vLLM &mdash; serving open-weights models on your own compute</span>
+        <span class="r-url">know.2nth.ai/explainers/agents/vllm</span>
       </a>
-    </div>
-  </div>
-</section>
-
-<section id="memo-source">
-  <div class="container">
-    <div class="info-card amber fade-up">
-      <h4>The source markdown</h4>
-      <p>This page is the rendered form of the audit memo at <a href="sa-llm-residency-validation.md" target="_blank" rel="noopener" style="color: var(--sky); text-decoration: none; border-bottom: 1px dotted rgba(56, 189, 248, 0.4);">sa-llm-residency-validation.md</a> &mdash; checked in at the repo root as the source-of-truth document for the line edits applied to <a href="explainers/agents/gpt" style="color: var(--sky); text-decoration: none; border-bottom: 1px dotted rgba(56, 189, 248, 0.4);">/explainers/agents/gpt</a> and <a href="explainers/tech/microsoft/" style="color: var(--sky); text-decoration: none; border-bottom: 1px dotted rgba(56, 189, 248, 0.4);">/explainers/tech/microsoft/</a> in commit <code>ba8725a</code> (PR #32).</p>
     </div>
   </div>
 </section>
@@ -442,7 +457,7 @@
     <div class="footer-links">
       <a href="./">Skills tree</a>
       <a href="./#domains">All domains</a>
-      <a href="sa-llm-residency-validation.md" target="_blank" rel="noopener">Memo (markdown source) &nearr;</a>
+      <a href="sa-llm-residency-validation.md" target="_blank" rel="noopener">Markdown source &nearr;</a>
     </div>
     <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant</p>
   </div>

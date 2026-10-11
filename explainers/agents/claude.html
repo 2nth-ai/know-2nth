@@ -181,7 +181,7 @@
     <div class="prose fade-up" style="transition-delay: 0.05s">
       <p>Claude is the model family from <strong>Anthropic</strong>, the AI safety company founded in 2021 by former OpenAI researchers. The first Claude model shipped in early 2023; the family has been on a steady release cadence since, with Claude 4.x being the current generation as of mid-2026.</p>
       <p>Where GPT and Gemini compete on raw capability and ecosystem reach, Claude has historically led on three things: <strong>instruction-following reliability</strong> (does what you ask, even when you ask weird things), <strong>long-context reasoning quality</strong> (uses 200k+ context windows well, doesn't degrade like cheaper models), and <strong>safety-focused behaviour</strong> (refuses cleanly, hallucinates less in adversarial domains, avoids the "confidently wrong" failure mode that plagues mid-tier models). Those three properties make it the default choice for production agents that have to be right and have to be auditable.</p>
-      <p>Distribution: Claude is available via the <strong>Anthropic API</strong> directly, via <strong>AWS Bedrock</strong> (including in <code>af-south-1</code> Cape Town for SA-resident calls), via <strong>Google Cloud Vertex AI</strong>, via the <strong>Claude.ai web app</strong>, the <strong>Claude Desktop</strong> app, the <strong>Claude Code</strong> CLI, and through every major aggregator (OpenRouter, LangSmith, etc.). Enterprise plans include Claude Enterprise with SSO, audit logging, and admin controls.</p>
+      <p>Distribution: Claude is available via the <strong>Anthropic API</strong> directly, via <strong>AWS Bedrock</strong> (callable from <code>af-south-1</code> Cape Town, though inference routes globally &mdash; see <a href="../../sa-llm-residency-validation.html">where LLM inference runs in SA</a>), via <strong>Google Cloud Vertex AI</strong>, via the <strong>Claude.ai web app</strong>, the <strong>Claude Desktop</strong> app, the <strong>Claude Code</strong> CLI, and through every major aggregator (OpenRouter, LangSmith, etc.). Enterprise plans include Claude Enterprise with SSO, audit logging, and admin controls.</p>
     </div>
     <div class="info-card indigo fade-up" style="transition-delay: 0.08s">
       <h4>The family naming convention</h4>
@@ -315,7 +315,7 @@
       <div class="decision-card skip">
         <h4>Skip Claude when</h4>
         <ul>
-          <li>POPIA / data-residency forbids cross-border to US (mitigate via AWS Bedrock <code>af-south-1</code>)</li>
+          <li>POPIA / data-residency forbids cross-border to US (Bedrock <code>af-south-1</code> doesn&rsquo;t solve this &mdash; Claude inference still routes globally)</li>
           <li>Cost-sensitive at extreme scale &mdash; open-weights via Ollama is cheaper</li>
           <li>You need context beyond 1M tokens &mdash; Claude now ships 1M on Fable/Opus/Sonnet, but Gemini Pro / Ultra still leads past that</li>
           <li>Voice / video native &mdash; Gemini Live or specialised voice APIs</li>
@@ -335,8 +335,8 @@
       <h2 class="section-title">Where Claude lands in SA delivery work.</h2>
     </div>
     <div class="info-card indigo fade-up" style="transition-delay: 0.05s">
-      <h4>Enterprise &middot; AWS Bedrock <code>af-south-1</code> as the residency-clean path</h4>
-      <p>For SA enterprise (banks, insurers, telcos) with POPIA cross-border concerns, <strong>AWS Bedrock in Cape Town hosts Claude Sonnet and Haiku</strong> with full SA data residency. That's the structurally clean answer for PII-bearing workloads &mdash; data stays on-region, audit logs flow into CloudWatch, IAM controls integrate with existing AWS posture. Top-tier availability on Bedrock <code>af-south-1</code> can lag the Anthropic API by weeks &mdash; the newest Opus and Fable 5 land on the direct API first; if you need the bleeding edge, plan for direct API access with documented Section 72 cross-border consent flows.</p>
+      <h4>Enterprise &middot; AWS Bedrock <code>af-south-1</code>: local endpoint, global inference</h4>
+      <p>For SA enterprise (banks, insurers, telcos) on AWS, <strong>Bedrock in Cape Town gives you a local endpoint for Claude</strong>, with CloudWatch and CloudTrail logs in-region and IAM controls that fit an existing AWS posture. It does <strong>not</strong> give you SA data residency: from <code>af-south-1</code>, Claude is available only through global cross-Region inference, so prompts are processed wherever AWS has capacity. Treat it as a POPIA Section 72 transfer, the same as the direct API, with documented cross-border consent flows. If prompts must stay in country, Claude isn't currently an option &mdash; see <a href="../../sa-llm-residency-validation.html">where LLM inference runs in SA</a>.</p>
     </div>
     <div class="info-card fade-up" style="transition-delay: 0.07s">
       <h4>Studio &middot; the daily-driver tier</h4>

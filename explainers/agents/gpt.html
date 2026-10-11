@@ -181,7 +181,7 @@
     <div class="prose fade-up" style="transition-delay: 0.05s">
       <p>GPT (Generative Pre-trained Transformer) is the model family from <strong>OpenAI</strong>, the AI lab founded in 2015 and primarily known to most people through ChatGPT. The first GPT shipped in 2018; the family has been on near-annual major release cadence since GPT-2 (2019), with GPT-3 (2020), GPT-3.5 (2022), GPT-4 (2023), GPT-4o (2024), and GPT-5 (2025) marking the major generations. The o-series reasoning line (o1 in late 2024, o3 in early 2025) launched separately as the "thinking" complement, before that capability was folded into the GPT-5.x flagship.</p>
       <p>Where Claude has historically led on instruction-following and Gemini on raw context length, GPT has historically led on three things: <strong>function-calling reliability</strong> (the most consistent structured tool dispatch in the field since 2023), <strong>multimodal reach</strong> (image, audio, video input across the lineup, plus DALL-E and image generation), and <strong>API ecosystem depth</strong> (more SDKs, more tool integrations, more community examples than any competing family). Those three properties make it the default choice when ecosystem maturity is the deciding factor.</p>
-      <p>Distribution: GPT is available via the <strong>OpenAI Platform</strong> directly, via <strong>Azure OpenAI Service</strong> (including in <code>South Africa North</code> for SA-resident calls), via <strong>ChatGPT</strong> (the consumer product), and through every major aggregator (OpenRouter, LiteLLM, the LangChain ecosystem). Microsoft co-developed the platform and is the second-largest deployment surface after OpenAI Platform itself.</p>
+      <p>Distribution: GPT is available via the <strong>OpenAI Platform</strong> directly, via <strong>Azure OpenAI Service</strong> (including <code>South Africa North</code>, where only gpt-4o on Regional PTU runs in country &mdash; see <a href="../../sa-llm-residency-validation.html">where LLM inference runs in SA</a>), via <strong>ChatGPT</strong> (the consumer product), and through every major aggregator (OpenRouter, LiteLLM, the LangChain ecosystem). Microsoft co-developed the platform and is the second-largest deployment surface after OpenAI Platform itself.</p>
     </div>
     <div class="info-card indigo fade-up" style="transition-delay: 0.08s">
       <h4>Naming &middot; how the family lines up</h4>
@@ -313,7 +313,7 @@
         <ul>
           <li>Instruction-following reliability matters more than tool dispatch &mdash; Claude often wins</li>
           <li>You need the largest context windows &mdash; Gemini 3.x leads (1M+, reportedly to ~2M on the Pro tier)</li>
-          <li>POPIA / data-residency requires SA-resident inference and you can't use Azure SA North</li>
+          <li>POPIA / data-residency requires SA-resident inference on a current model &mdash; Azure SA North keeps only gpt-4o (Regional PTU) in country</li>
           <li>You want fully open / self-hostable models &mdash; GPT is closed</li>
           <li>Cost-sensitive at extreme scale &mdash; open-weights via Ollama is structurally cheaper</li>
           <li>You distrust OpenAI as a brand or vendor &mdash; Claude or Gemini fit better politically</li>
@@ -391,7 +391,7 @@
       <a href="../tech/microsoft/" class="connect-node">
         <span class="tag">tech/microsoft</span>
         <div class="skill">Microsoft / Azure</div>
-        <div class="why">Azure OpenAI Service in <code>South Africa North</code> is the SA-residency-clean path for GPT workloads.</div>
+        <div class="why">Azure OpenAI Service in <code>South Africa North</code>. In-country inference is limited to gpt-4o on Regional PTU; current GPT models there run as Global deployments.</div>
       </a>
     </div>
   </div>
