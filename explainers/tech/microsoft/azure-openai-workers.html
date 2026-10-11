@@ -4,12 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Azure OpenAI from Cloudflare Workers — know.2nth.ai</title>
-<meta name="description" content="The headless pattern under the SA in-country LLM stack — calling gpt-4o in southafricanorth from a JNB-colocated Worker. Streaming, throttle handling, token caching, and the auth upgrades that take it to production.">
+<meta name="description" content="The headless pattern under the SA in-country LLM stack — calling a Regional PTU gpt-4o deployment in southafricanorth from a JNB-colocated Worker. Streaming, throttle handling, token caching, and the auth upgrades that take it to production.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="know.2nth.ai">
 <meta property="og:url" content="https://know.2nth.ai/explainers/tech/microsoft/azure-openai-workers">
 <meta property="og:title" content="Azure OpenAI from Cloudflare Workers — know.2nth.ai">
-<meta property="og:description" content="The headless pattern under the SA in-country LLM stack — calling gpt-4o in southafricanorth from a JNB-colocated Worker. Streaming, throttle handling, token caching, and the auth upgrades that take it to production.">
+<meta property="og:description" content="The headless pattern under the SA in-country LLM stack — calling a Regional PTU gpt-4o deployment in southafricanorth from a JNB-colocated Worker. Streaming, throttle handling, token caching, and the auth upgrades that take it to production.">
 <meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
@@ -17,7 +17,7 @@
 <meta property="og:image:alt" content="know.2nth.ai — The Knowledge Tree">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Azure OpenAI from Cloudflare Workers — know.2nth.ai">
-<meta name="twitter:description" content="The headless pattern under the SA in-country LLM stack — calling gpt-4o in southafricanorth from a JNB-colocated Worker. Streaming, throttle handling, token caching, and the auth upgrades that take it to production.">
+<meta name="twitter:description" content="The headless pattern under the SA in-country LLM stack — calling a Regional PTU gpt-4o deployment in southafricanorth from a JNB-colocated Worker. Streaming, throttle handling, token caching, and the auth upgrades that take it to production.">
 <meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -522,6 +522,7 @@
     </div>
     <div class="prose fade-up" style="transition-delay: 0.05s">
       <p>The <a href="copilot-sa.html">Copilot in South Africa</a> node lays out three patterns for an in-country LLM stack on Microsoft. This page is the one Cloudflare-shop engineers actually deploy — a Worker calls Azure OpenAI directly, no Copilot UX layer, no Power Platform environment, no Dataverse. Just a JNB-colocated isolate making an HTTPS POST to <code>aoai-imbila-sa.openai.azure.com</code>.</p>
+      <p><strong>Residency depends on the deployment type, not the region.</strong> The Worker pattern keeps inference in country only when the deployment behind it is a <strong>Regional PTU</strong> deployment &mdash; and in <code>southafricanorth</code> that currently means gpt-4o 2024-05-13 only, a version scheduled to retire on 9 December 2026 (provisioned deployments aren't auto-upgraded). A Global Standard deployment in SA North uses the same endpoint and code but processes prompts outside the country. See <a href="../../../sa-llm-residency-validation.html">where LLM inference runs in SA</a>.</p>
       <p>The benefit isn't theoretical. From the JNB Cloudflare colo to the SA North Azure region the round trip is roughly 20 ms p50 — the same latency budget you'd hit talking to your own database. Cold starts are zero because Workers runs in V8 isolates. The whole prompt loop — auth, request shape, streaming, retries, caching — is yours to control, with no managed-orchestration layer making decisions silently on your behalf.</p>
       <p>The trade-off is also honest: you write the production-readiness layer yourself. Copilot Studio handles throttling, fallback, conversation state, and Bing-grounding-disabled-by-policy out of the box. A raw Worker handles none of that until you write it. The rest of this page is what "writing it" looks like.</p>
     </div>
@@ -898,7 +899,7 @@
       <div class="t-item">
         <div class="t-year">2026</div>
         <div class="t-title">Current state</div>
-        <div class="t-note">Worker → AOAI in SA North is the production default for new in-country LLM apps in our stack. This page documents how we wire it.</div>
+        <div class="t-note">Worker → AOAI in SA North is our production default. In-country inference holds only on a Regional PTU gpt-4o deployment, which is scheduled to retire on 9 Dec 2026 &mdash; plan the successor now.</div>
       </div>
     </div>
   </div>

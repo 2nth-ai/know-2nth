@@ -4,12 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Microsoft Copilot — In-Country LLM for South Africa · know.2nth.ai</title>
-<meta name="description" content="Microsoft Copilot is the only major LLM stack with a South Africa inference region. Here's what each Copilot surface actually keeps in country, how to wire it up, and where it falls short.">
+<meta name="description" content="Of AWS, Google and Microsoft, only Microsoft runs a frontier closed model in South Africa — narrowly, via gpt-4o on Regional PTU. Here's what each Copilot surface actually keeps in country, how to wire it up, and where it falls short.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="know.2nth.ai">
 <meta property="og:url" content="https://know.2nth.ai/explainers/tech/microsoft/copilot-sa">
 <meta property="og:title" content="Microsoft Copilot — In-Country LLM for South Africa · know.2nth.ai">
-<meta property="og:description" content="Microsoft Copilot is the only major LLM stack with a South Africa inference region. Here's what each Copilot surface actually keeps in country, how to wire it up, and where it falls short.">
+<meta property="og:description" content="Of AWS, Google and Microsoft, only Microsoft runs a frontier closed model in South Africa — narrowly, via gpt-4o on Regional PTU. Here's what each Copilot surface actually keeps in country, how to wire it up, and where it falls short.">
 <meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
@@ -17,7 +17,7 @@
 <meta property="og:image:alt" content="know.2nth.ai — The Knowledge Tree">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Microsoft Copilot — In-Country LLM for South Africa · know.2nth.ai">
-<meta name="twitter:description" content="Microsoft Copilot is the only major LLM stack with a South Africa inference region. Here's what each Copilot surface actually keeps in country, how to wire it up, and where it falls short.">
+<meta name="twitter:description" content="Of AWS, Google and Microsoft, only Microsoft runs a frontier closed model in South Africa — narrowly, via gpt-4o on Regional PTU. Here's what each Copilot surface actually keeps in country, how to wire it up, and where it falls short.">
 <meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -828,7 +828,7 @@
       Microsoft Copilot,<br><span class="gradient">in country.</span>
     </h1>
     <p class="hero-sub fade-up" style="transition-delay: 0.1s">
-      Microsoft is the only major LLM stack with a South Africa inference region. For enterprises constrained by POPIA, FSR, or DPSA cloud policy to keep prompts and grounding data inside the country, that's a deciding factor — but only if you pick the right Copilot surface and pin the deployment yourself. Here's what each one actually keeps in country, and where the model gets thin.
+      Of AWS, Google and Microsoft, only Microsoft runs a frontier closed model inside South Africa — and narrowly: gpt-4o (2024-05-13) on Regional PTU in <code>southafricanorth</code>, a version scheduled to retire on 9 December 2026. For enterprises constrained by POPIA, FSR, or DPSA cloud policy to keep prompts and grounding data inside the country, that's a deciding factor — but only if you pick the right Copilot surface and pin the deployment yourself. Here's what each one actually keeps in country, and where the model gets thin.
     </p>
     <div class="hero-meta fade-up" style="transition-delay: 0.15s">
       <span class="pill accent">Technology</span>
@@ -889,7 +889,7 @@
     <div class="fade-up">
       <div class="section-label">02 · Why it matters</div>
       <h2 class="section-title">Numbers that make this a one-vendor conversation.</h2>
-      <p class="section-lede">South Africa's regulatory posture has tightened faster than the cloud market has localised. POPIA enforcement, SARB Directive 6, and the National Cloud Strategy all pull in the same direction — and only one major LLM vendor has the regional footprint to answer.</p>
+      <p class="section-lede">South Africa's regulatory posture has tightened faster than the cloud market has localised. POPIA enforcement, SARB Directive 6, and the National Cloud Strategy all pull in the same direction — and only one major LLM vendor has any regional footprint to answer with &mdash; a narrow one.</p>
     </div>
     <div class="stat-strip fade-up" style="transition-delay: 0.05s">
       <div class="stat">
@@ -1013,9 +1013,9 @@ az cognitiveservices account deployment create \
           <tr>
             <td class="name this">Microsoft Copilot + Azure OpenAI (SA North)</td>
             <td><span class="yes">Yes</span></td>
-            <td>gpt-4o, embeddings</td>
+            <td>gpt-4o 2024-05-13 (Regional PTU only; retires 9 Dec 2026), embeddings</td>
             <td><span class="yes">Yes</span></td>
-            <td>Region-pinned via Azure Policy. Reasoning models (o3, o1) still out of region.</td>
+            <td>Region-pinned via Azure Policy. Current GPT-5.x / GPT-6 and reasoning models are Global-only in SA North &mdash; out of region.</td>
           </tr>
           <tr>
             <td class="name">OpenAI direct (api.openai.com)</td>
@@ -1041,9 +1041,9 @@ az cognitiveservices account deployment create \
           <tr>
             <td class="name">AWS Bedrock (af-south-1)</td>
             <td><span class="partial">Partial</span></td>
-            <td>Subset (Claude Haiku, Llama)</td>
+            <td>Claude via global cross-Region only</td>
             <td><span class="yes">Yes</span></td>
-            <td>Cape Town has Bedrock with limited model catalog. Frontier Claude models route via cross-region inference — leaves SA.</td>
+            <td>Endpoint and logs in Cape Town; Claude inference routes globally — leaves SA.</td>
           </tr>
           <tr>
             <td class="name">Self-hosted (Llama / Mistral via Ollama)</td>
