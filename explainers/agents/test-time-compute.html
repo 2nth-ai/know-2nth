@@ -209,6 +209,7 @@
     <div class="prose fade-up" style="transition-delay: 0.05s">
       <p>Here is the part the headline hides. Coverage counts a problem "solved" if <em>any</em> of your 10,000 samples is right &mdash; but in production you have to <strong>pick one answer</strong>. The Monkeys authors are explicit: the gains convert into real performance <strong>in domains where answers can be automatically verified</strong> &mdash; code with unit tests, formal proofs, math with checkable answers. Where no such verifier exists, identifying the correct sample among thousands becomes the problem, and common tricks like majority voting or reward-model scoring plateau well below the coverage ceiling.</p>
       <p>That is the <strong>generator-verifier gap</strong>: for many tasks, checking an answer is as hard as &mdash; or harder than &mdash; producing one, and verification, not generation, becomes the bottleneck. The research response is to build better checkers: <em>Let's Verify Step by Step</em> (Lightman et al., OpenAI, 2023) showed a <strong>process reward model</strong> &mdash; grading each reasoning step &mdash; substantially outperforms an outcome-only grader on hard math. The engineering response is the one this tree keeps arriving at from every direction: <strong>the same law that governs specs governs sampling</strong>. A spec without verification is a vibe with headers; ten thousand samples without a verifier are ten thousand vibes. Test-time compute is only as good as the check you can run against it.</p>
+      <p><strong>The limit case (Sep&ndash;Oct 2026).</strong> OpenAI ran about 10,000 agents for 88 hours on the Navier&ndash;Stokes problem and released 719 AI-written maths manuscripts weeks later. The headline result was taken seriously within days because it was checked in Lean; only about 42% of the release was, and three papers were withdrawn over a sign error a day after it went out. The full story is in <a href="ai-mathematics.html" style="color:var(--sky);text-decoration:none;">When the machine proves</a>.</p>
     </div>
   </div>
 </section>
@@ -270,6 +271,11 @@
       <h2 class="section-title">Where test-time compute links in the tree.</h2>
     </div>
     <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="ai-mathematics.html" class="connect-node">
+        <span class="tag">agents/ai-mathematics</span>
+        <div class="skill">AI mathematics</div>
+        <div class="why">Test-time compute at its limit: 10,000 agents on Navier&ndash;Stokes, made useful only because Lean can check the result.</div>
+      </a>
       <a href="./" class="connect-node">
         <span class="tag">agents</span>
         <div class="skill">Agents hub</div>

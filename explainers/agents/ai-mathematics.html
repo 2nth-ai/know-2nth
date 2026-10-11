@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>When the machine proves &mdash; AI mathematics &mdash; know.2nth.ai</title>
+<meta name="description" content="OpenAI's Navier–Stokes blow-up claim (8 Sep 2026) and its 719-manuscript openai/math release (6 Oct 2026), read for what they teach about AI work generally. What was claimed versus established, how it was produced (10,000 agents, 88 hours), what Lean formal verification does and does not prove, the three withdrawals a day after release, the priority dispute and the mathematicians' release guidelines — and why verification, not generation, is the bottleneck everywhere.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/agents/ai-mathematics">
+<meta property="og:title" content="When the machine proves &mdash; AI mathematics &mdash; know.2nth.ai">
+<meta property="og:description" content="Navier–Stokes and 719 manuscripts: what's claimed, what's checked, what Lean does and doesn't prove, and why verification is the bottleneck for all AI work.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="When the machine proves &mdash; AI mathematics">
+<meta name="twitter:description" content="Navier–Stokes and 719 manuscripts: what's claimed, what's checked, what Lean does and doesn't prove, and why verification is the bottleneck for all AI work.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12); --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-soft: rgba(99, 102, 241, 0.12); --bg: var(--ink); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(37, 99, 235, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(56, 189, 248, 0.3); --max-w: 1200px; --read-w: 760px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(37, 99, 235, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(37, 99, 235, 0.25); }
+  * { margin: 0; padding: 0; box-sizing: border-box; } html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.blue { width: 600px; height: 600px; background: var(--blue); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--sky); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--sky); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--sky); } .crumb-sep { opacity: 0.5; } .crumb-current { color: var(--text-secondary); }
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--indigo); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--indigo); box-shadow: 0 0 12px var(--indigo); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--blue-glow), var(--sky), var(--sky-muted)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.green { background: var(--green-soft); color: var(--green); border-color: rgba(16, 185, 129, 0.25); }
+  .pill.indigo { background: var(--indigo-soft); color: var(--indigo); border-color: rgba(99, 102, 241, 0.25); }
+  .pill.warn { background: var(--warm-soft); color: var(--warm-glow); border-color: rgba(245, 158, 11, 0.25); }
+  .pill.accent { background: rgba(37, 99, 235, 0.12); color: var(--blue-glow); border-color: rgba(37, 99, 235, 0.25); }
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--sky); margin-bottom: 14px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--sky); }
+  .prose ul, .prose ol { padding-left: 24px; margin-bottom: 18px; max-width: var(--read-w); }
+  .prose li { font-size: 15px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 8px; }
+  .prose li strong { color: var(--text-primary); font-weight: 600; }
+  pre.code { background: var(--ink-deep); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px 22px; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.65; color: var(--mist); margin: 0 0 20px; max-width: var(--read-w); }
+  [data-theme="light"] pre.code { background: #0F172A; color: #E2E8F0; }
+  pre.code .k { color: var(--sky); } pre.code .s { color: #A5F3B8; } pre.code .c { color: var(--text-muted); font-style: italic; } pre.code .h { color: var(--blue-glow); font-weight: 600; }
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); margin-bottom: 20px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.indigo { border-left: 3px solid var(--indigo); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .stack-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; max-width: var(--read-w); margin-bottom: 20px; }
+  .stack-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--indigo); border-radius: var(--radius-md); padding: 18px 22px; }
+  .stack-cell .layer { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .stack-cell h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.3px; }
+  .stack-cell p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: var(--read-w); margin-bottom: 20px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--sky); background: rgba(37, 99, 235, 0.04); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); } .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--sky); }
+  .compare td strong { color: var(--text-primary); }
+  .decision-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: var(--read-w); }
+  @media (max-width: 720px) { .decision-grid { grid-template-columns: 1fr; } }
+  .decision-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 24px; }
+  .decision-card.use { border-left: 3px solid var(--green); } .decision-card.skip { border-left: 3px solid var(--rose); }
+  .decision-card h4 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 12px; }
+  .decision-card.use h4 { color: var(--green); } .decision-card.skip h4 { color: var(--rose); }
+  .decision-card ul { list-style: none; padding: 0; }
+  .decision-card li { font-size: 13px; color: var(--text-secondary); line-height: 1.6; padding: 6px 0; border-bottom: 1px solid var(--border); }
+  .decision-card li:last-child { border-bottom: none; }
+  .connect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .connect-node { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; transition: all 0.3s; text-decoration: none; color: inherit; display: block; }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node .tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--sky); word-break: break-all; }
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--sky); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } pre.code { font-size: 11px; padding: 14px 16px; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+<div class="glow-orb blue"></div>
+<div class="glow-orb sky"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand"><span class="nav-brand-mark">know.2nth.ai</span><span class="nav-brand-sub">agents/ai-mathematics</span></a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">&larr; Agents</a>
+      <a href="../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x1F319;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="./">Agents</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">AI mathematics</span>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> agents &middot; AI mathematics &middot; Concept Leaf</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      When the machine proves, <span class="gradient">who checks the question?</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      On 8 September 2026 OpenAI published a 166-page proof that the Navier&ndash;Stokes equations can break down in finite time, produced by about <strong>10,000 agents over 88 hours</strong> and checked in the Lean proof assistant. Four weeks later it released <strong>719 more manuscripts</strong> on open problems. A day after that, it withdrew three of them over a sign error. Read together, these are the clearest evidence yet of the rule this tree keeps arriving at: <strong>AI output scales exactly as far as you can verify it</strong> &mdash; and the hardest part to verify is not the answer, but whether you asked the right question.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill accent">Claimed, not settled</span>
+      <span class="pill indigo">Multi-agent at scale</span>
+      <span class="pill green">Lean-verified</span>
+      <span class="pill warn">Statement gap</span>
+      <span class="pill">As of 11 Oct 2026</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 -->
+<section id="timeline">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; What happened</div>
+      <h2 class="section-title">Eight weeks, two releases, one dispute.</h2>
+      <p class="section-lede">The order matters, because the priority question turns on it.</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead><tr><th>Date (2026)</th><th>Event</th></tr></thead>
+        <tbody>
+          <tr><td><strong>15 Aug</strong></td><td>Tristan Buckmaster (NYU) and Levent Alpöge (Anthropic) obtain forced blow-up for the Euler equations, working with AI tools including OpenAI's Codex; Lean-verified about a week later, per their account.</td></tr>
+          <tr><td><strong>1 Sep</strong></td><td>OpenAI starts its multi-agent run on Navier&ndash;Stokes.</td></tr>
+          <tr><td><strong>8 Sep</strong></td><td>OpenAI publishes <em>Finite Time Blowup for Navier&ndash;Stokes</em> (166 pages) with a Lean formalisation. Buckmaster had published a statement alleging his work reached OpenAI the night before.</td></tr>
+          <tr><td><strong>11 Sep</strong></td><td>Fields Medallists publish an open letter, <em>A Severe Misalignment of AI in Mathematics</em>.</td></tr>
+          <tr><td><strong>21 Sep</strong></td><td>An independent Advisory Group on Mathematics and AI, hosted at the Institute for Advanced Study, is announced.</td></tr>
+          <tr><td><strong>29 Sep</strong></td><td>The group publishes guidelines for releasing AI-generated mathematics (&sect;05).</td></tr>
+          <tr><td><strong>6 Oct</strong></td><td>OpenAI releases <code>openai/math</code>: 719 manuscripts in 372 families, ~42% of headline results formalised in Lean.</td></tr>
+          <tr><td><strong>7 Oct</strong></td><td>Three manuscripts withdrawn over a sign error; 14 others repaired.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 02 -->
+<section id="claim">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; What was claimed</div>
+      <h2 class="section-title">A forced fluid that breaks &mdash; which counts, if it holds.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>The paper's Theorem 1.1: for every viscosity, there is a 3D incompressible flow that <strong>starts from rest</strong>, is pushed by a <strong>smooth force confined in space and time</strong>, keeps its <strong>kinetic energy bounded</strong>, and still develops <strong>unbounded velocity in finite time</strong>. The mechanism is a collapsing vortex whose core spins up, with carefully tuned oscillating pulses that keep the required force smooth even as the flow itself blows up.</p>
+      <p>Charles Fefferman's official Clay problem statement allows four outcomes, and proving any one wins: smoothness for ever in all space (A) or on a periodic box (B), or breakdown in all space (C) or on a periodic box (D). <strong>The paper claims (C) and (D).</strong> The breakdown alternatives explicitly allow a smooth external force, so a correct proof would settle the prize problem &mdash; Fefferman himself told Quanta he was &ldquo;thrilled that the problem was solved.&rdquo;</p>
+      <p>What it does <strong>not</strong> show is the version most people picture: a fluid left alone, with no force, going singular. That question stays open.</p>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.08s">
+      <h4>Claimed, formalised &mdash; not yet settled</h4>
+      <p>As of 11 October 2026 the Clay Institute's page lists the problem as <strong>Active</strong> and has credited no one. Clay's rules require publication in a refereed journal and two years of general acceptance before any award. There is no peer-reviewed publication yet, and OpenAI has said it will not claim the prize. Say &ldquo;claimed&rdquo; and &ldquo;formalised&rdquo;; don't say &ldquo;solved&rdquo; until the community does.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 -->
+<section id="how">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; How it was produced</div>
+      <h2 class="section-title">Industrial-scale search, then a machine check.</h2>
+    </div>
+    <div class="stack-grid fade-up" style="transition-delay: 0.05s">
+      <div class="stack-cell">
+        <span class="layer">Navier&ndash;Stokes &middot; 8 Sep</span>
+        <h4>10,000 agents, 88 hours</h4>
+        <p>An unreleased internal model ran about 10,000 agents exchanging roughly 5 million messages. A second model then took 17 hours to formalise the result in Lean. OpenAI's Sébastien Bubeck put the compute cost at several million dollars (as reported by Quanta).</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">openai/math &middot; 6 Oct</span>
+        <h4>4,000 problems, 719 papers</h4>
+        <p>The same unreleased model was posed about 4,000 open problems at roughly three hours of ChatGPT Pro-level thinking each. Filtering for significance left 719 manuscripts in 372 families across many fields, including the quasi-Riemann hypothesis and cases of the Hodge conjecture.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Disclosure</span>
+        <h4>Partial by design</h4>
+        <p>Abridged reasoning summaries for 10 results; the model is unnamed and unavailable. The README says some unformalised results &ldquo;could have issues&rdquo; and corrections will ship as new versions.</p>
+      </div>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.07s">
+      <p>This is <a href="test-time-compute.html" style="color:var(--sky);text-decoration:none;">test-time compute</a> at its limit: enormous parallel search, made useful only because maths has a near-perfect verifier. Without Lean, 10,000 agents would have produced 10,000 plausible drafts.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 -->
+<section id="lean">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; What Lean proves, and what it doesn't</div>
+      <h2 class="section-title">The proof is checked. The question still needs a human.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p><strong>Lean</strong> is a proof assistant: a small trusted kernel checks every step of a formal proof mechanically. If the kernel accepts it, the formal statement follows from the axioms &mdash; no reviewer fatigue, no skipped cases. That is why the Navier&ndash;Stokes claim was taken seriously within days rather than years.</p>
+      <p>But Lean checks the proof <em>of the statement you wrote down</em>. Whether that formal statement actually says what the paper claims &mdash; the right function spaces, the right hypotheses on the force, no accidentally easier variant &mdash; is a human judgement. OpenAI ships Comparator challenges for exactly this, and its own notes are careful: several comparisons <strong>&ldquo;verify supporting results, not the corresponding papers' main theorems.&rdquo;</strong></p>
+    </div>
+    <div class="info-card green fade-up" style="transition-delay: 0.07s">
+      <h4>The withdrawals are the most useful fact here</h4>
+      <p>One day after release, a sign error in <em>Algebraicity of Weil classes on split abelian eightfolds</em> invalidated it and two papers built on it; 14 more were repaired. Only about 42% of headline results were formalised at release. <strong>Unverified AI output fails the way unverified human output does &mdash; it just arrives faster and in bulk.</strong> The correction log is a credit to the release process, and a warning about reading the other 58%.</p>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.09s">
+      <h4>This is the specification problem, at its sharpest</h4>
+      <p>A verified answer to the wrong question is still wrong. That's the same gap <a href="../software/spec-driven-development.html" style="color:var(--sky);text-decoration:none;">spec-driven development</a> names for code &mdash; tests that pass against the wrong requirement &mdash; and that a <a href="../software/photocraft.html" style="color:var(--sky);text-decoration:none;">PhotoCraft</a>-style corpus oracle can't catch either. Machines can now check the <em>how</em>. People still own the <em>what</em>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 -->
+<section id="provenance">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; Provenance &amp; the release norms</div>
+      <h2 class="section-title">Who found it first &mdash; and on whose platform?</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Buckmaster says news of his and Alpöge's unpublished Euler work reached OpenAI and may have shaped its effort; he also asked whether OpenAI had seen his Codex sessions. OpenAI denies using the work, says the methods differ significantly, and has said Buckmaster's prompts could not have influenced the result &mdash; though its public wording on that point shifted several times over the following week. None of it is resolved, and both sides' accounts of private conversations differ.</p>
+      <p>Whatever the facts, the structural point stands: <strong>when your research runs on a vendor's model, the vendor is also a competitor for the result.</strong> That's a governance question for any business, not just mathematicians &mdash; see the briefing <a href="../../briefings/your-prompts-are-rnd" style="color:var(--sky);text-decoration:none;">Your Prompts Are R&amp;D</a>.</p>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.07s">
+      <h4>The mathematicians' guidelines (29 Sep 2026)</h4>
+      <ul>
+        <li><strong>Stop testing advanced problems on proprietary models:</strong> &ldquo;we do not endorse this practice.&rdquo;</li>
+        <li><strong>Disclose</strong> the model name, prompts, a summarised chain of thought, time taken and estimated cost.</li>
+        <li><strong>Publish the failures:</strong> for batch releases, how many comparable problems the model tried and failed.</li>
+        <li><strong>Formalise</strong> where possible; otherwise state the formalisation status clearly.</li>
+        <li><strong>Cite prior ideas</strong> even if the model found them independently, and release into community-controlled repositories, not marketing pages.</li>
+        <li><strong>Broad access:</strong> avoid a two-tier system where only internal models produce frontier results.</li>
+      </ul>
+      <p>The <code>openai/math</code> release meets some of these (versioned corrections, partial formalisation, some reasoning summaries) and not others (the model is unnamed, and there's no failure report).</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 -->
+<section id="decide">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; Decision guide</div>
+      <h2 class="section-title">Where verify-then-scale works outside maths.</h2>
+      <p class="section-lede">The transferable rule: buy generation in bulk only where you own a strong checker &mdash; and keep a person on the statement of the problem.</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead><tr><th>Domain</th><th>The verifier</th><th>How far you can scale</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Formal maths</strong></td><td>Lean kernel</td><td>Very far on proofs; a human still checks every formal statement.</td></tr>
+          <tr><td><strong>Software</strong></td><td>Types, tests, CI gates</td><td>Far &mdash; as far as your tests encode the real requirement.</td></tr>
+          <tr><td><strong>Tax &amp; accounting rules</strong></td><td>Golden tests, cited law</td><td>Moderate: checks coherence, not legal correctness; needs a practitioner sign-off.</td></tr>
+          <tr><td><strong>Contracts, strategy, advice</strong></td><td>None automatic</td><td>Barely: every output needs expert review, so bulk generation just moves the bottleneck.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="decision-grid fade-up" style="transition-delay: 0.07s">
+      <div class="decision-card use">
+        <h4>Lean on AI provers when</h4>
+        <ul>
+          <li>The work can be stated formally and checked mechanically</li>
+          <li>You have people who can read the formal statement and confirm it's the right one</li>
+          <li>You can publish or archive the formal artefact for others to re-check</li>
+        </ul>
+      </div>
+      <div class="decision-card skip">
+        <h4>Be wary when</h4>
+        <ul>
+          <li>A result is &ldquo;proved&rdquo; but unformalised &mdash; treat it as a draft, like 58% of the openai/math release</li>
+          <li>Only the vendor can rerun it: an unnamed internal model is not reproducible science</li>
+          <li>Your own unpublished work sits on a platform whose owner competes for the result</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 07 -->
+<section id="sa">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; South African context</div>
+      <h2 class="section-title">The two-tier risk lands hardest here.</h2>
+    </div>
+    <div class="info-card green fade-up" style="transition-delay: 0.05s">
+      <p>SA mathematics departments and research teams have no access to unreleased frontier models or million-dollar compute runs &mdash; precisely the two-tier system the advisory group warns about. The accessible parts of this story are the open ones: <strong>Lean and its mathlib library are free</strong>, the <code>openai/math</code> artefacts are Apache-2.0, and checking or formalising published results is work a small team can do on a laptop. For SA businesses the lesson is the verifier: before buying AI generation in bulk, ask what checks it &mdash; and keep unpublished IP off platforms where you can't see what the vendor retains.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 08 -->
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 &middot; Connections</div>
+      <h2 class="section-title">Where this links in the tree.</h2>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="test-time-compute.html" class="connect-node">
+        <span class="tag">agents/test-time-compute</span>
+        <div class="skill">Test-time compute</div>
+        <div class="why">The scaling law behind 10,000 agents &mdash; and why it only pays where a verifier exists.</div>
+      </a>
+      <a href="../software/spec-driven-development.html" class="connect-node">
+        <span class="tag">software/spec-driven-development</span>
+        <div class="skill">Spec-driven development</div>
+        <div class="why">The statement-matching gap in Lean is the specification problem in its purest form.</div>
+      </a>
+      <a href="../software/photocraft.html" class="connect-node">
+        <span class="tag">software/photocraft</span>
+        <div class="skill">PhotoCraft</div>
+        <div class="why">The same pattern in software: agents at scale, held together by automated checks, and honest about what those checks miss.</div>
+      </a>
+      <a href="effective-agents.html" class="connect-node">
+        <span class="tag">agents/effective-agents</span>
+        <div class="skill">Effective Agents</div>
+        <div class="why">Orchestrator and evaluator patterns &mdash; the building blocks of a 10,000-agent search.</div>
+      </a>
+      <a href="gpt.html" class="connect-node">
+        <span class="tag">agents/gpt</span>
+        <div class="skill">GPT &middot; OpenAI</div>
+        <div class="why">The model family and vendor &mdash; the maths results came from a model you can't use yet.</div>
+      </a>
+      <a href="../../briefings/your-prompts-are-rnd" class="connect-node">
+        <span class="tag">briefings/your-prompts-are-rnd</span>
+        <div class="skill">Your Prompts Are R&amp;D</div>
+        <div class="why">The CEO-level read: the provenance question this dispute raises for any business building on vendor models.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 09 -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">09 &middot; Resources</div>
+      <h2 class="section-title">Primary sources.</h2>
+      <p class="section-lede">Figures on agents, messages and cost come from OpenAI's statements as reported by Quanta; the dispute is described from both sides' public accounts. Last reviewed 2026-10-11.</p>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://cdn.openai.com/pdf/32d9f210-8b73-45e0-91bc-82a30aef8a9a/navier-stokes.pdf" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Paper &middot; OpenAI &middot; Sep 2026</span>
+        <span class="r-title">Finite Time Blowup for Navier&ndash;Stokes</span>
+        <span class="r-url">cdn.openai.com &middot; navier-stokes.pdf</span>
+      </a>
+      <a href="https://github.com/openai/math" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Repo &middot; Oct 2026</span>
+        <span class="r-title">openai/math &mdash; manuscripts, Lean library, correction history</span>
+        <span class="r-url">github.com/openai/math</span>
+      </a>
+      <a href="https://www.claymath.org/millennium/navier-stokes-equation/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Clay Mathematics Institute</span>
+        <span class="r-title">Navier&ndash;Stokes equation &mdash; problem page and status</span>
+        <span class="r-url">claymath.org/millennium/navier-stokes-equation</span>
+      </a>
+      <a href="https://agmai.org/general-sep29/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Guidelines &middot; 29 Sep 2026</span>
+        <span class="r-title">Responsible Release of AI-Generated Mathematics</span>
+        <span class="r-url">agmai.org/general-sep29</span>
+      </a>
+      <a href="https://www.quantamagazine.org/ai-has-solved-one-of-maths-1-million-millennium-prize-problems-20260908/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Reporting &middot; Quanta</span>
+        <span class="r-title">AI Has Solved One of Math's $1 Million Millennium Prize Problems</span>
+        <span class="r-url">quantamagazine.org</span>
+      </a>
+      <a href="https://github.com/leanprover/comparator" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Tool &middot; Lean</span>
+        <span class="r-title">Comparator &mdash; checking a formal statement against a reference</span>
+        <span class="r-url">github.com/leanprover/comparator</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../index.html">Skills tree</a>
+      <a href="./">Agents hub</a>
+      <a href="test-time-compute.html">Test-time compute</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant</p>
+  </div>
+</footer>
+<script>
+  function toggleTheme(){const html=document.documentElement;const current=html.getAttribute('data-theme');const next=current==='dark'?'light':'dark';html.setAttribute('data-theme',next);document.querySelector('.theme-toggle').textContent=next==='dark'?'☀️':'🌙';localStorage.setItem('theme',next);}
+  const saved=localStorage.getItem('theme');if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.theme-toggle').textContent=saved==='dark'?'☀️':'🌙';}
+  const observer=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting)entry.target.classList.add('visible');});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>

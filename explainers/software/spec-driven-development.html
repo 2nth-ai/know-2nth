@@ -240,6 +240,10 @@
       <h4>A spec without verification is a vibe with headers</h4>
       <p>The part most SDD write-ups undersell: a spec an agent cannot be <em>checked against</em> is just a longer prompt. The contract is really two artifacts &mdash; the spec, and the <strong>verification loop</strong> that enforces it: acceptance tests generated from the spec, eval suites, CI gates, and constraint files the pipeline actually runs. That loop is what converts "I wrote down what I wanted" into "the agent provably built what I specified" &mdash; and it's what makes regeneration safe, because a re-rolled implementation that still passes the spec's checks is a non-event. Write the spec; then write (or generate) the checks that make it binding.</p>
     </div>
+    <div class="info-card fade-up" style="transition-delay: 0.1s">
+      <h4>The limit case: a machine-checked proof of the wrong question</h4>
+      <p>Verification closes the gap only as far as the spec is right. AI-generated maths shows it at its sharpest: the Lean proof assistant can check every step of a proof, but whether the formal statement says what the paper claims is still a human call (Oct 2026). A perfect check against the wrong spec is still wrong. See <a href="../agents/ai-mathematics.html" style="color:var(--code);">When the machine proves</a>.</p>
+    </div>
   </div>
 </section>
 
@@ -297,6 +301,11 @@
       <h2 class="section-title">Where spec-driven development links in the tree.</h2>
     </div>
     <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="../agents/ai-mathematics.html" class="connect-node">
+        <span class="tag">agents/ai-mathematics</span>
+        <div class="skill">AI mathematics</div>
+        <div class="why">The spec problem at its sharpest: Lean checks the proof, but a human still checks that the formal statement is the right one.</div>
+      </a>
       <a href="planning-with-agents.html" class="connect-node">
         <span class="tag">software/planning-with-agents</span>
         <div class="skill">Planning with agents</div>

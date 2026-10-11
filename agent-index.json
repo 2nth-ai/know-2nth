@@ -3,7 +3,7 @@
   "description": "The public knowledge tree for the 2nth.ai ecosystem. Every leaf is both a human-readable reference and an agent-consumable context document.",
   "agent_fetch": "https://know.2nth.ai/api/context/<domain>/<leaf>",
   "mcp": "https://know.2nth.ai/mcp",
-  "count": 227,
+  "count": 229,
   "items": [
     {
       "title": "Agents — know.2nth.ai",
@@ -310,6 +310,14 @@
       "fetch": "agents/vllm"
     },
     {
+      "title": "When the machine proves — AI mathematics — know.2nth.ai",
+      "description": "OpenAI's Navier–Stokes blow-up claim (8 Sep 2026) and its 719-manuscript openai/math release (6 Oct 2026), read for what they teach about AI work generally. What was claimed versus established, how it was produced (10,000 agents, 88 hours), what Lean formal verification does and does not prove, the three withdrawals a day after release, the priority dispute and the mathematicians' release guidelines — and why verification, not generation, is the bottleneck everywhere.",
+      "domain": "agents",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/agents/ai-mathematics",
+      "fetch": "agents/ai-mathematics"
+    },
+    {
       "title": "Business — know.2nth.ai",
       "description": "The Business domain of the 2nth skill tree — ERP, CRM, HR, sales, accounting, operations. The systems businesses actually run on.",
       "domain": "biz",
@@ -611,6 +619,14 @@
       "domain": "briefings",
       "kind": "briefing",
       "url": "https://know.2nth.ai/briefings/own-your-stack",
+      "fetch": null
+    },
+    {
+      "title": "Your Prompts Are R&D — know.2nth.ai Briefing",
+      "description": "In September 2026 two mathematicians alleged their unpublished breakthrough reached the AI vendor whose tools they used — a vendor racing them for the same result. OpenAI denies it. Whatever the facts, the shape is new: when your work-in-progress runs on a vendor's model, the vendor can also be your competitor. A plain-language briefing on treating prompts as R&D, proving priority, and five questions for your AI vendors.",
+      "domain": "briefings",
+      "kind": "briefing",
+      "url": "https://know.2nth.ai/briefings/your-prompts-are-rnd",
       "fetch": null
     },
     {
