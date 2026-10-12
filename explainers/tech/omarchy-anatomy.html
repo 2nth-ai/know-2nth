@@ -3,21 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Anatomy of an agent-driven desktop &mdash; know.2nth.ai</title>
-<meta name="description" content="How Omarchy 4 is actually wired, mapped from a real 4.0.4 install: the read-only package and the ~/.config layer you own, the 441 omarchy-* commands between them, and the agent loop — one keybind launches Claude Code or another agent in auto mode, shipped skills tell it where config lives, and Hyprland live-reloads what it writes. Where changes belong, what was oversold, and when to take the wheel.">
+<title>Omarchy on a Mac &mdash; an agent-editable desktop &mdash; know.2nth.ai</title>
+<meta name="description" content="Omarchy is a free Linux desktop that replaces macOS on Intel Macs from 2013 to 2020 — most of which Apple no longer updates — and is built so an AI coding agent can change it at a keypress. What it means for a business, what you give up, which Macs work (T2 yes, Apple Silicon not yet), how the system and your config are split, how the agent loop works, where changes belong, and when to let the agent drive.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="know.2nth.ai">
 <meta property="og:url" content="https://know.2nth.ai/explainers/tech/omarchy-anatomy">
-<meta property="og:title" content="Anatomy of an agent-driven desktop &mdash; know.2nth.ai">
-<meta property="og:description" content="Omarchy 4 opened up: which files are yours, how a keypress becomes a pre-approved coding agent editing your desktop, and the one safety net it leaves you to build.">
+<meta property="og:title" content="Omarchy on a Mac &mdash; an agent-editable desktop &mdash; know.2nth.ai">
+<meta property="og:description" content="A second life for Intel Macs Apple has stopped updating: Omarchy replaces macOS with a desktop your AI agent can edit. Which Macs work, what you give up, and how the agent loop works.">
 <meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Anatomy of an agent-driven desktop &mdash; know.2nth.ai">
-<meta name="twitter:description" content="Omarchy 4 opened up: which files are yours, how a keypress becomes a pre-approved coding agent editing your desktop, and the one safety net it leaves you to build.">
+<meta name="twitter:title" content="Omarchy on a Mac &mdash; an agent-editable desktop &mdash; know.2nth.ai">
+<meta name="twitter:description" content="A second life for Intel Macs Apple has stopped updating: Omarchy replaces macOS with a desktop your AI agent can edit. Which Macs work, what you give up, and how the agent loop works.">
 <meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -177,7 +177,6 @@
 </style>
 </head>
 <body>
-
 <div class="glow-orb indigo"></div>
 <div class="glow-orb sky"></div>
 
@@ -198,7 +197,7 @@
     <span class="crumb-sep">&rsaquo;</span>
     <a href="./">Tech</a>
     <span class="crumb-sep">&rsaquo;</span>
-    <span class="crumb-current">Anatomy of an agent-driven desktop</span>
+    <span class="crumb-current">Omarchy on a Mac</span>
   </div>
 </div>
 
@@ -206,104 +205,163 @@
   <div class="container">
     <div class="eyebrow fade-up"><span class="dot"></span> tech &middot; Platform &amp; desktop</div>
     <h1 class="fade-up" style="transition-delay: 0.05s">
-      One keypress, one agent, <span class="gradient">write access to your desktop.</span>
+      An old Mac, rebuilt as a desktop <span class="gradient">your AI agent can edit.</span>
     </h1>
     <p class="sub fade-up" style="transition-delay: 0.1s">
-      The <a href="workstation.html" style="color: var(--sky);">workstation leaf</a> makes the argument for an agent-editable operating system. This one opens the machine up. It is a map of a real Omarchy&nbsp;4.0.4 install &mdash; which files the system is made of, which of them are yours, how a keybinding becomes a coding agent with permission to change them, and the one safety net Omarchy leaves for you to build.
+      Apple's current macOS runs on just four Intel Macs. Every other Intel MacBook, iMac and Mac mini is already off the current release. <strong>Omarchy</strong> is a free Linux desktop that installs on those machines in place of macOS, and it is built so that an AI coding agent can change it for you: press a key, say what you want, and see the change live. This page covers what that means for a business, what you give up, which Macs work, and &mdash; for the developers &mdash; exactly how the agent gets its hands on the system. The <a href="workstation.html" style="color: var(--sky);">workstation leaf</a> makes the broader case; this one is the practical tour.
     </p>
     <div class="hero-meta fade-up" style="transition-delay: 0.15s">
-      <span class="pill accent">Omarchy 4.0.4</span>
-      <span class="pill indigo">Hyprland 0.56 &middot; Lua</span>
-      <span class="pill cyan">Quickshell</span>
-      <span class="pill green">441 omarchy-* scripts</span>
-      <span class="pill warn">Agents in auto mode</span>
+      <span class="pill accent">Intel Macs 2013&ndash;2020</span>
+      <span class="pill indigo">Omarchy 4</span>
+      <span class="pill cyan">Hyprland &middot; Lua</span>
+      <span class="pill green">Agent at a keypress</span>
+      <span class="pill warn">Replaces macOS</span>
     </div>
   </div>
 </section>
 
-<!-- 01 WHAT IT IS -->
+<!-- 01 SHORT VERSION -->
+<section id="short-version">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label indigo">01 &middot; The short version</div>
+      <h2 class="section-title">A second life for Macs Apple has stopped updating.</h2>
+      <p class="section-lede">Omarchy came out of 37signals, the company behind Basecamp and HEY. It's a complete, opinionated desktop on Arch Linux: a tiling window manager, a launcher, themes, and a curated set of apps. On a Mac it replaces macOS entirely.</p>
+    </div>
+    <div class="stack-grid fade-up" style="transition-delay: 0.04s">
+      <div class="stack-cell">
+        <span class="layer">For the business</span>
+        <h4>Hardware you already own</h4>
+        <p>Intel Macs from 2013 to 2020 that no longer get macOS feature updates become fast, current developer machines. The Omarchy team measured a 36% performance gain on a 2019 MacBook Pro just by switching. No licence cost.</p>
+      </div>
+      <div class="stack-cell green">
+        <span class="layer">For the user</span>
+        <h4>Describe the change, see it happen</h4>
+        <p>One keypress opens your AI coding agent with permission to change the desktop. &ldquo;Move the clock left,&rdquo; &ldquo;bind the screenshot tool to F13,&rdquo; &ldquo;make it darker after sunset&rdquo; &mdash; and the screen updates as it saves.</p>
+      </div>
+      <div class="stack-cell sky">
+        <span class="layer">For the developer</span>
+        <h4>The whole desktop is text</h4>
+        <p>Every setting is a readable Lua or shell file, the system and your changes live in separate folders, and your folder can go into Git. Rebuilding a machine becomes a clone and an afternoon.</p>
+      </div>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.06s">
+      <h4>What you give up</h4>
+      <p><strong>macOS goes.</strong> Omarchy only supports being the sole operating system; the install wipes the drive. You can restore macOS later through Apple's Internet Recovery, but there is no dual boot. <strong>Apple's Secure Boot goes off</strong>, which removes the T2 chip's boot protection. And anything tied to macOS &mdash; Apple's MDM, iMessage, Final Cut, Microsoft Office desktop apps &mdash; stays behind. This is a developer workstation, not a drop-in replacement for a general staff laptop.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 WHICH MACS -->
+<section id="which-macs">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label cyan">02 &middot; Running it on a Mac</div>
+      <h2 class="section-title">Intel Macs, yes. Apple Silicon, not yet.</h2>
+      <p class="section-lede">The installer detects Mac hardware and applies the fixes each generation needs. What works depends on the security chip in the machine.</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.04s">
+      <table class="compare">
+        <thead><tr><th>Mac</th><th>Status</th><th>What the installer does</th></tr></thead>
+        <tbody>
+          <tr><td><strong>T2 Macs</strong> (2018&ndash;2020: MacBook Pro, MacBook Air, Mac mini, iMac 2020, iMac Pro)</td><td>Supported</td><td>Installs a patched <code>linux-t2</code> kernel, T2 audio config, Apple's Broadcom Wi-Fi and Bluetooth firmware, and fan control (<code>t2fanrd</code>). Touch Bar runs on built-in support.</td></tr>
+          <tr><td><strong>Older Intel Macs</strong> (2013&ndash;2017)</td><td>Supported</td><td>Broadcom Wi-Fi drivers and firmware, plus the SPI keyboard driver and an NVMe suspend fix on the MacBooks that need them.</td></tr>
+          <tr><td><strong>T1 MacBook Pros</strong> (2016 Touch Bar models)</td><td>Works, with gaps</td><td>Touch Bar and sound don't work.</td></tr>
+          <tr><td><strong>Apple Silicon</strong> (M-series)</td><td>Not directly supported</td><td>The code already names an <code>aarch64-apple</code> platform and separate <code>omarchy-mac</code> packages, but the manual says M-series installs aren't supported yet.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.06s">
+      <p><strong>Getting there takes four steps.</strong> Boot into Recovery (hold <code>Cmd-R</code>), open Startup Security Utility, set Secure Boot to &ldquo;No Security&rdquo; and allow external boot media. Then restart holding <code>Option</code>, pick the orange <em>EFI Boot</em> drive, and run the normal installer.</p>
+      <p><strong>Two details developers will appreciate.</strong> On T2 Macs the Wi-Fi firmware is only legally available from Apple, so the installer copies it off the Mac's own macOS volume &mdash; which means a machine that's already been wiped has to get the firmware from a macOS copy or a recovery image instead. And Broadcom's firmware fumbles the Wi-Fi handshake on networks in WPA2/WPA3 transition mode, so the installer hands the handshake back to software; the symptom it fixes is a correct password being rejected.</p>
+      <p><strong>Apple displays work too.</strong> On a Studio Display or Pro Display XDR, the keyboard brightness keys adjust the monitor when it has focus.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 TWO LAYERS -->
 <section id="what-it-is">
   <div class="container">
     <div class="fade-up">
-      <div class="section-label indigo">01 &middot; What this is</div>
-      <h2 class="section-title">Two layers of text files and a pile of shell scripts.</h2>
-      <p class="section-lede">Underneath the theme switcher and the launcher, Omarchy has a simple shape. Omarchy owns one read-only tree, you own another, and about four hundred commands connect them. Once you can see that split, every question about where a change should go answers itself, and so does the question of what an agent is allowed to touch.</p>
+      <div class="section-label indigo">03 &middot; How it's built</div>
+      <h2 class="section-title">The system's files, your files, and the commands between them.</h2>
+      <p class="section-lede">Under the themes and the launcher, Omarchy has a simple shape: one folder it owns and replaces on every update, one folder you own that updates leave alone, and a few hundred small commands joining them. That split is what makes it safe to let an agent loose &mdash; the agent edits your folder, never the system's.</p>
     </div>
     <div class="stack-grid fade-up" style="transition-delay: 0.04s">
       <div class="stack-cell">
         <span class="layer">Omarchy owns</span>
         <h4><code>/usr/share/omarchy</code></h4>
-        <p>Installed by pacman as the <code>omarchy</code> package. Default Hyprland Lua, the shell, 22 themes, 106 migrations, the agent skills, and every <code>omarchy-*</code> command. Updates replace it wholesale.</p>
+        <p>Installed as the <code>omarchy</code> package. Default Hyprland config in Lua, the shell, about two dozen themes, a hundred-odd dated migrations, the agent skills, and every <code>omarchy-*</code> command. Updates replace it wholesale.</p>
       </div>
       <div class="stack-cell green">
         <span class="layer">You own</span>
         <h4><code>~/.config</code></h4>
-        <p><code>hypr/*.lua</code> overrides, <code>omarchy/</code> hooks, themes, menu extensions, plugins and your default-agent choice. Nothing in an update writes here except a migration.</p>
+        <p>Your <code>hypr/*.lua</code> overrides, <code>omarchy/</code> hooks, themes, menu extensions, plugins and which agent you use. Nothing in an update writes here except a migration.</p>
       </div>
       <div class="stack-cell sky">
         <span class="layer">The glue</span>
         <h4><code>omarchy-*</code> commands</h4>
-        <p>441 bash and Python scripts on the path. The biggest families are install (38), theme (34), hardware (26), remove (25), launch (24) and hyprland (24). Every keybinding and menu item ends up calling one.</p>
+        <p>Roughly 440 bash and Python scripts on the path in 4.0. The biggest families install apps, set themes, handle hardware and launch things. Every keybinding and menu item ends up calling one.</p>
       </div>
       <div class="stack-cell cyan">
         <span class="layer">The face</span>
         <h4><code>omarchy-shell</code></h4>
-        <p>One Quickshell (QML) process that draws the bar, launcher, menus, notifications and lock screen. It also hosts the agents panel that shows your model usage.</p>
+        <p>One Quickshell (QML) process draws the bar, launcher, menus, notifications and lock screen. It also hosts the agents panel that shows your AI usage.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- 02 ANATOMY -->
+<!-- 04 WIRING -->
 <section id="anatomy">
   <div class="container">
     <div class="fade-up">
-      <div class="section-label">02 &middot; How it is wired</div>
-      <h2 class="section-title">Your config loads last, so it wins.</h2>
-      <p class="section-lede">Start at the package and follow the arrows. The main row is what runs when you press a key. The column above it shows where the code comes from, and the row below shows what happens afterwards.</p>
+      <div class="section-label">04 &middot; How it is wired</div>
+      <h2 class="section-title">Your settings load last, so they win.</h2>
+      <p class="section-lede">Start at the package and follow the arrows. The main row is what runs when you press a key; above it is where the code comes from; below it is what happens afterwards.</p>
     </div>
     <div class="diagram fade-up"><iframe src="/diagrams/omarchy/anatomy.html" title="Omarchy 4 anatomy diagram" loading="lazy"></iframe></div>
     <p class="diagram-cap fade-up">Interactive: pan, zoom, trace. <a href="/diagrams/omarchy/anatomy.html" target="_blank" rel="noopener">Open full screen &nearr;</a></p>
     <div class="prose fade-up" style="transition-delay: 0.04s">
-      <p><strong>The load order is the whole design.</strong> <code>~/.config/hypr/hyprland.lua</code> is short. It <code>dofile</code>s Omarchy's bootstrap, <code>require</code>s <code>default.hypr.omarchy</code>, and only then loads your <code>hypr.monitors</code>, <code>hypr.input</code>, <code>hypr.bindings</code>, <code>hypr.looknfeel</code> and <code>hypr.autostart</code>. The defaults can improve on every update without touching your files, and anything you set overrides them. You can switch off all of Omarchy's default bindings with a single flag, <code>omarchy_default_bindings = false</code>.</p>
-      <p><strong>Hyprland 0.56 is configured in Lua now, not hyprlang.</strong> The bootstrap keeps a list of module prefixes (<code>default.hypr</code>, <code>hypr</code>, <code>omarchy.current.theme</code>) that it drops from Lua's module cache on reload. A saved edit is live straight away, with no logout and no restart. That matters a great deal once an agent is the one doing the editing.</p>
-      <p><strong>Themes are templates.</strong> <code>omarchy-theme-set</code> renders <code>.tpl</code> files with the theme's colours, restyles the shell and apps, then runs <code>omarchy-hook theme-set</code>. That calls whatever you have placed in <code>~/.config/omarchy/hooks/theme-set.d/</code>. The same hook mechanism covers <code>post-boot</code>, <code>post-update</code>, <code>font-set</code>, <code>battery-low</code> and <code>pre-refresh-pacman</code>.</p>
-      <p><strong>Updates are pacman plus migrations.</strong> <code>omarchy-update</code> pulls the new package, then runs any of the 106 dated migration scripts that have not run yet. Migrations are the one place where Omarchy deliberately reaches into <code>~/.config</code>.</p>
+      <p><strong>The load order is the design.</strong> <code>~/.config/hypr/hyprland.lua</code> loads Omarchy's bootstrap and defaults first, then your <code>monitors</code>, <code>input</code>, <code>bindings</code>, <code>looknfeel</code> and <code>autostart</code> files. Omarchy can improve its defaults on every update without touching your files, and anything you set overrides them. One flag, <code>omarchy_default_bindings = false</code>, switches off every default keybinding.</p>
+      <p><strong>Changes are live the moment they're saved.</strong> Hyprland 0.56 is configured in Lua, and the bootstrap clears its own modules from Lua's cache on reload &mdash; no logout, no restart. That's what makes the agent loop feel instant.</p>
+      <p><strong>Themes are templates; events have hooks.</strong> Setting a theme renders <code>.tpl</code> files with its colours, restyles the shell and apps, then runs anything you've put in <code>~/.config/omarchy/hooks/theme-set.d/</code>. The same mechanism covers boot, updates, font changes and low battery.</p>
+      <p><strong>Updates are packages plus migrations.</strong> <code>omarchy-update</code> installs the new package, then runs any dated migration scripts that haven't run yet. Migrations are the one place Omarchy deliberately reaches into your folder.</p>
     </div>
   </div>
 </section>
 
-<!-- 03 AGENT LOOP -->
+<!-- 05 AGENT LOOP -->
 <section id="agent-loop">
   <div class="container">
     <div class="fade-up">
-      <div class="section-label cyan">03 &middot; The agent loop</div>
-      <h2 class="section-title">From keypress to edited config with no approval prompts.</h2>
-      <p class="section-lede">This is the part that makes Omarchy 4 agent-driven rather than just agent-friendly. Every step is a short, readable script, and reading them is the best way to understand what you have agreed to.</p>
+      <div class="section-label cyan">05 &middot; The agent loop</div>
+      <h2 class="section-title">Press a key, describe the change, watch it land.</h2>
+      <p class="section-lede">This is what makes Omarchy 4 agent-driven rather than merely agent-friendly. Each step is a short script you can read &mdash; and reading them is the best way to understand what you've agreed to.</p>
     </div>
     <div class="diagram fade-up"><iframe src="/diagrams/omarchy/agent-loop.html" title="Omarchy agent loop diagram" loading="lazy"></iframe></div>
     <p class="diagram-cap fade-up">Interactive: pan, zoom, trace. <a href="/diagrams/omarchy/agent-loop.html" target="_blank" rel="noopener">Open full screen &nearr;</a></p>
     <div class="prose fade-up" style="transition-delay: 0.04s">
       <ol>
-        <li><strong>You pick an agent once.</strong> <code>omarchy default agent claude</code> writes one word to <code>~/.config/omarchy/defaults/agent</code>. Omarchy deliberately ships without a default, and the keybinding opens a picker until you choose one.</li>
-        <li><strong>The launcher pre-approves it.</strong> <code>omarchy agent</code> starts the chosen agent with that agent's own way of saying "don't stop to ask": <code>claude --permission-mode auto</code>, <code>gemini --yolo</code>, <code>copilot --allow-all</code>, <code>grok --permission-mode bypassPermissions</code>, <code>crush --yolo</code>, <code>opencode --auto</code>. The comment in the script spells out the reasoning: agents launched from a keybinding run unattended.</li>
-        <li><strong>It moves out of your home folder.</strong> If <code>~/Work</code> exists, the launcher switches into it first, because agents refuse to remember trust for <code>$HOME</code>. The working directory is the agent's first view of the machine.</li>
-        <li><strong>Skills tell it where things are.</strong> Omarchy ships two agent skills, <code>omarchy</code> (Hyprland, theming, hooks, plugins, captures) and <code>diagnose-crash</code>, and symlinks them into the agent's skills folder. The agent arrives already knowing that edits go in <code>~/.config/hypr</code> and never in <code>/usr/share/omarchy</code>.</li>
-        <li><strong>It edits, Hyprland reloads.</strong> The agent changes a Lua file, Hyprland picks it up, and you see the result straight away. The loop closes without you approving anything.</li>
-        <li><strong>Crashes and spend get the same treatment.</strong> <code>omarchy agent crash &lt;pid&gt;</code> gathers the facts from <code>coredumpctl</code> and briefs the agent through the crash skill. The shell's agents panel reads <code>omarchy-agent-usage-*</code>, which collects local transcript stats together with the provider's rate-limit endpoint.</li>
+        <li><strong>You choose your agent once.</strong> <code>omarchy default agent claude</code> saves the choice. Omarchy ships without a default; until you pick one, the keybinding opens a picker.</li>
+        <li><strong>The launcher pre-approves it.</strong> <code>omarchy agent</code> starts the agent with its own &ldquo;don't stop to ask&rdquo; flag: <code>claude --permission-mode auto</code>, <code>gemini --yolo</code>, <code>copilot --allow-all</code>, <code>opencode --auto</code> and so on. The reasoning, in the script's own comment: an agent launched from a keybinding runs unattended.</li>
+        <li><strong>It starts in a work folder.</strong> If <code>~/Work</code> exists, the launcher moves there first, because agents won't remember trust for your home folder.</li>
+        <li><strong>Skills tell it the rules.</strong> Two agent skills ship with Omarchy &mdash; <code>omarchy</code> (Hyprland, theming, hooks, plugins) and <code>diagnose-crash</code> &mdash; and are linked into the agent's skills folder. The agent arrives knowing that edits go in <code>~/.config</code>, never in the system folder.</li>
+        <li><strong>It edits; the desktop reloads.</strong> The agent saves a Lua file, Hyprland picks it up, and you see the result. No approval step anywhere in the loop.</li>
+        <li><strong>Crashes and spend use the same machinery.</strong> <code>omarchy agent crash &lt;pid&gt;</code> collects the crash details and briefs the agent through the crash skill. The shell's agents panel shows usage and rate limits for your chosen agent.</li>
       </ol>
-      <p><strong>One correction to the launch coverage.</strong> The release was pitched as the OS offering your agent the core dump when a process crashes. On the 4.0.4 install we mapped, the command and the skill are both present, but nothing in the shell or the package calls them automatically. Treat crash triage as a command you run by PID, not a pop-up you can count on.</p>
+      <p><strong>One correction to the launch coverage.</strong> Omarchy 4 was pitched as offering your agent the details whenever an app crashes. As of 4.0.4, the command and skill exist but nothing triggers them automatically. Treat crash triage as a command you run, not a pop-up you can count on.</p>
     </div>
   </div>
 </section>
 
-<!-- 04 WHERE CHANGES GO -->
+<!-- 06 WHERE CHANGES GO -->
 <section id="where">
   <div class="container">
     <div class="fade-up">
-      <div class="section-label green">04 &middot; Where changes belong</div>
+      <div class="section-label green">06 &middot; Where changes belong</div>
       <h2 class="section-title">A routing table for you and your agent.</h2>
-      <p class="section-lede">Most Omarchy breakage comes from an edit in the wrong layer. That is equally true when the agent made it.</p>
+      <p class="section-lede">Most Omarchy breakage comes from an edit in the wrong place &mdash; whoever made it. This is the list worth pinning.</p>
     </div>
     <div class="compare-wrap fade-up" style="transition-delay: 0.04s">
       <table class="compare">
@@ -321,84 +379,104 @@
       </table>
     </div>
     <div class="prose fade-up" style="transition-delay: 0.06s">
-      <p><strong>The tell that it is working:</strong> look at <code>~/.config/hypr</code> after a few weeks of agent-assisted changes and you will find <code>bindings.lua.bak.&lt;epoch&gt;</code> files next to the real ones. The agent backs up before it writes, which is good manners. It is not version control.</p>
+      <p><strong>A sign it's working:</strong> after a few weeks of agent changes you'll find <code>bindings.lua.bak.&lt;timestamp&gt;</code> files next to the real ones. The agent backs up before it writes. That's good manners, not version control &mdash; put <code>~/.config</code> in Git.</p>
     </div>
   </div>
 </section>
 
-<!-- 05 DECISION GUIDE -->
+<!-- 07 DECISION GUIDE -->
 <section id="decision">
   <div class="container">
     <div class="fade-up">
-      <div class="section-label indigo">05 &middot; Decision guide</div>
-      <h2 class="section-title">When to let the agent drive.</h2>
-      <p class="section-lede">Auto mode is the default from the keybinding, and you can turn it off. Make that choice deliberately rather than inheriting it.</p>
+      <div class="section-label indigo">07 &middot; Decision guide</div>
+      <h2 class="section-title">Who should do this &mdash; and when to let the agent drive.</h2>
     </div>
     <div class="decision-grid fade-up" style="transition-delay: 0.04s">
       <div class="decision-card use">
-        <h4>Let it drive when</h4>
+        <h4>A good fit</h4>
         <ul>
-          <li><code>~/.config</code> is a Git repo and you commit before each session</li>
-          <li>The change is cosmetic or reversible: bindings, gaps, themes, widgets</li>
-          <li>You are diagnosing, not changing, for example crash triage from a core dump</li>
-          <li>The machine is yours and nobody else depends on it being up</li>
+          <li>Developers who live in a terminal, a browser and an editor</li>
+          <li>A cupboard of 2018&ndash;2020 Intel MacBooks that Apple no longer updates</li>
+          <li>Teams that want every workstation rebuilt from one Git repo</li>
+          <li>People curious to run their desktop through an AI agent</li>
+        </ul>
+      </div>
+      <div class="decision-card skip">
+        <h4>A poor fit</h4>
+        <ul>
+          <li>Staff who need Office desktop apps, Apple apps or iMessage</li>
+          <li>Fleets managed through Apple MDM or with compliance rules on Secure Boot</li>
+          <li>Apple Silicon Macs, until support lands</li>
+          <li>Anyone who needs macOS on the same machine</li>
+        </ul>
+      </div>
+    </div>
+    <div class="decision-grid fade-up" style="transition-delay: 0.06s">
+      <div class="decision-card use">
+        <h4>Let the agent drive when</h4>
+        <ul>
+          <li><code>~/.config</code> is in Git and you commit before each session</li>
+          <li>The change is cosmetic or easy to undo: bindings, gaps, themes, widgets</li>
+          <li>You're diagnosing, not changing &mdash; crash triage, for example</li>
+          <li>The machine is yours and nobody depends on it being up</li>
         </ul>
       </div>
       <div class="decision-card skip">
         <h4>Take the wheel when</h4>
         <ul>
-          <li>The change touches boot, disk encryption, drivers or pacman</li>
-          <li>The agent wants to edit <code>/usr/share/omarchy</code>. That is a bug report, not a fix</li>
-          <li>Client credentials or SSH keys live in the working directory</li>
-          <li>You cannot say which file changed. Launch it from a terminal without the auto flag instead</li>
+          <li>The change touches boot, disk encryption, drivers or packages</li>
+          <li>The agent wants to edit <code>/usr/share/omarchy</code>. That's a bug report, not a fix</li>
+          <li>Client credentials or SSH keys sit in the working folder</li>
+          <li>You can't say which file changed. Launch the agent without the auto flag instead</li>
         </ul>
       </div>
     </div>
   </div>
 </section>
 
-<!-- 06 SA CONTEXT -->
+<!-- 08 SA CONTEXT -->
 <section id="sa">
   <div class="container">
     <div class="fade-up">
-      <div class="section-label cyan">06 &middot; South African context</div>
-      <h2 class="section-title">The meter in the bar is in dollars.</h2>
+      <div class="section-label cyan">08 &middot; South African context</div>
+      <h2 class="section-title">Imported hardware, dollar meters, capped data.</h2>
     </div>
     <div class="prose fade-up" style="transition-delay: 0.04s">
-      <p><strong>Spend is visible, so use it.</strong> The agents panel sits next to the battery for a reason. Every "make my bar look nicer" session draws on a subscription billed in USD. Small cosmetic changes are cheaper to make by hand once you know which file to open, and section 04 is that list.</p>
-      <p><strong>Rolling updates on capped data.</strong> <code>omarchy-update</code> is pacman plus migrations, and both are bandwidth. On LTE, update deliberately rather than whenever the indicator nags. If you run several machines, keep a local package mirror.</p>
-      <p><strong>Your <code>~/.config</code> repo is also your second machine.</strong> Plenty of local developers run two boxes, one for client Windows and M365 work and one for building. If the Omarchy layer is text in Git, rebuilding or cloning it after a theft or a dead SSD takes an afternoon rather than a week.</p>
+      <p><strong>Old Macs are expensive to replace here.</strong> A new MacBook carries import duty and the exchange rate on top of Apple's price. Turning a 2019 MacBook Pro that Apple has stopped updating into a current developer machine defers that spend by years, and keeps a working laptop out of landfill.</p>
+      <p><strong>The meter in the bar is in dollars.</strong> The agents panel sits next to the battery for a reason: every &ldquo;make my bar look nicer&rdquo; session draws on a subscription billed in USD. Once you know which file to open (section 06), small changes are cheaper by hand.</p>
+      <p><strong>Rolling updates on capped data.</strong> Updates are package downloads plus migrations. On LTE, update deliberately rather than whenever the indicator nags; with several machines, run a local package mirror.</p>
+      <p><strong>Your config repo is also your recovery plan.</strong> If the Omarchy layer is text in Git, rebuilding after a theft or a dead SSD takes an afternoon rather than a week.</p>
     </div>
   </div>
 </section>
 
-<!-- 07 CONNECTIONS -->
+<!-- 09 CONNECTIONS -->
 <section id="connections">
   <div class="container">
     <div class="fade-up">
-      <div class="section-label">07 &middot; Connections</div>
+      <div class="section-label">09 &middot; Connections</div>
       <h2 class="section-title">Where this links in the tree.</h2>
     </div>
     <div class="connect-grid fade-up" style="transition-delay: 0.05s">
       <a href="workstation.html" class="connect-node">
         <span class="tag">tech/workstation</span>
         <div class="skill">The malleable workstation</div>
-        <div class="why">The why to this page's how. The thesis, and the comparison with NixOS and immutable images.</div>
+        <div class="why">The why to this page's how: the thesis, and the comparison with NixOS and immutable images.</div>
       </a>
       <a href="../agents/claude-code.html" class="connect-node">
         <span class="tag">agents/claude-code</span>
         <div class="skill">Claude Code</div>
-        <div class="why">The agent in this map. <code>--permission-mode auto</code> is the flag the launcher passes.</div>
+        <div class="why">One of the agents Omarchy launches; <code>--permission-mode auto</code> is the flag it passes.</div>
       </a>
       <a href="../agents/skills.html" class="connect-node">
         <span class="tag">agents/skills</span>
         <div class="skill">Agent skills</div>
-        <div class="why">The mechanism Omarchy uses to teach any agent its config layout.</div>
+        <div class="why">The mechanism Omarchy uses to teach any agent where its config lives.</div>
       </a>
       <a href="../agents/coding-cli-agents.html" class="connect-node">
         <span class="tag">agents/coding-cli-agents</span>
         <div class="skill">Coding CLI agents</div>
-        <div class="why">The rest of the field <code>omarchy default agent</code> can launch, and each one's approval model.</div>
+        <div class="why">The other agents <code>omarchy default agent</code> can launch, and how each handles approvals.</div>
       </a>
       <a href="own-your-stack.html" class="connect-node">
         <span class="tag">tech/own-your-stack</span>
@@ -409,34 +487,39 @@
   </div>
 </section>
 
-<!-- 08 RESOURCES -->
+<!-- 10 RESOURCES -->
 <section id="resources">
   <div class="container">
     <div class="fade-up">
-      <div class="section-label">08 &middot; Resources</div>
+      <div class="section-label">10 &middot; Resources</div>
       <h2 class="section-title">Primary sources.</h2>
-      <p class="section-lede">Mapped from an installed system in October 2026: <code>omarchy</code> 4.0.4-1, Hyprland 0.56.2, Quickshell 0.3.1. Paths and counts come from <code>/usr/share/omarchy</code>, not from the docs. Re-check them after a major update.</p>
+      <p class="section-lede">Paths and behaviour checked against Omarchy 4.0 (4.0.4, Hyprland 0.56, Quickshell 0.3) and the project source in October 2026. Counts move between releases; re-check after a major update.</p>
     </div>
     <div class="resource-grid fade-up" style="transition-delay: 0.05s">
-      <a href="https://github.com/omacom/omarchy" class="resource" target="_blank" rel="noopener">
-        <span class="r-kind">Source</span>
-        <span class="r-title">omacom/omarchy</span>
-        <span class="r-url">github.com/omacom/omarchy</span>
-      </a>
       <a href="https://omarchy.org/manual/" class="resource" target="_blank" rel="noopener">
         <span class="r-kind">Docs</span>
         <span class="r-title">The Omarchy Manual</span>
         <span class="r-url">omarchy.org/manual</span>
       </a>
+      <a href="https://github.com/omacom/omarchy/blob/master/manual/44-mac-support.md" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs &middot; Mac</span>
+        <span class="r-title">Omarchy &mdash; Mac support</span>
+        <span class="r-url">github.com/omacom/omarchy &middot; manual/44-mac-support.md</span>
+      </a>
+      <a href="https://github.com/omacom/omarchy" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Source</span>
+        <span class="r-title">omacom/omarchy</span>
+        <span class="r-url">github.com/omacom/omarchy</span>
+      </a>
+      <a href="https://support.apple.com/en-us/122867" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Apple</span>
+        <span class="r-title">macOS Tahoe 26 &mdash; compatible computers</span>
+        <span class="r-url">support.apple.com/en-us/122867</span>
+      </a>
       <a href="https://wiki.hypr.land/Configuring/Start/" class="resource" target="_blank" rel="noopener">
         <span class="r-kind">Compositor</span>
         <span class="r-title">Hyprland &mdash; configuring</span>
         <span class="r-url">wiki.hypr.land/Configuring/Start</span>
-      </a>
-      <a href="https://quickshell.org" class="resource" target="_blank" rel="noopener">
-        <span class="r-kind">Shell</span>
-        <span class="r-title">Quickshell</span>
-        <span class="r-url">quickshell.org</span>
       </a>
       <a href="https://code.claude.com/docs/en/skills" class="resource" target="_blank" rel="noopener">
         <span class="r-kind">Agent</span>
