@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Replacing SurveyMonkey on a Microsoft stack &mdash; know.2nth.ai</title>
+<meta name="description" content="Can you replace SurveyMonkey with open source on .NET, SQL Server and Azure? Mostly. Endatix (MIT, .NET 10, Azure SQL) is the best backend fit but needs a form designer — SurveyJS Creator is commercial per developer. The World Bank's Survey Solutions is .NET and royalty-free under its own licence, built for offline field research. Microsoft Forms is the zero-cost answer for M365 shops. What each costs, what's actually free, and when owning your survey stack is worth it.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/tech/microsoft/open-source-surveys">
+<meta property="og:title" content="Replacing SurveyMonkey on a Microsoft stack &mdash; know.2nth.ai">
+<meta property="og:description" content="Open-source survey platforms on .NET, SQL Server and Azure: Endatix, Survey Solutions and Microsoft Forms compared — what's free, what isn't, and when owning the stack pays.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Replacing SurveyMonkey on a Microsoft stack">
+<meta name="twitter:description" content="Open-source survey platforms on .NET, SQL Server and Azure: Endatix, Survey Solutions and Microsoft Forms compared — what's free, what isn't, and when owning the stack pays.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12); --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-soft: rgba(99, 102, 241, 0.12); --bg: var(--ink); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(37, 99, 235, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(56, 189, 248, 0.3); --max-w: 1200px; --read-w: 760px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(37, 99, 235, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(37, 99, 235, 0.25); }
+  * { margin: 0; padding: 0; box-sizing: border-box; } html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.blue { width: 600px; height: 600px; background: var(--blue); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--sky); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--sky); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--sky); } .crumb-sep { opacity: 0.5; } .crumb-current { color: var(--text-secondary); }
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--indigo); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--indigo); box-shadow: 0 0 12px var(--indigo); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--blue-glow), var(--sky), var(--sky-muted)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.green { background: var(--green-soft); color: var(--green); border-color: rgba(16, 185, 129, 0.25); }
+  .pill.indigo { background: var(--indigo-soft); color: var(--indigo); border-color: rgba(99, 102, 241, 0.25); }
+  .pill.warn { background: var(--warm-soft); color: var(--warm-glow); border-color: rgba(245, 158, 11, 0.25); }
+  .pill.accent { background: rgba(37, 99, 235, 0.12); color: var(--blue-glow); border-color: rgba(37, 99, 235, 0.25); }
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--sky); margin-bottom: 14px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--sky); }
+  .prose ul, .prose ol { padding-left: 24px; margin-bottom: 18px; max-width: var(--read-w); }
+  .prose li { font-size: 15px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 8px; }
+  .prose li strong { color: var(--text-primary); font-weight: 600; }
+  pre.code { background: var(--ink-deep); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px 22px; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.65; color: var(--mist); margin: 0 0 20px; max-width: var(--read-w); }
+  [data-theme="light"] pre.code { background: #0F172A; color: #E2E8F0; }
+  pre.code .k { color: var(--sky); } pre.code .s { color: #A5F3B8; } pre.code .c { color: var(--text-muted); font-style: italic; } pre.code .h { color: var(--blue-glow); font-weight: 600; }
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); margin-bottom: 20px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.indigo { border-left: 3px solid var(--indigo); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .stack-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; max-width: var(--read-w); margin-bottom: 20px; }
+  .stack-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--indigo); border-radius: var(--radius-md); padding: 18px 22px; }
+  .stack-cell .layer { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .stack-cell h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.3px; }
+  .stack-cell p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: var(--read-w); margin-bottom: 20px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--sky); background: rgba(37, 99, 235, 0.04); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); } .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--sky); }
+  .compare td strong { color: var(--text-primary); }
+  .decision-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: var(--read-w); }
+  @media (max-width: 720px) { .decision-grid { grid-template-columns: 1fr; } }
+  .decision-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 24px; }
+  .decision-card.use { border-left: 3px solid var(--green); } .decision-card.skip { border-left: 3px solid var(--rose); }
+  .decision-card h4 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 12px; }
+  .decision-card.use h4 { color: var(--green); } .decision-card.skip h4 { color: var(--rose); }
+  .decision-card ul { list-style: none; padding: 0; }
+  .decision-card li { font-size: 13px; color: var(--text-secondary); line-height: 1.6; padding: 6px 0; border-bottom: 1px solid var(--border); }
+  .decision-card li:last-child { border-bottom: none; }
+  .connect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .connect-node { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; transition: all 0.3s; text-decoration: none; color: inherit; display: block; }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node .tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--sky); word-break: break-all; }
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--sky); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } pre.code { font-size: 11px; padding: 14px 16px; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+<div class="glow-orb blue"></div>
+<div class="glow-orb sky"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../../index.html" class="nav-brand"><span class="nav-brand-mark">know.2nth.ai</span><span class="nav-brand-sub">tech/microsoft/open-source-surveys</span></a>
+    <div class="nav-right">
+      <a href="index.html" class="nav-link">&larr; Microsoft</a>
+      <a href="../../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x1F319;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="../index.html">Tech</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="index.html">Microsoft</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">Open-source surveys</span>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> tech &middot; Microsoft &middot; Decision Leaf</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      Replacing SurveyMonkey on a Microsoft stack: <span class="gradient">mostly yes, with one paid gap.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      If your business runs on .NET, SQL Server and Azure, you can own your survey platform &mdash; the questions, the answers and the database they live in &mdash; instead of renting it per seat in dollars. There is a credible open-source <strong>backend</strong> for exactly that stack. What there isn't, yet, is a fully free <strong>drag-and-drop form designer</strong> to go with it. This page compares the real options, says plainly what is free and what isn't, and when Microsoft Forms is the better answer.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill accent">.NET &middot; SQL Server &middot; Azure</span>
+      <span class="pill indigo">Endatix</span>
+      <span class="pill green">Survey Solutions</span>
+      <span class="pill">Microsoft Forms</span>
+      <span class="pill warn">Designer is paid</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 -->
+<section id="what">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; The question behind the question</div>
+      <h2 class="section-title">A survey tool is three things, and only two are free.</h2>
+      <p class="section-lede">SurveyMonkey bundles three jobs that open source splits apart. Knowing which part you're replacing tells you what it will cost.</p>
+    </div>
+    <div class="stack-grid fade-up" style="transition-delay: 0.05s">
+      <div class="stack-cell">
+        <span class="layer">1 &middot; Designer</span>
+        <h4>Where you build the survey</h4>
+        <p>Drag-and-drop questions, logic, branching, themes. This is the part most open-source options on .NET <strong>don't</strong> give you free.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">2 &middot; Runner</span>
+        <h4>What respondents see</h4>
+        <p>The form on a phone or laptop, validation, partial saves. The SurveyJS Form Library does this well, free under MIT.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">3 &middot; Backend</span>
+        <h4>Where answers live</h4>
+        <p>Storage, versions, access control, exports, webhooks. Endatix provides this on .NET with SQL Server or Azure SQL, free under MIT.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 -->
+<section id="options">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; The options</div>
+      <h2 class="section-title">Two open-source platforms on .NET, and the one you already pay for.</h2>
+      <p class="section-lede">Checked against each project's repository, readme and licence file in October 2026.</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead><tr><th></th><th>Endatix + SurveyJS</th><th>Survey Solutions</th><th>Microsoft Forms</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Who makes it</strong></td><td>Endatix Ltd, with the SurveyJS library</td><td>The World Bank</td><td>Microsoft</td></tr>
+          <tr><td><strong>Stack</strong></td><td>.NET 10, Entity Framework Core, SQL Server / Azure SQL (or PostgreSQL), Azure Blob storage</td><td>.NET, PostgreSQL, Vue web apps, Android apps</td><td>Microsoft 365 (SaaS)</td></tr>
+          <tr><td><strong>Licence</strong></td><td>Backend MIT; respondent forms MIT; designer and admin app commercial</td><td>World Bank Community Licence: royalty-free, but its own agreement rather than a standard open-source licence</td><td>Included in most M365 plans</td></tr>
+          <tr><td><strong>Best at</strong></td><td>Customer and client surveys you own end to end; multi-tenant survey products</td><td>Large field surveys, offline interviews on tablets, supervisor workflows</td><td>Quick internal polls, feedback, sign-ups</td></tr>
+          <tr><td><strong>Maturity</strong></td><td>Pre-1.0 (v0.7.x), small core team, very active</td><td>Years in production at statistics offices; releases every few months</td><td>Mature, Microsoft-supported</td></tr>
+          <tr><td><strong>You own the data</strong></td><td>Yes &mdash; your database, your Azure region</td><td>Yes &mdash; your server</td><td>In your M365 tenant</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 03 -->
+<section id="endatix">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; Endatix, up close</div>
+      <h2 class="section-title">The best Microsoft-stack fit &mdash; as long as you plan for the designer.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p><strong>Endatix</strong> is a headless survey backend: a REST API with no screens of its own. It stores forms as SurveyJS JSON and handles what SurveyMonkey does behind the scenes:</p>
+      <ul>
+        <li><strong>Form lifecycle:</strong> drafts, publishing, versioning (edit a live survey without breaking earlier answers), templates and folders.</li>
+        <li><strong>Respondent features:</strong> partial submissions people can resume, prefilled forms, one response per person, password-protected forms, reCAPTCHA.</li>
+        <li><strong>Files:</strong> uploads of documents, images, audio and video to Azure Blob storage, Amazon S3 or self-hosted storage.</li>
+        <li><strong>Integration:</strong> webhooks on submissions and form changes, CSV and Excel export, email notifications.</li>
+        <li><strong>Access:</strong> multi-tenancy with tenant isolation enforced by the data layer, role-based access, and single sign-on over OAuth 2.0 &mdash; so Entra ID can plug in.</li>
+      </ul>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.07s">
+      <h4>The paid gap, spelled out</h4>
+      <p>Respondents see forms through the <strong>SurveyJS Form Library</strong>, which is MIT-licensed and free. But the drag-and-drop designer, <strong>SurveyJS Creator</strong>, &ldquo;requires a commercial license for each software developer&rdquo; in production &mdash; licensed per developer, not per survey or respondent. Endatix's own admin app, <strong>Endatix Hub</strong>, is a commercial Next.js product. Your three routes: buy the Creator licence for your developers, buy Endatix Hub, or have survey authors work in JSON through a simple admin screen you build.</p>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.09s">
+      <h4>What a Microsoft-native build looks like</h4>
+      <p>Endatix API on Azure App Service or containers &middot; <strong>Azure SQL</strong> for forms and responses &middot; <strong>Azure Blob</strong> for uploads &middot; <strong>Entra ID</strong> for staff sign-in &middot; SurveyJS Form Library in your own site for respondents &middot; webhooks or exports into <strong>Power BI</strong> or <a href="dataverse.html" style="color:var(--sky);text-decoration:none;">Dataverse</a> for reporting.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 -->
+<section id="survey-solutions">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; Survey Solutions, up close</div>
+      <h2 class="section-title">Built for statistics offices and fieldwork, not marketing surveys.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>The World Bank's <strong>Survey Solutions</strong> is used by national statistics offices, central banks, NGOs and universities. It comes complete: a <strong>Designer</strong> for questionnaires with sharing and collaboration, a <strong>Web Tester</strong>, a <strong>Headquarters</strong> app for managing surveys and collecting both interviewer-led and online responses, and an export service that writes to statistics packages. Android apps let <strong>interviewers work offline</strong>, with supervisors able to hold and redistribute work where there's no connectivity.</p>
+      <p>Two things to weigh. The database is <strong>PostgreSQL, not SQL Server</strong>, so it's &ldquo;Microsoft stack&rdquo; in language more than in data platform. And the licence is the World Bank's own community agreement: royalty-free, but read it before building a commercial product on top.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 -->
+<section id="decide">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; Decision guide</div>
+      <h2 class="section-title">Own the stack only when owning it buys you something.</h2>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead><tr><th>If you need&hellip;</th><th>Choose</th></tr></thead>
+        <tbody>
+          <tr><td>Internal polls, event sign-ups, staff feedback, and you have M365</td><td><strong>Microsoft Forms.</strong> Already paid for; no build.</td></tr>
+          <tr><td>Client-facing surveys where you must own the data, schema and hosting region</td><td><strong>Endatix + SurveyJS</strong>, budgeting for the designer licence.</td></tr>
+          <tr><td>A survey product you sell to your own clients, multi-tenant</td><td><strong>Endatix</strong> &mdash; tenant isolation and webhooks are built in.</td></tr>
+          <tr><td>Household or field research with interviewers, offline tablets and supervisors</td><td><strong>Survey Solutions.</strong></td></tr>
+          <tr><td>A complete free platform, and the stack isn't a hard rule</td><td>Look beyond .NET: <a href="https://github.com/LimeSurvey/LimeSurvey" style="color:var(--sky);text-decoration:none;" target="_blank" rel="noopener">LimeSurvey</a> (PHP, GPL) or <a href="https://github.com/heyform/heyform" style="color:var(--sky);text-decoration:none;" target="_blank" rel="noopener">HeyForm</a> (Node, AGPL) are more complete out of the box.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="decision-grid fade-up" style="transition-delay: 0.07s">
+      <div class="decision-card use">
+        <h4>Self-hosting pays off when</h4>
+        <ul>
+          <li>Responses are personal information and you need to say exactly where they're stored</li>
+          <li>Surveys feed your own systems through webhooks, not exports by email</li>
+          <li>You run surveys for many clients and per-seat SaaS pricing scales badly</li>
+          <li>You already have .NET developers and Azure hosting</li>
+        </ul>
+      </div>
+      <div class="decision-card skip">
+        <h4>Stay on SaaS or Forms when</h4>
+        <ul>
+          <li>A handful of people send occasional surveys</li>
+          <li>Nobody will own patching, backups and uptime</li>
+          <li>You need SurveyMonkey's panels or benchmark data &mdash; no open-source tool replaces those</li>
+          <li>You'd be the first production user of a pre-1.0 project for a critical workload</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 -->
+<section id="sa">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; South African context</div>
+      <h2 class="section-title">POPIA, rands and offline fieldwork.</h2>
+    </div>
+    <div class="info-card green fade-up" style="transition-delay: 0.05s">
+      <p><strong>POPIA is the strongest argument.</strong> Survey answers are often personal information. Self-hosting Endatix on Azure SQL in the <strong>South Africa North</strong> region puts the data in-country under your own access controls &mdash; a cleaner answer to &ldquo;where is it stored?&rdquo; than a US-hosted SaaS. With Microsoft Forms, check where your M365 tenant keeps Forms data before you promise anything.</p>
+      <p><strong>Dollar seats versus a one-off licence.</strong> SaaS survey tools bill per seat in USD. A per-developer designer licence and Azure hosting you already run is a different cost shape &mdash; usually better once many staff or clients send surveys.</p>
+      <p><strong>Fieldwork without signal.</strong> For research teams, NGOs and municipalities collecting data in areas with patchy coverage, Survey Solutions' offline Android interviewer is the feature that matters most.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 07 -->
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; Connections</div>
+      <h2 class="section-title">Where this links in the tree.</h2>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="index.html" class="connect-node">
+        <span class="tag">tech/microsoft</span>
+        <div class="skill">Microsoft hub</div>
+        <div class="why">The rest of the Microsoft branch: Copilot, Azure OpenAI in South Africa North, and the platform underneath.</div>
+      </a>
+      <a href="dataverse.html" class="connect-node">
+        <span class="tag">tech/microsoft/dataverse</span>
+        <div class="skill">Dataverse</div>
+        <div class="why">Where survey results can land for Power BI, Power Apps and Copilot Studio to use.</div>
+      </a>
+      <a href="../own-your-stack.html" class="connect-node">
+        <span class="tag">tech/own-your-stack</span>
+        <div class="skill">Own your stack</div>
+        <div class="why">The general case for owning the systems that hold your data, of which surveys are a small, clear example.</div>
+      </a>
+      <a href="../../data/index.html" class="connect-node">
+        <span class="tag">data</span>
+        <div class="skill">Data domain</div>
+        <div class="why">What happens after collection: storage, warehousing and analytics.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 08 -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 &middot; Resources</div>
+      <h2 class="section-title">Primary sources.</h2>
+      <p class="section-lede">Features and licence terms are taken from each project's own repository. Neither platform was installed for this leaf. Last reviewed 2026-10-12.</p>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://github.com/endatix/endatix" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Repo &middot; MIT</span>
+        <span class="r-title">Endatix API</span>
+        <span class="r-url">github.com/endatix/endatix</span>
+      </a>
+      <a href="https://github.com/endatix/endatix-hub" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Repo &middot; commercial</span>
+        <span class="r-title">Endatix Hub (admin app)</span>
+        <span class="r-url">github.com/endatix/endatix-hub</span>
+      </a>
+      <a href="https://github.com/surveyjs/survey-library" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Repo &middot; MIT</span>
+        <span class="r-title">SurveyJS Form Library</span>
+        <span class="r-url">github.com/surveyjs/survey-library</span>
+      </a>
+      <a href="https://surveyjs.io/licensing" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Licensing</span>
+        <span class="r-title">SurveyJS Creator licensing</span>
+        <span class="r-url">surveyjs.io/licensing</span>
+      </a>
+      <a href="https://github.com/surveysolutions/surveysolutions" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Repo &middot; World Bank licence</span>
+        <span class="r-title">Survey Solutions</span>
+        <span class="r-url">github.com/surveysolutions/surveysolutions</span>
+      </a>
+      <a href="https://docs.mysurvey.solutions" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs</span>
+        <span class="r-title">Survey Solutions documentation</span>
+        <span class="r-url">docs.mysurvey.solutions</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../../index.html">Skills tree</a>
+      <a href="index.html">Microsoft hub</a>
+      <a href="dataverse.html">Dataverse</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant</p>
+  </div>
+</footer>
+<script>
+  function toggleTheme(){const html=document.documentElement;const current=html.getAttribute('data-theme');const next=current==='dark'?'light':'dark';html.setAttribute('data-theme',next);document.querySelector('.theme-toggle').textContent=next==='dark'?'☀️':'🌙';localStorage.setItem('theme',next);}
+  const saved=localStorage.getItem('theme');if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.theme-toggle').textContent=saved==='dark'?'☀️':'🌙';}
+  const observer=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting)entry.target.classList.add('visible');});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>
