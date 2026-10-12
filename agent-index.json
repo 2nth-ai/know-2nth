@@ -3,7 +3,7 @@
   "description": "The public knowledge tree for the 2nth.ai ecosystem. Every leaf is both a human-readable reference and an agent-consumable context document.",
   "agent_fetch": "https://know.2nth.ai/api/context/<domain>/<leaf>",
   "mcp": "https://know.2nth.ai/mcp",
-  "count": 229,
+  "count": 230,
   "items": [
     {
       "title": "Agents — know.2nth.ai",
@@ -1300,6 +1300,14 @@
       "kind": "leaf",
       "url": "https://know.2nth.ai/explainers/tech/hardware/altium",
       "fetch": "tech/hardware/altium"
+    },
+    {
+      "title": "Anatomy of an agent-driven desktop — know.2nth.ai",
+      "description": "How Omarchy 4 is actually wired, mapped from a real 4.0.4 install: the read-only package and the ~/.config layer you own, the 441 omarchy-* commands between them, and the agent loop — one keybind launches Claude Code or another agent in auto mode, shipped skills tell it where config lives, and Hyprland live-reloads what it writes. Where changes belong, what was oversold, and when to take the wheel.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/omarchy-anatomy",
+      "fetch": "tech/omarchy-anatomy"
     },
     {
       "title": "Android HCE — know.2nth.ai",
