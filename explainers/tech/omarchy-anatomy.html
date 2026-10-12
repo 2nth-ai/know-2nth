@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anatomy of an agent-driven desktop &mdash; know.2nth.ai</title>
+<meta name="description" content="How Omarchy 4 is actually wired, mapped from a real 4.0.4 install: the read-only package and the ~/.config layer you own, the 441 omarchy-* commands between them, and the agent loop — one keybind launches Claude Code or another agent in auto mode, shipped skills tell it where config lives, and Hyprland live-reloads what it writes. Where changes belong, what was oversold, and when to take the wheel.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/tech/omarchy-anatomy">
+<meta property="og:title" content="Anatomy of an agent-driven desktop &mdash; know.2nth.ai">
+<meta property="og:description" content="Omarchy 4 opened up: which files are yours, how a keypress becomes a pre-approved coding agent editing your desktop, and the one safety net it leaves you to build.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Anatomy of an agent-driven desktop &mdash; know.2nth.ai">
+<meta name="twitter:description" content="Omarchy 4 opened up: which files are yours, how a keypress becomes a pre-approved coding agent editing your desktop, and the one safety net it leaves you to build.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3Cline x1='16' y1='3' x2='16' y2='7' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='16' y1='25' x2='16' y2='29' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='3' y1='16' x2='7' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='25' y1='16' x2='29' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3C/svg%3E">
+<style>
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-glow: #34D399; --green-soft: rgba(16, 185, 129, 0.12); --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-glow: #818CF8; --indigo-soft: rgba(99, 102, 241, 0.12); --cyan: #22D3EE; --cyan-soft: rgba(34, 211, 238, 0.12); --bg: var(--ink); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(37, 99, 235, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(56, 189, 248, 0.3); --max-w: 1200px; --read-w: 760px; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(37, 99, 235, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(37, 99, 235, 0.25); }
+  * { margin: 0; padding: 0; box-sizing: border-box; } html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.indigo { width: 600px; height: 600px; background: var(--indigo); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--sky); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--sky); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--sky); } .crumb-sep { opacity: 0.5; } .crumb-current { color: var(--text-secondary); }
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--indigo); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--indigo); box-shadow: 0 0 12px var(--indigo); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--indigo-glow), var(--sky), var(--cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.accent { background: rgba(37, 99, 235, 0.12); color: var(--blue-glow); border-color: rgba(37, 99, 235, 0.25); }
+  .pill.green { background: var(--green-soft); color: var(--green); border-color: rgba(16, 185, 129, 0.25); }
+  .pill.indigo { background: var(--indigo-soft); color: var(--indigo-glow); border-color: rgba(99, 102, 241, 0.25); }
+  .pill.cyan { background: var(--cyan-soft); color: var(--cyan); border-color: rgba(34, 211, 238, 0.25); }
+  .pill.warn { background: var(--warm-soft); color: var(--warm-glow); border-color: rgba(245, 158, 11, 0.25); }
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--sky); margin-bottom: 14px; }
+  .section-label.indigo { color: var(--indigo-glow); }
+  .section-label.cyan { color: var(--cyan); }
+  .section-label.green { color: var(--green-glow); }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .q { color: var(--text-primary); font-style: italic; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--sky); }
+  .prose ul, .prose ol { padding-left: 24px; margin-bottom: 18px; max-width: var(--read-w); }
+  .prose li { font-size: 15px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 8px; }
+  .prose li strong { color: var(--text-primary); font-weight: 600; }
+  pre.code { background: var(--ink-deep); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px 22px; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.65; color: var(--mist); margin: 0 0 20px; max-width: var(--read-w); }
+  [data-theme="light"] pre.code { background: #0F172A; color: #E2E8F0; }
+  pre.code .k { color: var(--sky); } pre.code .s { color: #A5F3B8; } pre.code .c { color: var(--text-muted); font-style: italic; } pre.code .h { color: var(--blue-glow); font-weight: 600; }
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); margin-bottom: 20px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.indigo { border-left: 3px solid var(--indigo); }
+  .info-card.cyan { border-left: 3px solid var(--cyan); }
+  .info-card.rose { border-left: 3px solid var(--rose); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .info-card ul { padding-left: 20px; margin: 0; }
+  .info-card li { font-size: 14px; color: var(--text-secondary); line-height: 1.65; margin-bottom: 6px; }
+  .info-card li strong { color: var(--text-primary); }
+  /* Lock-in flow diagram */
+  .flow { display: grid; grid-template-columns: 1fr auto 1fr; gap: 16px; align-items: stretch; max-width: var(--read-w); margin-bottom: 20px; }
+  @media (max-width: 640px) { .flow { grid-template-columns: 1fr; } .flow .flow-mid { transform: rotate(90deg); padding: 8px 0; } }
+  .flow-col { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 22px 24px; }
+  .flow-col.trapped { border-left: 3px solid var(--rose); }
+  .flow-col.owned { border-left: 3px solid var(--green); }
+  .flow-col .flow-head { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1.4px; text-transform: uppercase; margin-bottom: 14px; }
+  .flow-col.trapped .flow-head { color: var(--rose); }
+  .flow-col.owned .flow-head { color: var(--green); }
+  .flow-col ul { list-style: none; padding: 0; margin: 0; }
+  .flow-col li { font-size: 13px; color: var(--text-secondary); line-height: 1.5; padding: 6px 0; border-bottom: 1px solid var(--border); display: flex; gap: 8px; }
+  .flow-col li:last-child { border-bottom: none; }
+  .flow-col li .mk { font-family: 'JetBrains Mono', monospace; flex-shrink: 0; }
+  .flow-col.trapped li .mk { color: var(--rose); }
+  .flow-col.owned li .mk { color: var(--green); }
+  .flow-mid { display: grid; place-items: center; font-family: 'JetBrains Mono', monospace; font-size: 22px; color: var(--text-muted); }
+  /* Stack layers */
+  .stack-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; max-width: var(--read-w); margin-bottom: 20px; }
+  .stack-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--indigo); border-radius: var(--radius-md); padding: 18px 22px; }
+  .stack-cell.sky { border-left-color: var(--sky); }
+  .stack-cell.cyan { border-left-color: var(--cyan); }
+  .stack-cell.green { border-left-color: var(--green); }
+  .stack-cell .layer { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .stack-cell h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.3px; }
+  .stack-cell p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+  /* Vertical stack diagram for AI foundation */
+  .pyramid { max-width: var(--read-w); margin-bottom: 20px; display: flex; flex-direction: column; gap: 10px; }
+  .pyramid-row { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 16px 22px; display: flex; align-items: center; gap: 16px; }
+  .pyramid-row .p-tier { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-muted); width: 88px; flex-shrink: 0; }
+  .pyramid-row .p-body { font-size: 14px; color: var(--text-secondary); line-height: 1.55; }
+  .pyramid-row .p-body strong { color: var(--text-primary); }
+  .pyramid-row.top { border-left: 3px solid var(--green); }
+  .pyramid-row.mid { border-left: 3px solid var(--cyan); }
+  .pyramid-row.base { border-left: 3px solid var(--indigo); }
+  .pyramid-arrow { text-align: center; color: var(--text-muted); font-size: 14px; font-family: 'JetBrains Mono', monospace; }
+  /* Compare table */
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: var(--read-w); margin-bottom: 20px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--sky); background: rgba(37, 99, 235, 0.04); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); } .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--sky); }
+  .compare td strong { color: var(--text-primary); }
+  /* Decision */
+  .decision-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: var(--read-w); }
+  @media (max-width: 720px) { .decision-grid { grid-template-columns: 1fr; } }
+  .decision-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 24px; }
+  .decision-card.use { border-left: 3px solid var(--indigo); } .decision-card.skip { border-left: 3px solid var(--sky); }
+  .decision-card h4 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 12px; }
+  .decision-card.use h4 { color: var(--indigo-glow); } .decision-card.skip h4 { color: var(--sky); }
+  .decision-card ul { list-style: none; padding: 0; }
+  .decision-card li { font-size: 13px; color: var(--text-secondary); line-height: 1.6; padding: 6px 0; border-bottom: 1px solid var(--border); }
+  .decision-card li:last-child { border-bottom: none; }
+  /* Connections */
+  .connect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .connect-node { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; transition: all 0.3s; text-decoration: none; color: inherit; display: block; }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node.soon { cursor: default; opacity: 0.72; }
+  .connect-node .tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+  /* Resources */
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--sky); word-break: break-all; }
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--sky); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } pre.code { font-size: 11px; padding: 14px 16px; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+  /* Diagram frame */
+  .diagram { max-width: 100%; margin-bottom: 14px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+  .diagram iframe { display: block; width: 100%; aspect-ratio: 16 / 10; border: 0; background: var(--ink-deep); }
+  .diagram-cap { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.4px; margin-bottom: 28px; }
+  .diagram-cap a { color: var(--sky); text-decoration: none; }
+  @media (max-width: 720px) { .diagram iframe { aspect-ratio: 3 / 4; } }
+</style>
+</head>
+<body>
+
+<div class="glow-orb indigo"></div>
+<div class="glow-orb sky"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand"><span class="nav-brand-mark">know.2nth.ai</span><span class="nav-brand-sub">tech/omarchy-anatomy</span></a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">&larr; Tech</a>
+      <a href="../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x2600;&#xFE0F;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="./">Tech</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">Anatomy of an agent-driven desktop</span>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> tech &middot; Platform &amp; desktop</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      One keypress, one agent, <span class="gradient">write access to your desktop.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      The <a href="workstation.html" style="color: var(--sky);">workstation leaf</a> makes the argument for an agent-editable operating system. This one opens the machine up. It is a map of a real Omarchy&nbsp;4.0.4 install &mdash; which files the system is made of, which of them are yours, how a keybinding becomes a coding agent with permission to change them, and the one safety net Omarchy leaves for you to build.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill accent">Omarchy 4.0.4</span>
+      <span class="pill indigo">Hyprland 0.56 &middot; Lua</span>
+      <span class="pill cyan">Quickshell</span>
+      <span class="pill green">441 omarchy-* scripts</span>
+      <span class="pill warn">Agents in auto mode</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 WHAT IT IS -->
+<section id="what-it-is">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label indigo">01 &middot; What this is</div>
+      <h2 class="section-title">Two layers of text files and a pile of shell scripts.</h2>
+      <p class="section-lede">Underneath the theme switcher and the launcher, Omarchy has a simple shape. Omarchy owns one read-only tree, you own another, and about four hundred commands connect them. Once you can see that split, every question about where a change should go answers itself, and so does the question of what an agent is allowed to touch.</p>
+    </div>
+    <div class="stack-grid fade-up" style="transition-delay: 0.04s">
+      <div class="stack-cell">
+        <span class="layer">Omarchy owns</span>
+        <h4><code>/usr/share/omarchy</code></h4>
+        <p>Installed by pacman as the <code>omarchy</code> package. Default Hyprland Lua, the shell, 22 themes, 106 migrations, the agent skills, and every <code>omarchy-*</code> command. Updates replace it wholesale.</p>
+      </div>
+      <div class="stack-cell green">
+        <span class="layer">You own</span>
+        <h4><code>~/.config</code></h4>
+        <p><code>hypr/*.lua</code> overrides, <code>omarchy/</code> hooks, themes, menu extensions, plugins and your default-agent choice. Nothing in an update writes here except a migration.</p>
+      </div>
+      <div class="stack-cell sky">
+        <span class="layer">The glue</span>
+        <h4><code>omarchy-*</code> commands</h4>
+        <p>441 bash and Python scripts on the path. The biggest families are install (38), theme (34), hardware (26), remove (25), launch (24) and hyprland (24). Every keybinding and menu item ends up calling one.</p>
+      </div>
+      <div class="stack-cell cyan">
+        <span class="layer">The face</span>
+        <h4><code>omarchy-shell</code></h4>
+        <p>One Quickshell (QML) process that draws the bar, launcher, menus, notifications and lock screen. It also hosts the agents panel that shows your model usage.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 ANATOMY -->
+<section id="anatomy">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; How it is wired</div>
+      <h2 class="section-title">Your config loads last, so it wins.</h2>
+      <p class="section-lede">Start at the package and follow the arrows. The main row is what runs when you press a key. The column above it shows where the code comes from, and the row below shows what happens afterwards.</p>
+    </div>
+    <div class="diagram fade-up"><iframe src="/diagrams/omarchy/anatomy.html" title="Omarchy 4 anatomy diagram" loading="lazy"></iframe></div>
+    <p class="diagram-cap fade-up">Interactive: pan, zoom, trace. <a href="/diagrams/omarchy/anatomy.html" target="_blank" rel="noopener">Open full screen &nearr;</a></p>
+    <div class="prose fade-up" style="transition-delay: 0.04s">
+      <p><strong>The load order is the whole design.</strong> <code>~/.config/hypr/hyprland.lua</code> is short. It <code>dofile</code>s Omarchy's bootstrap, <code>require</code>s <code>default.hypr.omarchy</code>, and only then loads your <code>hypr.monitors</code>, <code>hypr.input</code>, <code>hypr.bindings</code>, <code>hypr.looknfeel</code> and <code>hypr.autostart</code>. The defaults can improve on every update without touching your files, and anything you set overrides them. You can switch off all of Omarchy's default bindings with a single flag, <code>omarchy_default_bindings = false</code>.</p>
+      <p><strong>Hyprland 0.56 is configured in Lua now, not hyprlang.</strong> The bootstrap keeps a list of module prefixes (<code>default.hypr</code>, <code>hypr</code>, <code>omarchy.current.theme</code>) that it drops from Lua's module cache on reload. A saved edit is live straight away, with no logout and no restart. That matters a great deal once an agent is the one doing the editing.</p>
+      <p><strong>Themes are templates.</strong> <code>omarchy-theme-set</code> renders <code>.tpl</code> files with the theme's colours, restyles the shell and apps, then runs <code>omarchy-hook theme-set</code>. That calls whatever you have placed in <code>~/.config/omarchy/hooks/theme-set.d/</code>. The same hook mechanism covers <code>post-boot</code>, <code>post-update</code>, <code>font-set</code>, <code>battery-low</code> and <code>pre-refresh-pacman</code>.</p>
+      <p><strong>Updates are pacman plus migrations.</strong> <code>omarchy-update</code> pulls the new package, then runs any of the 106 dated migration scripts that have not run yet. Migrations are the one place where Omarchy deliberately reaches into <code>~/.config</code>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 AGENT LOOP -->
+<section id="agent-loop">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label cyan">03 &middot; The agent loop</div>
+      <h2 class="section-title">From keypress to edited config with no approval prompts.</h2>
+      <p class="section-lede">This is the part that makes Omarchy 4 agent-driven rather than just agent-friendly. Every step is a short, readable script, and reading them is the best way to understand what you have agreed to.</p>
+    </div>
+    <div class="diagram fade-up"><iframe src="/diagrams/omarchy/agent-loop.html" title="Omarchy agent loop diagram" loading="lazy"></iframe></div>
+    <p class="diagram-cap fade-up">Interactive: pan, zoom, trace. <a href="/diagrams/omarchy/agent-loop.html" target="_blank" rel="noopener">Open full screen &nearr;</a></p>
+    <div class="prose fade-up" style="transition-delay: 0.04s">
+      <ol>
+        <li><strong>You pick an agent once.</strong> <code>omarchy default agent claude</code> writes one word to <code>~/.config/omarchy/defaults/agent</code>. Omarchy deliberately ships without a default, and the keybinding opens a picker until you choose one.</li>
+        <li><strong>The launcher pre-approves it.</strong> <code>omarchy agent</code> starts the chosen agent with that agent's own way of saying "don't stop to ask": <code>claude --permission-mode auto</code>, <code>gemini --yolo</code>, <code>copilot --allow-all</code>, <code>grok --permission-mode bypassPermissions</code>, <code>crush --yolo</code>, <code>opencode --auto</code>. The comment in the script spells out the reasoning: agents launched from a keybinding run unattended.</li>
+        <li><strong>It moves out of your home folder.</strong> If <code>~/Work</code> exists, the launcher switches into it first, because agents refuse to remember trust for <code>$HOME</code>. The working directory is the agent's first view of the machine.</li>
+        <li><strong>Skills tell it where things are.</strong> Omarchy ships two agent skills, <code>omarchy</code> (Hyprland, theming, hooks, plugins, captures) and <code>diagnose-crash</code>, and symlinks them into the agent's skills folder. The agent arrives already knowing that edits go in <code>~/.config/hypr</code> and never in <code>/usr/share/omarchy</code>.</li>
+        <li><strong>It edits, Hyprland reloads.</strong> The agent changes a Lua file, Hyprland picks it up, and you see the result straight away. The loop closes without you approving anything.</li>
+        <li><strong>Crashes and spend get the same treatment.</strong> <code>omarchy agent crash &lt;pid&gt;</code> gathers the facts from <code>coredumpctl</code> and briefs the agent through the crash skill. The shell's agents panel reads <code>omarchy-agent-usage-*</code>, which collects local transcript stats together with the provider's rate-limit endpoint.</li>
+      </ol>
+      <p><strong>One correction to the launch coverage.</strong> The release was pitched as the OS offering your agent the core dump when a process crashes. On the 4.0.4 install we mapped, the command and the skill are both present, but nothing in the shell or the package calls them automatically. Treat crash triage as a command you run by PID, not a pop-up you can count on.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 WHERE CHANGES GO -->
+<section id="where">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label green">04 &middot; Where changes belong</div>
+      <h2 class="section-title">A routing table for you and your agent.</h2>
+      <p class="section-lede">Most Omarchy breakage comes from an edit in the wrong layer. That is equally true when the agent made it.</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.04s">
+      <table class="compare">
+        <thead><tr><th>You want to change</th><th>Edit</th><th>Never</th></tr></thead>
+        <tbody>
+          <tr><td>Keybindings</td><td><code>~/.config/hypr/bindings.lua</code></td><td><code>default/hypr/bindings/*</code></td></tr>
+          <tr><td>Monitors, input, gaps, animations</td><td><code>~/.config/hypr/{monitors,input,looknfeel}.lua</code></td><td>The bootstrap or <code>omarchy.lua</code></td></tr>
+          <tr><td>Startup apps</td><td><code>~/.config/hypr/autostart.lua</code></td><td>systemd units Omarchy owns</td></tr>
+          <tr><td>React to theme, font, boot or update</td><td><code>~/.config/omarchy/hooks/&lt;event&gt;.d/</code></td><td>Patching <code>omarchy-theme-set</code></td></tr>
+          <tr><td>Menu entries</td><td><code>~/.config/omarchy/extensions/omarchy-menu.jsonc</code></td><td>The shell QML</td></tr>
+          <tr><td>Bar widgets</td><td>A plugin via <code>omarchy plugin add</code></td><td><code>/usr/share/omarchy/shell</code></td></tr>
+          <tr><td>Theme colours for another app</td><td><code>~/.config/omarchy/themed/*.tpl</code></td><td>The generated output files</td></tr>
+          <tr><td>Which agent launches</td><td><code>omarchy default agent &lt;name&gt;</code></td><td>Editing <code>omarchy-agent</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.06s">
+      <p><strong>The tell that it is working:</strong> look at <code>~/.config/hypr</code> after a few weeks of agent-assisted changes and you will find <code>bindings.lua.bak.&lt;epoch&gt;</code> files next to the real ones. The agent backs up before it writes, which is good manners. It is not version control.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 DECISION GUIDE -->
+<section id="decision">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label indigo">05 &middot; Decision guide</div>
+      <h2 class="section-title">When to let the agent drive.</h2>
+      <p class="section-lede">Auto mode is the default from the keybinding, and you can turn it off. Make that choice deliberately rather than inheriting it.</p>
+    </div>
+    <div class="decision-grid fade-up" style="transition-delay: 0.04s">
+      <div class="decision-card use">
+        <h4>Let it drive when</h4>
+        <ul>
+          <li><code>~/.config</code> is a Git repo and you commit before each session</li>
+          <li>The change is cosmetic or reversible: bindings, gaps, themes, widgets</li>
+          <li>You are diagnosing, not changing, for example crash triage from a core dump</li>
+          <li>The machine is yours and nobody else depends on it being up</li>
+        </ul>
+      </div>
+      <div class="decision-card skip">
+        <h4>Take the wheel when</h4>
+        <ul>
+          <li>The change touches boot, disk encryption, drivers or pacman</li>
+          <li>The agent wants to edit <code>/usr/share/omarchy</code>. That is a bug report, not a fix</li>
+          <li>Client credentials or SSH keys live in the working directory</li>
+          <li>You cannot say which file changed. Launch it from a terminal without the auto flag instead</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 SA CONTEXT -->
+<section id="sa">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label cyan">06 &middot; South African context</div>
+      <h2 class="section-title">The meter in the bar is in dollars.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.04s">
+      <p><strong>Spend is visible, so use it.</strong> The agents panel sits next to the battery for a reason. Every "make my bar look nicer" session draws on a subscription billed in USD. Small cosmetic changes are cheaper to make by hand once you know which file to open, and section 04 is that list.</p>
+      <p><strong>Rolling updates on capped data.</strong> <code>omarchy-update</code> is pacman plus migrations, and both are bandwidth. On LTE, update deliberately rather than whenever the indicator nags. If you run several machines, keep a local package mirror.</p>
+      <p><strong>Your <code>~/.config</code> repo is also your second machine.</strong> Plenty of local developers run two boxes, one for client Windows and M365 work and one for building. If the Omarchy layer is text in Git, rebuilding or cloning it after a theft or a dead SSD takes an afternoon rather than a week.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 07 CONNECTIONS -->
+<section id="connections">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; Connections</div>
+      <h2 class="section-title">Where this links in the tree.</h2>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="workstation.html" class="connect-node">
+        <span class="tag">tech/workstation</span>
+        <div class="skill">The malleable workstation</div>
+        <div class="why">The why to this page's how. The thesis, and the comparison with NixOS and immutable images.</div>
+      </a>
+      <a href="../agents/claude-code.html" class="connect-node">
+        <span class="tag">agents/claude-code</span>
+        <div class="skill">Claude Code</div>
+        <div class="why">The agent in this map. <code>--permission-mode auto</code> is the flag the launcher passes.</div>
+      </a>
+      <a href="../agents/skills.html" class="connect-node">
+        <span class="tag">agents/skills</span>
+        <div class="skill">Agent skills</div>
+        <div class="why">The mechanism Omarchy uses to teach any agent its config layout.</div>
+      </a>
+      <a href="../agents/coding-cli-agents.html" class="connect-node">
+        <span class="tag">agents/coding-cli-agents</span>
+        <div class="skill">Coding CLI agents</div>
+        <div class="why">The rest of the field <code>omarchy default agent</code> can launch, and each one's approval model.</div>
+      </a>
+      <a href="own-your-stack.html" class="connect-node">
+        <span class="tag">tech/own-your-stack</span>
+        <div class="skill">Own your stack</div>
+        <div class="why">A desktop whose state is text you own is the same principle, one layer down.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 08 RESOURCES -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 &middot; Resources</div>
+      <h2 class="section-title">Primary sources.</h2>
+      <p class="section-lede">Mapped from an installed system in October 2026: <code>omarchy</code> 4.0.4-1, Hyprland 0.56.2, Quickshell 0.3.1. Paths and counts come from <code>/usr/share/omarchy</code>, not from the docs. Re-check them after a major update.</p>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://github.com/omacom/omarchy" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Source</span>
+        <span class="r-title">omacom/omarchy</span>
+        <span class="r-url">github.com/omacom/omarchy</span>
+      </a>
+      <a href="https://omarchy.org/manual/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs</span>
+        <span class="r-title">The Omarchy Manual</span>
+        <span class="r-url">omarchy.org/manual</span>
+      </a>
+      <a href="https://wiki.hypr.land/Configuring/Start/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Compositor</span>
+        <span class="r-title">Hyprland &mdash; configuring</span>
+        <span class="r-url">wiki.hypr.land/Configuring/Start</span>
+      </a>
+      <a href="https://quickshell.org" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Shell</span>
+        <span class="r-title">Quickshell</span>
+        <span class="r-url">quickshell.org</span>
+      </a>
+      <a href="https://code.claude.com/docs/en/skills" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Agent</span>
+        <span class="r-title">Claude Code &mdash; skills</span>
+        <span class="r-url">code.claude.com/docs</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../index.html">Knowledge tree</a>
+      <a href="./">Tech hub</a>
+      <a href="https://github.com/omacom/omarchy" target="_blank" rel="noopener">Omarchy source &nearr;</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant</p>
+  </div>
+</footer>
+<script>
+  function toggleTheme(){const html=document.documentElement;const current=html.getAttribute('data-theme');const next=current==='dark'?'light':'dark';html.setAttribute('data-theme',next);document.querySelector('.theme-toggle').textContent=next==='dark'?'☀️':'🌙';localStorage.setItem('theme',next);}
+  const saved=localStorage.getItem('theme');if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.theme-toggle').textContent=saved==='dark'?'☀️':'🌙';}
+  const observer=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting)entry.target.classList.add('visible');});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>
