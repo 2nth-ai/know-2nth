@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Copy Is Cheap Now &mdash; know.2nth.ai Briefing</title>
+<meta name="description" content="In fifteen days one small team used AI agents to publish open-source copies of thirteen flagship desktop apps — Photoshop, Word, Excel, PowerPoint, AutoCAD, Figma, Pro Tools and more. They copied the tip of the iceberg: the menus and the look. What sits below the waterline — real-world files, stability, ecosystem, support — is still the vendor's moat. A plain-language briefing on what that changes for your software bill.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/briefings/the-copy-is-cheap">
+<meta property="og:title" content="The Copy Is Cheap Now — know.2nth.ai Briefing">
+<meta property="og:description" content="Thirteen flagship apps copied in fifteen days by a small team and its agents. The tip of the iceberg is now cheap. What that does — and doesn't — change for your software bill.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai — The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Copy Is Cheap Now — know.2nth.ai">
+<meta name="twitter:description" content="Thirteen flagship apps copied in fifteen days by a small team and its agents. The tip of the iceberg is now cheap. What that does — and doesn't — change for your software bill.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%2338BDF8' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%232563EB' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --ink: #0B1120; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6;
+    --sky: #38BDF8; --cyan: #22D3EE; --paper: #F8FAFC; --slate: #94A3B8;
+    --warm: #F59E0B; --warm-soft: rgba(245,158,11,0.12);
+    --green: #10B981; --green-soft: rgba(16,185,129,0.12);
+    --rose: #F43F5E; --rose-soft: rgba(244,63,94,0.12);
+    --indigo: #6366F1; --indigo-soft: rgba(99,102,241,0.12);
+    --max-w: 1080px; --read-w: 820px;
+    --radius-md: 14px; --radius-lg: 22px; --radius-pill: 100px;
+    --bg: #EEF4FB; --bg-soft: #E2ECF6; --card: #FFFFFF; --card-2: #F8FBFE;
+    --text: #0B1120; --text-2: #475569; --text-3: #8A97AB;
+    --border: rgba(15,23,42,0.10); --border-strong: rgba(15,23,42,0.16);
+    --shadow: 0 14px 40px rgba(15,23,42,0.08);
+    --sea: rgba(37,99,235,0.10); --ice: #FFFFFF; --ice-edge: rgba(15,23,42,0.18); --ice-deep: #DCE8F5;
+  }
+  [data-theme="dark"] {
+    --bg: #07101D; --bg-soft: #0B1828; --card: #102033; --card-2: #0C1828;
+    --text: #F8FAFC; --text-2: #B6C2D6; --text-3: #6B7A92;
+    --border: rgba(148,163,184,0.14); --border-strong: rgba(148,163,184,0.24);
+    --shadow: 0 16px 48px rgba(0,0,0,0.5);
+    --sea: rgba(56,189,248,0.08); --ice: #1A2E47; --ice-edge: rgba(148,163,184,0.30); --ice-deep: #13253B;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body {
+    font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+    background: radial-gradient(1100px 560px at 80% -120px, var(--bg-soft), var(--bg)) fixed;
+    color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  }
+  .wrap { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+  a { color: var(--blue); text-decoration: none; }
+
+  .topbar { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(14px);
+    background: color-mix(in srgb, var(--bg) 80%, transparent); border-bottom: 1px solid var(--border); }
+  .topbar-inner { max-width: var(--max-w); margin: 0 auto; padding: 12px 24px;
+    display: flex; align-items: center; justify-content: space-between; }
+  .brand-wrap { display: flex; align-items: center; }
+  .brand { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 14px;
+    background: linear-gradient(135deg, var(--blue), var(--sky));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; text-decoration: none; }
+  .brand-sub { font-size: 11px; color: var(--text-3); letter-spacing: 1.5px; text-transform: uppercase;
+    margin-left: 10px; padding-left: 10px; border-left: 1px solid var(--border); font-weight: 500; }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-2); text-decoration: none; font-weight: 500; }
+  .nav-link:hover { color: var(--sky); }
+  .toggle { background: none; border: 1px solid var(--border); color: var(--text-2);
+    width: 34px; height: 34px; border-radius: 50%; cursor: pointer; display: grid; place-items: center;
+    font-size: 15px; transition: all 0.2s; }
+  .toggle:hover { border-color: var(--border-strong); }
+
+  .hero { padding: 60px 0 8px; }
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500;
+    letter-spacing: 2.5px; text-transform: uppercase; color: var(--indigo);
+    display: inline-flex; align-items: center; gap: 10px; margin-bottom: 22px; }
+  .eyebrow .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--indigo); box-shadow: 0 0 12px var(--indigo); }
+  .hero h1 { font-size: clamp(36px, 6vw, 60px); font-weight: 800; line-height: 1.05;
+    letter-spacing: -1.8px; margin-bottom: 22px; max-width: 17ch; }
+  .hero h1 .hl { background: linear-gradient(135deg, var(--blue-glow), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .lede { font-size: 19px; color: var(--text-2); max-width: 720px; line-height: 1.6; font-weight: 300; }
+  .hero .lede .hl { color: var(--text); font-weight: 500; }
+  .meta-chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+  .chip { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.4px; color: var(--text-2);
+    border: 1px solid var(--border); padding: 8px 14px; border-radius: var(--radius-pill); background: var(--card-2); }
+
+  section { padding: 44px 0; }
+  .s-num { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--sky); font-weight: 600; margin-bottom: 12px; }
+  .s-title { font-size: clamp(26px, 4vw, 36px); font-weight: 700; letter-spacing: -0.8px; line-height: 1.15; margin-bottom: 16px; max-width: 24ch; }
+  .s-lede { font-size: 17px; color: var(--text-2); max-width: var(--read-w); line-height: 1.7; font-weight: 300; margin-bottom: 26px; }
+  .s-lede .hl { color: var(--text); font-weight: 600; }
+  .s-lede + .s-lede { margin-top: -8px; }
+
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin: 6px 0 26px; }
+  @media (max-width: 760px){ .stats { grid-template-columns: repeat(2, 1fr); } }
+  .stat { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px 22px; box-shadow: var(--shadow); }
+  .stat .v { font-size: clamp(26px, 3.4vw, 34px); font-weight: 800; letter-spacing: -1px; line-height: 1.1; }
+  .stat .l { font-size: 13px; color: var(--text-2); margin-top: 4px; line-height: 1.45; }
+
+  .suite { width: 100%; max-width: var(--read-w); border-collapse: separate; border-spacing: 0; background: var(--card);
+    border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow); margin-bottom: 26px; }
+  .suite th { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.2px; text-transform: uppercase;
+    color: var(--text-3); text-align: left; font-weight: 600; padding: 12px 16px; background: var(--card-2); border-bottom: 1px solid var(--border); }
+  .suite td { font-size: 14.5px; color: var(--text-2); padding: 10px 16px; border-bottom: 1px solid var(--border); }
+  .suite tr:last-child td { border-bottom: none; }
+  .suite td:first-child { color: var(--text); font-weight: 600; }
+  .suite td.n { font-family: 'JetBrains Mono', monospace; font-size: 13px; text-align: right; white-space: nowrap; }
+  .suite th.n { text-align: right; }
+  .table-wrap { max-width: var(--read-w); overflow-x: auto; }
+  .src { font-size: 12.5px; color: var(--text-3); max-width: var(--read-w); margin: -14px 0 26px; line-height: 1.55; }
+
+  .berg { max-width: var(--read-w); background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 18px; box-shadow: var(--shadow); margin-bottom: 26px; }
+  .berg svg { width: 100%; height: auto; display: block; }
+  .berg .sea { fill: var(--sea); }
+  .berg .line { stroke: var(--sky); stroke-width: 2; stroke-dasharray: 6 6; }
+  .berg .tip { fill: var(--ice); stroke: var(--ice-edge); stroke-width: 1.5; }
+  .berg .mass { fill: var(--ice-deep); stroke: var(--ice-edge); stroke-width: 1.5; }
+  .berg .lbl { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.6px; font-weight: 600; }
+  .berg .lbl.up { fill: var(--green); } .berg .lbl.down { fill: var(--rose); } .berg .lbl.wl { fill: var(--sky); }
+  .berg .item { font-family: 'Outfit', sans-serif; font-size: 14px; fill: var(--text); font-weight: 500; }
+  .berg .note { font-family: 'Outfit', sans-serif; font-size: 12px; fill: var(--text-2); }
+
+  .defs { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 26px 0; }
+  @media (max-width: 720px){ .defs { grid-template-columns: 1fr; } }
+  .def { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 26px 28px; box-shadow: var(--shadow); }
+  .def.flow { border-top: 4px solid var(--warm); }
+  .def.agent { border-top: 4px solid var(--green); }
+  .def .dt { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; font-weight: 600; margin-bottom: 8px; }
+  .def.flow .dt { color: var(--warm); } .def.agent .dt { color: var(--green); }
+  .def h3 { font-size: 21px; font-weight: 800; letter-spacing: -0.4px; margin-bottom: 8px; }
+  .def p { font-size: 14.5px; color: var(--text-2); line-height: 1.6; margin-bottom: 10px; }
+  .def p:last-child { margin-bottom: 0; }
+
+  .callout { background: var(--card-2); border: 1px solid var(--border); border-left: 4px solid var(--sky); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); box-shadow: var(--shadow); }
+  .callout + .callout { margin-top: 18px; }
+  .callout.warm { border-left-color: var(--warm); }
+  .callout.green { border-left-color: var(--green); }
+  .callout.indigo { border-left-color: var(--indigo); }
+  .callout.rose { border-left-color: var(--rose); }
+  .callout .co-tag { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; font-weight: 600; color: var(--sky); margin-bottom: 10px; }
+  .callout.warm .co-tag { color: var(--warm); }
+  .callout.green .co-tag { color: var(--green); }
+  .callout.indigo .co-tag { color: var(--indigo); }
+  .callout.rose .co-tag { color: var(--rose); }
+  .callout p { font-size: 15.5px; color: var(--text-2); line-height: 1.7; }
+  .callout p strong { color: var(--text); }
+  .callout p + p { margin-top: 12px; }
+  .callout .more { font-family: 'JetBrains Mono', monospace; font-size: 12.5px; font-weight: 600; margin-top: 12px; display: inline-block; }
+
+  .checks { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: var(--read-w); margin-bottom: 26px; }
+  @media (max-width: 720px){ .checks { grid-template-columns: 1fr; } }
+  .check { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 22px 24px; box-shadow: var(--shadow); }
+  .check .q { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+  .check p { font-size: 13.5px; color: var(--text-2); line-height: 1.55; }
+
+  .thread { display: grid; grid-template-columns: repeat(2,1fr); gap: 14px; }
+  @media (max-width: 760px){ .thread { grid-template-columns: 1fr; } }
+  .tcard { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px 26px; box-shadow: var(--shadow); text-decoration: none; color: inherit; display: block; transition: transform .25s, border-color .25s; border-top: 4px solid var(--sky); }
+  .tcard:hover { transform: translateY(-3px); border-color: var(--border-strong); }
+  .tcard .tt { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--sky); font-weight: 600; margin-bottom: 8px; }
+  .tcard h4 { font-size: 19px; font-weight: 800; letter-spacing: -0.4px; margin-bottom: 8px; }
+  .tcard p { font-size: 14px; color: var(--text-2); line-height: 1.55; margin-bottom: 10px; }
+  .tcard .go { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--sky); font-weight: 600; }
+
+  .finalbox { max-width: var(--read-w); margin: 0 auto; background: var(--card); border: 1px solid var(--border-strong); border-radius: var(--radius-lg); padding: 34px 36px; box-shadow: var(--shadow); text-align: center; }
+  .finalbox .tag { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.6px; text-transform: uppercase; color: var(--indigo); font-weight: 600; margin-bottom: 14px; }
+  .finalbox p { font-size: clamp(18px, 2.4vw, 22px); font-weight: 500; color: var(--text); line-height: 1.5; }
+
+  footer { padding: 54px 0 48px; border-top: 1px solid var(--border); text-align: center; margin-top: 36px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600;
+    background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tag { font-size: 13px; color: var(--text-3); margin-bottom: 18px; }
+  .footer-links { display: flex; justify-content: center; gap: 22px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-2); text-decoration: none; }
+  .footer-links a:hover { color: var(--sky); }
+  .footer-copy { font-size: 12px; color: var(--text-3); margin-top: 18px; }
+
+  .fade { opacity: 0; transform: translateY(22px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade.vis { opacity: 1; transform: translateY(0); }
+  @media (prefers-reduced-motion: reduce) { .fade { opacity: 1; transform: none; } }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand-wrap"><a href="/index.html" class="brand">know.2nth.ai</a><span class="brand-sub">CEO Briefing</span></div>
+    <div class="nav-right">
+      <a href="/briefings/" class="nav-link">All briefings</a>
+      <button class="toggle" onclick="toggleTheme()" aria-label="Toggle light/dark">🌙</button>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div class="eyebrow fade"><span class="dot"></span> Software economics &middot; Licences</div>
+    <h1 class="fade" style="transition-delay:.05s">The copy is cheap now. <span class="hl">The iceberg isn't.</span></h1>
+    <p class="lede fade" style="transition-delay:.1s">
+      Between 30 September and 15 October 2026, one small company and its AI agents published open-source copies of <span class="hl">thirteen flagship desktop apps</span> &mdash; Photoshop, Word, Excel, PowerPoint, Acrobat, Premiere, Illustrator, InDesign, After Effects, Lightroom, AutoCAD, Pro Tools and Figma. Free, in one programming language, all working, all early. It's the clearest sign yet that <span class="hl">copying what software looks like has become cheap</span>. What it doesn't copy &mdash; the part below the waterline &mdash; is where your software bill actually lives.
+    </p>
+    <div class="meta-chips fade" style="transition-delay:.15s">
+      <span class="chip">Oct 2026</span>
+      <span class="chip">6-min read</span>
+      <span class="chip">For decision-makers</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">01 &middot; What happened</div>
+      <h2 class="s-title">Fifteen days, thirteen apps, one small team.</h2>
+      <p class="s-lede">The company is <span class="hl">ArtCraft</span> (GitHub: <em>storytold</em>), a US start-up whose paid product is a desktop tool for making AI images and video. Its founder previously built the AI voice sites FakeYou and Storyteller.ai. Three people are public members of its GitHub organisation. The &ldquo;Craft&rdquo; apps are given away under permissive open-source licences, and every one of them points back to ArtCraft.</p>
+    </div>
+    <div class="stats fade" style="transition-delay:.05s">
+      <div class="stat"><div class="v">13</div><div class="l">desktop apps, each modelled on a named commercial product</div></div>
+      <div class="stat"><div class="v">~18,200</div><div class="l">commits across the thirteen, in about two weeks</div></div>
+      <div class="stat"><div class="v">~3.5M</div><div class="l">lines of code, estimated from GitHub's size figures</div></div>
+      <div class="stat"><div class="v">~150k</div><div class="l">GitHub stars &mdash; attention, not users</div></div>
+    </div>
+    <div class="table-wrap fade" style="transition-delay:.08s">
+      <table class="suite">
+        <thead><tr><th>App</th><th>Modelled on</th><th class="n">Commits</th><th class="n">Version</th></tr></thead>
+        <tbody>
+          <tr><td>PhotoCraft</td><td>Adobe Photoshop</td><td class="n">2,371</td><td class="n">0.9</td></tr>
+          <tr><td>LightCraft</td><td>Adobe Lightroom</td><td class="n">2,895</td><td class="n">0.8</td></tr>
+          <tr><td>VectorCraft</td><td>Adobe Illustrator</td><td class="n">2,848</td><td class="n">0.11</td></tr>
+          <tr><td>FilmCraft</td><td>Adobe Premiere</td><td class="n">1,951</td><td class="n">0.8</td></tr>
+          <tr><td>EffectCraft</td><td>Adobe After Effects</td><td class="n">1,875</td><td class="n">0.10</td></tr>
+          <tr><td>PdfCraft</td><td>Adobe Acrobat</td><td class="n">1,165</td><td class="n">0.8</td></tr>
+          <tr><td>DesignCraft</td><td>Adobe InDesign</td><td class="n">1,025</td><td class="n">0.8</td></tr>
+          <tr><td>GridCraft</td><td>Microsoft Excel</td><td class="n">1,015</td><td class="n">0.7</td></tr>
+          <tr><td>DeckCraft</td><td>Microsoft PowerPoint</td><td class="n">884</td><td class="n">0.7</td></tr>
+          <tr><td>WordCraft</td><td>Microsoft Word</td><td class="n">727</td><td class="n">0.7</td></tr>
+          <tr><td>SoundCraft</td><td>Avid Pro Tools</td><td class="n">682</td><td class="n">0.7</td></tr>
+          <tr><td>CADCraft</td><td>Autodesk AutoCAD</td><td class="n">488</td><td class="n">0.7</td></tr>
+          <tr><td>FigCraft</td><td>Figma</td><td class="n">270</td><td class="n">0.6</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="src fade">Measured from GitHub on 15 October 2026. Line count estimated from GitHub's per-language byte totals, calibrated against a direct count of WordCraft (~240k lines). A fourteenth app, AniCraft, was announced on 14 October with no code yet.</p>
+    <div class="callout warm fade" style="transition-delay:.05s">
+      <div class="co-tag">How it's possible</div>
+      <p>This is not thirteen teams. It's <strong>one production line</strong>: every app shares the same instruction file for the AI agents, the same quality rules, the same build checks and the same layout. People decide what to build and police the rules; agents write the code. The rules are what turn hundreds of agent commits a day into software instead of mush.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">02 &middot; The iceberg</div>
+      <h2 class="s-title">They copied the tip. The mass is still underwater.</h2>
+      <p class="s-lede">Look at what the projects say about themselves. WordCraft has <span class="hl">97% of Word's ribbon and menu commands</span> wired up &mdash; and rates itself only <span class="hl">~60% &ldquo;ready for real work&rdquo;</span>, with zero users reporting they've switched from Word. Its own number-one gap: it has never been tested against a body of real documents from Word, Google Docs or LibreOffice. That gap between the two numbers is the whole story.</p>
+    </div>
+    <div class="berg fade" style="transition-delay:.05s">
+      <svg viewBox="0 0 760 470" role="img" aria-label="An iceberg. Above the waterline, the small tip: menus and ribbon, the look and layout, shortcuts, the feature checklist — the part the Craft apps copied in weeks. Below the waterline, the large mass: opening the files real people send you, years of stability, matching layout page for page, the ecosystem of plug-ins, macros and integrations, a vendor to call, and legal certainty — the part that is still the incumbent's moat.">
+        <rect class="sea" x="0" y="150" width="760" height="320" rx="16"/>
+        <line class="line" x1="0" y1="150" x2="760" y2="150"/>
+        <text class="lbl wl" x="742" y="140" text-anchor="end">WATERLINE</text>
+        <polygon class="tip" points="500,150 530,70 556,88 580,44 612,96 640,150"/>
+        <polygon class="mass" points="500,150 640,150 710,210 740,310 690,420 540,452 430,390 410,270 450,195"/>
+        <text class="lbl up" x="24" y="34">COPIED IN WEEKS</text>
+        <text class="item" x="24" y="62">Menus and ribbon</text>
+        <text class="item" x="24" y="84">The look and layout</text>
+        <text class="item" x="24" y="106">Shortcuts</text>
+        <text class="item" x="24" y="128">The feature checklist</text>
+        <text class="note" x="575" y="28" text-anchor="middle">WordCraft: 487 of 502 Word commands wired up</text>
+        <text class="lbl down" x="24" y="186">STILL THE INCUMBENT'S MOAT</text>
+        <text class="item" x="24" y="216">Opening the files people actually send you</text>
+        <text class="item" x="24" y="240">Years of stability on every machine</text>
+        <text class="item" x="24" y="264">Matching the layout, page for page</text>
+        <text class="item" x="24" y="288">Plug-ins, macros, integrations</text>
+        <text class="item" x="24" y="312">Training, habits, the people who know it</text>
+        <text class="item" x="24" y="336">A vendor to call, and legal certainty</text>
+        <text class="note" x="575" y="300" text-anchor="middle">WordCraft: ~60% ready for real work,</text>
+        <text class="note" x="575" y="318" text-anchor="middle">0 users switched from Word</text>
+      </svg>
+    </div>
+    <div class="defs fade" style="transition-delay:.08s">
+      <div class="def agent">
+        <div class="dt">Above the waterline</div>
+        <h3>What a demo shows</h3>
+        <p>Menus, buttons, the familiar layout. This used to take a team years; agents now produce a convincing version in weeks. It's what wins the screenshot and the star count.</p>
+      </div>
+      <div class="def flow">
+        <div class="dt">Below the waterline</div>
+        <h3>What your business runs on</h3>
+        <p>The supplier's odd spreadsheet that has to open correctly. The tender document that must print on exactly 40 pages. The macro finance built in 2014. The person you call when it breaks. None of that is in the menus.</p>
+      </div>
+    </div>
+    <div class="callout indigo fade" style="transition-delay:.1s">
+      <div class="co-tag">Same picture, different iceberg</div>
+      <p>It's the same shape as your own business: the front office customers see is the small part; <strong>the back office is where the cost, risk and knowledge sit</strong>. Software vendors are no different. Copying their front office got cheap. Their back office didn't.</p>
+      <a class="more" href="/briefings/the-iceberg">Deeper: The iceberg &rarr;</a>
+    </div>
+  </div>
+</section>
+
+<!-- 03 -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">03 &middot; What it does change</div>
+      <h2 class="s-title">Three things move now, even if you never install one.</h2>
+    </div>
+    <div class="checks fade" style="transition-delay:.05s">
+      <div class="check"><div class="q">Your renewal conversation</div><p>&ldquo;There is no alternative&rdquo; is weaker every month. You don't need to switch to use that &mdash; a credible free option for the light users is leverage when the per-seat price goes up again.</p></div>
+      <div class="check"><div class="q">Who needs the full licence</div><p>Most organisations pay flagship prices for people who open, read and lightly edit. That's the slice free tools reach first. Count how many of your seats are really heavy users.</p></div>
+      <div class="check"><div class="q">Documents made by agents</div><p>Every Craft app can be driven by an AI agent without a screen. Generating and editing Word, PDF or layered image files on your own servers, with no per-seat licence, is usable today &mdash; well before the apps are ready for people.</p></div>
+      <div class="check"><div class="q">What your own team could build</div><p>If a small team can stand up a Photoshop-shaped editor in ten days, your internal tools, portals and that niche package you overpay for are all cheaper to replace than your last estimate assumed.</p></div>
+    </div>
+    <div class="callout green fade" style="transition-delay:.08s">
+      <div class="co-tag">The pattern to use</div>
+      <p>Don't swap everything at once. <strong>Move one group of users or one job at a time</strong>, keep the old licence as a safety net, and only cut seats when the new tool has handled real work for a quarter. Cheap copies make that path cheaper; they don't make the big-bang switch any safer.</p>
+      <a class="more" href="/briefings/strangle-the-licence">Deeper: Strangle the licence &rarr;</a>
+    </div>
+  </div>
+</section>
+
+<!-- 04 -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">04 &middot; What it doesn't change</div>
+      <h2 class="s-title">Not ready for your staff. Not yet.</h2>
+      <p class="s-lede">Every Craft app is version 0.x, releasing almost daily. The makers are unusually honest about it: PhotoCraft published that 48 of its 146 settings do nothing and that its tests &ldquo;miss what users hit&rdquo;. WordCraft lists open crash reports on common hardware. <span class="hl">Agents shrink the time it takes to build a plausible feature. They don't shrink the time it takes real users to find out whether it works.</span></p>
+    </div>
+    <div class="callout rose fade" style="transition-delay:.05s">
+      <div class="co-tag">Read these before anyone gets excited</div>
+      <p><strong>Legal attention.</strong> Naming Microsoft, Adobe, Autodesk and Avid products as the thing you're copying invites a response. The projects follow strict &ldquo;clean-room&rdquo; rules &mdash; observe the original, copy nothing &mdash; and copying menus and file formats has strong legal precedent. But names and look-alike designs are where disputes start. Not legal advice; watch for renames.</p>
+      <p><strong>A tiny team behind fourteen products.</strong> Over 5,000 open issues and 3,700 open change requests across the thirteen apps, two weeks in. Keeping that healthy after the launch excitement fades is the open question.</p>
+      <p><strong>Stars aren't users.</strong> 150,000 stars measure a viral launch. Even long-dead repositories in the same account suddenly picked up dozens of copies in the same week &mdash; a sign of attention, some of it automated, not adoption.</p>
+      <p><strong>Free isn't the business model.</strong> The apps are a funnel to ArtCraft's paid AI product. That's legitimate, but it tells you where the company's priorities will go when the two compete for time.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">05 &middot; South African context</div>
+      <h2 class="s-title">Dollar-priced seats are the first target.</h2>
+      <p class="s-lede">For SA organisations, Adobe and Microsoft seats are priced in dollars and move with the rand. Schools, NGOs, small agencies and municipalities pay the same per seat as a New York firm. Free, offline, permissively licensed tools that also run in a browser are worth tracking closely &mdash; <span class="hl">but as a lever and a pilot, not a migration</span>. Documents that go back and forth with clients, auditors and government still need to open exactly as they were made, and that's the part of the iceberg nobody has copied yet.</p>
+    </div>
+    <div class="callout fade" style="transition-delay:.05s">
+      <div class="co-tag">Where agents help today</div>
+      <p>Generating quotes, reports, contracts and catalogue images from templates <strong>on your own infrastructure</strong>, with no per-seat cost and no document leaving the building, is the nearest-term win &mdash; and a cleaner POPIA story than sending client data to someone else's cloud service.</p>
+      <a class="more" href="/briefings/rented-in-dollars">Deeper: Rented in dollars &rarr;</a>
+    </div>
+  </div>
+</section>
+
+<!-- 06 -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">06 &middot; What to actually do</div>
+      <h2 class="s-title">Five moves for the next renewal cycle.</h2>
+    </div>
+    <div class="checks fade" style="transition-delay:.05s">
+      <div class="check"><div class="q">Split your seats into heavy and light users</div><p>Heavy users keep the flagship. Light users are where free alternatives &mdash; these and older ones like LibreOffice &mdash; save money first.</p></div>
+      <div class="check"><div class="q">List what sits below your waterline</div><p>The macros, templates, plug-ins and file exchanges that must keep working. That list, not the feature checklist, decides whether you can switch.</p></div>
+      <div class="check"><div class="q">Run a quarter-long pilot with one team</div><p>Real documents, real deadlines, old licence kept as the safety net. Measure the files that broke, not the features that exist.</p></div>
+      <div class="check"><div class="q">Put agent-made documents on the roadmap</div><p>Where your team produces documents from data, ask whether an agent driving a free engine can do it without a seat licence.</p></div>
+      <div class="check"><div class="q">Re-read this in six months</div><p>Check the release history, the crash reports and whether the names changed. Momentum now says nothing about who's still maintaining it in April.</p></div>
+    </div>
+    <div class="callout indigo fade" style="transition-delay:.08s">
+      <div class="co-tag">The technical version</div>
+      <p>How PhotoCraft was built &mdash; the agent instructions, the automated rules, the honest scorecard and the risks &mdash; is in the tree as a full case study.</p>
+      <a class="more" href="/explainers/software/photocraft">Deeper: PhotoCraft case study &rarr;</a>
+    </div>
+  </div>
+</section>
+
+<!-- RELATED -->
+<section>
+  <div class="wrap">
+    <div class="fade">
+      <div class="s-num">Keep reading</div>
+      <h2 class="s-title">Related</h2>
+    </div>
+    <div class="thread fade" style="transition-delay:.05s">
+      <a href="/briefings/strangle-the-licence" class="tcard">
+        <div class="tt">Briefing</div>
+        <h4>Strangle the Licence</h4>
+        <p>Replacing expensive software one piece at a time, with the old system as a safety net the whole way.</p>
+        <span class="go">Read briefing &rarr;</span>
+      </a>
+      <a href="/briefings/the-iceberg" class="tcard">
+        <div class="tt">Briefing</div>
+        <h4>The Iceberg</h4>
+        <p>Front office and back office: why the small visible part is never where the cost and risk sit.</p>
+        <span class="go">Read briefing &rarr;</span>
+      </a>
+      <a href="/briefings/rented-in-dollars" class="tcard">
+        <div class="tt">Briefing</div>
+        <h4>Rented in Dollars</h4>
+        <p>Why your software vendors are set up to keep you renting &mdash; and what that costs in rand.</p>
+        <span class="go">Read briefing &rarr;</span>
+      </a>
+      <a href="/explainers/software/photocraft" class="tcard">
+        <div class="tt">Case study</div>
+        <h4>PhotoCraft: 378k lines in ten days</h4>
+        <p>The first Craft app, read in technical detail: how it was built, what it measures, and what it's still missing.</p>
+        <span class="go">Read the leaf &rarr;</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL -->
+<section>
+  <div class="wrap">
+    <div class="finalbox fade">
+      <div class="tag">The take</div>
+      <p>Agents made copying what software looks like cheap. They haven't made copying what it does under the waterline cheap &mdash; yet. Use the copies as leverage and as engines for agent-made documents now; move people onto them one team at a time, only when real files stop breaking.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tag">CEO briefings &middot; the plain-language layer over the knowledge tree</p>
+    <div class="footer-links">
+      <a href="/briefings/">All briefings</a>
+      <a href="/index.html">Knowledge tree</a>
+      <a href="/briefings/strangle-the-licence">Strangle the Licence</a>
+      <a href="/briefings/the-iceberg">The Iceberg</a>
+      <a href="https://2nth.ai" target="_blank" rel="noopener">2nth.ai</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme(){
+    const h=document.documentElement, cur=h.getAttribute('data-theme'), nxt=cur==='dark'?'light':'dark';
+    h.setAttribute('data-theme',nxt);
+    document.querySelector('.toggle').textContent = nxt==='dark' ? '☀️' : '🌙';
+    localStorage.setItem('brief-theme',nxt);
+  }
+  const saved=localStorage.getItem('brief-theme');
+  if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.toggle').textContent=saved==='dark'?'☀️':'🌙';}
+  const ob=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');});},{threshold:0.08,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.fade').forEach(el=>ob.observe(el));
+</script>
+</body>
+</html>
