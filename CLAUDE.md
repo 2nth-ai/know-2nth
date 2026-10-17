@@ -45,7 +45,7 @@ know-2nth/
 ├── CLAUDE.md
 ├── index.html                # root: 12 top-level domain cards
 ├── about.html                # access model + how the site works
-├── join.html                 # HubSpot signup form (soft conversion play)
+├── join.html                 # "Stay in touch" lead capture → 2nth CRM (crm-form.js)
 ├── gate.js                   # tier-gate hook, loaded on every leaf, currently inert
 ├── og-image.jpg              # 1200×630 OG / Twitter card
 ├── og-image.svg              # source for the OG image
@@ -138,9 +138,9 @@ Both work; pick whichever the surrounding hub uses. **Stubs use the `soon` modif
 
 **Everything on know.2nth.ai is public. Do not gate new content.** No `data-tier="member"` markers exist anywhere in `explainers/`, and new leaves must not add them — reference *and* opinionated decision content both ship open. We'd rather show the work than half-gate it behind a soft localStorage overlay that creates friction without delivering on the promise.
 
-`gate.js` stays loaded on every leaf and is **inert**: it applies an overlay to any element carrying `data-tier="member"` for visitors without the `2nth-know-member` localStorage flag (set on successful HubSpot form submit from `/join.html`). Since nothing carries the marker, it does nothing. The hook is kept so gating can return without re-plumbing.
+`gate.js` stays loaded on every leaf and is **inert**: it applies an overlay to any element carrying `data-tier="member"` for visitors without the `2nth-know-member` localStorage flag. Since nothing carries the marker, it does nothing, and nothing sets the flag any more. The hook is kept so gating can return without re-plumbing.
 
-History: gating was switched on for decision leaves on 2026-05-17 (`/explainers/tools/runtime.html` was the only one using it, plus `tech/workstation.html` briefly) and removed again on 2026-08-30 — content reach beats the soft conversion signal while real auth doesn't exist. Magic-link auth remains parked. The `/join` form stays as the early-access signup and readership signal, not as a wall.
+History: gating was switched on for decision leaves on 2026-05-17 (`/explainers/tools/runtime.html` was the only one using it, plus `tech/workstation.html` briefly) and removed again on 2026-08-30 — content reach beats the soft conversion signal while real auth doesn't exist. Magic-link auth remains parked. `/join` is a "Stay in touch" lead-capture form (2026-10-17): it posts to the 2nth CRM at `crm.2nth.app/v1/leads/forms/know-interest` via `/crm-form.js`, with an email-updates opt-in. No HubSpot. There is no membership.
 
 ## Voice
 
