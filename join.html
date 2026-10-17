@@ -3,21 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Become a Member &mdash; know.2nth.ai</title>
-<meta name="description" content="Become a Member of know.2nth.ai to unlock the operational depth — code, real patterns, and specifics across every explainer in the tree. Free, instant, no passwords.">
+<title>Stay in touch &mdash; know.2nth.ai</title>
+<meta name="description" content="Get new explainers and CEO briefings from know.2nth.ai by email, or tell us what you are working on.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="know.2nth.ai">
 <meta property="og:url" content="https://know.2nth.ai/join.html">
-<meta property="og:title" content="Become a Member &mdash; know.2nth.ai">
-<meta property="og:description" content="Become a Member of know.2nth.ai to unlock the operational depth — code, real patterns, and specifics across every explainer in the tree. Free, instant, no passwords.">
+<meta property="og:title" content="Stay in touch &mdash; know.2nth.ai">
+<meta property="og:description" content="Get new explainers and CEO briefings from know.2nth.ai by email, or tell us what you are working on.">
 <meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Become a Member &mdash; know.2nth.ai">
-<meta name="twitter:description" content="Free, instant Member access. Unlock the operational depth across the tree.">
+<meta name="twitter:title" content="Stay in touch &mdash; know.2nth.ai">
+<meta name="twitter:description" content="Get new explainers and CEO briefings by email, or tell us what you are working on.">
 <meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -82,7 +82,21 @@
   .form-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--blue-glow); border-radius: var(--radius-lg); padding: 28px 32px; }
   .form-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.3px; }
   .form-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.65; margin-bottom: 20px; }
-  .form-card .hs-form-frame { max-width: 100%; }
+  .lf { display: grid; gap: 14px; }
+  .lf-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 600px) { .lf-row { grid-template-columns: 1fr; } }
+  .lf label { display: grid; gap: 6px; font-size: 13px; font-weight: 500; color: var(--text-secondary); }
+  .lf input, .lf select, .lf textarea { font: 16px 'Outfit', system-ui, sans-serif; color: var(--text-primary); background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 11px 13px; width: 100%; }
+  .lf input:focus, .lf select:focus, .lf textarea:focus { outline: none; border-color: var(--sky); }
+  .lf .lf-check { display: flex; gap: 10px; align-items: flex-start; font-weight: 400; }
+  .lf .lf-check input { width: auto; margin-top: 4px; }
+  .lf-hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+  .lf-btn { justify-self: start; font: 600 15px 'Outfit', sans-serif; color: #fff; background: linear-gradient(135deg, var(--blue), var(--blue-glow)); border: 0; border-radius: var(--radius-pill); padding: 12px 26px; cursor: pointer; }
+  .lf-btn:disabled { opacity: .6; cursor: wait; }
+  .lf-status { font-size: 14px; color: var(--text-secondary); margin: 0; }
+  .lf-status.bad { color: #F87171; }
+  .lf-done { font-size: 15px; color: var(--text-secondary); line-height: 1.65; }
+  .lf-done strong { color: var(--text-primary); }
 
   .perks { max-width: var(--read-w); margin-top: 8px; padding: 24px 28px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-md); margin-bottom: 60px; }
   .perks-title { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.6px; text-transform: uppercase; color: var(--sky); margin-bottom: 12px; }
@@ -120,7 +134,7 @@
   <div class="nav-inner">
     <a href="index.html" class="nav-brand">
       <span class="nav-brand-mark">know.2nth.ai</span>
-      <span class="nav-brand-sub">become a member</span>
+      <span class="nav-brand-sub">stay in touch</span>
     </a>
     <div class="nav-right">
       <a href="index.html#domains" class="nav-link">Tree</a>
@@ -135,41 +149,58 @@
   <div class="crumb">
     <a href="index.html">know.2nth.ai</a>
     <span class="crumb-sep">&rsaquo;</span>
-    <span class="crumb-current">Join</span>
+    <span class="crumb-current">Stay in touch</span>
   </div>
 </div>
 
 <!-- HERO -->
 <section class="hero">
   <div class="container">
-    <div class="eyebrow fade-up"><span class="dot"></span> Member &middot; signup</div>
+    <div class="eyebrow fade-up"><span class="dot"></span> Stay in touch</div>
     <h1 class="fade-up" style="transition-delay: 0.05s">
-      Become a Member of <span class="gradient">know.2nth.ai.</span>
+      Keep up with <span class="gradient">know.2nth.ai.</span>
     </h1>
     <p class="sub fade-up" style="transition-delay: 0.1s">
-      Member access unlocks the operational depth across every leaf in the tree &mdash; the code, the real patterns, the specifics. Free, instant, no passwords. The conceptual explainers stay open to everyone; this is the layer where things get real.
+      Everything in the tree is open and stays open. Leave your details to get new explainers and CEO briefings when they land, or tell us what you&rsquo;re working on and we&rsquo;ll get back to you.
     </p>
   </div>
 </section>
 
-<!-- FORM -->
+<!-- FORM: goes to the 2nth CRM (crm-form.js) -->
 <div class="container">
   <div class="form-wrap fade-up" style="transition-delay: 0.15s">
     <div class="form-card">
-      <h3>Become a Member</h3>
-      <p>Free. Instant. No password. Drop your email and the operational depth across the tree opens up on this device. Unsubscribe whenever &mdash; the conceptual explainers stay free regardless.</p>
-      <div class="hs-form-frame" data-region="na1" data-form-id="d759aabd-39b7-4dd6-a60c-ac39bef79628" data-portal-id="48288371"></div>
+      <form class="lf" data-crm-form action="https://crm.2nth.app/v1/leads/forms/know-interest" method="post">
+        <div class="lf-row">
+          <label>Name<input name="name" autocomplete="name" required maxlength="160"></label>
+          <label>Email<input name="email" type="email" autocomplete="email" required maxlength="254"></label>
+        </div>
+        <label>Company (optional)<input name="company" autocomplete="organization" maxlength="160"></label>
+        <label>What brings you here?
+          <select name="interest" required>
+            <option value="" disabled selected>Choose one</option>
+            <option>Keeping up with new explainers</option>
+            <option>Applying this at my company</option>
+            <option>Partnering or contributing</option>
+            <option>Something else</option>
+          </select>
+        </label>
+        <label>Anything you&rsquo;d like to tell us? (optional)<textarea name="message" rows="3" maxlength="5000"></textarea></label>
+        <label class="lf-check"><input type="checkbox" name="consent" value="yes"> Email me new explainers and CEO briefings. I can unsubscribe at any time.</label>
+        <input class="lf-hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <button class="lf-btn" type="submit">Send &rarr;</button>
+        <p class="lf-status" data-crm-status hidden></p>
+      </form>
+      <div class="lf-done" data-crm-done hidden><strong>Thanks, you&rsquo;re on the list.</strong> If you ticked the email option, check your inbox to confirm it. If you wrote to us, we&rsquo;ll reply by email.</div>
     </div>
   </div>
 
   <div class="perks fade-up" style="transition-delay: 0.2s">
-    <div class="perks-title">What Member unlocks</div>
+    <div class="perks-title">What you&rsquo;ll get</div>
     <ul>
-      <li>Operational skill nodes &mdash; opinionated runbooks, not just explainers</li>
-      <li>Role-based context bundles &mdash; agent-loadable packs by job shape</li>
-      <li>Deployment &amp; integration templates &mdash; production patterns you can fork</li>
-      <li>Curated learning paths &mdash; sequenced reading, not infinite scroll</li>
-      <li>Community access</li>
+      <li>New explainers as they go live in the tree</li>
+      <li>CEO briefings &mdash; short reads on what changes for a business</li>
+      <li>A reply from a person if you tell us what you&rsquo;re working on</li>
     </ul>
   </div>
 
@@ -194,8 +225,7 @@
   </div>
 </footer>
 
-<!-- HubSpot embed -->
-<script src="https://js.hsforms.net/forms/embed/48288371.js" defer></script>
+<script src="/crm-form.js" defer></script>
 
 <script>
   function toggleTheme() {
