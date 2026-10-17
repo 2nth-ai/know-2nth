@@ -6,7 +6,7 @@
     var status = form.querySelector('[data-crm-status]');
     var done = form.parentNode.querySelector('[data-crm-done]');
     var btn = form.querySelector('[type=submit]');
-    function say(msg, bad) { if (!status) return; status.textContent = msg; status.hidden = !msg; status.classList.toggle('bad', !!bad); }
+    function say(msg, bad) { if (!status) return; status.textContent = msg; status.hidden = !msg; status.style.display = msg ? '' : 'none'; status.classList.toggle('bad', !!bad); }
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       if (!form.reportValidity()) return;
@@ -17,7 +17,10 @@
         .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { return { ok: r.ok, j: j }; }); })
         .then(function (res) {
           if (!res.ok) throw new Error(res.j.error || 'Something went wrong.');
-          form.hidden = true; if (done) done.hidden = false;
+          // style.display, not just [hidden]: site CSS like .form{display:grid} overrides the attribute
+          say('');
+          form.hidden = true; form.style.display = 'none';
+          if (done) { done.hidden = false; done.style.display = ''; done.scrollIntoView({ block: 'center', behavior: 'smooth' }); }
         })
         .catch(function (err) {
           btn.disabled = false;
