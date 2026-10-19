@@ -3,7 +3,7 @@
   "description": "The public knowledge tree for the 2nth.ai ecosystem. Every leaf is both a human-readable reference and an agent-consumable context document.",
   "agent_fetch": "https://know.2nth.ai/api/context/<domain>/<leaf>",
   "mcp": "https://know.2nth.ai/mcp",
-  "count": 232,
+  "count": 236,
   "items": [
     {
       "title": "Agents — know.2nth.ai",
@@ -71,7 +71,7 @@
     },
     {
       "title": "Claude — know.2nth.ai",
-      "description": "Claude — Anthropic's flagship model family. Four tiers in 2026: Fable 5 (Mythos-class, the new top tier above Opus) for the hardest, longest-horizon work, Opus 4.8 for hard reasoning, Sonnet 4.6 for everyday agent work, Haiku 4.5 for high-volume routing. 1M context on Fable/Opus/Sonnet, 200k on Haiku. Adaptive thinking, MCP-first tool layer, vision and computer use built in. The default for production agents that need long-context reasoning, reliable function-calling, and instruction-following beyond what open-weights models reach.",
+      "description": "Claude — Anthropic's flagship model family. Four current tiers: Fable 5.1 (Mythos-class, the top tier above Opus) for demanding reasoning and long-horizon agentic work, Opus 5.5 for long-running agentic coding and knowledge work, Sonnet 5.5 for everyday agent work, Haiku 5.5 for high-volume routing. 1M context and 128K max output on all four. Adaptive thinking, MCP-first tool layer, vision and computer use built in. The default for production agents that need long-context reasoning, reliable function-calling, and instruction-following beyond what open-weights models reach.",
       "domain": "agents",
       "kind": "leaf",
       "url": "https://know.2nth.ai/explainers/agents/claude",
@@ -143,7 +143,7 @@
     },
     {
       "title": "GLM · Z.ai — know.2nth.ai",
-      "description": "GLM is Zhipu AI's open-weight model family, shipped internationally under the Z.ai brand. GLM-5.2 (June 2026): ~753B-parameter Mixture-of-Experts, ~40B active per token, 1M-token context, pure MIT licence, built for long-horizon agentic and coding work. Anthropic-Messages-API-compatible endpoint means Claude Code retargets with a base-URL change. The institutionally-deployable Chinese open-weight flagship — competitive with the closed frontier on agentic engineering, self-hostable to avoid the hosted-API governance risk, with an ~800GB-VRAM hardware reality that is the real binding constraint.",
+      "description": "GLM is Zhipu AI's open-weight model family, shipped internationally under the Z.ai brand. GLM-5.3 and GLM-5.3-Flash are current, on the GLM-5.2 (June 2026) base: ~744B-parameter Mixture-of-Experts, ~40B active per token, 1M-token context, pure MIT licence, built for long-horizon agentic and coding work. Anthropic-Messages-API-compatible endpoint means Claude Code retargets with a base-URL change. The institutionally-deployable Chinese open-weight flagship — competitive with the closed frontier on agentic engineering, self-hostable to avoid the hosted-API governance risk, with an ~800GB-VRAM hardware reality that is the real binding constraint.",
       "domain": "agents",
       "kind": "leaf",
       "url": "https://know.2nth.ai/explainers/agents/glm",
@@ -1542,6 +1542,14 @@
       "fetch": "tech/frappe/crm"
     },
     {
+      "title": "Frappe Drive & Suite — know.2nth.ai",
+      "description": "Frappe Drive — self-hosted file storage, sharing and collaborative documents on the Frappe Framework. The standalone app is archived and now ships inside Frappe Suite alongside Writer, Sheets, Slides, Meet, Mail and Calendar. Covers the destructive migration path, the JMAP/Suite Cloud mail split, and the POPIA sharing surface.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/frappe/drive",
+      "fetch": "tech/frappe/drive"
+    },
+    {
       "title": "Frappe Framework — know.2nth.ai",
       "description": "The Frappe Framework — a metadata-driven Python full-stack where every business object is a doctype. Doctypes, hooks, REST + RPC, Bench, the desk, and the patterns that make the entire Frappe ecosystem coherent.",
       "domain": "tech",
@@ -1564,6 +1572,22 @@
       "kind": "leaf",
       "url": "https://know.2nth.ai/explainers/tech/frappe/hr",
       "fetch": "tech/frappe/hr"
+    },
+    {
+      "title": "Frappe Learning (LMS) — know.2nth.ai",
+      "description": "Frappe Learning — open-source LMS on the Frappe Framework. Courses, chapters and lessons, batch cohorts with Zoom or Google Meet live classes, quizzes with proctoring, assignments, programming exercises and certificates with expiry. AGPLv3, requires frappe/payments.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/frappe/lms",
+      "fetch": "tech/frappe/lms"
+    },
+    {
+      "title": "Frappe Wiki — know.2nth.ai",
+      "description": "Frappe Wiki — a Markdown documentation wiki on the Frappe Framework, with revisions, a change-request approval queue, multi-space permissions and optional two-way GitHub sync. The one Frappe app under MIT rather than AGPL.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/frappe/wiki",
+      "fetch": "tech/frappe/wiki"
     },
     {
       "title": "Furniture Guild — Architecture & review — know.2nth.ai",
@@ -1724,6 +1748,14 @@
       "kind": "leaf",
       "url": "https://know.2nth.ai/explainers/tech/embedded/platformio",
       "fetch": "tech/embedded/platformio"
+    },
+    {
+      "title": "Raven — know.2nth.ai",
+      "description": "Raven — open-source team chat on the Frappe Framework. Channels, DMs, threads, polls and files, plus doctype notifications, document shares, in-thread approvals and AI bots that can call a typed CRUD surface over your doctypes using OpenAI or a local Ollama / LM Studio / LocalAI endpoint. AGPLv3, no per-user pricing.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/frappe/raven",
+      "fetch": "tech/frappe/raven"
     },
     {
       "title": "Redis — know.2nth.ai",
