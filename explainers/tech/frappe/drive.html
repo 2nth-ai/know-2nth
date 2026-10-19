@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Frappe Drive &amp; Suite — know.2nth.ai</title>
+<meta name="description" content="Frappe Drive — self-hosted file storage, sharing and collaborative documents on the Frappe Framework. The standalone app is archived and now ships inside Frappe Suite alongside Writer, Sheets, Slides, Meet, Mail and Calendar. Covers the destructive migration path, the JMAP/Suite Cloud mail split, and the POPIA sharing surface.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/tech/frappe/drive">
+<meta property="og:title" content="Frappe Drive &amp; Suite — know.2nth.ai">
+<meta property="og:description" content="Frappe Drive — self-hosted file storage, sharing and collaborative documents on the Frappe Framework. The standalone app is archived and now ships inside Frappe Suite alongside Writer, Sheets, Slides, Meet, Mail and Calendar. Covers the destructive migration path, the JMAP/Suite Cloud mail split, and the POPIA sharing surface.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai — The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Frappe Drive &amp; Suite — know.2nth.ai">
+<meta name="twitter:description" content="Frappe Drive — self-hosted file storage, sharing and collaborative documents on the Frappe Framework. The standalone app is archived and now ships inside Frappe Suite alongside Writer, Sheets, Slides, Meet, Mail and Calendar. Covers the destructive migration path, the JMAP/Suite Cloud mail split, and the POPIA sharing surface.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3Cline x1='16' y1='3' x2='16' y2='7' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='16' y1='25' x2='16' y2='29' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='3' y1='16' x2='7' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='25' y1='16' x2='29' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33;
+    --blue: #2563EB; --blue-glow: #3B82F6;
+    --sky: #38BDF8; --sky-muted: #7DD3FC;
+    --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8;
+    --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12);
+    --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12);
+    --violet: #8B5CF6; --violet-soft: rgba(139, 92, 246, 0.12);
+    --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12);
+    --bg: var(--ink); --bg-raised: var(--navy);
+    --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(37, 99, 235, 0.06);
+    --text-primary: var(--paper); --text-secondary: var(--slate);
+    --text-muted: #64748B;
+    --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(56, 189, 248, 0.3);
+    --max-w: 1200px; --read-w: 760px;
+    --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px;
+  }
+  [data-theme="light"] {
+    --bg: #F1F5F9; --bg-raised: #FFFFFF;
+    --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(37, 99, 235, 0.04);
+    --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8;
+    --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(37, 99, 235, 0.25);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+    background: var(--bg); color: var(--text-primary);
+    line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased;
+  }
+  body::before {
+    content: ''; position: fixed; inset: 0; opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 9999;
+  }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.blue { width: 600px; height: 600px; background: var(--blue); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+
+  nav {
+    position: sticky; top: 0; z-index: 100; padding: 0 24px;
+    backdrop-filter: blur(20px) saturate(1.4);
+    background: rgba(11, 17, 32, 0.75);
+    border-bottom: 1px solid var(--border);
+  }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner {
+    max-width: var(--max-w); margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 60px;
+  }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark {
+    font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px;
+    background: linear-gradient(135deg, var(--blue), var(--sky));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+  }
+  .nav-brand-sub {
+    font-size: 12px; color: var(--text-muted);
+    letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500;
+    padding-left: 10px; border-left: 1px solid var(--border);
+  }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--sky); }
+  .theme-toggle {
+    background: none; border: 1px solid var(--border); color: var(--text-secondary);
+    width: 36px; height: 36px; border-radius: 50%; cursor: pointer;
+    display: grid; place-items: center; font-size: 16px; transition: all 0.2s;
+  }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--sky); }
+
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .read { max-width: var(--read-w); }
+
+  .crumb {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted);
+    letter-spacing: 0.5px; padding: 28px 0 0;
+    display: flex; gap: 10px; flex-wrap: wrap;
+  }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--sky); }
+  .crumb-sep { opacity: 0.5; }
+  .crumb-current { color: var(--text-secondary); }
+
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500;
+    letter-spacing: 2px; text-transform: uppercase; color: var(--sky);
+    margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px;
+  }
+  .hero .eyebrow .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--blue-glow); box-shadow: 0 0 12px var(--blue-glow);
+  }
+  .hero h1 {
+    font-size: clamp(40px, 6vw, 66px); font-weight: 800;
+    line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 14ch;
+  }
+  .hero h1 .gradient {
+    background: linear-gradient(135deg, var(--blue-glow), var(--sky), var(--sky-muted));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500;
+    padding: 6px 14px; border-radius: var(--radius-pill);
+    border: 1px solid var(--border); color: var(--text-secondary);
+    letter-spacing: 0.5px;
+  }
+  .pill.accent { background: rgba(37, 99, 235, 0.12); color: var(--blue-glow); border-color: rgba(37, 99, 235, 0.25); }
+
+  section { padding: 52px 0; position: relative; }
+  .section-label {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500;
+    letter-spacing: 2px; text-transform: uppercase; color: var(--sky);
+    margin-bottom: 14px;
+  }
+  .section-title {
+    font-size: clamp(26px, 3.4vw, 36px); font-weight: 700;
+    letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2;
+  }
+  .section-lede {
+    font-size: 16px; color: var(--text-secondary); max-width: var(--read-w);
+    line-height: 1.75; font-weight: 300; margin-bottom: 32px;
+  }
+  .prose p {
+    font-size: 16px; color: var(--text-secondary); line-height: 1.75;
+    max-width: var(--read-w); margin-bottom: 18px;
+  }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.88em;
+    background: var(--bg-card); border: 1px solid var(--border);
+    padding: 1px 6px; border-radius: 4px; color: var(--sky);
+  }
+
+  pre.code {
+    background: var(--ink-deep); border: 1px solid var(--border);
+    border-radius: var(--radius-md); padding: 20px 22px;
+    overflow-x: auto; font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px; line-height: 1.65; color: var(--mist);
+    margin: 0 0 20px; max-width: var(--read-w);
+  }
+  [data-theme="light"] pre.code { background: #0F172A; color: #E2E8F0; }
+  pre.code .k { color: var(--sky); }
+  pre.code .s { color: #A5F3B8; }
+  pre.code .c { color: var(--text-muted); font-style: italic; }
+  pre.code .n { color: #FCD34D; }
+
+  .info-card {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-lg);
+    padding: 28px 32px; max-width: var(--read-w);
+    margin-bottom: 20px;
+  }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+
+  .compare-wrap {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-lg);
+    overflow: hidden; max-width: var(--read-w);
+    margin-bottom: 20px;
+  }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td {
+    padding: 12px 16px; text-align: left;
+    border-bottom: 1px solid var(--border); vertical-align: top;
+  }
+  .compare thead th {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600;
+    letter-spacing: 1.2px; text-transform: uppercase; color: var(--sky);
+    background: rgba(37, 99, 235, 0.04);
+  }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); }
+  .compare td code {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.9em;
+    color: var(--sky);
+  }
+
+  .gotcha-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 12px;
+  }
+  .gotcha {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-left: 3px solid var(--rose);
+    border-radius: var(--radius-md);
+    padding: 18px 22px;
+  }
+  .gotcha strong { display: block; color: var(--text-primary); font-weight: 600; font-size: 14px; margin-bottom: 6px; }
+  .gotcha p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+  .connect-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 12px;
+  }
+  .connect-node {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    padding: 18px 22px; transition: all 0.3s;
+    text-decoration: none; color: inherit; display: block;
+  }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node.soon { cursor: default; opacity: 0.72; }
+  .connect-node.soon:hover { border-color: var(--border); background: var(--bg-card); }
+  .connect-node .tag {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    letter-spacing: 1px; text-transform: uppercase;
+    color: var(--text-muted); display: block; margin-bottom: 6px;
+  }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+
+  .resource-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 12px;
+  }
+  .resource {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    padding: 18px 22px; text-decoration: none; transition: all 0.3s;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--sky); word-break: break-all; }
+
+  .decision-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+    max-width: var(--read-w);
+  }
+  @media (max-width: 720px) { .decision-grid { grid-template-columns: 1fr; } }
+  .decision-card {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    padding: 22px 24px;
+  }
+  .decision-card.use { border-left: 3px solid var(--green); }
+  .decision-card.skip { border-left: 3px solid var(--rose); }
+  .decision-card h4 {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .decision-card.use h4 { color: var(--green); }
+  .decision-card.skip h4 { color: var(--rose); }
+  .decision-card ul { list-style: none; padding: 0; }
+  .decision-card li {
+    font-size: 13px; color: var(--text-secondary); line-height: 1.6;
+    padding: 6px 0; border-bottom: 1px solid var(--border);
+  }
+  .decision-card li:last-child { border-bottom: none; }
+
+  footer {
+    padding: 60px 0 40px; border-top: 1px solid var(--border);
+    text-align: center; margin-top: 40px;
+  }
+  .footer-brand {
+    font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600;
+    background: linear-gradient(135deg, var(--blue), var(--sky));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+  }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--sky); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+
+  .fade-up {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 768px) {
+    .nav-brand-sub { display: none; }
+    .nav-link { display: none; }
+    pre.code { font-size: 11px; padding: 14px 16px; }
+    .compare { font-size: 12px; }
+    .compare th, .compare td { padding: 10px 12px; }
+  }
+
+  *, *::before, *::after {
+    transition-property: background-color, border-color, color, box-shadow;
+    transition-duration: 0.3s; transition-timing-function: ease;
+  }
+</style>
+</head>
+<body>
+
+<div class="glow-orb blue"></div>
+<div class="glow-orb sky"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../../index.html" class="nav-brand">
+      <span class="nav-brand-mark">know.2nth.ai</span>
+      <span class="nav-brand-sub">tech/frappe/drive</span>
+    </a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">← Frappe</a>
+      <a href="../../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">🌙</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">›</span>
+    <a href="../../../index.html#domains">Technology</a>
+    <span class="crumb-sep">›</span>
+    <a href="../">tech</a>
+    <span class="crumb-sep">›</span>
+    <a href="./">frappe</a>
+    <span class="crumb-sep">›</span>
+    <span class="crumb-current">drive</span>
+  </div>
+</div>
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> tech/frappe &middot; Drive &amp; Suite &middot; Skill Leaf</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      Files, docs and mail<br><span class="gradient">on your own bench.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      Frappe Drive is self-hosted file storage and sharing with a collaborative document editor. The thing to know before you plan anything around it: <strong>the standalone Drive app is archived</strong>. It now ships inside <strong>Frappe Suite</strong>, one app carrying seven products &mdash; Drive, Writer, Sheets, Slides, Meet, Mail and Calendar. The migration from standalone to Suite is destructive if you get the order wrong, so read section 04 before you touch a client site.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill accent">Live</span>
+      <span class="pill warn">Standalone Drive archived</span>
+      <span class="pill">Now part of frappe/suite</span>
+      <span class="pill">AGPL v3</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 WHAT IT IS -->
+<section id="what">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; What it is</div>
+      <h2 class="section-title">The Google Workspace shape, self-hosted.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Drive is two things in one app. The <strong>file manager</strong> does multi-part uploads for large files, folder uploads that keep your structure, in-browser previews, video streaming straight from the server, search across your files and files shared with you, per-file activity logs covering permission and metadata changes, and sharing with individual users, groups, everyone on the site, or the public. Guest users get limited, controlled access. Storage is either pooled across all users or quota'd per user. The <strong>editor</strong>, Writer, does real-time collaborative documents with inline annotations you can resolve and reply to, manual versioning alongside automatic versioning, and <code>.docx</code> import.</p>
+      <p>Underneath: the Frappe Framework for database, auth, permissions and realtime; Frappe UI for the interface; TipTap over ProseMirror for the editor; and <strong>Yjs</strong>, a CRDT, for the actual concurrent editing and annotation sync. That last choice is why collaborative editing behaves sensibly rather than last-write-wins.</p>
+      <p>Frappe Suite wraps Drive together with Writer, Sheets (collaborative spreadsheets, with a Hocuspocus collaboration server), Slides, Meet (group video over a mediasoup WebRTC SFU), Mail and Calendar. One app, one install, seven surfaces, AGPLv3. For a consultancy the appeal is obvious: a client who wants off a per-seat productivity subscription gets files, documents, spreadsheets, mail and calls on infrastructure they already run.</p>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.08s">
+      <h4>Read this before planning a Drive install</h4>
+      <p>The <code>frappe/drive</code> repository carries an archive notice at the top of its README: Drive is archived and is now part of Suite. The repository still resolves and the code is still there, so an existing install keeps working and the documentation is still useful &mdash; but it is not where new work happens. Treat <code>frappe/drive</code> as reference and <code>frappe/suite</code> as the thing you actually install. This leaf keeps the <code>drive</code> route because that is what the ecosystem still calls the product.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 WHAT SUITE CONTAINS -->
+<section id="doctypes">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; What Suite contains</div>
+      <h2 class="section-title">Seven products, one app.</h2>
+      <p class="section-lede">Read from the <code>frappe/suite</code> README at <code>HEAD</code>. Each product also has its own standalone repository, now superseded.</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>What it does</th>
+            <th>Notable dependency</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><code>Drive</code></td><td>Store, organise, share and preview files; stream video; per-file activity log</td><td>Frappe Framework file handling</td></tr>
+          <tr><td><code>Writer</code></td><td>Collaborative documents with annotations and versioning; docx import</td><td>TipTap / ProseMirror, Yjs</td></tr>
+          <tr><td><code>Sheets</code></td><td>Collaborative spreadsheets</td><td>Yjs plus a Hocuspocus collaboration server</td></tr>
+          <tr><td><code>Slides</code></td><td>Create and present slide decks</td><td>Frappe UI</td></tr>
+          <tr><td><code>Meet</code></td><td>Group video meetings</td><td>mediasoup WebRTC SFU &mdash; a separate process to run</td></tr>
+          <tr><td><code>Mail</code></td><td>A modern email client over JMAP</td><td>A Stalwart cluster, administered by the separate <code>suite_cloud</code> app</td></tr>
+          <tr><td><code>Calendar</code></td><td>Events and schedules</td><td>Needs only the JMAP server</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.08s">
+      <h4>Mail is not a mail server, and that is the right call</h4>
+      <p>Suite does not run or administer a mail server itself. The servers are Stalwart clusters managed by a separate <code>suite_cloud</code> app, and a Suite site is one tenant of a cluster. End users read and send straight against the cluster over <strong>JMAP</strong> with a per-account app password, so Suite only needs the cluster's <code>server_url</code>. Every administrative change &mdash; domains, accounts, passwords, groups, mailing lists &mdash; goes through Suite Cloud's site API, which checks that the site owns what it is touching. <strong>The site never holds cluster admin credentials.</strong> That separation is a sound security design and also a hard constraint: Mail and Calendar are fully usable with just a JMAP server, but account creation, signup and the Admin Dashboard require Suite Cloud, and without it those endpoints refuse outright.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 HOW IT WORKS -->
+<section id="api">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; How it works</div>
+      <h2 class="section-title">Install, and the five values Mail needs.</h2>
+      <p class="section-lede">Suite installs like any Frappe app. Mail is the only part with configuration you cannot guess.</p>
+    </div>
+
+    <pre class="code fade-up" style="transition-delay: 0.05s"><span class="c"># Fresh install on a bench</span>
+bench get-app https://github.com/frappe/suite
+bench new-site suite.localhost --install-app suite
+bench start
+
+<span class="c"># Production frontend build</span>
+bench build --app suite</pre>
+
+    <pre class="code fade-up" style="transition-delay: 0.08s"><span class="c"># The five connection values a Mail-enabled site carries.</span>
+<span class="c"># Frappe Cloud writes these into site_config.json when it registers the site;</span>
+<span class="c"># on a self-managed site the Settings doctypes override them.</span>
+
+<span class="c"># Mail Settings (or the "mail" key of the site config)</span>
+server_url        <span class="c"># the JMAP URL users connect to</span>
+verify_ssl
+
+<span class="c"># Suite Settings (or top-level keys of the same name)</span>
+suite_cloud_url
+suite_cloud_tenant
+suite_cloud_secret
+
+<span class="c"># Confirm them with "Validate Suite Cloud Credentials" on Suite Settings</span></pre>
+
+    <pre class="code fade-up" style="transition-delay: 0.1s"><span class="c"># A site that deployed mail servers through Suite before the split</span>
+bench --site yoursite migrate
+bench --site yoursite install-app suite_cloud</pre>
+
+    <div class="info-card fade-up" style="transition-delay: 0.12s">
+      <h4>Drive's permission model is worth understanding separately</h4>
+      <p>Sharing in Drive is not just "link or no link". A file or folder can be shared with named users, with groups, with everyone on the site, or published publicly &mdash; and <strong>guest users</strong> are a distinct class with limited, controlled access. Storage is either pooled across all users or allocated as a per-user quota, which is the switch that decides whether one person's video archive becomes everyone's problem. Each file carries an activity log of permission and metadata changes, which is the closest thing here to an audit trail and worth knowing exists before someone asks who shared what.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 GOTCHAS -->
+<section id="gotchas">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; Gotchas</div>
+      <h2 class="section-title">Where it gets tricky.</h2>
+    </div>
+    <div class="gotcha-list fade-up" style="transition-delay: 0.05s">
+      <div class="gotcha">
+        <strong>The migration to Suite deletes data before it restores it</strong>
+        <p>Suite ships the same modules and doctypes as the standalone apps, so it refuses to install on a site that still has any of them &mdash; the install aborts and lists the conflicts. The documented path is: back up the site <em>with files</em>, uninstall every standalone app (<strong>which deletes that app's data on the site</strong>), install Suite, then restore the backup, which lands in the same tables. Then <code>remove-from-installed-apps</code> for each old app, <code>install-app suite</code>, <code>migrate</code>. Every step is reversible only from that backup. Do it on a clone first, and never on a Friday.</p>
+      </div>
+      <div class="gotcha">
+        <strong>Meet and Sheets each need a process you have to run</strong>
+        <p>Meet's group video depends on a mediasoup SFU, and Sheets' realtime editing on a Hocuspocus server. These are not Python workers inside the bench &mdash; they are separate services with their own ports, process supervision and, for WebRTC, firewall and NAT considerations. On Frappe Cloud that is someone else's problem. Self-hosting Suite for the video is a materially bigger job than self-hosting it for the files.</p>
+      </div>
+      <div class="gotcha">
+        <strong>Mail's admin half is gated on an app you may not have</strong>
+        <p>Without <code>suite_cloud</code> installed and its three credentials valid, the Admin Dashboard is hidden from admins, its routes bounce back to the mailbox, and every endpoint in the admin API refuses. Users with existing accounts can still read and send. If your plan was "self-host Suite and administer mail from the dashboard", check that assumption early.</p>
+      </div>
+      <div class="gotcha">
+        <strong>You are now the backup strategy for everyone's files</strong>
+        <p>Replacing a hosted drive means inheriting what the vendor was quietly doing: versioned backups, cross-region durability, restore on request after someone deletes a folder. Drive gives you per-document versioning in Writer and whatever you configure at the bench and storage layer &mdash; nothing more. Decide the backup, retention and restore story before migrating a client's files, and test a restore. An untested backup of a company's document store is not a backup.</p>
+      </div>
+      <div class="gotcha">
+        <strong>Previews and streaming are server work</strong>
+        <p>In-browser previews and server-side video streaming are genuinely useful and genuinely load-bearing on CPU, disk and bandwidth. A bench sized for an ERPNext workload will not be sized for a team streaming video out of it. Size the box for the file workload, not the database one.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 DECISION -->
+<section id="decision">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; Decision guide</div>
+      <h2 class="section-title">Use it for, skip it for.</h2>
+    </div>
+    <div class="decision-grid fade-up" style="transition-delay: 0.05s">
+      <div class="decision-card use">
+        <h4>Use Drive / Suite when</h4>
+        <ul>
+          <li>Documents must stay on infrastructure you control, and that requirement is firm enough to pay for in effort.</li>
+          <li>You are already running Frappe and want file storage with the same users, groups and permissions as the business system.</li>
+          <li>The need is files, documents and spreadsheets &mdash; the parts that work with the fewest extra services.</li>
+          <li>A per-seat productivity subscription in dollars is a line item the client wants gone and they accept the operational trade.</li>
+          <li>You want collaborative editing with real conflict resolution rather than a shared folder and a naming convention.</li>
+        </ul>
+      </div>
+      <div class="decision-card skip">
+        <h4>Skip Drive / Suite when</h4>
+        <ul>
+          <li>Nobody will own backups, restores and capacity. This is infrastructure, not an app you install and forget.</li>
+          <li>You need the group video to be reliable from day one. Run Meet on managed hosting or keep using what works.</li>
+          <li>Feature parity with Google Workspace or Microsoft 365 is the expectation. It isn't close, and offline sync clients especially are not there.</li>
+          <li>You need enterprise document governance &mdash; DLP, legal hold, eDiscovery, retention policy enforcement, external audit trails.</li>
+          <li>You have an existing standalone Drive install and no appetite for a destructive-then-restore migration. Plan it properly or stay put.</li>
+          <li>You aren't on Frappe. The framework is the entry price and it is too high for file storage alone.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 SA CONTEXT -->
+<section id="sa-context">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; South African context</div>
+      <h2 class="section-title">Where it lands in SA delivery work.</h2>
+    </div>
+    <div class="info-card green fade-up" style="transition-delay: 0.05s">
+      <h4>Residency you can actually demonstrate</h4>
+      <p>This is one of the few places where "the data stays in South Africa" is a simple claim rather than a careful one. A bench in a Johannesburg or Cape Town data centre, files on local disk or local object storage, no third-party service in the path for Drive and Writer &mdash; so no cross-border transfer to document under POPIA Section 72 for the document store itself. For a client whose board has asked where the contracts live, that answer is worth real operational effort. Note the asymmetry: Drive and Writer are clean, while Mail depends on a Stalwart cluster whose location you need to establish, and Frappe Cloud has no SA region.</p>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.07s">
+      <h4>POPIA &middot; sharing is the risk surface, not storage</h4>
+      <p>Drive can share with everyone on the site or publish publicly in two clicks, and guest users sit outside your normal user governance. A folder of HR files shared to "everyone on the site" is a POPIA problem that looks like a convenience. Three controls that matter more than the hosting decision: default new shares to named users only, review what is published publicly on a schedule rather than on an incident, and use the per-file activity log as the thing you actually read when someone asks who had access. Per-user quotas rather than a pooled pool also limit how much ends up there in the first place.</p>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.09s">
+      <h4>The honest cost comparison</h4>
+      <p>A per-seat subscription is a predictable rand cost tracking the dollar. Self-hosted Suite swaps that for a server, bandwidth, storage growth, and a person who maintains it &mdash; and SA bandwidth and storage are not free, especially for the video and preview workload. The migration itself is a project. Where this trade is clearly good: residency is a requirement, the team is large enough that per-seat pricing bites, and someone competent already runs the bench. Where it isn't: a ten-person firm with no sysadmin, chasing a subscription saving they will spend twice over in downtime.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 07 CONNECTIONS -->
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; Connections</div>
+      <h2 class="section-title">Where this leaf links.</h2>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="framework.html" class="connect-node">
+        <span class="tag">tech/frappe/framework</span>
+        <div class="skill">Frappe Framework</div>
+        <div class="why">Provides the database, authentication, permissions, realtime events and APIs that every Suite product shares.</div>
+      </a>
+      <a href="raven.html" class="connect-node">
+        <span class="tag">tech/frappe/raven</span>
+        <div class="skill">Raven</div>
+        <div class="why">The other collaboration app. Raven is the conversation; Suite is the artefacts. Together they cover most of what a team leaves a Frappe site to do.</div>
+      </a>
+      <a href="wiki.html" class="connect-node">
+        <span class="tag">tech/frappe/wiki</span>
+        <div class="skill">Frappe Wiki</div>
+        <div class="why">Writer is for documents people work on; Wiki is for documentation people publish and review. Don't use one for the other's job.</div>
+      </a>
+      <a href="./" class="connect-node">
+        <span class="tag">tech/frappe</span>
+        <div class="skill">Frappe sub-hub</div>
+        <div class="why">The hub for the Frappe ecosystem apps. Drive and Suite sit in the collaboration band.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 08 RESOURCES -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 &middot; Resources</div>
+      <h2 class="section-title">Primary sources only.</h2>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://github.com/frappe/suite" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Source</span>
+        <span class="r-title">frappe/suite &mdash; install this, not standalone Drive</span>
+        <span class="r-url">github.com/frappe/suite</span>
+      </a>
+      <a href="https://github.com/frappe/drive" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Source &middot; archived</span>
+        <span class="r-title">frappe/drive &mdash; archived, now part of Suite</span>
+        <span class="r-url">github.com/frappe/drive</span>
+      </a>
+      <a href="https://github.com/frappe/suite_cloud" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Dependency</span>
+        <span class="r-title">frappe/suite_cloud &mdash; required for Mail administration</span>
+        <span class="r-url">github.com/frappe/suite_cloud</span>
+      </a>
+      <a href="https://frappe.io/drive" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Project home</span>
+        <span class="r-title">Frappe Drive</span>
+        <span class="r-url">frappe.io/drive</span>
+      </a>
+      <a href="https://docs.frappe.io/drive/quick-start" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs</span>
+        <span class="r-title">Frappe Drive quick start</span>
+        <span class="r-url">docs.frappe.io/drive/quick-start</span>
+      </a>
+      <a href="https://frappecloud.com" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Hosting</span>
+        <span class="r-title">Frappe Cloud &mdash; managed hosting (no SA region)</span>
+        <span class="r-url">frappecloud.com</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../../index.html">Skills tree</a>
+      <a href="./">Frappe sub-hub</a>
+      <a href="https://frappe.io/drive" target="_blank" rel="noopener">Frappe Drive ↗</a>
+    </div>
+    <p class="footer-copy">© 2026 2nth.ai · Built in South Africa — Globally relevant</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme() {
+    const html = document.documentElement;
+    const current = html.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
+    localStorage.setItem('theme', next);
+  }
+  const saved = localStorage.getItem('theme');
+  if (saved) {
+    document.documentElement.setAttribute('data-theme', saved);
+    document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '☀️' : '🌙';
+  }
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>

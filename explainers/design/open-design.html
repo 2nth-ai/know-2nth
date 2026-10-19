@@ -235,7 +235,7 @@
       <h2 class="section-title">A daemon, an adapter zoo, and a prompt stack you can fork.</h2>
     </div>
     <div class="prose fade-up" style="transition-delay: 0.05s">
-      <p>Anthropic shipped <strong>Claude Design</strong> on 2026-04-17 &mdash; a hosted, Pro/Max-gated design canvas built on Opus 4.7. Eleven days later, <code>nexu-io/open-design</code> shipped the open-source counterpart. Same job; opposite shape.</p>
+      <p>Anthropic shipped <strong>Claude Design</strong> on 2026-04-17 &mdash; a hosted design canvas, at launch a Pro/Max research preview built on Opus 4.7. Eleven days later, <code>nexu-io/open-design</code> shipped the open-source counterpart. Same job; opposite shape. The gating has since gone: as of October 2026 Claude Design is included on every plan, the Free tier included, it runs inside any Claude conversation rather than only on its own canvas, and the standalone <code>claude.ai/design</code> site is scheduled to close on 2026-12-14. That removes the "it costs a subscription" half of OD's case &mdash; what remains is the self-hosting and bring-your-own-model half, which is the part that actually mattered.</p>
       <p>Open Design (<strong>OD</strong>) is a web app plus a local Node daemon. The daemon's only job is to find whichever coding-agent CLI you already have on <code>PATH</code> and route design briefs through it. Skills are folders of structured prompts (<code>SKILL.md</code> + <code>example.html</code> anchor). Design Systems are <code>DESIGN.md</code> files describing colour, typography, spacing, motion, voice. The daemon assembles a prompt stack from the active Skill + Design System and hands it to the CLI. The CLI emits HTML; OD renders it in a sandboxed <code>srcdoc</code> iframe and offers exports to PDF, PPTX, ZIP, and Markdown.</p>
       <p>This is a <strong>thin wrapper around tools you already pay for</strong>. If you have Claude Code, OD spawns it. If you have Codex CLI, OD spawns it. If you have nothing, OD falls back to an OpenAI-compatible BYOK proxy at <code>/api/proxy/stream</code> &mdash; point it at DeepSeek, Groq, OpenRouter, the Anthropic API direct, or your own self-hosted vLLM / Ollama.</p>
     </div>
@@ -517,10 +517,10 @@ pnpm install &amp;&amp; pnpm dev
         <span class="r-title">alchaincyf/huashu-design (critique source)</span>
         <span class="r-url">github.com/alchaincyf/huashu-design</span>
       </a>
-      <a href="https://www.anthropic.com/news/claude-design" class="resource" target="_blank" rel="noopener">
+      <a href="https://claude.com/product/design" class="resource" target="_blank" rel="noopener">
         <span class="r-kind">Comparison</span>
-        <span class="r-title">Claude Design announcement (Anthropic Labs)</span>
-        <span class="r-url">anthropic.com/news/claude-design</span>
+        <span class="r-title">Claude Design product page (plans, exports, sunset date)</span>
+        <span class="r-url">claude.com/product/design</span>
       </a>
       <a href="https://popia.co.za/protection-of-personal-information-act-popia/" class="resource" target="_blank" rel="noopener">
         <span class="r-kind">Compliance</span>

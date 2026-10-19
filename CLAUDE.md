@@ -8,7 +8,10 @@ Sibling sites in the ecosystem:
 - **2nth.ai** — framework / GTM site (Human + AI = 2ⁿ)
 - **dev.2nth.ai** — partner / Gridline / openBUILD AI source content (Construction domain pulls from here)
 - **2nth.io** — compute infrastructure layer
+- **2nth.me**, **2nth.org**, **pay.2nth.ai** — further ecosystem properties that draw on this tree as source material. What each one is for is not documented here; ask before writing copy that describes them.
 - **imbila.ai** — parent consultancy brand
+
+Leaves here are source material for all of the above, so an error in a leaf propagates. Accuracy and voice matter beyond this site.
 
 ### Related repos that are NOT this one
 
@@ -43,26 +46,46 @@ Sibling sites in the ecosystem:
 ```
 know-2nth/
 ├── CLAUDE.md
-├── index.html                # root: 12 top-level domain cards
+├── LICENSE                   # MIT (added PR #146)
+├── index.html                # root: 14 top-level domain cards
 ├── about.html                # access model + how the site works
+├── ask.html                  # retrieval-over-the-tree Q&A surface
 ├── join.html                 # "Stay in touch" lead capture → 2nth CRM (crm-form.js)
 ├── gate.js                   # tier-gate hook, loaded on every leaf, currently inert
-├── og-image.jpg              # 1200×630 OG / Twitter card
-├── og-image.svg              # source for the OG image
+├── crm-form.js               # posts /join to crm.2nth.app
+├── og-image.jpg / .svg       # 1200×630 OG / Twitter card + its source
 ├── _redirects                # Cloudflare Pages redirects
-├── google-adk-explainer.md   # canonical source markdown for ADK leaf (PR #17)
+├── wrangler.toml             # Pages / Functions config
+├── llms.txt                  # GENERATED — see scripts/gen-agent-index.mjs
+├── agent-index.json          # GENERATED — the index the MCP server searches
+├── scripts/gen-agent-index.mjs
+├── functions/                # Pages Functions: agent-fetch converter + MCP server
+├── briefings/                # CEO/CTO-level briefings (own index.html), counted in the agent index
+├── claude/                   # /claude landing page
+├── diagrams/                 # standalone interactive diagrams (e.g. omarchy/)
+├── lab/                      # scratch / demo surface
+├── *.md, *.html at root      # source markdown and one-off pages: google-adk-explainer.md,
+│                             # google-antigravity-explainer.md, frappe-hr.md, roboflow.md,
+│                             # sa-llm-residency-validation.{html,md}, popia-document-agent-pilot.html
 └── explainers/
     ├── agents/        # Frameworks, Protocols, Models, Inference (the strategic priority)
-    ├── biz/           # ERP, CRM, HR — has erp/ and crm/ sub-hubs
+    ├── biz/           # bpm/, crm/, ecm/, erp/, hr/ sub-hubs
     ├── construction/  # openBIM + Gridline / openBUILD AI partner-anchored
-    ├── data/          # analytics/, warehousing/, engineering/ sub-hubs
+    ├── data/          # analytics/, engineering/, warehousing/ sub-hubs
     ├── design/        # tokens, components, motion, AI-assisted design
+    ├── fin/           # financial services
+    ├── health/        # private practice management + ambient AI scribes (launched PR #131)
+    ├── leg/           # SA legal: commercial, employment, disputes, IP (PRs #110–113)
+    ├── media/         # audio / video / TTS
     ├── partners/      # co-branded leaves (no hub yet, not on root grid)
-    ├── people/        # coaching, leadership, typologies/
-    └── tech/          # cloudflare/, google/, microsoft/, frappe/, runtime/, android-hce/, embedded/, frameworks/
+    ├── people/        # coaching, leadership, ai-roles/, typologies/
+    ├── software/      # software engineering practice
+    ├── tech/          # android-hce/, cloudflare/, embedded/, frameworks/, frappe/,
+    │                  # game-engines/, google/, hardware/, microsoft/, oracle/, runtime/
+    └── tools/         # tooling leaves (no root grid card)
 ```
 
-Five additional domains exist on the root grid as cards but have **no folder yet**: `edu`, `fin`, `health`, `iot`, `leg`. Building any of them out means: create `explainers/<domain>/index.html` hub, ship at least one Live leaf, then the root card becomes meaningful.
+Two domains exist on the root grid as cards but have **no folder yet**: `edu` and `iot`. Building either out means: create `explainers/<domain>/index.html` hub, ship at least one Live leaf, then the root card becomes meaningful. (`fin`, `health` and `leg` *do* have folders — this doc claimed otherwise until 2026-10-19.) Conversely `partners/` and `tools/` have folders but no root grid card.
 
 ## How leaves are built
 
@@ -88,6 +111,8 @@ Hubs (`explainers/<domain>/index.html` and sub-hubs) list their leaves as cards.
 
 - `svc-card` / `svc-card soon` — used by `agents`, `tech/*`, `construction`, `design`
 - `hub-card` / `leaf-card` (with `soon` variant) — used by `biz`, `data`, `people`, `tech` (root)
+
+**Counts drift.** `tech/index.html` carries a `<span class="state">N live</span>` badge per sub-hub and each sub-hub carries its own "Live explainers" stat. Both are hand-maintained and several were years of leaves out of date (`cloudflare` read 1 live against 18 leaves). When you flip a stub, bump the sub-hub stat *and* the `tech/index.html` badge. The convention is: one leaf `.html` file that the hub links = one live explainer.
 
 Both work; pick whichever the surrounding hub uses. **Stubs use the `soon` modifier**; flipping a stub to Live = swap `<div class="…-card soon">` for `<a href="…" class="…-card">`. After flipping, bump any "N Live" count in the hub heading and on the matching root domain card.
 

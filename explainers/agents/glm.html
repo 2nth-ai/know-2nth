@@ -4,12 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GLM &middot; Z.ai &mdash; know.2nth.ai</title>
-<meta name="description" content="GLM is Zhipu AI's open-weight model family, shipped internationally under the Z.ai brand. GLM-5.2 (June 2026): ~753B-parameter Mixture-of-Experts, ~40B active per token, 1M-token context, pure MIT licence, built for long-horizon agentic and coding work. Anthropic-Messages-API-compatible endpoint means Claude Code retargets with a base-URL change. The institutionally-deployable Chinese open-weight flagship — competitive with the closed frontier on agentic engineering, self-hostable to avoid the hosted-API governance risk, with an ~800GB-VRAM hardware reality that is the real binding constraint.">
+<meta name="description" content="GLM is Zhipu AI's open-weight model family, shipped internationally under the Z.ai brand. GLM-5.3 and GLM-5.3-Flash are current, on the GLM-5.2 (June 2026) base: ~744B-parameter Mixture-of-Experts, ~40B active per token, 1M-token context, pure MIT licence, built for long-horizon agentic and coding work. Anthropic-Messages-API-compatible endpoint means Claude Code retargets with a base-URL change. The institutionally-deployable Chinese open-weight flagship — competitive with the closed frontier on agentic engineering, self-hostable to avoid the hosted-API governance risk, with an ~800GB-VRAM hardware reality that is the real binding constraint.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="know.2nth.ai">
 <meta property="og:url" content="https://know.2nth.ai/explainers/agents/glm">
 <meta property="og:title" content="GLM &middot; Z.ai &mdash; know.2nth.ai">
-<meta property="og:description" content="GLM-5.2 (Jun 2026): 753B MoE, 40B active, 1M context, MIT-licensed. Long-horizon agentic coding, Anthropic-Messages-API-compatible, self-hostable. The institutionally-deployable Chinese open-weight flagship — and the harness, not the model, is now the hard part.">
+<meta property="og:description" content="GLM-5.3 on the GLM-5.2 base: 744B MoE, 40B active, 1M context, MIT-licensed. Long-horizon agentic coding, Anthropic-Messages-API-compatible, self-hostable. The institutionally-deployable Chinese open-weight flagship — and the harness, not the model, is now the hard part.">
 <meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
@@ -17,7 +17,7 @@
 <meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="GLM &middot; Z.ai &mdash; know.2nth.ai">
-<meta name="twitter:description" content="GLM-5.2: 753B MoE open weights, 1M context, MIT, Anthropic-Messages-compatible. Competitive on agentic coding, self-hostable to dodge the hosted-API governance risk — if you can afford the ~800GB VRAM.">
+<meta name="twitter:description" content="GLM-5.3: 744B MoE open weights, 1M context, MIT, Anthropic-Messages-compatible. Competitive on agentic coding, self-hostable to dodge the hosted-API governance risk — if you can afford the ~800GB VRAM.">
 <meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -157,13 +157,13 @@
       The open-weight flagship <span class="gradient">that trades blows with the frontier.</span>
     </h1>
     <p class="sub fade-up" style="transition-delay: 0.1s">
-      <strong>GLM</strong> is Zhipu AI's model family, shipped internationally under the <strong>Z.ai</strong> brand. <strong>GLM-5.2</strong> (June 2026) is the current headline: a ~753B-parameter Mixture-of-Experts model with ~40B active per token, a <strong>1M-token context window</strong>, and a pure <strong>MIT licence</strong>. It is built for long-horizon agentic and coding work, and its API is Anthropic-Messages-compatible &mdash; so Claude Code retargets to it with a base-URL change. The institutionally-deployable Chinese open-weight flagship: genuinely competitive on agentic engineering, self-hostable to keep your data on your own infrastructure &mdash; if you can afford the GPUs.
+      <strong>GLM</strong> is Zhipu AI's model family, shipped internationally under the <strong>Z.ai</strong> brand. <strong>GLM-5.3</strong> is the current headline, built on the same base model as <strong>GLM-5.2</strong> (June 2026): a ~744B-parameter Mixture-of-Experts model with ~40B active per token, a <strong>1M-token context window</strong>, and a pure <strong>MIT licence</strong>. It is built for long-horizon agentic and coding work, and its API is Anthropic-Messages-compatible &mdash; so Claude Code retargets to it with a base-URL change. The institutionally-deployable Chinese open-weight flagship: genuinely competitive on agentic engineering, self-hostable to keep your data on your own infrastructure &mdash; if you can afford the GPUs.
     </p>
     <div class="hero-meta fade-up" style="transition-delay: 0.15s">
       <span class="pill green">Live &middot; open weights</span>
       <span class="pill accent">MIT licence</span>
-      <span class="pill indigo">GLM-5.2 &middot; Jun 2026</span>
-      <span class="pill indigo">753B MoE &middot; 40B active</span>
+      <span class="pill indigo">GLM-5.3 &middot; current</span>
+      <span class="pill indigo">744B MoE &middot; 40B active</span>
       <span class="pill warn">~800GB VRAM to self-host</span>
     </div>
   </div>
@@ -177,9 +177,16 @@
       <h2 class="section-title">Zhipu AI's family, told as one tight arc.</h2>
     </div>
     <div class="prose fade-up" style="transition-delay: 0.05s">
-      <p><strong>GLM</strong> (General Language Model) is the family from <strong>Zhipu AI</strong>, a Beijing lab spun out of Tsinghua University, now shipping internationally under the <strong>Z.ai</strong> brand. Its defining trait is cadence: roughly quarterly releases, the most consistent of any Chinese frontier lab. The lineage worth anchoring runs GLM-4.5 (Jul 2025) &rarr; GLM-4.6 (Sep 2025, 200K context, MIT) &rarr; GLM-4.7 (Dec 2025) &rarr; <strong>GLM-5</strong> (Feb 2026, 744B MoE) &rarr; GLM-5.1 (Apr 2026) &rarr; <strong>GLM-5.2</strong> (Jun 2026). Z.ai listed on the Hong Kong Stock Exchange in January 2026 &mdash; the first publicly-listed Chinese AI lab (ticker <code>02513.HK</code>).</p>
+      <p><strong>GLM</strong> (General Language Model) is the family from <strong>Zhipu AI</strong>, a Beijing lab spun out of Tsinghua University, now shipping internationally under the <strong>Z.ai</strong> brand. Its defining trait is cadence: roughly quarterly releases, the most consistent of any Chinese frontier lab. The lineage worth anchoring runs GLM-4.5 (Jul 2025) &rarr; GLM-4.6 (Sep 2025, 200K context, MIT) &rarr; GLM-4.7 (Dec 2025) &rarr; <strong>GLM-5</strong> (Feb 2026, 744B MoE) &rarr; GLM-5.1 (Apr 2026) &rarr; <strong>GLM-5.2</strong> (Jun 2026) &rarr; <strong>GLM-5.3</strong> and <strong>GLM-5.3-Flash</strong>, the current pair. Z.ai listed on the Hong Kong Stock Exchange in January 2026 &mdash; the first publicly-listed Chinese AI lab (ticker <code>02513.HK</code>).</p>
       <p>The strategic point for this tree is not the changelog &mdash; it is the <strong>licence and the shape of the business</strong>. GLM-5.2 ships under <strong>pure MIT</strong>: free to self-host, fine-tune, and use commercially, with none of the MAU caps or attribution clauses that complicate Llama's Community Licence. Z.ai monetises through its hosted API and the GLM Coding Plan, <em>not</em> by withholding weights. That makes GLM an open-weight model you can run next to your own data and systems-of-record &mdash; which is the only frame the Agents domain cares about. Judge it the way this sub-tree judges every model: on tool-use reliability and agent-framework integration, not chat vibes.</p>
     </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.07s">
+      <h4>Since this leaf was written: GLM-5.3 and GLM-5.3-Flash</h4>
+      <p>Two more releases have landed in the series repo, and they change what you should actually pull. <strong>GLM-5.3</strong> reuses GLM-5.2's base model unchanged &mdash; every gain is post-training &mdash; at the same 744B-A40B shape, shipped in FP8 and BF16. Z.ai claims roughly a 50% improvement over 5.2 on its in-house Code Bench and open-weights state of the art on Terminal Bench 3.0 and Agents' Last Exam; those are vendor numbers on partly in-house benchmarks, so treat them as a direction, not a measurement. <strong>GLM-5.3-Flash</strong> is the more interesting release architecturally: a newly trained <strong>320B-A18B</strong> base combining sparse and linear attention specifically to cut long-context serving cost, which is the number that decides whether self-hosting is affordable at all.</p>
+      <p>Two operational details that will bite if you carry a 5.2 integration forward. <strong>The effort parameter changed:</strong> GLM-5.2 accepts only <code>high</code> and <code>max</code> for <code>reasoning_effort</code>, while 5.3 and 5.3-Flash add <code>low</code>; both default to <code>max</code> if you pass nothing or pass a value they don't recognise, which is the expensive default. And in the 5.3 chat template, <code>clear_thinking</code> defaults to <code>false</code> &mdash; pass <code>clear_thinking=true</code> explicitly for chat-shaped use, or reasoning accumulates in the transcript.</p>
+      <p>One claim deserves naming rather than burying, because it is a governance question and not a feature: Z.ai states that as it scaled post-training, <strong>cyber capability developed faster than expected</strong>, and that GLM-5.3 is state of the art on CyberGym for vulnerability discovery, with its largest gains further up the exploitation chain. If you are putting open weights on your own infrastructure inside a regulated South African organisation, that is a model-risk item for your security team to sign off, not a bullet for the capability slide.</p>
+    </div>
+
     <div class="info-card indigo fade-up" style="transition-delay: 0.08s">
       <h4>Where it sits in the Models band</h4>
       <p>GLM is the seventh distinct model story in this band and the third open-weight option, alongside <a href="llama.html" style="color:var(--sky);text-decoration:none;">Llama</a> and <a href="mistral-qwen.html" style="color:var(--sky);text-decoration:none;">Mistral / Qwen</a>. Where Llama is the broad community workhorse and Qwen Coder is the small-model code specialist, <strong>GLM-5.2 is the frontier-adjacent open-weight flagship</strong> &mdash; the one you reach for when you want closed-frontier-class agentic and coding quality but need the weights in your own hands. The cost of that is hardware, not licence (see &sect;02).</p>
@@ -199,7 +206,7 @@
     <div class="stack-grid fade-up" style="transition-delay: 0.05s">
       <div class="stack-cell">
         <span class="layer">Architecture</span>
-        <h4>~753B MoE &middot; ~40B active</h4>
+        <h4>744B MoE &middot; ~40B active</h4>
         <p>Mixture-of-Experts: 8 of 256 routed experts fire per token plus 1 shared expert. 78 layers, hidden size 6,144, 64 attention heads. You hold three-quarters of a trillion parameters; you pay compute for only ~40B per token.</p>
       </div>
       <div class="stack-cell">
@@ -448,10 +455,20 @@
         <span class="r-title">Hugging Face &middot; zai-org/GLM-5.2-FP8</span>
         <span class="r-url">huggingface.co/zai-org/GLM-5.2-FP8</span>
       </a>
-      <a href="https://github.com/zai-org/GLM" class="resource" target="_blank" rel="noopener">
+      <a href="https://github.com/zai-org/GLM-5" class="resource" target="_blank" rel="noopener">
         <span class="r-kind">Source</span>
-        <span class="r-title">zai-org/GLM &middot; GitHub</span>
-        <span class="r-url">github.com/zai-org/GLM</span>
+        <span class="r-title">zai-org/GLM-5 &middot; the GLM-5 series repo (5, 5.1, 5.2, 5.3)</span>
+        <span class="r-url">github.com/zai-org/GLM-5</span>
+      </a>
+      <a href="https://huggingface.co/zai-org/GLM-5.3" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Weights &middot; FP8</span>
+        <span class="r-title">Hugging Face &middot; zai-org/GLM-5.3</span>
+        <span class="r-url">huggingface.co/zai-org/GLM-5.3</span>
+      </a>
+      <a href="https://huggingface.co/zai-org/GLM-5.3-Flash" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Weights &middot; FP8</span>
+        <span class="r-title">Hugging Face &middot; zai-org/GLM-5.3-Flash</span>
+        <span class="r-url">huggingface.co/zai-org/GLM-5.3-Flash</span>
       </a>
       <a href="https://docs.z.ai" class="resource" target="_blank" rel="noopener">
         <span class="r-kind">Docs</span>

@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Frappe Learning (LMS) — know.2nth.ai</title>
+<meta name="description" content="Frappe Learning — open-source LMS on the Frappe Framework. Courses, chapters and lessons, batch cohorts with Zoom or Google Meet live classes, quizzes with proctoring, assignments, programming exercises and certificates with expiry. AGPLv3, requires frappe/payments.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/tech/frappe/lms">
+<meta property="og:title" content="Frappe Learning (LMS) — know.2nth.ai">
+<meta property="og:description" content="Frappe Learning — open-source LMS on the Frappe Framework. Courses, chapters and lessons, batch cohorts with Zoom or Google Meet live classes, quizzes with proctoring, assignments, programming exercises and certificates with expiry. AGPLv3, requires frappe/payments.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai — The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Frappe Learning (LMS) — know.2nth.ai">
+<meta name="twitter:description" content="Frappe Learning — open-source LMS on the Frappe Framework. Courses, chapters and lessons, batch cohorts with Zoom or Google Meet live classes, quizzes with proctoring, assignments, programming exercises and certificates with expiry. AGPLv3, requires frappe/payments.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3Cline x1='16' y1='3' x2='16' y2='7' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='16' y1='25' x2='16' y2='29' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='3' y1='16' x2='7' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='25' y1='16' x2='29' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33;
+    --blue: #2563EB; --blue-glow: #3B82F6;
+    --sky: #38BDF8; --sky-muted: #7DD3FC;
+    --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8;
+    --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12);
+    --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12);
+    --violet: #8B5CF6; --violet-soft: rgba(139, 92, 246, 0.12);
+    --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12);
+    --bg: var(--ink); --bg-raised: var(--navy);
+    --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(37, 99, 235, 0.06);
+    --text-primary: var(--paper); --text-secondary: var(--slate);
+    --text-muted: #64748B;
+    --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(56, 189, 248, 0.3);
+    --max-w: 1200px; --read-w: 760px;
+    --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px;
+  }
+  [data-theme="light"] {
+    --bg: #F1F5F9; --bg-raised: #FFFFFF;
+    --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(37, 99, 235, 0.04);
+    --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8;
+    --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(37, 99, 235, 0.25);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+    background: var(--bg); color: var(--text-primary);
+    line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased;
+  }
+  body::before {
+    content: ''; position: fixed; inset: 0; opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 9999;
+  }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.blue { width: 600px; height: 600px; background: var(--blue); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+
+  nav {
+    position: sticky; top: 0; z-index: 100; padding: 0 24px;
+    backdrop-filter: blur(20px) saturate(1.4);
+    background: rgba(11, 17, 32, 0.75);
+    border-bottom: 1px solid var(--border);
+  }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner {
+    max-width: var(--max-w); margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 60px;
+  }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark {
+    font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px;
+    background: linear-gradient(135deg, var(--blue), var(--sky));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+  }
+  .nav-brand-sub {
+    font-size: 12px; color: var(--text-muted);
+    letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500;
+    padding-left: 10px; border-left: 1px solid var(--border);
+  }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--sky); }
+  .theme-toggle {
+    background: none; border: 1px solid var(--border); color: var(--text-secondary);
+    width: 36px; height: 36px; border-radius: 50%; cursor: pointer;
+    display: grid; place-items: center; font-size: 16px; transition: all 0.2s;
+  }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--sky); }
+
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .read { max-width: var(--read-w); }
+
+  .crumb {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted);
+    letter-spacing: 0.5px; padding: 28px 0 0;
+    display: flex; gap: 10px; flex-wrap: wrap;
+  }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--sky); }
+  .crumb-sep { opacity: 0.5; }
+  .crumb-current { color: var(--text-secondary); }
+
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500;
+    letter-spacing: 2px; text-transform: uppercase; color: var(--sky);
+    margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px;
+  }
+  .hero .eyebrow .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--blue-glow); box-shadow: 0 0 12px var(--blue-glow);
+  }
+  .hero h1 {
+    font-size: clamp(40px, 6vw, 66px); font-weight: 800;
+    line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 14ch;
+  }
+  .hero h1 .gradient {
+    background: linear-gradient(135deg, var(--blue-glow), var(--sky), var(--sky-muted));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500;
+    padding: 6px 14px; border-radius: var(--radius-pill);
+    border: 1px solid var(--border); color: var(--text-secondary);
+    letter-spacing: 0.5px;
+  }
+  .pill.accent { background: rgba(37, 99, 235, 0.12); color: var(--blue-glow); border-color: rgba(37, 99, 235, 0.25); }
+
+  section { padding: 52px 0; position: relative; }
+  .section-label {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500;
+    letter-spacing: 2px; text-transform: uppercase; color: var(--sky);
+    margin-bottom: 14px;
+  }
+  .section-title {
+    font-size: clamp(26px, 3.4vw, 36px); font-weight: 700;
+    letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2;
+  }
+  .section-lede {
+    font-size: 16px; color: var(--text-secondary); max-width: var(--read-w);
+    line-height: 1.75; font-weight: 300; margin-bottom: 32px;
+  }
+  .prose p {
+    font-size: 16px; color: var(--text-secondary); line-height: 1.75;
+    max-width: var(--read-w); margin-bottom: 18px;
+  }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.88em;
+    background: var(--bg-card); border: 1px solid var(--border);
+    padding: 1px 6px; border-radius: 4px; color: var(--sky);
+  }
+
+  pre.code {
+    background: var(--ink-deep); border: 1px solid var(--border);
+    border-radius: var(--radius-md); padding: 20px 22px;
+    overflow-x: auto; font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px; line-height: 1.65; color: var(--mist);
+    margin: 0 0 20px; max-width: var(--read-w);
+  }
+  [data-theme="light"] pre.code { background: #0F172A; color: #E2E8F0; }
+  pre.code .k { color: var(--sky); }
+  pre.code .s { color: #A5F3B8; }
+  pre.code .c { color: var(--text-muted); font-style: italic; }
+  pre.code .n { color: #FCD34D; }
+
+  .info-card {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-lg);
+    padding: 28px 32px; max-width: var(--read-w);
+    margin-bottom: 20px;
+  }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+
+  .compare-wrap {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-lg);
+    overflow: hidden; max-width: var(--read-w);
+    margin-bottom: 20px;
+  }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td {
+    padding: 12px 16px; text-align: left;
+    border-bottom: 1px solid var(--border); vertical-align: top;
+  }
+  .compare thead th {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600;
+    letter-spacing: 1.2px; text-transform: uppercase; color: var(--sky);
+    background: rgba(37, 99, 235, 0.04);
+  }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); }
+  .compare td code {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.9em;
+    color: var(--sky);
+  }
+
+  .gotcha-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 12px;
+  }
+  .gotcha {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-left: 3px solid var(--rose);
+    border-radius: var(--radius-md);
+    padding: 18px 22px;
+  }
+  .gotcha strong { display: block; color: var(--text-primary); font-weight: 600; font-size: 14px; margin-bottom: 6px; }
+  .gotcha p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+  .connect-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 12px;
+  }
+  .connect-node {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    padding: 18px 22px; transition: all 0.3s;
+    text-decoration: none; color: inherit; display: block;
+  }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node.soon { cursor: default; opacity: 0.72; }
+  .connect-node.soon:hover { border-color: var(--border); background: var(--bg-card); }
+  .connect-node .tag {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    letter-spacing: 1px; text-transform: uppercase;
+    color: var(--text-muted); display: block; margin-bottom: 6px;
+  }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+
+  .resource-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 12px;
+  }
+  .resource {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    padding: 18px 22px; text-decoration: none; transition: all 0.3s;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--sky); word-break: break-all; }
+
+  .decision-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+    max-width: var(--read-w);
+  }
+  @media (max-width: 720px) { .decision-grid { grid-template-columns: 1fr; } }
+  .decision-card {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    padding: 22px 24px;
+  }
+  .decision-card.use { border-left: 3px solid var(--green); }
+  .decision-card.skip { border-left: 3px solid var(--rose); }
+  .decision-card h4 {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .decision-card.use h4 { color: var(--green); }
+  .decision-card.skip h4 { color: var(--rose); }
+  .decision-card ul { list-style: none; padding: 0; }
+  .decision-card li {
+    font-size: 13px; color: var(--text-secondary); line-height: 1.6;
+    padding: 6px 0; border-bottom: 1px solid var(--border);
+  }
+  .decision-card li:last-child { border-bottom: none; }
+
+  footer {
+    padding: 60px 0 40px; border-top: 1px solid var(--border);
+    text-align: center; margin-top: 40px;
+  }
+  .footer-brand {
+    font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600;
+    background: linear-gradient(135deg, var(--blue), var(--sky));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+  }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--sky); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+
+  .fade-up {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 768px) {
+    .nav-brand-sub { display: none; }
+    .nav-link { display: none; }
+    pre.code { font-size: 11px; padding: 14px 16px; }
+    .compare { font-size: 12px; }
+    .compare th, .compare td { padding: 10px 12px; }
+  }
+
+  *, *::before, *::after {
+    transition-property: background-color, border-color, color, box-shadow;
+    transition-duration: 0.3s; transition-timing-function: ease;
+  }
+</style>
+</head>
+<body>
+
+<div class="glow-orb blue"></div>
+<div class="glow-orb sky"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../../index.html" class="nav-brand">
+      <span class="nav-brand-mark">know.2nth.ai</span>
+      <span class="nav-brand-sub">tech/frappe/lms</span>
+    </a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">← Frappe</a>
+      <a href="../../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">🌙</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">›</span>
+    <a href="../../../index.html#domains">Technology</a>
+    <span class="crumb-sep">›</span>
+    <a href="../">tech</a>
+    <span class="crumb-sep">›</span>
+    <a href="./">frappe</a>
+    <span class="crumb-sep">›</span>
+    <span class="crumb-current">lms</span>
+  </div>
+</div>
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> tech/frappe &middot; Learning &middot; Skill Leaf</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      Courses, cohorts<br><span class="gradient">and a certificate at the end.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      Frappe Learning &mdash; the app still installed as <code>lms</code> &mdash; is an open-source learning management system on the Frappe Framework. Courses break into chapters and lessons, learners are grouped into batches with live classes, quizzes and assignments carry the assessment, and completion issues a certificate. It began in 2021 as the platform for FOSS United's Mon.School and became a product because the alternatives were worse.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill accent">Live</span>
+      <span class="pill">Frappe Framework app</span>
+      <span class="pill">AGPL v3</span>
+      <span class="pill">Requires frappe/payments</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 WHAT IT IS -->
+<section id="what">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; What it is</div>
+      <h2 class="section-title">An LMS that didn't want to be Moodle.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Frappe Learning does the standard LMS job: publish structured course content, enrol learners, assess them, certify them. What it is reacting against is stated plainly in its own README &mdash; the team evaluated Moodle for Mon.School, found the forms long and the interface confusing, and wrote their own. The result is narrower than Moodle and much easier to get a first course into.</p>
+      <p>The content model is three levels: an <code>LMS Course</code> holds <code>Course Chapter</code> records, each holding <code>Course Lesson</code> records. Lessons are Markdown with embedded video, files and inline assessments. On top of that sits the <strong>cohort layer</strong>: an <code>LMS Batch</code> groups learners with a start and end date, a timetable, seat count and optional Zoom or Google Meet live classes. A course can be taken self-paced or run as a batch, and <code>disable_self_learning</code> on the course is the switch that forces the cohort route.</p>
+      <p>Assessment is more serious than the quick tour suggests. <code>LMS Quiz</code> carries <code>max_attempts</code>, <code>passing_percentage</code>, <code>shuffle_questions</code>, a <code>duration</code>, optional negative marking, scheduling windows, and proctoring with a violation threshold &mdash; there is an <code>LMS Quiz Violation Log</code> doctype behind that. <code>LMS Assignment</code> takes submissions as documents or PDFs for manual grading, and <code>LMS Programming Exercise</code> runs submitted code against test cases. Certificates are <code>LMS Certificate</code> documents with an issue date, an optional expiry and a template you can replace.</p>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.08s">
+      <h4>It is also a Frappe app, which is the actual reason to pick it</h4>
+      <p>Every object above is a doctype on your site, which means learner records sit next to the rest of the business. If the same site runs Frappe HR, a <code>LMS Certificate</code> is queryable against an <code>Employee</code> without an integration &mdash; which is how you answer "who on this crew holds a current induction?" as a report instead of a spreadsheet. That is the pitch. An LMS that only did courses well would not be worth the framework.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 KEY DOCTYPES -->
+<section id="doctypes">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; Key doctypes</div>
+      <h2 class="section-title">The data model.</h2>
+      <p class="section-lede">Fields read from the doctype definitions in <code>frappe/lms</code> at <code>HEAD</code>. There are around seventy doctypes in the app; these are the ones you will actually query.</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead>
+          <tr>
+            <th>Doctype</th>
+            <th>Purpose</th>
+            <th>Key fields</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><code>LMS Course</code></td><td>The course itself, published or not</td><td>title, description, published, chapters, instructors, category, paid_course, course_price, amount_usd, enable_certification, disable_self_learning, enforce_lesson_completion</td></tr>
+          <tr><td><code>Course Chapter</code></td><td>A grouping of lessons &mdash; also the SCORM boundary</td><td>course, title, lessons, is_scorm_package, scorm_package, manifest_file, launch_file</td></tr>
+          <tr><td><code>Course Lesson</code></td><td>One lesson: Markdown body, video, inline assessments</td><td>chapter, course, title, body, youtube, file_type, instructor_notes, assessments, include_in_preview</td></tr>
+          <tr><td><code>LMS Batch</code></td><td>A cohort with dates, a timetable and live classes</td><td>title, start_date, end_date, courses, seat_count, timetable, medium, conferencing_provider, zoom_account, certification, allow_self_enrollment, paid_batch</td></tr>
+          <tr><td><code>LMS Enrollment</code></td><td>One learner on one course, and how far they are</td><td>member, course, progress, current_lesson, payment, certificate, enrollment_from_batch</td></tr>
+          <tr><td><code>LMS Quiz</code></td><td>Assessment with attempts, timing and proctoring</td><td>title, questions, max_attempts, passing_percentage, duration, shuffle_questions, enable_proctoring, max_violations, enable_negative_marking, enable_scheduling</td></tr>
+          <tr><td><code>LMS Assignment</code></td><td>A graded submission task</td><td>title, question, type, grade_assignment, course, enable_scheduling</td></tr>
+          <tr><td><code>LMS Certificate</code></td><td>The issued credential</td><td>member, course, batch_name, issue_date, expiry_date, template, published, evaluator</td></tr>
+          <tr><td><code>LMS Program</code></td><td>Several courses taken as one track</td><td>title, program_courses, program_members, enforce_course_order, published</td></tr>
+          <tr><td><code>LMS Payment</code></td><td>A paid enrolment &mdash; note the tax fields</td><td>member, amount, currency, original_amount, amount_with_gst, gstin, pan, coupon, payment_received, payment_for_document</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 03 HOW IT WORKS -->
+<section id="api">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; How it works</div>
+      <h2 class="section-title">REST against enrolments and progress.</h2>
+      <p class="section-lede">The reporting questions a client actually asks &mdash; who is behind, whose certificate expires this quarter &mdash; are ordinary Frappe queries.</p>
+    </div>
+
+    <pre class="code fade-up" style="transition-delay: 0.05s"><span class="c"># Learners on a course who have started but not finished</span>
+GET /api/resource/LMS Enrollment
+  ?filters=[[<span class="s">"course"</span>,<span class="s">"="</span>,<span class="s">"popia-for-operations"</span>],[<span class="s">"progress"</span>,<span class="s">"&lt;"</span>,<span class="n">100</span>],[<span class="s">"progress"</span>,<span class="s">"&gt;"</span>,<span class="n">0</span>]]
+  &fields=[<span class="s">"member"</span>,<span class="s">"member_name"</span>,<span class="s">"progress"</span>,<span class="s">"current_lesson"</span>]
+  &order_by=progress asc</pre>
+
+    <pre class="code fade-up" style="transition-delay: 0.08s"><span class="c"># Certificates expiring in the next 90 days &mdash; the compliance question</span>
+GET /api/resource/LMS Certificate
+  ?filters=[[<span class="s">"expiry_date"</span>,<span class="s">"between"</span>,[<span class="s">"2026-10-19"</span>,<span class="s">"2027-01-17"</span>]]]
+  &fields=[<span class="s">"member_name"</span>,<span class="s">"course_title"</span>,<span class="s">"issue_date"</span>,<span class="s">"expiry_date"</span>]
+  &order_by=expiry_date asc
+
+<span class="c"># Enrol a learner into a batch</span>
+POST /api/resource/LMS Batch Enrollment
+{
+  <span class="s">"batch"</span>: <span class="s">"induction-2026-q4"</span>,
+  <span class="s">"member"</span>: <span class="s">"learner@example.co.za"</span>
+}</pre>
+
+    <pre class="code fade-up" style="transition-delay: 0.1s"><span class="c"># Quiz results for a cohort, to see whether the assessment discriminates</span>
+GET /api/resource/LMS Quiz Submission
+  ?fields=[<span class="s">"member"</span>,<span class="s">"quiz"</span>,<span class="s">"score"</span>,<span class="s">"percentage"</span>,<span class="s">"creation"</span>]
+  &filters=[[<span class="s">"quiz"</span>,<span class="s">"="</span>,<span class="s">"induction-assessment"</span>]]
+  &limit_page_length=<span class="n">0</span></pre>
+
+    <div class="info-card fade-up" style="transition-delay: 0.12s">
+      <h4>Field names are not guaranteed across versions</h4>
+      <p>The doctype names above are read from the current <code>develop</code> branch. Frappe Learning moves, and submission doctypes in particular have been reshaped before. Before you build a report or an agent against a field, confirm it on the version you installed &mdash; <code>GET /api/method/frappe.client.get_list</code> with <code>doctype=DocField</code>, or just open the doctype in Desk. This applies to the whole Frappe ecosystem, but it bites hardest in the newer apps.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 GOTCHAS -->
+<section id="gotchas">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; Gotchas</div>
+      <h2 class="section-title">Where it gets tricky.</h2>
+    </div>
+    <div class="gotcha-list fade-up" style="transition-delay: 0.05s">
+      <div class="gotcha">
+        <strong>Code exercises default to a Frappe-hosted runner</strong>
+        <p>Programming exercises execute submitted code through a service at <code>livecode_url</code> in <code>LMS Settings</code>. Leave that blank and the app falls back to a hard-coded default, <code>https://falcon.frappe.io</code> &mdash; meaning learner-submitted code leaves your server for a third party you have no contract with. If you use programming exercises at all, set <code>livecode_url</code> to a runner you control, and if you can't, disable the feature rather than shipping it quietly.</p>
+      </div>
+      <div class="gotcha">
+        <strong>The payments app is a hard dependency</strong>
+        <p><code>required_apps</code> in <code>hooks.py</code> is <code>["frappe/payments"]</code>, so you install <code>payments</code> whether or not you ever sell a course. That matters for the install order on a self-managed bench: <code>bench get-app payments</code> before <code>bench get-app lms</code>, or the install fails.</p>
+      </div>
+      <div class="gotcha">
+        <strong>The money model is shaped for India</strong>
+        <p><code>LMS Payment</code> carries <code>gstin</code>, <code>pan</code> and <code>amount_with_gst</code>; <code>LMS Settings</code> has <code>apply_gst</code> and an <code>exception_country</code> list. That is Indian GST, not South African VAT, and there is no SA tax-invoice logic in the app. If you are selling courses to SA customers, treat paid enrolment as a payment record and raise the tax invoice in ERPNext or your accounting system &mdash; don't try to make this doctype the invoice.</p>
+      </div>
+      <div class="gotcha">
+        <strong>Gateway coverage comes from frappe/payments, and it is thin for SA</strong>
+        <p>The gateways that app ships are Stripe, PayPal, Braintree, Razorpay, Paytm, GoCardless, Paymob and M-Pesa. For a South African seller that realistically means Stripe or PayPal; PayFast, Peach, Ozow and Yoco are not there. Confirm the gateway before you promise paid courses, not after.</p>
+      </div>
+      <div class="gotcha">
+        <strong>Proctoring is a browser-side honour system</strong>
+        <p><code>enable_proctoring</code> and <code>max_violations</code> log suspicious events during a quiz. That is a deterrent and an audit trail, not invigilation. Don't let a client hang a certification whose integrity actually matters &mdash; a ticketed trade qualification, say &mdash; on it. Use an evaluator and <code>LMS Certificate Evaluation</code> for those.</p>
+      </div>
+      <div class="gotcha">
+        <strong>SCORM support is at the chapter level</strong>
+        <p><code>Course Chapter</code> can be a SCORM package rather than a set of lessons, which is how you bring existing commercial courseware in. Expect the usual SCORM experience: packages that work, packages that half-work, and tracking that reports completion but not much else. Test the specific package before you quote the work.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 DECISION -->
+<section id="decision">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; Decision guide</div>
+      <h2 class="section-title">Use it for, skip it for.</h2>
+    </div>
+    <div class="decision-grid fade-up" style="transition-delay: 0.05s">
+      <div class="decision-card use">
+        <h4>Use Frappe Learning when</h4>
+        <ul>
+          <li>You need internal training with records that tie to employees &mdash; induction, safety, compliance refreshers &mdash; and you already run Frappe or ERPNext.</li>
+          <li>Certificate expiry is the reporting question that matters, and you want it as a query rather than a spreadsheet.</li>
+          <li>You run cohorts: fixed-date batches with a timetable and live sessions, not just a content library.</li>
+          <li>You want to publish a small paid course catalogue and Stripe or PayPal is an acceptable gateway.</li>
+          <li>You would otherwise pay per-seat for a hosted LMS whose features you use a fraction of.</li>
+        </ul>
+      </div>
+      <div class="decision-card skip">
+        <h4>Skip Frappe Learning when</h4>
+        <ul>
+          <li>The qualification is externally accredited and the integrity of assessment has to hold up to scrutiny. Browser-side proctoring won't.</li>
+          <li>You need SA VAT invoicing on course sales out of the box. The tax model is Indian GST and retrofitting it is not a small job.</li>
+          <li>Your learners are consumers at scale and the storefront is the product &mdash; a hosted platform will out-market this on checkout, coupons and course discovery.</li>
+          <li>You need deep learning analytics: cohort comparisons, item analysis on questions, predictive drop-off. The reporting is basic.</li>
+          <li>You aren't running Frappe. The framework is the price of entry, and for a standalone LMS that price is too high.</li>
+          <li>Programming exercises are central and you cannot host your own code runner.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 SA CONTEXT -->
+<section id="sa-context">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; South African context</div>
+      <h2 class="section-title">Where it lands in SA delivery work.</h2>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.05s">
+      <h4>The compliance-training use case is the strong one</h4>
+      <p>South African employers carry a lot of mandatory training &mdash; occupational health and safety induction, POPIA awareness, site-specific competency &mdash; and the usual evidence is an attendance register in a lever-arch file. <code>LMS Certificate</code> with an <code>expiry_date</code>, joined to <code>Employee</code> in Frappe HR on the same site, turns "prove everyone on site is current" into a report. That, not course authoring, is normally what justifies the install.</p>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.07s">
+      <h4>POPIA &middot; learner records are personal information, and quiz logs are more than that</h4>
+      <p>Enrolments, progress, quiz scores and submitted assignments are personal information about employees, and assessment results are the kind of record that affects someone's employment. Three things to settle at design time: who may read <code>LMS Quiz Submission</code> (the default Frappe roles are more generous than most HR policies), how long submissions are retained once a certificate is issued, and whether proctoring violation logs are kept at all &mdash; a log of flagged behaviour during an assessment is exactly the sort of data a learner is entitled to ask about. If you leave the default code runner in place, submitted code also crosses a border; see the gotcha above.</p>
+    </div>
+    <div class="info-card green fade-up" style="transition-delay: 0.09s">
+      <h4>FX &middot; dollar-priced courses, rand-priced delivery</h4>
+      <p><code>LMS Course</code> carries both <code>course_price</code> in a chosen <code>currency</code> and a separate <code>amount_usd</code>, and <code>LMS Settings</code> has <code>show_usd_equivalent</code>. Useful if you sell across borders, and a trap if you forget it: a USD figure captured once does not track the rand, so a stale <code>amount_usd</code> quietly misprices your catalogue. Pick one currency as authoritative and treat the other as display. Hosting cost itself is rand-denominated if you self-host; Frappe Cloud is not, and has no SA region.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 07 CONNECTIONS -->
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; Connections</div>
+      <h2 class="section-title">Where this leaf links.</h2>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="framework.html" class="connect-node">
+        <span class="tag">tech/frappe/framework</span>
+        <div class="skill">Frappe Framework</div>
+        <div class="why">The engine underneath. Courses, batches, enrolments and certificates are doctypes with the standard REST surface and permission model.</div>
+      </a>
+      <a href="hr.html" class="connect-node">
+        <span class="tag">tech/frappe/hr</span>
+        <div class="skill">Frappe HR</div>
+        <div class="why">The pairing that pays for the install. Certificates and enrolments join to Employee records, so training currency becomes an HR report.</div>
+      </a>
+      <a href="wiki.html" class="connect-node">
+        <span class="tag">tech/frappe/wiki</span>
+        <div class="skill">Frappe Wiki</div>
+        <div class="why">The other content app. Wiki is reference you look things up in; Learning is structured content with assessment. Different jobs, same site.</div>
+      </a>
+      <a href="./" class="connect-node">
+        <span class="tag">tech/frappe</span>
+        <div class="skill">Frappe sub-hub</div>
+        <div class="why">The hub for the Frappe ecosystem apps. Learning sits in the people and enablement band.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 08 RESOURCES -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 &middot; Resources</div>
+      <h2 class="section-title">Primary sources only.</h2>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://github.com/frappe/lms" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Source</span>
+        <span class="r-title">frappe/lms on GitHub</span>
+        <span class="r-url">github.com/frappe/lms</span>
+      </a>
+      <a href="https://github.com/frappe/lms/blob/develop/license.txt" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Licence</span>
+        <span class="r-title">AGPL v3</span>
+        <span class="r-url">github.com/frappe/lms/blob/develop/license.txt</span>
+      </a>
+      <a href="https://github.com/frappe/payments" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Dependency</span>
+        <span class="r-title">frappe/payments &mdash; the required gateway app</span>
+        <span class="r-url">github.com/frappe/payments</span>
+      </a>
+      <a href="https://frappe.io/learning" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Project home</span>
+        <span class="r-title">Frappe Learning</span>
+        <span class="r-url">frappe.io/learning</span>
+      </a>
+      <a href="https://docs.frappe.io/learning" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs</span>
+        <span class="r-title">Frappe Learning documentation</span>
+        <span class="r-url">docs.frappe.io/learning</span>
+      </a>
+      <a href="https://frappecloud.com/lms/signup" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Hosting</span>
+        <span class="r-title">Frappe Cloud &mdash; managed hosting</span>
+        <span class="r-url">frappecloud.com/lms/signup</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../../index.html">Skills tree</a>
+      <a href="./">Frappe sub-hub</a>
+      <a href="https://frappe.io/learning" target="_blank" rel="noopener">Frappe Learning ↗</a>
+    </div>
+    <p class="footer-copy">© 2026 2nth.ai · Built in South Africa — Globally relevant</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme() {
+    const html = document.documentElement;
+    const current = html.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
+    localStorage.setItem('theme', next);
+  }
+  const saved = localStorage.getItem('theme');
+  if (saved) {
+    document.documentElement.setAttribute('data-theme', saved);
+    document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '☀️' : '🌙';
+  }
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>
