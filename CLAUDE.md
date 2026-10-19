@@ -112,9 +112,9 @@ Hubs (`explainers/<domain>/index.html` and sub-hubs) list their leaves as cards.
 - `svc-card` / `svc-card soon` — used by `agents`, `tech/*`, `construction`, `design`
 - `hub-card` / `leaf-card` (with `soon` variant) — used by `biz`, `data`, `people`, `tech` (root)
 
-**Counts drift.** `tech/index.html` carries a `<span class="state">N live</span>` badge per sub-hub and each sub-hub carries its own "Live explainers" stat. Both are hand-maintained and several were years of leaves out of date (`cloudflare` read 1 live against 18 leaves). When you flip a stub, bump the sub-hub stat *and* the `tech/index.html` badge. The convention is: one leaf `.html` file that the hub links = one live explainer.
-
 Both work; pick whichever the surrounding hub uses. **Stubs use the `soon` modifier**; flipping a stub to Live = swap `<div class="…-card soon">` for `<a href="…" class="…-card">`. After flipping, bump any "N Live" count in the hub heading and on the matching root domain card.
+
+**Counts drift.** `tech/index.html` carries a `<span class="state">N live</span>` badge per sub-hub and each sub-hub carries its own "Live explainers" stat. Both are hand-maintained and several were years of leaves out of date (`cloudflare` read 1 live against 18 leaves). When you flip a stub, bump the sub-hub stat *and* the `tech/index.html` badge. The convention is: one leaf `.html` file that the hub links = one live explainer.
 
 ## Design system
 
