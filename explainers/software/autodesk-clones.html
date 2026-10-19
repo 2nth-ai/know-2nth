@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Autodesk's turn &mdash; CADCraft, SolidCraft and your licence &middot; know.2nth.ai</title>
+<meta name="description" content="After Adobe and Microsoft, agent-built open-source copies now target Autodesk: CADCraft (AutoCAD) and SolidCraft (Fusion), both pure Rust, both drivable over MCP. What they actually do by their own numbers, why CAD's iceberg is deeper than Photoshop's, where the vendor's moat moves when code stops being the barrier (file formats, names, patents, contracts, cloud), and what that means for your Autodesk renewal.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/software/autodesk-clones">
+<meta property="og:title" content="Autodesk's turn &mdash; CADCraft, SolidCraft and your licence &middot; know.2nth.ai">
+<meta property="og:description" content="Agent-built copies of AutoCAD and Fusion, by their own numbers: ~38% and &ldquo;usable for simple parts&rdquo;. Where the moat moves when the code is cheap, and what that does to your Autodesk renewal.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Autodesk's turn &mdash; CADCraft, SolidCraft and your licence">
+<meta name="twitter:description" content="Agent-built copies of AutoCAD and Fusion, by their own numbers. Where the moat moves when the code is cheap, and what that does to your Autodesk renewal.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3Cline x1='16' y1='3' x2='16' y2='7' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='16' y1='25' x2='16' y2='29' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='3' y1='16' x2='7' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='25' y1='16' x2='29' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3C/svg%3E">
+<style>
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12); --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-soft: rgba(99, 102, 241, 0.12); --code: #14B8A6; --code-soft: rgba(20, 184, 166, 0.12); --bg: var(--ink); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(20, 184, 166, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(20, 184, 166, 0.3); --max-w: 1200px; --read-w: 760px; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(20, 184, 166, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(20, 184, 166, 0.28); }
+  * { margin: 0; padding: 0; box-sizing: border-box; } html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.blue { width: 600px; height: 600px; background: var(--code); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--code), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--code); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--code); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--code); } .crumb-sep { opacity: 0.5; } .crumb-current { color: var(--text-secondary); }
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--code); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--code); box-shadow: 0 0 12px var(--code); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--code), var(--sky), var(--sky-muted)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.accent { background: rgba(37, 99, 235, 0.12); color: var(--blue-glow); border-color: rgba(37, 99, 235, 0.25); }
+  .pill.green { background: var(--green-soft); color: var(--green); border-color: rgba(16, 185, 129, 0.25); }
+  .pill.code { background: var(--code-soft); color: var(--code); border-color: rgba(20, 184, 166, 0.25); }
+  .pill.warn { background: var(--warm-soft); color: var(--warm-glow); border-color: rgba(245, 158, 11, 0.25); }
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--sky); margin-bottom: 14px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--code); }
+  .prose ul, .prose ol { padding-left: 24px; margin-bottom: 18px; max-width: var(--read-w); }
+  .prose li { font-size: 15px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 8px; }
+  .prose li strong { color: var(--text-primary); font-weight: 600; }
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); margin-bottom: 20px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.code { border-left: 3px solid var(--code); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .info-card code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--code); }
+  .info-card strong { color: var(--text-primary); }
+  .stack-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; max-width: var(--read-w); margin-bottom: 20px; }
+  .stack-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--code); border-radius: var(--radius-md); padding: 18px 22px; }
+  .stack-cell .layer { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .stack-cell h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.3px; }
+  .stack-cell p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: var(--read-w); margin-bottom: 20px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--sky); background: rgba(37, 99, 235, 0.04); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); } .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--code); }
+  .compare td strong { color: var(--text-primary); }
+  .connect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .connect-node { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; transition: all 0.3s; text-decoration: none; color: inherit; display: block; }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node.soon { cursor: default; opacity: 0.72; }
+  .connect-node .tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--code); word-break: break-all; }
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--code), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--code); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+
+  .codeblock { background: var(--ink-deep); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 20px; max-width: var(--read-w); margin-bottom: 20px; overflow-x: auto; }
+  .codeblock .cb-cap { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; display: block; }
+  .codeblock pre { font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.65; color: var(--mist); white-space: pre; }
+  .codeblock pre .k { color: var(--code); }
+  .info-card ul { margin: 6px 0 0; padding-left: 20px; }
+  .info-card li { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 8px; }
+  .info-card li:last-child { margin-bottom: 0; }
+  .info-card li strong { color: var(--text-primary); }
+  .prose ol { padding-left: 22px; margin-bottom: 18px; max-width: var(--read-w); }
+  .prose ol li { font-size: 15px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 10px; }
+  .prose ol li strong { color: var(--text-primary); }
+</style>
+</head>
+<body>
+
+<div class="glow-orb blue"></div>
+<div class="glow-orb sky"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand"><span class="nav-brand-mark">know.2nth.ai</span><span class="nav-brand-sub">software/autodesk-clones</span></a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">&larr; Software</a>
+      <a href="../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x1F319;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="./">Software</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">Autodesk's turn</span>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> software &middot; Autodesk clones &middot; Update</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      First Adobe, then Microsoft. <span class="gradient">Now Autodesk.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      In October 2026 the agent-built copying wave reached engineering software. <strong>CADCraft</strong> is an open-source AutoCAD look-alike from the ArtCraft team. <strong>SolidCraft</strong> is a separate open-source take on Fusion. Both are written in pure Rust, both can be driven by an AI agent over MCP, and both are honest about how far they still have to go. Neither will replace your Autodesk seats this year. What they change is the argument at your next renewal, and where software vendors will have to defend themselves now that copying the code is no longer the hard part.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill code">Agent-built</span>
+      <span class="pill accent">AutoCAD &middot; Fusion</span>
+      <span class="pill green">MIT / Apache-2.0</span>
+      <span class="pill warn">Pre-alpha / early</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 WHAT HAPPENED -->
+<section id="what">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; What happened</div>
+      <h2 class="section-title">Two CAD copies in two weeks.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>The ArtCraft team spent the first two weeks of October releasing open-source copies of thirteen flagship desktop apps. Most were Adobe and Microsoft products; the <a href="/briefings/the-copy-is-cheap">CEO briefing</a> covers the full list. Autodesk was on it from the start, as <strong>CADCraft</strong>, an AutoCAD-style 2D and 3D drafting app. On 13 October a second project, <strong>SolidCraft</strong>, launched on Hacker News aimed at Fusion, Autodesk's parametric 3D modeller. With both out, Autodesk joins Adobe and Microsoft as a vendor whose flagship products have a free, agent-built look-alike.</p>
+      <ul>
+        <li><strong>CADCraft</strong> (<code>github.com/storytold/cadcraft</code>) is built by the ArtCraft team, the people behind <a href="photocraft.html">PhotoCraft</a>. It targets AutoCAD 2027, opens DWG and DXF files, and runs on Windows, macOS, Linux, FreeBSD and in the browser. We counted 6,000 stars and 2,600 forks on 19 October.</li>
+        <li><strong>SolidCraft</strong> (<code>github.com/bherbruck/solidcraft</code>, earlier called SolveCraft) is a parametric 3D CAD app with sketches, constraints, a feature timeline, assemblies and sheet metal. It comes from a different developer. How closely it is tied to ArtCraft is unclear. Its agent instructions call CADCraft its &ldquo;closest sibling&rdquo;, and its app ID starts with ArtCraft's parent company name, <code>ai.storyteller</code>.</li>
+        <li><strong>The same recipe as the others.</strong> Both are written in Rust with the <code>egui</code> and <code>wgpu</code> libraries, dual-licensed MIT or Apache-2.0, and ship a headless CLI and an MCP server. Both carry <code>CLAUDE.md</code> files telling coding agents to work autonomously. CADCraft's roadmap estimates about 50 Opus 5.5 hours to alpha. SolidCraft's estimates about 82 agent hours.</li>
+      </ul>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.07s">
+      <h4>What this is not</h4>
+      <p>Nobody has copied <strong>Revit, Civil 3D, Inventor, Vault or Autodesk Construction Cloud</strong>. Those are the products that hold most of Autodesk's construction and engineering business. So far the copies cover the desktop drafting tool and the hobbyist-to-prosumer 3D modeller, the two Autodesk products whose value is mostly in one app on one machine. We found no public response from Autodesk as of 19 October.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 SIDE BY SIDE -->
+<section id="compare">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; The two projects</div>
+      <h2 class="section-title">Side by side, by their own numbers.</h2>
+      <p class="section-lede">Every readiness figure below is the project's own published measurement, from each repo's <code>ROADMAP.md</code> as updated on 14 October 2026. We did not build or test either app. The numbers move every week.</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead><tr><th></th><th>CADCraft</th><th>SolidCraft</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Copies</strong></td><td>AutoCAD (2D drafting first)</td><td>Fusion (parametric solids)</td></tr>
+          <tr><td><strong>Who</strong></td><td>ArtCraft team (<code>storytold</code> org)</td><td>Separate developer; links to ArtCraft unclear</td></tr>
+          <tr><td><strong>Ready for real work</strong></td><td>&asymp;38% weighted; 4 of AutoCAD's 5 core workflows fail its alpha test, so it calls itself <strong>pre-alpha</strong></td><td>&ldquo;Early but usable for simple parts&rdquo;</td></tr>
+          <tr><td><strong>Breadth</strong></td><td>245 of 491 AutoCAD menu items (50%); 2D drawing 60%; 3D modelling and rendering <strong>2%</strong></td><td>Sketch, extrude, revolve, loft, sweep, fillet, shell, holes, threads, patterns, assemblies with joints, sheet metal</td></tr>
+          <tr><td><strong>Accuracy test</strong></td><td>No checked AutoCAD round trip yet</td><td>75 of 76 public reference parts match volume, area and centre of mass, which the project says &ldquo;does not establish&rdquo; full equivalence</td></tr>
+          <tr><td><strong>Files</strong></td><td>Opens DXF R12&ndash;2018 and DWG R13&ndash;2018 (via the <code>acadrust</code> library); saves only R2000; <strong>anything it doesn't understand is lost on save</strong></td><td>STEP AP242, IGES, 3MF, STL, OBJ, DXF, URDF; imports FreeCAD and Rhino solids. Native files are local <code>.solidcraft</code> or JSON</td></tr>
+          <tr><td><strong>Out of scope</strong></td><td>Collaboration and cloud at 5%; automation ecosystem (LISP, add-ins) at 10%</td><td>2D drawings, CAM, simulation, rendering, T-spline modelling, mesh editing, PCB design</td></tr>
+          <tr><td><strong>Agent surface</strong></td><td><code>cadcraft-cli mcp</code>: run commands, query entities, inspect, render</td><td><code>solidcraft-cli mcp</code>: execute, measure, screenshot, export, save; file access limited to allowed folders</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="info-card code fade-up" style="transition-delay: 0.07s">
+      <h4>The most interesting data point is a rover</h4>
+      <p>A community member built a planetary rover model in SolidCraft <strong>entirely through the MCP server</strong>: 3,323 timeline steps, all rebuilding without errors. That is the real novelty. Whether or not SolidCraft ever matches Fusion feature for feature, an agent can already build a parametric model step by step, measure it and export STEP or 3MF, with no licence and nothing leaving the machine.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 THE CAD ICEBERG -->
+<section id="iceberg">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; Why CAD is harder</div>
+      <h2 class="section-title">CAD's iceberg is deeper than Photoshop's.</h2>
+      <p class="section-lede">The <a href="/briefings/the-iceberg">iceberg</a> applies to every Craft app: the menus, the look and the feature checklist sit above the waterline and are cheap to copy. CAD has more mass below the waterline than any other category on the list, because a drawing is a legal and engineering record, not just a picture.</p>
+    </div>
+    <div class="stack-grid fade-up" style="transition-delay: 0.05s">
+      <div class="stack-cell">
+        <span class="layer">Below the line</span>
+        <h4>DWG has no open spec</h4>
+        <p>Every non-Autodesk DWG reader is reverse-engineered: the Open Design Alliance's libraries, the GPL-licensed LibreDWG, and now <code>acadrust</code>. A drawing that loses its xrefs, custom objects or proxy entities when someone saves it is worse than no drawing at all.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Below the line</span>
+        <h4>The geometry kernel</h4>
+        <p>Fillets, booleans and shells that fail on awkward geometry are where CAD tools earn their price. SolidCraft builds on the Apache-licensed <code>truck</code> kernel and adds its own error-recovery layers. A sibling project, <code>solidcore</code>, is porting NVIDIA's SMLib kernel to Rust. Commercial kernels have had decades of hardening.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Below the line</span>
+        <h4>Drawings and standards</h4>
+        <p>In engineering, the 2D drawing is the contract: dimensions, tolerances, title blocks, layer standards, plot styles. SolidCraft has put drawings off. CADCraft drops anything it doesn't model when it saves.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Below the line</span>
+        <h4>Twenty years of customisation</h4>
+        <p>AutoLISP routines, .NET and ObjectARX add-ins, office templates, block libraries and vertical toolsets. CADCraft rates its automation ecosystem at 10%. Most firms don't know how much of this they rely on until it stops working.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Below the line</span>
+        <h4>The rest of the Autodesk estate</h4>
+        <p>Revit and BIM, Civil 3D, Vault document management, the Construction Cloud and the APIs behind it. A firm that runs on these is not buying AutoCAD on its own, so replacing AutoCAD on its own saves less than it looks.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Below the line</span>
+        <h4>Accountability</h4>
+        <p>Professional indemnity insurers, client contracts and municipal submissions assume a known toolchain and a vendor to call. An open-source project with 300+ open issues and no indemnity is a hard sell to a firm that signs off structures.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 WHERE THE MOAT MOVES -->
+<section id="moat">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; What it means for software</div>
+      <h2 class="section-title">When the code is cheap, the moat moves.</h2>
+      <p class="section-lede">Copyright protects code, not what the code does. That has been settled law for decades. What's new is that agents make rebuilding the behaviour cheap. Every vendor whose value sits in one desktop app now has to defend that value somewhere else. These are the places left to defend it, and how well each one holds against a clean-room copy.</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead><tr><th>Lever</th><th>What it protects</th><th>Against a clean-room copy</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Copyright</strong></td><td>Source code, icons, fonts, help text, templates</td><td><strong>Weak.</strong> In the US, <em>Lotus v. Borland</em> (1995) held that a menu hierarchy is a method of operation, not copyrightable expression. In the EU, <em>SAS Institute v. World Programming</em> (CJEU, 2012) held that a program's functionality, programming language and data file formats aren't protected. Both projects forbid copying Autodesk fonts, hatch patterns, linetypes, icons and help text for exactly this reason.</td></tr>
+          <tr><td><strong>File formats</strong></td><td>DWG, RVT, F3D: the files your work is stored in</td><td><strong>Strong, and the real moat.</strong> Formats aren't copyrightable, but an undocumented format costs time to reverse-engineer and is never quite finished. Autodesk has defended DWG before. In 2006 it sued the Open Design Alliance over DWG files its libraries wrote that carried Autodesk's &ldquo;TrustedDWG&rdquo; watermark, and won a restraining order. The 2010 settlement made the ODA drop DWG from its product names, but explicitly let it keep building software that reads and writes DWG files.</td></tr>
+          <tr><td><strong>Trademarks</strong></td><td>Product names, look-alike branding</td><td><strong>Narrow, but it's where fights start.</strong> It stops &ldquo;AutoCAD&rdquo; in a project name or a confusing logo, not the features. Expect renames before lawsuits.</td></tr>
+          <tr><td><strong>Patents</strong></td><td>Specific inventions in how a feature works</td><td><strong>Patchy.</strong> A clean room does nothing against a valid patent, because patents cover the method, not the code. Autodesk has a large portfolio. This is the lever most likely to remove individual features from a copy.</td></tr>
+          <tr><td><strong>Contract</strong></td><td>What licensees may do with the software</td><td><strong>Depends where you are.</strong> Autodesk's terms forbid reverse engineering except where the law allows it. In the US, courts have enforced such clauses (<em>Bowers v. Baystate</em>, 2003). In the EU, the Software Directive lets a lawful user observe, study and test a program, and decompile it for interoperability, and a contract can't take that away. That right covers whoever builds the copy, not your firm when it uses it.</td></tr>
+          <tr><td><strong>Cloud and ecosystem</strong></td><td>Collaboration, data, APIs, AI features, partner add-ins</td><td><strong>Strongest, and growing.</strong> Nothing that runs on Autodesk's servers can be copied by watching the desktop app. Expect more value, and more AI, to move there. CADCraft rates its collaboration and cloud layer at 5%.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="info-card green fade-up" style="transition-delay: 0.07s">
+      <h4>The pattern for every big software vendor</h4>
+      <p>Adobe, Microsoft and Autodesk now face the same pressure. The desktop app is cheaper to copy, so value will be defended in <strong>formats, cloud services, bundles and contracts</strong>. As a buyer, expect three things: more features that only work signed in to the vendor's cloud, bundles that make dropping single products unattractive, and closer attention to licence terms and compliance. None of these is a reason to panic. Each is a reason to read your agreement before renewal rather than at it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 LICENSING OPTIONS -->
+<section id="licensing">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; Licensing options</div>
+      <h2 class="section-title">What changes at your Autodesk renewal.</h2>
+      <p class="section-lede">Autodesk has sold subscriptions only, per named user, for years. It has also been moving its reseller sales to a model where you buy from Autodesk and the partner acts as its agent. Free copies don't change those terms. What they change is your fallback option, and that is what a renewal negotiation turns on.</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead><tr><th>User group</th><th>Today's option</th><th>What the copies add</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Viewers and markup</strong></td><td>Free Autodesk viewers, or a full seat they barely use</td><td>Little new. Free viewers already exist. The saving is in finding people on full seats who only view.</td></tr>
+          <tr><td><strong>Light 2D drafting</strong></td><td>AutoCAD LT, or one of the existing DWG-based alternatives (BricsCAD, DraftSight, ZWCAD, all built on ODA libraries)</td><td>A <strong>free, open-source</strong> option to pilot, but it saves only to R2000 and has no tested AutoCAD round trip. For now it's leverage, not a replacement.</td></tr>
+          <tr><td><strong>Production drafting</strong></td><td>Full AutoCAD or a toolset bundle</td><td>Nothing yet. Xrefs, blocks, LISP and plot standards are where CADCraft is weakest.</td></tr>
+          <tr><td><strong>Hobby, prototyping, 3D printing</strong></td><td>Fusion's personal-use tier or a paid seat; FreeCAD</td><td>SolidCraft is a real option for simple parts, with local files and STEP and 3MF export. Watch whether it keeps improving.</td></tr>
+          <tr><td><strong>BIM and civil</strong></td><td>Revit, Civil 3D, the AEC Collection</td><td>Nothing. The open exit here is <a href="../construction/openbim.html">IFC and openBIM</a>, not a copied app.</td></tr>
+          <tr><td><strong>Automated output</strong></td><td>A seat per machine, or Autodesk's cloud APIs</td><td><strong>The nearest-term win.</strong> Agents driving a free engine to batch-convert, check or generate drawings and parts, with no seat and nothing leaving your building.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.07s">
+      <h4>Three traps</h4>
+      <ul>
+        <li><strong>Installing an alternative doesn't reduce what you owe.</strong> Autodesk software still installed without a licence is a compliance finding, whatever else is on the machine. When you cut seats, uninstall the software and keep the evidence.</li>
+        <li><strong>Mid-term exits are rarely free.</strong> Seats on multi-year or prepaid terms renew on their own dates. Map renewal dates and notice periods first, or you end up paying for both tools.</li>
+        <li><strong>GitHub stars aren't a negotiating position.</strong> A pilot with real drawings, real users and a count of files that broke is. Vendors know the difference.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 06 DECISION GUIDE -->
+<section id="decide">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; Decision guide</div>
+      <h2 class="section-title">Pilot and automate. Don't migrate.</h2>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead><tr><th>Use them when</th><th>Skip them when</th></tr></thead>
+        <tbody>
+          <tr><td>You want an <strong>agent to generate or check parts and drawings</strong> on your own machines, through MCP or a CLI.</td><td>The drawing is a <strong>deliverable someone signs</strong>: council submissions, construction issue sets, manufacturing drawings.</td></tr>
+          <tr><td>You're <strong>prototyping or 3D printing</strong> simple parts and want local files and STEP/3MF export with no account.</td><td>Your DWGs carry <strong>xrefs, custom objects or vertical-toolset entities</strong>. CADCraft drops what it doesn't model when it saves.</td></tr>
+          <tr><td>You're preparing a <strong>renewal</strong> and need a tested fallback for a light-user group.</td><td>You run on <strong>Revit, Civil 3D or Vault</strong>. Nothing here touches them.</td></tr>
+          <tr><td>You're teaching CAD concepts, or studying how an agent-built codebase is run.</td><td>You need a vendor to call, indemnity, or behaviour that won't change from one month to the next.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 07 SA CONTEXT -->
+<section id="sa-context">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; South African context</div>
+      <h2 class="section-title">Dollar-priced drafting seats, rand-priced projects.</h2>
+    </div>
+    <div class="info-card code fade-up" style="transition-delay: 0.05s">
+      <h4>Where it lands here</h4>
+      <p>SA architecture practices, engineering consultancies, contractors and municipalities pay for Autodesk seats priced in dollars, while their fees and budgets are in rand. Full AutoCAD lists at roughly US$2,000 a year per named user before the exchange rate. That makes the <strong>light-user group the obvious target</strong>: estimators, site staff and admin teams on full seats who mostly view, mark up and plot.</p>
+      <p>Be careful with work you hand to someone else. Consultants exchange DWGs constantly, and a file that comes back with missing xrefs, blocks or layers costs more than a seat. Start with work that stays inside the firm: internal sketches, 3D printing jigs and fixtures, and agent-generated batch output. For BIM, the open way out is <a href="../construction/openbim.html">IFC and openBIM</a>, which most SA consultants can already export. It is a better exit than any copied app. And the clean-room law cited above is US and EU law. Get local advice before you build a policy on it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 08 CONNECTIONS -->
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 &middot; Connections</div>
+      <h2 class="section-title">Where this links in the tree.</h2>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="/briefings/the-copy-is-cheap" class="connect-node">
+        <span class="tag">briefings/the-copy-is-cheap</span>
+        <div class="skill">The Copy Is Cheap Now</div>
+        <div class="why">The CEO version across all thirteen Craft apps. This leaf is the Autodesk follow-up.</div>
+      </a>
+      <a href="photocraft.html" class="connect-node">
+        <span class="tag">software/photocraft</span>
+        <div class="skill">PhotoCraft case study</div>
+        <div class="why">The same team and method, read in technical detail: the agent instructions, the automated rules and the honest scorecard.</div>
+      </a>
+      <a href="/briefings/the-iceberg" class="connect-node">
+        <span class="tag">briefings/the-iceberg</span>
+        <div class="skill">The iceberg</div>
+        <div class="why">Why the visible tip of a product is the cheap part, and why CAD has more below the waterline than most.</div>
+      </a>
+      <a href="/briefings/strangle-the-licence" class="connect-node">
+        <span class="tag">briefings/strangle-the-licence</span>
+        <div class="skill">Strangle the licence</div>
+        <div class="why">Moving off a licence one group of users at a time, with the old seats kept as a safety net.</div>
+      </a>
+      <a href="/briefings/rented-in-dollars" class="connect-node">
+        <span class="tag">briefings/rented-in-dollars</span>
+        <div class="skill">Rented in dollars</div>
+        <div class="why">The rand exposure behind dollar-priced seats, and why SA buyers feel every price change twice.</div>
+      </a>
+      <a href="../construction/openbim.html" class="connect-node">
+        <span class="tag">construction/openbim</span>
+        <div class="skill">openBIM &amp; IFC</div>
+        <div class="why">The open-standard way out of proprietary BIM formats. It does more for Revit lock-in than any copied app.</div>
+      </a>
+      <a href="../agents/mcp.html" class="connect-node">
+        <span class="tag">agents/mcp</span>
+        <div class="skill">Model Context Protocol</div>
+        <div class="why">The protocol both CAD copies expose, and why limiting the folders an agent can reach matters.</div>
+      </a>
+      <a href="rust.html" class="connect-node">
+        <span class="tag">software/rust</span>
+        <div class="skill">Rust</div>
+        <div class="why">Why every Craft app picks it: one codebase for desktop and browser, and safety checks that agents can't skip.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 09 RESOURCES -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">09 &middot; Resources</div>
+      <h2 class="section-title">Primary sources &mdash; repos, rulings, the vendor.</h2>
+      <p class="section-lede">Project figures come from each repo's own roadmap. Legal points are summaries of the rulings and laws linked here, not legal advice. Last reviewed 2026-10-19.</p>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://github.com/storytold/cadcraft" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Repo</span>
+        <span class="r-title">storytold/cadcraft</span>
+        <span class="r-url">github.com/storytold/cadcraft</span>
+      </a>
+      <a href="https://github.com/storytold/cadcraft/blob/main/ROADMAP.md" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Repo &middot; roadmap</span>
+        <span class="r-title">CADCraft roadmap &amp; AutoCAD parity</span>
+        <span class="r-url">github.com/storytold/cadcraft/blob/main/ROADMAP.md</span>
+      </a>
+      <a href="https://github.com/bherbruck/solidcraft" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Repo</span>
+        <span class="r-title">SolidCraft</span>
+        <span class="r-url">github.com/bherbruck/solidcraft</span>
+      </a>
+      <a href="https://github.com/bherbruck/solidcraft/blob/main/ROADMAP.md" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Repo &middot; roadmap</span>
+        <span class="r-title">SolidCraft roadmap &amp; milestones</span>
+        <span class="r-url">github.com/bherbruck/solidcraft/blob/main/ROADMAP.md</span>
+      </a>
+      <a href="https://www.autodesk.com/products/autocad/buy" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Vendor</span>
+        <span class="r-title">AutoCAD subscription pricing</span>
+        <span class="r-url">autodesk.com/products/autocad/buy</span>
+      </a>
+      <a href="https://investors.autodesk.com/node/14936" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Vendor &middot; 2010</span>
+        <span class="r-title">Autodesk&ndash;ODA DWG trademark settlement</span>
+        <span class="r-url">investors.autodesk.com/node/14936</span>
+      </a>
+      <a href="https://curia.europa.eu/juris/liste.jsf?num=C-406/10" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Ruling &middot; CJEU 2012</span>
+        <span class="r-title">SAS Institute v. World Programming (C-406/10)</span>
+        <span class="r-url">curia.europa.eu &middot; C-406/10</span>
+      </a>
+      <a href="https://eur-lex.europa.eu/eli/dir/2009/24/oj" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Law &middot; EU</span>
+        <span class="r-title">Software Directive 2009/24/EC (Arts 5, 6, 8)</span>
+        <span class="r-url">eur-lex.europa.eu/eli/dir/2009/24/oj</span>
+      </a>
+      <a href="https://law.justia.com/cases/federal/appellate-courts/F3/49/807/522284/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Ruling &middot; 1st Cir. 1995</span>
+        <span class="r-title">Lotus Development v. Borland International</span>
+        <span class="r-url">law.justia.com &middot; 49 F.3d 807</span>
+      </a>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.08s; margin-top: 8px;">
+      <p style="font-size: 13px; color: var(--text-muted);">Provenance: parity, readiness and file-support figures are <strong>the projects' own published measurements</strong> from their roadmaps and READMEs (updated 14 October 2026), quoted as such. Star and fork counts were read from GitHub on 19 October 2026. The AutoCAD list price is approximate and set by region, so check your own quote. We found no public Autodesk statement on either project as of 19 October. SolidCraft's ties to ArtCraft are inferred from its repo files, not confirmed by either party.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../index.html">Skills tree</a>
+      <a href="./">Software hub</a>
+      <a href="photocraft.html">PhotoCraft</a>
+      <a href="/briefings/the-copy-is-cheap">The Copy Is Cheap</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant</p>
+  </div>
+</footer>
+<script>
+  function toggleTheme() {
+    const html = document.documentElement;
+    const current = html.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
+    localStorage.setItem('theme', next);
+  }
+  const saved = localStorage.getItem('theme');
+  if (saved) {
+    document.documentElement.setAttribute('data-theme', saved);
+    document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '☀️' : '🌙';
+  }
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>
