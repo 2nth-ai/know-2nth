@@ -8,7 +8,12 @@ Sibling sites in the ecosystem:
 - **2nth.ai** — framework / GTM site (Human + AI = 2ⁿ)
 - **dev.2nth.ai** — partner / Gridline / openBUILD AI source content (Construction domain pulls from here)
 - **2nth.io** — compute infrastructure layer
+- **2nth.me** — personal / practitioner surface
+- **2nth.org** — community / non-commercial surface
+- **pay.2nth.ai** — payments surface
 - **imbila.ai** — parent consultancy brand
+
+Leaves here are source material those properties draw on, so an inaccuracy on know.2nth.ai propagates. Accuracy and voice matter beyond this site.
 
 ### Related repos that are NOT this one
 
@@ -43,26 +48,48 @@ Sibling sites in the ecosystem:
 ```
 know-2nth/
 ├── CLAUDE.md
-├── index.html                # root: 12 top-level domain cards
+├── index.html                # root: 14 top-level domain cards (12 Live, 2 `soon`)
 ├── about.html                # access model + how the site works
 ├── join.html                 # "Stay in touch" lead capture → 2nth CRM (crm-form.js)
 ├── gate.js                   # tier-gate hook, loaded on every leaf, currently inert
 ├── og-image.jpg              # 1200×630 OG / Twitter card
 ├── og-image.svg              # source for the OG image
+├── ask.html                  # natural-language entry point over the tree
 ├── _redirects                # Cloudflare Pages redirects
-├── google-adk-explainer.md   # canonical source markdown for ADK leaf (PR #17)
+├── llms.txt                  # generated: plain-text index of the tree
+├── agent-index.json          # generated: machine index the MCP server searches
+├── wrangler.toml             # Cloudflare Pages config
+├── scripts/
+│   └── gen-agent-index.mjs   # regenerates llms.txt + agent-index.json from the HTML
+├── functions/                # Cloudflare Pages Functions (agent-fetch converter, MCP server)
+├── briefings/                # opinion / POV pieces (19 + hub), linked from leaves
+├── lab/                      # interactive demos (decision-gate, tree-race)
+├── claude/                   # Claude-specific landing page over the agents band
+├── *-explainer.md            # canonical source markdown for specific leaves (ADK, Antigravity, …)
 └── explainers/
-    ├── agents/        # Frameworks, Protocols, Models, Inference (the strategic priority)
-    ├── biz/           # ERP, CRM, HR — has erp/ and crm/ sub-hubs
+    ├── agents/        # Perspective, Frameworks, Protocols, Models, Inference, Coding CLIs (the strategic priority)
+    ├── biz/           # erp/, crm/, hr/ sub-hubs + bpm/ and ecm/ single-leaf bands
     ├── construction/  # openBIM + Gridline / openBUILD AI partner-anchored
-    ├── data/          # analytics/, warehousing/, engineering/ sub-hubs
+    ├── data/          # analytics/, warehousing/ sub-hubs + engineering/ (leaves carded on the data hub, no sub-hub)
     ├── design/        # tokens, components, motion, AI-assisted design
+    ├── fin/           # compliance, consolidation, planning, reporting
+    ├── health/        # practice management + SA health context
+    ├── leg/           # commercial, corporate, data-privacy, disputes, employment, ip, legal-ai
+    ├── media/         # voice & speech first; image / video / music are future bands
     ├── partners/      # co-branded leaves (no hub yet, not on root grid)
-    ├── people/        # coaching, leadership, typologies/
-    └── tech/          # cloudflare/, google/, microsoft/, frappe/, runtime/, android-hce/, embedded/, frameworks/
+    ├── people/        # coaching, leadership, ai-roles/
+    ├── software/      # engineering practice — agents as software, planning, version control
+    ├── tech/          # cloudflare/, google/, microsoft/, frappe/, oracle/, runtime/, hardware/, game-engines/, android-hce/, embedded/, frameworks/
+    └── tools/         # landscape / runtime / architecture (the original band, now mostly superseded)
 ```
 
-Five additional domains exist on the root grid as cards but have **no folder yet**: `edu`, `fin`, `health`, `iot`, `leg`. Building any of them out means: create `explainers/<domain>/index.html` hub, ship at least one Live leaf, then the root card becomes meaningful.
+Scale, as of 2026-10-12: **182 non-index leaves across 28 hubs**, plus 19 briefings and 3 lab pages. Roughly **58 `soon` stubs across 14 hubs** are the authoring backlog.
+
+Two domains exist on the root grid as cards but have **no folder yet**: `edu` and `iot`. (`fin`, `health` and `leg` were built out and are Live.) Building a new one means: create `explainers/<domain>/index.html` hub, ship at least one Live leaf, then the root card becomes meaningful.
+
+### Counts drift — check them
+
+Hub headings, hub-stat rows, root domain cards and OG/Twitter meta all carry hard-coded `N Live` numbers, and they drift whenever a leaf lands without every counter being bumped. When you touch a hub, re-derive its count from the cards actually present and fix the root card and the meta block to match.
 
 ## How leaves are built
 
@@ -81,6 +108,15 @@ Five additional domains exist on the root grid as cards but have **no folder yet
   - `0N · Connections` — links elsewhere in the tree
   - `0N · Resources` — primary sources only
 - **Section labels**: JetBrains Mono, 11px, uppercase, 2px letter-spacing, sky colour. Format: `01 · Section name`.
+
+### Review-cadence footer (partial convention)
+
+Some leaves carry a footer of the form `Last reviewed: YYYY-MM-DD · Cadence: hot (quarterly)`. It is a real freshness contract: a `hot` leaf is one whose model names, versions or prices move fast enough to need re-verification every quarter.
+
+It is applied inconsistently — as of 2026-10-12 only **14 of 230** leaves and briefings carry the marker, and **13 of those 14 are past their stated cadence**. Two rules follow:
+
+- **Never bump a `Last reviewed` date without actually re-verifying against primary sources.** The date is the claim; moving it without checking turns a freshness signal into a false one.
+- When authoring a leaf whose content is version- or price-sensitive, add the footer with today's date and an honest cadence. Don't add it to a leaf you can't commit to re-checking.
 
 ## Hubs and stubs
 
