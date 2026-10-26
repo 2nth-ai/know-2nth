@@ -232,20 +232,20 @@
         <thead><tr><th>Vendor</th><th>Flagship</th><th>Strength</th><th>Open / closed</th></tr></thead>
         <tbody>
           <tr><td><strong>ElevenLabs</strong></td><td>Flash (75ms), Multilingual v2, v3, Scribe v2</td><td>Deepest platform &mdash; TTS, cloning, dubbing, agents, music. The default for creators and developers.</td><td>Closed; open API</td></tr>
-          <tr><td><strong>Cartesia</strong></td><td>Sonic-3 (~90ms model latency)</td><td>The latency king. Purpose-built for real-time voice agents; 40+ languages.</td><td>Closed</td></tr>
-          <tr><td><strong>Hume AI</strong></td><td>EVI (empathic voice interface)</td><td>Emotion as a first-class feature &mdash; reads tone and responds with matching prosody.</td><td>Closed; open API</td></tr>
-          <tr><td><strong>OpenAI</strong></td><td><code>gpt-realtime</code>, Realtime-Translate, Realtime-Whisper</td><td>Voice-in-LLM &mdash; integrated listening, reasoning, speaking. Live translation across 70+ languages.</td><td>Closed; API</td></tr>
-          <tr><td><strong>Google</strong></td><td>Gemini TTS, Chirp 3 HD</td><td>Native audio inside Gemini; production TTS on Vertex AI. 100+ languages.</td><td>Closed; API</td></tr>
-          <tr><td><strong>Deepgram</strong></td><td>Nova (STT), Aura-2 (TTS)</td><td>STT accuracy leader; Aura-2 closes the TTS gap with enterprise pronunciation handling.</td><td>Closed; some on-prem</td></tr>
-          <tr><td><strong>AssemblyAI</strong></td><td>Universal-3 (streaming STT)</td><td>Audio analysis &mdash; transcription plus summarisation, entity detection, topic classification.</td><td>Closed; API</td></tr>
-          <tr><td><strong>Whisper</strong> (OpenAI)</td><td>large-v3</td><td>The open-weights STT standard. 99 languages, MIT-licensed, self-hostable or $0.006/min API.</td><td><strong>Open (MIT)</strong></td></tr>
+          <tr><td><strong>Cartesia</strong></td><td><code>sonic-3.5</code>, <code>sonic-3</code>; <code>ink-whisper</code> (STT)</td><td>The latency king. Purpose-built for real-time voice agents; 44 languages in the API, none of them African. Now ships its own hosted agent runtime.</td><td>Closed</td></tr>
+          <tr><td><strong>Hume AI</strong></td><td>EVI 3 (empathic voice interface), Octave 1 / 2 (TTS)</td><td>Emotion as a first-class feature &mdash; scores 48 named dimensions off voice and responds with matching prosody. Bring-your-own LLM.</td><td>Closed; open API</td></tr>
+          <tr><td><strong>OpenAI</strong></td><td><code>gpt-realtime</code>, <code>gpt-realtime-translate</code>, <code>gpt-realtime-whisper</code>; <code>gpt-4o-mini-tts</code>; <code>gpt-transcribe</code></td><td>Voice-in-LLM &mdash; integrated listening, reasoning, speaking, plus separate TTS and transcription endpoints.</td><td>Closed; API</td></tr>
+          <tr><td><strong>Google</strong></td><td><code>gemini-3.8-flash-tts</code>, Live API; Chirp on Vertex</td><td>Native audio inside Gemini, with prebuilt voices, voice replication and a two-speaker dialogue mode. Chirp is the separate Cloud Speech line.</td><td>Closed; API</td></tr>
+          <tr><td><strong>Deepgram</strong></td><td><code>nova-3</code> (STT), <code>flux-general-en</code> (turn-aware STT), <code>aura-2-*</code> (TTS)</td><td>STT accuracy leader; Flux puts conversational turn detection inside the transcriber rather than above it. Aura-2 closes the TTS gap.</td><td>Closed; some on-prem</td></tr>
+          <tr><td><strong>AssemblyAI</strong></td><td><code>universal-3-5-pro</code>, <code>universal-2</code> (STT); own TTS voices</td><td>Transcription plus audio analysis, with model-fallback lists, keyterm biasing and per-channel attribution. LeMUR was dropped in the 1.0 SDK.</td><td>Closed; API</td></tr>
+          <tr><td><strong>Whisper</strong> (OpenAI)</td><td><code>large-v3</code>, <code>turbo</code> (809M)</td><td>The open-weights STT standard. 100 languages in the tokenizer, MIT-licensed, self-hostable. <code>turbo</code> is an optimised <code>large-v3</code> and cannot translate.</td><td><strong>Open (MIT)</strong></td></tr>
           <tr><td><strong>Kokoro</strong></td><td>Kokoro-82M</td><td>Lightweight open TTS &mdash; runs on consumer hardware, quality near larger models. No voice cloning.</td><td><strong>Open (Apache-2)</strong></td></tr>
         </tbody>
       </table>
     </div>
 
     <div class="prose fade-up" style="transition-delay: 0.06s">
-      <p><strong>The shape of it.</strong> ElevenLabs is the breadth leader &mdash; it does every category competently and owns creator and developer mind-share. Cartesia owns latency, Hume owns emotion. The big labs (OpenAI, Google, Anthropic) are pulling voice <em>inside</em> the LLM, which over time favours them for conversational agents. Deepgram and AssemblyAI own the STT side. Whisper and Kokoro prove open-weights models are competitive on accuracy and cost &mdash; the commodity floor keeps rising.</p>
+      <p><strong>The shape of it.</strong> ElevenLabs is the breadth leader &mdash; it does every category competently and owns creator and developer mind-share. Cartesia owns latency, Hume owns emotion. OpenAI and Google are pulling voice <em>inside</em> the LLM, which over time favours them for conversational agents. Anthropic is the exception worth naming: Claude has a voice mode in its apps, but the Anthropic API exposes no audio surface at all, so you cannot build a voice product on Claude without somebody else&rsquo;s speech layer. Deepgram and AssemblyAI own the STT side. Whisper and Kokoro prove open-weights models are competitive on accuracy and cost &mdash; the commodity floor keeps rising.</p>
     </div>
   </div>
 </section>
@@ -261,7 +261,7 @@
     <div class="info-card media fade-up" style="transition-delay: 0.04s">
       <h4>What &ldquo;fast&rdquo; means in 2026</h4>
       <p><strong>Human conversational baseline:</strong> ~200ms average response time. That is the target a voice agent is measured against.</p>
-      <p><strong>TTS alone:</strong> the fast tier is now 75&ndash;90ms (ElevenLabs Flash, Cartesia Sonic-3). This is close to a solved problem.</p>
+      <p><strong>TTS alone:</strong> the fast tier is now 75&ndash;90ms (ElevenLabs Flash, Cartesia Sonic-3.5). This is close to a solved problem.</p>
       <p><strong>End-to-end (STT + LLM reasoning + TTS):</strong> this is the real bottleneck. Sub-500ms is the bar for natural conversation; ~800ms is the practical ceiling before dialogue feels laggy. The LLM reasoning step, not the speech synthesis, is what eats the budget.</p>
       <p><strong>Architecture matters.</strong> Most production voice agents in 2026 are still <em>turn-based</em> (STT then LLM then TTS, in sequence), not true streaming. Streaming architectures shave latency but are harder to build. When a vendor quotes a latency number, ask whether it is the model alone or the full round trip.</p>
     </div>
@@ -305,8 +305,8 @@
     <div class="prose fade-up" style="transition-delay: 0.04s">
       <p><strong>South African English</strong> is broadly supported &mdash; ElevenLabs, Google Cloud TTS, Deepgram, and Whisper all handle it, though no major vendor has tuned a model specifically for the SA-English accent to the quality bar they hit for US or UK English. Accent prompting on ElevenLabs is the usual workaround.</p>
       <p><strong>Afrikaans</strong> has moderate coverage &mdash; several cloud TTS providers offer <code>af-ZA</code> voices, with smaller but growing vendor support.</p>
-      <p><strong>isiZulu and isiXhosa</strong> are severely under-resourced in commercial TTS. <strong>Qfrency</strong> (South African Voices) is the notable exception that offers both. Whisper's large-v3 theoretically covers them via multilingual training, but with no region-specific optimisation. Open datasets exist for research &mdash; OpenSLR #32 covers Afrikaans, Sesotho, Setswana, and isiXhosa.</p>
-      <p><strong>The honest read.</strong> If you are building voice for South African English, default to ElevenLabs with accent prompting. For isiZulu, isiXhosa, and the other indigenous languages, expect a custom solution or an academic partnership &mdash; commercial TTS quality for these languages is likely 18+ months from parity, and pretending otherwise sets a project up to fail.</p>
+      <p><strong>isiZulu and isiXhosa</strong> are severely under-resourced in commercial TTS. <strong>Qfrency</strong> (South African Voices) is the notable exception that offers both. Whisper does <em>not</em> cover them: its tokenizer lists 100 languages and <code>zu</code>, <code>xh</code>, <code>st</code> and <code>tn</code> are not among them. Afrikaans (<code>af</code>) is, as are Swahili, Shona, Yoruba, Hausa, Amharic and Somali &mdash; so &ldquo;Whisper handles African languages&rdquo; is true in general and false for South Africa&rsquo;s Bantu languages. Open datasets exist for research &mdash; OpenSLR #32 covers Afrikaans, Sesotho, Setswana, and isiXhosa.</p>
+      <p><strong>The honest read.</strong> If you are building voice for South African English, default to ElevenLabs with accent prompting. For isiZulu, isiXhosa, and the other indigenous languages, expect a custom solution or an academic partnership &mdash; commercial TTS quality for these languages is still nowhere near parity &mdash; nothing shipped through 2026 changed that &mdash; and pretending otherwise sets a project up to fail.</p>
     </div>
   </div>
 </section>
@@ -321,6 +321,10 @@
     <div class="cross-links fade-up" style="transition-delay: 0.03s">
       <a href="index.html" class="cross-link">&rarr; Media domain hub</a>
       <a href="elevenlabs.html" class="cross-link">&rarr; ElevenLabs (deep dive)</a>
+      <a href="cartesia.html" class="cross-link">&rarr; Cartesia (latency)</a>
+      <a href="hume.html" class="cross-link">&rarr; Hume AI (emotion)</a>
+      <a href="big-lab-voice.html" class="cross-link">&rarr; Big-lab voice</a>
+      <a href="speech-to-text.html" class="cross-link">&rarr; STT &middot; transcription</a>
       <a href="../agents/" class="cross-link">&rarr; Agents (voice agents orchestrate LLMs)</a>
       <a href="../agents/gpt.html" class="cross-link">&rarr; GPT</a>
       <a href="../agents/gemini.html" class="cross-link">&rarr; Gemini</a>
@@ -364,7 +368,7 @@
       <a href="https://2nth.ai">2nth.ai</a>
     </div>
     <div class="footer-copy">&copy; 2026 imbila.ai &middot; All knowledge open</div>
-    <div class="footer-review">Last reviewed: 2026-05-21 &middot; Cadence: hot (quarterly)</div>
+    <div class="footer-review">Last reviewed: 2026-10-26 &middot; Cadence: hot (quarterly)</div>
   </div>
 </footer>
 

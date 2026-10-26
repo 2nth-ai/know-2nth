@@ -8,7 +8,10 @@ Sibling sites in the ecosystem:
 - **2nth.ai** — framework / GTM site (Human + AI = 2ⁿ)
 - **dev.2nth.ai** — partner / Gridline / openBUILD AI source content (Construction domain pulls from here)
 - **2nth.io** — compute infrastructure layer
+- **2nth.me**, **2nth.org**, **pay.2nth.ai** — further ecosystem properties that draw on this tree as source material. They are not in this repo and their specifics are not documented here; confirm with Craig before writing anything about them into a leaf.
 - **imbila.ai** — parent consultancy brand
+
+Leaves here are source material for all of the above, so a factual error on know.2nth.ai propagates. That is why the weekly refresh pass exists and why the Resources discipline is primary-sources-only.
 
 ### Related repos that are NOT this one
 
@@ -43,26 +46,32 @@ Sibling sites in the ecosystem:
 ```
 know-2nth/
 ├── CLAUDE.md
-├── index.html                # root: 12 top-level domain cards
+├── index.html                # root: 14 top-level domain cards
 ├── about.html                # access model + how the site works
 ├── join.html                 # "Stay in touch" lead capture → 2nth CRM (crm-form.js)
-├── gate.js                   # tier-gate hook, loaded on every leaf, currently inert
+├── gate.js                   # tier-gate hook, inert; loaded on most leaves but NOT all (see below)
 ├── og-image.jpg              # 1200×630 OG / Twitter card
 ├── og-image.svg              # source for the OG image
 ├── _redirects                # Cloudflare Pages redirects
 ├── google-adk-explainer.md   # canonical source markdown for ADK leaf (PR #17)
 └── explainers/
     ├── agents/        # Frameworks, Protocols, Models, Inference (the strategic priority)
-    ├── biz/           # ERP, CRM, HR — has erp/ and crm/ sub-hubs
+    ├── biz/           # erp/, crm/, hr/, ecm/, bpm/ sub-hubs
     ├── construction/  # openBIM + Gridline / openBUILD AI partner-anchored
     ├── data/          # analytics/, warehousing/, engineering/ sub-hubs
     ├── design/        # tokens, components, motion, AI-assisted design
+    ├── fin/           # reporting, planning, consolidation, compliance
+    ├── health/        # ambient scribes, practice management
+    ├── leg/           # commercial, corporate, data-privacy, disputes, employment, ip, legal-ai
+    ├── media/         # generative media; voice & speech band closed, image/video/music scoped
     ├── partners/      # co-branded leaves (no hub yet, not on root grid)
-    ├── people/        # coaching, leadership, typologies/
-    └── tech/          # cloudflare/, google/, microsoft/, frappe/, runtime/, android-hce/, embedded/, frameworks/
+    ├── people/        # coaching, leadership, typologies/, ai-roles/
+    ├── software/      # languages, version control, CI/CD, agent-era software practice
+    ├── tech/          # cloudflare/, google/, microsoft/, frappe/, oracle/, runtime/, android-hce/, embedded/, frameworks/, game-engines/, hardware/
+    └── tools/         # architecture, runtime (not on the root grid)
 ```
 
-Five additional domains exist on the root grid as cards but have **no folder yet**: `edu`, `fin`, `health`, `iot`, `leg`. Building any of them out means: create `explainers/<domain>/index.html` hub, ship at least one Live leaf, then the root card becomes meaningful.
+Two domains exist on the root grid as cards but have **no folder yet**: `edu` and `iot`. Building either out means: create `explainers/<domain>/index.html` hub, ship at least one Live leaf, then the root card becomes meaningful. (`fin`, `health`, `leg` and `media` were in this list once and have since been built — this doc has been wrong about it before, so check the filesystem rather than trusting this paragraph.)
 
 ## How leaves are built
 
@@ -98,8 +107,8 @@ Both work; pick whichever the surrounding hub uses. **Stubs use the `soon` modif
 - **JetBrains Mono** — code, labels, badges, nav brand
 
 ### Theme
-- Dark mode is default (`data-theme="dark"`)
-- Light mode toggle persists via localStorage
+- Light mode toggle persists via localStorage, under the `2nth-theme` key
+- **The initial `data-theme` on `<html>` is inconsistent across the tree.** As of 2026-10-26: 116 files under `explainers/` ship `data-theme="dark"`, 99 ship `data-theme="light"`, and the root `index.html` ships `light` while `about.html` and `join.html` ship `dark`. A first-time visitor therefore gets a different initial render depending on which leaf they land on, and the whole `media/` domain renders light. This is a real inconsistency, not a documented choice — it needs a design decision (pick one, or respect `prefers-color-scheme`) and then a sweep. Until then, match the surrounding hub rather than introducing a third pattern.
 - All colours come from CSS custom properties — never hardcode hex in body markup. Define new tokens at `:root` if needed.
 
 ### Colour tokens (in `:root`)
@@ -138,7 +147,9 @@ Both work; pick whichever the surrounding hub uses. **Stubs use the `soon` modif
 
 **Everything on know.2nth.ai is public. Do not gate new content.** No `data-tier="member"` markers exist anywhere in `explainers/`, and new leaves must not add them — reference *and* opinionated decision content both ship open. We'd rather show the work than half-gate it behind a soft localStorage overlay that creates friction without delivering on the promise.
 
-`gate.js` stays loaded on every leaf and is **inert**: it applies an overlay to any element carrying `data-tier="member"` for visitors without the `2nth-know-member` localStorage flag. Since nothing carries the marker, it does nothing, and nothing sets the flag any more. The hook is kept so gating can return without re-plumbing.
+`gate.js` is **inert**: it applies an overlay to any element carrying `data-tier="member"` for visitors without the `2nth-know-member` localStorage flag. Since nothing carries the marker, it does nothing, and nothing sets the flag any more. The hook is kept so gating can return without re-plumbing.
+
+It is loaded on *most* leaves, not all: as of 2026-10-26, 201 of 213 files under `explainers/` reference it. The whole `media/` domain and six files under `tech/microsoft/` (plus `tech/game-engines/index.html`) do not. Because the script is inert this has no user-visible effect, so it is not worth a sweep on its own — but match the surrounding hub when you add a leaf, and don't assume the hook is present when reading a leaf.
 
 History: gating was switched on for decision leaves on 2026-05-17 (`/explainers/tools/runtime.html` was the only one using it, plus `tech/workstation.html` briefly) and removed again on 2026-08-30 — content reach beats the soft conversion signal while real auth doesn't exist. Magic-link auth remains parked. `/join` is a "Stay in touch" lead-capture form (2026-10-17): it posts to the 2nth CRM at `crm.2nth.app/v1/leads/forms/know-interest` via `/crm-form.js`, with an email-updates opt-in. No HubSpot. There is no membership.
 

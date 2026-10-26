@@ -3,7 +3,7 @@
   "description": "The public knowledge tree for the 2nth.ai ecosystem. Every leaf is both a human-readable reference and an agent-consumable context document.",
   "agent_fetch": "https://know.2nth.ai/api/context/<domain>/<leaf>",
   "mcp": "https://know.2nth.ai/mcp",
-  "count": 233,
+  "count": 237,
   "items": [
     {
       "title": "Agents — know.2nth.ai",
@@ -966,12 +966,44 @@
       "fetch": "media"
     },
     {
+      "title": "Big-lab voice — OpenAI, Google, Anthropic — know.2nth.ai",
+      "description": "Voice as a first-class LLM feature. OpenAI ships gpt-realtime plus translate and whisper variants, gpt-4o-mini-tts and the gpt-transcribe family; Google ships gemini-3.8-flash-tts, the Live API, voice replication and a two-speaker mode. Anthropic ships no audio API at all — Claude's voice mode is an app feature. What each exposes, why bundling voice into the LLM changes the latency maths, and when a specialist still wins.",
+      "domain": "media",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/media/big-lab-voice",
+      "fetch": "media/big-lab-voice"
+    },
+    {
+      "title": "Cartesia — the latency specialist — know.2nth.ai",
+      "description": "Cartesia is the voice vendor that optimised for one number: time to first audio. sonic-3.5 and sonic-3 for text-to-speech, ink-whisper for transcription, a voice changer, and a hosted agent runtime with phone numbers and call metrics. 44 languages in the API — none of them African. What the API actually exposes, how the telephony path works, where it beats ElevenLabs, and when latency is not your problem.",
+      "domain": "media",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/media/cartesia",
+      "fetch": "media/cartesia"
+    },
+    {
       "title": "ElevenLabs — the voice AI platform — know.2nth.ai",
       "description": "ElevenLabs is the deepest voice AI platform as of mid-2026 — ElevenCreative (text-to-speech across 70+ languages, voice cloning, music, sound effects), ElevenAgents (conversational voice agents, omnichannel), and ElevenAPI for developers. Flagship models: Eleven Flash (75ms latency), Multilingual v2, Eleven v3 (most expressive), Scribe v2 (speech-to-text). Credit-based per-character pricing. The default pick for creators and developers; what to know before committing.",
       "domain": "media",
       "kind": "leaf",
       "url": "https://know.2nth.ai/explainers/media/elevenlabs",
       "fetch": "media/elevenlabs"
+    },
+    {
+      "title": "Hume AI — the empathic voice interface — know.2nth.ai",
+      "description": "Hume AI treats emotional expression as data: EVI scores 48 named dimensions off the caller's voice and hands them to your LLM, and Octave takes natural-language acting directions instead of SSML. Bring-your-own-LLM across Anthropic, OpenAI, Google, Groq, Bedrock and more. What the API exposes, why the 48 dimensions are inferences rather than facts, the POPIA problem with emotion data, and when empathy is the wrong feature.",
+      "domain": "media",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/media/hume",
+      "fetch": "media/hume"
+    },
+    {
+      "title": "Speech-to-text — the transcription arena — know.2nth.ai",
+      "description": "Deepgram nova-3 and flux, AssemblyAI universal-3-5-pro, Speechmatics on-prem, and self-hosted Whisper, compared on what actually decides a build: streaming vs batch, keyterm biasing, diarisation, and where the audio is processed. Includes the South African language reality — Whisper's tokenizer has Afrikaans but no isiZulu, isiXhosa, Sesotho or Setswana — and a test protocol you can run before you commit.",
+      "domain": "media",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/media/speech-to-text",
+      "fetch": "media/speech-to-text"
     },
     {
       "title": "Text-to-speech: the engine arena — know.2nth.ai",

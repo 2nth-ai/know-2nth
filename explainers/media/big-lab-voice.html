@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Big-lab voice &mdash; OpenAI, Google, Anthropic &mdash; know.2nth.ai</title>
+<meta name="description" content="Voice as a first-class LLM feature. OpenAI ships gpt-realtime plus translate and whisper variants, gpt-4o-mini-tts and the gpt-transcribe family; Google ships gemini-3.8-flash-tts, the Live API, voice replication and a two-speaker mode. Anthropic ships no audio API at all — Claude's voice mode is an app feature. What each exposes, why bundling voice into the LLM changes the latency maths, and when a specialist still wins.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/media/big-lab-voice">
+<meta property="og:title" content="Big-lab voice &mdash; OpenAI, Google, Anthropic">
+<meta property="og:description" content="Voice inside the LLM — OpenAI's realtime family, Google's Gemini TTS and Live API, and the Anthropic gap nobody states plainly. What each exposes, and when a specialist wins.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Big-lab voice &mdash; OpenAI, Google, Anthropic">
+<meta name="twitter:description" content="Voice inside the LLM — OpenAI's realtime family, Google's Gemini TTS and Live API, and the Anthropic gap nobody states plainly. What each exposes, and when a specialist wins.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12); --violet: #8B5CF6; --violet-soft: rgba(139, 92, 246, 0.12); --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-soft: rgba(99, 102, 241, 0.12); --media: #DB2777; --media-glow: #EC4899; --media-soft: rgba(219, 39, 119, 0.12); --bg: var(--ink); --bg-raised: var(--navy); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(219, 39, 119, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(236, 72, 153, 0.3); --max-w: 1200px; --read-w: 760px; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-raised: #FFFFFF; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(219, 39, 119, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(219, 39, 119, 0.25); }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.1; pointer-events: none; z-index: 0; }
+  .glow-orb.media { width: 600px; height: 600px; background: var(--media); top: -200px; right: -100px; }
+  .glow-orb.violet { width: 500px; height: 500px; background: var(--violet); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.05; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--media-glow); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--media-glow); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--media-glow); }
+  .crumb-sep { opacity: 0.5; }
+  .crumb-current { color: var(--text-secondary); }
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--media); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--media); box-shadow: 0 0 12px var(--media); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--media), var(--media-glow), #F9A8D4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 720px; line-height: 1.7; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.media { background: var(--media-soft); color: var(--media-glow); border-color: rgba(219, 39, 119, 0.3); }
+  .pill.warm { background: var(--warm-soft); color: var(--warm); border-color: rgba(245, 158, 11, 0.25); }
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--media); margin-bottom: 14px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .section-lede strong { color: var(--text-primary); font-weight: 600; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--media-glow); }
+  .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; max-width: 1040px; margin-bottom: 20px; }
+  .feature-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--media); border-radius: var(--radius-md); padding: 20px 24px; }
+  .feature-cell h4 { font-size: 15px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.2px; }
+  .feature-cell p { font-size: 13.5px; color: var(--text-secondary); line-height: 1.65; }
+  .feature-cell code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; color: var(--media-glow); background: var(--media-soft); padding: 1px 5px; border-radius: 3px; }
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow-x: auto; max-width: 1040px; margin-bottom: 24px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 640px; }
+  .compare th, .compare td { padding: 11px 14px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--media-glow); background: rgba(219, 39, 119, 0.04); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); }
+  .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--media-glow); }
+  .compare td strong { color: var(--text-primary); }
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 26px 30px; max-width: var(--read-w); margin-bottom: 18px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.rose { border-left: 3px solid var(--rose); }
+  .info-card.media { border-left: 3px solid var(--media); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14.5px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .info-card code { font-family: 'JetBrains Mono', monospace; font-size: 0.86em; color: var(--media-glow); background: var(--media-soft); padding: 1px 5px; border-radius: 4px; }
+  .info-card strong { color: var(--text-primary); font-weight: 600; }
+  .pair-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 1040px; }
+  @media (max-width: 720px) { .pair-grid { grid-template-columns: 1fr; } }
+  .when-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 24px 28px; }
+  .when-card.use { border-top: 3px solid var(--green); }
+  .when-card.skip { border-top: 3px solid var(--rose); }
+  .when-card .label { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; display: block; margin-bottom: 8px; font-weight: 600; }
+  .when-card.use .label { color: var(--green); }
+  .when-card.skip .label { color: var(--rose); }
+  .when-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 14px; letter-spacing: -0.3px; }
+  .when-card ul { list-style: none; padding: 0; }
+  .when-card li { font-size: 13.5px; color: var(--text-secondary); line-height: 1.6; padding-left: 16px; position: relative; margin-bottom: 8px; }
+  .when-card li::before { content: '\2192'; position: absolute; left: 0; color: var(--text-muted); }
+  .when-card li strong { color: var(--text-primary); font-weight: 600; }
+  .cross-links { display: flex; gap: 10px; flex-wrap: wrap; }
+  .cross-link { font-family: 'JetBrains Mono', monospace; font-size: 12px; padding: 10px 20px; border-radius: var(--radius-pill); border: 1px solid var(--border); background: var(--bg-card); text-decoration: none; color: var(--text-secondary); transition: all 0.3s; letter-spacing: 0.5px; }
+  .cross-link:hover { border-color: var(--border-hover); color: var(--media-glow); transform: translateY(-1px); }
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 16px 20px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--media-glow); word-break: break-all; }
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--media-glow); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .footer-review { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); margin-top: 14px; letter-spacing: 0.4px; }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+</head>
+<body>
+
+<div class="glow-orb media"></div>
+<div class="glow-orb violet"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand">
+      <span class="nav-brand-mark">know.2nth.ai</span>
+      <span class="nav-brand-sub">media &middot; big-lab voice</span>
+    </a>
+    <div class="nav-right">
+      <a href="index.html" class="nav-link">&larr; Media</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x1F319;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="index.html">Media</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">Big-lab voice</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> media &middot; voice &amp; speech &middot; comparison</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      <span class="gradient">Big-lab voice.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      The frontier labs stopped treating speech as a separate product and pulled it inside the model. OpenAI ships a <strong>realtime</strong> family plus standalone TTS and transcription; Google ships <strong>Gemini TTS</strong> and the <strong>Live API</strong> with voice replication and a two-speaker mode; <strong>Anthropic ships no audio API at all</strong> &mdash; a fact worth stating plainly, because a great deal of writing implies otherwise. This leaf covers what each one actually exposes, why bundling changes the latency arithmetic, and the cases where a specialist vendor still wins.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill media">Voice in the LLM</span>
+      <span class="pill">Comparison explainer</span>
+      <span class="pill warm">Hot &middot; quarterly review</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 · WHAT THIS IS -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; What this is</div>
+      <h2 class="section-title">Voice stopped being a separate purchase.</h2>
+      <p class="section-lede">For most of the last decade speech was a vendor you bought next to your model. The frontier labs have been collapsing that into the model itself &mdash; unevenly, and not all of them.</p>
+    </div>
+
+    <div class="prose fade-up" style="transition-delay: 0.04s">
+      <p>There are two architectures here and conflating them is the most common mistake in this area. The <strong>pipeline</strong> is STT, then an LLM, then TTS: three calls, three bills, three failure modes, and a full text round trip in the middle. The <strong>native-audio</strong> model takes audio in and emits audio out over one session, with no text bottleneck between hearing and speaking. OpenAI&rsquo;s realtime family and Google&rsquo;s Live API are the second kind; their separate TTS and transcription endpoints are components for the first.</p>
+      <p>Native audio buys two things pipelines cannot easily get: a shorter critical path, because nothing waits for a complete transcript, and information that text throws away &mdash; hesitation, emphasis, a caller trailing off. It costs you the thing pipelines are good at: inspecting, logging and testing a text transcript at every stage. Pick deliberately. A regulated contact centre that must evidence what was said often wants the pipeline precisely <em>because</em> it is inspectable.</p>
+      <p>The strategic read: if you already build on a frontier model, the voice layer is now an option on your existing bill rather than a procurement exercise. That is a real reduction in friction, and it is also how specialists get squeezed &mdash; not by being beaten on quality, but by being unnecessary.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 · OPENAI -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; OpenAI</div>
+      <h2 class="section-title">The widest surface.</h2>
+      <p class="section-lede">OpenAI covers both architectures, with a realtime family for native audio and conventional endpoints for pipeline builds. Model ids below are from the published API specification.</p>
+    </div>
+
+    <div class="compare-wrap fade-up" style="transition-delay: 0.04s">
+      <table class="compare">
+        <thead><tr><th>Model</th><th>Kind</th><th>What it is for</th></tr></thead>
+        <tbody>
+          <tr><td><code>gpt-realtime</code></td><td>Native audio</td><td>The conversational session &mdash; audio in, audio out, tools, interruption. Dated pins exist; use one in production rather than the floating id.</td></tr>
+          <tr><td><code>gpt-realtime-translate</code></td><td>Native audio</td><td>Live speech translation as a first-class mode rather than a prompt trick.</td></tr>
+          <tr><td><code>gpt-realtime-whisper</code></td><td>Native audio</td><td>The transcription model available inside a realtime session, for when you want the session&rsquo;s own text stream.</td></tr>
+          <tr><td><code>gpt-audio</code></td><td>Audio-in chat</td><td>Audio as an input modality on a normal request/response call &mdash; not a live session. Good for &ldquo;understand this clip&rdquo;.</td></tr>
+          <tr><td><code>gpt-4o-mini-tts</code></td><td>TTS</td><td>The current synthesis model. Takes an <code>instructions</code> field &mdash; plain-language delivery direction, which <code>tts-1</code> and <code>tts-1-hd</code> ignore. Input caps at 4096 characters.</td></tr>
+          <tr><td><code>gpt-transcribe</code>, <code>gpt-4o-transcribe</code>, <code>gpt-4o-mini-transcribe</code></td><td>STT</td><td>Batch transcription. <code>gpt-transcribe</code> adds a <code>languages</code> shortlist and a <code>keywords</code> bias list &mdash; the two knobs that fix domain vocabulary.</td></tr>
+          <tr><td><code>gpt-4o-transcribe-diarize</code></td><td>STT</td><td>Speaker-attributed transcription via the <code>diarized_json</code> response format. Does not accept a <code>prompt</code>.</td></tr>
+          <tr><td><code>whisper-1</code></td><td>STT (legacy)</td><td>The hosted open-weights model. Still callable, no longer the lead option &mdash; see the <a href="speech-to-text.html">STT leaf</a>.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="prose fade-up" style="transition-delay: 0.06s">
+      <p>Built-in voices run <code>alloy</code>, <code>ash</code>, <code>ballad</code>, <code>coral</code>, <code>echo</code>, <code>fable</code>, <code>onyx</code>, <code>nova</code>, <code>sage</code>, <code>shimmer</code>, <code>verse</code>, <code>marin</code> and <code>cedar</code>, and you can reference a custom voice by id. Custom voices must be built from audio samples &mdash; voices invented from a text prompt are available only in the live surface. Output is <code>mp3</code>, <code>opus</code>, <code>aac</code>, <code>flac</code>, <code>wav</code> or <code>pcm</code>, with speed from 0.25&times; to 4&times;.</p>
+      <p>The detail worth lifting out: <code>instructions</code> on <code>gpt-4o-mini-tts</code> is the same idea as Hume&rsquo;s acting directions and the reason the older <code>tts-1</code> models now feel inert. If you inherited a codebase pinned to <code>tts-1</code>, that is a one-line upgrade with a real quality difference.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 · GOOGLE -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; Google</div>
+      <h2 class="section-title">Two speech stories under one brand.</h2>
+      <p class="section-lede">Google has Gemini-native audio and the older Cloud Speech line, and they are different products with different endpoints, quotas and regional stories. Knowing which one someone means saves a wasted sprint.</p>
+    </div>
+
+    <div class="feature-grid fade-up" style="transition-delay: 0.04s">
+      <div class="feature-cell">
+        <h4>Gemini TTS</h4>
+        <p>Synthesis through the Gemini API on <code>gemini-3.8-flash-tts</code>. You set <code>response_modalities: ['AUDIO']</code> and a speech config naming a prebuilt voice (<code>Aoede</code> and friends) or a replicated one. A <code>language_code</code> steers synthesis.</p>
+      </div>
+      <div class="feature-cell">
+        <h4>The Live API</h4>
+        <p>Google&rsquo;s native-audio session &mdash; the equivalent of OpenAI&rsquo;s realtime surface, with streaming input, tool responses and an audio-transcription config so you can get text alongside the audio.</p>
+      </div>
+      <div class="feature-cell">
+        <h4>Chirp, on Vertex</h4>
+        <p>The Cloud Speech-to-Text and Text-to-Speech line, reached through Vertex AI rather than the Gemini API. Separate quotas, separate regional endpoints, and the place to look when data location is a procurement requirement.</p>
+      </div>
+    </div>
+
+    <div class="info-card media fade-up" style="transition-delay: 0.06s">
+      <h4>Two things Google does that the others do not</h4>
+      <p><strong>A two-speaker dialogue mode.</strong> The multi-speaker config takes a list of speaker-to-voice mappings and requires <em>exactly two</em> speaker configurations &mdash; the names must match the speaker labels in your prompt. For two-host podcast segments, dialogue practice and role-play scripts this is one call instead of a stitching pipeline. Three speakers is not a configuration option, so plan around it rather than discovering it late.</p>
+      <p><strong>Voice replication as a config object.</strong> A replicated voice sits in the same voice-config slot as a prebuilt one, so cloning is a parameter change, not a different product. Convenient, and exactly the kind of convenience that gets a consent step skipped &mdash; see section 05.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 · ANTHROPIC -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; Anthropic</div>
+      <h2 class="section-title">There is no Claude voice API.</h2>
+      <p class="section-lede">This needs saying flatly, because a lot of market commentary lists Anthropic alongside OpenAI and Google on voice, and the architecture consequence is significant.</p>
+    </div>
+
+    <div class="prose fade-up" style="transition-delay: 0.04s">
+      <p>Claude has a voice mode in Anthropic&rsquo;s own apps. The <strong>API</strong> is a different matter: its published surface covers messages, batches, models, files, skills and organisation administration, and contains no audio, speech or voice endpoint of any kind. There is no Anthropic TTS, no Anthropic STT, and no Anthropic realtime audio session to call.</p>
+      <p>So &ldquo;a voice agent on Claude&rdquo; always means Claude doing the reasoning inside somebody else&rsquo;s speech layer. That is a well-trodden path, not a limitation &mdash; Hume&rsquo;s EVI lists Claude models among its bring-your-own-LLM options, and every orchestration platform in the <a href="voice-agents.html">voice agents leaf</a> will put Claude in the think step between a third-party STT and TTS.</p>
+      <p>What it does mean is that the convenience argument for big-lab voice &mdash; one vendor, one bill, one latency path &mdash; does not apply to Anthropic. If that convenience is what you are buying, your choice is OpenAI or Google. If you want Claude&rsquo;s reasoning, budget for a pipeline and choose its speech components on their own merits.</p>
+    </div>
+
+    <div class="info-card amber fade-up" style="transition-delay: 0.06s">
+      <h4>How to answer the client question</h4>
+      <p>&ldquo;Can we do this with Claude?&rdquo; &mdash; yes, with a speech layer around it, and here is what that layer costs and who processes the audio. Not &ldquo;Claude does voice.&rdquo; The distinction matters when the data-processing map goes to an information officer, because the audio processor is a different company from the reasoning processor.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 · THE TRADE-OFFS -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; The trade-offs</div>
+      <h2 class="section-title">What bundling actually costs.</h2>
+      <p class="section-lede">Native audio is genuinely better for conversation and genuinely worse for several things teams discover after they have shipped.</p>
+    </div>
+
+    <div class="pair-grid fade-up" style="transition-delay: 0.04s">
+      <div class="when-card use">
+        <span class="label">Bundling wins on&hellip;</span>
+        <h4>The conversational path</h4>
+        <ul>
+          <li><strong>Latency</strong> &mdash; one session, no text bottleneck, no three-vendor round trip</li>
+          <li><strong>Paralinguistic information</strong> &mdash; hesitation and emphasis survive, where a transcript discards them</li>
+          <li><strong>Interruption handling</strong> &mdash; the session owns turn-taking rather than you stitching it</li>
+          <li><strong>Procurement</strong> &mdash; one vendor, one contract, one invoice, one data-processing agreement</li>
+          <li><strong>Tool use</strong> &mdash; the same tool definitions you already wrote work inside the voice session</li>
+        </ul>
+      </div>
+      <div class="when-card skip">
+        <span class="label">Bundling costs you&hellip;</span>
+        <h4>Control and inspectability</h4>
+        <ul>
+          <li><strong>Component choice</strong> &mdash; you take the lab&rsquo;s voice quality and accent coverage as given</li>
+          <li><strong>The audit trail</strong> &mdash; no clean text boundary to log, redact and test at</li>
+          <li><strong>Portability</strong> &mdash; a native-audio session is a deeper dependency than three swappable calls</li>
+          <li><strong>Cost visibility</strong> &mdash; audio tokens are harder to forecast than characters and minutes</li>
+          <li><strong>Data residency</strong> &mdash; the realtime surfaces are the least regionally flexible part of either platform</li>
+          <li><strong>Telephony fit</strong> &mdash; neither is as 8&nbsp;kHz-native as a vendor built for phone lines</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="info-card rose fade-up" style="transition-delay: 0.07s">
+      <h4>Cloning is a parameter now. Consent is not.</h4>
+      <p>On both platforms a replicated or custom voice is a field in a config object, which makes cloning a staff member or a client trivially easy to do and trivially easy to do without authority. Under POPIA a voice is personal information and a clone is personal information about an identifiable person; the responsibility sits with whoever commissions it. Keep a written, specific consent artefact with every voice you create, and do not let &ldquo;it is just a config value&rdquo; stand in for a decision.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 · DECISION GUIDE -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; Decision guide</div>
+      <h2 class="section-title">Big lab or specialist.</h2>
+      <p class="section-lede">The honest default is: if you are already on a frontier model and voice is a feature of your product, start with the lab. If voice <em>is</em> the product, price a specialist against it.</p>
+    </div>
+
+    <div class="pair-grid fade-up" style="transition-delay: 0.04s">
+      <div class="when-card use">
+        <span class="label">Use big-lab voice if&hellip;</span>
+        <h4>Voice is a feature</h4>
+        <ul>
+          <li>You <strong>already build on OpenAI or Gemini</strong> and want fewer vendors, not more</li>
+          <li>You need <strong>live translation</strong> &mdash; OpenAI exposes it as a mode rather than a build</li>
+          <li>You want <strong>audio understanding</strong>, not just synthesis &mdash; &ldquo;what is in this recording&rdquo;</li>
+          <li>You want <strong>two-speaker dialogue</strong> in one call &mdash; that is Google&rsquo;s</li>
+          <li><strong>Procurement overhead</strong> is a real cost for this client</li>
+          <li>You are <strong>prototyping</strong> and want a voice path working this afternoon</li>
+        </ul>
+      </div>
+      <div class="when-card skip">
+        <span class="label">Choose a specialist if&hellip;</span>
+        <h4>Voice is the product</h4>
+        <ul>
+          <li><strong>Telephony is the channel</strong> and you need 8&nbsp;kHz-native output &mdash; <a href="cartesia.html">Cartesia</a></li>
+          <li>You need <strong>emotion as a readable signal</strong> &mdash; <a href="hume.html">Hume</a></li>
+          <li>You need <strong>breadth</strong> &mdash; dubbing, cloning, music, sound design on one invoice &mdash; <a href="elevenlabs.html">ElevenLabs</a></li>
+          <li>You need <strong>best-in-class transcription</strong> with keyterm biasing and diarisation &mdash; see the <a href="speech-to-text.html">STT leaf</a></li>
+          <li>You need <strong>self-hosting or in-country inference</strong>; no frontier lab offers it</li>
+          <li>You need <strong>a pinned voice that will not drift</strong> across a multi-year contract</li>
+          <li>You want <strong>Claude&rsquo;s reasoning</strong> &mdash; then there is no bundled option and the pipeline is the design</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 07 · SOUTH AFRICAN CONTEXT -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; South African context</div>
+      <h2 class="section-title">What lands in SA.</h2>
+    </div>
+
+    <div class="prose fade-up" style="transition-delay: 0.04s">
+      <p><strong>Data residency is where this gets decided, and the answer is probably no.</strong> There is a Johannesburg region, <code>africa-south1</code>, and Vertex AI lists it &mdash; but it lists it for the ML-platform features (training, prediction, Model Registry, Pipelines, Feature Store), and generative-AI locations are documented on a separate page. Compute Engine also shows no GPU machine types in those zones, which is a strong hint about what can be served there. Treat &ldquo;Google has an SA region, so we can run Gemini voice in-country&rdquo; as unproven until you have checked the generative-AI locations page for the exact endpoint you intend to call. The OpenAI realtime surface is the least regionally flexible part of that platform. If a client requires that call audio does not leave South Africa, establish that at design time, because the honest answer today is that no frontier native-audio surface meets it.</p>
+      <p><strong>Cross-border transfer.</strong> Where audio does leave, section 72 of POPIA governs it and you need a lawful route &mdash; consent, or a contractual or adequacy basis. A voice session sends raw audio of an identifiable person abroad, which is a more sensitive payload than the text your product already sends. Treat it as a separate decision with its own record.</p>
+      <p><strong>Accent coverage.</strong> Both labs handle South African English, neither has tuned for it to the bar they hit for US English, and neither covers South Africa&rsquo;s Bantu languages at production quality. OpenAI&rsquo;s <code>keywords</code> bias list on <code>gpt-transcribe</code> is the most practical fix available for local proper nouns &mdash; street names, suburbs, medical-aid schemes, surnames &mdash; and is worth using properly rather than treating as optional.</p>
+      <p><strong>FX and forecasting.</strong> Audio tokens are harder to forecast than per-character TTS, and they are USD-denominated. For a rand-funded client that is a variable cost on an unhedged currency. Model a worst-case month, not an average one, and state the assumption in the proposal.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 08 · CONNECTIONS -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 &middot; Connections</div>
+      <h2 class="section-title">Where this leaf links into the tree.</h2>
+    </div>
+    <div class="cross-links fade-up" style="transition-delay: 0.03s">
+      <a href="index.html" class="cross-link">&rarr; Media domain hub</a>
+      <a href="landscape.html" class="cross-link">&rarr; The voice AI landscape</a>
+      <a href="speech-to-text.html" class="cross-link">&rarr; STT &middot; transcription</a>
+      <a href="cartesia.html" class="cross-link">&rarr; Cartesia</a>
+      <a href="hume.html" class="cross-link">&rarr; Hume AI</a>
+      <a href="elevenlabs.html" class="cross-link">&rarr; ElevenLabs</a>
+      <a href="voice-agents.html" class="cross-link">&rarr; Voice agents &amp; telephony</a>
+      <a href="../agents/gpt.html" class="cross-link">&rarr; GPT</a>
+      <a href="../agents/gemini.html" class="cross-link">&rarr; Gemini</a>
+      <a href="../agents/claude.html" class="cross-link">&rarr; Claude</a>
+      <a href="../leg/" class="cross-link">&rarr; Legal (POPIA)</a>
+    </div>
+  </div>
+</section>
+
+<!-- 09 · RESOURCES -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">09 &middot; Resources</div>
+      <h2 class="section-title">Primary sources.</h2>
+      <p class="section-lede">Model ids, voice names, formats, parameter names and the absence of an Anthropic audio surface were all read off the vendors&rsquo; own published API specifications and SDKs. Pricing and per-endpoint regional availability were not verified and are not quoted.</p>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.03s">
+      <a class="resource" href="https://github.com/openai/openai-openapi" target="_blank" rel="noopener"><span class="r-kind">Spec &middot; primary</span><span class="r-title">openai/openai-openapi &mdash; the OpenAI API specification</span><span class="r-url">github.com/openai/openai-openapi</span></a>
+      <a class="resource" href="https://github.com/googleapis/python-genai" target="_blank" rel="noopener"><span class="r-kind">SDK &middot; primary</span><span class="r-title">googleapis/python-genai &mdash; Gemini TTS, Live, speech config</span><span class="r-url">github.com/googleapis/python-genai</span></a>
+      <a class="resource" href="https://github.com/anthropics/anthropic-sdk-python/blob/main/api.md" target="_blank" rel="noopener"><span class="r-kind">API surface &middot; primary</span><span class="r-title">Anthropic API reference &mdash; no audio endpoints</span><span class="r-url">github.com/anthropics/anthropic-sdk-python/blob/main/api.md</span></a>
+      <a class="resource" href="https://developers.openai.com/api/docs/guides/realtime" target="_blank" rel="noopener"><span class="r-kind">Docs</span><span class="r-title">OpenAI realtime guide</span><span class="r-url">developers.openai.com/api/docs/guides/realtime</span></a>
+      <a class="resource" href="https://ai.google.dev/gemini-api/docs/live" target="_blank" rel="noopener"><span class="r-kind">Docs</span><span class="r-title">Gemini Live API</span><span class="r-url">ai.google.dev/gemini-api/docs/live</span></a>
+      <a class="resource" href="https://ai.google.dev/gemini-api/docs/speech-generation" target="_blank" rel="noopener"><span class="r-kind">Docs</span><span class="r-title">Gemini speech generation</span><span class="r-url">ai.google.dev/gemini-api/docs/speech-generation</span></a>
+      <a class="resource" href="https://cloud.google.com/vertex-ai/docs/general/locations" target="_blank" rel="noopener"><span class="r-kind">Docs</span><span class="r-title">Vertex AI locations (check before promising residency)</span><span class="r-url">cloud.google.com/vertex-ai/docs/general/locations</span></a>
+      <a class="resource" href="https://www.gov.za/documents/protection-personal-information-act" target="_blank" rel="noopener"><span class="r-kind">Legislation</span><span class="r-title">Protection of Personal Information Act 4 of 2013</span><span class="r-url">gov.za/documents/protection-personal-information-act</span></a>
+      <a class="resource" href="landscape.html"><span class="r-kind">know.2nth.ai</span><span class="r-title">The voice AI landscape</span><span class="r-url">/explainers/media/landscape</span></a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <div class="footer-tagline">The Knowledge Tree</div>
+    <div class="footer-links">
+      <a href="../../index.html">Tree</a>
+      <a href="index.html">Media</a>
+      <a href="landscape.html">Landscape</a>
+      <a href="../../about.html">About</a>
+      <a href="../../join.html">Stay in touch</a>
+      <a href="https://2nth.ai">2nth.ai</a>
+    </div>
+    <div class="footer-copy">&copy; 2026 imbila.ai &middot; All knowledge open</div>
+    <div class="footer-review">Last reviewed: 2026-10-26 &middot; Cadence: hot (quarterly)</div>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme() {
+    const cur = document.documentElement.getAttribute('data-theme');
+    const next = cur === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('2nth-theme', next);
+  }
+  const stored = localStorage.getItem('2nth-theme');
+  if (stored) document.documentElement.setAttribute('data-theme', stored);
+  const observer = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold: 0.05 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
