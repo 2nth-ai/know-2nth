@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Speech-to-text &mdash; the transcription arena &mdash; know.2nth.ai</title>
+<meta name="description" content="Deepgram nova-3 and flux, AssemblyAI universal-3-5-pro, Speechmatics on-prem, and self-hosted Whisper, compared on what actually decides a build: streaming vs batch, keyterm biasing, diarisation, and where the audio is processed. Includes the South African language reality — Whisper's tokenizer has Afrikaans but no isiZulu, isiXhosa, Sesotho or Setswana — and a test protocol you can run before you commit.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/media/speech-to-text">
+<meta property="og:title" content="Speech-to-text &mdash; the transcription arena">
+<meta property="og:description" content="Deepgram, AssemblyAI, Speechmatics and self-hosted Whisper compared on streaming, keyterm biasing, diarisation and data residency — plus the SA language reality, stated plainly.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Speech-to-text &mdash; the transcription arena">
+<meta name="twitter:description" content="Deepgram, AssemblyAI, Speechmatics and self-hosted Whisper compared on streaming, keyterm biasing, diarisation and data residency — plus the SA language reality, stated plainly.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12); --violet: #8B5CF6; --violet-soft: rgba(139, 92, 246, 0.12); --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-soft: rgba(99, 102, 241, 0.12); --media: #DB2777; --media-glow: #EC4899; --media-soft: rgba(219, 39, 119, 0.12); --bg: var(--ink); --bg-raised: var(--navy); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(219, 39, 119, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(236, 72, 153, 0.3); --max-w: 1200px; --read-w: 760px; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-raised: #FFFFFF; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(219, 39, 119, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(219, 39, 119, 0.25); }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.1; pointer-events: none; z-index: 0; }
+  .glow-orb.media { width: 600px; height: 600px; background: var(--media); top: -200px; right: -100px; }
+  .glow-orb.violet { width: 500px; height: 500px; background: var(--violet); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.05; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--media-glow); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--media-glow); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--media-glow); }
+  .crumb-sep { opacity: 0.5; }
+  .crumb-current { color: var(--text-secondary); }
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--media); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--media); box-shadow: 0 0 12px var(--media); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--media), var(--media-glow), #F9A8D4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 720px; line-height: 1.7; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.media { background: var(--media-soft); color: var(--media-glow); border-color: rgba(219, 39, 119, 0.3); }
+  .pill.warm { background: var(--warm-soft); color: var(--warm); border-color: rgba(245, 158, 11, 0.25); }
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--media); margin-bottom: 14px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .section-lede strong { color: var(--text-primary); font-weight: 600; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--media-glow); }
+  .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; max-width: 1040px; margin-bottom: 20px; }
+  .feature-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--media); border-radius: var(--radius-md); padding: 20px 24px; }
+  .feature-cell h4 { font-size: 15px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.2px; }
+  .feature-cell p { font-size: 13.5px; color: var(--text-secondary); line-height: 1.65; }
+  .feature-cell code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; color: var(--media-glow); background: var(--media-soft); padding: 1px 5px; border-radius: 3px; }
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow-x: auto; max-width: 1040px; margin-bottom: 24px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 640px; }
+  .compare th, .compare td { padding: 11px 14px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--media-glow); background: rgba(219, 39, 119, 0.04); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); }
+  .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--media-glow); }
+  .compare td strong { color: var(--text-primary); }
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 26px 30px; max-width: var(--read-w); margin-bottom: 18px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.rose { border-left: 3px solid var(--rose); }
+  .info-card.media { border-left: 3px solid var(--media); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14.5px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .info-card code { font-family: 'JetBrains Mono', monospace; font-size: 0.86em; color: var(--media-glow); background: var(--media-soft); padding: 1px 5px; border-radius: 4px; }
+  .info-card strong { color: var(--text-primary); font-weight: 600; }
+  .pair-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 1040px; }
+  @media (max-width: 720px) { .pair-grid { grid-template-columns: 1fr; } }
+  .when-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 24px 28px; }
+  .when-card.use { border-top: 3px solid var(--green); }
+  .when-card.skip { border-top: 3px solid var(--rose); }
+  .when-card .label { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; display: block; margin-bottom: 8px; font-weight: 600; }
+  .when-card.use .label { color: var(--green); }
+  .when-card.skip .label { color: var(--rose); }
+  .when-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 14px; letter-spacing: -0.3px; }
+  .when-card ul { list-style: none; padding: 0; }
+  .when-card li { font-size: 13.5px; color: var(--text-secondary); line-height: 1.6; padding-left: 16px; position: relative; margin-bottom: 8px; }
+  .when-card li::before { content: '\2192'; position: absolute; left: 0; color: var(--text-muted); }
+  .when-card li strong { color: var(--text-primary); font-weight: 600; }
+  .cross-links { display: flex; gap: 10px; flex-wrap: wrap; }
+  .cross-link { font-family: 'JetBrains Mono', monospace; font-size: 12px; padding: 10px 20px; border-radius: var(--radius-pill); border: 1px solid var(--border); background: var(--bg-card); text-decoration: none; color: var(--text-secondary); transition: all 0.3s; letter-spacing: 0.5px; }
+  .cross-link:hover { border-color: var(--border-hover); color: var(--media-glow); transform: translateY(-1px); }
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 16px 20px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--media-glow); word-break: break-all; }
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--media-glow); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .footer-review { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); margin-top: 14px; letter-spacing: 0.4px; }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+</head>
+<body>
+
+<div class="glow-orb media"></div>
+<div class="glow-orb violet"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand">
+      <span class="nav-brand-mark">know.2nth.ai</span>
+      <span class="nav-brand-sub">media &middot; speech-to-text</span>
+    </a>
+    <div class="nav-right">
+      <a href="index.html" class="nav-link">&larr; Media</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x1F319;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="index.html">Media</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">STT &middot; transcription</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> media &middot; voice &amp; speech &middot; comparison</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      <span class="gradient">Speech-to-text.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      The listening half of voice AI, and the half that decides whether a voice agent works. Four options cover most real builds: <strong>Deepgram</strong> for streaming accuracy and turn detection, <strong>AssemblyAI</strong> for analysis-rich batch work, <strong>Speechmatics</strong> when the audio may not leave the building, and <strong>self-hosted Whisper</strong> when cost or residency decides it. This leaf compares them on the axes that actually matter, states the South African language position plainly, and gives you a test protocol to run before you commit.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill media">Transcription</span>
+      <span class="pill">Comparison explainer</span>
+      <span class="pill warm">Hot &middot; quarterly review</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 · WHAT IT IS -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; What it is</div>
+      <h2 class="section-title">Two different products wearing one name.</h2>
+      <p class="section-lede">&ldquo;Speech-to-text&rdquo; covers streaming and batch, and they are not the same purchase. Buying the wrong one is the most common and most expensive mistake in this category.</p>
+    </div>
+
+    <div class="prose fade-up" style="transition-delay: 0.04s">
+      <p><strong>Streaming</strong> returns words while the speaker is still talking, over a websocket, and is judged on time-to-partial, how stable those partials are, and how well it decides a turn has ended. It is what a voice agent needs. <strong>Batch</strong> takes a finished file and returns one transcript, and is judged on word error rate, diarisation quality, and the structured extras it hangs off the transcript. It is what call analytics, subtitling and meeting notes need.</p>
+      <p>A vendor can be excellent at one and ordinary at the other. Running a file through a streaming endpoint is also slower than sending it in one piece, which surprises people who assume streaming is simply the faster mode.</p>
+      <p>The axis that quietly decides most procurement is neither: it is <strong>where the audio is processed</strong>. If the answer has to be &ldquo;inside our network&rdquo;, the field narrows to Speechmatics&rsquo; deployable appliance or self-hosted Whisper, and the accuracy conversation becomes secondary. Establish that first.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 · THE FOUR OPTIONS -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; The four options</div>
+      <h2 class="section-title">Who wins which build.</h2>
+      <p class="section-lede">Model ids and capability names below come from each vendor&rsquo;s own published SDK. We are not quoting word error rates &mdash; vendor WER figures are measured on the vendor&rsquo;s own audio and will not predict yours.</p>
+    </div>
+
+    <div class="compare-wrap fade-up" style="transition-delay: 0.04s">
+      <table class="compare">
+        <thead><tr><th>Option</th><th>Models</th><th>Why you would pick it</th><th>Where it is processed</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Deepgram</strong></td><td><code>nova-3</code>, <code>flux-general-en</code>; <code>aura-2-*</code> for TTS</td><td>Streaming first. <code>nova-3</code> takes <code>language="multi"</code> for code-switched audio or <code>detect_language</code> when you do not know. <code>flux-general-en</code> puts conversational turn detection inside the transcriber instead of leaving you to build it. Ships a composable agent runtime where listen, think and speak are each a provider choice.</td><td>Hosted; some on-premises options</td></tr>
+          <tr><td><strong>AssemblyAI</strong></td><td><code>universal-3-5-pro</code>, <code>universal-2</code></td><td>Batch depth. You pass a <em>list</em> of models and it falls back down it, which is a real availability feature. <code>keyterms_prompt</code> biases the decoder (up to 100 terms / 8000 characters), <code>language_codes</code> steers monolingual or multilingual audio, and per-channel attribution is independent of speaker diarisation &mdash; <em>which line</em> is a separate question from <em>whose voice</em>. Now ships its own TTS voices too.</td><td>Hosted</td></tr>
+          <tr><td><strong>Speechmatics</strong></td><td>Realtime and Batch ASR v2</td><td>Deployment flexibility, and it is the differentiator. The published options are SaaS, on-premises, on-device and <strong>air-gapped</strong> &mdash; you point the same client code at <code>ws://</code> inside your own network. Native models for 55+ languages rather than one multilingual model, <code>language="auto"</code> identification with an expected-language shortlist, a 1,000-word custom dictionary, diarisation and speaker ID included, and realtime translation to 30+ languages. The one to shortlist when residency is the requirement.</td><td><strong>Cloud, regional, on-device, or air-gapped</strong></td></tr>
+          <tr><td><strong>Whisper</strong> (self-hosted)</td><td><code>large-v3</code>, <code>turbo</code>, down to <code>tiny</code></td><td>Cost and control. MIT-licensed, no per-minute fee, runs on your own GPU. Six sizes from <code>tiny</code> (39M, ~1&nbsp;GB VRAM) to <code>large</code> (1550M, ~10&nbsp;GB); <code>turbo</code> (809M, ~6&nbsp;GB) is an optimised <code>large-v3</code> that is roughly 8&times; faster than <code>large</code> and <strong>cannot translate</strong>.</td><td><strong>Wherever you run it</strong></td></tr>
+          <tr><td><strong>OpenAI hosted</strong></td><td><code>gpt-transcribe</code>, <code>gpt-4o-transcribe</code>, <code>gpt-4o-transcribe-diarize</code>, <code>whisper-1</code></td><td>Convenience if you are already there. <code>gpt-transcribe</code> adds a <code>languages</code> shortlist and a <code>keywords</code> bias list; the diarize model returns speaker annotations via <code>diarized_json</code> but refuses a <code>prompt</code>. <code>whisper-1</code> is still callable and no longer the lead option.</td><td>Hosted</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="info-card media fade-up" style="transition-delay: 0.06s">
+      <h4>The feature that actually fixes accuracy</h4>
+      <p>Not the model. <strong>Keyterm biasing</strong> &mdash; AssemblyAI&rsquo;s <code>keyterms_prompt</code>, OpenAI&rsquo;s <code>keywords</code> on <code>gpt-transcribe</code>. You hand the decoder the vocabulary it will not have seen: product names, drug names, scheme names, suburbs, surnames. For South African audio this is the single highest-leverage knob available, because the proper nouns are exactly what a model trained elsewhere gets wrong. Build the list from your own data (a CRM export of surnames and suburbs beats guessing) and keep it under the documented cap.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 · STREAMING -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; Streaming, and the turn problem</div>
+      <h2 class="section-title">Knowing when somebody has finished.</h2>
+      <p class="section-lede">The hard part of streaming transcription is not the words. It is deciding that a turn ended, because that decision gates everything downstream.</p>
+    </div>
+
+    <div class="prose fade-up" style="transition-delay: 0.04s">
+      <p>End the turn too early and you interrupt someone mid-thought. End it too late and the agent feels slow even when every component is fast. Most pipelines settle this with a silence timeout, which is a blunt instrument: it is wrong for a thoughtful pause and wrong again for a fast speaker.</p>
+      <p>Two vendors treat this as a first-class problem rather than your problem. Deepgram&rsquo;s <code>flux-general-en</code> is built around contextual turn detection in the transcriber itself. Cartesia&rsquo;s transcription websocket splits into <em>auto-finalize</em> (server decides) and <em>manual-finalize</em> (you decide and flush explicitly) &mdash; useful when your application knows something the audio does not, such as that a form field is complete.</p>
+      <p>If you are building a voice agent and have not yet decided how turns end, decide that before you compare word error rates. It will shape the perceived quality of the product more than a point of accuracy will.</p>
+    </div>
+
+    <div class="info-card amber fade-up" style="transition-delay: 0.06s">
+      <h4>Channels and speakers are different questions</h4>
+      <p>Diarisation asks <em>whose voice is this</em>. Channel attribution asks <em>which audio line did this arrive on</em>. They are independent: two people on one channel should get two speaker labels, and one person heard on two channels should keep a single label. AssemblyAI exposes both separately, per word. For a contact centre where agent and caller arrive on separate legs, channel attribution is more reliable than inferring it from voices &mdash; use it, and keep diarisation for the case where it genuinely cannot be known.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 · SOUTH AFRICAN LANGUAGES -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; South African languages</div>
+      <h2 class="section-title">Afrikaans yes. isiZulu no. Check, do not assume.</h2>
+      <p class="section-lede">This is the section to read before you quote a client. The gap is specific, it is verifiable, and it is routinely papered over by &ldquo;100 languages&rdquo; marketing.</p>
+    </div>
+
+    <div class="prose fade-up" style="transition-delay: 0.04s">
+      <p>Whisper&rsquo;s language list is published in its tokenizer and runs to 100 entries. Nine of those are African: Afrikaans (<code>af</code>), Swahili, Shona, Yoruba, Hausa, Somali, Amharic, Malagasy and Lingala. <strong>isiZulu, isiXhosa, Sesotho and Setswana are not in the list at all</strong> &mdash; there is no <code>zu</code>, no <code>xh</code>, no <code>st</code>, no <code>tn</code>. The model cannot be prompted into a language it has no token for, so this is a hard limit, not a quality setting.</p>
+      <p>That matters beyond Whisper, because Whisper is the open baseline a lot of the field is measured against and the model many teams quietly fall back on. &ldquo;Whisper handles African languages&rdquo; is true in general and false for South Africa&rsquo;s most-spoken Bantu languages. If a client reads a benchmark table and concludes otherwise, this is the correction to make early.</p>
+      <p>For the hosted vendors, treat published language lists as the claim and your own audio as the evidence. Afrikaans has reasonable coverage across the field. Code-switched South African speech &mdash; English with isiZulu or Afrikaans inside a single sentence, which is how a great many people actually talk &mdash; is the genuinely hard case, and it is what <code>nova-3</code>&rsquo;s <code>language="multi"</code> and AssemblyAI&rsquo;s multi-code <code>language_codes</code> are aimed at. They are worth testing specifically. Do not assume a monolingual benchmark predicts them.</p>
+    </div>
+
+    <div class="info-card green fade-up" style="transition-delay: 0.06s">
+      <h4>A test protocol you can run in a day</h4>
+      <p><strong>1.</strong> Collect ten minutes of your own audio, recorded the way production will be &mdash; the same codec, the same line quality, the same background noise. A clean studio sample tells you nothing about a mobile call on a congested cell.</p>
+      <p><strong>2.</strong> Make sure it covers your real speaker mix: accents, home languages, age range, and at least one code-switched stretch.</p>
+      <p><strong>3.</strong> Transcribe it by hand once. This is the tedious step and it is the one that makes the rest meaningful.</p>
+      <p><strong>4.</strong> Run every candidate against it, twice &mdash; once bare, once with a keyterm list built from your own proper nouns. The difference between those two runs is usually larger than the difference between vendors.</p>
+      <p><strong>5.</strong> Score what the product actually depends on, not overall WER. If an error on an account number breaks the flow and an error on &ldquo;um&rdquo; does not, weight them that way.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 · COST AND RESIDENCY -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; Cost and residency</div>
+      <h2 class="section-title">Self-hosting, honestly.</h2>
+      <p class="section-lede">Whisper is free to licence and not free to run. The comparison people reach for &mdash; per-minute API fee versus zero &mdash; is the wrong one.</p>
+    </div>
+
+    <div class="prose fade-up" style="transition-delay: 0.04s">
+      <p>Self-hosting buys two things worth real money: audio that never leaves your perimeter, and a cost that stops scaling with volume. It costs you a GPU to rent or own, someone to keep the service up, batching and queueing you write yourself, and the accuracy gap between an open checkpoint and a vendor&rsquo;s continuously-tuned model. The crossover point depends almost entirely on your duty cycle. Steady high volume favours self-hosting; spiky low volume rarely does, because a GPU idling is a GPU you are still paying for.</p>
+      <p><strong>Sizing from the published table.</strong> <code>turbo</code> at 809M parameters and roughly 6&nbsp;GB of VRAM is the sensible default for most transcription work &mdash; about 8&times; faster than <code>large</code> with modest accuracy loss &mdash; provided you do not need translation, which it cannot do. If you need non-English speech rendered as English, you need one of the multilingual checkpoints (<code>medium</code> or <code>large</code>), and that changes your hardware budget.</p>
+      <p><strong>When residency is the actual requirement</strong> and you would rather buy than build, Speechmatics is the vendor with a deployable path &mdash; its tooling points a websocket at an appliance inside your network, and the same client code works against the cloud. That is a materially different conversation with a client&rsquo;s information officer than &ldquo;our provider is SOC 2 certified&rdquo;.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 · DECISION GUIDE -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; Decision guide</div>
+      <h2 class="section-title">Pick by constraint, not by benchmark.</h2>
+      <p class="section-lede">Published accuracy figures across these vendors are close enough that your audio, your vocabulary and your deployment constraint will decide the outcome &mdash; not the leaderboard.</p>
+    </div>
+
+    <div class="prose fade-up" style="transition-delay: 0.03s">
+      <p>Be careful which figures you read on the way to that decision. Speechmatics ships a word-error-rate comparison against Deepgram inside its own SDK readme &mdash; a vendor comparing itself to a competitor on audio of its own choosing, which is marketing wearing a table&rsquo;s clothes. The same scepticism applies in every direction.</p>
+    </div>
+
+    <div class="pair-grid fade-up" style="transition-delay: 0.04s">
+      <div class="when-card use">
+        <span class="label">Start here&hellip;</span>
+        <h4>By what binds you</h4>
+        <ul>
+          <li><strong>Live voice agent</strong> &rarr; Deepgram; look hard at <code>flux-general-en</code> for turn detection</li>
+          <li><strong>Call analytics or subtitling</strong> &rarr; AssemblyAI, for diarisation, channel attribution and model fallback</li>
+          <li><strong>Audio cannot leave the network</strong> &rarr; Speechmatics on-premises, or self-hosted Whisper</li>
+          <li><strong>High steady volume, cost-dominated</strong> &rarr; self-hosted Whisper <code>turbo</code> on your own GPU</li>
+          <li><strong>Already on OpenAI, voice is a side feature</strong> &rarr; <code>gpt-transcribe</code> and stop shopping</li>
+          <li><strong>Code-switched SA speech</strong> &rarr; test <code>nova-3</code> with <code>language="multi"</code> against AssemblyAI with multiple <code>language_codes</code></li>
+        </ul>
+      </div>
+      <div class="when-card skip">
+        <span class="label">Do not&hellip;</span>
+        <h4>The avoidable mistakes</h4>
+        <ul>
+          <li><strong>Buy on vendor WER.</strong> It was measured on their audio. Run the protocol in section 04</li>
+          <li><strong>Promise isiZulu or isiXhosa transcription</strong> on the strength of a &ldquo;100 languages&rdquo; claim</li>
+          <li><strong>Stream a file that is already on disk.</strong> Batch is faster for finished audio</li>
+          <li><strong>Self-host for spiky volume.</strong> An idle GPU costs more than the API calls you avoided</li>
+          <li><strong>Skip keyterm biasing</strong> and then blame the model for mangling local proper nouns</li>
+          <li><strong>Infer the speaker</strong> when the channel already tells you, in a two-leg contact-centre recording</li>
+          <li><strong>Leave turn detection to a silence timeout</strong> and expect the agent to feel responsive</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 07 · SOUTH AFRICAN CONTEXT -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; South African context</div>
+      <h2 class="section-title">What lands in SA.</h2>
+    </div>
+
+    <div class="prose fade-up" style="transition-delay: 0.04s">
+      <p><strong>Call recordings are high-sensitivity personal information.</strong> A recorded call typically contains identity numbers, account numbers, medical detail and family circumstances, and a transcript makes all of it searchable. Under POPIA that raises the stakes on retention, access control and cross-border transfer well above those of ordinary product telemetry. Transcribe with a defined purpose, retain for a defined period, and keep the transcript&rsquo;s access list narrower than the recording&rsquo;s, not wider.</p>
+      <p><strong>Cross-border transfer.</strong> Sending call audio to a US or EU endpoint is a section 72 transfer and needs a lawful route. This is the clearest commercial argument for Speechmatics&rsquo; deployable appliance or self-hosted Whisper in banking, insurance, healthcare and the public sector &mdash; not because hosted vendors are careless, but because &ldquo;the audio never left&rdquo; is a much shorter answer than a transfer assessment.</p>
+      <p><strong>Consent to record.</strong> RICA governs interception; in practice a recorded business call relies on the parties being informed, which is why the announcement at the start of the call exists. If you are adding transcription to calls already being recorded, confirm that the notice covers processing and not only recording &mdash; they are not the same thing, and the notice is often older than the AI.</p>
+      <p><strong>Line quality is part of your accuracy.</strong> A great deal of South African call audio arrives as 8&nbsp;kHz mobile audio over a congested network. Benchmark on that, not on a studio recording. A model that is slightly less accurate but more robust to packet loss is the better production choice, and you will only find that out by testing on real lines.</p>
+      <p><strong>FX.</strong> Per-minute hosted pricing is USD-denominated and scales with call volume, so it is simultaneously a variable cost and an unhedged one. For a high-volume contact centre that combination is exactly where self-hosting arithmetic starts to win.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 08 · CONNECTIONS -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 &middot; Connections</div>
+      <h2 class="section-title">Where this leaf links into the tree.</h2>
+    </div>
+    <div class="cross-links fade-up" style="transition-delay: 0.03s">
+      <a href="index.html" class="cross-link">&rarr; Media domain hub</a>
+      <a href="landscape.html" class="cross-link">&rarr; The voice AI landscape</a>
+      <a href="text-to-speech.html" class="cross-link">&rarr; TTS engine arena (the other half)</a>
+      <a href="voice-agents.html" class="cross-link">&rarr; Voice agents &amp; telephony</a>
+      <a href="cartesia.html" class="cross-link">&rarr; Cartesia (ink-whisper, manual finalise)</a>
+      <a href="big-lab-voice.html" class="cross-link">&rarr; Big-lab voice</a>
+      <a href="../agents/ollama.html" class="cross-link">&rarr; Ollama (self-hosting open models)</a>
+      <a href="../leg/" class="cross-link">&rarr; Legal (POPIA, RICA)</a>
+    </div>
+  </div>
+</section>
+
+<!-- 09 · RESOURCES -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">09 &middot; Resources</div>
+      <h2 class="section-title">Primary sources.</h2>
+      <p class="section-lede">Model ids, parameter names, caps, the Whisper size table and the Whisper language list were all read off the vendors&rsquo; own published SDKs and repositories. No word error rates or prices are quoted on this leaf, because we could not verify them against a primary source.</p>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.03s">
+      <a class="resource" href="https://github.com/deepgram/deepgram-python-sdk" target="_blank" rel="noopener"><span class="r-kind">SDK &middot; primary</span><span class="r-title">deepgram/deepgram-python-sdk &mdash; nova-3, flux, agent runtime</span><span class="r-url">github.com/deepgram/deepgram-python-sdk</span></a>
+      <a class="resource" href="https://github.com/AssemblyAI/assemblyai-python-sdk" target="_blank" rel="noopener"><span class="r-kind">SDK &middot; primary</span><span class="r-title">AssemblyAI/assemblyai-python-sdk &mdash; keyterms, channels, model fallback</span><span class="r-url">github.com/AssemblyAI/assemblyai-python-sdk</span></a>
+      <a class="resource" href="https://github.com/openai/whisper" target="_blank" rel="noopener"><span class="r-kind">Repo &middot; primary</span><span class="r-title">openai/whisper &mdash; model sizes, VRAM, MIT licence</span><span class="r-url">github.com/openai/whisper</span></a>
+      <a class="resource" href="https://github.com/openai/whisper/blob/main/whisper/tokenizer.py" target="_blank" rel="noopener"><span class="r-kind">Source &middot; primary</span><span class="r-title">Whisper tokenizer &mdash; the actual language list</span><span class="r-url">github.com/openai/whisper/blob/main/whisper/tokenizer.py</span></a>
+      <a class="resource" href="https://github.com/speechmatics/speechmatics-python-sdk" target="_blank" rel="noopener"><span class="r-kind">SDK &middot; primary</span><span class="r-title">speechmatics-python-sdk &mdash; realtime, batch, on-prem endpoints</span><span class="r-url">github.com/speechmatics/speechmatics-python-sdk</span></a>
+      <a class="resource" href="https://github.com/openai/openai-openapi" target="_blank" rel="noopener"><span class="r-kind">Spec &middot; primary</span><span class="r-title">OpenAI API specification &mdash; transcription models and formats</span><span class="r-url">github.com/openai/openai-openapi</span></a>
+      <a class="resource" href="https://arxiv.org/abs/2212.04356" target="_blank" rel="noopener"><span class="r-kind">Paper</span><span class="r-title">Robust Speech Recognition via Large-Scale Weak Supervision</span><span class="r-url">arxiv.org/abs/2212.04356</span></a>
+      <a class="resource" href="https://www.openslr.org/32/" target="_blank" rel="noopener"><span class="r-kind">SA dataset</span><span class="r-title">OpenSLR #32 &mdash; Afrikaans, Sesotho, Setswana, isiXhosa</span><span class="r-url">openslr.org/32</span></a>
+      <a class="resource" href="https://www.gov.za/documents/protection-personal-information-act" target="_blank" rel="noopener"><span class="r-kind">Legislation</span><span class="r-title">Protection of Personal Information Act 4 of 2013</span><span class="r-url">gov.za/documents/protection-personal-information-act</span></a>
+      <a class="resource" href="landscape.html"><span class="r-kind">know.2nth.ai</span><span class="r-title">The voice AI landscape</span><span class="r-url">/explainers/media/landscape</span></a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <div class="footer-tagline">The Knowledge Tree</div>
+    <div class="footer-links">
+      <a href="../../index.html">Tree</a>
+      <a href="index.html">Media</a>
+      <a href="landscape.html">Landscape</a>
+      <a href="../../about.html">About</a>
+      <a href="../../join.html">Stay in touch</a>
+      <a href="https://2nth.ai">2nth.ai</a>
+    </div>
+    <div class="footer-copy">&copy; 2026 imbila.ai &middot; All knowledge open</div>
+    <div class="footer-review">Last reviewed: 2026-10-26 &middot; Cadence: hot (quarterly)</div>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme() {
+    const cur = document.documentElement.getAttribute('data-theme');
+    const next = cur === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('2nth-theme', next);
+  }
+  const stored = localStorage.getItem('2nth-theme');
+  if (stored) document.documentElement.setAttribute('data-theme', stored);
+  const observer = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold: 0.05 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>

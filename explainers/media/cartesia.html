@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cartesia &mdash; the latency specialist &mdash; know.2nth.ai</title>
+<meta name="description" content="Cartesia is the voice vendor that optimised for one number: time to first audio. sonic-3.5 and sonic-3 for text-to-speech, ink-whisper for transcription, a voice changer, and a hosted agent runtime with phone numbers and call metrics. 44 languages in the API — none of them African. What the API actually exposes, how the telephony path works, where it beats ElevenLabs, and when latency is not your problem.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/media/cartesia">
+<meta property="og:title" content="Cartesia &mdash; the latency specialist">
+<meta property="og:description" content="The latency specialist — sonic-3.5, ink-whisper, voice changer, hosted agents. 44 languages, no African ones. What the API exposes and when latency is not your problem.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Cartesia &mdash; the latency specialist">
+<meta name="twitter:description" content="The latency specialist — sonic-3.5, ink-whisper, voice changer, hosted agents. 44 languages, no African ones. What the API exposes and when latency is not your problem.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12); --violet: #8B5CF6; --violet-soft: rgba(139, 92, 246, 0.12); --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-soft: rgba(99, 102, 241, 0.12); --media: #DB2777; --media-glow: #EC4899; --media-soft: rgba(219, 39, 119, 0.12); --bg: var(--ink); --bg-raised: var(--navy); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(219, 39, 119, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(236, 72, 153, 0.3); --max-w: 1200px; --read-w: 760px; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-raised: #FFFFFF; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(219, 39, 119, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(219, 39, 119, 0.25); }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.1; pointer-events: none; z-index: 0; }
+  .glow-orb.media { width: 600px; height: 600px; background: var(--media); top: -200px; right: -100px; }
+  .glow-orb.violet { width: 500px; height: 500px; background: var(--violet); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.05; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--media-glow); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--media-glow); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--media-glow); }
+  .crumb-sep { opacity: 0.5; }
+  .crumb-current { color: var(--text-secondary); }
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--media); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--media); box-shadow: 0 0 12px var(--media); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--media), var(--media-glow), #F9A8D4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 720px; line-height: 1.7; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.media { background: var(--media-soft); color: var(--media-glow); border-color: rgba(219, 39, 119, 0.3); }
+  .pill.warm { background: var(--warm-soft); color: var(--warm); border-color: rgba(245, 158, 11, 0.25); }
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--media); margin-bottom: 14px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .section-lede strong { color: var(--text-primary); font-weight: 600; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--media-glow); }
+  .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; max-width: 1040px; margin-bottom: 20px; }
+  .feature-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--media); border-radius: var(--radius-md); padding: 20px 24px; }
+  .feature-cell h4 { font-size: 15px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.2px; }
+  .feature-cell p { font-size: 13.5px; color: var(--text-secondary); line-height: 1.65; }
+  .feature-cell code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; color: var(--media-glow); background: var(--media-soft); padding: 1px 5px; border-radius: 3px; }
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow-x: auto; max-width: 1040px; margin-bottom: 24px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 640px; }
+  .compare th, .compare td { padding: 11px 14px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--media-glow); background: rgba(219, 39, 119, 0.04); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); }
+  .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--media-glow); }
+  .compare td strong { color: var(--text-primary); }
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 26px 30px; max-width: var(--read-w); margin-bottom: 18px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.rose { border-left: 3px solid var(--rose); }
+  .info-card.media { border-left: 3px solid var(--media); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14.5px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .info-card code { font-family: 'JetBrains Mono', monospace; font-size: 0.86em; color: var(--media-glow); background: var(--media-soft); padding: 1px 5px; border-radius: 4px; }
+  .info-card strong { color: var(--text-primary); font-weight: 600; }
+  .pair-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 1040px; }
+  @media (max-width: 720px) { .pair-grid { grid-template-columns: 1fr; } }
+  .when-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 24px 28px; }
+  .when-card.use { border-top: 3px solid var(--green); }
+  .when-card.skip { border-top: 3px solid var(--rose); }
+  .when-card .label { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; display: block; margin-bottom: 8px; font-weight: 600; }
+  .when-card.use .label { color: var(--green); }
+  .when-card.skip .label { color: var(--rose); }
+  .when-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 14px; letter-spacing: -0.3px; }
+  .when-card ul { list-style: none; padding: 0; }
+  .when-card li { font-size: 13.5px; color: var(--text-secondary); line-height: 1.6; padding-left: 16px; position: relative; margin-bottom: 8px; }
+  .when-card li::before { content: '\2192'; position: absolute; left: 0; color: var(--text-muted); }
+  .when-card li strong { color: var(--text-primary); font-weight: 600; }
+  .cross-links { display: flex; gap: 10px; flex-wrap: wrap; }
+  .cross-link { font-family: 'JetBrains Mono', monospace; font-size: 12px; padding: 10px 20px; border-radius: var(--radius-pill); border: 1px solid var(--border); background: var(--bg-card); text-decoration: none; color: var(--text-secondary); transition: all 0.3s; letter-spacing: 0.5px; }
+  .cross-link:hover { border-color: var(--border-hover); color: var(--media-glow); transform: translateY(-1px); }
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 16px 20px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--media-glow); word-break: break-all; }
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--media-glow); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .footer-review { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); margin-top: 14px; letter-spacing: 0.4px; }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+</head>
+<body>
+
+<div class="glow-orb media"></div>
+<div class="glow-orb violet"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand">
+      <span class="nav-brand-mark">know.2nth.ai</span>
+      <span class="nav-brand-sub">media &middot; cartesia</span>
+    </a>
+    <div class="nav-right">
+      <a href="index.html" class="nav-link">&larr; Media</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x1F319;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="index.html">Media</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">Cartesia</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> media &middot; voice &amp; speech &middot; vendor</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      <span class="gradient">Cartesia.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      The vendor that picked one number and optimised everything around it: <strong>time to first audio</strong>. <code>sonic-3.5</code> is the current flagship, <code>ink-whisper</code> handles transcription, and there is now a hosted agent runtime with phone numbers, call recordings and scored metrics. This leaf covers what the API actually exposes, the telephony path that makes it worth the switch, the 44-language list and what is missing from it, and the cases where latency is simply not the constraint you have.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill media">Real-time TTS</span>
+      <span class="pill">Vendor explainer</span>
+      <span class="pill warm">Hot &middot; quarterly review</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 · WHAT IT IS -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; What it is</div>
+      <h2 class="section-title">A speech API built around one constraint.</h2>
+      <p class="section-lede">Most voice vendors sell breadth. Cartesia sells the gap between the last word your LLM emits and the first byte of audio your caller hears &mdash; and then builds the rest of the product to protect it.</p>
+    </div>
+
+    <div class="prose fade-up" style="transition-delay: 0.04s">
+      <p>Cartesia is a text-to-speech company whose product decisions all read the same way. The API offers raw PCM as a first-class container, not an afterthought. It exposes a websocket where you stream transcript fragments in as your LLM generates them, so synthesis starts before the sentence is finished. It ships <code>pcm_mulaw</code> and <code>pcm_alaw</code> encodings at 8&nbsp;kHz, which is only useful if you are putting audio on a phone line. None of that is for someone making an audiobook.</p>
+      <p>The flagship is <code>sonic-3.5</code>, with <code>sonic-3</code> still available and dated pins (<code>sonic-3.5-2026-05-04</code>, <code>sonic-3-2026-01-12</code>, <code>sonic-3-2025-10-27</code>) for anyone who needs a voice to stop changing under them. There is a <code>sonic-latest</code> alias, which is convenient and a bad idea in production for exactly that reason.</p>
+      <p>Since the agent runtime landed, Cartesia is no longer only a model vendor. The same API now lists agents, attaches phone numbers, retrieves call transcripts and audio, and scores calls against metrics you define. That moves it into the same bracket as ElevenAgents and Vapi &mdash; worth knowing before you assume you still need an orchestration layer on top.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 · WHAT THE API EXPOSES -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; What the API exposes</div>
+      <h2 class="section-title">The surface, honestly.</h2>
+      <p class="section-lede">Taken from the published SDK surface rather than the marketing site. Everything below is an endpoint you can call today.</p>
+    </div>
+
+    <div class="compare-wrap fade-up" style="transition-delay: 0.04s">
+      <table class="compare">
+        <thead><tr><th>Surface</th><th>Endpoints</th><th>What it is for</th></tr></thead>
+        <tbody>
+          <tr><td><strong>TTS</strong></td><td><code>/tts/bytes</code>, <code>/tts/sse</code>, websocket, <code>/infill/bytes</code></td><td>Synthesis. Bytes for one-shot, SSE and websocket for streaming, infill to regenerate a span inside existing audio without redoing the whole clip.</td></tr>
+          <tr><td><strong>STT</strong></td><td><code>/stt</code> plus two websocket modes</td><td>Transcription on <code>ink-whisper</code>. The websocket comes in <em>auto-finalize</em> (the server decides when a turn ended) and <em>manual-finalize</em> (you decide) &mdash; the distinction that matters for barge-in.</td></tr>
+          <tr><td><strong>Voice changer</strong></td><td><code>/voice-changer/bytes</code>, <code>/voice-changer/sse</code></td><td>Speech-to-speech. Keeps the delivery, swaps the speaker. Dubbing, anonymisation, accessibility.</td></tr>
+          <tr><td><strong>Voices</strong></td><td><code>/voices</code>, <code>/voices/clone</code>, <code>/voices/localize</code>, <code>/accents</code></td><td>Catalogue, cloning, and an accent system: a published accent catalogue (<code>en-US</code> &rarr; <code>General American English</code> and so on) with a localise call that re-points an existing voice at another accent.</td></tr>
+          <tr><td><strong>Agents</strong></td><td><code>/agents</code>, <code>/agents/calls</code>, <code>/agents/metrics</code>, <code>/agents/deployments</code></td><td>The hosted runtime. Agent templates, attached phone numbers, call transcripts, downloadable call audio, custom metrics with exportable results, and deployment history.</td></tr>
+          <tr><td><strong>Fine-tunes</strong></td><td><code>/fine-tunes</code>, <code>/datasets</code></td><td>Train a voice on your own dataset and list the voices it produced. Dataset file upload is part of the same surface.</td></tr>
+          <tr><td><strong>Pronunciation</strong></td><td><code>/pronunciation-dicts</code></td><td>Per-account dictionaries. The thing you reach for when a product name, a surname, or <em>Mpumalanga</em> comes out wrong and prompt-fiddling will not fix it.</td></tr>
+          <tr><td><strong>Access tokens</strong></td><td><code>/access-token</code></td><td>Short-lived tokens so a browser or handset can stream directly without carrying your API key.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="info-card media fade-up" style="transition-delay: 0.06s">
+      <h4>The two knobs worth knowing</h4>
+      <p><strong>Output format.</strong> Container is <code>raw</code>, <code>wav</code> or <code>mp3</code>; raw encodings are <code>pcm_f32le</code>, <code>pcm_s16le</code>, <code>pcm_mulaw</code> and <code>pcm_alaw</code>. For a phone line you want <code>raw</code> + <code>pcm_mulaw</code> + 8000&nbsp;Hz and nothing else &mdash; asking for 44.1&nbsp;kHz MP3 and downsampling in your own code throws away the latency you came for.</p>
+      <p><strong>Speed.</strong> <code>model_speed</code> is a three-position enum &mdash; <code>slow</code>, <code>normal</code>, <code>fast</code> &mdash; not a float multiplier. If you need fine-grained pacing, this is not the API for it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 · LATENCY, CAREFULLY -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; Latency, carefully</div>
+      <h2 class="section-title">The number is real. It is also not your number.</h2>
+      <p class="section-lede">Cartesia&rsquo;s sub-100ms claim is a model-latency figure measured under the vendor&rsquo;s own conditions. It is a genuine engineering result and it is not what your caller experiences.</p>
+    </div>
+
+    <div class="prose fade-up" style="transition-delay: 0.04s">
+      <p>Treat any vendor latency figure as the <em>floor</em> of one component. What a caller hears is the sum of: the audio getting from the handset to your STT, the transcription settling enough to be acted on, your LLM producing its first tokens, the synthesis starting, and the audio travelling back. Synthesis is usually the smallest term in that sum, and Cartesia optimises the smallest term.</p>
+      <p>This is not an argument against Cartesia &mdash; it is an argument for measuring the right thing. If your LLM takes 600ms to first token, moving from a 250ms TTS to a 90ms TTS changes your round trip by a fifth and your user&rsquo;s experience by very little. Fix the dominant term first, then come back and collect the speech win.</p>
+      <p><strong>Where it does change the experience:</strong> barge-in. When a caller interrupts, the system has to stop talking, finalise a partial transcript, and respond. That path runs several times per call and the speech components are proportionally much larger in it. Cartesia&rsquo;s manual-finalize websocket exists precisely so you can control that moment rather than wait for a server-side timeout.</p>
+    </div>
+
+    <div class="info-card amber fade-up" style="transition-delay: 0.06s">
+      <h4>Measure this before you choose</h4>
+      <p>Instrument four timestamps on one real call, over the network your users are actually on: last caller word &rarr; final transcript, final transcript &rarr; first LLM token, first LLM token &rarr; first audio byte, first audio byte &rarr; audible playback. Then pick a vendor. Nearly every voice-agent latency complaint we have seen traced back to the second or fourth interval, not the third.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 · LANGUAGES -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; Languages</div>
+      <h2 class="section-title">44 languages. Count what is missing.</h2>
+      <p class="section-lede">The API&rsquo;s supported-language list is published and finite, which makes it easy to check instead of trusting a &ldquo;40+&rdquo; headline.</p>
+    </div>
+
+    <div class="prose fade-up" style="transition-delay: 0.04s">
+      <p>The list runs 44 codes: the major European languages, Mandarin, Japanese, Korean, Arabic, Hebrew, Turkish, Vietnamese, Thai, Indonesian, Malay, Tagalog, Georgian, and an unusually deep Indian-language block &mdash; Hindi, Bengali, Tamil, Telugu, Gujarati, Kannada, Malayalam, Marathi, Punjabi, Odia and Urdu.</p>
+      <p><strong>There is not one African language in it.</strong> No Afrikaans, no isiZulu, no isiXhosa, no Swahili. For South African delivery that is the single most important fact on this page, and it is not visible from a &ldquo;44 languages&rdquo; badge.</p>
+      <p>What you can do is English with an accent. The accent catalogue is a real API surface &mdash; <code>GET /accents</code> returns ids, locales and whether each one can be targeted by <code>POST /voices/localize</code> &mdash; so South African English is addressable to the extent the catalogue carries it. Audition it against real speakers before you commit; accent coverage for <code>en-ZA</code> is thinner than for US or UK English across every vendor in this band, Cartesia included.</p>
+    </div>
+
+    <div class="info-card rose fade-up" style="transition-delay: 0.06s">
+      <h4>Do not sell what the enum does not contain</h4>
+      <p>If a client brief says &ldquo;the IVR must answer in isiZulu&rdquo;, Cartesia cannot do it and no amount of prompting changes that. Say so in the scoping call. The options are a specialist SA vendor, a custom model, or an honest conversation about English-plus-Afrikaans as phase one &mdash; not a demo that quietly ships US English with a hopeful accent prompt.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 · PRICING -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; Pricing reality</div>
+      <h2 class="section-title">Credits, and the questions to ask.</h2>
+      <p class="section-lede">Cartesia bills from a credit pool on tiered monthly plans. We are not quoting figures on this leaf, and that is deliberate.</p>
+    </div>
+
+    <div class="prose fade-up" style="transition-delay: 0.04s">
+      <p>Voice pricing moves faster than this leaf&rsquo;s review cadence, and a stale rand figure is worse than no figure. Read the vendor&rsquo;s own pricing page, then interrogate it on the four axes that actually decide your bill:</p>
+      <p><strong>What is a credit?</strong> Characters and bytes are not the same unit. A vendor that bills per UTF-8 byte charges you more for Afrikaans diacritics and considerably more for any non-Latin script than a per-character vendor does. Ask which it is and test with your own text.</p>
+      <p><strong>Do credits expire?</strong> A monthly pool that resets punishes spiky workloads. If your volume arrives in two campaign weeks a quarter, pay-as-you-go may beat a plan with a larger notional allowance.</p>
+      <p><strong>Is the agent runtime billed separately?</strong> Hosted agents, attached phone numbers and call recording are a different cost line from synthesis, and telephony minutes are usually a third. Price the whole call, not the TTS.</p>
+      <p><strong>What does FX do to it?</strong> Plans are USD-denominated. For a South African client that is unhedged exposure on a recurring line item, and it belongs in the proposal as a stated assumption with a review trigger &mdash; not as a rand number that quietly goes wrong.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 · DECISION GUIDE -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; Decision guide</div>
+      <h2 class="section-title">When to use Cartesia &mdash; and when to skip.</h2>
+      <p class="section-lede">It is a specialist. That is the whole point, and it is also the reason it is the wrong default for most content work.</p>
+    </div>
+
+    <div class="pair-grid fade-up" style="transition-delay: 0.04s">
+      <div class="when-card use">
+        <span class="label">Use Cartesia if&hellip;</span>
+        <h4>Latency is the constraint</h4>
+        <ul>
+          <li>You are building a <strong>real-time voice agent</strong> and have already measured the round trip</li>
+          <li>You need <strong>telephony-native output</strong> &mdash; <code>pcm_mulaw</code> at 8&nbsp;kHz, straight onto the line</li>
+          <li><strong>Barge-in quality</strong> matters and you want to control turn finalisation yourself</li>
+          <li>You want <strong>one vendor for STT and TTS</strong> on the same latency budget</li>
+          <li>You want a <strong>hosted agent runtime</strong> with call metrics without adding an orchestration vendor</li>
+          <li>You need <strong>pinned model versions</strong> so a voice does not drift mid-contract</li>
+        </ul>
+      </div>
+      <div class="when-card skip">
+        <span class="label">Skip Cartesia if&hellip;</span>
+        <h4>Latency is not your problem</h4>
+        <ul>
+          <li>You need <strong>any African language</strong> &mdash; it is not in the API, full stop</li>
+          <li>The work is <strong>long-form</strong> &mdash; audiobooks, narration, e-learning. Nobody waits 90ms for chapter two; buy expressiveness instead</li>
+          <li>You need <strong>emotion as a signal you can read</strong>, not just a tag you set &mdash; that is Hume</li>
+          <li>You want <strong>breadth on one invoice</strong> &mdash; dubbing, music, sound effects. ElevenLabs does more, competently</li>
+          <li>You need <strong>in-country or on-premises inference</strong> for a data-residency requirement &mdash; this is a hosted API</li>
+          <li>Your dominant latency term is <strong>the LLM</strong>, which it usually is. Fix that first</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 07 · SOUTH AFRICAN CONTEXT -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; South African context</div>
+      <h2 class="section-title">What lands in SA.</h2>
+    </div>
+
+    <div class="prose fade-up" style="transition-delay: 0.04s">
+      <p><strong>Distance is part of your latency budget.</strong> Cartesia is a hosted US-centric API. From Johannesburg you are adding real round-trip time to every request before the model does anything, and that tax applies to the component Cartesia optimised. A 90ms model behind 180ms of transit is a 270ms component. Measure from where your users are, not from a laptop on a VPN.</p>
+      <p><strong>POPIA and voice as personal information.</strong> A recording of someone&rsquo;s voice is personal information, and a voice clone is personal information about an identifiable person. Sending call audio to a US API is a cross-border transfer under section 72 of POPIA and needs a lawful basis &mdash; consent, or an adequacy or contractual route. The agent runtime stores call transcripts and downloadable call audio on the vendor&rsquo;s side, which widens that footprint rather than narrowing it. Decide retention deliberately and write it into the operator agreement.</p>
+      <p><strong>Consent for cloning.</strong> Fine-tuning a voice on a staff member, a client, or a public figure needs documented, specific consent, and the responsibility sits with whoever commissions the clone, not the vendor. Keep the consent artefact with the dataset.</p>
+      <p><strong>FX on a recurring line.</strong> USD-denominated credits on a monthly plan are an unhedged recurring cost for a rand-funded client. Put it in the proposal as an assumption with a stated review point.</p>
+      <p><strong>The honest read.</strong> For an English-language SA voice agent where response pacing is the product &mdash; collections, bookings, triage &mdash; Cartesia is a sound choice and the telephony path is better thought through than most. For anything multilingual in South African terms, it is not a candidate.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 08 · CONNECTIONS -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 &middot; Connections</div>
+      <h2 class="section-title">Where this leaf links into the tree.</h2>
+    </div>
+    <div class="cross-links fade-up" style="transition-delay: 0.03s">
+      <a href="index.html" class="cross-link">&rarr; Media domain hub</a>
+      <a href="landscape.html" class="cross-link">&rarr; The voice AI landscape</a>
+      <a href="text-to-speech.html" class="cross-link">&rarr; TTS engine arena</a>
+      <a href="elevenlabs.html" class="cross-link">&rarr; ElevenLabs (the breadth alternative)</a>
+      <a href="hume.html" class="cross-link">&rarr; Hume AI (the emotion alternative)</a>
+      <a href="speech-to-text.html" class="cross-link">&rarr; STT &middot; transcription</a>
+      <a href="voice-agents.html" class="cross-link">&rarr; Voice agents &amp; telephony</a>
+      <a href="../leg/" class="cross-link">&rarr; Legal (POPIA)</a>
+    </div>
+  </div>
+</section>
+
+<!-- 09 · RESOURCES -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">09 &middot; Resources</div>
+      <h2 class="section-title">Primary sources.</h2>
+      <p class="section-lede">The model ids, language list, encodings and endpoint surface on this leaf were read off Cartesia&rsquo;s own published SDK, which is the most reliable version of that information. Pricing was not verified and is not quoted.</p>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.03s">
+      <a class="resource" href="https://github.com/cartesia-ai/cartesia-python" target="_blank" rel="noopener"><span class="r-kind">SDK &middot; primary</span><span class="r-title">cartesia-ai/cartesia-python</span><span class="r-url">github.com/cartesia-ai/cartesia-python</span></a>
+      <a class="resource" href="https://github.com/cartesia-ai/cartesia-python/blob/main/api.md" target="_blank" rel="noopener"><span class="r-kind">API surface</span><span class="r-title">Generated API reference (every endpoint)</span><span class="r-url">github.com/cartesia-ai/cartesia-python/blob/main/api.md</span></a>
+      <a class="resource" href="https://docs.cartesia.ai" target="_blank" rel="noopener"><span class="r-kind">Docs</span><span class="r-title">Cartesia API documentation</span><span class="r-url">docs.cartesia.ai</span></a>
+      <a class="resource" href="https://cartesia.ai/pricing" target="_blank" rel="noopener"><span class="r-kind">Pricing</span><span class="r-title">Cartesia pricing (verify before quoting)</span><span class="r-url">cartesia.ai/pricing</span></a>
+      <a class="resource" href="https://pypi.org/project/cartesia/" target="_blank" rel="noopener"><span class="r-kind">Package</span><span class="r-title">cartesia on PyPI</span><span class="r-url">pypi.org/project/cartesia</span></a>
+      <a class="resource" href="https://www.gov.za/documents/protection-personal-information-act" target="_blank" rel="noopener"><span class="r-kind">Legislation</span><span class="r-title">Protection of Personal Information Act 4 of 2013</span><span class="r-url">gov.za/documents/protection-personal-information-act</span></a>
+      <a class="resource" href="landscape.html"><span class="r-kind">know.2nth.ai</span><span class="r-title">The voice AI landscape</span><span class="r-url">/explainers/media/landscape</span></a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <div class="footer-tagline">The Knowledge Tree</div>
+    <div class="footer-links">
+      <a href="../../index.html">Tree</a>
+      <a href="index.html">Media</a>
+      <a href="landscape.html">Landscape</a>
+      <a href="../../about.html">About</a>
+      <a href="../../join.html">Stay in touch</a>
+      <a href="https://2nth.ai">2nth.ai</a>
+    </div>
+    <div class="footer-copy">&copy; 2026 imbila.ai &middot; All knowledge open</div>
+    <div class="footer-review">Last reviewed: 2026-10-26 &middot; Cadence: hot (quarterly)</div>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme() {
+    const cur = document.documentElement.getAttribute('data-theme');
+    const next = cur === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('2nth-theme', next);
+  }
+  const stored = localStorage.getItem('2nth-theme');
+  if (stored) document.documentElement.setAttribute('data-theme', stored);
+  const observer = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold: 0.05 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>

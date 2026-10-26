@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hume AI &mdash; the empathic voice interface &mdash; know.2nth.ai</title>
+<meta name="description" content="Hume AI treats emotional expression as data: EVI scores 48 named dimensions off the caller's voice and hands them to your LLM, and Octave takes natural-language acting directions instead of SSML. Bring-your-own-LLM across Anthropic, OpenAI, Google, Groq, Bedrock and more. What the API exposes, why the 48 dimensions are inferences rather than facts, the POPIA problem with emotion data, and when empathy is the wrong feature.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/media/hume">
+<meta property="og:title" content="Hume AI &mdash; the empathic voice interface">
+<meta property="og:description" content="Emotion as a first-class signal — EVI's 48 dimensions, Octave's acting directions, bring-your-own-LLM. What it exposes, and the POPIA problem with inferred emotion.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Hume AI &mdash; the empathic voice interface">
+<meta name="twitter:description" content="Emotion as a first-class signal — EVI's 48 dimensions, Octave's acting directions, bring-your-own-LLM. What it exposes, and the POPIA problem with inferred emotion.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3C/svg%3E">
+<style>
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12); --violet: #8B5CF6; --violet-soft: rgba(139, 92, 246, 0.12); --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-soft: rgba(99, 102, 241, 0.12); --media: #DB2777; --media-glow: #EC4899; --media-soft: rgba(219, 39, 119, 0.12); --bg: var(--ink); --bg-raised: var(--navy); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(219, 39, 119, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(236, 72, 153, 0.3); --max-w: 1200px; --read-w: 760px; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-raised: #FFFFFF; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(219, 39, 119, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(219, 39, 119, 0.25); }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.1; pointer-events: none; z-index: 0; }
+  .glow-orb.media { width: 600px; height: 600px; background: var(--media); top: -200px; right: -100px; }
+  .glow-orb.violet { width: 500px; height: 500px; background: var(--violet); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.05; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--media-glow); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--media-glow); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--media-glow); }
+  .crumb-sep { opacity: 0.5; }
+  .crumb-current { color: var(--text-secondary); }
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--media); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--media); box-shadow: 0 0 12px var(--media); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--media), var(--media-glow), #F9A8D4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 720px; line-height: 1.7; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.media { background: var(--media-soft); color: var(--media-glow); border-color: rgba(219, 39, 119, 0.3); }
+  .pill.warm { background: var(--warm-soft); color: var(--warm); border-color: rgba(245, 158, 11, 0.25); }
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--media); margin-bottom: 14px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .section-lede strong { color: var(--text-primary); font-weight: 600; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--media-glow); }
+  .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; max-width: 1040px; margin-bottom: 20px; }
+  .feature-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--media); border-radius: var(--radius-md); padding: 20px 24px; }
+  .feature-cell h4 { font-size: 15px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.2px; }
+  .feature-cell p { font-size: 13.5px; color: var(--text-secondary); line-height: 1.65; }
+  .feature-cell code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; color: var(--media-glow); background: var(--media-soft); padding: 1px 5px; border-radius: 3px; }
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow-x: auto; max-width: 1040px; margin-bottom: 24px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 640px; }
+  .compare th, .compare td { padding: 11px 14px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--media-glow); background: rgba(219, 39, 119, 0.04); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); }
+  .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--media-glow); }
+  .compare td strong { color: var(--text-primary); }
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 26px 30px; max-width: var(--read-w); margin-bottom: 18px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.rose { border-left: 3px solid var(--rose); }
+  .info-card.media { border-left: 3px solid var(--media); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14.5px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .info-card code { font-family: 'JetBrains Mono', monospace; font-size: 0.86em; color: var(--media-glow); background: var(--media-soft); padding: 1px 5px; border-radius: 4px; }
+  .info-card strong { color: var(--text-primary); font-weight: 600; }
+  .pair-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 1040px; }
+  @media (max-width: 720px) { .pair-grid { grid-template-columns: 1fr; } }
+  .when-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 24px 28px; }
+  .when-card.use { border-top: 3px solid var(--green); }
+  .when-card.skip { border-top: 3px solid var(--rose); }
+  .when-card .label { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; display: block; margin-bottom: 8px; font-weight: 600; }
+  .when-card.use .label { color: var(--green); }
+  .when-card.skip .label { color: var(--rose); }
+  .when-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 14px; letter-spacing: -0.3px; }
+  .when-card ul { list-style: none; padding: 0; }
+  .when-card li { font-size: 13.5px; color: var(--text-secondary); line-height: 1.6; padding-left: 16px; position: relative; margin-bottom: 8px; }
+  .when-card li::before { content: '\2192'; position: absolute; left: 0; color: var(--text-muted); }
+  .when-card li strong { color: var(--text-primary); font-weight: 600; }
+  .cross-links { display: flex; gap: 10px; flex-wrap: wrap; }
+  .cross-link { font-family: 'JetBrains Mono', monospace; font-size: 12px; padding: 10px 20px; border-radius: var(--radius-pill); border: 1px solid var(--border); background: var(--bg-card); text-decoration: none; color: var(--text-secondary); transition: all 0.3s; letter-spacing: 0.5px; }
+  .cross-link:hover { border-color: var(--border-hover); color: var(--media-glow); transform: translateY(-1px); }
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 16px 20px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--media-glow); word-break: break-all; }
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--media-glow); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .footer-review { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); margin-top: 14px; letter-spacing: 0.4px; }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+</head>
+<body>
+
+<div class="glow-orb media"></div>
+<div class="glow-orb violet"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand">
+      <span class="nav-brand-mark">know.2nth.ai</span>
+      <span class="nav-brand-sub">media &middot; hume ai</span>
+    </a>
+    <div class="nav-right">
+      <a href="index.html" class="nav-link">&larr; Media</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x1F319;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="index.html">Media</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">Hume AI</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> media &middot; voice &amp; speech &middot; vendor</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      <span class="gradient">Hume AI.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      The vendor that made emotional expression a field in the payload. <strong>EVI</strong> scores a caller&rsquo;s voice across 48 named dimensions and passes them to whichever LLM you plug in; <strong>Octave</strong> synthesises speech from plain-language acting directions rather than markup. This leaf covers what the API actually exposes, why those 48 numbers are inferences and not measurements, the POPIA question that emotion data raises before anything else, and the cases where empathy is a liability rather than a feature.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill media">Empathic voice</span>
+      <span class="pill">Vendor explainer</span>
+      <span class="pill warm">Hot &middot; quarterly review</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 · WHAT IT IS -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; What it is</div>
+      <h2 class="section-title">Two products, one bet.</h2>
+      <p class="section-lede">Hume&rsquo;s bet is that <em>how</em> something was said is structured data you should be able to act on, in both directions &mdash; read off the caller, and controlled on the way out.</p>
+    </div>
+
+    <div class="prose fade-up" style="transition-delay: 0.04s">
+      <p>Everyone else in this band treats prosody as a quality problem: make the output sound less robotic. Hume treats it as an interface. Its conversational product, the <strong>Empathic Voice Interface</strong> (EVI, now on its third generation), returns a scored vector alongside the transcript &mdash; 48 named dimensions, each a float &mdash; so your prompt can see that the caller sounds <em>distressed</em> or <em>sarcastic</em> and not only what words they used. Its speech product, <strong>Octave</strong>, inverts the same idea: instead of SSML tags you write a short natural-language direction and the model acts it.</p>
+      <p>The structural choice that matters commercially is that EVI is <strong>bring-your-own-LLM</strong>. Hume supplies the ears, the voice and the turn-taking; the reasoning is a model you select. The published provider list spans Anthropic, OpenAI, Google, Groq, Fireworks, Amazon Bedrock, Perplexity, SambaNova, Cerebras and xAI, plus a custom-language-model hook and Hume&rsquo;s own small <code>ellm</code>. So EVI is a voice <em>layer</em>, not a vertically integrated assistant &mdash; you are not re-platforming your reasoning to adopt it.</p>
+      <p>Worth knowing if you read about Hume a year ago: the standalone <strong>Expression Measurement</strong> API that once sat alongside these &mdash; face, burst and language models you could call on arbitrary media &mdash; is gone from the current SDK. It was moved behind a <code>legacy</code> extra and that extra was removed outright. If a plan of yours depended on batch-scoring recorded media, check that it still exists before you design around it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 · THE PRODUCT LINES -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; The product lines</div>
+      <h2 class="section-title">EVI and Octave.</h2>
+      <p class="section-lede">Two namespaces in one SDK. Most teams want one of them, and the one they want is usually not the one they came for.</p>
+    </div>
+
+    <div class="feature-grid fade-up" style="transition-delay: 0.04s">
+      <div class="feature-cell">
+        <h4>EVI &mdash; conversational</h4>
+        <p>A websocket voice session with turn-taking handled for you. Configs are versioned server-side; tools are declared as JSON specs, including built-in tools and a web-search tool; webhooks fire on chat start, chat end and tool call. The assistant&rsquo;s own prosody comes back too, so you can log how your agent sounded, not just what it said.</p>
+      </div>
+      <div class="feature-cell">
+        <h4>Octave &mdash; speech</h4>
+        <p>Text-to-speech built around <em>utterances</em>. Each utterance carries text, an optional voice, a <code>speed</code> multiplier, trailing silence, and a <code>description</code> that is either acting directions or &mdash; if you name no voice &mdash; a prompt that invents one. Versions 1 and 2 are both callable; version 2 requires a named voice and adds timestamps.</p>
+      </div>
+      <div class="feature-cell">
+        <h4>Where they overlap</h4>
+        <p>Both draw on the same Voice Library, with <code>HUME_AI</code> stock voices and <code>CUSTOM_VOICE</code> entries of your own. Octave output is <code>mp3</code>, <code>wav</code> or raw <code>pcm</code>, default 48&nbsp;kHz &mdash; note that it is not an 8&nbsp;kHz telephony-native API the way Cartesia is, so a phone deployment resamples somewhere.</p>
+      </div>
+    </div>
+
+    <div class="info-card media fade-up" style="transition-delay: 0.06s">
+      <h4>Octave&rsquo;s two modes, and the one that bites</h4>
+      <p>The <code>description</code> field changes meaning depending on whether you named a voice. <strong>With</strong> a voice it is delivery direction &mdash; Hume&rsquo;s own guidance is to keep it under about 100 characters. <strong>Without</strong> a voice it is a voice-design prompt and the model invents a speaker, which means the same request can return a different person tomorrow.</p>
+      <p>For anything customer-facing, create the voice once, pin it by id, and treat <code>description</code> as direction only. <code>instant_mode</code> &mdash; the low-latency streaming path &mdash; enforces this anyway: it requires a named voice and a single generation.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 · THE 48 DIMENSIONS -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; The 48 dimensions</div>
+      <h2 class="section-title">What the numbers are, and what they are not.</h2>
+      <p class="section-lede">The vector is real, documented and genuinely useful. It is also a model&rsquo;s inference about a stranger&rsquo;s inner state from an audio signal, and that distinction is the whole engineering problem.</p>
+    </div>
+
+    <div class="prose fade-up" style="transition-delay: 0.04s">
+      <p>The scored set is published and fixed at 48 named dimensions. They are finer-grained than the usual sentiment buckets &mdash; alongside <em>anger</em>, <em>joy</em> and <em>sadness</em> sit <em>awkwardness</em>, <em>concentration</em>, <em>contemplation</em>, <em>craving</em>, <em>empathic pain</em>, <em>entrancement</em>, <em>realisation</em>, <em>nostalgia</em>, and <em>surprise</em> split into positive and negative. That granularity is what makes the signal worth having: &ldquo;confusion rising across three turns&rdquo; is actionable in a way that &ldquo;negative sentiment&rdquo; is not.</p>
+      <p>What the numbers are <strong>not</strong> is ground truth about what someone feels. They are scores from a model trained on labelled vocal expression, and vocal expression is culturally and individually variable. A South African English speaker&rsquo;s neutral register, an older caller&rsquo;s slower pacing, a second-language speaker&rsquo;s careful enunciation, a bad GSM line &mdash; each can move these numbers without anything changing in the person. There is no published evidence that the scoring was validated on South African speech, and you should assume it was not.</p>
+      <p>The design rule that follows: <strong>use the vector to adapt, never to decide.</strong> Softening tone when distress scores high is a good use. Routing to a human when confusion persists is a good use. Pricing, declining, escalating, flagging for fraud, or scoring an employee on inferred emotion is not &mdash; you would be making a consequential decision about a person from a number the vendor describes as an inference.</p>
+    </div>
+
+    <div class="info-card rose fade-up" style="transition-delay: 0.06s">
+      <h4>Emotion data under POPIA</h4>
+      <p>An inferred emotional state attached to an identifiable caller is personal information under POPIA, and it is information the data subject never knowingly provided. Section 9 requires that you collect only what is adequate and relevant to a defined purpose; section 71 restricts decisions about someone taken solely by automated means where those decisions have legal or substantial consequences. An emotion vector retained indefinitely &ldquo;for analytics&rdquo; fails the first test. An automated action triggered by it walks into the second.</p>
+      <p>Practically: name emotion inference in your processing notice, give it a short retention period separate from the transcript, keep it out of any automated adverse decision, and record the decision not to use it that way. Hume&rsquo;s own usage policy also sets limits here &mdash; read it before you design, not after.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 · ARCHITECTURE -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; Architecture</div>
+      <h2 class="section-title">Bring your own model.</h2>
+      <p class="section-lede">EVI&rsquo;s LLM is a configuration value, which makes it unusually easy to adopt and unusually easy to misconfigure.</p>
+    </div>
+
+    <div class="prose fade-up" style="transition-delay: 0.04s">
+      <p>You point a config at a provider and a model id and EVI drives the conversation around it. The practical consequences are worth stating plainly.</p>
+      <p><strong>Good:</strong> your reasoning, prompts and tool definitions stay portable. If you already run Claude or GPT behind a product, EVI is a voice front-end rather than a migration. Swapping the reasoning model is a config change, not a rewrite.</p>
+      <p><strong>Less good:</strong> the model list is long and includes plenty of older ids. Choosing one off a dropdown without checking what it is gets you a conversation whose latency and quality you then blame on the voice layer. Pick the model deliberately, and prefer the newest one you have actually tested.</p>
+      <p><strong>Watch the data path.</strong> Audio goes to Hume, the transcript and emotion vector then go to your chosen LLM provider, and tool calls go to your own services. That is two or three processors in the chain and possibly two or three jurisdictions. For a POPIA-scoped deployment, each one needs an operator agreement, and the chain needs to appear in your processing record. Choosing a US-hosted LLM behind a US-hosted voice layer is a decision about cross-border transfer whether or not anyone wrote it down.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 · PRICING -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; Pricing reality</div>
+      <h2 class="section-title">Two meters, not one.</h2>
+      <p class="section-lede">We are not quoting figures &mdash; they move faster than this leaf&rsquo;s review cadence, and a stale number is worse than none. The structure is the part worth internalising.</p>
+    </div>
+
+    <div class="prose fade-up" style="transition-delay: 0.04s">
+      <p>An EVI call bills on <strong>Hume&rsquo;s own meter</strong> (voice session time) and on <strong>your LLM provider&rsquo;s meter</strong> (tokens), and those are separate invoices. A long call with a chatty, expensive reasoning model costs considerably more than the voice-session figure suggests, and the second invoice is the one that surprises people.</p>
+      <p>Before committing, price one representative call end to end: voice-session minutes, LLM input and output tokens including the system prompt on every turn, any tool-call round trips, and telephony minutes if there is a phone line involved. Then multiply by your real call volume rather than your pilot&rsquo;s. For a rand-funded client, both meters are USD-denominated, so FX belongs in the proposal as a stated assumption with a review trigger.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 · DECISION GUIDE -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; Decision guide</div>
+      <h2 class="section-title">When to use Hume &mdash; and when to skip.</h2>
+      <p class="section-lede">Hume is the right answer to a narrow question. If emotional nuance is not load-bearing in your product, you are paying complexity for a field you will not read.</p>
+    </div>
+
+    <div class="pair-grid fade-up" style="transition-delay: 0.04s">
+      <div class="when-card use">
+        <span class="label">Use Hume if&hellip;</span>
+        <h4>Delivery is the product</h4>
+        <ul>
+          <li>The conversation is <strong>emotionally loaded</strong> &mdash; wellbeing, bereavement, debt, complaints &mdash; and tone changes the outcome</li>
+          <li>You want <strong>acting direction in plain language</strong> rather than hand-tuned SSML</li>
+          <li>You want to <strong>keep your own LLM</strong> and add a voice layer around it</li>
+          <li>You need <strong>a signal for escalation</strong> &mdash; sustained confusion or distress routing to a human</li>
+          <li>You want <strong>your agent&rsquo;s own prosody logged</strong> for review, not just its words</li>
+          <li>You are doing <strong>character or narrative work</strong> where one voice must play several registers</li>
+        </ul>
+      </div>
+      <div class="when-card skip">
+        <span class="label">Skip Hume if&hellip;</span>
+        <h4>Empathy is not the job</h4>
+        <ul>
+          <li>The task is <strong>transactional</strong> &mdash; balance checks, OTPs, appointment slots. Emotion is noise there</li>
+          <li><strong>Latency is the hard constraint</strong> &mdash; Cartesia is built for that and Octave is not 8&nbsp;kHz-native</li>
+          <li>You need <strong>African-language coverage</strong>; nothing in this band delivers it, Hume included</li>
+          <li>You want <strong>one vendor for everything</strong> &mdash; dubbing, music, sound design. That is ElevenLabs</li>
+          <li>You would be tempted to <strong>act automatically on the emotion score</strong> &mdash; the compliance exposure is real and the signal will not carry the weight</li>
+          <li>You need <strong>on-premises or in-country inference</strong> &mdash; this is a hosted API with no self-host path</li>
+          <li>Your stakeholders cannot articulate <strong>which decision the vector changes</strong>. If nobody can, you are buying a demo</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 07 · SOUTH AFRICAN CONTEXT -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; South African context</div>
+      <h2 class="section-title">What lands in SA.</h2>
+    </div>
+
+    <div class="prose fade-up" style="transition-delay: 0.04s">
+      <p><strong>The validation gap is the headline.</strong> South Africa has eleven official spoken languages and a very wide range of English registers. A model trained predominantly on North American and European vocal expression will read some of those registers wrong, and there is no published SA validation to appeal to. Before any pilot goes live, run your own check: record consenting speakers across the accents and home languages your callers actually have, score them in a neutral state, and look at where the vector lands. If neutral SA English speakers score as agitated, you have found out cheaply instead of in production.</p>
+      <p><strong>Language coverage.</strong> Both EVI and Octave are strong on English and thin to absent on South Africa&rsquo;s Bantu languages &mdash; the same gap the <a href="landscape.html">landscape leaf</a> names across the whole band. Hume is not the exception.</p>
+      <p><strong>Three processors, one processing record.</strong> Audio to Hume, transcript plus emotion vector to your LLM provider, tool calls to your own stack. Under POPIA each external leg is an operator relationship needing a written agreement and a lawful basis for cross-border transfer. Map it once, early. It is much harder to retrofit after a client&rsquo;s information officer asks.</p>
+      <p><strong>Where it genuinely earns its place.</strong> Debt collection, medical-aid support, bereavement and claims calls, student support &mdash; conversations where a caller is already stressed and tone is not cosmetic. Used to <em>adapt</em> delivery and to <em>hand over</em> to a person sooner, this is the most defensible version of the product. Used to score or sort people, it is the least.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 08 · CONNECTIONS -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 &middot; Connections</div>
+      <h2 class="section-title">Where this leaf links into the tree.</h2>
+    </div>
+    <div class="cross-links fade-up" style="transition-delay: 0.03s">
+      <a href="index.html" class="cross-link">&rarr; Media domain hub</a>
+      <a href="landscape.html" class="cross-link">&rarr; The voice AI landscape</a>
+      <a href="cartesia.html" class="cross-link">&rarr; Cartesia (the latency alternative)</a>
+      <a href="elevenlabs.html" class="cross-link">&rarr; ElevenLabs (the breadth alternative)</a>
+      <a href="big-lab-voice.html" class="cross-link">&rarr; Big-lab voice</a>
+      <a href="voice-agents.html" class="cross-link">&rarr; Voice agents &amp; telephony</a>
+      <a href="../agents/claude.html" class="cross-link">&rarr; Claude (a BYO-LLM option)</a>
+      <a href="../leg/" class="cross-link">&rarr; Legal (POPIA)</a>
+    </div>
+  </div>
+</section>
+
+<!-- 09 · RESOURCES -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">09 &middot; Resources</div>
+      <h2 class="section-title">Primary sources.</h2>
+      <p class="section-lede">The 48 dimensions, the Octave parameters, the Octave versions and the bring-your-own-LLM provider list on this leaf were read off Hume&rsquo;s own published SDK. Pricing was not verified and is not quoted.</p>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.03s">
+      <a class="resource" href="https://github.com/HumeAI/hume-python-sdk" target="_blank" rel="noopener"><span class="r-kind">SDK &middot; primary</span><span class="r-title">HumeAI/hume-python-sdk</span><span class="r-url">github.com/HumeAI/hume-python-sdk</span></a>
+      <a class="resource" href="https://github.com/HumeAI/hume-python-sdk/blob/main/src/hume/empathic_voice/types/emotion_scores.py" target="_blank" rel="noopener"><span class="r-kind">Type &middot; primary</span><span class="r-title">EmotionScores &mdash; the 48 named dimensions</span><span class="r-url">github.com/HumeAI/hume-python-sdk/.../emotion_scores.py</span></a>
+      <a class="resource" href="https://github.com/HumeAI/hume-python-sdk/blob/main/src/hume/tts/types/posted_tts.py" target="_blank" rel="noopener"><span class="r-kind">Type &middot; primary</span><span class="r-title">PostedTts &mdash; Octave versions, instant mode, temperature</span><span class="r-url">github.com/HumeAI/hume-python-sdk/.../posted_tts.py</span></a>
+      <a class="resource" href="https://dev.hume.ai/docs/empathic-voice-interface-evi/overview" target="_blank" rel="noopener"><span class="r-kind">Docs</span><span class="r-title">Empathic Voice Interface overview</span><span class="r-url">dev.hume.ai/docs/empathic-voice-interface-evi/overview</span></a>
+      <a class="resource" href="https://dev.hume.ai/docs/text-to-speech-tts/overview" target="_blank" rel="noopener"><span class="r-kind">Docs</span><span class="r-title">Octave text-to-speech overview</span><span class="r-url">dev.hume.ai/docs/text-to-speech-tts/overview</span></a>
+      <a class="resource" href="https://github.com/HumeAI/hume-api-examples" target="_blank" rel="noopener"><span class="r-kind">Examples</span><span class="r-title">Hume API examples (EVI + TTS quickstarts)</span><span class="r-url">github.com/HumeAI/hume-api-examples</span></a>
+      <a class="resource" href="https://www.gov.za/documents/protection-personal-information-act" target="_blank" rel="noopener"><span class="r-kind">Legislation</span><span class="r-title">Protection of Personal Information Act 4 of 2013</span><span class="r-url">gov.za/documents/protection-personal-information-act</span></a>
+      <a class="resource" href="landscape.html"><span class="r-kind">know.2nth.ai</span><span class="r-title">The voice AI landscape</span><span class="r-url">/explainers/media/landscape</span></a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <div class="footer-tagline">The Knowledge Tree</div>
+    <div class="footer-links">
+      <a href="../../index.html">Tree</a>
+      <a href="index.html">Media</a>
+      <a href="landscape.html">Landscape</a>
+      <a href="../../about.html">About</a>
+      <a href="../../join.html">Stay in touch</a>
+      <a href="https://2nth.ai">2nth.ai</a>
+    </div>
+    <div class="footer-copy">&copy; 2026 imbila.ai &middot; All knowledge open</div>
+    <div class="footer-review">Last reviewed: 2026-10-26 &middot; Cadence: hot (quarterly)</div>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme() {
+    const cur = document.documentElement.getAttribute('data-theme');
+    const next = cur === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('2nth-theme', next);
+  }
+  const stored = localStorage.getItem('2nth-theme');
+  if (stored) document.documentElement.setAttribute('data-theme', stored);
+  const observer = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold: 0.05 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
