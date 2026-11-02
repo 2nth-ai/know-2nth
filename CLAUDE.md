@@ -48,7 +48,7 @@ Leaves here are source material the other properties draw on, so a factual error
 ```
 know-2nth/
 ├── CLAUDE.md
-├── index.html                # root: 12 top-level domain cards
+├── index.html                # root: 14 top-level domain cards (see the note below the tree)
 ├── about.html                # access model + how the site works
 ├── join.html                 # "Stay in touch" lead capture → 2nth CRM (crm-form.js)
 ├── gate.js                   # tier-gate hook, loaded on every leaf, currently inert
@@ -113,7 +113,7 @@ Counts live in more than one place and drift independently — the sub-hub's own
 
 ### Current stub state (verified 2026-11-02)
 
-**54 stubs across 13 hubs**, not the ~107 an older note claimed. Largest backlogs: `tech/` root (8), `tech/frappe/` (3 remaining), `biz/` (6), `people/` (5), `people/ai-roles/` (5), `construction/` (5), `media/` (4), `data/analytics/` (4), `data/warehousing/` (4). Note that `biz/erp/`, `biz/crm/`, `biz/hr/`, `design/`, `software/`, `agents/`, `fin/`, `leg/`, `tools/` and most `tech/*` sub-hubs have **zero** stubs — a backlog instruction that says "biz/erp first" has nothing to act on there.
+**54 stubs across 13 hubs**, not the ~107 an older note claimed. Largest backlogs: `tech/` root (8), `tech/frappe/` (3 cards left, but one is the archived Print Designer below — so 2 authorable), `biz/` (6), `people/` (5), `people/ai-roles/` (5), `construction/` (5), `media/` (4), `data/analytics/` (4), `data/warehousing/` (4). Note that `biz/erp/`, `biz/crm/`, `biz/hr/`, `design/`, `software/`, `agents/`, `fin/`, `leg/`, `tools/` and most `tech/*` sub-hubs have **zero** stubs — a backlog instruction that says "biz/erp first" has nothing to act on there.
 
 ### The `Archived` state
 
