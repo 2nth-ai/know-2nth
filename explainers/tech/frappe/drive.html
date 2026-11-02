@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Frappe Drive — know.2nth.ai</title>
+<meta name="description" content="Frappe Drive — open-source, self-hosted file storage, sharing and collaboration on the Frappe Framework. Multi-part uploads, in-browser previews, granular sharing, and the Writer editor with real-time collaboration on a YJS CRDT. Still labelled beta upstream: take backups.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/tech/frappe/drive">
+<meta property="og:title" content="Frappe Drive — know.2nth.ai">
+<meta property="og:description" content="Frappe Drive — open-source, self-hosted file storage, sharing and collaboration on the Frappe Framework. Multi-part uploads, in-browser previews, granular sharing, and the Writer editor with real-time collaboration on a YJS CRDT. Still labelled beta upstream: take backups.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai — The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Frappe Drive — know.2nth.ai">
+<meta name="twitter:description" content="Frappe Drive — open-source, self-hosted file storage, sharing and collaboration on the Frappe Framework. Multi-part uploads, in-browser previews, granular sharing, and the Writer editor with real-time collaboration on a YJS CRDT. Still labelled beta upstream: take backups.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3Cline x1='16' y1='3' x2='16' y2='7' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='16' y1='25' x2='16' y2='29' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='3' y1='16' x2='7' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='25' y1='16' x2='29' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33;
+    --blue: #2563EB; --blue-glow: #3B82F6;
+    --sky: #38BDF8; --sky-muted: #7DD3FC;
+    --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8;
+    --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12);
+    --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12);
+    --violet: #8B5CF6; --violet-soft: rgba(139, 92, 246, 0.12);
+    --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12);
+    --bg: var(--ink); --bg-raised: var(--navy);
+    --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(37, 99, 235, 0.06);
+    --text-primary: var(--paper); --text-secondary: var(--slate);
+    --text-muted: #64748B;
+    --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(56, 189, 248, 0.3);
+    --max-w: 1200px; --read-w: 760px;
+    --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px;
+  }
+  [data-theme="light"] {
+    --bg: #F1F5F9; --bg-raised: #FFFFFF;
+    --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(37, 99, 235, 0.04);
+    --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8;
+    --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(37, 99, 235, 0.25);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+    background: var(--bg); color: var(--text-primary);
+    line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased;
+  }
+  body::before {
+    content: ''; position: fixed; inset: 0; opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 9999;
+  }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.blue { width: 600px; height: 600px; background: var(--blue); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+
+  nav {
+    position: sticky; top: 0; z-index: 100; padding: 0 24px;
+    backdrop-filter: blur(20px) saturate(1.4);
+    background: rgba(11, 17, 32, 0.75);
+    border-bottom: 1px solid var(--border);
+  }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner {
+    max-width: var(--max-w); margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 60px;
+  }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark {
+    font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px;
+    background: linear-gradient(135deg, var(--blue), var(--sky));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+  }
+  .nav-brand-sub {
+    font-size: 12px; color: var(--text-muted);
+    letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500;
+    padding-left: 10px; border-left: 1px solid var(--border);
+  }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--sky); }
+  .theme-toggle {
+    background: none; border: 1px solid var(--border); color: var(--text-secondary);
+    width: 36px; height: 36px; border-radius: 50%; cursor: pointer;
+    display: grid; place-items: center; font-size: 16px; transition: all 0.2s;
+  }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--sky); }
+
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .read { max-width: var(--read-w); }
+
+  .crumb {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted);
+    letter-spacing: 0.5px; padding: 28px 0 0;
+    display: flex; gap: 10px; flex-wrap: wrap;
+  }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--sky); }
+  .crumb-sep { opacity: 0.5; }
+  .crumb-current { color: var(--text-secondary); }
+
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500;
+    letter-spacing: 2px; text-transform: uppercase; color: var(--sky);
+    margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px;
+  }
+  .hero .eyebrow .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--blue-glow); box-shadow: 0 0 12px var(--blue-glow);
+  }
+  .hero h1 {
+    font-size: clamp(40px, 6vw, 66px); font-weight: 800;
+    line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 14ch;
+  }
+  .hero h1 .gradient {
+    background: linear-gradient(135deg, var(--blue-glow), var(--sky), var(--sky-muted));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500;
+    padding: 6px 14px; border-radius: var(--radius-pill);
+    border: 1px solid var(--border); color: var(--text-secondary);
+    letter-spacing: 0.5px;
+  }
+  .pill.accent { background: rgba(37, 99, 235, 0.12); color: var(--blue-glow); border-color: rgba(37, 99, 235, 0.25); }
+
+  section { padding: 52px 0; position: relative; }
+  .section-label {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500;
+    letter-spacing: 2px; text-transform: uppercase; color: var(--sky);
+    margin-bottom: 14px;
+  }
+  .section-title {
+    font-size: clamp(26px, 3.4vw, 36px); font-weight: 700;
+    letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2;
+  }
+  .section-lede {
+    font-size: 16px; color: var(--text-secondary); max-width: var(--read-w);
+    line-height: 1.75; font-weight: 300; margin-bottom: 32px;
+  }
+  .prose p {
+    font-size: 16px; color: var(--text-secondary); line-height: 1.75;
+    max-width: var(--read-w); margin-bottom: 18px;
+  }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.88em;
+    background: var(--bg-card); border: 1px solid var(--border);
+    padding: 1px 6px; border-radius: 4px; color: var(--sky);
+  }
+
+  pre.code {
+    background: var(--ink-deep); border: 1px solid var(--border);
+    border-radius: var(--radius-md); padding: 20px 22px;
+    overflow-x: auto; font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px; line-height: 1.65; color: var(--mist);
+    margin: 0 0 20px; max-width: var(--read-w);
+  }
+  [data-theme="light"] pre.code { background: #0F172A; color: #E2E8F0; }
+  pre.code .k { color: var(--sky); }
+  pre.code .s { color: #A5F3B8; }
+  pre.code .c { color: var(--text-muted); font-style: italic; }
+  pre.code .n { color: #FCD34D; }
+
+  .info-card {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-lg);
+    padding: 28px 32px; max-width: var(--read-w);
+    margin-bottom: 20px;
+  }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+
+  .compare-wrap {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-lg);
+    overflow: hidden; max-width: var(--read-w);
+    margin-bottom: 20px;
+  }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td {
+    padding: 12px 16px; text-align: left;
+    border-bottom: 1px solid var(--border); vertical-align: top;
+  }
+  .compare thead th {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600;
+    letter-spacing: 1.2px; text-transform: uppercase; color: var(--sky);
+    background: rgba(37, 99, 235, 0.04);
+  }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); }
+  .compare td code {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.9em;
+    color: var(--sky);
+  }
+
+  .gotcha-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 12px;
+  }
+  .gotcha {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-left: 3px solid var(--rose);
+    border-radius: var(--radius-md);
+    padding: 18px 22px;
+  }
+  .gotcha strong { display: block; color: var(--text-primary); font-weight: 600; font-size: 14px; margin-bottom: 6px; }
+  .gotcha p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+  .connect-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 12px;
+  }
+  .connect-node {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    padding: 18px 22px; transition: all 0.3s;
+    text-decoration: none; color: inherit; display: block;
+  }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node.soon { cursor: default; opacity: 0.72; }
+  .connect-node.soon:hover { border-color: var(--border); background: var(--bg-card); }
+  .connect-node .tag {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    letter-spacing: 1px; text-transform: uppercase;
+    color: var(--text-muted); display: block; margin-bottom: 6px;
+  }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+
+  .resource-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 12px;
+  }
+  .resource {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    padding: 18px 22px; text-decoration: none; transition: all 0.3s;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--sky); word-break: break-all; }
+
+  .decision-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+    max-width: var(--read-w);
+  }
+  @media (max-width: 720px) { .decision-grid { grid-template-columns: 1fr; } }
+  .decision-card {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    padding: 22px 24px;
+  }
+  .decision-card.use { border-left: 3px solid var(--green); }
+  .decision-card.skip { border-left: 3px solid var(--rose); }
+  .decision-card h4 {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .decision-card.use h4 { color: var(--green); }
+  .decision-card.skip h4 { color: var(--rose); }
+  .decision-card ul { list-style: none; padding: 0; }
+  .decision-card li {
+    font-size: 13px; color: var(--text-secondary); line-height: 1.6;
+    padding: 6px 0; border-bottom: 1px solid var(--border);
+  }
+  .decision-card li:last-child { border-bottom: none; }
+
+  footer {
+    padding: 60px 0 40px; border-top: 1px solid var(--border);
+    text-align: center; margin-top: 40px;
+  }
+  .footer-brand {
+    font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600;
+    background: linear-gradient(135deg, var(--blue), var(--sky));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+  }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--sky); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+
+  .fade-up {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 768px) {
+    .nav-brand-sub { display: none; }
+    .nav-link { display: none; }
+    pre.code { font-size: 11px; padding: 14px 16px; }
+    .compare { font-size: 12px; }
+    .compare th, .compare td { padding: 10px 12px; }
+  }
+
+  *, *::before, *::after {
+    transition-property: background-color, border-color, color, box-shadow;
+    transition-duration: 0.3s; transition-timing-function: ease;
+  }
+</style>
+</head>
+<body>
+
+<div class="glow-orb blue"></div>
+<div class="glow-orb sky"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../../index.html" class="nav-brand">
+      <span class="nav-brand-mark">know.2nth.ai</span>
+      <span class="nav-brand-sub">tech/frappe/drive</span>
+    </a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">← Frappe</a>
+      <a href="../../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">🌙</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">›</span>
+    <a href="../../../index.html#domains">Technology</a>
+    <span class="crumb-sep">›</span>
+    <a href="../">tech</a>
+    <span class="crumb-sep">›</span>
+    <a href="./">frappe</a>
+    <span class="crumb-sep">›</span>
+    <span class="crumb-current">drive</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> tech/frappe · Drive · Skill Leaf</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      File storage you own.<br><span class="gradient">Still in beta.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      Frappe Drive is an open-source file storage, sharing and collaboration platform on the Frappe Framework &mdash; a file manager plus a real-time collaborative document editor, on infrastructure you choose. The project labels it <strong>beta</strong> and advises taking backups in production use. That caveat is upstream, not ours, and it should shape how you deploy this.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill accent">Beta</span>
+      <span class="pill">Frappe Framework app</span>
+      <span class="pill">AGPL v3</span>
+      <span class="pill">Real-time collaboration</span>
+      <span class="pill">YJS CRDT</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 WHAT IT IS -->
+<section id="what">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 · What it is</div>
+      <h2 class="section-title">Two products in one app.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Frappe Drive is a self-hosted cloud storage platform with a modern interface, built on the <a href="framework.html">Frappe Framework</a>. The ambition is explicit: storing, sharing and collaborating on files without a per-seat subscription and without your documents sitting in someone else&rsquo;s datacentre.</p>
+      <p>It is really two things. <strong>Core</strong> is the file manager &mdash; upload, organise, preview, share, control access. <strong>Writer</strong> is a collaborative document editor with real-time co-editing, comment threads and versioning. The project&rsquo;s own account of its history is honest about this: the idea of a Drive-like app had been circulating inside Frappe since 2015, and what began as simple file sharing grew into a collaboration tool as they dug in.</p>
+      <p>The framework already handles files competently; Drive exists because a standalone, user-facing product was a different problem from a framework capability.</p>
+    </div>    <div class="info-card fade-up" style="transition-delay: 0.08s">
+      <h4>Read the beta label as written</h4>
+      <p>The repository carries an explicit warning: Frappe Drive is in beta, and it is strongly advised to take backups in production use. We are not going to soften that. It does not mean the app is unusable &mdash; plenty of software is run in production at this maturity &mdash; but it does mean this should not be the only copy of anything you cannot afford to lose, and that your backup restore path should be tested rather than assumed. If that sentence makes a stakeholder uncomfortable, they have understood it correctly.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 CORE &MDASH; THE FILE MANAGER -->
+<section id="core">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 · Core &mdash; the file manager</div>
+      <h2 class="section-title">What the storage layer does.</h2>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead>
+          <tr>
+            <th>Capability</th>
+            <th>Detail</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Large uploads</strong></td><td>Multi-part uploads, so big files do not depend on one unbroken connection.</td></tr>
+          <tr><td><strong>Folder uploads</strong></td><td>Upload a folder and keep its structure intact.</td></tr>
+          <tr><td><strong>Previews</strong></td><td>Preview files in the browser without downloading. The supported-format list is documented &mdash; check it rather than assuming.</td></tr>
+          <tr><td><strong>Video streaming</strong></td><td>Stream video directly from the server rather than forcing a full download.</td></tr>
+          <tr><td><strong>Search</strong></td><td>Across your own files and files shared with you.</td></tr>
+          <tr><td><strong>Activity logs</strong></td><td>Per-file history of permission and metadata changes.</td></tr>
+          <tr><td><strong>Sharing</strong></td><td>With individual users, groups, everyone on the site, or published publicly.</td></tr>
+          <tr><td><strong>Guest users</strong></td><td>Limited, controlled access for people who are not site users.</td></tr>
+          <tr><td><strong>Storage model</strong></td><td>Pool all users&rsquo; storage together, or assign a per-user quota.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 03 WRITER &MDASH; THE EDITOR -->
+<section id="writer">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 · Writer &mdash; the editor</div>
+      <h2 class="section-title">Collaborative documents, CRDT-backed.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Writer is where Drive stops being a file store. It gives you real-time collaborative editing with other users and with guests, annotation threads you can resolve and reply to, manual versioning so you can pin a state worth returning to, automatic versioning as a safety net, and <code>.docx</code> import.</p>
+      <p>The interesting part is underneath. Real-time collaboration in both the document and the annotation system runs on <strong>YJS</strong> &mdash; a CRDT, or conflict-free replicated data type. Rather than locking a document or reconciling edits on a server, a CRDT lets concurrent edits merge deterministically regardless of the order they arrive in. It is the same family of technique behind most credible collaborative editors, and choosing it rather than inventing a locking scheme is a good sign about the engineering.</p>
+    </div>    <div class="compare-wrap fade-up" style="transition-delay: 0.07s">
+      <table class="compare">
+        <thead>
+          <tr>
+            <th>Component</th>
+            <th>Role</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><a href="framework.html">Frappe Framework</a></td><td>Database abstraction, authentication, REST API &mdash; the foundation.</td></tr>
+          <tr><td>Frappe UI</td><td>Vue-based component library for the interface.</td></tr>
+          <tr><td>Tiptap</td><td>Editor framework, wrapping ProseMirror with friendlier APIs and defaults.</td></tr>
+          <tr><td>ProseMirror</td><td>The rich-text toolkit underneath, giving precise control over document structure.</td></tr>
+          <tr><td>YJS</td><td>The CRDT at the core of real-time collaboration in documents and annotations.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 04 GOTCHAS -->
+<section id="gotchas">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 · Gotchas</div>
+      <h2 class="section-title">Where it gets tricky.</h2>
+    </div>
+    <div class="gotcha-list fade-up" style="transition-delay: 0.05s">
+      <div class="gotcha">
+        <strong>Beta means your backup discipline is the product&rsquo;s safety margin</strong>
+        <p>The upstream advice is to take backups in production use. Translate that into practice: automated backups, offsite copies, and a restore you have actually performed at least once. Drive holding the only copy of a client deliverable is a risk you chose, not one the project hid from you.</p>
+      </div>
+      <div class="gotcha">
+        <strong>The pooled-versus-quota decision is early and awkward to reverse</strong>
+        <p>You can pool storage across all users or assign per-user quotas. This looks like a settings toggle and behaves like an architecture decision &mdash; it shapes how you capacity-plan, what happens when one user fills the disk, and how you bill internal departments if you do. Decide it with the people who will own the storage bill.</p>
+      </div>
+      <div class="gotcha">
+        <strong>Previews and format support are a list, not a guarantee</strong>
+        <p>In-browser preview is a headline feature and its coverage is documented per format. If your workflow depends on previewing a specific file type &mdash; CAD, large PDFs, particular video codecs &mdash; verify it against the documented list before you promise it to anyone.</p>
+      </div>
+      <div class="gotcha">
+        <strong>AGPL v3 is network copyleft</strong>
+        <p>Drive is AGPLv3. Internal use carries no obligation; offering a modified Drive to third parties over a network does. If you plan to white-label this as a storage product for clients, get the licence read first. Note the inconsistency across the estate &mdash; <a href="wiki.html">Frappe Wiki</a> is MIT.</p>
+      </div>
+      <div class="gotcha">
+        <strong>It will be compared to Google Drive, and that is the wrong frame</strong>
+        <p>Users arriving from Google Drive or OneDrive will measure this against a product with two decades of engineering and a global CDN behind it. Set the expectation deliberately: you are trading feature depth and edge performance for ownership, residency and the absence of a per-seat bill. That is a reasonable trade for some teams and a bad one for others.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 DECISION GUIDE -->
+<section id="decision">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 · Decision guide</div>
+      <h2 class="section-title">Use it for, skip it for.</h2>
+    </div>
+    <div class="decision-grid fade-up" style="transition-delay: 0.05s">
+      <div class="decision-card use">
+        <h4>Use it when</h4>
+        <ul>
+          <li>You need file storage and collaborative documents inside infrastructure you control</li>
+          <li>You are already running Frappe and want storage on the same site, with the same users and permissions</li>
+          <li>POPIA or a client contract requires documents to stay in a region and on hardware you can point at</li>
+          <li>Per-seat Google Workspace or Microsoft 365 billing in USD is a cost you want to cut</li>
+          <li>You can commit to real backup discipline &mdash; automated, offsite, restore-tested</li>
+          <li>Guest access with controlled permissions is a workflow you need for external collaborators</li>
+        </ul>
+      </div>
+      <div class="decision-card skip">
+        <h4>Skip it when</h4>
+        <ul>
+          <li>It would become the sole system of record for documents you cannot afford to lose, and backups are aspirational</li>
+          <li>You need the full Google Workspace or Microsoft 365 feature surface &mdash; this is not that, and will not be soon</li>
+          <li>Your compliance regime requires a vendor certification that self-hosted software cannot produce</li>
+          <li>Your users are distributed across continents and expect CDN-grade file performance</li>
+          <li>You need a documentation platform with review workflow &mdash; that is <a href="wiki.html">Frappe Wiki</a></li>
+          <li>Nobody will own storage capacity planning, and growth is unpredictable</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 SOUTH AFRICAN CONTEXT -->
+<section id="sa-context">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 · South African context</div>
+      <h2 class="section-title">What this changes for SA delivery.</h2>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.05s">
+      <h4>POPIA &mdash; this is the strongest residency card in the Frappe estate</h4>
+      <p>Documents are where personal information actually accumulates: ID copies, payslips, contracts, medical notes, client files. For an SA organisation, self-hosted storage on local infrastructure converts the cross-border transfer question into a non-question. You are not documenting a Section 72 transfer and managing consent &mdash; the data never leaves. For regulated SA clients who have been told for years that cloud storage means a US processing agreement, that is a genuinely different conversation.</p>
+    </div>    <div class="info-card fade-up" style="transition-delay: 0.07s">
+      <h4>Bandwidth and egress &mdash; the SA-specific cost nobody models</h4>
+      <p>Server-side video streaming and in-browser previews are lovely features and they move bytes. On local hosting with South African bandwidth pricing and a workforce that is partly remote and partly on mobile, egress is a real line item and latency is a real experience problem &mdash; especially if your users are not in the same city as the server. Model this before you migrate a media-heavy team. A storage platform that is cheaper per seat and more expensive per gigabyte served is not automatically cheaper.</p>
+    </div>    <div class="info-card fade-up" style="transition-delay: 0.09s">
+      <h4>FX &mdash; favourable, with an honest asterisk</h4>
+      <p>Workspace and M365 storage tiers are priced in dollars per user per month and ratchet upward as quotas fill. Self-hosted storage is rand-denominated infrastructure plus your own time. At meaningful headcount the arithmetic favours self-hosting &mdash; but count the operational burden properly, and count the beta risk as a cost too. A restore you never tested is not a saving.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 07 CONNECTIONS -->
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 · Connections</div>
+      <h2 class="section-title">Where this leaf links.</h2>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="framework.html" class="connect-node">
+        <span class="tag">tech/frappe/framework</span>
+        <div class="skill">Frappe Framework</div>
+        <div class="why">The engine underneath. Drive uses the framework&rsquo;s users, permissions and REST API; the framework&rsquo;s own file handling is what Drive grew out of.</div>
+      </a>
+      <a href="wiki.html" class="connect-node">
+        <span class="tag">tech/frappe/wiki</span>
+        <div class="skill">Frappe Wiki</div>
+        <div class="why">The distinction worth holding: Drive&rsquo;s Writer is real-time co-editing of working documents; Wiki is reviewed, published documentation. Teams that conflate them end up with neither.</div>
+      </a>
+      <a href="raven.html" class="connect-node">
+        <span class="tag">tech/frappe/raven</span>
+        <div class="skill">Raven</div>
+        <div class="why">Chat on the same site. Files shared into a channel and files stored in Drive are both on your infrastructure, under one permissions model.</div>
+      </a>
+      <a href="hr.html" class="connect-node">
+        <span class="tag">tech/frappe/hr</span>
+        <div class="skill">Frappe HR</div>
+        <div class="why">The POPIA pairing. Employee documents &mdash; contracts, payslips, disciplinary records &mdash; are the sharpest case for storage that never leaves the country.</div>
+      </a>
+      <a href="./" class="connect-node">
+        <span class="tag">tech/frappe</span>
+        <div class="skill">Frappe sub-hub</div>
+        <div class="why">The hub listing the Frappe ecosystem apps covered in this tree.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 08 RESOURCES -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 · Resources</div>
+      <h2 class="section-title">Primary sources only.</h2>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://github.com/frappe/drive" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Source</span>
+        <span class="r-title">frappe/drive on GitHub</span>
+        <span class="r-url">github.com/frappe/drive</span>
+      </a>
+      <a href="https://frappe.io/drive" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Project home</span>
+        <span class="r-title">Frappe Drive</span>
+        <span class="r-url">frappe.io/drive</span>
+      </a>
+      <a href="https://docs.frappe.io/drive/quick-start" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs</span>
+        <span class="r-title">Frappe Drive quick start</span>
+        <span class="r-url">docs.frappe.io/drive/quick-start</span>
+      </a>
+      <a href="https://docs.frappe.io/drive/previews" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Reference</span>
+        <span class="r-title">Supported file previews</span>
+        <span class="r-url">docs.frappe.io/drive/previews</span>
+      </a>
+      <a href="https://github.com/yjs/yjs" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Internals</span>
+        <span class="r-title">YJS &mdash; the CRDT behind real-time editing</span>
+        <span class="r-url">github.com/yjs/yjs</span>
+      </a>
+      <a href="https://github.com/ueberdosis/tiptap" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Internals</span>
+        <span class="r-title">Tiptap editor framework</span>
+        <span class="r-url">github.com/ueberdosis/tiptap</span>
+      </a>
+      <a href="https://frappecloud.com" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Hosting</span>
+        <span class="r-title">Frappe Cloud &mdash; managed hosting</span>
+        <span class="r-url">frappecloud.com</span>
+      </a>
+    </div>
+  </div>
+</section>
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../../index.html">Skills tree</a>
+      <a href="./">Frappe sub-hub</a>
+      <a href="https://frappe.io/drive" target="_blank" rel="noopener">Frappe Drive ↗</a>
+    </div>
+    <p class="footer-copy">© 2026 2nth.ai · Built in South Africa — Globally relevant</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme() {
+    const html = document.documentElement;
+    const current = html.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
+    localStorage.setItem('theme', next);
+  }
+  const saved = localStorage.getItem('theme');
+  if (saved) {
+    document.documentElement.setAttribute('data-theme', saved);
+    document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '☀️' : '🌙';
+  }
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>

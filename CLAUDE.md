@@ -8,7 +8,12 @@ Sibling sites in the ecosystem:
 - **2nth.ai** — framework / GTM site (Human + AI = 2ⁿ)
 - **dev.2nth.ai** — partner / Gridline / openBUILD AI source content (Construction domain pulls from here)
 - **2nth.io** — compute infrastructure layer
+- **2nth.me** — personal / practitioner surface
+- **2nth.org** — non-profit / community surface
+- **pay.2nth.ai** — payments surface
 - **imbila.ai** — parent consultancy brand
+
+Leaves here are source material the other properties draw on, so a factual error does not stay local to this site.
 
 ### Related repos that are NOT this one
 
@@ -43,7 +48,7 @@ Sibling sites in the ecosystem:
 ```
 know-2nth/
 ├── CLAUDE.md
-├── index.html                # root: 12 top-level domain cards
+├── index.html                # root: 14 top-level domain cards (see the note below the tree)
 ├── about.html                # access model + how the site works
 ├── join.html                 # "Stay in touch" lead capture → 2nth CRM (crm-form.js)
 ├── gate.js                   # tier-gate hook, loaded on every leaf, currently inert
@@ -53,16 +58,29 @@ know-2nth/
 ├── google-adk-explainer.md   # canonical source markdown for ADK leaf (PR #17)
 └── explainers/
     ├── agents/        # Frameworks, Protocols, Models, Inference (the strategic priority)
-    ├── biz/           # ERP, CRM, HR — has erp/ and crm/ sub-hubs
+    ├── biz/           # sub-dirs: bpm/, crm/, ecm/, erp/, hr/ (crm, erp and hr have hubs)
     ├── construction/  # openBIM + Gridline / openBUILD AI partner-anchored
-    ├── data/          # analytics/, warehousing/, engineering/ sub-hubs
+    ├── data/          # sub-dirs: analytics/, engineering/, warehousing/ (analytics + warehousing have hubs)
     ├── design/        # tokens, components, motion, AI-assisted design
+    ├── fin/           # built out — 5 leaves
+    ├── health/        # built out — 3 leaves
+    ├── leg/           # built out — 8 leaves (employment, commercial, disputes, IP)
+    ├── media/         # TTS, voice agents, the media landscape
     ├── partners/      # co-branded leaves (no hub yet, not on root grid)
-    ├── people/        # coaching, leadership, typologies/
-    └── tech/          # cloudflare/, google/, microsoft/, frappe/, runtime/, android-hce/, embedded/, frameworks/
+    ├── people/        # sub-dirs: ai-roles/, typologies/
+    ├── software/      # practice-of-software leaves (SDD, waterfall, TypeScript, case studies)
+    ├── tech/          # sub-dirs: android-hce/, cloudflare/, embedded/, frameworks/, frappe/,
+    │                  #   game-engines/, google/, hardware/, microsoft/, oracle/, runtime/
+    └── tools/         # tooling leaves (no root card)
 ```
 
-Five additional domains exist on the root grid as cards but have **no folder yet**: `edu`, `fin`, `health`, `iot`, `leg`. Building any of them out means: create `explainers/<domain>/index.html` hub, ship at least one Live leaf, then the root card becomes meaningful.
+Also in the repo and not shown above: `briefings/` (CEO/CTO briefings, indexed alongside leaves), `ask.html` (Vinci, the on-site assistant), `diagrams/`, `lab/`, `claude/`, `scripts/`, `functions/`, `wrangler.toml`, and the generated `llms.txt` + `agent-index.json`.
+
+The root grid carries **fourteen** domain cards (`agents`, `biz`, `construction`, `data`, `design`, `edu`, `fin`, `health`, `iot`, `leg`, `media`, `people`, `software`, `tech`) — the section title on `index.html` reads "Fourteen domains. One knowledge tree."
+
+Of those, **two** have no folder yet: `edu` and `iot`. (`fin`, `health` and `leg` were built out and are live — an earlier version of this doc listed them as empty.) Building out a card means: create `explainers/<domain>/index.html` hub, ship at least one Live leaf, then the root card becomes meaningful.
+
+`partners/` and `tools/` exist as folders but are deliberately not on the root grid.
 
 ## How leaves are built
 
@@ -90,6 +108,16 @@ Hubs (`explainers/<domain>/index.html` and sub-hubs) list their leaves as cards.
 - `hub-card` / `leaf-card` (with `soon` variant) — used by `biz`, `data`, `people`, `tech` (root)
 
 Both work; pick whichever the surrounding hub uses. **Stubs use the `soon` modifier**; flipping a stub to Live = swap `<div class="…-card soon">` for `<a href="…" class="…-card">`. After flipping, bump any "N Live" count in the hub heading and on the matching root domain card.
+
+Counts live in more than one place and drift independently — the sub-hub's own `hub-stat` / heading count, **and** the parent hub's card (e.g. `explainers/tech/index.html` carries a `13 apps · N live` badge for Frappe). Check both; the parent is the one that gets forgotten.
+
+### Current stub state (verified 2026-11-02)
+
+**54 stubs across 13 hubs**, not the ~107 an older note claimed. Largest backlogs: `tech/` root (8), `tech/frappe/` (3 cards left, but one is the archived Print Designer below — so 2 authorable), `biz/` (6), `people/` (5), `people/ai-roles/` (5), `construction/` (5), `media/` (4), `data/analytics/` (4), `data/warehousing/` (4). Note that `biz/erp/`, `biz/crm/`, `biz/hr/`, `design/`, `software/`, `agents/`, `fin/`, `leg/`, `tools/` and most `tech/*` sub-hubs have **zero** stubs — a backlog instruction that says "biz/erp first" has nothing to act on there.
+
+### The `Archived` state
+
+`tech/frappe/print-designer` uses a third state: `svc-state stub` with the label **`Archived`**. Upstream `frappe/print_designer` is archived and no longer maintained — the repo directs users to the Print Format Editor built into Frappe from v16. The card is kept as a signpost so nobody adopts it by accident. **Do not author a leaf for it.** Use the same pattern for any other upstream project that dies: keep the card, mark it `Archived`, say so in the description.
 
 ## Design system
 
