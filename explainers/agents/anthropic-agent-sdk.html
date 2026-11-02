@@ -422,7 +422,7 @@ main = Agent(
     </div>
     <div class="info-card green fade-up" style="transition-delay: 0.09s">
       <h4>FX cost reality</h4>
-      <p>Claude is USD-billed and not cheap at frontier tier. Opus 4.7 input tokens are billed at frontier-tier rates; output tokens cost ~5x input; extended thinking burns thinking-tokens at the same rate as output. For SA studios watching FX, the practical path is: <strong>Sonnet 4.6 as the default</strong> (much cheaper than Opus, very close in quality), promote to Opus only for hard reasoning, use Haiku 4.5 for high-volume routing tasks. The SDK supports this routing trivially &mdash; sub-agents can run on different model tiers.</p>
+      <p>Claude is USD-billed. Output tokens cost 5&times; input, and thinking tokens are billed at the output rate &mdash; so on reasoning-heavy agents the thinking budget, not the prompt, is usually what moves the invoice. The tiering advice has changed with the Claude 5.x generation and is worth re-reading if you set your routing up a year ago: <strong>Opus 5.5 is now the sensible default</strong> at <code>$4 / $20</code> per million tokens, cheaper than the Opus it replaces and cheaper per output token than the old Sonnet default. Drop to <strong>Sonnet 5.5</strong> (<code>$2 / $10</code>) where latency matters more than depth, and <strong>Haiku 5.5</strong> for high-volume routing and extraction. The SDK supports this routing trivially &mdash; sub-agents can run on different model tiers. Rates verified 2 November 2026; see the <a href="./claude.html">Claude leaf</a> for the full table and the Haiku long-prompt caveat.</p>
     </div>
   </div>
 </section>
