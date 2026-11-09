@@ -35,7 +35,7 @@
   <div class="hero-eyebrow fade-up"><span class="dot"></span> Technology &middot; Cloudflare &middot; Skill Node</div>
   <h1 class="fade-up" style="transition-delay:0.05s">Cloudflare<br><span class="gradient">D1.</span></h1>
   <p class="hero-sub fade-up" style="transition-delay:0.1s">SQLite at the edge. Real SQL, real migrations, real constraints &mdash; including the honest ones. Single-primary, eventually consistent reads, and the question of whether SQLite is enough for your workload.</p>
-  <div class="hero-meta fade-up" style="transition-delay:0.15s"><span class="pill accent">Technology</span><span class="pill">Edge Database</span><span class="pill">Open Tier</span><span class="pill">Last updated &middot; Apr 2026</span></div>
+  <div class="hero-meta fade-up" style="transition-delay:0.15s"><span class="pill accent">Technology</span><span class="pill">Edge Database</span><span class="pill">Open Tier</span><span class="pill">Last updated &middot; Nov 2026</span></div>
 </div></section>
 
 <section id="what"><div class="container">
@@ -114,7 +114,7 @@ npx wrangler d1 migrations apply prod --remote</pre>
   <div class="fade-up"><div class="section-label">03 &middot; Gotchas</div><h2 class="section-title">Where it bites you.</h2></div>
   <div class="gotcha-grid fade-up" style="transition-delay:0.05s">
     <div class="gotcha"><span class="tag">Write latency</span><h4>Single-primary means writes cross the ocean</h4><p>If your primary is in the US and your user is in Johannesburg, every write is a 200ms+ round trip. Read replicas help reads but don't fix write latency.</p></div>
-    <div class="gotcha"><span class="tag">Size limits</span><h4>10 GB per database</h4><p>D1 is not for large datasets. If you're approaching the limit, either archive old data to R2 or use Hyperdrive to a proper Postgres.</p></div>
+    <div class="gotcha"><span class="tag">Size limits</span><h4>10 GB per database &mdash; but 500 MB on the Free plan</h4><p>The 10&nbsp;GB ceiling everyone quotes is the Workers Paid figure. On the Free plan a single database caps at 500&nbsp;MB and the whole account at 5&nbsp;GB, which is the one that surprises people mid-prototype. Paid accounts get 1&nbsp;TB across all databases. If you're approaching the per-database limit, either archive old data to R2, shard into several databases, or use Hyperdrive to a proper Postgres.</p></div>
     <div class="gotcha"><span class="tag">No stored procedures</span><h4>It's SQLite, not Postgres</h4><p>No PL/pgSQL, no triggers (beyond basic SQLite triggers), no custom functions. Complex business logic stays in your Worker code.</p></div>
     <div class="gotcha"><span class="tag">Concurrent writes</span><h4>Single-writer model</h4><p>Only one write can execute at a time on the primary. High-write-throughput workloads will queue. This is a SQLite limitation, not a Cloudflare one.</p></div>
   </div>
@@ -125,7 +125,7 @@ npx wrangler d1 migrations apply prod --remote</pre>
   <div class="decide fade-up" style="transition-delay:0.05s">
     <div class="decide-col use"><div class="decide-head">&#10003; Use it when</div><ul>
       <li><strong>You need relational data with zero ops.</strong> No connection strings, no patching, no scaling knobs. It just works.</li>
-      <li><strong>Your dataset fits in SQLite's envelope.</strong> Under 10 GB, moderate write volume, standard SQL queries.</li>
+      <li><strong>Your dataset fits in SQLite's envelope.</strong> Under 10 GB on Paid (500 MB on Free), moderate write volume, standard SQL queries.</li>
       <li><strong>You want the full Cloudflare binding model.</strong> D1 pairs naturally with Workers, KV, R2, and Queues in the same wrangler.toml.</li>
     </ul></div>
     <div class="decide-col skip"><div class="decide-head">&#10007; Skip it when</div><ul>

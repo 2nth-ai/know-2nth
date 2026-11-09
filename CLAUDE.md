@@ -8,7 +8,12 @@ Sibling sites in the ecosystem:
 - **2nth.ai** — framework / GTM site (Human + AI = 2ⁿ)
 - **dev.2nth.ai** — partner / Gridline / openBUILD AI source content (Construction domain pulls from here)
 - **2nth.io** — compute infrastructure layer
+- **2nth.me** — personal / practitioner surface
+- **2nth.org** — non-profit / community surface
+- **pay.2nth.ai** — payments surface
 - **imbila.ai** — parent consultancy brand
+
+Leaves here are source material the other properties draw on, so accuracy and voice matter beyond this site.
 
 ### Related repos that are NOT this one
 
@@ -43,26 +48,42 @@ Sibling sites in the ecosystem:
 ```
 know-2nth/
 ├── CLAUDE.md
-├── index.html                # root: 12 top-level domain cards
+├── index.html                # root: 14 top-level domain cards
 ├── about.html                # access model + how the site works
 ├── join.html                 # "Stay in touch" lead capture → 2nth CRM (crm-form.js)
+├── ask.html                  # "Ask Vinci" — on-site grounded assistant (Workers AI + Vectorize)
 ├── gate.js                   # tier-gate hook, loaded on every leaf, currently inert
 ├── og-image.jpg              # 1200×630 OG / Twitter card
 ├── og-image.svg              # source for the OG image
 ├── _redirects                # Cloudflare Pages redirects
-├── google-adk-explainer.md   # canonical source markdown for ADK leaf (PR #17)
+├── wrangler.toml             # Pages / Functions config
+├── *-explainer.md            # canonical source markdown for specific leaves (ADK, Antigravity, …)
+├── briefings/                # CEO / CTO briefings (indexed alongside leaves)
+├── diagrams/                 # standalone interactive diagrams
+├── lab/                      # experiments, not part of the tree proper
+├── claude/                   # agent-facing material
+├── functions/                # Cloudflare Pages Functions (agent-fetch converter, MCP server)
+├── scripts/                  # gen-agent-index.mjs
 └── explainers/
     ├── agents/        # Frameworks, Protocols, Models, Inference (the strategic priority)
-    ├── biz/           # ERP, CRM, HR — has erp/ and crm/ sub-hubs
+    ├── biz/           # has bpm/, crm/, ecm/, erp/, hr/ sub-hubs
     ├── construction/  # openBIM + Gridline / openBUILD AI partner-anchored
     ├── data/          # analytics/, warehousing/, engineering/ sub-hubs
     ├── design/        # tokens, components, motion, AI-assisted design
+    ├── fin/           # financial services
+    ├── health/        # private practice management + ambient AI scribes
+    ├── leg/           # SA law for the AI era — employment, commercial, disputes, IP
+    ├── media/         # voice, TTS, STT, generative media
     ├── partners/      # co-branded leaves (no hub yet, not on root grid)
-    ├── people/        # coaching, leadership, typologies/
-    └── tech/          # cloudflare/, google/, microsoft/, frappe/, runtime/, android-hce/, embedded/, frameworks/
+    ├── people/        # coaching, leadership, ai-roles/, typologies/
+    ├── software/      # engineering practice — SDD, waterfall, TypeScript, case studies
+    ├── tech/          # android-hce/, cloudflare/, embedded/, frameworks/, frappe/, game-engines/, google/, hardware/, microsoft/, oracle/, runtime/
+    └── tools/         # runtime / architecture decision leaves (not on root grid)
 ```
 
-Five additional domains exist on the root grid as cards but have **no folder yet**: `edu`, `fin`, `health`, `iot`, `leg`. Building any of them out means: create `explainers/<domain>/index.html` hub, ship at least one Live leaf, then the root card becomes meaningful.
+Two domains exist on the root grid as cards but have **no folder yet**: `edu` and `iot`. (`fin`, `health` and `leg` were in this list historically — all three now have hubs and Live leaves.) Building one out means: create `explainers/<domain>/index.html` hub, ship at least one Live leaf, then the root card becomes meaningful.
+
+`tools/` and `partners/` are the reverse case — folders that exist but are deliberately not on the root grid.
 
 ## How leaves are built
 
@@ -86,10 +107,12 @@ Five additional domains exist on the root grid as cards but have **no folder yet
 
 Hubs (`explainers/<domain>/index.html` and sub-hubs) list their leaves as cards. Two patterns coexist:
 
-- `svc-card` / `svc-card soon` — used by `agents`, `tech/*`, `construction`, `design`
-- `hub-card` / `leaf-card` (with `soon` variant) — used by `biz`, `data`, `people`, `tech` (root)
+- `svc-card` / `svc-card soon` — used by `agents`, `tech/*`, `construction`, `design`, `media`, `data/analytics`, `data/warehousing`
+- `hub-card` / `leaf-card` (with `soon` variant) — used by `biz`, `data` (root), `people`, `tech` (root)
 
 Both work; pick whichever the surrounding hub uses. **Stubs use the `soon` modifier**; flipping a stub to Live = swap `<div class="…-card soon">` for `<a href="…" class="…-card">`. After flipping, bump any "N Live" count in the hub heading and on the matching root domain card.
+
+A stub card also carries a `<span class="svc-state stub">Stub</span>` badge that becomes `<span class="svc-state live">Live</span>` on flipping. Hub stat blocks (`.hub-stat .num`) and sub-hub summary badges (`N tools · N live`) both drift easily — check them against a file count rather than trusting them.
 
 ## Design system
 

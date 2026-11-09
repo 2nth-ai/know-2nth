@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DuckDB — know.2nth.ai</title>
+<meta name="description" content="DuckDB 2.0 LTS — the in-process analytical database. Columnar, vectorised, reads Parquet and CSV in place, runs inside your Python or Node process. Plus the honest read on the AWS acquisition.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/data/warehousing/duckdb">
+<meta property="og:title" content="DuckDB — know.2nth.ai">
+<meta property="og:description" content="DuckDB 2.0 LTS — the in-process analytical database. Columnar, vectorised, reads Parquet and CSV in place, runs inside your Python or Node process. Plus the honest read on the AWS acquisition.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai — The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="DuckDB — know.2nth.ai">
+<meta name="twitter:description" content="DuckDB 2.0 LTS — the in-process analytical database. Columnar, vectorised, reads Parquet and CSV in place, runs inside your Python or Node process. Plus the honest read on the AWS acquisition.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3Cline x1='16' y1='3' x2='16' y2='7' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='16' y1='25' x2='16' y2='29' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='3' y1='16' x2='7' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='25' y1='16' x2='29' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33;
+    --blue: #2563EB; --blue-glow: #3B82F6;
+    --sky: #38BDF8; --sky-muted: #7DD3FC;
+    --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8;
+    --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12);
+    --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12);
+    --violet: #8B5CF6; --violet-soft: rgba(139, 92, 246, 0.12);
+    --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12);
+    --bg: var(--ink); --bg-raised: var(--navy);
+    --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(56, 189, 248, 0.06);
+    --text-primary: var(--paper); --text-secondary: var(--slate);
+    --text-muted: #64748B;
+    --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(56, 189, 248, 0.3);
+    --max-w: 1200px; --read-w: 760px;
+    --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px;
+  }
+  [data-theme="light"] {
+    --bg: #F1F5F9; --bg-raised: #FFFFFF;
+    --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(56, 189, 248, 0.04);
+    --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8;
+    --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(56, 189, 248, 0.25);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+    background: var(--bg); color: var(--text-primary);
+    line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased;
+  }
+  body::before {
+    content: ''; position: fixed; inset: 0; opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 9999;
+  }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.sky { width: 600px; height: 600px; background: var(--sky); top: -200px; right: -100px; }
+  .glow-orb.blue { width: 500px; height: 500px; background: var(--blue); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+
+  nav {
+    position: sticky; top: 0; z-index: 100; padding: 0 24px;
+    backdrop-filter: blur(20px) saturate(1.4);
+    background: rgba(11, 17, 32, 0.75);
+    border-bottom: 1px solid var(--border);
+  }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner {
+    max-width: var(--max-w); margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 60px;
+  }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark {
+    font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px;
+    background: linear-gradient(135deg, var(--blue), var(--sky));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+  }
+  .nav-brand-sub {
+    font-size: 12px; color: var(--text-muted);
+    letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500;
+    padding-left: 10px; border-left: 1px solid var(--border);
+  }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--sky); }
+  .theme-toggle {
+    background: none; border: 1px solid var(--border); color: var(--text-secondary);
+    width: 36px; height: 36px; border-radius: 50%; cursor: pointer;
+    display: grid; place-items: center; font-size: 16px; transition: all 0.2s;
+  }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--sky); }
+
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .read { max-width: var(--read-w); }
+
+  .crumb {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted);
+    letter-spacing: 0.5px; padding: 28px 0 0;
+    display: flex; gap: 10px; flex-wrap: wrap;
+  }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--sky); }
+  .crumb-sep { opacity: 0.5; }
+  .crumb-current { color: var(--text-secondary); }
+
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500;
+    letter-spacing: 2px; text-transform: uppercase; color: var(--sky);
+    margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px;
+  }
+  .hero .eyebrow .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--sky); box-shadow: 0 0 12px var(--sky);
+  }
+  .hero h1 {
+    font-size: clamp(40px, 6vw, 66px); font-weight: 800;
+    line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 14ch;
+  }
+  .hero h1 .gradient {
+    background: linear-gradient(135deg, var(--sky), var(--sky-muted), var(--blue-glow));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500;
+    padding: 6px 14px; border-radius: var(--radius-pill);
+    border: 1px solid var(--border); color: var(--text-secondary);
+    letter-spacing: 0.5px;
+  }
+  .pill.accent { background: rgba(56, 189, 248, 0.12); color: var(--sky); border-color: rgba(56, 189, 248, 0.25); }
+
+  section { padding: 52px 0; position: relative; }
+  .section-label {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500;
+    letter-spacing: 2px; text-transform: uppercase; color: var(--sky);
+    margin-bottom: 14px;
+  }
+  .section-title {
+    font-size: clamp(26px, 3.4vw, 36px); font-weight: 700;
+    letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2;
+  }
+  .section-lede {
+    font-size: 16px; color: var(--text-secondary); max-width: var(--read-w);
+    line-height: 1.75; font-weight: 300; margin-bottom: 32px;
+  }
+  .prose p {
+    font-size: 16px; color: var(--text-secondary); line-height: 1.75;
+    max-width: var(--read-w); margin-bottom: 18px;
+  }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.88em;
+    background: var(--bg-card); border: 1px solid var(--border);
+    padding: 1px 6px; border-radius: 4px; color: var(--sky);
+  }
+
+  pre.code {
+    background: var(--ink-deep); border: 1px solid var(--border);
+    border-radius: var(--radius-md); padding: 20px 22px;
+    overflow-x: auto; font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px; line-height: 1.65; color: var(--mist);
+    margin: 0 0 20px; max-width: var(--read-w);
+  }
+  [data-theme="light"] pre.code { background: #0F172A; color: #E2E8F0; }
+  pre.code .k { color: var(--sky); }
+  pre.code .s { color: #A5F3B8; }
+  pre.code .c { color: var(--text-muted); font-style: italic; }
+  pre.code .n { color: #FCD34D; }
+
+  .info-card {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-lg);
+    padding: 28px 32px; max-width: var(--read-w);
+    margin-bottom: 20px;
+  }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+
+  .compare-wrap {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-lg);
+    overflow: hidden; max-width: var(--read-w);
+    margin-bottom: 20px;
+  }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td {
+    padding: 12px 16px; text-align: left;
+    border-bottom: 1px solid var(--border); vertical-align: top;
+  }
+  .compare thead th {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600;
+    letter-spacing: 1.2px; text-transform: uppercase; color: var(--sky);
+    background: rgba(56, 189, 248, 0.04);
+  }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); }
+  .compare td code {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.9em;
+    color: var(--sky);
+  }
+
+  .gotcha-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 12px;
+  }
+  .gotcha {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-left: 3px solid var(--rose);
+    border-radius: var(--radius-md);
+    padding: 18px 22px;
+  }
+  .gotcha strong { display: block; color: var(--text-primary); font-weight: 600; font-size: 14px; margin-bottom: 6px; }
+  .gotcha p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+  .connect-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 12px;
+  }
+  .connect-node {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    padding: 18px 22px; transition: all 0.3s;
+    text-decoration: none; color: inherit; display: block;
+  }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node.soon { cursor: default; opacity: 0.72; }
+  .connect-node.soon:hover { border-color: var(--border); background: var(--bg-card); }
+  .connect-node .tag {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    letter-spacing: 1px; text-transform: uppercase;
+    color: var(--text-muted); display: block; margin-bottom: 6px;
+  }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+
+  .resource-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 12px;
+  }
+  .resource {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    padding: 18px 22px; text-decoration: none; transition: all 0.3s;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--sky); word-break: break-all; }
+
+  /* Decision split */
+  .decision-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+    max-width: var(--read-w);
+  }
+  @media (max-width: 720px) { .decision-grid { grid-template-columns: 1fr; } }
+  .decision-card {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    padding: 22px 24px;
+  }
+  .decision-card.use { border-left: 3px solid var(--green); }
+  .decision-card.skip { border-left: 3px solid var(--rose); }
+  .decision-card h4 {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .decision-card.use h4 { color: var(--green); }
+  .decision-card.skip h4 { color: var(--rose); }
+  .decision-card ul { list-style: none; padding: 0; }
+  .decision-card li {
+    font-size: 13px; color: var(--text-secondary); line-height: 1.6;
+    padding: 6px 0; border-bottom: 1px solid var(--border);
+  }
+  .decision-card li:last-child { border-bottom: none; }
+
+  footer {
+    padding: 60px 0 40px; border-top: 1px solid var(--border);
+    text-align: center; margin-top: 40px;
+  }
+  .footer-brand {
+    font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600;
+    background: linear-gradient(135deg, var(--blue), var(--sky));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+  }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--sky); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+
+  .fade-up {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 768px) {
+    .nav-brand-sub { display: none; }
+    .nav-link { display: none; }
+    pre.code { font-size: 11px; padding: 14px 16px; }
+    .compare { font-size: 12px; }
+    .compare th, .compare td { padding: 10px 12px; }
+  }
+
+  *, *::before, *::after {
+    transition-property: background-color, border-color, color, box-shadow;
+    transition-duration: 0.3s; transition-timing-function: ease;
+  }
+</style>
+<body>
+
+<div class="glow-orb sky"></div>
+<div class="glow-orb blue"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../../index.html" class="nav-brand">
+      <span class="nav-brand-mark">know.2nth.ai</span>
+      <span class="nav-brand-sub">data/warehousing/duckdb</span>
+    </a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">← Warehousing</a>
+      <a href="../../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">🌙</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">›</span>
+    <a href="../../../index.html#domains">Data</a>
+    <span class="crumb-sep">›</span>
+    <a href="../">data</a>
+    <span class="crumb-sep">›</span>
+    <a href="./">warehousing</a>
+    <span class="crumb-sep">›</span>
+    <span class="crumb-current">duckdb</span>
+  </div>
+</div>
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> data/warehousing · DuckDB · Skill Leaf</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      The warehouse that<br><span class="gradient">runs inside your process.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      DuckDB 2.0 LTS — an analytical database with no server, no port and no cluster. It links into your Python, Node or CLI process, reads Parquet and CSV where they already sit, and answers analytical SQL over them at a speed that makes most small warehouses look like overhead.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill accent">Live</span>
+      <span class="pill">MIT License</span>
+      <span class="pill">v2.0 LTS</span>
+      <span class="pill">In-process</span>
+      <span class="pill">Columnar</span>
+      <span class="pill">Last updated · Nov 2026</span>
+    </div>
+  </div>
+</section>
+
+<!-- ── 01 WHAT IT IS ── -->
+<section id="what">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 · What it is</div>
+      <h2 class="section-title">SQLite's shape, OLAP's engine.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>DuckDB is an <strong>in-process analytical database</strong>. The comparison everyone reaches for is SQLite, and on deployment shape it's exact: one library, linked into your application, no daemon to run, no credentials to manage, the whole database in a single file or purely in memory. Where it diverges is the engine underneath. SQLite stores rows and is built to fetch a few of them quickly. DuckDB stores columns and is built to scan all of them — vectorised execution, compressed columnar storage, a query optimiser that expects aggregations over millions of rows rather than point lookups by primary key.</p>
+      <p>That combination solves a problem most data teams have and few name: the analytical workload that is too big for pandas to hold comfortably and far too small to justify a warehouse. A 4&nbsp;GB Parquet export, a month of transaction logs, a client's entire general ledger. The traditional answer was to provision something — a Postgres with enough RAM, a BigQuery dataset, a Snowflake trial — and then own it. DuckDB's answer is <code>pip install duckdb</code> and a SQL string.</p>
+      <p>The second thing it does, and arguably the more useful one, is <strong>query files in place</strong>. You don't load data into DuckDB to query it. You point SQL at a Parquet file, a directory of Parquet files, a CSV, a JSON file, an S3 or R2 bucket, or a pandas DataFrame sitting in the same process, and it reads what the query needs and ignores the rest. There is no ingestion step to build and no copy of the data to keep in sync.</p>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.08s">
+      <h4>Where this sits against the other warehousing leaves</h4>
+      <p>PostgreSQL is the default for anything transactional and holds up fine for light analytics. ClickHouse is where you go when analytical queries have to serve concurrent users at scale, continuously. DuckDB is the one that isn't a service at all — it is a library you call, which makes it the right tool for notebooks, ETL steps, CI jobs, CLI tools and agent workloads, and the wrong tool for anything multiple clients need to connect to at once.</p>
+      <p>In practice these compose rather than compete: DuckDB reads the Parquet that a pipeline wrote, transforms it, and hands the result to Postgres or to a dashboard. It is frequently the compute in a stack that has no other compute.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── 02 HOW IT WORKS ── -->
+<section id="how">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 · How it works</div>
+      <h2 class="section-title">Point SQL at the files. There is no step one.</h2>
+      <p class="section-lede">Four patterns cover most of what DuckDB gets used for. None of them involve provisioning anything.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>The API surface is deliberately small. In Python you get a connection object; in Node, Rust, Go, Java and R you get the equivalent; from the shell you get a CLI that reads SQL on stdin. All of them drive the same engine with the same SQL dialect, which is close enough to PostgreSQL's that most queries move across unchanged.</p>
+    </div>
+    <pre class="code fade-up" style="transition-delay: 0.08s"><span class="c"># 01 · Query a Parquet file with no ingestion step</span>
+<span class="k">import</span> duckdb
+duckdb.sql(<span class="s">"""
+  SELECT branch, sum(amount_zar) AS total
+  FROM 'exports/ledger_2026_*.parquet'
+  WHERE posted_at >= '2026-07-01'
+  GROUP BY branch ORDER BY total DESC
+"""</span>).show()
+
+<span class="c"># 02 · Query a DataFrame already in this process — zero copy</span>
+<span class="k">import</span> pandas <span class="k">as</span> pd
+df = pd.read_csv(<span class="s">"debtors.csv"</span>)
+duckdb.sql(<span class="s">"SELECT account, days_overdue FROM df WHERE days_overdue > 90"</span>)
+
+<span class="c"># 03 · Read straight off object storage (R2, S3, GCS)</span>
+duckdb.sql(<span class="s">"""
+  INSTALL httpfs; LOAD httpfs;
+  SET s3_endpoint = 'ACCOUNT.r2.cloudflarestorage.com';
+  SELECT count(*) FROM read_parquet('s3://warehouse/events/**/*.parquet')
+"""</span>)
+
+<span class="c"># 04 · Persist to a file when you want the database to outlive the process</span>
+con = duckdb.connect(<span class="s">"analytics.duckdb"</span>)
+con.sql(<span class="s">"CREATE TABLE ledger AS SELECT * FROM 'exports/*.parquet'"</span>)</pre>
+    <div class="prose fade-up" style="transition-delay: 0.1s">
+      <p><strong>What 2.0 changed.</strong> The 1.0 release in 2024 was about stability and a backwards-compatible storage format; 2.0, released 21 October 2026 as <em>Cinnamon Teal</em>, is explicitly a feature release with LTS support stated through at least October 2027. The two changes that matter operationally are <strong>asynchronous I/O</strong> for Parquet, CSV and the native storage format — which is what makes reading from object storage over a slow link tolerable rather than painful — and full integration of the <strong>VARIANT</strong> type introduced in 1.5, for semi-structured data that doesn't have one fixed schema. The 1.5 line also added a native <code>GEOMETRY</code> type and the <strong>Quack</strong> client-server protocol as a core extension, which is the closest DuckDB comes to being something you connect to over a network. Building from source now needs a C++17 compiler.</p>
+      <p><strong>DuckLake.</strong> Alongside 1.5.2 the project shipped DuckLake 1.0, a lakehouse specification with a reference implementation: table formats and metadata in a catalogue database rather than in a pile of manifest files. If you have been weighing Iceberg or Delta Lake for a small estate, this is the lighter-weight third option, and it is from the same project rather than bolted on.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── 03 THE AWS QUESTION ── -->
+<section id="governance">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 · The AWS question</div>
+      <h2 class="section-title">Amazon bought the company. It did not buy the database.</h2>
+      <p class="section-lede">This is the first thing anyone asks about DuckDB now, and the honest answer has more than one part to it.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>On 26 August 2026 Amazon signed a definitive agreement to acquire <strong>DuckLabs</strong>, the company behind DuckDB, which becomes a wholly owned subsidiary. AWS stated plainly that it is not acquiring the open-source project. The core IP and the trademarks for DuckDB, DuckLake and Quack sit with the independent non-profit foundation, and all three remain under the MIT licence — which, unlike AGPL or SSPL, imposes nothing on you downstream and cannot be retroactively narrowed on code already released.</p>
+      <p>So the licence risk that killed confidence in other projects after an acquisition is genuinely not the risk here. What remains is <strong>roadmap influence</strong>, and that is a real thing rather than a hypothetical. Most of the core committers now draw an Amazon salary. The foundation has not finished settling its voting rights and governance structure, and is reportedly considering a technical advisory board to give outside companies a formal channel to the roadmap. Commentary that two of the foundation's three board seats are now held by Amazon employees has circulated but we have not been able to confirm it against a primary source, so treat it as unverified.</p>
+      <p>Our read, stated as a position rather than a fact: the MIT licence means a bad outcome is forkable, and a project this widely embedded would be forked. The thing worth watching is not the licence but whether features that serve AWS's managed-service interests get priority over features that serve people running DuckDB inside their own processes. That is a question you answer by watching release notes over the next year, not by reading the acquisition announcement.</p>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.08s">
+      <h4>What this means if you're recommending DuckDB to a client right now</h4>
+      <p>It does not change the recommendation for the workloads below. DuckDB in an ETL step, a notebook or a CLI tool is a library dependency pinned to a version, under a permissive licence, with an LTS line supported into late 2027. The acquisition does not reach into a build like that. Where it should make you pause is a decision to standardise an organisation's whole analytical layer on DuckLake — a younger specification whose governance is genuinely unsettled — when Iceberg has broader multi-vendor backing.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── 04 USE CASES ── -->
+<section id="use-cases">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 · Where it earns its place</div>
+      <h2 class="section-title">The jobs it does better than anything else.</h2>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead><tr><th>Job</th><th>Why DuckDB and not the obvious alternative</th></tr></thead>
+        <tbody>
+          <tr><td><strong>The transform step in a pipeline</strong></td><td>Replaces a pile of pandas with SQL that doesn't need the whole dataset in RAM, and doesn't need a warehouse to run the transform in. Reads Parquet, writes Parquet.</td></tr>
+          <tr><td><strong>Analysis in a notebook</strong></td><td>Queries DataFrames in place with no copy, so you can mix SQL and Python without serialising between them. Handles files larger than memory, which pandas does not.</td></tr>
+          <tr><td><strong>Interrogating a client's data export</strong></td><td>A 3&nbsp;GB CSV dump arrives. You need answers today, not a loading pipeline. This is the single most common reason we reach for it.</td></tr>
+          <tr><td><strong>Tests and CI</strong></td><td>A real analytical engine with no service to start in the test harness. Spin it up in memory, assert on the result, throw it away.</td></tr>
+          <tr><td><strong>Agent and tool-calling workloads</strong></td><td>An agent that needs to answer questions over a dataset can be handed a DuckDB connection instead of warehouse credentials. No network, no quota, no cost per query, nothing to leak.</td></tr>
+          <tr><td><strong>Querying object storage directly</strong></td><td>With <code>httpfs</code>, a Parquet lake on R2 or S3 becomes queryable without a query service in front of it. 2.0's async I/O is what makes this practical on an ordinary connection.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ── 05 SA CONTEXT ── -->
+<section id="sa">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 · SA context</div>
+      <h2 class="section-title">Why this one lands particularly well locally.</h2>
+      <p class="section-lede">Three South African constraints — FX exposure, data residency, and bandwidth — all push in DuckDB's favour.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p><strong>No dollar line item.</strong> The warehousing conversation in South Africa usually stalls on the same thing: the tool is priced in dollars, billed monthly, and the rand moves. A client who approved a budget at one exchange rate is looking at a different number two quarters later, and nobody enjoys that meeting. DuckDB has no per-query cost, no per-seat cost and no subscription, so the analytical layer stops being an FX-exposed operating expense. The compute is whatever machine you were already paying for.</p>
+      <p><strong>POPIA and data residency, simplified.</strong> Because DuckDB runs in your process, personal information does not leave the host it is already on. There is no vendor to assess as an operator, no cross-border transfer to justify under POPIA's section 72, and no data-processing agreement to negotiate. For analysis over personal information — HR data, patient records, debtor books — that is a materially shorter compliance path than sending the same data to a warehouse in another jurisdiction. The obligation that remains is the ordinary one: the host it runs on is still processing personal information and still needs the appropriate security safeguards.</p>
+      <p><strong>Bandwidth is a real constraint, and columnar helps.</strong> Reading Parquet off object storage transfers only the columns and row groups a query touches. On a connection where moving a full dataset is slow or metered, that projection pushdown is not an optimisation detail — it is the difference between a workable pattern and an unworkable one. Pair it with an R2 bucket for zero egress fees and the data-movement cost of the whole arrangement approaches nothing.</p>
+      <p><strong>Load shedding.</strong> An in-process database has no daemon to come back up and no connection pool to re-establish. A job that was interrupted is simply re-run. Keep the source data as files on durable storage and treat the <code>.duckdb</code> file as derived — rebuildable rather than precious — and an outage costs you one re-run rather than a recovery procedure.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── 06 GOTCHAS ── -->
+<section id="gotchas">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 · Gotchas</div>
+      <h2 class="section-title">Things that only bite once you ship.</h2>
+      <p class="section-lede">Most of these come from treating an in-process library as though it were a database server.</p>
+    </div>
+    <div class="gotcha-list fade-up" style="transition-delay: 0.05s">
+      <div class="gotcha">
+        <strong>One writer. That's the whole concurrency model.</strong>
+        <p>A DuckDB file permits a single process with write access at a time. Multiple readers are fine; two services both writing is not a configuration you can tune your way into. If more than one process needs to write, you need a database server — this is the single most common reason a DuckDB build has to be replaced later.</p>
+      </div>
+      <div class="gotcha">
+        <strong>It is not a web application's database</strong>
+        <p>No network listener, no users, no roles, no grants. The Quack protocol gives you a client-server option, but the engine's design centre is still one process doing analysis, not many clients doing concurrent reads and writes. Use PostgreSQL for the application and DuckDB for the analysis over its exports.</p>
+      </div>
+      <div class="gotcha">
+        <strong>Memory is still finite</strong>
+        <p>"Handles data larger than memory" is true — it spills to disk — but a query that spills runs at disk speed, not RAM speed. Set <code>memory_limit</code> and <code>temp_directory</code> explicitly in any job that runs unattended, or an oversized join will consume the host rather than fail politely.</p>
+      </div>
+      <div class="gotcha">
+        <strong>The storage format is stable now, but check on upgrade</strong>
+        <p>Backwards compatibility has been a commitment since 1.0 and 2.0 is an LTS line, which is a far better position than the pre-1.0 years when files did not survive upgrades. Still: pin the version in production jobs, and read the release notes before moving a persisted <code>.duckdb</code> file across a major version.</p>
+      </div>
+      <div class="gotcha">
+        <strong>Extensions are a runtime dependency</strong>
+        <p><code>INSTALL httpfs</code> fetches from the internet on first use. In a locked-down container or an air-gapped environment that call fails at the worst moment. Bundle the extensions into the image, or use a build that ships them statically.</p>
+      </div>
+      <div class="gotcha">
+        <strong>SQL that looks like Postgres isn't always Postgres</strong>
+        <p>The dialect is close enough that most queries port directly, which is exactly why the differences surprise people. Window-function edge cases, type coercion and some date arithmetic behave differently. Test ported queries against known results rather than assuming equivalence.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 07 DECISION ── -->
+<section id="decision">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 · Decision guide</div>
+      <h2 class="section-title">Use it for, skip it for.</h2>
+      <p class="section-lede">DuckDB is an unusually easy yes inside its envelope and an unusually clear no outside it. The boundary is concurrency.</p>
+    </div>
+    <div class="decision-grid fade-up" style="transition-delay: 0.05s">
+      <div class="decision-card use">
+        <h4>Use DuckDB when</h4>
+        <ul>
+          <li>The analytical work happens in one process — an ETL step, a notebook, a CLI tool, a scheduled job, a test.</li>
+          <li>The data is files: Parquet, CSV or JSON, locally or on R2 / S3 / GCS, and you'd rather query them than load them.</li>
+          <li>The dataset is bigger than pandas is comfortable with and smaller than a warehouse is worth — roughly single-digit GB to a few hundred GB.</li>
+          <li>Personal information must not leave the host, and you want the shortest POPIA path available.</li>
+          <li>You want no dollar-denominated subscription in the analytical layer.</li>
+          <li>An agent needs to answer questions over a dataset without being handed warehouse credentials.</li>
+        </ul>
+      </div>
+      <div class="decision-card skip">
+        <h4>Skip DuckDB when</h4>
+        <ul>
+          <li><strong>More than one process needs to write.</strong> This is the hard boundary, not a tuning problem. Use PostgreSQL or ClickHouse.</li>
+          <li>It is backing an application — you need users, roles, grants and a network listener. That is PostgreSQL's job.</li>
+          <li>Many people need to hit the same dataset concurrently through a BI tool. ClickHouse is built for that shape; DuckDB is not.</li>
+          <li>The data genuinely runs to tens of terabytes with queries over all of it. At that point the specialist warehouses earn their cost.</li>
+          <li>You need streaming ingestion with sub-second freshness. DuckDB has no ingestion service to stream into.</li>
+          <li>Your organisation's policy requires a vendor with a support contract behind the analytical engine. A foundation-governed MIT project may not clear that bar, whatever its technical merits.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 08 2ⁿ PERSPECTIVE ── -->
+<section id="perspective">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 · 2ⁿ Perspective</div>
+      <h2 class="section-title">How this leaf compounds in the tree.</h2>
+      <p class="section-lede">DuckDB is the piece that lets an analytical layer exist before anyone has approved a warehouse. That changes the order you can do things in.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>The usual sequence is: decide on a warehouse, provision it, build the pipeline, then finally find out what the data actually says. DuckDB inverts it. You can answer the analytical questions first — against the exports you already have — and only then decide whether any of it justifies a warehouse. A good share of the time it doesn't, and the honest outcome is a scheduled job writing Parquet with DuckDB doing the compute.</p>
+      <p>It also changes what you can hand an agent. A warehouse connection given to an agent is a standing credential against a billable service with a blast radius. A DuckDB file is a read-only artefact: no network, no quota, no cost per query, and nothing that leaks if the agent misbehaves. For the analytical half of agent work that is a far better-shaped primitive, and it is why this leaf sits upstream of the agent nodes as well as the data ones.</p>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.08s">
+      <a href="postgresql.html" class="connect-node">
+        <span class="tag">data/warehousing/postgresql</span>
+        <div class="skill">PostgreSQL</div>
+        <div class="why">The transactional counterpart. Postgres owns the application's state; DuckDB analyses its exports. The pairing covers most builds without a warehouse between them.</div>
+      </a>
+      <a href="clickhouse.html" class="connect-node">
+        <span class="tag">data/warehousing/clickhouse</span>
+        <div class="skill">ClickHouse</div>
+        <div class="why">The same columnar idea as a service rather than a library. When analytical queries must serve many concurrent users continuously, this is the leaf to read next.</div>
+      </a>
+      <a href="../analytics/superset.html" class="connect-node">
+        <span class="tag">data/analytics/superset</span>
+        <div class="skill">Apache Superset</div>
+        <div class="why">The dashboard layer over whatever DuckDB produces. In practice DuckDB writes the aggregate tables and Superset reads them from Postgres.</div>
+      </a>
+      <a href="../../tech/cloudflare/r2.html" class="connect-node">
+        <span class="tag">tech/cloudflare/r2</span>
+        <div class="skill">Cloudflare R2</div>
+        <div class="why">Zero-egress object storage is the natural home for a Parquet lake that DuckDB queries over <code>httpfs</code>. The two together are an analytical stack with no per-query bill.</div>
+      </a>
+      <a href="../engineering/chonkie.html" class="connect-node">
+        <span class="tag">data/engineering/chonkie</span>
+        <div class="skill">Chonkie</div>
+        <div class="why">The other in-process data library in the tree. Same instinct: do the work inside your own process rather than provisioning a service for it.</div>
+      </a>
+      <a href="./" class="connect-node">
+        <span class="tag">data/warehousing</span>
+        <div class="skill">Warehousing sub-hub</div>
+        <div class="why">The parent sub-hub, where DuckDB occupies the no-server end of the spectrum.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── 09 RESOURCES ── -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">09 · Resources</div>
+      <h2 class="section-title">Go deeper.</h2>
+      <p class="section-lede">Primary sources only. The release announcements are the best record of what changed and when, and the foundation's own statement is the one to read on the acquisition.</p>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://duckdb.org" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Project home</span>
+        <span class="r-title">duckdb.org</span>
+        <span class="r-url">duckdb.org</span>
+      </a>
+      <a href="https://duckdb.org/docs/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs</span>
+        <span class="r-title">DuckDB documentation</span>
+        <span class="r-url">duckdb.org/docs</span>
+      </a>
+      <a href="https://duckdb.org/2026/10/21/announcing-duckdb-200" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Release</span>
+        <span class="r-title">Announcing DuckDB 2.0.0 LTS “Cinnamon Teal”</span>
+        <span class="r-url">duckdb.org/2026/10/21/announcing-duckdb-200</span>
+      </a>
+      <a href="https://duckdb.org/2026/03/09/announcing-duckdb-150" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Release</span>
+        <span class="r-title">Announcing DuckDB 1.5.0 — VARIANT and GEOMETRY</span>
+        <span class="r-url">duckdb.org/2026/03/09/announcing-duckdb-150</span>
+      </a>
+      <a href="https://duckdb.org/news/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Changelog</span>
+        <span class="r-title">DuckDB release notes and engineering blog</span>
+        <span class="r-url">duckdb.org/news</span>
+      </a>
+      <a href="https://github.com/duckdb/duckdb" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Source</span>
+        <span class="r-title">duckdb/duckdb — MIT licensed</span>
+        <span class="r-url">github.com/duckdb/duckdb</span>
+      </a>
+      <a href="https://ducklake.select" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Specification</span>
+        <span class="r-title">DuckLake — the lakehouse format</span>
+        <span class="r-url">ducklake.select</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../../index.html">Skills tree</a>
+      <a href="./">Warehousing sub-hub</a>
+      <a href="https://duckdb.org" target="_blank" rel="noopener">duckdb.org ↗</a>
+    </div>
+    <p class="footer-copy">© 2026 2nth.ai · Built in South Africa — Globally relevant</p>
+  </div>
+</footer>
+<script>
+  function toggleTheme() {
+    const html = document.documentElement;
+    const current = html.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
+    localStorage.setItem('theme', next);
+  }
+  const saved = localStorage.getItem('theme');
+  if (saved) {
+    document.documentElement.setAttribute('data-theme', saved);
+    document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '☀️' : '🌙';
+  }
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>

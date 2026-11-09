@@ -936,7 +936,7 @@
       <span class="pill accent">Technology</span>
       <span class="pill">Edge Compute</span>
       <span class="pill">Open Tier</span>
-      <span class="pill">Last updated · Apr 2026</span>
+      <span class="pill">Last updated · Nov 2026</span>
     </div>
   </div>
 </section>
@@ -1031,7 +1031,7 @@
           <span class="concept-num">01</span>
           <h3>V8 Isolates, not containers</h3>
         </div>
-        <p>Each Worker runs in a V8 isolate — the same primitive a Chrome tab uses. An isolate spins up in roughly a millisecond, shares a single V8 process with thousands of peers, and has no filesystem, no Node.js, no native modules. That's how you get sub-millisecond cold starts and per-request pricing. It's also why you can't `require('sharp')` or shell out to ImageMagick.</p>
+        <p>Each Worker runs in a V8 isolate — the same primitive a Chrome tab uses. An isolate spins up in roughly a millisecond, shares a single V8 process with thousands of peers, and has no filesystem and no native modules. That's how you get sub-millisecond cold starts and per-request pricing. It's also why you can't `require('sharp')` or shell out to ImageMagick. Node.js itself is less of a wall than it was: `nodejs_compat` covers a large slice of the built-in modules, and for any Worker with a compatibility date of 2026-08-04 or later it's on by default &mdash; so most npm packages that stick to `node:crypto`, `node:buffer`, `node:stream` or `node:path` now just work. Anything that wants the filesystem or a compiled binding still doesn't.</p>
         <pre><span class="tok-com">// Every request gets a fresh isolate context.</span>
 <span class="tok-com">// No container. No VM. No cold start.</span>
 <span class="tok-kw">export default</span> {

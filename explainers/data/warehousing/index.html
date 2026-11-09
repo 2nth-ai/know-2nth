@@ -329,7 +329,7 @@
     </p>
     <div class="hub-stats fade-up" style="transition-delay: 0.15s">
       <div class="hub-stat"><div class="num">5</div><div class="label">Databases</div></div>
-      <div class="hub-stat"><div class="num">1</div><div class="label">Live explainer</div></div>
+      <div class="hub-stat"><div class="num">3</div><div class="label">Live explainers</div></div>
     </div>
   </div>
 </section>
@@ -340,7 +340,7 @@
     <div class="fade-up">
       <div class="hub-label">01 · Databases</div>
       <h2 class="hub-title">The warehousing toolkit.</h2>
-      <p class="hub-lede">Five databases that cover different points on the OLTP-to-OLAP spectrum. PostgreSQL is live and is the default for new builds; the rest land as content ships.</p>
+      <p class="hub-lede">Five databases that cover different points on the OLTP-to-OLAP spectrum. PostgreSQL is the default for new builds; DuckDB covers analytical work with no server at all, and ClickHouse covers it as a service at scale. BigQuery and Snowflake land as content ships.</p>
     </div>
 
     <div class="svc-grid fade-up" style="transition-delay: 0.03s">
@@ -354,23 +354,23 @@
         <p>The default relational database. ACID, extensions (PostGIS, pgvector, TimescaleDB), JSON, full-text search. The warehouse Frappe, Superset, and most 2nth builds run on.</p>
       </a>
 
-      <div class="svc-card soon">
+      <a href="clickhouse.html" class="svc-card">
         <div class="svc-head">
           <div class="svc-name">ClickHouse</div>
-          <span class="svc-state stub">Stub</span>
+          <span class="svc-state live">Live</span>
         </div>
         <span class="svc-path">data/warehousing/clickhouse</span>
-        <p>Column-oriented OLAP for sub-second analytics on billions of rows. The engine of choice when PostgreSQL with materialized views isn't fast enough for the query shape.</p>
-      </div>
+        <p>Column-oriented OLAP for sub-second analytics on billions of rows, under concurrent load. MergeTree and the sorting key, ClickHouse Keeper, and the honest read on self-hosted versus Cloud &mdash; including the SharedMergeTree asymmetry that decides the lock-in.</p>
+      </a>
 
-      <div class="svc-card soon">
+      <a href="duckdb.html" class="svc-card">
         <div class="svc-head">
           <div class="svc-name">DuckDB</div>
-          <span class="svc-state stub">Stub</span>
+          <span class="svc-state live">Live</span>
         </div>
         <span class="svc-path">data/warehousing/duckdb</span>
-        <p>In-process analytical SQL. The SQLite of OLAP — no server, just a library. Runs inside Python scripts, dbt, notebooks, and Cloudflare Workers (WASM build).</p>
-      </div>
+        <p>In-process analytical SQL &mdash; SQLite's shape with a columnar engine. v2.0 LTS, queries Parquet and CSV where they sit, no server to run. Includes the honest read on Amazon's acquisition of DuckLabs.</p>
+      </a>
 
       <div class="svc-card soon">
         <div class="svc-head">

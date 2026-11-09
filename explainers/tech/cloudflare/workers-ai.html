@@ -35,14 +35,14 @@
   <div class="hero-eyebrow fade-up"><span class="dot"></span> Technology &middot; Cloudflare &middot; Skill Node</div>
   <h1 class="fade-up" style="transition-delay:0.05s">Workers<br><span class="gradient">AI.</span></h1>
   <p class="hero-sub fade-up" style="transition-delay:0.1s">Edge inference across a catalogue of open models &mdash; LLMs, embeddings, image generation, speech-to-text. No GPU management, no model hosting. One binding, one <code style="font-family:'JetBrains Mono',monospace;color:var(--sky)">env.AI.run()</code> call.</p>
-  <div class="hero-meta fade-up" style="transition-delay:0.15s"><span class="pill accent">Technology</span><span class="pill">Edge AI Inference</span><span class="pill">Open Tier</span><span class="pill">Last updated &middot; Apr 2026</span></div>
+  <div class="hero-meta fade-up" style="transition-delay:0.15s"><span class="pill accent">Technology</span><span class="pill">Edge AI Inference</span><span class="pill">Open Tier</span><span class="pill">Last updated &middot; Nov 2026</span></div>
 </div></section>
 
 <section id="what"><div class="container">
   <div class="fade-up"><div class="section-label">01 &middot; What it is</div><h2 class="section-title">GPU inference without GPU management.</h2></div>
   <div class="prose fade-up" style="transition-delay:0.05s">
     <p><strong>Workers AI</strong> is Cloudflare's serverless inference platform. You pick a model from their catalogue (Llama, Mistral, Whisper, Stable Diffusion, BAAI embeddings, and more), call <code>env.AI.run()</code> from your Worker, and Cloudflare routes the request to GPUs in their network. No model hosting, no VRAM calculations, no queue management.</p>
-    <p>The models are open-source &mdash; no API keys for OpenAI or Anthropic. You pay per token (for LLMs) or per request (for other models), and there's a generous free tier. The trade-off: model selection is limited to what Cloudflare offers, and you can't fine-tune or deploy custom models.</p>
+    <p>The models are open-weight &mdash; no API keys for OpenAI or Anthropic. Billing is not per token: every model has a cost expressed in <strong>Neurons</strong>, Cloudflare's normalised unit, so a small embedding call and a large text generation draw on the same budget. Every account gets 10,000 Neurons per day free, resetting at 00:00 UTC; past that you need the Workers Paid plan at $0.011 per 1,000 Neurons. The real trade-off is the catalogue: you run the models Cloudflare has loaded onto its GPUs, not arbitrary weights of your own.</p>
     <p>For structured output, Workers AI supports JSON schema enforcement on compatible models &mdash; the model's output is constrained to match your schema, eliminating parse failures.</p>
   </div>
 </div></section>
@@ -99,7 +99,7 @@ binding = <span class="tok-str">"AI"</span>
 <section id="gotchas"><div class="container">
   <div class="fade-up"><div class="section-label">03 &middot; Gotchas</div><h2 class="section-title">Where it bites you.</h2></div>
   <div class="gotcha-grid fade-up" style="transition-delay:0.05s">
-    <div class="gotcha"><span class="tag">Model selection</span><h4>Limited to Cloudflare's catalogue</h4><p>You can't deploy custom or fine-tuned models. If you need GPT-4, Claude, or a private model, use AI Gateway to proxy to those providers instead.</p></div>
+    <div class="gotcha"><span class="tag">Model selection</span><h4>Catalogue models, plus your LoRA adapters</h4><p>You can't upload arbitrary base weights, but you can bring a fine-tune: Workers AI loads LoRA adapters on top of a supported, unquantised base model &mdash; up to 300&nbsp;MB per adapter, 100 adapters per account, and Cloudflare doesn't train them for you. For a frontier model or a private one, use AI Gateway to proxy to that provider instead.</p></div>
     <div class="gotcha"><span class="tag">Latency</span><h4>GPU routing adds latency vs local inference</h4><p>Requests are routed to the nearest GPU-equipped PoP, which isn't every PoP. From some regions (including parts of Africa), this adds noticeable latency.</p></div>
     <div class="gotcha"><span class="tag">Rate limits</span><h4>Concurrent request limits per model</h4><p>Popular models have concurrency limits. Burst traffic can hit 429s. Use Queues to smooth demand for batch workloads.</p></div>
   </div>
@@ -114,8 +114,8 @@ binding = <span class="tok-str">"AI"</span>
       <li><strong>Building a fully-Cloudflare RAG stack.</strong> Workers AI + Vectorize + D1/R2 is a complete pipeline with no external dependencies.</li>
     </ul></div>
     <div class="decide-col skip"><div class="decide-head">&#10007; Skip it when</div><ul>
-      <li><strong>You need frontier models.</strong> GPT-4o, Claude Opus, Gemini &mdash; use AI Gateway to proxy to those providers.</li>
-      <li><strong>You need custom or fine-tuned models.</strong> Workers AI runs Cloudflare's catalogue only.</li>
+      <li><strong>You need a frontier model.</strong> The current closed-weight tier &mdash; Anthropic's Claude Opus line, OpenAI's GPT line, Google's Gemini line &mdash; is not in this catalogue and won't be. Use AI Gateway to proxy to those providers.</li>
+      <li><strong>You need your own base weights.</strong> A LoRA adapter over a supported base model is in scope; a model Cloudflare hasn't loaded is not.</li>
       <li><strong>Inference latency is critical and users are in GPU-sparse regions.</strong> GPU routing from underserved regions adds unpredictable latency.</li>
     </ul></div>
   </div>
