@@ -3,7 +3,7 @@
   "description": "The public knowledge tree for the 2nth.ai ecosystem. Every leaf is both a human-readable reference and an agent-consumable context document.",
   "agent_fetch": "https://know.2nth.ai/api/context/<domain>/<leaf>",
   "mcp": "https://know.2nth.ai/mcp",
-  "count": 233,
+  "count": 236,
   "items": [
     {
       "title": "Agents — know.2nth.ai",
@@ -700,6 +700,30 @@
       "kind": "leaf",
       "url": "https://know.2nth.ai/explainers/data/engineering/chonkie",
       "fetch": "data/engineering/chonkie"
+    },
+    {
+      "title": "ClickHouse — know.2nth.ai",
+      "description": "ClickHouse — the columnar OLAP database built for analytical queries at scale. MergeTree, ClickHouse Keeper, and the honest read on self-hosted versus ClickHouse Cloud.",
+      "domain": "data",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/data/warehousing/clickhouse",
+      "fetch": "data/warehousing/clickhouse"
+    },
+    {
+      "title": "DuckDB — know.2nth.ai",
+      "description": "DuckDB 2.0 LTS — the in-process analytical database. Columnar, vectorised, reads Parquet and CSV in place, runs inside your Python or Node process. Plus the honest read on the AWS acquisition.",
+      "domain": "data",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/data/warehousing/duckdb",
+      "fetch": "data/warehousing/duckdb"
+    },
+    {
+      "title": "Grafana — know.2nth.ai",
+      "description": "Grafana — the dashboard layer for operational data. The LGTM stack, the AGPLv3 licence change and what it means for client work, and when Grafana is the wrong tool.",
+      "domain": "data",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/data/analytics/grafana",
+      "fetch": "data/analytics/grafana"
     },
     {
       "title": "LiteParse — know.2nth.ai",

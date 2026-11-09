@@ -35,7 +35,7 @@
   <div class="hero-eyebrow fade-up"><span class="dot"></span> Technology &middot; Cloudflare &middot; Skill Node</div>
   <h1 class="fade-up" style="transition-delay:0.05s">Cloudflare<br><span class="gradient">Vectorize.</span></h1>
   <p class="hero-sub fade-up" style="transition-delay:0.1s">A vector database with metadata filtering, built for RAG pipelines on Cloudflare. Store embeddings from Workers AI, query by similarity, and retrieve context for LLM generation &mdash; all without leaving the platform.</p>
-  <div class="hero-meta fade-up" style="transition-delay:0.15s"><span class="pill accent">Technology</span><span class="pill">Vector Database</span><span class="pill">Open Tier</span><span class="pill">Last updated &middot; Apr 2026</span></div>
+  <div class="hero-meta fade-up" style="transition-delay:0.15s"><span class="pill accent">Technology</span><span class="pill">Vector Database</span><span class="pill">Open Tier</span><span class="pill">Last updated &middot; Nov 2026</span></div>
 </div></section>
 
 <section id="what"><div class="container">
@@ -93,7 +93,7 @@ index_name = <span class="tok-str">"knowledge-base"</span></pre>
 <section id="gotchas"><div class="container">
   <div class="fade-up"><div class="section-label">03 &middot; Gotchas</div><h2 class="section-title">Where it bites you.</h2></div>
   <div class="gotcha-grid fade-up" style="transition-delay:0.05s">
-    <div class="gotcha"><span class="tag">Scale</span><h4>Index size limits on free/pro tiers</h4><p>Free tier has strict vector count limits. For large corpora (millions of vectors), you'll need a paid plan or consider Pinecone/Weaviate as alternatives.</p></div>
+    <div class="gotcha"><span class="tag">Dimension ceiling</span><h4>1,536 dimensions, and that's the real constraint</h4><p>Vector count is rarely what stops you &mdash; an index holds up to 10 million vectors, and a Paid account can have 50,000 indexes (100 on Free). The ceiling that actually bites is 1,536 dimensions per vector at 32-bit precision. Several current embedding models emit more than that, so check your model's output width before you commit to it, or reduce dimensions at the embedding step.</p></div>
     <div class="gotcha"><span class="tag">Dimension lock</span><h4>Index dimension is fixed at creation</h4><p>If you change embedding models (different dimension), you need a new index and re-embed everything. Pick your model carefully upfront.</p></div>
     <div class="gotcha"><span class="tag">Metadata filtering</span><h4>Limited filter operators</h4><p>Metadata filtering supports equality and basic comparisons. Complex queries (OR, nested conditions) may need to be handled in your Worker code post-query.</p></div>
   </div>
@@ -108,7 +108,7 @@ index_name = <span class="tok-str">"knowledge-base"</span></pre>
       <li><strong>You want zero-ops vector search.</strong> No cluster management, no index tuning. Managed and integrated.</li>
     </ul></div>
     <div class="decide-col skip"><div class="decide-head">&#10007; Skip it when</div><ul>
-      <li><strong>You need tens of millions of vectors.</strong> For very large corpora, dedicated vector databases (Pinecone, Weaviate, Qdrant) offer better scale and features.</li>
+      <li><strong>You need more than 10 million vectors in one index, or wider than 1,536 dimensions.</strong> Both are hard limits. Sharding across indexes is possible but you own the routing; at that point a dedicated vector database (Pinecone, Weaviate, Qdrant) is doing a job Vectorize isn't shaped for.</li>
       <li><strong>You need advanced query features.</strong> Hybrid search (vector + full-text), complex filters, or graph-based retrieval need more specialised tools.</li>
       <li><strong>Your embeddings come from outside Cloudflare.</strong> If your pipeline is on AWS/GCP, shipping embeddings to Cloudflare adds unnecessary complexity.</li>
     </ul></div>

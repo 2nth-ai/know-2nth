@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grafana — know.2nth.ai</title>
+<meta name="description" content="Grafana — the dashboard layer for operational data. The LGTM stack, the AGPLv3 licence change and what it means for client work, and when Grafana is the wrong tool.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/data/analytics/grafana">
+<meta property="og:title" content="Grafana — know.2nth.ai">
+<meta property="og:description" content="Grafana — the dashboard layer for operational data. The LGTM stack, the AGPLv3 licence change and what it means for client work, and when Grafana is the wrong tool.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai — The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Grafana — know.2nth.ai">
+<meta name="twitter:description" content="Grafana — the dashboard layer for operational data. The LGTM stack, the AGPLv3 licence change and what it means for client work, and when Grafana is the wrong tool.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3Cline x1='16' y1='3' x2='16' y2='7' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='16' y1='25' x2='16' y2='29' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='3' y1='16' x2='7' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='25' y1='16' x2='29' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33;
+    --blue: #2563EB; --blue-glow: #3B82F6;
+    --sky: #38BDF8; --sky-muted: #7DD3FC;
+    --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8;
+    --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12);
+    --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12);
+    --violet: #8B5CF6; --violet-soft: rgba(139, 92, 246, 0.12);
+    --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12);
+    --bg: var(--ink); --bg-raised: var(--navy);
+    --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(56, 189, 248, 0.06);
+    --text-primary: var(--paper); --text-secondary: var(--slate);
+    --text-muted: #64748B;
+    --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(56, 189, 248, 0.3);
+    --max-w: 1200px; --read-w: 760px;
+    --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px;
+  }
+  [data-theme="light"] {
+    --bg: #F1F5F9; --bg-raised: #FFFFFF;
+    --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(56, 189, 248, 0.04);
+    --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8;
+    --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(56, 189, 248, 0.25);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+    background: var(--bg); color: var(--text-primary);
+    line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased;
+  }
+  body::before {
+    content: ''; position: fixed; inset: 0; opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 9999;
+  }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.sky { width: 600px; height: 600px; background: var(--sky); top: -200px; right: -100px; }
+  .glow-orb.blue { width: 500px; height: 500px; background: var(--blue); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+
+  nav {
+    position: sticky; top: 0; z-index: 100; padding: 0 24px;
+    backdrop-filter: blur(20px) saturate(1.4);
+    background: rgba(11, 17, 32, 0.75);
+    border-bottom: 1px solid var(--border);
+  }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner {
+    max-width: var(--max-w); margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 60px;
+  }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark {
+    font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px;
+    background: linear-gradient(135deg, var(--blue), var(--sky));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+  }
+  .nav-brand-sub {
+    font-size: 12px; color: var(--text-muted);
+    letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500;
+    padding-left: 10px; border-left: 1px solid var(--border);
+  }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--sky); }
+  .theme-toggle {
+    background: none; border: 1px solid var(--border); color: var(--text-secondary);
+    width: 36px; height: 36px; border-radius: 50%; cursor: pointer;
+    display: grid; place-items: center; font-size: 16px; transition: all 0.2s;
+  }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--sky); }
+
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .read { max-width: var(--read-w); }
+
+  .crumb {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted);
+    letter-spacing: 0.5px; padding: 28px 0 0;
+    display: flex; gap: 10px; flex-wrap: wrap;
+  }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--sky); }
+  .crumb-sep { opacity: 0.5; }
+  .crumb-current { color: var(--text-secondary); }
+
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500;
+    letter-spacing: 2px; text-transform: uppercase; color: var(--sky);
+    margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px;
+  }
+  .hero .eyebrow .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--sky); box-shadow: 0 0 12px var(--sky);
+  }
+  .hero h1 {
+    font-size: clamp(40px, 6vw, 66px); font-weight: 800;
+    line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 14ch;
+  }
+  .hero h1 .gradient {
+    background: linear-gradient(135deg, var(--sky), var(--sky-muted), var(--blue-glow));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500;
+    padding: 6px 14px; border-radius: var(--radius-pill);
+    border: 1px solid var(--border); color: var(--text-secondary);
+    letter-spacing: 0.5px;
+  }
+  .pill.accent { background: rgba(56, 189, 248, 0.12); color: var(--sky); border-color: rgba(56, 189, 248, 0.25); }
+
+  section { padding: 52px 0; position: relative; }
+  .section-label {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500;
+    letter-spacing: 2px; text-transform: uppercase; color: var(--sky);
+    margin-bottom: 14px;
+  }
+  .section-title {
+    font-size: clamp(26px, 3.4vw, 36px); font-weight: 700;
+    letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2;
+  }
+  .section-lede {
+    font-size: 16px; color: var(--text-secondary); max-width: var(--read-w);
+    line-height: 1.75; font-weight: 300; margin-bottom: 32px;
+  }
+  .prose p {
+    font-size: 16px; color: var(--text-secondary); line-height: 1.75;
+    max-width: var(--read-w); margin-bottom: 18px;
+  }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.88em;
+    background: var(--bg-card); border: 1px solid var(--border);
+    padding: 1px 6px; border-radius: 4px; color: var(--sky);
+  }
+
+  pre.code {
+    background: var(--ink-deep); border: 1px solid var(--border);
+    border-radius: var(--radius-md); padding: 20px 22px;
+    overflow-x: auto; font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px; line-height: 1.65; color: var(--mist);
+    margin: 0 0 20px; max-width: var(--read-w);
+  }
+  [data-theme="light"] pre.code { background: #0F172A; color: #E2E8F0; }
+  pre.code .k { color: var(--sky); }
+  pre.code .s { color: #A5F3B8; }
+  pre.code .c { color: var(--text-muted); font-style: italic; }
+  pre.code .n { color: #FCD34D; }
+
+  .info-card {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-lg);
+    padding: 28px 32px; max-width: var(--read-w);
+    margin-bottom: 20px;
+  }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+
+  .compare-wrap {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-lg);
+    overflow: hidden; max-width: var(--read-w);
+    margin-bottom: 20px;
+  }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td {
+    padding: 12px 16px; text-align: left;
+    border-bottom: 1px solid var(--border); vertical-align: top;
+  }
+  .compare thead th {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600;
+    letter-spacing: 1.2px; text-transform: uppercase; color: var(--sky);
+    background: rgba(56, 189, 248, 0.04);
+  }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); }
+  .compare td code {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.9em;
+    color: var(--sky);
+  }
+
+  .gotcha-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 12px;
+  }
+  .gotcha {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-left: 3px solid var(--rose);
+    border-radius: var(--radius-md);
+    padding: 18px 22px;
+  }
+  .gotcha strong { display: block; color: var(--text-primary); font-weight: 600; font-size: 14px; margin-bottom: 6px; }
+  .gotcha p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+  .connect-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 12px;
+  }
+  .connect-node {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    padding: 18px 22px; transition: all 0.3s;
+    text-decoration: none; color: inherit; display: block;
+  }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node.soon { cursor: default; opacity: 0.72; }
+  .connect-node.soon:hover { border-color: var(--border); background: var(--bg-card); }
+  .connect-node .tag {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    letter-spacing: 1px; text-transform: uppercase;
+    color: var(--text-muted); display: block; margin-bottom: 6px;
+  }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+
+  .resource-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 12px;
+  }
+  .resource {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    padding: 18px 22px; text-decoration: none; transition: all 0.3s;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--sky); word-break: break-all; }
+
+  /* Decision split */
+  .decision-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+    max-width: var(--read-w);
+  }
+  @media (max-width: 720px) { .decision-grid { grid-template-columns: 1fr; } }
+  .decision-card {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    padding: 22px 24px;
+  }
+  .decision-card.use { border-left: 3px solid var(--green); }
+  .decision-card.skip { border-left: 3px solid var(--rose); }
+  .decision-card h4 {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .decision-card.use h4 { color: var(--green); }
+  .decision-card.skip h4 { color: var(--rose); }
+  .decision-card ul { list-style: none; padding: 0; }
+  .decision-card li {
+    font-size: 13px; color: var(--text-secondary); line-height: 1.6;
+    padding: 6px 0; border-bottom: 1px solid var(--border);
+  }
+  .decision-card li:last-child { border-bottom: none; }
+
+  footer {
+    padding: 60px 0 40px; border-top: 1px solid var(--border);
+    text-align: center; margin-top: 40px;
+  }
+  .footer-brand {
+    font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600;
+    background: linear-gradient(135deg, var(--blue), var(--sky));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+  }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--sky); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+
+  .fade-up {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 768px) {
+    .nav-brand-sub { display: none; }
+    .nav-link { display: none; }
+    pre.code { font-size: 11px; padding: 14px 16px; }
+    .compare { font-size: 12px; }
+    .compare th, .compare td { padding: 10px 12px; }
+  }
+
+  *, *::before, *::after {
+    transition-property: background-color, border-color, color, box-shadow;
+    transition-duration: 0.3s; transition-timing-function: ease;
+  }
+</style>
+<body>
+
+<div class="glow-orb sky"></div>
+<div class="glow-orb blue"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../../index.html" class="nav-brand">
+      <span class="nav-brand-mark">know.2nth.ai</span>
+      <span class="nav-brand-sub">data/analytics/grafana</span>
+    </a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">← Analytics</a>
+      <a href="../../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">🌙</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">›</span>
+    <a href="../../../index.html#domains">Data</a>
+    <span class="crumb-sep">›</span>
+    <a href="../">data</a>
+    <span class="crumb-sep">›</span>
+    <a href="./">analytics</a>
+    <span class="crumb-sep">›</span>
+    <span class="crumb-current">grafana</span>
+  </div>
+</div>
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> data/analytics · Grafana · Skill Leaf</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      The dashboard layer<br><span class="gradient">that doesn't own your data.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      Grafana queries other people's databases and draws the result. That one design decision — no storage of its own — is why it ended up on top of almost every operational stack, and it is also the thing that decides whether it suits your build or doesn't.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill accent">Live</span>
+      <span class="pill">AGPLv3</span>
+      <span class="pill">Observability</span>
+      <span class="pill">Self-host or Cloud</span>
+      <span class="pill">Last updated · Nov 2026</span>
+    </div>
+  </div>
+</section>
+
+<!-- ── 01 WHAT IT IS ── -->
+<section id="what">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 · What it is</div>
+      <h2 class="section-title">A query-and-draw layer, not a BI platform.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Grafana is a dashboard and alerting tool that stores no data of its own. You register data sources — Prometheus, PostgreSQL, ClickHouse, Loki, InfluxDB, Elasticsearch, a plain HTTP endpoint — and each panel on a dashboard is a query sent live to one of them. Grafana keeps the dashboard definitions, the users, the alert rules and the data-source credentials, and nothing else. Every number you see was fetched when you loaded the page.</p>
+      <p>That is a genuinely different product from a BI platform, and the distinction gets blurred often enough to cause bad tool choices. Superset or Metabase are built around a semantic model: you define datasets, and analysts explore them without writing SQL. Grafana assumes you already know the query. Its strength is time — a panel is overwhelmingly "this metric, over this window, refreshed every fifteen seconds" — and its natural reader is someone watching a system rather than someone analysing a business.</p>
+      <p>Get that right and the tool choice is easy. <strong>Grafana is for operational data that changes while you watch it.</strong> If the question is "is the service healthy, and what happened at 02:40", it is the best tool available. If the question is "what did margin do by product line last quarter", it is the wrong one, and you will feel that within a week of trying.</p>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.08s">
+      <h4>The LGTM stack, since the names come up constantly</h4>
+      <p>Grafana Labs ships four open-source backends that pair with Grafana, and the acronym for them is LGTM. <strong>Loki</strong> for logs, <strong>Grafana</strong> for the dashboards, <strong>Tempo</strong> for distributed traces, <strong>Mimir</strong> for metrics at scale — Mimir being the Prometheus-compatible long-term metrics store that succeeded Cortex. You do not need any of them: Grafana over Prometheus and Postgres is a perfectly ordinary deployment. But the four are designed to work together, and when someone says "we run the LGTM stack" this is what they mean.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── 02 HOW IT WORKS ── -->
+<section id="how">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 · How it works</div>
+      <h2 class="section-title">Data sources, panels, variables, alerts.</h2>
+      <p class="section-lede">Four concepts. Learn the third one properly and you build one dashboard instead of twenty.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p><strong>Data sources</strong> are connections Grafana holds, each with its own credentials and query editor. A single dashboard can mix them — a panel from Prometheus next to a panel from Postgres — which is often the reason Grafana wins over a tool tied to one warehouse.</p>
+      <p><strong>Panels</strong> are a query plus a visualisation. The query is written in the source's own language: PromQL for Prometheus, LogQL for Loki, plain SQL for Postgres and ClickHouse. There is no abstraction layer over them, which is both the appeal and the reason non-technical users stall.</p>
+      <p><strong>Template variables</strong> are the concept worth the most. A variable is a value chosen from a dropdown — a tenant, an environment, a host — that the panel queries interpolate. Build the dashboard once with a <code>$tenant</code> variable and you have one dashboard serving every client, instead of a copy per client that drifts out of sync. Teams that skip variables end up maintaining dozens of near-identical dashboards, and that is the most common self-inflicted Grafana problem we see.</p>
+      <p><strong>Alerting</strong> evaluates a query on a schedule and fires when a condition holds. The current unified alerting system is a real improvement on what came before, but it is still a scheduled query, which means an alert can only see what the data source retained — a point worth remembering before trusting it as a safety net.</p>
+      <p>Dashboards are JSON underneath, and that is the part to use deliberately. Provisioning them as files in a repository, rather than clicking them together in the UI, makes them reviewable, diffable and reproducible across environments. It is the difference between a dashboard someone built and a dashboard the team owns.</p>
+    </div>
+    <pre class="code fade-up" style="transition-delay: 0.08s"><span class="c"># Provision data sources as files, not by clicking. Keep this in the repo.</span>
+<span class="c"># /etc/grafana/provisioning/datasources/sources.yaml</span>
+apiVersion: <span class="n">1</span>
+datasources:
+  - name: Prometheus
+    type: prometheus
+    url: http://prometheus:9090
+    isDefault: <span class="k">true</span>
+  - name: ClickHouse
+    type: grafana-clickhouse-datasource
+    jsonData:
+      host: clickhouse.internal
+      port: <span class="n">9000</span>
+    secureJsonData:
+      password: ${CLICKHOUSE_PASSWORD}   <span class="c"># from the environment, never in the file</span>
+
+<span class="c"># A panel query against ClickHouse, using a template variable.</span>
+<span class="c"># $tenant comes from a dropdown; $__timeFilter is Grafana's time range.</span>
+<span class="k">SELECT</span>
+  toStartOfFiveMinute(occurred_at) <span class="k">AS</span> time,
+  count() <span class="k">AS</span> events
+<span class="k">FROM</span> events
+<span class="k">WHERE</span> tenant_id = ${tenant} <span class="k">AND</span> $__timeFilter(occurred_at)
+<span class="k">GROUP BY</span> time <span class="k">ORDER BY</span> time</pre>
+  </div>
+</section>
+
+<!-- ── 03 THE LICENCE ── -->
+<section id="licence">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 · The licence</div>
+      <h2 class="section-title">AGPLv3, and why it belongs in a client conversation.</h2>
+      <p class="section-lede">This is the part that gets skipped, and it is the part that occasionally makes Grafana the wrong choice for reasons that have nothing to do with the software.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>In April 2021 Grafana Labs relicensed Grafana, Loki and Tempo from Apache 2.0 to <strong>AGPLv3</strong>. The first affected releases were Grafana 8.0, Loki 2.3 and Tempo 1.0 — anything on Grafana 7.x or older remains Apache-licensed. Mimir was AGPLv3 from the start. Grafana Enterprise and Grafana Cloud are offered under a separate commercial licence, and plugins, agents and some libraries stayed Apache. The company's stated reason for choosing AGPLv3 over SSPL was that AGPLv3 is OSI-approved and SSPL is not, which is a more honest position than several comparable relicensings.</p>
+      <p>What AGPLv3 actually obliges: if you <em>modify</em> Grafana and offer the modified version as a service over a network, you must make the complete source of your modified version available to its users. That is the network clause, and it is narrower than people fear. Running unmodified Grafana — self-hosted, behind your VPN, for your own staff or embedded in your own product — triggers nothing. Writing a plugin, provisioning dashboards, theming it, or putting it behind your own authentication proxy is not modifying Grafana.</p>
+      <p>Where it genuinely matters is twofold. First, if you intend to fork or patch Grafana itself and ship that as part of a hosted product, get legal advice before you start — that is the exact case the licence was changed to cover. Second, and more common in practice: some corporate and public-sector procurement policies in South Africa prohibit AGPL-licensed software outright, regardless of whether the obligation would ever bind. That is a policy fact rather than a legal one, and arguing the licence's merits with a procurement committee is not a winnable fight. Find out before you build the dashboards, not after.</p>
+      <p>We have seen it claimed that Grafana Enterprise can be run without a licence by organisations whose policy forbids AGPL. We could not confirm that against a primary Grafana Labs source and would not act on it — if an AGPL prohibition is the blocker, talk to Grafana Labs about the commercial licence rather than relying on a secondary account.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── 04 GRAFANA VS THE BI TOOLS ── -->
+<section id="compare">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 · vs the BI tools</div>
+      <h2 class="section-title">Where the line actually falls.</h2>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead><tr><th>Dimension</th><th>Grafana</th><th>Superset / Metabase</th></tr></thead>
+        <tbody>
+          <tr><td>Natural question</td><td>"Is it healthy right now, and what happened at 02:40?"</td><td>"What did this do by segment last quarter?"</td></tr>
+          <tr><td>Time handling</td><td>First-class — every panel has a time range and a refresh interval</td><td>A dimension like any other</td></tr>
+          <tr><td>Semantic model</td><td>None. The query is the model.</td><td>Datasets, metrics and dimensions defined once, reused</td></tr>
+          <tr><td>Who builds dashboards</td><td>Engineers who write PromQL, LogQL or SQL</td><td>Analysts, often without SQL</td></tr>
+          <tr><td>Ad-hoc exploration</td><td>Weak — Explore is for debugging, not for slicing</td><td>The core use case</td></tr>
+          <tr><td>Alerting</td><td>Strong, built-in, with routing and silences</td><td>Basic or absent</td></tr>
+          <tr><td>Mixing sources on one dashboard</td><td>Routine</td><td>Usually one warehouse</td></tr>
+          <tr><td>Licence</td><td>AGPLv3 (OSS), commercial for Enterprise / Cloud</td><td>Apache 2.0 (Superset) — worth noting where AGPL is blocked</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.08s">
+      <h4>They are not alternatives, and most stacks run both</h4>
+      <p>The common mature arrangement is Grafana for the operational surface — infrastructure, service health, pipeline freshness, alerting — and Superset for the business surface over the warehouse. Trying to make one do both is how you end up with a Grafana full of unmaintained business dashboards nobody trusts, or a Superset being refreshed every thirty seconds by someone watching a deployment.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── 05 SA CONTEXT ── -->
+<section id="sa">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 · SA context</div>
+      <h2 class="section-title">Self-hosting, residency and the licence question locally.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p><strong>Self-hosting is the sensible default here, and it is genuinely easy.</strong> Grafana is one container with a small database behind it — SQLite for a single instance, Postgres for anything you care about. It is one of the lowest-effort self-hosted services in this tree, which matters when the alternative is a dollar-billed subscription that scales with users and metric volume. Grafana Cloud is a good product; it is also an FX-exposed monthly cost for something a modest VM runs comfortably.</p>
+      <p><strong>Residency falls out of the architecture.</strong> Because Grafana stores no data of its own, the residency question is about the data sources, not about Grafana. A self-hosted Grafana querying a ClickHouse and a Postgres that both sit in South Africa means no personal information crosses a border to be visualised. Grafana Cloud inverts that: your queries, and the results they return, leave the country. For dashboards over operational metrics that is often immaterial; for dashboards over anything containing personal information it is a POPIA cross-border question you now have to answer. Check what your panels actually return before assuming it is only metrics.</p>
+      <p><strong>Credentials are the real risk, and it is underrated.</strong> A Grafana instance holds connection credentials to every data source it can see — frequently including production databases. It is, in effect, a directory of your most sensitive credentials with a web interface. Put it behind SSO rather than local accounts, scope every data-source user to read-only on the specific tables it needs, and treat a Grafana compromise in your incident planning as equivalent to a database compromise. Under POPIA section 19 that scoping is part of the "appropriate, reasonable technical measures" you are obliged to take, not an optional hardening step.</p>
+      <p><strong>Load shedding is the one thing Grafana is genuinely good at showing you.</strong> Dashboards over UPS state, generator fuel, link status and queue depth during an outage are the most valuable panels many South African operations have, and they are exactly the real-time operational shape Grafana is built for. The obvious trap: host the Grafana that monitors your infrastructure somewhere other than on that infrastructure, or it goes dark precisely when you need it.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── 06 GOTCHAS ── -->
+<section id="gotchas">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 · Gotchas</div>
+      <h2 class="section-title">Things that only bite once you ship.</h2>
+    </div>
+    <div class="gotcha-list fade-up" style="transition-delay: 0.05s">
+      <div class="gotcha">
+        <strong>Dashboards built in the UI are not reproducible</strong>
+        <p>A dashboard clicked together in the browser exists in one database with no history and no review. Export the JSON and provision it from the repository. Otherwise the person who built it is the only one who can fix it, and the staging copy will never match production.</p>
+      </div>
+      <div class="gotcha">
+        <strong>It will take your database down if you let it</strong>
+        <p>A heavy panel on a thirty-second refresh, open on ten screens, is a sustained query load nobody authorised. Set generous refresh intervals, enable query caching where available, point panels at pre-aggregated tables rather than raw events, and apply per-user limits on the data source itself.</p>
+      </div>
+      <div class="gotcha">
+        <strong>No variables means dashboard sprawl</strong>
+        <p>Copying a dashboard per tenant or per environment feels faster on day one. Six months later there are forty of them, they have diverged, and a fix has to be applied forty times. Build with template variables from the first dashboard.</p>
+      </div>
+      <div class="gotcha">
+        <strong>SQLite is not a production backend</strong>
+        <p>The default SQLite store is fine for one instance on one host. It will not survive running two replicas, and it makes backup and migration awkward. Move Grafana's own state to Postgres before anyone depends on the dashboards.</p>
+      </div>
+      <div class="gotcha">
+        <strong>Alerts only see what the data source kept</strong>
+        <p>An alert is a scheduled query. If the metric was never scraped, or retention has already aged it out, the alert cannot fire and its silence looks identical to health. Alert on the absence of data too, not only on bad values.</p>
+      </div>
+      <div class="gotcha">
+        <strong>The AGPL question is a procurement question</strong>
+        <p>Technically the obligation rarely binds. Practically, "no AGPL software" appears in real corporate and public-sector policies. Ask at the start of the engagement, because discovering it after the dashboards are built is an expensive conversation.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 07 DECISION ── -->
+<section id="decision">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 · Decision guide</div>
+      <h2 class="section-title">Use it for, skip it for.</h2>
+      <p class="section-lede">Grafana is close to unbeatable at operational dashboards and genuinely poor at business intelligence. The honest version of this guide is mostly about not mistaking the second for the first.</p>
+    </div>
+    <div class="decision-grid fade-up" style="transition-delay: 0.05s">
+      <div class="decision-card use">
+        <h4>Use Grafana when</h4>
+        <ul>
+          <li>The data is time-series and operational — infrastructure, service health, queue depth, device telemetry, pipeline freshness.</li>
+          <li>Someone needs to watch it change, with a refresh interval rather than a report schedule.</li>
+          <li>You need alerting attached to the same queries that drive the dashboards.</li>
+          <li>One view has to span several systems — Prometheus and Postgres and ClickHouse on one screen.</li>
+          <li>The audience writes queries, or will accept dashboards built by people who do.</li>
+          <li>Self-hosting matters: residency, no dollar subscription, one container to run.</li>
+        </ul>
+      </div>
+      <div class="decision-card skip">
+        <h4>Skip Grafana when</h4>
+        <ul>
+          <li>The users are analysts who need to slice data themselves without SQL. Use Superset or Metabase — this is not a Grafana weakness you can configure away.</li>
+          <li>The output is a formatted business report — financial statements, board packs, anything that needs to print properly.</li>
+          <li>You need a governed semantic layer so that "revenue" means one thing everywhere. Grafana has no such concept.</li>
+          <li>The organisation's procurement policy prohibits AGPL-licensed software and a commercial licence isn't on the table.</li>
+          <li>The data isn't time-shaped at all. A table of current stock levels does not need a dashboard with a time picker.</li>
+          <li>You want it to store the data too. It doesn't, and no configuration makes it.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 08 2ⁿ PERSPECTIVE ── -->
+<section id="perspective">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 · 2ⁿ Perspective</div>
+      <h2 class="section-title">How this leaf compounds in the tree.</h2>
+      <p class="section-lede">Grafana is where the other nodes become visible. That is a smaller claim than it sounds and a more useful one.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Every operational node in this tree produces something worth watching, and almost none of them produce a way to watch it. A ClickHouse cluster has merge lag. A Frappe site has background-job queues. A Cloudflare Worker has request and error rates. An agent pipeline has token spend and failure rates per step. Each of those is a number somewhere that nobody looks at until it has already caused an incident. Grafana is the cheapest way to turn all of them into one screen, and the fact that it stores nothing is why it can sit over all of them at once.</p>
+      <p>For agent work there is a sharper version of this. Agent systems fail quietly — a step that silently retries, a tool call that returns an empty result, cost that drifts upward over weeks. The instinct is to build bespoke observability into the agent. The cheaper move is to write the metrics somewhere Grafana can query and put an alert on the shape you care about, because the dashboard layer is already a solved problem and the agent's own behaviour is not.</p>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.08s">
+      <a href="superset.html" class="connect-node">
+        <span class="tag">data/analytics/superset</span>
+        <div class="skill">Apache Superset</div>
+        <div class="why">The business-intelligence counterpart, and Apache 2.0 where the AGPL question blocks Grafana. Most mature stacks run both, for different audiences.</div>
+      </a>
+      <a href="../warehousing/clickhouse.html" class="connect-node">
+        <span class="tag">data/warehousing/clickhouse</span>
+        <div class="skill">ClickHouse</div>
+        <div class="why">The data source behind Grafana when the time-series volume gets serious. ClickHouse's pre-aggregation patterns are what keep these panels fast.</div>
+      </a>
+      <a href="../warehousing/postgresql.html" class="connect-node">
+        <span class="tag">data/warehousing/postgresql</span>
+        <div class="skill">PostgreSQL</div>
+        <div class="why">Both a data source and the right backend for Grafana's own state once you move off SQLite.</div>
+      </a>
+      <a href="../../tech/cloudflare/analytics-engine.html" class="connect-node">
+        <span class="tag">tech/cloudflare/analytics-engine</span>
+        <div class="skill">Analytics Engine</div>
+        <div class="why">Write-heavy time-series from Workers, queryable by SQL — a data source for Grafana that needs no cluster behind it.</div>
+      </a>
+      <a href="../../tech/frappe/framework.html" class="connect-node">
+        <span class="tag">tech/frappe/framework</span>
+        <div class="skill">Frappe Framework</div>
+        <div class="why">A Frappe site's Postgres is a Grafana data source. Background-job queue depth and failed-job counts are the two panels every Frappe deployment should have and almost none do.</div>
+      </a>
+      <a href="./" class="connect-node">
+        <span class="tag">data/analytics</span>
+        <div class="skill">Analytics sub-hub</div>
+        <div class="why">The parent sub-hub. Grafana holds the operational end; Superset and the BI tools hold the business end.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── 09 RESOURCES ── -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">09 · Resources</div>
+      <h2 class="section-title">Go deeper.</h2>
+      <p class="section-lede">Primary sources only. The relicensing announcement is Grafana Labs' own, and it is the one to read rather than any summary of it.</p>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://grafana.com" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Project home</span>
+        <span class="r-title">grafana.com</span>
+        <span class="r-url">grafana.com</span>
+      </a>
+      <a href="https://grafana.com/docs/grafana/latest/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs</span>
+        <span class="r-title">Grafana documentation</span>
+        <span class="r-url">grafana.com/docs/grafana/latest</span>
+      </a>
+      <a href="https://grafana.com/blog/grafana-loki-tempo-relicensing-to-agplv3/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Licence</span>
+        <span class="r-title">Grafana, Loki and Tempo relicensing to AGPLv3</span>
+        <span class="r-url">grafana.com/blog/grafana-loki-tempo-relicensing-to-agplv3</span>
+      </a>
+      <a href="https://grafana.com/docs/grafana/latest/dashboards/variables/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Guide</span>
+        <span class="r-title">Template variables — the concept worth learning first</span>
+        <span class="r-url">grafana.com/docs/grafana/latest/dashboards/variables</span>
+      </a>
+      <a href="https://grafana.com/docs/grafana/latest/administration/provisioning/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Operations</span>
+        <span class="r-title">Provisioning dashboards and data sources as files</span>
+        <span class="r-url">grafana.com/docs/grafana/latest/administration/provisioning</span>
+      </a>
+      <a href="https://grafana.com/blog/announcing-grafana-mimir/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Announcement</span>
+        <span class="r-title">Announcing Grafana Mimir — the Cortex successor</span>
+        <span class="r-url">grafana.com/blog/announcing-grafana-mimir</span>
+      </a>
+      <a href="https://github.com/grafana/grafana" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Source</span>
+        <span class="r-title">grafana/grafana — AGPLv3 from 8.0</span>
+        <span class="r-url">github.com/grafana/grafana</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../../index.html">Skills tree</a>
+      <a href="./">Analytics sub-hub</a>
+      <a href="https://grafana.com" target="_blank" rel="noopener">grafana.com ↗</a>
+    </div>
+    <p class="footer-copy">© 2026 2nth.ai · Built in South Africa — Globally relevant</p>
+  </div>
+</footer>
+<script>
+  function toggleTheme() {
+    const html = document.documentElement;
+    const current = html.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
+    localStorage.setItem('theme', next);
+  }
+  const saved = localStorage.getItem('theme');
+  if (saved) {
+    document.documentElement.setAttribute('data-theme', saved);
+    document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '☀️' : '🌙';
+  }
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>

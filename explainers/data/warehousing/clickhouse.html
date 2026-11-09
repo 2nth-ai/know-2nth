@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ClickHouse — know.2nth.ai</title>
+<meta name="description" content="ClickHouse — the columnar OLAP database built for analytical queries at scale. MergeTree, ClickHouse Keeper, and the honest read on self-hosted versus ClickHouse Cloud.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/data/warehousing/clickhouse">
+<meta property="og:title" content="ClickHouse — know.2nth.ai">
+<meta property="og:description" content="ClickHouse — the columnar OLAP database built for analytical queries at scale. MergeTree, ClickHouse Keeper, and the honest read on self-hosted versus ClickHouse Cloud.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai — The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ClickHouse — know.2nth.ai">
+<meta name="twitter:description" content="ClickHouse — the columnar OLAP database built for analytical queries at scale. MergeTree, ClickHouse Keeper, and the honest read on self-hosted versus ClickHouse Cloud.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3Cline x1='16' y1='3' x2='16' y2='7' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='16' y1='25' x2='16' y2='29' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='3' y1='16' x2='7' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='25' y1='16' x2='29' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33;
+    --blue: #2563EB; --blue-glow: #3B82F6;
+    --sky: #38BDF8; --sky-muted: #7DD3FC;
+    --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8;
+    --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12);
+    --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12);
+    --violet: #8B5CF6; --violet-soft: rgba(139, 92, 246, 0.12);
+    --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12);
+    --bg: var(--ink); --bg-raised: var(--navy);
+    --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(56, 189, 248, 0.06);
+    --text-primary: var(--paper); --text-secondary: var(--slate);
+    --text-muted: #64748B;
+    --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(56, 189, 248, 0.3);
+    --max-w: 1200px; --read-w: 760px;
+    --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px;
+  }
+  [data-theme="light"] {
+    --bg: #F1F5F9; --bg-raised: #FFFFFF;
+    --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(56, 189, 248, 0.04);
+    --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8;
+    --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(56, 189, 248, 0.25);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+    background: var(--bg); color: var(--text-primary);
+    line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased;
+  }
+  body::before {
+    content: ''; position: fixed; inset: 0; opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 9999;
+  }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.sky { width: 600px; height: 600px; background: var(--sky); top: -200px; right: -100px; }
+  .glow-orb.blue { width: 500px; height: 500px; background: var(--blue); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+
+  nav {
+    position: sticky; top: 0; z-index: 100; padding: 0 24px;
+    backdrop-filter: blur(20px) saturate(1.4);
+    background: rgba(11, 17, 32, 0.75);
+    border-bottom: 1px solid var(--border);
+  }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner {
+    max-width: var(--max-w); margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 60px;
+  }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark {
+    font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px;
+    background: linear-gradient(135deg, var(--blue), var(--sky));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+  }
+  .nav-brand-sub {
+    font-size: 12px; color: var(--text-muted);
+    letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500;
+    padding-left: 10px; border-left: 1px solid var(--border);
+  }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--sky); }
+  .theme-toggle {
+    background: none; border: 1px solid var(--border); color: var(--text-secondary);
+    width: 36px; height: 36px; border-radius: 50%; cursor: pointer;
+    display: grid; place-items: center; font-size: 16px; transition: all 0.2s;
+  }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--sky); }
+
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .read { max-width: var(--read-w); }
+
+  .crumb {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted);
+    letter-spacing: 0.5px; padding: 28px 0 0;
+    display: flex; gap: 10px; flex-wrap: wrap;
+  }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--sky); }
+  .crumb-sep { opacity: 0.5; }
+  .crumb-current { color: var(--text-secondary); }
+
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500;
+    letter-spacing: 2px; text-transform: uppercase; color: var(--sky);
+    margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px;
+  }
+  .hero .eyebrow .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--sky); box-shadow: 0 0 12px var(--sky);
+  }
+  .hero h1 {
+    font-size: clamp(40px, 6vw, 66px); font-weight: 800;
+    line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 14ch;
+  }
+  .hero h1 .gradient {
+    background: linear-gradient(135deg, var(--sky), var(--sky-muted), var(--blue-glow));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500;
+    padding: 6px 14px; border-radius: var(--radius-pill);
+    border: 1px solid var(--border); color: var(--text-secondary);
+    letter-spacing: 0.5px;
+  }
+  .pill.accent { background: rgba(56, 189, 248, 0.12); color: var(--sky); border-color: rgba(56, 189, 248, 0.25); }
+
+  section { padding: 52px 0; position: relative; }
+  .section-label {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500;
+    letter-spacing: 2px; text-transform: uppercase; color: var(--sky);
+    margin-bottom: 14px;
+  }
+  .section-title {
+    font-size: clamp(26px, 3.4vw, 36px); font-weight: 700;
+    letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2;
+  }
+  .section-lede {
+    font-size: 16px; color: var(--text-secondary); max-width: var(--read-w);
+    line-height: 1.75; font-weight: 300; margin-bottom: 32px;
+  }
+  .prose p {
+    font-size: 16px; color: var(--text-secondary); line-height: 1.75;
+    max-width: var(--read-w); margin-bottom: 18px;
+  }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.88em;
+    background: var(--bg-card); border: 1px solid var(--border);
+    padding: 1px 6px; border-radius: 4px; color: var(--sky);
+  }
+
+  pre.code {
+    background: var(--ink-deep); border: 1px solid var(--border);
+    border-radius: var(--radius-md); padding: 20px 22px;
+    overflow-x: auto; font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px; line-height: 1.65; color: var(--mist);
+    margin: 0 0 20px; max-width: var(--read-w);
+  }
+  [data-theme="light"] pre.code { background: #0F172A; color: #E2E8F0; }
+  pre.code .k { color: var(--sky); }
+  pre.code .s { color: #A5F3B8; }
+  pre.code .c { color: var(--text-muted); font-style: italic; }
+  pre.code .n { color: #FCD34D; }
+
+  .info-card {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-lg);
+    padding: 28px 32px; max-width: var(--read-w);
+    margin-bottom: 20px;
+  }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+
+  .compare-wrap {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-lg);
+    overflow: hidden; max-width: var(--read-w);
+    margin-bottom: 20px;
+  }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td {
+    padding: 12px 16px; text-align: left;
+    border-bottom: 1px solid var(--border); vertical-align: top;
+  }
+  .compare thead th {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600;
+    letter-spacing: 1.2px; text-transform: uppercase; color: var(--sky);
+    background: rgba(56, 189, 248, 0.04);
+  }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); }
+  .compare td code {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.9em;
+    color: var(--sky);
+  }
+
+  .gotcha-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 12px;
+  }
+  .gotcha {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-left: 3px solid var(--rose);
+    border-radius: var(--radius-md);
+    padding: 18px 22px;
+  }
+  .gotcha strong { display: block; color: var(--text-primary); font-weight: 600; font-size: 14px; margin-bottom: 6px; }
+  .gotcha p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+  .connect-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 12px;
+  }
+  .connect-node {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    padding: 18px 22px; transition: all 0.3s;
+    text-decoration: none; color: inherit; display: block;
+  }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node.soon { cursor: default; opacity: 0.72; }
+  .connect-node.soon:hover { border-color: var(--border); background: var(--bg-card); }
+  .connect-node .tag {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    letter-spacing: 1px; text-transform: uppercase;
+    color: var(--text-muted); display: block; margin-bottom: 6px;
+  }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+
+  .resource-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 12px;
+  }
+  .resource {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    padding: 18px 22px; text-decoration: none; transition: all 0.3s;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--sky); word-break: break-all; }
+
+  /* Decision split */
+  .decision-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+    max-width: var(--read-w);
+  }
+  @media (max-width: 720px) { .decision-grid { grid-template-columns: 1fr; } }
+  .decision-card {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    padding: 22px 24px;
+  }
+  .decision-card.use { border-left: 3px solid var(--green); }
+  .decision-card.skip { border-left: 3px solid var(--rose); }
+  .decision-card h4 {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .decision-card.use h4 { color: var(--green); }
+  .decision-card.skip h4 { color: var(--rose); }
+  .decision-card ul { list-style: none; padding: 0; }
+  .decision-card li {
+    font-size: 13px; color: var(--text-secondary); line-height: 1.6;
+    padding: 6px 0; border-bottom: 1px solid var(--border);
+  }
+  .decision-card li:last-child { border-bottom: none; }
+
+  footer {
+    padding: 60px 0 40px; border-top: 1px solid var(--border);
+    text-align: center; margin-top: 40px;
+  }
+  .footer-brand {
+    font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600;
+    background: linear-gradient(135deg, var(--blue), var(--sky));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+  }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--sky); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+
+  .fade-up {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 768px) {
+    .nav-brand-sub { display: none; }
+    .nav-link { display: none; }
+    pre.code { font-size: 11px; padding: 14px 16px; }
+    .compare { font-size: 12px; }
+    .compare th, .compare td { padding: 10px 12px; }
+  }
+
+  *, *::before, *::after {
+    transition-property: background-color, border-color, color, box-shadow;
+    transition-duration: 0.3s; transition-timing-function: ease;
+  }
+</style>
+<body>
+
+<div class="glow-orb sky"></div>
+<div class="glow-orb blue"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../../index.html" class="nav-brand">
+      <span class="nav-brand-mark">know.2nth.ai</span>
+      <span class="nav-brand-sub">data/warehousing/clickhouse</span>
+    </a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">← Warehousing</a>
+      <a href="../../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">🌙</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">›</span>
+    <a href="../../../index.html#domains">Data</a>
+    <span class="crumb-sep">›</span>
+    <a href="../">data</a>
+    <span class="crumb-sep">›</span>
+    <a href="./">warehousing</a>
+    <span class="crumb-sep">›</span>
+    <span class="crumb-current">clickhouse</span>
+  </div>
+</div>
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> data/warehousing · ClickHouse · Skill Leaf</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      Analytical queries<br><span class="gradient">that stay fast under load.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      ClickHouse is a columnar OLAP database built for one job: aggregating over very large tables, repeatedly, while many clients watch. It is the answer when Postgres materialised views have stopped keeping up and a dashboard needs to stay responsive at the same time.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill accent">Live</span>
+      <span class="pill">Apache 2.0</span>
+      <span class="pill">Columnar OLAP</span>
+      <span class="pill">Self-host or Cloud</span>
+      <span class="pill">Last updated · Nov 2026</span>
+    </div>
+  </div>
+</section>
+
+<!-- ── 01 WHAT IT IS ── -->
+<section id="what">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 · What it is</div>
+      <h2 class="section-title">A database that gave up transactions to win at scans.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>ClickHouse is an open-source columnar database for online analytical processing. The design is unapologetically specialised: store each column separately and compressed, read only the columns a query names, process them in vectorised batches, and accept an append-oriented write model in exchange. What you get is aggregation over billions of rows in the time a row store takes to warm up. What you give up is the thing a transactional database is for — you do not get the update-and-delete ergonomics, the foreign-key enforcement or the transactional guarantees that PostgreSQL hands you for free.</p>
+      <p>That trade is the whole point, and it tells you when the tool is right. ClickHouse is for event data, logs, metrics, clickstreams, telemetry, financial tick data, call records — anything that arrives continuously, is written once, is read in aggregate, and is never really edited afterwards. It is not for an order table that people amend.</p>
+      <p>The piece that distinguishes it from DuckDB, the other columnar engine in this sub-hub, is <strong>concurrency</strong>. DuckDB is a library in one process with a single writer. ClickHouse is a server built to hold many concurrent connections, each running an analytical query, continuously, for as long as the service is up. If the question is "can a hundred people hit this dashboard at once", that is the line that separates them.</p>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.08s">
+      <h4>The honest sizing question first</h4>
+      <p>ClickHouse is genuinely excellent, and it is also a real piece of infrastructure to run. Before reaching for it, check whether PostgreSQL with well-chosen indexes and materialised views actually fails for your workload, because for a surprising share of "we need a warehouse" conversations it doesn't. The signals that it genuinely has stopped being enough are concrete: aggregate queries that take tens of seconds and can't be pre-computed, a table in the hundreds of millions of rows that keeps growing, and concurrent dashboard users who feel each other's queries.</p>
+      <p>If instead the analysis happens in one process on an export, read the DuckDB leaf — it does that job with no service to operate.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── 02 HOW IT WORKS ── -->
+<section id="how">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 · How it works</div>
+      <h2 class="section-title">MergeTree, and why the name tells you the model.</h2>
+      <p class="section-lede">Almost everything about operating ClickHouse follows from one table engine family.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Tables in a self-managed ClickHouse are overwhelmingly <strong>MergeTree</strong> family. An insert writes a new immutable data part, sorted by the table's sorting key. Background threads then merge small parts into larger ones, continuously, which is where the name comes from. Queries read the parts they need, skipping whole granules using the sparse primary index. Understanding that single mechanism explains most of the operational behaviour you will encounter: why many small inserts are harmful, why the sorting key matters more than any index you are used to, and why "the merges are behind" is a thing you will eventually monitor.</p>
+      <p>For replication the family member is <strong>ReplicatedMergeTree</strong>, and coordination between replicas is handled by <strong>ClickHouse Keeper</strong> — a Raft-based coordination service that replaced the earlier ZooKeeper dependency. A production self-hosted deployment is therefore at minimum: ClickHouse nodes, a Keeper quorum, and a backup mechanism you assemble yourself, commonly <code>clickhouse-backup</code> on a schedule.</p>
+      <p>The specialised variants of MergeTree are where most of the real gains are, and they are worth knowing by name before you design a schema: <code>ReplacingMergeTree</code> for deduplicating on a key, <code>SummingMergeTree</code> and <code>AggregatingMergeTree</code> for pre-aggregation at merge time, and materialised views that write into them so that the aggregate is maintained on insert rather than computed on read.</p>
+    </div>
+    <pre class="code fade-up" style="transition-delay: 0.08s"><span class="c">-- The sorting key is the single most consequential schema decision.</span>
+<span class="c">-- Order it by how you filter, coarsest first.</span>
+<span class="k">CREATE TABLE</span> events (
+  tenant_id   UInt32,
+  occurred_at DateTime,
+  event_type  LowCardinality(String),
+  amount_zar  Decimal(<span class="n">12</span>, <span class="n">2</span>),
+  payload     String <span class="k">CODEC</span>(ZSTD(<span class="n">3</span>))
+)
+<span class="k">ENGINE</span> = MergeTree
+<span class="k">PARTITION BY</span> toYYYYMM(occurred_at)
+<span class="k">ORDER BY</span> (tenant_id, occurred_at)
+<span class="k">TTL</span> occurred_at + <span class="k">INTERVAL</span> <span class="n">25</span> MONTH <span class="k">DELETE</span>;
+
+<span class="c">-- Pre-aggregate on insert, not on read.</span>
+<span class="k">CREATE MATERIALIZED VIEW</span> daily_totals
+<span class="k">ENGINE</span> = SummingMergeTree
+<span class="k">ORDER BY</span> (tenant_id, day) <span class="k">AS</span>
+<span class="k">SELECT</span> tenant_id, toDate(occurred_at) <span class="k">AS</span> day, sum(amount_zar) <span class="k">AS</span> total
+<span class="k">FROM</span> events <span class="k">GROUP BY</span> tenant_id, day;
+
+<span class="c">-- Insert in batches. Thousands of rows per statement, not one.</span>
+<span class="k">INSERT INTO</span> events <span class="k">SELECT</span> * <span class="k">FROM</span> input(<span class="s">'...'</span>);</pre>
+  </div>
+</section>
+
+<!-- ── 03 SELF-HOSTED VS CLOUD ── -->
+<section id="deployment">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 · Self-hosted vs Cloud</div>
+      <h2 class="section-title">The two ClickHouses are not the same database.</h2>
+      <p class="section-lede">This is the decision that shapes everything else, and the marketing on both sides obscures the one asymmetry that matters.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Self-managed ClickHouse is Apache 2.0, runs on your own hardware or VMs, uses local or attached storage with MergeTree-family engines, and leaves backups, replication topology and monitoring to you. ClickHouse Cloud is the vendor's managed service, and it does not merely host the same thing: it separates compute from shared object storage using <strong>SharedMergeTree</strong>, an engine available only in the managed service. There is no path to running SharedMergeTree yourself.</p>
+      <p>That asymmetry is the part to internalise. It is not a feature flag — it is a different storage architecture, and it is the one that delivers the managed service's elasticity. It also means the migration between the two is not symmetric: moving onto Cloud is far easier than moving off it, and Cloud's egress charges on data leaving the service make a later exit a line item rather than an afternoon. Judge the lock-in on that basis rather than on the licence, which is permissive on the self-managed side.</p>
+      <p>The published comparisons also disagree substantially on where self-hosting becomes cheaper — we have seen the crossover put anywhere from a few hundred dollars a month to tens of terabytes stored. We would not repeat any of those numbers as a rule. The reliable version is unglamorous: the cost that decides this is operational, not infrastructural. If you have a platform team that already runs stateful services, self-hosting is a known quantity. If you don't, the managed service is buying you the team you don't have, and the sticker price is not what you are actually comparing.</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.08s">
+      <table class="compare">
+        <thead><tr><th>Dimension</th><th>Self-managed</th><th>ClickHouse Cloud</th></tr></thead>
+        <tbody>
+          <tr><td>Storage engine</td><td>MergeTree / ReplicatedMergeTree on local or attached storage</td><td>SharedMergeTree over shared object storage — managed service only</td></tr>
+          <tr><td>Coordination</td><td>You run a ClickHouse Keeper quorum</td><td>Handled for you</td></tr>
+          <tr><td>Backups</td><td>Yours to build — commonly <code>clickhouse-backup</code> on a schedule</td><td>Managed, with point-in-time restore</td></tr>
+          <tr><td>Scaling</td><td>Plan capacity, add nodes, reshard</td><td>Compute scales independently of storage</td></tr>
+          <tr><td>Tuning surface</td><td>Full — merge settings, background concurrency, query priorities</td><td>Narrower; the service decides much of it</td></tr>
+          <tr><td>Data residency</td><td>Wherever you put it, including on-premise in South Africa</td><td>Whichever regions the vendor offers — check before assuming</td></tr>
+          <tr><td>Exit cost</td><td>Your data, your disks</td><td>Egress charges apply to data leaving the service</td></tr>
+          <tr><td>Known gaps</td><td>—</td><td>Some engines are unavailable; the Kafka table engine has been reported as one</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ── 04 SA CONTEXT ── -->
+<section id="sa">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 · SA context</div>
+      <h2 class="section-title">Residency, FX, and the case for self-hosting here.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p><strong>Residency is the strongest local argument for self-hosting.</strong> ClickHouse's most natural workloads — call records, transaction streams, clickstream, device telemetry — are frequently full of personal information, and POPIA's conditions on transferring it outside the Republic are the kind of thing that turns a two-week build into a two-month legal exercise. A self-managed cluster in a Johannesburg or Cape Town data centre, or in <code>africa-south1</code>, removes that question entirely. Before assuming the managed service can do the same, check which regions it actually offers; do not infer availability from a provider having a local presence for other products.</p>
+      <p><strong>FX exposure, stated plainly.</strong> A managed analytical service is a dollar-denominated monthly commitment whose rand cost moves with the exchange rate, and it is usage-billed, so the bill grows with the dataset at the same time. Self-hosting converts that into local infrastructure cost plus local engineering time. That is not automatically cheaper — engineering time is expensive and scarce — but it is denominated in the same currency as the client's revenue, which materially changes how a CFO reads it. Where Cloud is the right answer, budget at a conservative exchange rate rather than today's and include the egress cost of an eventual exit.</p>
+      <p><strong>Retention is a compliance control, and TTL is how you implement it.</strong> POPIA requires that personal information is not kept longer than necessary. ClickHouse's table-level <code>TTL ... DELETE</code> turns that obligation into a schema declaration that enforces itself at merge time, rather than a deletion script someone has to remember to run. Set it when you create the table and the retention policy becomes a property of the data rather than a promise in a document.</p>
+      <p><strong>Load shedding and a stateful cluster.</strong> This is the part that gets underestimated. A replicated ClickHouse with a Keeper quorum does not enjoy losing power: you need the Keeper quorum to survive the outage, which means an odd number of nodes with genuinely independent power, not three VMs on one host. If the site has load shedding and no generator, either put the cluster somewhere that doesn't, or accept the managed service and its FX exposure. Running a quorum on municipal power alone is how clusters get corrupted.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── 05 GOTCHAS ── -->
+<section id="gotchas">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 · Gotchas</div>
+      <h2 class="section-title">Things that only bite once you ship.</h2>
+      <p class="section-lede">Most ClickHouse pain is one of two mistakes: writing like it's Postgres, or choosing the sorting key carelessly.</p>
+    </div>
+    <div class="gotcha-list fade-up" style="transition-delay: 0.05s">
+      <div class="gotcha">
+        <strong>Row-at-a-time inserts will destroy it</strong>
+        <p>Every insert creates a data part. An application doing single-row inserts produces thousands of tiny parts, the merge threads fall behind, and you get the <code>Too many parts</code> error with queries degrading around it. Batch at the application, or use asynchronous inserts, or put a queue in front. This is the single most common way a first ClickHouse deployment fails.</p>
+      </div>
+      <div class="gotcha">
+        <strong>The sorting key is close to permanent</strong>
+        <p><code>ORDER BY</code> determines physical layout and therefore which queries can skip data. Get it wrong and the fix is recreating the table and backfilling. Choose it from the filters your real queries use, coarsest cardinality first, before you load anything substantial.</p>
+      </div>
+      <div class="gotcha">
+        <strong><code>UPDATE</code> and <code>DELETE</code> are not what you think</strong>
+        <p>Mutations exist but they rewrite data parts asynchronously — they are maintenance operations, not transactional statements, and they are expensive. There is no rollback. If the workload genuinely needs row-level edits, you have chosen the wrong database; model corrections as new rows with <code>ReplacingMergeTree</code> instead.</p>
+      </div>
+      <div class="gotcha">
+        <strong>No referential integrity, no joins-as-usual</strong>
+        <p>Foreign keys don't exist. Joins work but are not the strength, and a large distributed join will disappoint you compared to the equivalent in Postgres. Denormalise deliberately, and use dictionaries for lookup tables rather than joining to them.</p>
+      </div>
+      <div class="gotcha">
+        <strong>Eventual consistency between replicas is real</strong>
+        <p>An insert acknowledged on one replica is not instantly readable on another. Reading immediately after writing through a load balancer can legitimately return nothing. Use <code>insert_quorum</code> and the sequential-consistency setting where it matters, and design the application not to need read-after-write where it doesn't.</p>
+      </div>
+      <div class="gotcha">
+        <strong>A query can consume the whole server</strong>
+        <p>An unbounded <code>GROUP BY</code> over a high-cardinality column will take all the memory it can and take the node down with it. Set <code>max_memory_usage</code>, <code>max_execution_time</code> and per-user quotas before exposing it to a BI tool, not after the first incident.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 06 DECISION ── -->
+<section id="decision">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 · Decision guide</div>
+      <h2 class="section-title">Use it for, skip it for.</h2>
+      <p class="section-lede">ClickHouse is the right answer less often than its benchmarks suggest, and when it is right nothing else is close.</p>
+    </div>
+    <div class="decision-grid fade-up" style="transition-delay: 0.05s">
+      <div class="decision-card use">
+        <h4>Use ClickHouse when</h4>
+        <ul>
+          <li>The data is append-mostly events at scale — logs, metrics, telemetry, clickstream, transactions, call records.</li>
+          <li>Aggregate queries over hundreds of millions of rows or more need to return in under a second.</li>
+          <li>Many clients need to query concurrently and continuously — a product analytics surface, a customer-facing dashboard.</li>
+          <li>Postgres has demonstrably stopped coping: materialised views can't be refreshed fast enough and indexes aren't helping.</li>
+          <li>POPIA residency means the analytical store has to sit in South Africa, and you have the team to run it.</li>
+          <li>Storage cost matters — columnar compression on event data routinely beats a row store by a wide margin.</li>
+        </ul>
+      </div>
+      <div class="decision-card skip">
+        <h4>Skip ClickHouse when</h4>
+        <ul>
+          <li>You need transactions, foreign keys or frequent row-level updates. Use PostgreSQL. This is not a tuning problem.</li>
+          <li>The analysis happens in one process over files or an export. Use DuckDB and skip the service entirely.</li>
+          <li>Postgres has not actually failed yet. Indexes and materialised views first; a cluster is not a free upgrade.</li>
+          <li>Nobody on the team has run a stateful distributed service, and the managed service's dollar billing doesn't fit the client's budget. Pick one of the two, not neither.</li>
+          <li>The site has load shedding and no generator, and you were planning to self-host the quorum there.</li>
+          <li>The workload is a handful of analysts running occasional queries. The operational overhead will exceed the benefit.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 07 2ⁿ PERSPECTIVE ── -->
+<section id="perspective">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 · 2ⁿ Perspective</div>
+      <h2 class="section-title">How this leaf compounds in the tree.</h2>
+      <p class="section-lede">ClickHouse is the node that makes analytical workloads a product surface rather than an internal report.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>The reason this leaf matters beyond the data branch is that it changes who analytics can be shown to. A Postgres-backed report is something you run for yourself. A ClickHouse-backed aggregate that returns in under a second, under concurrent load, is something you can put in front of a client inside their own application — per-tenant usage, live operational dashboards, the analytics half of a SaaS product. That is a revenue surface, not a cost centre, and it is the same reason the ERP and construction branches eventually point here.</p>
+      <p>It also completes the warehousing spectrum. PostgreSQL covers transactional and light analytical in one engine. DuckDB covers analytical work with no service at all. ClickHouse covers analytical work as a service at scale. Knowing which of the three a workload wants — and being able to say so in one sentence — is most of the value of reading all three leaves.</p>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.08s">
+      <a href="postgresql.html" class="connect-node">
+        <span class="tag">data/warehousing/postgresql</span>
+        <div class="skill">PostgreSQL</div>
+        <div class="why">The database ClickHouse is usually brought in to relieve, not replace. Postgres keeps the transactional truth; ClickHouse serves the aggregates over it.</div>
+      </a>
+      <a href="duckdb.html" class="connect-node">
+        <span class="tag">data/warehousing/duckdb</span>
+        <div class="skill">DuckDB</div>
+        <div class="why">The same columnar idea with no server. Read it before committing to a cluster — a good share of the time it is the honest answer.</div>
+      </a>
+      <a href="../analytics/superset.html" class="connect-node">
+        <span class="tag">data/analytics/superset</span>
+        <div class="skill">Apache Superset</div>
+        <div class="why">The usual BI layer on top. Superset speaks to ClickHouse directly; the per-user memory and time limits in this leaf exist precisely because a BI tool is pointed at it.</div>
+      </a>
+      <a href="../analytics/grafana.html" class="connect-node">
+        <span class="tag">data/analytics/grafana</span>
+        <div class="skill">Grafana</div>
+        <div class="why">For time-series and operational dashboards, Grafana over ClickHouse is the pairing. The TTL and pre-aggregation patterns here are what keep those panels fast.</div>
+      </a>
+      <a href="../../tech/cloudflare/analytics-engine.html" class="connect-node">
+        <span class="tag">tech/cloudflare/analytics-engine</span>
+        <div class="skill">Analytics Engine</div>
+        <div class="why">Cloudflare's write-heavy time-series store is the same shape at a smaller scale, with no cluster to run. The step before you need this one.</div>
+      </a>
+      <a href="./" class="connect-node">
+        <span class="tag">data/warehousing</span>
+        <div class="skill">Warehousing sub-hub</div>
+        <div class="why">The parent sub-hub. ClickHouse occupies the scale-and-concurrency end of the spectrum.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── 08 RESOURCES ── -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 · Resources</div>
+      <h2 class="section-title">Go deeper.</h2>
+      <p class="section-lede">Primary sources only. The MergeTree and sorting-key documentation is where the real learning is — read those two before writing a schema.</p>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://clickhouse.com" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Project home</span>
+        <span class="r-title">clickhouse.com</span>
+        <span class="r-url">clickhouse.com</span>
+      </a>
+      <a href="https://clickhouse.com/docs" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs</span>
+        <span class="r-title">ClickHouse documentation</span>
+        <span class="r-url">clickhouse.com/docs</span>
+      </a>
+      <a href="https://clickhouse.com/docs/engines/table-engines/mergetree-family/mergetree" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Reference</span>
+        <span class="r-title">MergeTree engine — the model to understand first</span>
+        <span class="r-url">clickhouse.com/docs/engines/table-engines/mergetree-family/mergetree</span>
+      </a>
+      <a href="https://clickhouse.com/docs/guides/best-practices/sparse-primary-indexes" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Guide</span>
+        <span class="r-title">Sparse primary indexes and sorting keys</span>
+        <span class="r-url">clickhouse.com/docs/guides/best-practices/sparse-primary-indexes</span>
+      </a>
+      <a href="https://clickhouse.com/docs/architecture/horizontal-scaling" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Architecture</span>
+        <span class="r-title">Replication and ClickHouse Keeper</span>
+        <span class="r-url">clickhouse.com/docs/architecture/horizontal-scaling</span>
+      </a>
+      <a href="https://github.com/ClickHouse/ClickHouse" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Source</span>
+        <span class="r-title">ClickHouse/ClickHouse — Apache 2.0</span>
+        <span class="r-url">github.com/ClickHouse/ClickHouse</span>
+      </a>
+      <a href="https://github.com/Altinity/clickhouse-backup" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Tooling</span>
+        <span class="r-title">clickhouse-backup — the self-hosted backup path</span>
+        <span class="r-url">github.com/Altinity/clickhouse-backup</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../../index.html">Skills tree</a>
+      <a href="./">Warehousing sub-hub</a>
+      <a href="https://clickhouse.com" target="_blank" rel="noopener">clickhouse.com ↗</a>
+    </div>
+    <p class="footer-copy">© 2026 2nth.ai · Built in South Africa — Globally relevant</p>
+  </div>
+</footer>
+<script>
+  function toggleTheme() {
+    const html = document.documentElement;
+    const current = html.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
+    localStorage.setItem('theme', next);
+  }
+  const saved = localStorage.getItem('theme');
+  if (saved) {
+    document.documentElement.setAttribute('data-theme', saved);
+    document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '☀️' : '🌙';
+  }
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>
