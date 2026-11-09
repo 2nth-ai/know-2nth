@@ -110,9 +110,9 @@ Hubs (`explainers/<domain>/index.html` and sub-hubs) list their leaves as cards.
 - `svc-card` / `svc-card soon` — used by `agents`, `tech/*`, `construction`, `design`, `media`, `data/analytics`, `data/warehousing`
 - `hub-card` / `leaf-card` (with `soon` variant) — used by `biz`, `data` (root), `people`, `tech` (root)
 
-A stub card also carries a `<span class="svc-state stub">Stub</span>` badge that becomes `<span class="svc-state live">Live</span>` on flipping. Hub stat blocks (`.hub-stat .num`) and sub-hub summary badges (`N tools · N live`) both drift easily — check them against a file count rather than trusting them.
-
 Both work; pick whichever the surrounding hub uses. **Stubs use the `soon` modifier**; flipping a stub to Live = swap `<div class="…-card soon">` for `<a href="…" class="…-card">`. After flipping, bump any "N Live" count in the hub heading and on the matching root domain card.
+
+A stub card also carries a `<span class="svc-state stub">Stub</span>` badge that becomes `<span class="svc-state live">Live</span>` on flipping. Hub stat blocks (`.hub-stat .num`) and sub-hub summary badges (`N tools · N live`) both drift easily — check them against a file count rather than trusting them.
 
 ## Design system
 
