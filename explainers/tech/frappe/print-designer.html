@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Frappe Print Designer — know.2nth.ai</title>
+<meta name="description" content="Frappe Print Designer — a visual canvas for print formats that also replaces the PDF engine. wkhtmltopdf vs headless Chromium over CDP, the concurrency default that decides your month-end, and an honest decision guide.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/tech/frappe/print-designer">
+<meta property="og:title" content="Frappe Print Designer — know.2nth.ai">
+<meta property="og:description" content="Frappe Print Designer — a visual canvas for print formats that also replaces the PDF engine. wkhtmltopdf vs headless Chromium over CDP, the concurrency default that decides your month-end, and an honest decision guide.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai — The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Frappe Print Designer — know.2nth.ai">
+<meta name="twitter:description" content="Frappe Print Designer — a visual canvas for print formats that also replaces the PDF engine. wkhtmltopdf vs headless Chromium over CDP, the concurrency default that decides your month-end, and an honest decision guide.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3Cline x1='16' y1='3' x2='16' y2='7' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='16' y1='25' x2='16' y2='29' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='3' y1='16' x2='7' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='25' y1='16' x2='29' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33;
+    --blue: #2563EB; --blue-glow: #3B82F6;
+    --sky: #38BDF8; --sky-muted: #7DD3FC;
+    --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8;
+    --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12);
+    --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12);
+    --violet: #8B5CF6; --violet-soft: rgba(139, 92, 246, 0.12);
+    --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12);
+    --bg: var(--ink); --bg-raised: var(--navy);
+    --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(37, 99, 235, 0.06);
+    --text-primary: var(--paper); --text-secondary: var(--slate);
+    --text-muted: #64748B;
+    --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(56, 189, 248, 0.3);
+    --max-w: 1200px; --read-w: 760px;
+    --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px;
+  }
+  [data-theme="light"] {
+    --bg: #F1F5F9; --bg-raised: #FFFFFF;
+    --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(37, 99, 235, 0.04);
+    --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8;
+    --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(37, 99, 235, 0.25);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+    background: var(--bg); color: var(--text-primary);
+    line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased;
+  }
+  body::before {
+    content: ''; position: fixed; inset: 0; opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 9999;
+  }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.blue { width: 600px; height: 600px; background: var(--blue); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+
+  nav {
+    position: sticky; top: 0; z-index: 100; padding: 0 24px;
+    backdrop-filter: blur(20px) saturate(1.4);
+    background: rgba(11, 17, 32, 0.75);
+    border-bottom: 1px solid var(--border);
+  }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner {
+    max-width: var(--max-w); margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 60px;
+  }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark {
+    font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px;
+    background: linear-gradient(135deg, var(--blue), var(--sky));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+  }
+  .nav-brand-sub {
+    font-size: 12px; color: var(--text-muted);
+    letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500;
+    padding-left: 10px; border-left: 1px solid var(--border);
+  }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--sky); }
+  .theme-toggle {
+    background: none; border: 1px solid var(--border); color: var(--text-secondary);
+    width: 36px; height: 36px; border-radius: 50%; cursor: pointer;
+    display: grid; place-items: center; font-size: 16px; transition: all 0.2s;
+  }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--sky); }
+
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .read { max-width: var(--read-w); }
+
+  .crumb {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted);
+    letter-spacing: 0.5px; padding: 28px 0 0;
+    display: flex; gap: 10px; flex-wrap: wrap;
+  }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--sky); }
+  .crumb-sep { opacity: 0.5; }
+  .crumb-current { color: var(--text-secondary); }
+
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500;
+    letter-spacing: 2px; text-transform: uppercase; color: var(--sky);
+    margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px;
+  }
+  .hero .eyebrow .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--blue-glow); box-shadow: 0 0 12px var(--blue-glow);
+  }
+  .hero h1 {
+    font-size: clamp(40px, 6vw, 66px); font-weight: 800;
+    line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 14ch;
+  }
+  .hero h1 .gradient {
+    background: linear-gradient(135deg, var(--blue-glow), var(--sky), var(--sky-muted));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500;
+    padding: 6px 14px; border-radius: var(--radius-pill);
+    border: 1px solid var(--border); color: var(--text-secondary);
+    letter-spacing: 0.5px;
+  }
+  .pill.accent { background: rgba(37, 99, 235, 0.12); color: var(--blue-glow); border-color: rgba(37, 99, 235, 0.25); }
+
+  section { padding: 52px 0; position: relative; }
+  .section-label {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500;
+    letter-spacing: 2px; text-transform: uppercase; color: var(--sky);
+    margin-bottom: 14px;
+  }
+  .section-title {
+    font-size: clamp(26px, 3.4vw, 36px); font-weight: 700;
+    letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2;
+  }
+  .section-lede {
+    font-size: 16px; color: var(--text-secondary); max-width: var(--read-w);
+    line-height: 1.75; font-weight: 300; margin-bottom: 32px;
+  }
+  .prose p {
+    font-size: 16px; color: var(--text-secondary); line-height: 1.75;
+    max-width: var(--read-w); margin-bottom: 18px;
+  }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.88em;
+    background: var(--bg-card); border: 1px solid var(--border);
+    padding: 1px 6px; border-radius: 4px; color: var(--sky);
+  }
+
+  pre.code {
+    background: var(--ink-deep); border: 1px solid var(--border);
+    border-radius: var(--radius-md); padding: 20px 22px;
+    overflow-x: auto; font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px; line-height: 1.65; color: var(--mist);
+    margin: 0 0 20px; max-width: var(--read-w);
+  }
+  [data-theme="light"] pre.code { background: #0F172A; color: #E2E8F0; }
+  pre.code .k { color: var(--sky); }
+  pre.code .s { color: #A5F3B8; }
+  pre.code .c { color: var(--text-muted); font-style: italic; }
+  pre.code .n { color: #FCD34D; }
+
+  .info-card {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-lg);
+    padding: 28px 32px; max-width: var(--read-w);
+    margin-bottom: 20px;
+  }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+
+  .compare-wrap {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-lg);
+    overflow: hidden; max-width: var(--read-w);
+    margin-bottom: 20px;
+  }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td {
+    padding: 12px 16px; text-align: left;
+    border-bottom: 1px solid var(--border); vertical-align: top;
+  }
+  .compare thead th {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600;
+    letter-spacing: 1.2px; text-transform: uppercase; color: var(--sky);
+    background: rgba(37, 99, 235, 0.04);
+  }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); }
+  .compare td code {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.9em;
+    color: var(--sky);
+  }
+
+  .gotcha-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 12px;
+  }
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 12px;
+  }
+  .pill.warn { background: var(--warm-soft); color: var(--warm-glow); border-color: rgba(245, 158, 11, 0.25); }
+  .gotcha {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-left: 3px solid var(--rose);
+    border-radius: var(--radius-md);
+    padding: 18px 22px;
+  }
+  .gotcha strong { display: block; color: var(--text-primary); font-weight: 600; font-size: 14px; margin-bottom: 6px; }
+  .gotcha p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+  .connect-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 12px;
+  }
+  .connect-node {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    padding: 18px 22px; transition: all 0.3s;
+    text-decoration: none; color: inherit; display: block;
+  }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node.soon { cursor: default; opacity: 0.72; }
+  .connect-node.soon:hover { border-color: var(--border); background: var(--bg-card); }
+  .connect-node .tag {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    letter-spacing: 1px; text-transform: uppercase;
+    color: var(--text-muted); display: block; margin-bottom: 6px;
+  }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+
+  .resource-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 12px;
+  }
+  .resource {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    padding: 18px 22px; text-decoration: none; transition: all 0.3s;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--sky); word-break: break-all; }
+
+  .decision-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+    max-width: var(--read-w);
+  }
+  @media (max-width: 720px) { .decision-grid { grid-template-columns: 1fr; } }
+  .decision-card {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    padding: 22px 24px;
+  }
+  .decision-card.use { border-left: 3px solid var(--green); }
+  .decision-card.skip { border-left: 3px solid var(--rose); }
+  .decision-card h4 {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .decision-card.use h4 { color: var(--green); }
+  .decision-card.skip h4 { color: var(--rose); }
+  .decision-card ul { list-style: none; padding: 0; }
+  .decision-card li {
+    font-size: 13px; color: var(--text-secondary); line-height: 1.6;
+    padding: 6px 0; border-bottom: 1px solid var(--border);
+  }
+  .decision-card li:last-child { border-bottom: none; }
+
+  footer {
+    padding: 60px 0 40px; border-top: 1px solid var(--border);
+    text-align: center; margin-top: 40px;
+  }
+  .footer-brand {
+    font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600;
+    background: linear-gradient(135deg, var(--blue), var(--sky));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+  }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--sky); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+
+  .fade-up {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 768px) {
+    .nav-brand-sub { display: none; }
+    .nav-link { display: none; }
+    pre.code { font-size: 11px; padding: 14px 16px; }
+    .compare { font-size: 12px; }
+    .compare th, .compare td { padding: 10px 12px; }
+  }
+
+  *, *::before, *::after {
+    transition-property: background-color, border-color, color, box-shadow;
+    transition-duration: 0.3s; transition-timing-function: ease;
+  }
+</style>
+</head>
+<body>
+
+<div class="glow-orb blue"></div>
+<div class="glow-orb sky"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../../index.html" class="nav-brand">
+      <span class="nav-brand-mark">know.2nth.ai</span>
+      <span class="nav-brand-sub">tech/frappe/print-designer</span>
+    </a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">← Frappe</a>
+      <a href="../../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">🌙</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">›</span>
+    <a href="../../../index.html#domains">Technology</a>
+    <span class="crumb-sep">›</span>
+    <a href="../">tech</a>
+    <span class="crumb-sep">›</span>
+    <a href="./">frappe</a>
+    <span class="crumb-sep">›</span>
+    <span class="crumb-current">print-designer</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> tech/frappe · Print Designer · Skill Leaf</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      Invoices you design,<br><span class="gradient">not invoices you code.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      Print Designer is a Frappe app that puts a visual canvas where Jinja templates used to be. Drag fields onto a page, bind them to the document and its linked documents, and publish a print format without writing HTML. The part most teams miss until production: it also replaces the PDF engine. Pick <code>chrome</code> as the generator and you get modern CSS and a headless Chromium process to run and size.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill accent">Live</span>
+      <span class="pill">Frappe Framework app</span>
+      <span class="pill">AGPL v3</span>
+      <span class="pill">v1.6.7</span>
+      <span class="pill warn">Frappe v15 / develop</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 WHAT IT IS -->
+<section id="what">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; What it is</div>
+      <h2 class="section-title">A canvas bolted onto the Print Format doctype.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Every Frappe site already has a print format builder. It is fine for a logo, an address block and a table of line items. The moment finance asks for a two-column remittance advice, a QR code for a payment reference, or a brochure-style quotation, you drop into a custom format and write Jinja and CSS by hand &mdash; and then you own that template forever.</p>
+      <p>Print Designer is Frappe Technologies' answer to that. It is a separate app (<code>print_designer</code>, AGPL v3, currently <strong>1.6.7</strong>) that adds a drag-and-drop designer, a table editor, multi-page layouts, and a scripting escape hatch for custom data and custom HTML when the canvas runs out. Barcode and QR rendering come from its own Python dependencies &mdash; <code>python-barcode</code> and <code>PyQRCode</code> &mdash; rather than from anything you template yourself.</p>
+      <p>The architectural point worth holding on to is that it is <em>not</em> a parallel printing system. The app registers a <code>doctype_js</code> override on the standard <code>Print Format</code> doctype, so a Designer format is just a Print Format record with a different editing surface. Everything downstream that already knows how to print a Print Format &mdash; the print view, the POS screen, <code>download_pdf</code>, your own server-side calls &mdash; keeps working. You are changing how the format is authored, not where it lives.</p>
+      <div class="info-card">
+        <h4>What you actually install</h4>
+        <p>A Frappe app with five Python dependencies (<code>PyQRCode</code>, <code>pypng</code>, <code>python-barcode</code>, <code>websockets</code>, <code>distro</code>) and Python 3.10 or newer. The <code>websockets</code> entry is the tell: it is there to talk to a browser, which is the subject of the next section.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 THE PDF ENGINE -->
+<section id="engine">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; The part that surprises people</div>
+      <h2 class="section-title">It swaps out your PDF engine.</h2>
+      <p class="section-lede">Print Designer claims the framework's PDF hooks. Installing it changes how PDFs are produced, per format, and that is a capacity decision as much as a design one.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>The app's <code>hooks.py</code> takes over <code>pdf_generator</code>, <code>pdf_body_html</code>, <code>pdf_header_html</code>, <code>pdf_footer_html</code> and <code>get_print_format_template</code>, and installs <code>before_request</code> and <code>after_request</code> handlers. On each request it reads a <code>pdf_generator</code> field off the Print Format record, falling back to <code>wkhtmltopdf</code>. Two values matter:</p>
+      <ul>
+        <li><code>wkhtmltopdf</code> &mdash; the historical Frappe path. An old WebKit. Fast, modest memory, and indifferent to most CSS written this decade: no flexbox or grid worth relying on.</li>
+        <li><code>chrome</code> &mdash; headless Chromium, driven over the DevTools Protocol on a websocket. Modern CSS renders the way the designer previewed it, which is the entire reason the option exists.</li>
+      </ul>
+      <p>Choosing <code>chrome</code> means you now run a browser on your application server. Print Designer looks for a bundled <code>headless_shell</code> binary in the bench folder (per-platform <code>chrome-linux</code>, <code>chrome-mac</code>, <code>chrome-win</code> paths), allows <code>chromium_binary_path</code> in site config if yours lives elsewhere, and allows <code>chromium_websocket_url</code> to point at a browser on another host &mdash; a path the source itself marks as not yet tested. Browser start-up has a ten-second default timeout.</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.08s">
+      <table class="compare">
+        <thead>
+          <tr>
+            <th>Setting (site config)</th>
+            <th>Default</th>
+            <th>What it decides</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><code>chromium_max_concurrent</code></td><td><code>1</code></td><td>Websocket connections allowed to the Chromium instance &mdash; effectively how many PDFs render at once</td></tr>
+          <tr><td><code>chromium_binary_path</code></td><td>bench folder</td><td>Where to find <code>headless_shell</code> if it is not bundled in the bench</td></tr>
+          <tr><td><code>chromium_websocket_url</code></td><td>unset</td><td>Use a Chromium on another host or container. The source flags this as not implemented/tested</td></tr>
+          <tr><td>persistent Chromium</td><td>off</td><td>Keep the browser alive between requests instead of closing it in <code>after_request</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 03 CONCURRENCY -->
+<section id="scale">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; Capacity reality</div>
+      <h2 class="section-title">One browser, one PDF at a time.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Read <code>chromium_max_concurrent: 1</code> carefully, because it is the number that decides whether this app survives your month-end. The default configuration starts a single Chromium instance and permits one concurrent render through it. The source carries an explicit note that handling multiple Chromium instances per worker is still to be implemented.</p>
+      <p>For interactive printing &mdash; a user opens an invoice, clicks print, waits a second &mdash; that is entirely adequate and you will never notice. For a statement run that generates four thousand PDFs on the 1st of the month, you are serialising four thousand browser renders behind one connection, with a cold browser start if persistence is off. That is not a reason to avoid the app; it is a reason to decide, before you commit, which formats need <code>chrome</code> and which can stay on <code>wkhtmltopdf</code>.</p>
+      <div class="info-card">
+        <h4>The practical split</h4>
+        <p>Set <code>chrome</code> on the handful of formats where layout is the product &mdash; customer-facing quotations, brochures, anything with a designed grid. Leave the high-volume internal paper &mdash; picking slips, delivery notes, bulk statements &mdash; on <code>wkhtmltopdf</code>. The <code>pdf_generator</code> field is per Print Format precisely so you can make that call format by format rather than site-wide. Raise <code>chromium_max_concurrent</code> only with memory headroom measured on your own box, and turn on persistent Chromium before you raise concurrency, not after.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 GOTCHAS -->
+<section id="gotchas">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; Gotchas</div>
+      <h2 class="section-title">Things worth knowing first.</h2>
+    </div>
+    <div class="info-grid fade-up" style="transition-delay: 0.05s">
+      <div class="info-card">
+        <h4>The version warning is behind the stack</h4>
+        <p>The project README still states that Print Designer is compatible only with Frappe <strong>v15</strong> and <code>develop</code>. Meanwhile the published ERPNext images have moved on &mdash; a <code>version-16</code> line is shipping alongside <code>version-15</code>. If you are standing up a new site on v16, treat Print Designer compatibility as something to verify on a throwaway bench rather than assume, and check the repository's own branches before you plan the rollout.</p>
+      </div>
+      <div class="info-card">
+        <h4>Rendering is not guaranteed deterministic</h4>
+        <p>The browser code carries a standing TODO to implement deterministic rendering via the DevTools Protocol, blocked on platform support. In practice: do not assume byte-identical PDFs across runs or across hosts. If you have a compliance or archival requirement that two renders of the same document must match exactly, test that specifically &mdash; the project has not claimed it.</p>
+      </div>
+      <div class="info-card">
+        <h4>AGPL v3, like the rest of the stack</h4>
+        <p>Print Designer is AGPL v3, the same licence as the framework and ERPNext. Using it to print your own documents carries no obligation. Shipping a modified Print Designer as part of a hosted product you offer to others is where the network-use clause starts to matter, and that is a legal question, not a technical one.</p>
+      </div>
+      <div class="info-card">
+        <h4>You still own a template</h4>
+        <p>The scripting escape hatch for custom data and custom HTML is genuinely useful and genuinely a trapdoor. A format with substantial custom script is a maintained artefact again &mdash; the thing the visual designer was meant to save you from. Worth noticing when it happens, rather than discovering it at handover.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 DECISION -->
+<section id="decision">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; Decision guide</div>
+      <h2 class="section-title">Use it for, skip it for.</h2>
+    </div>
+    <div class="decision-grid fade-up" style="transition-delay: 0.05s">
+      <div class="decision-card use">
+        <h4>Use Print Designer when</h4>
+        <ul>
+          <li>Your print formats are a recurring change request and a developer is in the loop every time.</li>
+          <li>Layout quality is customer-facing &mdash; quotations, proposals, branded statements that represent the organisation.</li>
+          <li>You need barcodes or payment QR codes on documents and would rather not template them yourself.</li>
+          <li>Finance or ops staff are capable of maintaining their own formats if you give them a canvas.</li>
+          <li>Volume is interactive rather than batch, or you can keep batch formats on the old generator.</li>
+        </ul>
+      </div>
+      <div class="decision-card skip">
+        <h4>Skip Print Designer when</h4>
+        <ul>
+          <li>Your bottleneck is bulk generation &mdash; thousands of documents in a window. One Chromium at concurrency 1 is the wrong shape for that, and tuning it is real work.</li>
+          <li>Your application server has no memory headroom. A browser process is not free, and small VPS instances feel it.</li>
+          <li>You need byte-reproducible output for archival or audit. That is an open TODO, not a feature.</li>
+          <li>You are on Frappe v16 and cannot afford to validate compatibility yourself yet.</li>
+          <li>Your existing Jinja formats work, nobody is asking for changes, and the only gain would be aesthetic. The standard builder plus one good custom format is a perfectly defensible end state.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 SA CONTEXT -->
+<section id="sa">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; South African context</div>
+      <h2 class="section-title">Documents, residency and the rand.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Two things make this leaf more than cosmetic for a South African organisation.</p>
+      <p>The first is cost shape. Print Designer is free; the Chromium process is not. If you are sizing a server in rands against dollar-priced hosting, "add a browser to the app server" is a line item, and the honest comparison is one slightly larger instance against a per-document SaaS document service. Deciding per format &mdash; <code>chrome</code> where it shows, <code>wkhtmltopdf</code> where it does not &mdash; is how you keep that instance small. For a business billing in rands, resisting an instance-size upgrade for formats nobody outside the warehouse ever sees is the whole game.</p>
+      <p>The second is POPIA. A print format is a personal-information processing surface: payslips, statements, delivery notes with names and addresses. Three habits follow. Keep generated PDFs inside the same site and permission model as the records they came from, rather than dropping them on a share with looser access &mdash; the designer does not change your permissions, but a careless export pipeline around it does. Treat a format that pulls from linked documents as a potential over-collection: the canvas makes it trivially easy to put a customer's full contact record on a document that only needed a delivery address. And if you point <code>chromium_websocket_url</code> at a browser on another host, note that document content now crosses to that host &mdash; worth knowing where it sits before you do it.</p>
+      <div class="info-card">
+        <h4>Who this suits here</h4>
+        <p>SMEs already running ERPNext with an in-house finance person who keeps asking for layout changes. The win is removing the developer from that loop. Organisations printing at genuine volume &mdash; distribution, logistics, utilities &mdash; should scope the generator split before installing, not after.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 07 CONNECTIONS -->
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; Connections</div>
+      <h2 class="section-title">Where this leaf links.</h2>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="framework.html" class="connect-node">
+        <span class="tag">tech/frappe/framework</span>
+        <div class="skill">Frappe Framework</div>
+        <div class="why">The hook system Print Designer uses to claim the PDF pipeline, and the <code>Print Format</code> doctype it overrides rather than replaces.</div>
+      </a>
+      <a href="../../biz/erp/erpnext.html" class="connect-node">
+        <span class="tag">biz/erp/erpnext</span>
+        <div class="skill">ERPNext</div>
+        <div class="why">Where the documents come from. Invoices, quotations, statements and delivery notes are the formats you will actually redesign.</div>
+      </a>
+      <a href="books.html" class="connect-node">
+        <span class="tag">tech/frappe/books</span>
+        <div class="skill">Frappe Books</div>
+        <div class="why">The desktop accounting sibling. Useful contrast: Books prints from a local app, with none of the server-side browser question.</div>
+      </a>
+      <a href="./" class="connect-node">
+        <span class="tag">tech/frappe</span>
+        <div class="skill">Frappe sub-hub</div>
+        <div class="why">The hub listing the Frappe ecosystem apps. Print Designer sits in the Builders and Hosting band.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 08 RESOURCES -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 &middot; Resources</div>
+      <h2 class="section-title">Primary sources.</h2>
+      <p class="section-lede">Version, licence, dependencies, the generator settings and the two TODOs quoted above were read off the repository itself on 2026-11-16, not from a summary.</p>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://github.com/frappe/print_designer" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Source &middot; v1.6.7</span>
+        <span class="r-title">frappe/print_designer on GitHub</span>
+        <span class="r-url">github.com/frappe/print_designer</span>
+      </a>
+      <a href="https://github.com/frappe/print_designer/tree/main/print_designer/pdf_generator" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Source &middot; the generator</span>
+        <span class="r-title">pdf_generator — Chromium, CDP and the concurrency setting</span>
+        <span class="r-url">github.com/frappe/print_designer/.../pdf_generator</span>
+      </a>
+      <a href="https://docs.frappe.io/print-designer" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs</span>
+        <span class="r-title">Print Designer documentation</span>
+        <span class="r-url">docs.frappe.io/print-designer</span>
+      </a>
+      <a href="https://frappe.io/print-designer" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Project home</span>
+        <span class="r-title">Print Designer</span>
+        <span class="r-url">frappe.io/print-designer</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../../index.html">Skills tree</a>
+      <a href="./">Frappe sub-hub</a>
+      <a href="https://frappe.io/print-designer" target="_blank" rel="noopener">Print Designer ↗</a>
+    </div>
+    <p class="footer-copy">© 2026 2nth.ai · Built in South Africa — Globally relevant</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme() {
+    const html = document.documentElement;
+    const current = html.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
+    localStorage.setItem('theme', next);
+  }
+  const saved = localStorage.getItem('theme');
+  if (saved) {
+    document.documentElement.setAttribute('data-theme', saved);
+    document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '☀️' : '🌙';
+  }
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>

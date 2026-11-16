@@ -165,7 +165,7 @@
       Ported to Go. <span class="gradient">And it broke your linter.</span>
     </h1>
     <p class="sub fade-up" style="transition-delay: 0.1s">
-      TypeScript 7.0 reached GA on <strong>8 July 2026</strong>. It is the compiler and language service <strong>ported to Go</strong> &mdash; the type-checking semantics carry over from 6.0 by design; the implementation language is what changed. Microsoft reports full-build speedups <strong>typically between 8x and 12x</strong>. The catch is the same fact that made it fast: 7.0 ships <strong>no programmatic compiler API</strong>. If your app is React or Node, you can upgrade today. If your toolchain embeds the compiler &mdash; Vue, Svelte, Astro, Angular templates, <code>typescript-eslint</code> &mdash; you are waiting for 7.1. The speed and the breakage have one cause.
+      TypeScript 7.0 reached GA on <strong>8 July 2026</strong>. It is the compiler and language service <strong>ported to Go</strong> &mdash; the type-checking semantics carry over from 6.0 by design; the implementation language is what changed. Microsoft reports full-build speedups <strong>typically between 8x and 12x</strong>. The catch is the same fact that made it fast: 7.0 ships <strong>no programmatic compiler API</strong>. If your app is React or Node, you can upgrade today. If your toolchain embeds the compiler &mdash; Vue, Svelte, Astro, Angular templates, <code>typescript-eslint</code> &mdash; you are waiting for 7.1, in beta since 20 October 2026 with a redesigned modular API rather than the old one restored. The speed and the breakage have one cause.
     </p>
     <div class="hero-meta fade-up" style="transition-delay: 0.15s">
       <span class="pill code">Go port</span>
@@ -190,7 +190,8 @@
     </div>
     <div class="info-card code fade-up" style="transition-delay: 0.08s">
       <h4>The one fact that decides your upgrade</h4>
-      <p>7.0 ships with <strong>no programmatic compiler API at all</strong> &mdash; not an unstable one, none. Microsoft says a new and different API will arrive in <strong>7.1</strong>. If nothing in your stack calls the compiler as a library, that is a non-event. If something does &mdash; a linter, a template checker, a code transformer &mdash; it is the whole story. The <code>@typescript/typescript6</code> compatibility package ships a <code>tsc6</code> binary and re-exports the 6.0 API for side-by-side operation while you wait.</p>
+      <p>7.0 ships with <strong>no programmatic compiler API at all</strong> &mdash; not an unstable one, none. Microsoft said a new and different API would arrive in <strong>7.1</strong>, and as of <strong>20 October 2026</strong> it is testable: <code>typescript@7.1.0-beta</code> is on npm. If nothing in your stack calls the compiler as a library, that is a non-event. If something does &mdash; a linter, a template checker, a code transformer &mdash; it is the whole story. The <code>@typescript/typescript6</code> compatibility package ships a <code>tsc6</code> binary and re-exports the 6.0 API for side-by-side operation while you wait.</p>
+      <p>What 7.1 actually restores is worth knowing before you plan around it, because it is <em>not</em> the old API returned. The beta package drops the single monolithic entry point: the root <code>typescript</code> export now resolves to a version stub that provides only <code>version</code> and <code>versionMajorMinor</code>. The compiler surface moved to subpaths &mdash; <code>typescript/sync</code> and <code>typescript/async</code> for the client, <code>typescript/fs</code> for file systems, <code>typescript/path</code>, <code>typescript/proto</code>, and <code>typescript/ast</code> (with <code>ast/is</code>, <code>ast/factory</code>, <code>ast/visitor</code>, <code>ast/scanner</code>, <code>ast/clone</code>) for node work. The model is snapshot-based rather than <code>createProgram</code>-based: <code>Snapshot</code>, <code>Project</code>, <code>Program</code>, <code>LanguageService</code>, <code>Checker</code> and <code>BuildOrchestrator</code> are classes on the <code>sync</code> client. So every tool in the blocked list below is not waiting for a drop-in &mdash; it is waiting to do a migration. That is the difference between "7.1 unblocks us" and "7.1 lets us start the work".</p>
     </div>
   </div>
 </section>
@@ -246,7 +247,7 @@
         </ul>
       </div>
       <div class="decision-card skip">
-        <h4>Skip 7.0 (wait for 7.1) when</h4>
+        <h4>Skip 7.0 (track the 7.1 beta) when</h4>
         <ul>
           <li>Anything embeds the compiler or walks the AST &mdash; <code>typescript-eslint</code>, <code>ts-morph</code>, custom transformers, <code>ts-jest</code> on the native package</li>
           <li>You use Vue, Svelte, Astro, MDX, or Angular template type-checking</li>
@@ -297,7 +298,7 @@
       <a href="ci-cd.html" class="connect-node">
         <span class="tag">software/ci-cd</span>
         <div class="skill">CI / CD</div>
-        <div class="why">Where the 8&ndash;12x lands as money: the type-check stage shrinks, but pin <code>--checkers</code> for reproducibility and keep 6.0 for the lint stage until 7.1.</div>
+        <div class="why">Where the 8&ndash;12x lands as money: the type-check stage shrinks, but pin <code>--checkers</code> for reproducibility and keep 6.0 for the lint stage until 7.1 lands stable.</div>
       </a>
       <a href="packages.html" class="connect-node">
         <span class="tag">software/packages</span>
@@ -319,13 +320,23 @@
     <div class="fade-up">
       <div class="section-label">06 &middot; Resources</div>
       <h2 class="section-title">Primary sources.</h2>
-      <p class="section-lede">Microsoft's own release notes and the Go repo &mdash; and one independent anchor (the typescript-eslint issue) you can check without taking the vendor's word. Last reviewed 2026-07-27; benchmark figures are Microsoft's own.</p>
+      <p class="section-lede">Microsoft's own release notes and the Go repo &mdash; and one independent anchor (the typescript-eslint issue) you can check without taking the vendor's word. Last reviewed 2026-11-16: stable is <code>7.0.2</code>, <code>7.1.0-beta</code> published 20 Oct 2026, and the 7.1 API subpaths above were read off the published package rather than the announcement. <code>typescript-eslint</code> 8.72.2 (9 Nov 2026) still declares <code>typescript &gt;=4.8.4 &lt;6.1.0</code>, so the install is still blocked on 7.x. Benchmark figures are Microsoft's own.</p>
     </div>
     <div class="resource-grid fade-up" style="transition-delay: 0.05s">
       <a href="https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/" class="resource" target="_blank" rel="noopener">
         <span class="r-kind">Release notes &middot; 8 Jul 2026</span>
         <span class="r-title">Announcing TypeScript 7.0</span>
         <span class="r-url">devblogs.microsoft.com/typescript/announcing-typescript-7-0</span>
+      </a>
+      <a href="https://devblogs.microsoft.com/typescript/announcing-typescript-7-1-beta/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Release notes &middot; 20 Oct 2026</span>
+        <span class="r-title">Announcing TypeScript 7.1 Beta (the new modular API)</span>
+        <span class="r-url">devblogs.microsoft.com/typescript/announcing-typescript-7-1-beta</span>
+      </a>
+      <a href="https://www.npmjs.com/package/typescript?activeTab=versions" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Registry &middot; checked 16 Nov 2026</span>
+        <span class="r-title">typescript on npm — stable 7.0.2, beta 7.1.0-beta</span>
+        <span class="r-url">npmjs.com/package/typescript</span>
       </a>
       <a href="https://devblogs.microsoft.com/typescript/announcing-typescript-6-0/" class="resource" target="_blank" rel="noopener">
         <span class="r-kind">Release notes &middot; 23 Mar 2026</span>

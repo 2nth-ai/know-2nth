@@ -3,7 +3,7 @@
   "description": "The public knowledge tree for the 2nth.ai ecosystem. Every leaf is both a human-readable reference and an agent-consumable context document.",
   "agent_fetch": "https://know.2nth.ai/api/context/<domain>/<leaf>",
   "mcp": "https://know.2nth.ai/mcp",
-  "count": 233,
+  "count": 236,
   "items": [
     {
       "title": "Agents — know.2nth.ai",
@@ -663,7 +663,7 @@
     },
     {
       "title": "Analytics — know.2nth.ai",
-      "description": "The Analytics sub-hub of the 2nth data domain. Five BI tools — Superset, Metabase, Evidence, Druid, Grafana — with Superset as the default for new builds.",
+      "description": "The Analytics sub-hub of the 2nth data domain. Six BI tools — Superset, Tableau, Metabase, Evidence, Druid, Grafana — with Superset as the default for new builds.",
       "domain": "data",
       "kind": "hub",
       "url": "https://know.2nth.ai/explainers/data/analytics/",
@@ -708,6 +708,14 @@
       "kind": "leaf",
       "url": "https://know.2nth.ai/explainers/data/engineering/liteparse",
       "fetch": "data/engineering/liteparse"
+    },
+    {
+      "title": "Metabase — know.2nth.ai",
+      "description": "Metabase — open-source self-service BI. The 0.x AGPL vs 1.x commercial split, how it compares to Superset, the production gotchas, and an honest decision guide for South African teams.",
+      "domain": "data",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/data/analytics/metabase",
+      "fetch": "data/analytics/metabase"
     },
     {
       "title": "Postgres vs Microsoft SQL — know.2nth.ai",
@@ -1542,6 +1550,14 @@
       "fetch": "tech/frappe/books"
     },
     {
+      "title": "Frappe Cloud — know.2nth.ai",
+      "description": "Frappe Cloud — the official managed hosting for the Frappe stack, and press, the AGPL app that runs it. The commit-to-image deploy model, the architecture, and an honest read on pricing shape, POPIA section 72 and FX.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/frappe/cloud",
+      "fetch": "tech/frappe/cloud"
+    },
+    {
       "title": "Frappe CRM — know.2nth.ai",
       "description": "Frappe CRM — lead-to-deal pipeline built on the Frappe Framework. Vue 3 frontend, kanban boards, email integration, call logs. The 2024 rebuild that replaced the old ERPNext CRM module.",
       "domain": "tech",
@@ -1572,6 +1588,14 @@
       "kind": "leaf",
       "url": "https://know.2nth.ai/explainers/tech/frappe/hr",
       "fetch": "tech/frappe/hr"
+    },
+    {
+      "title": "Frappe Print Designer — know.2nth.ai",
+      "description": "Frappe Print Designer — a visual canvas for print formats that also replaces the PDF engine. wkhtmltopdf vs headless Chromium over CDP, the concurrency default that decides your month-end, and an honest decision guide.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/frappe/print-designer",
+      "fetch": "tech/frappe/print-designer"
     },
     {
       "title": "Furniture Guild — Architecture & review — know.2nth.ai",
