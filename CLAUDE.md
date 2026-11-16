@@ -6,6 +6,9 @@
 
 Sibling sites in the ecosystem:
 - **2nth.ai** — framework / GTM site (Human + AI = 2ⁿ)
+- **2nth.me** — personal / practitioner surface
+- **2nth.org** — non-profit / community surface
+- **pay.2nth.ai** — payments surface
 - **dev.2nth.ai** — partner / Gridline / openBUILD AI source content (Construction domain pulls from here)
 - **2nth.io** — compute infrastructure layer
 - **imbila.ai** — parent consultancy brand
@@ -43,7 +46,7 @@ Sibling sites in the ecosystem:
 ```
 know-2nth/
 ├── CLAUDE.md
-├── index.html                # root: 12 top-level domain cards
+├── index.html                # root: 14 top-level domain cards
 ├── about.html                # access model + how the site works
 ├── join.html                 # "Stay in touch" lead capture → 2nth CRM (crm-form.js)
 ├── gate.js                   # tier-gate hook, loaded on every leaf, currently inert
@@ -51,18 +54,38 @@ know-2nth/
 ├── og-image.svg              # source for the OG image
 ├── _redirects                # Cloudflare Pages redirects
 ├── google-adk-explainer.md   # canonical source markdown for ADK leaf (PR #17)
+├── briefings/                # CEO / CTO briefings (indexed alongside leaves)
+├── lab/                      # demos and experiments
+├── diagrams/                 # standalone interactive diagrams
+├── claude/                   # Claude-facing assets
+├── functions/                # Cloudflare Pages Functions (agent-fetch, MCP)
+├── scripts/                  # gen-agent-index.mjs and friends
+├── ask.html                  # "Ask Vinci" on-site assistant
+├── agent-index.json          # generated — see scripts/gen-agent-index.mjs
+├── llms.txt                  # generated — see scripts/gen-agent-index.mjs
 └── explainers/
     ├── agents/        # Frameworks, Protocols, Models, Inference (the strategic priority)
-    ├── biz/           # ERP, CRM, HR — has erp/ and crm/ sub-hubs
+    ├── biz/           # has bpm/, crm/, ecm/, erp/, hr/ sub-hubs
     ├── construction/  # openBIM + Gridline / openBUILD AI partner-anchored
     ├── data/          # analytics/, warehousing/, engineering/ sub-hubs
     ├── design/        # tokens, components, motion, AI-assisted design
+    ├── fin/           # financial services
+    ├── health/        # private practice management + ambient AI scribes
+    ├── leg/           # SA legal — commercial, employment, disputes, IP, privacy
+    ├── media/         # voice, TTS/STT, the media landscape
     ├── partners/      # co-branded leaves (no hub yet, not on root grid)
-    ├── people/        # coaching, leadership, typologies/
-    └── tech/          # cloudflare/, google/, microsoft/, frappe/, runtime/, android-hce/, embedded/, frameworks/
+    ├── people/        # coaching, leadership, typologies/, ai-roles/
+    ├── software/      # languages, version control, CI/CD, agent-era practice
+    ├── tech/          # android-hce/, cloudflare/, embedded/, frameworks/, frappe/,
+    │                  #   game-engines/, google/, hardware/, microsoft/, oracle/, runtime/
+    └── tools/         # hub exists, no leaves yet
 ```
 
-Five additional domains exist on the root grid as cards but have **no folder yet**: `edu`, `fin`, `health`, `iot`, `leg`. Building any of them out means: create `explainers/<domain>/index.html` hub, ship at least one Live leaf, then the root card becomes meaningful.
+Two domains exist on the root grid as cards but have **no folder yet**: `edu` and `iot`. (`fin`, `health`, `leg`, `media` and `software` all have folders and live leaves now — this list was stale.) Building one out means: create `explainers/<domain>/index.html` hub, ship at least one Live leaf, then the root card becomes meaningful.
+
+`explainers/tools/` and `explainers/partners/` are the inverse case: folders that are not cards on the root grid.
+
+**Hub counts drift.** The "N live" badges on hubs, on parent-hub cards and on root domain cards are hand-maintained and are routinely stale — several were found wrong in Nov 2026. When you flip a stub, fix the count on the hub, on the parent hub's card for that sub-hub, and on the root domain card.
 
 ## How leaves are built
 

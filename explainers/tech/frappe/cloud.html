@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Frappe Cloud — know.2nth.ai</title>
+<meta name="description" content="Frappe Cloud — the official managed hosting for the Frappe stack, and press, the AGPL app that runs it. The commit-to-image deploy model, the architecture, and an honest read on pricing shape, POPIA section 72 and FX.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/tech/frappe/cloud">
+<meta property="og:title" content="Frappe Cloud — know.2nth.ai">
+<meta property="og:description" content="Frappe Cloud — the official managed hosting for the Frappe stack, and press, the AGPL app that runs it. The commit-to-image deploy model, the architecture, and an honest read on pricing shape, POPIA section 72 and FX.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai — The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Frappe Cloud — know.2nth.ai">
+<meta name="twitter:description" content="Frappe Cloud — the official managed hosting for the Frappe stack, and press, the AGPL app that runs it. The commit-to-image deploy model, the architecture, and an honest read on pricing shape, POPIA section 72 and FX.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3Cline x1='16' y1='3' x2='16' y2='7' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='16' y1='25' x2='16' y2='29' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='3' y1='16' x2='7' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='25' y1='16' x2='29' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33;
+    --blue: #2563EB; --blue-glow: #3B82F6;
+    --sky: #38BDF8; --sky-muted: #7DD3FC;
+    --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8;
+    --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12);
+    --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12);
+    --violet: #8B5CF6; --violet-soft: rgba(139, 92, 246, 0.12);
+    --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12);
+    --bg: var(--ink); --bg-raised: var(--navy);
+    --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(37, 99, 235, 0.06);
+    --text-primary: var(--paper); --text-secondary: var(--slate);
+    --text-muted: #64748B;
+    --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(56, 189, 248, 0.3);
+    --max-w: 1200px; --read-w: 760px;
+    --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px;
+  }
+  [data-theme="light"] {
+    --bg: #F1F5F9; --bg-raised: #FFFFFF;
+    --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(37, 99, 235, 0.04);
+    --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8;
+    --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(37, 99, 235, 0.25);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+    background: var(--bg); color: var(--text-primary);
+    line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased;
+  }
+  body::before {
+    content: ''; position: fixed; inset: 0; opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 9999;
+  }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.blue { width: 600px; height: 600px; background: var(--blue); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+
+  nav {
+    position: sticky; top: 0; z-index: 100; padding: 0 24px;
+    backdrop-filter: blur(20px) saturate(1.4);
+    background: rgba(11, 17, 32, 0.75);
+    border-bottom: 1px solid var(--border);
+  }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner {
+    max-width: var(--max-w); margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 60px;
+  }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark {
+    font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px;
+    background: linear-gradient(135deg, var(--blue), var(--sky));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+  }
+  .nav-brand-sub {
+    font-size: 12px; color: var(--text-muted);
+    letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500;
+    padding-left: 10px; border-left: 1px solid var(--border);
+  }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--sky); }
+  .theme-toggle {
+    background: none; border: 1px solid var(--border); color: var(--text-secondary);
+    width: 36px; height: 36px; border-radius: 50%; cursor: pointer;
+    display: grid; place-items: center; font-size: 16px; transition: all 0.2s;
+  }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--sky); }
+
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .read { max-width: var(--read-w); }
+
+  .crumb {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted);
+    letter-spacing: 0.5px; padding: 28px 0 0;
+    display: flex; gap: 10px; flex-wrap: wrap;
+  }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--sky); }
+  .crumb-sep { opacity: 0.5; }
+  .crumb-current { color: var(--text-secondary); }
+
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500;
+    letter-spacing: 2px; text-transform: uppercase; color: var(--sky);
+    margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px;
+  }
+  .hero .eyebrow .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--blue-glow); box-shadow: 0 0 12px var(--blue-glow);
+  }
+  .hero h1 {
+    font-size: clamp(40px, 6vw, 66px); font-weight: 800;
+    line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 14ch;
+  }
+  .hero h1 .gradient {
+    background: linear-gradient(135deg, var(--blue-glow), var(--sky), var(--sky-muted));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500;
+    padding: 6px 14px; border-radius: var(--radius-pill);
+    border: 1px solid var(--border); color: var(--text-secondary);
+    letter-spacing: 0.5px;
+  }
+  .pill.accent { background: rgba(37, 99, 235, 0.12); color: var(--blue-glow); border-color: rgba(37, 99, 235, 0.25); }
+
+  section { padding: 52px 0; position: relative; }
+  .section-label {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500;
+    letter-spacing: 2px; text-transform: uppercase; color: var(--sky);
+    margin-bottom: 14px;
+  }
+  .section-title {
+    font-size: clamp(26px, 3.4vw, 36px); font-weight: 700;
+    letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2;
+  }
+  .section-lede {
+    font-size: 16px; color: var(--text-secondary); max-width: var(--read-w);
+    line-height: 1.75; font-weight: 300; margin-bottom: 32px;
+  }
+  .prose p {
+    font-size: 16px; color: var(--text-secondary); line-height: 1.75;
+    max-width: var(--read-w); margin-bottom: 18px;
+  }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.88em;
+    background: var(--bg-card); border: 1px solid var(--border);
+    padding: 1px 6px; border-radius: 4px; color: var(--sky);
+  }
+
+  pre.code {
+    background: var(--ink-deep); border: 1px solid var(--border);
+    border-radius: var(--radius-md); padding: 20px 22px;
+    overflow-x: auto; font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px; line-height: 1.65; color: var(--mist);
+    margin: 0 0 20px; max-width: var(--read-w);
+  }
+  [data-theme="light"] pre.code { background: #0F172A; color: #E2E8F0; }
+  pre.code .k { color: var(--sky); }
+  pre.code .s { color: #A5F3B8; }
+  pre.code .c { color: var(--text-muted); font-style: italic; }
+  pre.code .n { color: #FCD34D; }
+
+  .info-card {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-lg);
+    padding: 28px 32px; max-width: var(--read-w);
+    margin-bottom: 20px;
+  }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+
+  .compare-wrap {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-lg);
+    overflow: hidden; max-width: var(--read-w);
+    margin-bottom: 20px;
+  }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td {
+    padding: 12px 16px; text-align: left;
+    border-bottom: 1px solid var(--border); vertical-align: top;
+  }
+  .compare thead th {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600;
+    letter-spacing: 1.2px; text-transform: uppercase; color: var(--sky);
+    background: rgba(37, 99, 235, 0.04);
+  }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); }
+  .compare td code {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.9em;
+    color: var(--sky);
+  }
+
+  .gotcha-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 12px;
+  }
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 12px;
+  }
+  .gotcha {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-left: 3px solid var(--rose);
+    border-radius: var(--radius-md);
+    padding: 18px 22px;
+  }
+  .gotcha strong { display: block; color: var(--text-primary); font-weight: 600; font-size: 14px; margin-bottom: 6px; }
+  .gotcha p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+  .connect-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 12px;
+  }
+  .connect-node {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    padding: 18px 22px; transition: all 0.3s;
+    text-decoration: none; color: inherit; display: block;
+  }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node.soon { cursor: default; opacity: 0.72; }
+  .connect-node.soon:hover { border-color: var(--border); background: var(--bg-card); }
+  .connect-node .tag {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    letter-spacing: 1px; text-transform: uppercase;
+    color: var(--text-muted); display: block; margin-bottom: 6px;
+  }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+
+  .resource-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 12px;
+  }
+  .resource {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    padding: 18px 22px; text-decoration: none; transition: all 0.3s;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--sky); word-break: break-all; }
+
+  .decision-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+    max-width: var(--read-w);
+  }
+  @media (max-width: 720px) { .decision-grid { grid-template-columns: 1fr; } }
+  .decision-card {
+    background: var(--bg-card); backdrop-filter: blur(10px);
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    padding: 22px 24px;
+  }
+  .decision-card.use { border-left: 3px solid var(--green); }
+  .decision-card.skip { border-left: 3px solid var(--rose); }
+  .decision-card h4 {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .decision-card.use h4 { color: var(--green); }
+  .decision-card.skip h4 { color: var(--rose); }
+  .decision-card ul { list-style: none; padding: 0; }
+  .decision-card li {
+    font-size: 13px; color: var(--text-secondary); line-height: 1.6;
+    padding: 6px 0; border-bottom: 1px solid var(--border);
+  }
+  .decision-card li:last-child { border-bottom: none; }
+
+  footer {
+    padding: 60px 0 40px; border-top: 1px solid var(--border);
+    text-align: center; margin-top: 40px;
+  }
+  .footer-brand {
+    font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600;
+    background: linear-gradient(135deg, var(--blue), var(--sky));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+  }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--sky); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+
+  .fade-up {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 768px) {
+    .nav-brand-sub { display: none; }
+    .nav-link { display: none; }
+    pre.code { font-size: 11px; padding: 14px 16px; }
+    .compare { font-size: 12px; }
+    .compare th, .compare td { padding: 10px 12px; }
+  }
+
+  *, *::before, *::after {
+    transition-property: background-color, border-color, color, box-shadow;
+    transition-duration: 0.3s; transition-timing-function: ease;
+  }
+</style>
+</head>
+<body>
+
+<div class="glow-orb blue"></div>
+<div class="glow-orb sky"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../../index.html" class="nav-brand">
+      <span class="nav-brand-mark">know.2nth.ai</span>
+      <span class="nav-brand-sub">tech/frappe/cloud</span>
+    </a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">← Frappe</a>
+      <a href="../../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">🌙</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">›</span>
+    <a href="../../../index.html#domains">Technology</a>
+    <span class="crumb-sep">›</span>
+    <a href="../">tech</a>
+    <span class="crumb-sep">›</span>
+    <a href="./">frappe</a>
+    <span class="crumb-sep">›</span>
+    <span class="crumb-current">cloud</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> tech/frappe · Frappe Cloud · Skill Leaf</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      Managed hosting<br><span class="gradient">that is itself a Frappe app.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      Frappe Cloud is the official hosting service for the Frappe stack. The platform underneath it is <code>press</code> — an open-source Frappe app, AGPL v3, that you can read and self-host. That matters more than it sounds: the deployment model it enforces is not <code>bench update</code> on a server, it is a build pipeline that turns a set of git commits into a Docker image. Understanding that is most of understanding Frappe Cloud.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill accent">Live</span>
+      <span class="pill">Managed hosting</span>
+      <span class="pill">AGPL v3 (press)</span>
+      <span class="pill">Docker + Ansible</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 WHAT IT IS -->
+<section id="what">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; What it is</div>
+      <h2 class="section-title">The hosting layer, open-sourced.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Frappe Technologies originally ran customer sites on an internal platform built to host ERPNext and little else. Customers wanted custom apps, SSH, control over their own updates. Frappe Cloud is the rebuild that gives them that, and <code>press</code> is the application that runs it.</p>
+      <p>Press is a Frappe app like any other — doctypes, the same permission model, the same REST surface — which produces the slightly recursive result that the hosting control plane for the Frappe stack is itself a Frappe site. It is published under AGPL v3 and documented for local setup, so "what does the platform actually do when I click Deploy" is a readable question rather than a support ticket.</p>
+      <p>What you get as a customer: multi-tenant site hosting where each site can run its own app versions and update independently, a dashboard over apps, servers, sites, billing, backups and updates, granular team permissions, automated backups and monitoring, a marketplace for third-party apps with compatibility checks and payouts, and billing that runs on daily or monthly subscriptions with wallet credits.</p>
+      <div class="info-card">
+        <h4>Why the open source matters practically</h4>
+        <p>Not for the usual ideological reason. It matters because the exit path is legible: the same software that hosts you is the software you could run yourself, and the artefact it produces is a Docker image built from your own repositories. Lock-in on Frappe Cloud is commercial convenience, not a proprietary runtime you cannot reproduce.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 DEPLOY MODEL -->
+<section id="deploy">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; The deploy model</div>
+      <h2 class="section-title">Commits become images, images become benches.</h2>
+      <p class="section-lede">This is the concept that trips up teams arriving from a self-managed bench. There is no in-place update. There is a build.</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead>
+          <tr>
+            <th>Doctype</th>
+            <th>What it represents</th>
+            <th>Notable fields</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><code>App Release</code></td><td>One commit of one app, cloned and validated before it is allowed into a build</td><td>hash, author, message, source, status, invalid_release, invalidation_reason</td></tr>
+          <tr><td><code>Release Group</code></td><td>The "bench group" — a named set of apps on a Frappe version, bound to servers, with shared bench and site config</td><td>version, apps, servers, common_site_config, bench_config, is_push_to_deploy_enabled</td></tr>
+          <tr><td><code>Deploy Candidate</code></td><td>A build of a release group: the image, and every knob baked into it</td><td>apps, dependencies, environment_variables, packages, gunicorn_threads_per_worker, use_app_cache</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.08s">
+      <p>The chain runs one way. A commit lands and becomes an <code>App Release</code>, which is validated — an invalid release carries a reason and does not proceed. A <code>Release Group</code> pins which apps at which versions belong together. Deploying produces a <code>Deploy Candidate</code>: a built image carrying your apps, your Python and Node dependency versions, your OS packages, your environment variables, and worker tuning such as <code>gunicorn_threads_per_worker</code>. Sites then move onto the new bench.</p>
+      <p>Two consequences follow, and they are the whole operational difference. First, a deploy is reproducible and reversible in a way a live <code>bench update</code> never is — the image either built or it did not, and the previous one still exists. Second, anything that is not in the image is not in production. Environment variables, system packages and dependency pins are build inputs on the Deploy Candidate, not things you SSH in and add. Teams used to patching a running bench feel this as friction for about a week and as a safety net thereafter.</p>
+      <p><code>is_push_to_deploy_enabled</code> on the release group is the automation switch: push to the tracked branch and the build-and-deploy chain runs without anyone opening the dashboard.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 ARCHITECTURE -->
+<section id="arch">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; What runs underneath</div>
+      <h2 class="section-title">Four moving parts.</h2>
+    </div>
+    <div class="info-grid fade-up" style="transition-delay: 0.05s">
+      <div class="info-card">
+        <h4>Press (Frappe Framework)</h4>
+        <p>The control plane. Doctypes for servers, sites, benches, releases, billing and the marketplace, with the ordinary Frappe REST API over all of it. This is the part you are clicking.</p>
+      </div>
+      <div class="info-card">
+        <h4>Agent (Flask)</h4>
+        <p>A small Flask application that runs on each managed server and gives Press a way to act on sites and benches. Press does not SSH around issuing commands; it talks to Agent. If you are reasoning about blast radius, this is the boundary worth knowing.</p>
+      </div>
+      <div class="info-card">
+        <h4>Docker</h4>
+        <p>The packaging layer. A Deploy Candidate is an image; a bench is that image running. This is why dependency and environment changes are build-time concerns.</p>
+      </div>
+      <div class="info-card">
+        <h4>Ansible</h4>
+        <p>Server provisioning and configuration. Press uses it to bring machines into a known state before they ever host a site.</p>
+      </div>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.08s">
+      <p>On infrastructure, the <code>Cluster</code> doctype is explicit about which providers Press can drive: AWS EC2, OCI, Hetzner, DigitalOcean, Frappe's own compute, and a <code>Generic</code> option for machines it did not provision. Clusters carry a region and availability zone. That is the platform's capability surface, and it is worth separating from the commercial question of which regions Frappe Cloud actually sells today — the second is a pricing-page fact, not a repository fact.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 PRICING -->
+<section id="pricing">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; Pricing reality</div>
+      <h2 class="section-title">The shape, not the number.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>This leaf deliberately does not quote plan prices. Hosting prices move, and a stale rand-converted figure in a knowledge tree is worse than no figure — read the current plans on the Frappe Cloud site before you budget. What is stable enough to be worth writing down is the <em>shape</em> of the billing, which is visible in the platform itself.</p>
+      <ul>
+        <li><strong>Subscriptions run daily or monthly.</strong> Daily accrual is unusual in this market and it is genuinely useful: a test site that exists for nine days costs nine days, which makes spinning up throwaway environments cheap in a way monthly billing discourages.</li>
+        <li><strong>Wallet credits sit in front of payment.</strong> You top up a balance that consumption draws down, rather than every resource carrying its own card transaction. For a South African buyer this is the lever that matters most — see below.</li>
+        <li><strong>The marketplace bills through the same system.</strong> Third-party apps carry their own pricing and payouts run through Press. A paid app is another line on the same account, not a separate vendor relationship.</li>
+        <li><strong>Servers and sites are separate cost objects.</strong> Shared-tenancy sites and dedicated servers are different products in the model. Moving from one to the other is a real migration decision, not a slider.</li>
+      </ul>
+      <div class="info-card">
+        <h4>The comparison that actually decides it</h4>
+        <p>Frappe Cloud versus a VPS you manage is not primarily a hosting-cost question, because a small VPS will usually look cheaper on the invoice. It is a question of who owns upgrades, backups, restores and the 2am failure. Price the alternative honestly: the VPS plus the hours someone bills to keep benches patched, plus the cost of the first restore that does not work. If your organisation has no one who wants that job, the managed price is the cheap option even when the invoice is larger.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 DECISION -->
+<section id="decision">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; Decision guide</div>
+      <h2 class="section-title">Use it for, skip it for.</h2>
+    </div>
+    <div class="decision-grid fade-up" style="transition-delay: 0.05s">
+      <div class="decision-card use">
+        <h4>Use Frappe Cloud when</h4>
+        <ul>
+          <li>You run ERPNext or custom Frappe apps and have no one whose job is bench maintenance.</li>
+          <li>You want reproducible deploys and painless rollback without building that pipeline yourself.</li>
+          <li>You run several sites — client environments, staging, demos — and daily billing makes short-lived ones cheap.</li>
+          <li>You want the official marketplace apps installed and billed in one place.</li>
+          <li>You want an exit that is technically real: the same platform is open source and the output is a Docker image.</li>
+        </ul>
+      </div>
+      <div class="decision-card skip">
+        <h4>Skip Frappe Cloud when</h4>
+        <ul>
+          <li>A binding contract or policy requires the data to be physically in South Africa and the regions on offer do not include one. Check before you design around it.</li>
+          <li>You need deep OS-level customisation on the host. The image-build model is the point, and fighting it is miserable.</li>
+          <li>You already have a competent platform team, existing Kubernetes or Docker infrastructure, and monitoring you trust. You are buying something you have.</li>
+          <li>Your workload is one small internal site with two users and no growth plan — a modest VPS with honest backups is a legitimate answer.</li>
+          <li>Dollar-denominated recurring spend is itself the blocker for the business, and a local rand-billed host wins on procurement grounds alone.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 SA CONTEXT -->
+<section id="sa">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; South African context</div>
+      <h2 class="section-title">FX, latency and what POPIA actually says.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p><strong>POPIA does not ban offshore hosting.</strong> This is the single most common misunderstanding in local ERP procurement and it costs organisations real money in avoidable architecture. Section 72 permits transferring personal information outside the Republic where conditions are met — among them that the recipient is subject to a law or binding agreement upholding principles of reasonable processing substantially similar to POPIA. In practice that is a contractual exercise: know which jurisdiction the data sits in, have the operator agreement in place, and record the basis. It is work, not a prohibition. Treat a blanket "POPIA means it must be in South Africa" claim as a prompt to read section 72, and get your own legal sign-off rather than ours.</p>
+      <p><strong>Latency is a design input, not a dealbreaker.</strong> ERPNext is a server-rendered application with chatty forms, and a European or Indian region adds noticeable round-trip time for a Johannesburg user doing heavy data entry all day. It is usually tolerable and occasionally not — the honest test is to put a real capturer on a real site in the actual region for a day before committing, rather than arguing about milliseconds.</p>
+      <p><strong>FX exposure is structural.</strong> Dollar-priced hosting against rand revenue means your infrastructure line moves with a currency you do not control, and it moves against you in exactly the months the rest of the economy is difficult. The wallet-credit model gives you a partial lever that per-month card billing does not: topping up when the rate is favourable converts a floating exposure into a fixed one for that balance. It is not hedging in any serious sense, but for a small business it is the difference between a predictable cost and a surprise.</p>
+      <div class="info-card">
+        <h4>The procurement framing that works</h4>
+        <p>Bring three numbers to the decision: the monthly managed price converted at a rate you are prepared to defend, the fully-loaded cost of the person who would otherwise maintain the bench, and the cost of a day of downtime for the operation. Most South African SMEs running ERPNext find the second number dominates and the argument ends there.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 07 CONNECTIONS -->
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; Connections</div>
+      <h2 class="section-title">Where this leaf links.</h2>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="framework.html" class="connect-node">
+        <span class="tag">tech/frappe/framework</span>
+        <div class="skill">Frappe Framework</div>
+        <div class="why">Press is built on it. The control plane you are clicking is doctypes and the same REST API your own apps expose.</div>
+      </a>
+      <a href="../../biz/erp/erpnext.html" class="connect-node">
+        <span class="tag">biz/erp/erpnext</span>
+        <div class="skill">ERPNext</div>
+        <div class="why">The workload most Frappe Cloud sites exist to run, and the thing whose upgrade pain the managed model is buying away.</div>
+      </a>
+      <a href="print-designer.html" class="connect-node">
+        <span class="tag">tech/frappe/print-designer</span>
+        <div class="skill">Print Designer</div>
+        <div class="why">A marketplace app with a server-side Chromium appetite — a concrete case of why image builds and instance sizing are the same conversation.</div>
+      </a>
+      <a href="./" class="connect-node">
+        <span class="tag">tech/frappe</span>
+        <div class="skill">Frappe sub-hub</div>
+        <div class="why">The hub listing the Frappe ecosystem apps. Frappe Cloud sits in the Builders and Hosting band.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 08 RESOURCES -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 &middot; Resources</div>
+      <h2 class="section-title">Primary sources.</h2>
+      <p class="section-lede">The architecture, the deploy chain and the provider list were read off the <code>press</code> repository on 2026-11-16. Pricing is deliberately not quoted here — go to the source for current plans.</p>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://github.com/frappe/press" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Source &middot; AGPL v3</span>
+        <span class="r-title">frappe/press — the platform behind Frappe Cloud</span>
+        <span class="r-url">github.com/frappe/press</span>
+      </a>
+      <a href="https://docs.frappe.io/cloud" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs</span>
+        <span class="r-title">Frappe Cloud documentation</span>
+        <span class="r-url">docs.frappe.io/cloud</span>
+      </a>
+      <a href="https://frappecloud.com" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Pricing &middot; check current</span>
+        <span class="r-title">Frappe Cloud — plans and regions</span>
+        <span class="r-url">frappecloud.com</span>
+      </a>
+      <a href="https://github.com/frappe/agent" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Source</span>
+        <span class="r-title">frappe/agent — the per-server Flask agent</span>
+        <span class="r-url">github.com/frappe/agent</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../../index.html">Skills tree</a>
+      <a href="./">Frappe sub-hub</a>
+      <a href="https://frappecloud.com" target="_blank" rel="noopener">Frappe Cloud ↗</a>
+    </div>
+    <p class="footer-copy">© 2026 2nth.ai · Built in South Africa — Globally relevant</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme() {
+    const html = document.documentElement;
+    const current = html.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    document.querySelector('.theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
+    localStorage.setItem('theme', next);
+  }
+  const saved = localStorage.getItem('theme');
+  if (saved) {
+    document.documentElement.setAttribute('data-theme', saved);
+    document.querySelector('.theme-toggle').textContent = saved === 'dark' ? '☀️' : '🌙';
+  }
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>
