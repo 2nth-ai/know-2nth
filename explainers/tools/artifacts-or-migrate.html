@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Artifacts are a surface, not a system &mdash; know.2nth.ai</title>
+<meta name="description" content="When a Claude artifact is a legitimate long-term home and when to migrate to Cloudflare or another cloud. Three questions, the verified limits as of November 2026, and a migration order that moves data and logic first and the interface last.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/tools/artifacts-or-migrate">
+<meta property="og:title" content="Artifacts are a surface, not a system">
+<meta property="og:description" content="The runtime layer in a model-portable architecture. LangGraph as the recommendation; Vercel AI SDK and Pydantic AI as credible alternatives.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Artifacts are a surface, not a system">
+<meta name="twitter:description" content="The runtime layer in a model-portable architecture. LangGraph + Vercel AI SDK + Pydantic AI.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3Cline x1='16' y1='3' x2='16' y2='7' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='16' y1='25' x2='16' y2='29' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='3' y1='16' x2='7' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='25' y1='16' x2='29' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3C/svg%3E">
+<style>
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12); --violet: #8B5CF6; --violet-soft: rgba(139, 92, 246, 0.12); --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-soft: rgba(99, 102, 241, 0.12); --bg: var(--ink); --bg-raised: var(--navy); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(37, 99, 235, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(56, 189, 248, 0.3); --max-w: 1200px; --read-w: 760px; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-raised: #FFFFFF; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(37, 99, 235, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(37, 99, 235, 0.25); }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.blue { width: 600px; height: 600px; background: var(--blue); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--sky); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--sky); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .read { max-width: var(--read-w); }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--sky); }
+  .crumb-sep { opacity: 0.5; }
+  .crumb-current { color: var(--text-secondary); }
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--indigo); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--indigo); box-shadow: 0 0 12px var(--indigo); }
+  .hero h1 { font-size: clamp(38px, 5.6vw, 60px); font-weight: 800; line-height: 1.05; letter-spacing: -2px; margin-bottom: 22px; max-width: 18ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--blue-glow), var(--sky), var(--sky-muted)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 720px; line-height: 1.7; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.accent { background: rgba(37, 99, 235, 0.12); color: var(--blue-glow); border-color: rgba(37, 99, 235, 0.25); }
+  .pill.green { background: var(--green-soft); color: var(--green); border-color: rgba(16, 185, 129, 0.25); }
+  .pill.indigo { background: var(--indigo-soft); color: var(--indigo); border-color: rgba(99, 102, 241, 0.25); }
+  .pill.warm { background: var(--warm-soft); color: var(--warm); border-color: rgba(245, 158, 11, 0.25); }
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--sky); margin-bottom: 14px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .section-lede strong { color: var(--text-primary); font-weight: 600; }
+  .section-lede code { font-family: 'JetBrains Mono', monospace; font-size: 0.86em; background: rgba(56, 189, 248, 0.06); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--sky); }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--sky); }
+  .prose ul, .prose ol { padding-left: 24px; margin-bottom: 18px; max-width: var(--read-w); }
+  .prose li { font-size: 15px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 8px; }
+  .prose li strong { color: var(--text-primary); font-weight: 600; }
+  .prose li code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; color: var(--sky); background: rgba(56, 189, 248, 0.06); padding: 1px 5px; border-radius: 3px; }
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: 1040px; margin-bottom: 24px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--sky); background: rgba(37, 99, 235, 0.04); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); }
+  .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--sky); }
+  .compare td strong { color: var(--text-primary); }
+  .does-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; max-width: 1040px; margin-bottom: 20px; }
+  .does-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--blue); border-radius: var(--radius-md); padding: 18px 22px; }
+  .does-cell h4 { font-size: 14px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.2px; }
+  .does-cell p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+  .does-cell code { font-family: 'JetBrains Mono', monospace; font-size: 0.86em; color: var(--sky); background: rgba(56, 189, 248, 0.06); padding: 1px 5px; border-radius: 3px; }
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px 28px; max-width: var(--read-w); margin-bottom: 16px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.indigo { border-left: 3px solid var(--indigo); }
+  .info-card.rose { border-left: 3px solid var(--rose); }
+  .info-card.sky { border-left: 3px solid var(--sky); }
+  .info-card h4 { font-size: 15px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .info-card code { font-family: 'JetBrains Mono', monospace; font-size: 0.86em; color: var(--sky); background: rgba(56, 189, 248, 0.06); padding: 1px 5px; border-radius: 4px; }
+  .info-card strong { color: var(--text-primary); font-weight: 600; }
+  .cross-links { display: flex; gap: 10px; flex-wrap: wrap; }
+  .cross-link { font-family: 'JetBrains Mono', monospace; font-size: 12px; padding: 10px 20px; border-radius: var(--radius-pill); border: 1px solid var(--border); background: var(--bg-card); text-decoration: none; color: var(--text-secondary); transition: all 0.3s; letter-spacing: 0.5px; }
+  .cross-link:hover { border-color: var(--border-hover); color: var(--sky); transform: translateY(-1px); }
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--sky); word-break: break-all; }
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--sky); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .footer-review { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); margin-top: 14px; letter-spacing: 0.4px; }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+
+<div class="glow-orb blue"></div>
+<div class="glow-orb sky"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand">
+      <span class="nav-brand-mark">know.2nth.ai</span>
+      <span class="nav-brand-sub">tools &middot; artifacts</span>
+    </a>
+    <div class="nav-right">
+      <a href="index.html" class="nav-link">&larr; Tools</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x1F319;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="index.html">Tools</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">Artifacts or migrate</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> tools &middot; substrate decision &middot; surface layer</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      <span class="grad">Artifacts are a surface, not a system.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      A Claude artifact made today can keep 100 MB of data, know who is looking at it, and call that person's connectors. It still has no backend. Both facts are true, and the second decides more than the first.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill warm">Surface layer</span>
+      <span class="pill indigo">Decision doc</span>
+      <span class="pill">Hot &middot; quarterly review &middot; next hard date 15 Dec 2026</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 · TL;DR -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; TL;DR</div>
+      <h2 class="section-title">Keep the interface. Move anything you can't walk away from.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.04s">
+      <p>"Artifacts are only for prototypes" was a fair rule until 16 September 2026. Anthropic now calls anything made in chat before that date a legacy artifact, and the limits most people remember (20 MB of text, storage only after publishing, data deleted on unpublish) belong to that older kind.</p>
+      <p>The replacement rule is narrower. An artifact is a good permanent home for an interface whose users all sit inside one Claude organisation and whose data lives somewhere else. It is the wrong home for a system of record, for anything that must run while nobody has the page open, and for anything a customer without a Claude seat has to use.</p>
+      <p>Prototype versus production is the wrong axis. Ownership is the right one.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 · WHAT IT IS NOW -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; What an artifact is in November 2026</div>
+      <h2 class="section-title">The verified surface, with numbers.</h2>
+      <p class="section-lede">Each row is sourced to Anthropic's Help Center or Claude Code docs. The full reference is the <a href="../agents/claude-artifacts.html" style="color:var(--sky);text-decoration:none;border-bottom:1px solid var(--sky)">Claude artifacts reference leaf</a>.</p>
+    </div>
+    <div class="fade-up" style="transition-delay: 0.04s; overflow-x: auto;">
+      <table style="width:100%;max-width:1040px;border-collapse:collapse;font-size:14px;color:var(--text-secondary)">
+        <thead>
+          <tr style="text-align:left;border-bottom:1px solid var(--border)">
+            <th style="padding:12px 14px;color:var(--text-primary)">Capability</th>
+            <th style="padding:12px 14px;color:var(--text-primary)">What the docs say</th>
+            <th style="padding:12px 14px;color:var(--text-primary)">Source</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid var(--border)"><td style="padding:12px 14px"><strong>Data storage</strong></td><td style="padding:12px 14px">Personal or shared. 100 MB and 25,000 documents per artifact, whichever comes first</td><td style="padding:12px 14px">Help Center, artifacts article</td></tr>
+          <tr style="border-bottom:1px solid var(--border)"><td style="padding:12px 14px"><strong>Uploaded files</strong></td><td style="padding:12px 14px">20 MB per file (2 MB for SVG), 5,000 files and 1 GB per artifact</td><td style="padding:12px 14px">Help Center, artifacts article</td></tr>
+          <tr style="border-bottom:1px solid var(--border)"><td style="padding:12px 14px"><strong>Connectors</strong></td><td style="padding:12px 14px">Reads and writes through the viewer's own connected apps. Pro and above. First use needs approval</td><td style="padding:12px 14px">Help Center, artifacts article</td></tr>
+          <tr style="border-bottom:1px solid var(--border)"><td style="padding:12px 14px"><strong>Calls to Claude</strong></td><td style="padding:12px 14px">Count against each viewer's own plan limits</td><td style="padding:12px 14px">Help Center, artifacts article</td></tr>
+          <tr style="border-bottom:1px solid var(--border)"><td style="padding:12px 14px"><strong>Sharing</strong></td><td style="padding:12px 14px">Depends on plan and admin settings. Up to 50 outside invitees per artifact</td><td style="padding:12px 14px">Help Center, sharing article</td></tr>
+          <tr style="border-bottom:1px solid var(--border)"><td style="padding:12px 14px"><strong>Governance</strong></td><td style="padding:12px 14px">Retention policy; audit events under <code>claude_artifact_*</code>; three Compliance API endpoints (Claude Code surface)</td><td style="padding:12px 14px">Claude Code docs</td></tr>
+          <tr><td style="padding:12px 14px"><strong>Legacy artifacts</strong></td><td style="padding:12px 14px">20 MB, text only, storage only after publishing; unpublishing deletes the data</td><td style="padding:12px 14px">Help Center, artifacts article</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>That is a real application surface. For an internal tracker, a review queue or an ops dashboard, standing up auth, hosting, a deploy pipeline and an inference bill to replace it is cost with no return.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 03 · WHERE IT STOPS -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; Where it stops</div>
+      <h2 class="section-title">Five walls, all documented.</h2>
+    </div>
+    <div class="feature-grid fade-up" style="transition-delay: 0.04s">
+      <div class="feature-cell"><h4>No backend</h4><p>Anthropic's Claude Code docs describe an artifact as one self-contained page that cannot serve multiple routes or authenticate viewers itself. For a hosted internal tool with a backend, the docs point to your own infrastructure. Nothing in the docs describes scheduled jobs, webhooks or server-held secrets.</p></div>
+      <div class="feature-cell"><h4>A locked-down network</h4><p>Per the same docs, network calls reach only the page's own origin, plus Google Fonts. Scripts load from five public CDN hosts. Any other outside call has to go through a connector.</p></div>
+      <div class="feature-cell"><h4>Everything runs as the viewer</h4><p>Connector calls use the viewing account's connection, so two people can open the same page and see different data. Connector tools that need approval for each action are not available to artifacts at all.</p></div>
+      <div class="feature-cell"><h4>Outside users get a reduced page</h4><p>An artifact that connects to other websites cannot be shared by public link or email invitation. Claude and connectors do not work for outside link viewers.</p></div>
+      <div class="feature-cell"><h4>The platform moves under you</h4><p>Chat artifacts became legacy on 16 September 2026. Standalone Claude Design closes on 14 December 2026. Claude Code cannot publish artifacts from Amazon Bedrock, Google Cloud or Microsoft Foundry sessions.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 · DECISION GUIDE -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; Decision guide</div>
+      <h2 class="section-title">Three questions.</h2>
+    </div>
+    <div class="fade-up" style="transition-delay: 0.04s; overflow-x: auto;">
+      <table style="width:100%;max-width:1040px;border-collapse:collapse;font-size:14px;color:var(--text-secondary)">
+        <thead>
+          <tr style="text-align:left;border-bottom:1px solid var(--border)">
+            <th style="padding:12px 14px;color:var(--text-primary)">Question</th>
+            <th style="padding:12px 14px;color:var(--text-primary)">Stay on artifacts</th>
+            <th style="padding:12px 14px;color:var(--text-primary)">Migrate</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom:1px solid var(--border)"><td style="padding:12px 14px"><strong>Who are the users?</strong></td><td style="padding:12px 14px">All inside one Claude organisation</td><td style="padding:12px 14px">Customers, the public, or anyone without a seat</td></tr>
+          <tr style="border-bottom:1px solid var(--border)"><td style="padding:12px 14px"><strong>Where does the truth live?</strong></td><td style="padding:12px 14px">In an ERP, CRM or database the page reads through a connector</td><td style="padding:12px 14px">In the artifact's own storage</td></tr>
+          <tr><td style="padding:12px 14px"><strong>Does anything run when the page is closed?</strong></td><td style="padding:12px 14px">No</td><td style="padding:12px 14px">Schedules, webhooks, queues, background agents</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Three "stay" answers and the artifact is not a prototype. It is the cheapest correct architecture. One "migrate" answer and it is a prototype, whatever it looks like.</p>
+      <p>The trade-off on the "stay" side is real: you give up tests, environments, CI and an SLA, and you inherit Anthropic's roadmap. That is acceptable for a view you can regenerate in an afternoon. It is not acceptable for the ledger.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 · THE PATTERN -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; The pattern that lasts</div>
+      <h2 class="section-title">Thin page, thick MCP.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.04s">
+      <p>The durable shape is an artifact as a disposable interface over MCP servers that front the real systems. Permissions, validation and writes live in the MCP server and the system behind it. The page holds layout and nothing else.</p>
+      <p>This is the harness model applied to interfaces. One operator regenerates the page when the workflow changes. The human specialists and the audit trail sit behind the connector, where they belong.</p>
+      <p>Test it with one question: if Anthropic retired this artifact type tomorrow, what would you lose? If the answer is "a layout", you built it right.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 · MIGRATION ORDER -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; Migration order</div>
+      <h2 class="section-title">Data first, logic second, interface last.</h2>
+    </div>
+    <div class="feature-grid fade-up" style="transition-delay: 0.04s">
+      <div class="feature-cell"><h4>1 &middot; Data</h4><p>Move records out of artifact storage into a database you control: D1 for edge-local SQLite, Postgres for anything relational and shared.</p></div>
+      <div class="feature-cell"><h4>2 &middot; Logic</h4><p>Move rules, writes and integrations into a Worker, and expose them as an MCP server so the existing artifact keeps working against the new backend.</p></div>
+      <div class="feature-cell"><h4>3 &middot; Identity</h4><p>Put your own auth in front of the backend the day a non-Claude user needs access.</p></div>
+      <div class="feature-cell"><h4>4 &middot; Interface</h4><p>Rebuild the page on Pages only when one of the three questions flips. Many never do.</p></div>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Steps 1 and 2 remove the risk. Step 4 is optional, and skipping it is often the right call.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 07 · SA CONTEXT -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; South African context</div>
+      <h2 class="section-title">POPIA, rand cost, and who pays.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.04s">
+      <p><strong>Residency.</strong> Anthropic's Claude Code docs state that artifact content is stored on Anthropic-operated infrastructure. The Team and Enterprise admin guide gives no residency commitment for artifacts and says Claude Design does not support residency requirements. Treat personal information in artifact storage as a POPIA Section 72 cross-border transfer, the same position this tree takes on Claude inference.</p>
+      <p><strong>Cost.</strong> Artifact usage draws on each viewer's seat, or on API rates for usage-based Enterprise. There is no hosting line item, which makes an internal tool look free in rand terms. The cost has moved to seat limits, and a heavy shared dashboard will show up there.</p>
+      <p><strong>Regulated clients.</strong> The interface can be an artifact; the records cannot, wherever a South African client has sector rules on where records live.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 08 · CONNECTIONS -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 &middot; Connections</div>
+      <h2 class="section-title">Where this leaf links into the rest of the tree.</h2>
+    </div>
+    <div class="cross-links fade-up" style="transition-delay: 0.03s">
+      <a href="index.html" class="cross-link">&rarr; Tools catalog</a>
+      <a href="architecture.html" class="cross-link">&rarr; Agent platform architecture</a>
+      <a href="runtime.html" class="cross-link">&rarr; Runtime decision</a>
+      <a href="../agents/claude-artifacts.html" class="cross-link">&rarr; Claude artifacts (reference)</a>
+      <a href="../agents/mcp.html" class="cross-link">&rarr; MCP</a>
+      <a href="../agents/claude-code.html" class="cross-link">&rarr; Claude Code</a>
+      <a href="../tech/cloudflare/workers.html" class="cross-link">&rarr; Cloudflare Workers &amp; Pages</a>
+      <a href="../tech/cloudflare/d1.html" class="cross-link">&rarr; Cloudflare D1</a>
+      <a href="../tech/cloudflare/durable-objects.html" class="cross-link">&rarr; Durable Objects</a>
+      <a href="../data/warehousing/postgresql.html" class="cross-link">&rarr; PostgreSQL</a>
+    </div>
+  </div>
+</section>
+
+<!-- 09 · RESOURCES -->
+<section>
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">09 &middot; Resources</div>
+      <h2 class="section-title">Primary sources.</h2>
+      <p class="section-lede">Checked 21 November 2026. Verify the limits against these pages before you commit to a migration.</p>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.03s">
+      <a class="resource" href="https://support.claude.com/en/articles/17153992" target="_blank" rel="noopener"><span class="r-kind">Help Center</span><span class="r-title">What are artifacts and how do I use them?</span><span class="r-url">support.claude.com/en/articles/17153992</span></a>
+      <a class="resource" href="https://support.claude.com/en/articles/9547008" target="_blank" rel="noopener"><span class="r-kind">Help Center</span><span class="r-title">Publish and share artifacts</span><span class="r-url">support.claude.com/en/articles/9547008</span></a>
+      <a class="resource" href="https://support.claude.com/en/articles/16994751" target="_blank" rel="noopener"><span class="r-kind">Admin</span><span class="r-title">Artifacts admin guide for Team and Enterprise plans</span><span class="r-url">support.claude.com/en/articles/16994751</span></a>
+      <a class="resource" href="https://code.claude.com/docs/en/artifacts" target="_blank" rel="noopener"><span class="r-kind">Docs</span><span class="r-title">Share session output as artifacts</span><span class="r-url">code.claude.com/docs/en/artifacts</span></a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <div class="footer-tagline">The Knowledge Tree</div>
+    <div class="footer-links">
+      <a href="../../index.html">Tree</a>
+      <a href="index.html">Tools</a>
+      <a href="../../about.html">About</a>
+      <a href="../../join.html">Stay in touch</a>
+      <a href="https://2nth.ai">2nth.ai</a>
+    </div>
+    <div class="footer-copy">&copy; 2026 imbila.ai &middot; All knowledge open</div>
+    <div class="footer-review">Last reviewed: 2026-11-21 &middot; Cadence: hot (quarterly) &middot; Next hard review: 2026-12-15</div>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme() {
+    const cur = document.documentElement.getAttribute('data-theme');
+    const next = cur === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('2nth-theme', next);
+  }
+  const stored = localStorage.getItem('2nth-theme');
+  if (stored) document.documentElement.setAttribute('data-theme', stored);
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.05 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+
+<script src="/gate.js" defer></script>
+
+</body>
+</html>
