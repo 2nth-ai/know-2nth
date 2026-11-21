@@ -162,7 +162,7 @@
       LangGraph is the graph-based orchestration framework from LangChain Inc. Built around a <code>StateGraph</code> primitive with explicit nodes, edges, and shared state &mdash; you draw the agent flow, the framework runs it. MIT-licensed, Python and TypeScript SDKs, native checkpointing, time-travel debugging, human-in-the-loop interrupts, deep LangSmith observability. The de-facto choice in 2026 when you want full control over agent behaviour rather than letting an LLM decide what happens next. Used in production at Klarna, Replit, Elastic, AppFolio, and across the broader LangChain ecosystem.
     </p>
     <div class="hero-meta fade-up" style="transition-delay: 0.15s">
-      <span class="pill green">v1.0+ &middot; production-ready</span>
+      <span class="pill green">v1.2.x &middot; production-ready</span>
       <span class="pill indigo">MIT licensed</span>
       <span class="pill accent">Python &middot; TypeScript</span>
       <span class="pill">17,000+ stars</span>
@@ -182,7 +182,7 @@
       <p>LangGraph is a low-level orchestration framework for building stateful, multi-step agent workflows. Released in early 2024 by LangChain Inc. and shipped as a sibling library to LangChain itself, it took a deliberately different design from the &quot;chain&quot; abstraction that made LangChain famous.</p>
       <p>The thesis: <strong>most production agent failures are control-flow failures, not reasoning failures</strong>. The LLM picks the wrong tool, calls it twice, loops forever, or misses a step. LangGraph's answer is to lift the flow out of the prompt and into the framework. You define a <code>StateGraph</code> &mdash; nodes, edges, shared state &mdash; and the graph runs deterministically. The LLM still reasons inside nodes; the framework decides which node runs next.</p>
       <p>That single architectural choice cascades into the things LangGraph does well: <strong>checkpointing</strong> (the state at every node is persisted, so you can resume, inspect, or fork from any step), <strong>time-travel debugging</strong> (rewind state to a previous node and re-run), <strong>human-in-the-loop interrupts</strong> (pause the graph, ask a human, resume), and <strong>fan-out / fan-in patterns</strong> (parallel branches that merge cleanly). All of which are awkward to bolt onto a "let the agent decide" framework.</p>
-      <p>LangGraph is MIT-licensed and lives across <code>langchain-ai/langgraph</code> (Python) and <code>langchain-ai/langgraphjs</code> (TypeScript). The Python repo crossed 17,000 GitHub stars in 2026 and ships ~weekly releases. The framework reached its <strong>1.0 stable release</strong> in late 2024, signalling production-readiness; v1.x has been the recommended track since.</p>
+      <p>LangGraph is MIT-licensed and lives across <code>langchain-ai/langgraph</code> (Python) and <code>langchain-ai/langgraphjs</code> (TypeScript). The Python repo crossed 17,000 GitHub stars in 2026 and ships ~weekly releases. The framework reached its <strong>1.0 stable release</strong> in October 2025, signalling production-readiness; v1.x has been the recommended track since, and the 1.2 line was current through autumn 2026.</p>
     </div>
     <div class="info-card indigo fade-up" style="transition-delay: 0.08s">
       <h4>Why "graph" not "chain" not "agent"</h4>
@@ -507,7 +507,7 @@ app.invoke(Command(<span class="h">resume</span>={<span class="s">"approved"</sp
     <div class="fade-up">
       <div class="section-label">09 &middot; Resources</div>
       <h2 class="section-title">Primary sources.</h2>
-      <p class="section-lede">Authored from the canonical <code>langchain-ai/langgraph</code> repo, the LangGraph documentation, the LangChain Academy course materials, and LangChain Inc.'s public case studies and engineering blog posts. Last reviewed 2026-05-10.</p>
+      <p class="section-lede">Authored from the canonical <code>langchain-ai/langgraph</code> repo, the LangGraph documentation, the LangChain Academy course materials, and LangChain Inc.'s public case studies and engineering blog posts. Last reviewed 2026-11-21.</p>
     </div>
     <div class="resource-grid fade-up" style="transition-delay: 0.05s">
       <a href="https://langchain-ai.github.io/langgraph/" class="resource" target="_blank" rel="noopener">
@@ -564,6 +564,7 @@ app.invoke(Command(<span class="h">resume</span>={<span class="s">"approved"</sp
       <a href="https://langchain-ai.github.io/langgraph/" target="_blank" rel="noopener">LangGraph docs &nearr;</a>
     </div>
     <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant</p>
+    <p class="footer-copy">Last reviewed: 2026-11-21</p>
   </div>
 </footer>
 

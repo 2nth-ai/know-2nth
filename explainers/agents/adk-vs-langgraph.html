@@ -211,7 +211,7 @@
         <span class="tag">LangGraph</span>
         <h4>Stateful graph runtime + LangChain ecosystem</h4>
         <p><strong>LangGraph</strong> is LangChain Inc.'s graph-based agent framework. MIT licensed Python (TS narrower). Agents are modelled as <strong>state graphs</strong> &mdash; nodes are steps, edges are transitions, interrupts pause for human input.</p>
-        <p>v1.0 landed late 2025. 90k+ GitHub stars. Multi-provider is native via <code>init_chat_model("&lt;provider&gt;:&lt;model&gt;")</code>. MCP support was added in late 2025. <strong>LangSmith</strong> is the SaaS observability backend; <strong>Langfuse</strong> (OSS, self-hosted) works via the OpenTelemetry GenAI exporter.</p>
+        <p>v1.0 landed late 2025; 2.0 reached GA for Python on 19 May 2026 with a graph-based workflow runtime and breaking changes from 1.x. 90k+ GitHub stars. Multi-provider is native via <code>init_chat_model("&lt;provider&gt;:&lt;model&gt;")</code>. MCP support was added in late 2025. <strong>LangSmith</strong> is the SaaS observability backend; <strong>Langfuse</strong> (OSS, self-hosted) works via the OpenTelemetry GenAI exporter.</p>
         <p>LangGraph is one part of a larger ecosystem (LangChain Core, LangSmith, LangServe). You can use it standalone or as the orchestration layer within a fuller stack.</p>
       </div>
     </div>
@@ -234,7 +234,7 @@
         </thead>
         <tbody>
           <tr><td class="dim-name">Maintainer / License</td><td>Google &middot; Apache 2</td><td>LangChain Inc. &middot; MIT</td></tr>
-          <tr><td class="dim-name">Maturity</td><td>GA 2024; mature on Google stack</td><td>v1.0 late 2025; 90k+ stars; broad community</td></tr>
+          <tr><td class="dim-name">Maturity</td><td>GA 2024; mature on Google stack</td><td>v1.0 late 2025; 2.0 GA (Python) May 2026; 90k+ stars; broad community</td></tr>
           <tr><td class="dim-name">Primary language</td><td>Python (Java + JS exist)</td><td>Python (TS narrower)</td></tr>
           <tr><td class="dim-name">Mental model</td><td><strong>Agents + tools + sub-agents.</strong> Delegate, hand-off, parallel. Maps cleanly to "what would a person do."</td><td><strong>State graph.</strong> Nodes are steps, edges are transitions, interrupts gate humans. More powerful, steeper.</td></tr>
           <tr><td class="dim-name">Multi-provider</td><td>Yes, via adapters. Gemini is the easy path; Claude / GPT / others work but Vertex Agent Engine assumes Gemini for deepest integration.</td><td>Yes, native. <code>init_chat_model("provider:model")</code> switches with a config call. All providers (including Ollama / vLLM) first-class.</td></tr>
@@ -461,7 +461,7 @@
       <a href="https://2nth.ai">2nth.ai</a>
     </div>
     <div class="footer-copy">&copy; 2026 imbila.ai &middot; All knowledge open</div>
-    <div class="footer-review">Last reviewed: 2026-05-18 &middot; Cadence: hot (quarterly)</div>
+    <div class="footer-review">Last reviewed: 2026-11-21 &middot; Cadence: hot (quarterly)</div>
   </div>
 </footer>
 

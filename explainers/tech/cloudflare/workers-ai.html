@@ -35,14 +35,14 @@
   <div class="hero-eyebrow fade-up"><span class="dot"></span> Technology &middot; Cloudflare &middot; Skill Node</div>
   <h1 class="fade-up" style="transition-delay:0.05s">Workers<br><span class="gradient">AI.</span></h1>
   <p class="hero-sub fade-up" style="transition-delay:0.1s">Edge inference across a catalogue of open models &mdash; LLMs, embeddings, image generation, speech-to-text. No GPU management, no model hosting. One binding, one <code style="font-family:'JetBrains Mono',monospace;color:var(--sky)">env.AI.run()</code> call.</p>
-  <div class="hero-meta fade-up" style="transition-delay:0.15s"><span class="pill accent">Technology</span><span class="pill">Edge AI Inference</span><span class="pill">Open Tier</span><span class="pill">Last updated &middot; Apr 2026</span></div>
+  <div class="hero-meta fade-up" style="transition-delay:0.15s"><span class="pill accent">Technology</span><span class="pill">Edge AI Inference</span><span class="pill">Open Tier</span><span class="pill">Last updated &middot; Nov 2026</span></div>
 </div></section>
 
 <section id="what"><div class="container">
   <div class="fade-up"><div class="section-label">01 &middot; What it is</div><h2 class="section-title">GPU inference without GPU management.</h2></div>
   <div class="prose fade-up" style="transition-delay:0.05s">
     <p><strong>Workers AI</strong> is Cloudflare's serverless inference platform. You pick a model from their catalogue (Llama, Mistral, Whisper, Stable Diffusion, BAAI embeddings, and more), call <code>env.AI.run()</code> from your Worker, and Cloudflare routes the request to GPUs in their network. No model hosting, no VRAM calculations, no queue management.</p>
-    <p>The models are open-source &mdash; no API keys for OpenAI or Anthropic. You pay per token (for LLMs) or per request (for other models), and there's a generous free tier. The trade-off: model selection is limited to what Cloudflare offers, and you can't fine-tune or deploy custom models.</p>
+    <p>The models are open-source &mdash; no API keys for OpenAI or Anthropic. Billing is in Neurons: 10,000 free a day, then $0.011 per 1,000 Neurons. Cloudflare publishes per-token prices for LLMs alongside, which convert to Neurons under the hood. The trade-off: model selection is limited to what Cloudflare offers, and you can't fine-tune or deploy custom models.</p>
     <p>For structured output, Workers AI supports JSON schema enforcement on compatible models &mdash; the model's output is constrained to match your schema, eliminating parse failures.</p>
   </div>
 </div></section>
@@ -142,7 +142,7 @@ binding = <span class="tok-str">"AI"</span>
   </div>
 </div></section>
 
-<footer><div class="container"><div class="footer-brand">know.2nth.ai</div><p class="footer-tagline">The operational intelligence layer for the modern stack.</p><div class="footer-links"><a href="../../../index.html">Skills tree</a><a href="https://2nth.ai" target="_blank" rel="noopener">2nth.ai</a><a href="https://imbila.ai" target="_blank" rel="noopener">Imbila.AI</a><a href="https://2nth.io" target="_blank" rel="noopener">2nth.io</a></div><p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant</p></div></footer>
+<footer><div class="container"><div class="footer-brand">know.2nth.ai</div><p class="footer-tagline">The operational intelligence layer for the modern stack.</p><div class="footer-links"><a href="../../../index.html">Skills tree</a><a href="https://2nth.ai" target="_blank" rel="noopener">2nth.ai</a><a href="https://imbila.ai" target="_blank" rel="noopener">Imbila.AI</a><a href="https://2nth.io" target="_blank" rel="noopener">2nth.io</a></div><p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant · Last reviewed: 2026-11-21</p></div></footer>
 <script>function toggleTheme(){const h=document.documentElement,c=h.getAttribute('data-theme'),n=c==='dark'?'light':'dark';h.setAttribute('data-theme',n);document.querySelector('.theme-toggle').textContent=n==='dark'?'\u2600\uFE0F':'\uD83C\uDF19';localStorage.setItem('theme',n)}const saved=localStorage.getItem('theme');if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.theme-toggle').textContent=saved==='dark'?'\u2600\uFE0F':'\uD83C\uDF19'}const observer=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible')})},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));</script>
 <script src="/gate.js" defer></script>
 </body>

@@ -4,12 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Gemma &mdash; know.2nth.ai</title>
-<meta name="description" content="Gemma — Google's open-weights model family from the Gemini research line. Gemma 4 is the current generation, shipping in four sizes (E2B / E4B / 31B dense / 26B A4B MoE), multimodal across text + image + video + audio, 128k context on small models / 256k on medium, with native function-calling and configurable thinking modes. Permissive licence; runs on Ollama, vLLM, Hugging Face. The local-first option for teams that want frontier-quality inference without cloud dependency.">
+<meta name="description" content="Gemma — Google's open-weights model family from the Gemini research line. Gemma 4 is the current generation, shipping in five sizes (E2B / E4B / 12B Unified / 31B dense / 26B A4B MoE), multimodal across text + image + video + audio, 128k context on E2B / E4B, 256k on the 12B and the medium models, with native function-calling and configurable thinking modes. Permissive licence; runs on Ollama, vLLM, Hugging Face. The local-first option for teams that want frontier-quality inference without cloud dependency.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="know.2nth.ai">
 <meta property="og:url" content="https://know.2nth.ai/explainers/agents/gemma">
 <meta property="og:title" content="Gemma &mdash; know.2nth.ai">
-<meta property="og:description" content="Gemma — Google's open-weights family. Gemma 4 (E2B / E4B / 31B / 26B A4B MoE), text + image + video + audio, 128k–256k context, function-calling, thinking modes. Runs on Ollama, vLLM, Hugging Face. Local-first frontier-quality inference.">
+<meta property="og:description" content="Gemma — Google's open-weights family. Gemma 4 (E2B / E4B / 12B / 31B / 26B A4B MoE), text + image + video + audio, 128k–256k context, function-calling, thinking modes. Runs on Ollama, vLLM, Hugging Face. Local-first frontier-quality inference.">
 <meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
@@ -17,7 +17,7 @@
 <meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Gemma &mdash; know.2nth.ai">
-<meta name="twitter:description" content="Gemma — Google's open-weights family. Gemma 4 (E2B / E4B / 31B / 26B A4B MoE), multimodal text + image + video + audio, 128k–256k context, runs locally.">
+<meta name="twitter:description" content="Gemma — Google's open-weights family. Gemma 4 (E2B / E4B / 12B / 31B / 26B A4B MoE), multimodal text + image + video + audio, 128k–256k context, runs locally.">
 <meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -151,12 +151,12 @@
       Gemini's research, <span class="gradient">in open weights you can run.</span>
     </h1>
     <p class="sub fade-up" style="transition-delay: 0.1s">
-      Gemma is Google's open-weights model family, built from the same research line that produces Gemini. <strong>Gemma 4</strong> (current generation) ships in four sizes &mdash; <strong>E2B</strong> and <strong>E4B</strong> for ultra-mobile / edge / browser, a <strong>31B dense</strong> model for server-grade single-host inference, and a <strong>26B A4B Mixture-of-Experts</strong> for high-throughput reasoning. Multimodal across text, image, video, and audio (audio is native on E2B and E4B); 128k context on the small models, 256k on the medium. Native function-calling and configurable thinking modes. Permissive licence; runs on Ollama, Hugging Face, and Vertex AI Model Garden. The local-first option for teams that want frontier-quality inference without the cloud dependency.
+      Gemma is Google's open-weights model family, built from the same research line that produces Gemini. <strong>Gemma 4</strong> (current generation) ships in five sizes &mdash; <strong>E2B</strong> and <strong>E4B</strong> for ultra-mobile / edge / browser, a <strong>12B Unified</strong> model (11.95B parameters, 256k context), a <strong>31B dense</strong> model for server-grade single-host inference, and a <strong>26B A4B Mixture-of-Experts</strong> for high-throughput reasoning. Multimodal across text, image, video, and audio (audio is native on E2B and E4B); 128k context on the small models, 256k on the medium. Native function-calling and configurable thinking modes. Permissive licence; runs on Ollama, Hugging Face, and Vertex AI Model Garden. The local-first option for teams that want frontier-quality inference without the cloud dependency.
     </p>
     <div class="hero-meta fade-up" style="transition-delay: 0.15s">
       <span class="pill green">Gemma 4 &middot; current</span>
       <span class="pill indigo">Open weights</span>
-      <span class="pill accent">E2B &middot; E4B &middot; 31B &middot; 26B A4B</span>
+      <span class="pill accent">E2B &middot; E4B &middot; 12B &middot; 31B &middot; 26B A4B</span>
       <span class="pill">128k &mdash; 256k context</span>
       <span class="pill warn">Multimodal &middot; text + image + video + audio</span>
     </div>
@@ -171,7 +171,7 @@
     </div>
     <div class="prose fade-up" style="transition-delay: 0.05s">
       <p><strong>Gemma is a family of open-weights models from Google DeepMind</strong>, distilled from the research and training infrastructure that produces Gemini. The first release was Gemma 1 (February 2024) at 2B and 7B sizes; Gemma 2 added 9B and 27B; Gemma 3 (March 2025) shipped at 270M / 1B / 4B / 12B / 27B with vision-text multimodality; <strong>Gemma 4</strong> is the current generation and the one most teams should default to.</p>
-      <p>Gemma 4 ships in four sizes &mdash; <strong>E2B</strong> and <strong>E4B</strong> (small, effective-parameter naming for the mobile / edge / browser class), a <strong>31B</strong> dense model, and a <strong>26B A4B</strong> Mixture-of-Experts. Multimodal across text + image (object detection, document / PDF parsing, OCR including multilingual, handwriting, pointing) + video (frame-sequence understanding) + audio (native on the E2B and E4B models). Context window is 128k on the small models and 256k on the medium. Native function-calling support is built in, and all four sizes are designed as capable reasoners with configurable thinking modes. Google's <em>Gemma Terms of Use</em> is the licence &mdash; not Apache 2.0, but permissive enough for almost every commercial case.</p>
+      <p>Gemma 4 ships in five sizes &mdash; <strong>E2B</strong> and <strong>E4B</strong> (small, effective-parameter naming for the mobile / edge / browser class), a <strong>12B Unified</strong> model (11.95B parameters, 256k context, audio input), a <strong>31B</strong> dense model, and a <strong>26B A4B</strong> Mixture-of-Experts. Multimodal across text + image (object detection, document / PDF parsing, OCR including multilingual, handwriting, pointing) + video (frame-sequence understanding) + audio (native on the E2B, E4B and 12B models). Context window is 128k on E2B and E4B and 256k on the 12B, 26B A4B and 31B. Native function-calling support is built in, and all five sizes are designed as capable reasoners with configurable thinking modes. Google's <em>Gemma Terms of Use</em> is the licence &mdash; not Apache 2.0, but permissive enough for almost every commercial case.</p>
       <p><strong>Why the rename in the small range.</strong> The "E2B" / "E4B" naming replaces Gemma 3's 270M / 1B / 4B / 12B grading. The <em>E</em> stands for "effective" &mdash; the parameter count that determines runtime behaviour on a phone or browser, rather than the raw parameter count of the underlying model. The shift signals Gemma 4's deliberate design for ultra-mobile and edge deployment alongside the server-grade 31B and 26B-A4B options.</p>
     </div>
     <div class="info-card indigo fade-up" style="transition-delay: 0.08s">
@@ -185,8 +185,8 @@
   <div class="container">
     <div class="fade-up">
       <div class="section-label">02 &middot; The Gemma 4 line</div>
-      <h2 class="section-title">Four sizes, two quality curves.</h2>
-      <p class="section-lede">Gemma 4 splits into two ranges. The <strong>small</strong> models (E2B, E4B) are built for ultra-mobile, edge, and browser deployment &mdash; 128k context, native audio, on-device practical. The <strong>medium</strong> models (31B dense, 26B A4B MoE) are server-grade and 256k context; the MoE option gives high throughput for advanced reasoning at lower active-parameter cost than the dense 31B.</p>
+      <h2 class="section-title">Five sizes, two quality curves.</h2>
+      <p class="section-lede">Gemma 4 splits into two ranges. The <strong>small</strong> models (E2B, E4B) are built for ultra-mobile, edge, and browser deployment &mdash; 128k context, native audio, on-device practical. The <strong>medium</strong> models (12B Unified, 31B dense, 26B A4B MoE) run to 256k context, and the 31B and 26B A4B are the server-grade options; the MoE option gives high throughput for advanced reasoning at lower active-parameter cost than the dense 31B.</p>
     </div>
 
     <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
@@ -195,6 +195,7 @@
         <tbody>
           <tr><td><strong>Gemma 4 E2B</strong></td><td>Phones, embedded, browser (Chrome), Pixel</td><td>On-device assistants, classification, basic chat. Audio in / out native.</td></tr>
           <tr><td><strong>Gemma 4 E4B</strong></td><td>Laptops (16&ndash;32GB RAM), edge devices, mid-tier mobile</td><td>The default "good local model" &mdash; agents, chat, RAG, multimodal including audio</td></tr>
+          <tr><td><strong>Gemma 4 12B Unified</strong></td><td>Mid-range single host (11.95B parameters)</td><td>Long-context multimodal work (256k) with audio input, where the 31B footprint is too much</td></tr>
           <tr><td><strong>Gemma 4 31B (dense)</strong></td><td>64GB+ MacBook Pro, single GPU 24GB+ VRAM (RTX 4090, H100)</td><td>Frontier-grade open-weights tasks; reasoning, code, server-side multimodal</td></tr>
           <tr><td><strong>Gemma 4 26B A4B (MoE)</strong></td><td>Same server class as 31B but lower active params per token</td><td>High-throughput inference; advanced reasoning at a fraction of the 31B compute cost per token</td></tr>
         </tbody>
@@ -418,6 +419,7 @@ curl http://localhost:11434/v1/chat/completions \
       <a href="https://ai.google.dev/gemma" target="_blank" rel="noopener">Gemma &nearr;</a>
     </div>
     <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant</p>
+    <p class="footer-copy">Last reviewed: 2026-11-21</p>
   </div>
 </footer>
 

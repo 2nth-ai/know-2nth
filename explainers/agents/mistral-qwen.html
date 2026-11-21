@@ -154,7 +154,7 @@
       Two open-weights families. <span class="gradient">Picked for what they do best.</span>
     </h1>
     <p class="sub fade-up" style="transition-delay: 0.1s">
-      Mistral and Qwen are the two strongest "second-tier" open-weights model families in 2026 &mdash; below Llama on raw ecosystem reach but each leading on a specific dimension that matters in production. <strong>Mistral AI</strong> (France) leads on <strong>function-calling reliability</strong>, <strong>European multilingual</strong>, and Apache-2.0-licensed releases. <strong>Qwen</strong> (Alibaba) leads on <strong>code-specific work</strong> via Qwen Coder and on <strong>Asian multilingual</strong> including Chinese, Japanese, and Korean. Together they cover use cases where Llama and Gemma are the wrong shape.
+      Updated 21 November 2026: the current generations covered here are Mistral Small 4 (March 2026, Apache 2.0, 119B MoE with 6B active), Qwen3.5 (February 2026, 397B-A17B, open weights) and Qwen3.6 (April 2026). The model rows below reflect these; anything not re-verified is marked as such. Mistral and Qwen are the two strongest "second-tier" open-weights model families in 2026 &mdash; below Llama on raw ecosystem reach but each leading on a specific dimension that matters in production. <strong>Mistral AI</strong> (France) leads on <strong>function-calling reliability</strong>, <strong>European multilingual</strong>, and Apache-2.0-licensed releases. <strong>Qwen</strong> (Alibaba) leads on <strong>code-specific work</strong> via Qwen Coder and on <strong>Asian multilingual</strong> including Chinese, Japanese, and Korean. Together they cover use cases where Llama and Gemma are the wrong shape.
     </p>
     <div class="hero-meta fade-up" style="transition-delay: 0.15s">
       <span class="pill green">Both Live &middot; production-ready</span>
@@ -173,8 +173,8 @@
       <h2 class="section-title">The two families that handle what Llama and Gemma don't.</h2>
     </div>
     <div class="prose fade-up" style="transition-delay: 0.05s">
-      <p><strong>Mistral AI</strong> is the French AI lab founded in 2023 by ex-DeepMind and ex-Meta researchers. The company shipped Mistral 7B in late 2023, Mixtral 8x7B (the first popular open-weights mixture-of-experts model) in early 2024, Mistral Large in 2024, and continues to ship at frequent cadence. The pattern: <strong>most Mistral models are released under Apache 2.0</strong> &mdash; genuinely open-source, commercially unrestricted &mdash; while a few flagship variants (Mistral Large 2, the latest commercial-tier models) ship under a commercial-research licence. The mix gives you Apache-licensed open weights for production and the flagship-tier for paid hosted access.</p>
-      <p><strong>Qwen</strong> is Alibaba's open-weights family. The Qwen 2.5 (late 2024) and Qwen 3 (2025) generations cover a wide size range &mdash; from Qwen 2.5 0.5B for edge devices up to Qwen 2.5 72B and Qwen 3 235B for frontier-adjacent work. <strong>Qwen 2.5 Coder</strong> is the specialised code variant and is widely considered the strongest open-weights coding model in its size class &mdash; meaningfully better than Llama or Gemma at code generation, refactoring, and software-engineering tasks. The general Qwen models also lead on Asian-language work given Alibaba's training-data emphasis.</p>
+      <p><strong>Mistral AI</strong> is the French AI lab founded in 2023 by ex-DeepMind and ex-Meta researchers. The company shipped Mistral 7B in late 2023, Mixtral 8x7B (the first popular open-weights mixture-of-experts model) in early 2024, Mistral Large in 2024, and continues to ship at frequent cadence. The pattern: <strong>most Mistral models are released under Apache 2.0</strong> &mdash; genuinely open-source, commercially unrestricted &mdash; while some flagship variants ship under a commercial-research licence. The mix gives you Apache-licensed open weights for production and the flagship-tier for paid hosted access.</p>
+      <p><strong>Qwen</strong> is Alibaba's open-weights family. Qwen3.5 (February 2026) is a natively multimodal 397B-A17B mixture-of-experts model with open weights. Qwen3.6 (April 2026) added open 35B-A3B releases, while the top Alibaba tiers (Qwen3.6-Plus, Qwen3.7-Max) are API-only. The earlier Qwen 2.5 and Qwen 3 generations, which span edge sizes up to 72B and 235B, are still available. <strong>Qwen 2.5 Coder</strong> (the last Coder generation checked in this review; newer Coder releases not verified) is the specialised code variant and is widely considered the strongest open-weights coding model in its size class &mdash; meaningfully better than Llama or Gemma at code generation, refactoring, and software-engineering tasks. The general Qwen models also lead on Asian-language work given Alibaba's training-data emphasis.</p>
       <p>Both families are widely hosted &mdash; Ollama, Together AI, Fireworks, Hugging Face, vLLM-via-self-host, and (for Qwen) the official Alibaba Cloud Model Studio. Both run anywhere Llama runs, with the same OpenAI-compatible API surface.</p>
     </div>
     <div class="info-card indigo fade-up" style="transition-delay: 0.08s">
@@ -195,39 +195,44 @@
     <div class="stack-grid fade-up" style="transition-delay: 0.05s">
       <div class="stack-cell">
         <span class="layer">Mistral &middot; flagship</span>
-        <h4>Mistral Large 2</h4>
-        <p>Top-tier, frontier-adjacent quality. ~123B parameters. Strongest function-calling reliability of any open-weights model. Multilingual including French, German, Italian, Spanish at frontier quality. Commercial-research licence; hosted access via la Plateforme.</p>
+        <h4>Mistral Large 4</h4>
+        <p>Named by Mistral as the recommended successor to Mistral Medium 3.5 on its model page. Specifications, licence and pricing not verified in this review; check docs.mistral.ai before relying on it.</p>
       </div>
       <div class="stack-cell">
         <span class="layer">Mistral &middot; default</span>
-        <h4>Mistral Small / Nemo</h4>
-        <p>Apache 2.0 licensed. The everyday open-weights pick when function-calling matters. Mistral Nemo (12B) is a particularly strong "small" variant. Runs comfortably on Ollama for dev work.</p>
+        <h4>Mistral Small 4</h4>
+        <p>Released 16 March 2026 (<code>mistral-small-2603</code>), Apache 2.0. 119B mixture-of-experts with 6B active parameters and a 256k context. Consolidates the Magistral reasoning and Devstral coding lines into one model. API price $0.15 / $0.60 per million tokens. The open-weights pick to test first when function-calling matters.</p>
       </div>
       <div class="stack-cell">
-        <span class="layer">Mistral &middot; MoE</span>
-        <h4>Mixtral 8x7B / 8x22B</h4>
-        <p>Mixture-of-experts variants. Mixtral 8x22B has 141B total params, ~39B active per token &mdash; punches above its weight on quality vs latency. Apache 2.0. Production-popular when you want strong quality at lower active inference cost.</p>
+        <span class="layer">Mistral &middot; previous generation</span>
+        <h4>Mistral Medium 3.5</h4>
+        <p>Open weights under a modified MIT licence, released 28 April 2026 with a 256k context. Mistral's model page lists it as deprecated from 31 October 2026 and recommends Large 4 for new integrations. Do not select for new work.</p>
       </div>
       <div class="stack-cell">
         <span class="layer">Qwen &middot; flagship</span>
-        <h4>Qwen 3 235B / Qwen 2.5 72B</h4>
-        <p>Frontier-adjacent quality. Strong reasoning and multilingual including Chinese / Japanese / Korean. Apache 2.0 licensed. The right pick when Asian-language work or Chinese-trained-data alignment is structurally needed.</p>
+        <h4>Qwen3.5 (397B-A17B)</h4>
+        <p>Released 16 February 2026 as an open-weights, natively multimodal mixture-of-experts model: 397B total, 17B active per token, aimed at reasoning, coding and agent work. Strong multilingual including Chinese / Japanese / Korean. Benchmark figures are vendor-published and not independently reproduced here.</p>
       </div>
       <div class="stack-cell">
         <span class="layer">Qwen &middot; default</span>
-        <h4>Qwen 2.5 14B / 32B</h4>
-        <p>Mid-tier general purpose. Apache 2.0. Strong on Asian languages and code-adjacent tasks. Runs on Ollama, vLLM, Together &mdash; broad hosting support.</p>
+        <h4>Qwen3.6-35B-A3B</h4>
+        <p>Open-weights mixture-of-experts (35B total, 3B active), released April 2026 on Hugging Face and ModelScope and positioned as an agentic coder. Sources differ on the exact April date. Runs on Ollama, vLLM and Together for broad hosting support.</p>
       </div>
       <div class="stack-cell">
         <span class="layer">Qwen &middot; specialist</span>
         <h4>Qwen 2.5 Coder &middot; 7B / 14B / 32B</h4>
-        <p>The best open-weights coding model in its size class. Often outperforms Llama and Gemma on code benchmarks at equivalent parameter counts. Apache 2.0. The structural pick when you're building coding agents on open-weights.</p>
+        <p>Last Coder generation checked in this review. Earlier vendor benchmarks put it ahead of Llama and Gemma on code at equal size; not re-verified. Apache 2.0. Confirm whether a newer Coder release exists before building on it.</p>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Qwen &middot; closed top tier</span>
+        <h4>Qwen3.7-Max</h4>
+        <p>Proprietary and API-only, with no open weights. Qwen3.7-Plus is the companion model. Qwen3.6-Plus and Qwen3.6-Max-Preview are also closed. Not an option for self-hosting.</p>
       </div>
     </div>
 
     <div class="info-card green fade-up" style="transition-delay: 0.08s">
       <h4>Where each family wins on benchmarks</h4>
-      <p><strong>Mistral Large 2</strong> consistently leads open-weights function-calling benchmarks &mdash; the model was specifically tuned for tool use. <strong>Qwen 2.5 Coder 32B</strong> is competitive with Claude Sonnet and GPT-4 on code-specific benchmarks &mdash; the strongest open-weights coding model below frontier-tier closed models. <strong>Mistral Nemo</strong> and small Qwen variants outperform similarly-sized Llama models on multilingual work for their respective language families. <strong>Llama and Gemma still win on general English benchmarks at most size points</strong>, but the second-tier families fill the niches Llama and Gemma don't.</p>
+      <p>Earlier revisions of this leaf quoted benchmark leads for Mistral Large 2 and Qwen 2.5 Coder 32B. Those described superseded generations and have been removed until re-verified against the current models. The figures that remain for Qwen3.5 and Mistral Small 4 are vendor-published, so treat them as claims to check rather than settled rankings.</p>
     </div>
   </div>
 </section>
@@ -247,13 +252,13 @@
         <tbody>
           <tr><td><strong>General-purpose open-weights workhorse</strong></td><td>Llama 3.x / 4</td><td>Largest community ecosystem; broadest hosting</td></tr>
           <tr><td><strong>Frontier-lab safety tuning + multimodal</strong></td><td>Gemma 3</td><td>Google DeepMind training pipeline</td></tr>
-          <tr><td><strong>Function-calling-heavy production agents</strong></td><td>Mistral Large 2 / Mistral Nemo</td><td>Tuned for tool use; most reliable open-weights function-calling</td></tr>
-          <tr><td><strong>European multilingual (FR / DE / IT / ES)</strong></td><td>Mistral Large 2</td><td>Frontier quality on European languages</td></tr>
-          <tr><td><strong>Apache 2.0 strict licence requirement</strong></td><td>Mistral Small / Nemo / Mixtral</td><td>Genuinely open-source vs Llama Community Licence</td></tr>
-          <tr><td><strong>Code-generating agents on open-weights</strong></td><td>Qwen 2.5 Coder</td><td>Strongest open-weights coder; close to closed-frontier on code benchmarks</td></tr>
-          <tr><td><strong>Asian-language work (CN / JA / KO)</strong></td><td>Qwen 2.5 / 3</td><td>Alibaba training-data emphasis</td></tr>
-          <tr><td><strong>Mixture-of-experts inference economics</strong></td><td>Mixtral 8x22B</td><td>Lower active inference cost vs equivalent dense models</td></tr>
-          <tr><td><strong>Frontier reasoning quality</strong></td><td>Claude Opus / GPT-5 / Gemini Ultra</td><td>Closed frontier still leads on hardest reasoning</td></tr>
+          <tr><td><strong>Function-calling-heavy production agents</strong></td><td>Mistral Small 4</td><td>Current Apache 2.0 Mistral release; test against your own tool schema</td></tr>
+          <tr><td><strong>European multilingual (FR / DE / IT / ES)</strong></td><td>Mistral Small 4 / Large 4</td><td>Current Mistral line; not re-benchmarked on European languages here</td></tr>
+          <tr><td><strong>Apache 2.0 strict licence requirement</strong></td><td>Mistral Small 4</td><td>Genuinely open-source vs Llama Community Licence</td></tr>
+          <tr><td><strong>Code-generating agents on open-weights</strong></td><td>Qwen 2.5 Coder (confirm newer Coder release)</td><td>Last Coder line checked here; older vendor benchmarks only</td></tr>
+          <tr><td><strong>Asian-language work (CN / JA / KO)</strong></td><td>Qwen3.5</td><td>Alibaba training-data emphasis</td></tr>
+          <tr><td><strong>Mixture-of-experts inference economics</strong></td><td>Mistral Small 4</td><td>119B MoE with 6B active parameters per token</td></tr>
+          <tr><td><strong>Frontier reasoning quality</strong></td><td>Claude / GPT / Gemini 4 Argon</td><td>Closed frontier still leads on hardest reasoning</td></tr>
         </tbody>
       </table>
     </div>
@@ -271,11 +276,11 @@
       <div class="decision-card use">
         <h4>Use Mistral / Qwen when</h4>
         <ul>
-          <li>Function-calling reliability is load-bearing &mdash; Mistral Large 2 leads open-weights here</li>
-          <li>You're building a coding agent on open-weights &mdash; Qwen 2.5 Coder is the right pick</li>
+          <li>Function-calling reliability is load-bearing &mdash; start with Mistral Small 4 and test against your schema</li>
+          <li>You're building a coding agent on open-weights &mdash; Qwen 2.5 Coder is the last Coder line checked here; confirm the current one</li>
           <li>European multilingual matters (Mistral) or Asian multilingual (Qwen)</li>
           <li>Apache 2.0 strict licensing is non-negotiable &mdash; Mistral has the most variants here</li>
-          <li>You want MoE inference economics &mdash; Mixtral 8x22B is the open-weights MoE leader</li>
+          <li>You want MoE inference economics &mdash; Mistral Small 4 (119B MoE, 6B active) is the current Mistral option</li>
           <li>You want vendor diversity beyond Llama / Gemma in your open-weights routing</li>
         </ul>
       </div>
@@ -303,11 +308,11 @@
     </div>
     <div class="info-card indigo fade-up" style="transition-delay: 0.05s">
       <h4>Mistral &middot; the function-calling-on-open-weights pick</h4>
-      <p>For SA studios building production agents on open-weights with function-calling load-bearing &mdash; tool dispatch, structured outputs, multi-step workflows &mdash; Mistral Large 2 is meaningfully more reliable than Llama or Gemma at the tool-use surface. Hosted via Together / Fireworks; self-host via vLLM. The Apache-licensed variants (Nemo, Small, Mixtral) avoid the Llama 700M MAU edge cases entirely and the "Built with Llama" attribution requirement.</p>
+      <p>For SA studios building production agents on open-weights with function-calling load-bearing &mdash; tool dispatch, structured outputs, multi-step workflows &mdash; Mistral Small 4 is the current candidate to test against Llama or Gemma at the tool-use surface. Hosted via Together / Fireworks; self-host via vLLM. The Apache-licensed Mistral releases (Small 4) avoid the Llama 700M MAU edge cases entirely and the "Built with Llama" attribution requirement.</p>
     </div>
     <div class="info-card fade-up" style="transition-delay: 0.07s">
       <h4>Qwen Coder &middot; the open-weights coding agent</h4>
-      <p>For SA studios building internal coding agents (PR review, refactor assistants, codebase Q&amp;A) on open-weights, Qwen 2.5 Coder is the right pick. Runs on Ollama for dev work; production via Together AI or self-hosted vLLM. The structural cost advantage over Claude Code or GPT-driven coding agents matters at high-volume internal usage &mdash; especially when many developers run many agent calls per day.</p>
+      <p>For SA studios building internal coding agents (PR review, refactor assistants, codebase Q&amp;A) on open-weights, Qwen 2.5 Coder is the last Coder line checked here, so confirm the current one before committing. Runs on Ollama for dev work; production via Together AI or self-hosted vLLM. The structural cost advantage over Claude Code or GPT-driven coding agents matters at high-volume internal usage &mdash; especially when many developers run many agent calls per day.</p>
     </div>
     <div class="info-card amber fade-up" style="transition-delay: 0.09s">
       <h4>SA hosting reality</h4>
@@ -421,6 +426,7 @@
       <a href="https://qwenlm.github.io" target="_blank" rel="noopener">Qwen &nearr;</a>
     </div>
     <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant</p>
+    <p class="footer-copy">Last reviewed: 2026-11-21</p>
   </div>
 </footer>
 

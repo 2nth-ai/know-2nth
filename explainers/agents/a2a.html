@@ -171,7 +171,7 @@
       The Agent2Agent (A2A) Protocol is the open standard that lets agents from different frameworks call each other. JSON-RPC over HTTP, Agent Card discovery at <code>/.well-known/agent-card.json</code>, native streaming, push notifications. Originally released by Google, now governed by the Linux Foundation. The interop layer that turns "ADK + LangGraph + CrewAI in production" from an aspiration into a deployment.
     </p>
     <div class="hero-meta fade-up" style="transition-delay: 0.15s">
-      <span class="pill green">Live spec</span>
+      <span class="pill green">Spec v1.0</span>
       <span class="pill indigo">Linux Foundation</span>
       <span class="pill accent">JSON-RPC 2.0 over HTTP</span>
       <span class="pill">Agent Card discovery</span>
@@ -189,7 +189,7 @@
     <div class="prose fade-up" style="transition-delay: 0.05s">
       <p>A2A is a <strong>wire protocol</strong>, not a framework. It defines how an agent in one process announces what it can do (Agent Card), how a remote caller discovers and invokes those capabilities (JSON-RPC over HTTP), and how long-running interactions are handled (streaming responses, push notifications, task lifecycle states). It does not define what the agent is, how it reasons, or what tools it uses internally &mdash; those are framework concerns.</p>
       <p>The thesis is simple: <strong>agentic workloads in production will span multiple frameworks</strong>. One team builds with Google ADK because they're on GCP. Another team uses LangGraph because they need explicit graph control. A third runs CrewAI for fast prototypes. Without a shared protocol, integrating them means custom HTTP wrappers, brittle JSON contracts, and bespoke retry logic at every boundary. With A2A, every agent advertises a standard Agent Card; every caller speaks the same JSON-RPC dialect; the integration is the protocol.</p>
-      <p>Originally released by Google as part of the broader agent stack, A2A was donated to the <strong>Linux Foundation</strong> in 2026 to neutralise vendor concerns and accelerate adoption. The spec lives at <a href="https://a2a-protocol.org/latest/" target="_blank" rel="noopener" style="color:var(--sky)">a2a-protocol.org</a>; the reference implementations and tooling are at <a href="https://github.com/a2aproject/A2A" target="_blank" rel="noopener" style="color:var(--sky)">github.com/a2aproject/A2A</a>.</p>
+      <p>Originally released by Google as part of the broader agent stack, Google donated A2A to the <strong>Linux Foundation</strong> on 23 June 2025 to neutralise vendor concerns and accelerate adoption. The spec reached <strong>v1.0</strong>, its first stable release, in early 2026; a single agent can serve several protocol versions, negotiated via the <code>A2A-Version</code> header. The spec lives at <a href="https://a2a-protocol.org/latest/" target="_blank" rel="noopener" style="color:var(--sky)">a2a-protocol.org</a>; the reference implementations and tooling are at <a href="https://github.com/a2aproject/A2A" target="_blank" rel="noopener" style="color:var(--sky)">github.com/a2aproject/A2A</a>.</p>
     </div>
     <div class="info-card indigo fade-up" style="transition-delay: 0.08s">
       <h4>The four primitives</h4>
@@ -439,6 +439,7 @@ root = Agent(<span class="h">name</span>=<span class="s">"coordinator"</span>, <
       <a href="https://a2a-protocol.org/latest/" target="_blank" rel="noopener">A2A spec &nearr;</a>
     </div>
     <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant</p>
+    <p class="footer-copy">Last reviewed: 2026-11-21</p>
   </div>
 </footer>
 
