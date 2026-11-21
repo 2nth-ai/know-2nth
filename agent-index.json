@@ -3,11 +3,11 @@
   "description": "The public knowledge tree for the 2nth.ai ecosystem. Every leaf is both a human-readable reference and an agent-consumable context document.",
   "agent_fetch": "https://know.2nth.ai/api/context/<domain>/<leaf>",
   "mcp": "https://know.2nth.ai/mcp",
-  "count": 233,
+  "count": 234,
   "items": [
     {
       "title": "Agents — know.2nth.ai",
-      "description": "The Agents domain on know.2nth.ai — the agentic frameworks, protocols, models, inference platforms, and coding CLI agents that matter in 2026. 37 Live leaves across five bands: nine frameworks (Google ADK, Google Antigravity, LangGraph, CrewAI, OpenAI Agents SDK, Anthropic Agent SDK, AutoGen, AgentForce, Deep Agents), four protocols (A2A, MCP, Agent Skills, OpenWiki + OKF), ten models, six inference leaves, and four coding CLI agents (Claude Code, OpenAI Codex CLI, GitHub Copilot CLI plus a comparison). Built around the principle that agents are software, not prompt soup.",
+      "description": "The Agents domain on know.2nth.ai — the agentic frameworks, protocols, models, inference platforms, and coding CLI agents that matter in 2026. 38 Live leaves across six bands: nine frameworks (Google ADK, Google Antigravity, LangGraph, CrewAI, OpenAI Agents SDK, Anthropic Agent SDK, AutoGen, AgentForce, Deep Agents), four protocols (A2A, MCP, Agent Skills, OpenWiki + OKF), ten models, six inference leaves, and four coding CLI agents (Claude Code, OpenAI Codex CLI, GitHub Copilot CLI plus a comparison). Built around the principle that agents are software, not prompt soup.",
       "domain": "agents",
       "kind": "hub",
       "url": "https://know.2nth.ai/explainers/agents/",
@@ -76,6 +76,14 @@
       "kind": "leaf",
       "url": "https://know.2nth.ai/explainers/agents/claude",
       "fetch": "agents/claude"
+    },
+    {
+      "title": "Claude artifacts — what they are and where they stop — know.2nth.ai",
+      "description": "Claude artifacts are Anthropic's publishing surface: private pages and typed documents, Docs, Slides, Design, Data, Sheets, Whiteboards and Motion, made from chat, the Artifacts tab, Claude Code or mobile. What is verified as of November 2026: legacy versus new artifacts, storage and upload limits, connectors that run as the viewer, sharing by plan, admin controls, and the Claude Code surface. Reference, with the limits sourced to Anthropic.",
+      "domain": "agents",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/agents/claude-artifacts",
+      "fetch": "agents/claude-artifacts"
     },
     {
       "title": "Claude Code — Anthropic's agentic coding CLI — know.2nth.ai",
