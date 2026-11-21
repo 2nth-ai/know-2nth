@@ -225,7 +225,7 @@
       <span class="pill indigo">Apache 2.0</span>
       <span class="pill accent">Python &middot; TS &middot; Go &middot; Java</span>
       <span class="pill">17,500+ stars (adk-python)</span>
-      <span class="pill warn">v2.0 Beta &middot; v1.23 stable</span>
+      <span class="pill green">v2.x &middot; 2.0 GA 19 May 2026 (Python)</span>
     </div>
   </div>
 </section>
@@ -258,7 +258,7 @@
       <div class="stack-cell">
         <span class="layer">Stat &middot; cadence</span>
         <h4>~bi-weekly</h4>
-        <p>Release cadence on Python. 25+ minor releases between launch and v2.0 Beta.</p>
+        <p>Release cadence on Python. 25+ minor releases between launch and the 2.0 GA.</p>
       </div>
       <div class="stack-cell">
         <span class="layer">Stat &middot; protocol</span>
@@ -331,7 +331,7 @@ root = Agent(
         <li><code>ParallelAgent</code> &mdash; runs sub-agents concurrently</li>
         <li><code>LoopAgent</code> &mdash; repeats until a condition is met</li>
       </ul>
-      <p><strong>ADK 2.0 graph workflows (Beta).</strong> ADK 2.0, currently Beta in Python only, adds explicit graph-based workflows where every node is an Agent, Tool, function, or human-input step, connected by edges that can route conditionally. The <code>Workflow</code> class replaces deeply nested prompt instructions with explicit DAGs:</p>
+      <p><strong>ADK 2.0 graph workflows.</strong> ADK 2.0, GA for Python since 19 May 2026 (Go and TypeScript followed on their own schedules per the official 2.0 page), adds explicit graph-based workflows where every node is an Agent, Tool, function, or human-input step, connected by edges that can route conditionally. The <code>Workflow</code> class replaces deeply nested prompt instructions with explicit DAGs:</p>
     </div>
 
     <pre class="code fade-up" style="transition-delay: 0.19s"><span class="h">from</span> google.adk <span class="h">import</span> Agent, Workflow, Event
@@ -436,7 +436,7 @@ remote = RemoteA2aAgent(<span class="h">name</span>=<span class="s">"pricing"</s
     <div class="fade-up">
       <div class="section-label">04 &middot; Use cases and evolution</div>
       <h2 class="section-title">Where ADK earns its keep, and how it got here.</h2>
-      <p class="section-lede">Six patterns where ADK has shipped concrete value, drawn from Google's official samples and community deployments. Plus the timeline of how the framework went from zero to ADK 2.0 Beta inside thirteen months.</p>
+      <p class="section-lede">Six patterns where ADK has shipped concrete value, drawn from Google's official samples and community deployments. Plus the timeline of how the framework went from zero to ADK 2.0 GA inside about thirteen months.</p>
     </div>
 
     <div class="prose fade-up" style="transition-delay: 0.05s">
@@ -481,7 +481,7 @@ remote = RemoteA2aAgent(<span class="h">name</span>=<span class="s">"pricing"</s
       </div>
       <div class="timeline-step">
         <div class="timeline-date">May 2026</div>
-        <div class="timeline-text">ADK 2.0 in <strong>Beta</strong> for Python; ADK TypeScript 1.0 GA; A2A Protocol now under <strong>Linux Foundation</strong> governance.</div>
+        <div class="timeline-text">ADK 2.0 reaches <strong>GA for Python</strong> (19 May 2026); ADK TypeScript 1.0 GA; A2A Protocol now under <strong>Linux Foundation</strong> governance.</div>
       </div>
     </div>
   </div>
@@ -505,7 +505,7 @@ remote = RemoteA2aAgent(<span class="h">name</span>=<span class="s">"pricing"</s
           <li>You're building hierarchical multi-agent systems with clear role delegation</li>
           <li>A2A interop matters &mdash; you want to mix ADK with LangGraph or CrewAI agents</li>
           <li>You want a managed runtime (Agent Engine) to handle sessions, memory, and scaling</li>
-          <li>You're comfortable with weekly-to-bi-weekly framework churn during v2.0 stabilisation</li>
+          <li>You're comfortable with weekly-to-bi-weekly framework churn during the 2.x release cadence</li>
         </ul>
       </div>
       <div class="decision-card skip">
@@ -522,7 +522,7 @@ remote = RemoteA2aAgent(<span class="h">name</span>=<span class="s">"pricing"</s
 
     <div class="info-card amber fade-up" style="transition-delay: 0.08s">
       <h4>Pre-GA pinning</h4>
-      <p>ADK 2.0 is pre-GA at the time of writing. Install with <code>pip install --pre google-adk</code>. Don't ship it to production until it goes GA. The official 2.0 docs flag breaking changes from 1.x. For production, pin to v1.23+ stable until 2.0 GA lands.</p>
+      <p>ADK 2.0 is GA for Python (19 May 2026) and is a breaking change from 1.x: the Workflow Runtime replaces the hierarchical executor with a graph-based engine, and the agent API, event model and session schema change. Sessions written by 2.0 are readable by 1.28+ but not by older 1.x. The 2.x line releases frequently, so pin an exact version in production rather than a range.</p>
     </div>
   </div>
 </section>
@@ -611,7 +611,7 @@ remote = RemoteA2aAgent(<span class="h">name</span>=<span class="s">"pricing"</s
     <div class="fade-up">
       <div class="section-label">08 &middot; Resources</div>
       <h2 class="section-title">Primary sources only.</h2>
-      <p class="section-lede">This page was assembled from primary sources: Google's <code>adk-python</code> README, CHANGELOG, and release tags; the canonical docs site at <code>google.github.io/adk-docs</code>; the Google Developers Blog launch post; the A2A Protocol repository and specification; and Google Cloud's official Vertex AI documentation. Anything that couldn't be verified against a primary source was removed. Last reviewed 2026-05-10.</p>
+      <p class="section-lede">This page was assembled from primary sources: Google's <code>adk-python</code> README, CHANGELOG, and release tags; the canonical docs site at <code>google.github.io/adk-docs</code>; the Google Developers Blog launch post; the A2A Protocol repository and specification; and Google Cloud's official Vertex AI documentation. Anything that couldn't be verified against a primary source was removed. Last reviewed 2026-11-21.</p>
     </div>
     <div class="resource-grid fade-up" style="transition-delay: 0.05s">
       <a href="https://google.github.io/adk-docs/" class="resource" target="_blank" rel="noopener">
@@ -678,6 +678,7 @@ remote = RemoteA2aAgent(<span class="h">name</span>=<span class="s">"pricing"</s
       <a href="https://google.github.io/adk-docs/" target="_blank" rel="noopener">ADK docs &nearr;</a>
     </div>
     <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant</p>
+    <p class="footer-copy">Last reviewed: 2026-11-21</p>
   </div>
 </footer>
 

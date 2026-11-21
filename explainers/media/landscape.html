@@ -231,8 +231,8 @@
       <table class="compare">
         <thead><tr><th>Vendor</th><th>Flagship</th><th>Strength</th><th>Open / closed</th></tr></thead>
         <tbody>
-          <tr><td><strong>ElevenLabs</strong></td><td>Flash (75ms), Multilingual v2, v3, Scribe v2</td><td>Deepest platform &mdash; TTS, cloning, dubbing, agents, music. The default for creators and developers.</td><td>Closed; open API</td></tr>
-          <tr><td><strong>Cartesia</strong></td><td>Sonic-3 (~90ms model latency)</td><td>The latency king. Purpose-built for real-time voice agents; 40+ languages.</td><td>Closed</td></tr>
+          <tr><td><strong>ElevenLabs</strong></td><td>v4 / v4 Turbo (Sep 2026), Flash (75ms), Multilingual v2, v3, Scribe v2</td><td>Deepest platform &mdash; TTS, cloning, dubbing, agents, music. The default for creators and developers.</td><td>Closed; open API</td></tr>
+          <tr><td><strong>Cartesia</strong></td><td>Sonic 3.5 (sub-90ms per vendor docs)</td><td>The latency king. Purpose-built for real-time voice agents; 40+ languages.</td><td>Closed</td></tr>
           <tr><td><strong>Hume AI</strong></td><td>EVI (empathic voice interface)</td><td>Emotion as a first-class feature &mdash; reads tone and responds with matching prosody.</td><td>Closed; open API</td></tr>
           <tr><td><strong>OpenAI</strong></td><td><code>gpt-realtime</code>, Realtime-Translate, Realtime-Whisper</td><td>Voice-in-LLM &mdash; integrated listening, reasoning, speaking. Live translation across 70+ languages.</td><td>Closed; API</td></tr>
           <tr><td><strong>Google</strong></td><td>Gemini TTS, Chirp 3 HD</td><td>Native audio inside Gemini; production TTS on Vertex AI. 100+ languages.</td><td>Closed; API</td></tr>
@@ -261,7 +261,7 @@
     <div class="info-card media fade-up" style="transition-delay: 0.04s">
       <h4>What &ldquo;fast&rdquo; means in 2026</h4>
       <p><strong>Human conversational baseline:</strong> ~200ms average response time. That is the target a voice agent is measured against.</p>
-      <p><strong>TTS alone:</strong> the fast tier is now 75&ndash;90ms (ElevenLabs Flash, Cartesia Sonic-3). This is close to a solved problem.</p>
+      <p><strong>TTS alone:</strong> the fast tier is now roughly 75&ndash;100ms on vendor-stated figures (ElevenLabs Flash, Eleven v4 Turbo, Cartesia Sonic 3.5). This is close to a solved problem.</p>
       <p><strong>End-to-end (STT + LLM reasoning + TTS):</strong> this is the real bottleneck. Sub-500ms is the bar for natural conversation; ~800ms is the practical ceiling before dialogue feels laggy. The LLM reasoning step, not the speech synthesis, is what eats the budget.</p>
       <p><strong>Architecture matters.</strong> Most production voice agents in 2026 are still <em>turn-based</em> (STT then LLM then TTS, in sequence), not true streaming. Streaming architectures shave latency but are harder to build. When a vendor quotes a latency number, ask whether it is the model alone or the full round trip.</p>
     </div>
@@ -274,13 +274,12 @@
     <div class="fade-up">
       <div class="section-label">04 &middot; Consent, voice rights, regulation</div>
       <h2 class="section-title">Voice cloning sits inside real law now.</h2>
-      <p class="section-lede">By mid-2026 the regulatory frame around synthetic voice has moved from "coming soon" to enforceable. Anyone cloning a voice or shipping AI audio needs to know this.</p>
+      <p class="section-lede">By late 2026 the regulatory frame around synthetic voice has moved from "coming soon" to enforceable. Anyone cloning a voice or shipping AI audio needs to know this.</p>
     </div>
 
     <div class="info-card rose fade-up" style="transition-delay: 0.04s">
-      <h4>Three regulatory developments that have landed</h4>
-      <p><strong>EU Digital Creativity Integrity Act</strong> &mdash; voice rights are recognised as monetizable creative assets; vendors must track and compensate voice actors whose voices are used in cloning.</p>
-      <p><strong>US AI Transparency and Accountability Act</strong> &mdash; individuals have legal grounds to seek recurring compensation when AI companies use their voices without consent.</p>
+      <h4>Regulatory developments that have landed</h4>
+      <p><strong>EU AI Act, Article 50 (transparency)</strong> &mdash; the transparency rules took effect in August 2026, per the Commission's regulatory-framework page. Synthetic audio needs to be disclosed as AI-generated. The machine-readable marking duty in Article 50(2) has a contested date: secondary sources say 2 December 2026, others a later date, so check the Official Journal text (Regulation (EU) 2026/1744 as reported) before relying on it.</p>
       <p><strong>Tennessee ELVIS Act</strong> &mdash; unauthorised use of a person's voice or likeness is a civil tort plus a Class A misdemeanour; the scope has expanded beyond music to all voice contexts.</p>
     </div>
 
@@ -364,7 +363,7 @@
       <a href="https://2nth.ai">2nth.ai</a>
     </div>
     <div class="footer-copy">&copy; 2026 imbila.ai &middot; All knowledge open</div>
-    <div class="footer-review">Last reviewed: 2026-05-21 &middot; Cadence: hot (quarterly)</div>
+    <div class="footer-review">Last reviewed: 2026-11-21 &middot; Cadence: hot (quarterly)</div>
   </div>
 </footer>
 

@@ -411,7 +411,7 @@
     <div class="fade-up">
       <div class="section-label">05 &middot; Omni Flash &amp; benchmarks</div>
       <h2 class="section-title">The deployable variant, and how it scores.</h2>
-      <p class="section-lede">The version Google actually ships is <strong>Gemini Omni Flash</strong> &mdash; positioned for "exceptional results in Video Editing, Text to Video, Image to Video, and Reference to Video." Google's reported human-rater and benchmark results across those four tasks:</p>
+      <p class="section-lede">The benchmarks below were reported for the original <strong>Gemini Omni Flash</strong> (May 2026), since superseded by <strong>Gemini Omni 1.2 Flash</strong> (5 November 2026) &mdash; positioned for "exceptional results in Video Editing, Text to Video, Image to Video, and Reference to Video." Google's reported human-rater and benchmark results across those four tasks:</p>
     </div>
     <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
       <table class="compare">
@@ -437,7 +437,7 @@
     <div class="fade-up">
       <div class="section-label">06 &middot; Where to use it &amp; provenance</div>
       <h2 class="section-title">Consumer surfaces today, provenance built in.</h2>
-      <p class="section-lede">At launch Omni is surfaced through Google's creative and consumer products rather than as a standalone developer endpoint. Every output it produces carries provenance signals.</p>
+      <p class="section-lede">Omni is surfaced through Google's creative and consumer products and, since 5 November 2026, through the Gemini API and Google Cloud. Every output it produces carries provenance signals.</p>
     </div>
     <div class="stack-grid fade-up" style="transition-delay: 0.05s">
       <div class="stack-cell">
@@ -474,7 +474,7 @@
     <div class="fade-up">
       <div class="section-label">07 &middot; Builder's reality</div>
       <h2 class="section-title">Reach for Omni when. Don't, when.</h2>
-      <p class="section-lede">The single most important thing for a builder to internalise: at launch Omni is a <strong>product capability</strong>, not a confirmed Vertex / AI Studio API SKU. It's reachable through the Gemini app, Flow, and Shorts &mdash; not (yet, publicly) as a programmatic endpoint you can wire into an agent. Plan accordingly.</p>
+      <p class="section-lede">The single most important thing for a builder to internalise: Omni is now a <strong>programmatic model as well as a product</strong>. Gemini Omni 1.2 Flash (<code>gemini-omni-1.2-flash</code>) is generally available on the Gemini API and Google Cloud, announced 5 November 2026, with clips of 3 to 15 seconds. Google lists $0.07 per second of 720p video. Confirm current model IDs, pricing and regional availability on Google's pages before you quote a client.</p>
     </div>
     <div class="decision-grid fade-up" style="transition-delay: 0.05s">
       <div class="decision-card use">
@@ -491,7 +491,7 @@
       <div class="decision-card skip">
         <h4>Don't design around Omni when</h4>
         <ul>
-          <li>You need a programmatic API today &mdash; treat it as a capability signal, verify the model matrix first</li>
+          <li>Your API access depends on region or Google Cloud tier &mdash; check the model matrix first</li>
           <li>You're building an autonomous agent that must generate video unattended</li>
           <li>Your users are outside the supported subscription tiers or geographies</li>
           <li>You need on-prem / SA-resident generation &mdash; no regional hosting story yet</li>
@@ -502,7 +502,7 @@
     </div>
     <div class="info-card amber fade-up" style="transition-delay: 0.08s">
       <h4>The one-line risk to write into any plan</h4>
-      <p>If a proposal depends on calling Omni from code, flag it as <strong>unconfirmed</strong> until the Gemini model availability matrix lists a programmatic Omni / Omni Flash endpoint. The capability is real and shipping &mdash; through products. The API surface is the open question. Building a client deliverable around a programmatic Omni call today is a planning risk, not a feature.</p>
+      <p>If a proposal depends on calling Omni from code, the endpoint exists as of 5 November 2026. The open questions are regional availability, tier and cost, and SA residency, not whether the API exists. Confirm those against the Gemini model matrix before you build a client deliverable on it.</p>
     </div>
   </div>
 </section>
@@ -634,6 +634,7 @@
       <a href="https://deepmind.google/models/gemini-omni/" target="_blank" rel="noopener">Gemini Omni &nearr;</a>
     </div>
     <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant</p>
+    <p class="footer-copy">Last reviewed: 2026-11-21</p>
   </div>
 </footer>
 

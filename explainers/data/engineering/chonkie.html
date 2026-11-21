@@ -367,7 +367,7 @@
       <span class="pill">Python · TypeScript</span>
       <span class="pill">Rust SIMD core</span>
       <span class="pill">MIT / dual-licence</span>
-      <span class="pill">v1.6.4</span>
+      <span class="pill">v1.7.0</span>
     </div>
   </div>
 </section>
@@ -380,7 +380,7 @@
       <h2 class="section-title">A thin Python layer over a separate Rust crate.</h2>
     </div>
     <div class="prose fade-up" style="transition-delay: 0.05s">
-      <p>Chonkie handles ingestion-stage chunking: take a document, split it into passages a retriever can index, and optionally embed and refine them. It ships in Python (<code>chonkie</code>, MIT) and TypeScript, is actively developed (<code>v1.6.4</code>, April 2026), and is maintained by a small YC-backed company that also runs a hosted product.</p>
+      <p>Chonkie handles ingestion-stage chunking: take a document, split it into passages a retriever can index, and optionally embed and refine them. It ships in Python (<code>chonkie</code>, MIT) and TypeScript, is actively developed (<code>v1.7.0</code>, July 2026), and is maintained by a small YC-backed company that also runs a hosted product.</p>
       <p>The architecture is the thing to understand first, because it explains every number downstream. <strong>The Python package is a thin wrapper over a separate Rust crate.</strong> <code>chonkie-inc/chunk</code> (Rust, dual MIT/Apache-2.0) does the SIMD boundary detection; <code>chonkie-inc/chonkie</code> (Python) wraps it. Two repos, two licences, two release cadences — and the fast part lives on the far side of a foreign-function boundary from the code you call.</p>
       <p>The chunker menu is broad: fixed-token, a byte-based SIMD chunker (<code>FastChunker</code>), sentence, recursive, semantic, late, code, a fine-tuned-BERT neural chunker, and an LLM-driven one ("Slumber"). Worth knowing before you plan a container build: only two of them — <code>FastChunker</code> and <code>TokenChunker</code> — are in the default install. The semantic, late, neural, and LLM chunkers each require extras.</p>
     </div>
@@ -538,7 +538,7 @@ chunks = chunker(text)
       <a href="../">Data domain</a>
       <a href="https://github.com/chonkie-inc/chonkie" target="_blank" rel="noopener">github.com/chonkie-inc/chonkie ↗</a>
     </div>
-    <p class="footer-copy">© 2026 2nth.ai · Built in South Africa — Globally relevant</p>
+    <p class="footer-copy">© 2026 2nth.ai · Built in South Africa — Globally relevant · Last reviewed: 2026-11-21</p>
   </div>
 </footer>
 

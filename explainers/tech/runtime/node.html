@@ -203,7 +203,7 @@
       <span class="pill accent">Engine &middot; V8</span>
       <span class="pill">Built in C++</span>
       <span class="pill">npm origin</span>
-      <span class="pill">LTS &middot; v22</span>
+      <span class="pill">LTS &middot; v26</span>
     </div>
   </div>
 </section>
@@ -218,7 +218,7 @@
     <div class="prose fade-up" style="transition-delay: 0.05s">
       <p>Node.js is a JavaScript runtime built on Chrome's <strong>V8 engine</strong>, designed for non-blocking I/O via the <strong>libuv</strong> event loop. The original 2009 thesis &mdash; "JavaScript on the server, with an event-driven async model that scales better than thread-per-request" &mdash; reshaped the backend industry. Sixteen years later, that thesis is so settled it's invisible: Node is the default JavaScript runtime, and "the npm registry" is, in practice, the JavaScript ecosystem.</p>
       <p>The runtime ships with: <strong>V8</strong> (the JS engine, shared with Chrome), <strong>libuv</strong> (the cross-platform async I/O library), and a curated set of native modules (<code>fs</code>, <code>http</code>, <code>crypto</code>, <code>stream</code>, <code>worker_threads</code>, <code>cluster</code>, etc.). Everything else &mdash; web frameworks, ORMs, test runners, bundlers, TypeScript compilers &mdash; comes from npm. Node is deliberately small at the core; the ecosystem is where the work happens.</p>
-      <p>The release cadence settles its own conservative rhythm: <strong>even-numbered releases (v18, v20, v22, v24) are LTS</strong> &mdash; supported for 30 months, the version most production deploys target. <strong>Odd-numbered releases (v19, v21, v23) are short-lived</strong>, used for previewing what the next LTS will adopt. As of 2026 the active LTS is v22; v24 ships LTS October 2026.</p>
+      <p>The release cadence settles its own conservative rhythm: <strong>even-numbered releases (v18, v20, v22, v24, v26) are LTS</strong> &mdash; supported for 30 months, the version most production deploys target. <strong>Odd-numbered releases (v19, v21, v23, v25) are short-lived</strong>, used for previewing what the next LTS will adopt. As of November 2026 the LTS lines are v26 (Lithium, LTS since October 2026), v24 (Krypton) and v22 (Jod); check nodejs.org for which line is Active and which is in Maintenance.</p>
     </div>
     <div class="info-card blue fade-up" style="transition-delay: 0.08s">
       <h4>The settled architecture, in one breath</h4>
@@ -242,7 +242,7 @@
 
     <pre class="code fade-up" style="transition-delay: 0.07s"><span class="c"># Install via nvm (recommended over system Node)</span>
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.0/install.sh | bash
-nvm install --lts            <span class="c"># installs current LTS (v22 as of 2026)</span>
+nvm install --lts            <span class="c"># installs current LTS (v26 as of November 2026)</span>
 nvm use --lts
 
 <span class="c"># Run scripts</span>
@@ -417,7 +417,7 @@ server.listen(3000);</pre>
     <div class="fade-up">
       <div class="section-label">06 &middot; Resources</div>
       <h2 class="section-title">Go deeper.</h2>
-      <p class="section-lede">Node's docs are comprehensive and well-organised; the changelog is the canonical place to learn what's new. The Node Foundation's release schedule and the LTS roadmap are the load-bearing artifacts for production planning.</p>
+      <p class="section-lede">Node's docs are comprehensive and well-organised; the changelog is the canonical place to learn what's new. The Node Foundation's release schedule and the LTS roadmap are the load-bearing artifacts for production planning. Last reviewed 2026-11-21 (LTS lines checked against nodejs.org/en/about/previous-releases).</p>
     </div>
     <div class="resource-grid fade-up" style="transition-delay: 0.05s">
       <a href="https://nodejs.org" class="resource" target="_blank" rel="noopener">

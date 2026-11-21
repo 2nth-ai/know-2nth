@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Text-to-speech: the engine arena &mdash; know.2nth.ai</title>
-<meta name="description" content="The TTS engine arena, mid-2026 — Fish Audio S2.1 Pro vs ElevenLabs vs Cartesia Sonic 3, with every number dated and arena-named. The pricing reality (Fish bills per UTF-8 byte, not character), the licence trap (Fish's open weights are research-licensed — commercial self-host needs a separate agreement), the quality-leaderboard fragmentation read honestly, and an SA-accent test protocol clients can run themselves.">
+<meta name="description" content="The TTS engine arena, mid-2026 — Fish Audio S2.1 Pro vs ElevenLabs vs Cartesia Sonic 3.5, with every number dated and arena-named. The pricing reality (Fish bills per UTF-8 byte, not character), the licence trap (Fish's open weights are research-licensed — commercial self-host needs a separate agreement), the quality-leaderboard fragmentation read honestly, and an SA-accent test protocol clients can run themselves.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="know.2nth.ai">
 <meta property="og:url" content="https://know.2nth.ai/explainers/media/text-to-speech">
@@ -183,7 +183,7 @@
     <div class="feature-grid fade-up" style="transition-delay: 0.05s">
       <div class="feature-cell">
         <h4>Fish Audio &mdash; the value play</h4>
-        <p>S2.1 Pro: 83 languages (vendor-stated), ~90ms time-to-first-audio, and a paid API at <code>$15 per million UTF-8 bytes</code>. The API is currently <strong>free</strong> &mdash; a window Fish has extended to <strong>31 August 2026</strong> &mdash; with no SLA and inputs eligible for training. Backed by a $52M seed; the S2 family ships open weights (see &sect;04 before you plan around that).</p>
+        <p>S2.1 Pro: 83 languages (vendor-stated), ~90ms time-to-first-audio, and a paid API at <code>$15 per million UTF-8 bytes</code>. Fish's pricing page lists an <code>s2.1-pro-free</code> model at $0.00 with <strong>no end date stated</strong> (checked 21 November 2026); the earlier 31 August 2026 window is no longer confirmed. The SLA and training-use terms are not stated on that page. Backed by a $52M seed; the S2 family ships open weights (see &sect;04 before you plan around that).</p>
       </div>
       <div class="feature-cell">
         <h4>ElevenLabs &mdash; the ecosystem leader</h4>
@@ -191,7 +191,7 @@
       </div>
       <div class="feature-cell">
         <h4>Cartesia &mdash; the latency specialist</h4>
-        <p>Sonic 3: ~40ms TTFA on Turbo (vendor-stated), the fastest commercial path; ~<code>$39 per million</code> on the Artificial Analysis listing, plans vary; 42 languages. SSM-based architecture (a Stanford spin-out). And a quality story that changed recently &mdash; see &sect;03 before repeating the old "fast but lower quality" line.</p>
+        <p>Sonic 3.5 (May 2026 flagship; docs state sub-90 ms latency, the earlier ~40 ms TTFA figure was the Sonic 3 Turbo claim): ~<code>$39 per million</code> on the Artificial Analysis listing, which Cartesia's own pricing page did not confirm; 42 languages. SSM-based architecture (a Stanford spin-out). And a quality story that changed recently &mdash; see &sect;03 before repeating the old "fast but lower quality" line.</p>
       </div>
     </div>
     <div class="prose fade-up" style="transition-delay: 0.08s">
@@ -210,13 +210,13 @@
     </div>
     <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
       <table class="compare">
-        <thead><tr><th>Dimension</th><th>Fish Audio S2.1 Pro</th><th>ElevenLabs (Flash / v2&ndash;v3)</th><th>Cartesia Sonic 3</th></tr></thead>
+        <thead><tr><th>Dimension</th><th>Fish Audio S2.1 Pro</th><th>ElevenLabs (Flash / v2&ndash;v4)</th><th>Cartesia Sonic 3.5</th></tr></thead>
         <tbody>
           <tr><td><strong>Paid price</strong></td><td>$15 / M <strong>UTF-8 bytes</strong></td><td>~$50&ndash;$100 / M chars (credit-mediated)</td><td>~$39 / M (AA listing; plans vary)</td></tr>
-          <tr><td><strong>Latency (TTFA, vendor)</strong></td><td>~90ms</td><td>~75ms (Flash)</td><td><strong>~40ms</strong> (Turbo)</td></tr>
+          <tr><td><strong>Latency (TTFA, vendor)</strong></td><td>~90ms</td><td>~75ms (Flash)</td><td><strong>sub-90ms</strong> (docs, 3.5)</td></tr>
           <tr><td><strong>Languages (vendor)</strong></td><td>83</td><td>70+</td><td>42</td></tr>
           <tr><td><strong>Weights</strong></td><td>Open &mdash; <strong>research licence</strong> (&sect;04)</td><td>Closed</td><td>Closed</td></tr>
-          <tr><td><strong>Free tier</strong></td><td>API free to <strong>31 Aug 2026</strong>; no SLA; trains on inputs</td><td>Limited free credits</td><td>Trial credits</td></tr>
+          <tr><td><strong>Free tier</strong></td><td>S2.1 Pro free model ($0.00); no end date stated; SLA and training terms not stated</td><td>Limited free credits</td><td>Trial credits</td></tr>
           <tr><td><strong>Data policy note</strong></td><td>ZDR on enterprise tier</td><td>BIPA class actions pending (&sect;04)</td><td>Standard commercial terms</td></tr>
           <tr><td><strong>Distinct strength</strong></td><td>Cost per unit of quality</td><td>Voice library, agent tooling, docs</td><td>Raw speed for turn-taking</td></tr>
         </tbody>
@@ -238,7 +238,7 @@
     </div>
     <div class="prose fade-up" style="transition-delay: 0.05s">
       <p>TTS quality rankings are fragmented in a way most write-ups hide. Artificial Analysis alone runs more than one board: a <strong>Provider Voice Arena</strong> (each vendor's chosen voices) and a newer <strong>Controlled Voice Arena</strong> that clones the <em>same eight voices</em> across every model &mdash; the cleaner methodology, because it separates voice preference from model quality. The two boards crown different leaders, and positions move weekly.</p>
-      <p>On the <strong>Controlled Voice Arena</strong> (snapshot, late July 2026): <strong>Cartesia Sonic 3.5 led at Elo ~1,122</strong>, ahead of ElevenLabs Eleven v3 (~1,088) &mdash; while <strong>Fish S2 Pro (~1,128 in the same period's tracking) was the top open-weights entry</strong>, and the older Sonic 3 sat well down the table (~1,070). Three practical conclusions. First, the lazy line "Cartesia is fast but lower quality" is <strong>stale</strong> &mdash; its newest model currently tops the cleanest board. Second, Fish's quality-per-dollar claim is genuinely supported. Third, and most important: <strong>never quote a TTS rank without the arena name and a date</strong> &mdash; the boards disagree, the models version monthly, and any specific Elo in this paragraph may be wrong by the time you read it. Check the live board.</p>
+      <p>On the <strong>Controlled Voice Arena</strong> (snapshot, late July 2026; a secondary source reports Cartesia replaced Sonic 3.5 with Sonic 3.6 in August 2026, and these figures have not been re-checked): <strong>Cartesia Sonic 3.5 led at Elo ~1,122</strong>, ahead of ElevenLabs Eleven v3 (~1,088) &mdash; while <strong>Fish S2 Pro (~1,128 in the same period's tracking) was the top open-weights entry</strong>, and the older Sonic 3 sat well down the table (~1,070). Three practical conclusions. First, the lazy line "Cartesia is fast but lower quality" is <strong>stale</strong> &mdash; its newest model currently tops the cleanest board. Second, Fish's quality-per-dollar claim is genuinely supported. Third, and most important: <strong>never quote a TTS rank without the arena name and a date</strong> &mdash; the boards disagree, the models version monthly, and any specific Elo in this paragraph may be wrong by the time you read it. Check the live board.</p>
     </div>
   </div>
 </section>
@@ -256,7 +256,7 @@
     </div>
     <div class="info-card amber fade-up" style="transition-delay: 0.07s">
       <h4>The free tier trains on your data &mdash; and it's dated</h4>
-      <p>Fish's free API window (currently through <strong>31 August 2026</strong>) carries no SLA, no latency guarantee, and permits training on your requests. That's fine for prototyping with non-sensitive text; it is not acceptable for client production or anything containing personal information &mdash; zero-data-retention sits on the enterprise tier. For POPIA-scoped work, the s.72 lens from the <a href="../leg/data-privacy" style="color:var(--media-glow);">Data privacy &amp; POPIA</a> leaf applies to prompts sent to any of these hosted APIs.</p>
+      <p>Fish's free S2.1 Pro API has no end date stated on its pricing page, and the terms this leaf originally recorded (no SLA, training on requests) were not re-confirmed on 21 November 2026. Treat it as having no SLA until the terms are checked. That's fine for prototyping with non-sensitive text; it is not acceptable for client production or anything containing personal information &mdash; zero-data-retention sits on the enterprise tier. For POPIA-scoped work, the s.72 lens from the <a href="../leg/data-privacy" style="color:var(--media-glow);">Data privacy &amp; POPIA</a> leaf applies to prompts sent to any of these hosted APIs.</p>
     </div>
     <div class="info-card fade-up" style="transition-delay: 0.09s">
       <h4>ElevenLabs' provenance flag, stated precisely</h4>
@@ -297,14 +297,14 @@
           <li><strong>Conversational agents</strong> &rarr; Fish (cost per unit of quality) or Cartesia (raw turn-taking speed &mdash; telephony where every millisecond counts).</li>
           <li><strong>Premium content, audiobooks, brand voice</strong> &rarr; ElevenLabs v3 &mdash; the expressiveness and library are real, and you're paying for the ecosystem too.</li>
           <li><strong>Data-residency / edge clients</strong> &rarr; Fish's weights are the only self-host path &mdash; <em>with the commercial licence budgeted</em> (&sect;04).</li>
-          <li><strong>Prototyping</strong> &rarr; Fish's free tier, non-sensitive text only, until 31 Aug 2026.</li>
+          <li><strong>Prototyping</strong> &rarr; Fish's free S2.1 Pro tier, non-sensitive text only.</li>
         </ul>
       </div>
       <div class="when-card skip">
         <span class="label">Don't</span>
         <h4>The traps, restated as rules</h4>
         <ul>
-          <li>Don't put client or personal data through Fish's free tier &mdash; it trains on inputs and has no SLA.</li>
+          <li>Don't put client or personal data through Fish's free tier &mdash; its SLA and training terms are unconfirmed, so it is not suitable for client data.</li>
           <li>Don't promise "free self-host" on Fish's open weights &mdash; commercial use needs a paid licence.</li>
           <li>Don't compare Fish's per-byte price to per-character prices without converting on your actual corpus.</li>
           <li>Don't quote a quality rank without the arena name and date &mdash; and don't repeat "Cartesia = lower quality" without checking the current board.</li>
@@ -387,7 +387,7 @@
       <a href="https://2nth.ai">2nth.ai</a>
     </div>
     <div class="footer-copy">&copy; 2026 imbila.ai &middot; All knowledge open</div>
-    <div class="footer-review">Last reviewed: 2026-08-01 &middot; Cadence: hot (quarterly) &mdash; arena numbers and the Fish free-tier window move; re-verify before quoting</div>
+    <div class="footer-review">Last reviewed: 2026-11-21 &middot; Cadence: hot (quarterly) &mdash; arena numbers, Cartesia model naming and the Fish free tier move; re-verify before quoting</div>
   </div>
 </footer>
 

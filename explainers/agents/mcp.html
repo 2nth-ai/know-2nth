@@ -160,7 +160,7 @@
       The Model Context Protocol (MCP) is Anthropic's open standard for connecting AI agents to tools, data, and prompts. JSON-RPC over stdio, SSE, or HTTP. Released in late 2024, broadly adopted across Claude Desktop, Cursor, Windsurf, ADK, OpenAI Agents SDK, and more. The lingua franca of agent tooling in 2026 &mdash; if you write a tool once as an MCP server, every framework and every model can call it.
     </p>
     <div class="hero-meta fade-up" style="transition-delay: 0.15s">
-      <span class="pill green">Live spec &middot; v0.1+</span>
+      <span class="pill green">Spec 2026-07-28</span>
       <span class="pill indigo">Anthropic origin</span>
       <span class="pill accent">JSON-RPC &middot; stdio / SSE / HTTP</span>
       <span class="pill">Tools &middot; Resources &middot; Prompts</span>
@@ -209,7 +209,7 @@
       <div class="stack-cell">
         <span class="layer">Transport &middot; modern</span>
         <h4>Streamable HTTP</h4>
-        <p>The newer transport &mdash; HTTP with optional streaming. Replaces SSE in MCP 2025-03-26 spec. Same semantics, simpler firewall story, better for production hosting.</p>
+        <p>The newer transport &mdash; HTTP with optional streaming. Replaced SSE in the 2025-03-26 spec. Same semantics, simpler firewall story, better for production hosting. The 2026-07-28 revision (the fifth spec release) goes further: the protocol is stateless, the <code>initialize</code> handshake is removed, and roots, sampling and logging are deprecated (they stay in the spec for at least twelve months).</p>
       </div>
     </div>
 
@@ -410,10 +410,10 @@ agent = Agent(<span class="h">name</span>=<span class="s">"forecaster"</span>, <
         <span class="r-title">modelcontextprotocol.io</span>
         <span class="r-url">modelcontextprotocol.io</span>
       </a>
-      <a href="https://spec.modelcontextprotocol.io/" class="resource" target="_blank" rel="noopener">
+      <a href="https://modelcontextprotocol.io/specification/2026-07-28" class="resource" target="_blank" rel="noopener">
         <span class="r-kind">Spec</span>
         <span class="r-title">MCP specification</span>
-        <span class="r-url">spec.modelcontextprotocol.io</span>
+        <span class="r-url">modelcontextprotocol.io/specification/2026-07-28</span>
       </a>
       <a href="https://github.com/modelcontextprotocol" class="resource" target="_blank" rel="noopener">
         <span class="r-kind">Source</span>
@@ -454,6 +454,7 @@ agent = Agent(<span class="h">name</span>=<span class="s">"forecaster"</span>, <
       <a href="https://modelcontextprotocol.io" target="_blank" rel="noopener">MCP &nearr;</a>
     </div>
     <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant</p>
+    <p class="footer-copy">Last reviewed: 2026-11-21</p>
   </div>
 </footer>
 

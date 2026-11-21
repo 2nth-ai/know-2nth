@@ -440,7 +440,7 @@ POST   /services/data/v60.0/composite</pre>
     <div class="prose fade-up" style="transition-delay: 0.05s">
       <p><strong>Hyperforce in South Africa.</strong> Salesforce's <code>Hyperforce</code> is the multi-region public-cloud infrastructure that hosts modern Salesforce orgs (AWS, GCP, Azure). As of mid-2026 there is no Hyperforce datacenter in South Africa &mdash; SA-based orgs typically land in <code>eu-central-1</code> (Frankfurt) or <code>eu-west-1</code> (Ireland). Data residency for POPIA Section 72 analysis happens at the cluster level; you'll want a Salesforce-provided data-residency commitment in writing as part of any enterprise agreement.</p>
       <p><strong>POPIA and the Einstein Trust Layer.</strong> The Trust Layer's "zero data retention" guarantee with model providers is the load-bearing claim for POPIA-sensitive workloads &mdash; OpenAI, Anthropic, and Google don't retain Salesforce-sent prompts or completions on their side. That's the contractual basis on which an SA Information Officer can sign off on AgentForce processing customer data. Without that guarantee, the same workflow would need a local-inference or air-gapped setup.</p>
-      <p><strong>FX and the digital-labour pitch.</strong> AgentForce's Flex Credits are USD-priced ($0.10 per credit). For SA businesses, every AgentForce action carries an FX-translated cost in rand &mdash; budget envelope planning needs to model ZAR depreciation. A "digital labour is cheaper than human labour" claim that pencils at R18/USD looks different at R22/USD. Pre-commit pricing is worth the discount for predictability.</p>
+      <p><strong>FX and the digital-labour pitch.</strong> AgentForce's Flex Credits are USD-priced ($500 per 100,000 credits, with one agent action drawing 20 credits, roughly $0.10 per action, per Salesforce's launch pricing). For SA businesses, every AgentForce action carries an FX-translated cost in rand &mdash; budget envelope planning needs to model ZAR depreciation. A "digital labour is cheaper than human labour" claim that pencils at R18/USD looks different at R22/USD. Pre-commit pricing is worth the discount for predictability.</p>
       <p><strong>The BBBEE / GAR question.</strong> Salesforce's SA presence has expanded since the mid-2020s but it remains a US-headquartered vendor. For B-BBEE scorecards and government tenders that require local technology spend, a Salesforce licence rarely counts. Local System Integrator partners that hold the Salesforce licence on behalf of clients can change that calculus; budget for that conversation early in any procurement cycle.</p>
     </div>
   </div>
@@ -552,6 +552,7 @@ POST   /services/data/v60.0/composite</pre>
       <a href="https://developer.salesforce.com" target="_blank" rel="noopener">Developers &nearr;</a>
     </div>
     <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant</p>
+    <p class="footer-copy">Last reviewed: 2026-11-21 &middot; Cadence: hot (quarterly)</p>
   </div>
 </footer>
 

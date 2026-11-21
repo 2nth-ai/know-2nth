@@ -162,7 +162,7 @@
       AutoGen is Microsoft Research's multi-agent conversation framework. Released in late 2023, it pioneered the idea that <strong>multi-agent systems should look like a group chat</strong> &mdash; agents take turns talking, debate, refine answers, and converge through dialogue rather than explicit graph orchestration. Two flavours coexist in 2026: <strong>Microsoft's AutoGen v0.4+</strong> (the modular rewrite under active Microsoft Research development) and <strong>AG2</strong> (the community fork that continues the original v0.2 design). Both are MIT-licensed Python frameworks. The strongest fit for research workflows, agent-debate experiments, and academic / R&D use cases &mdash; with the honest caveat that production tooling lags LangGraph and CrewAI.
     </p>
     <div class="hero-meta fade-up" style="transition-delay: 0.15s">
-      <span class="pill green">Live &middot; v0.4+ (Microsoft) &middot; AG2 (community)</span>
+      <span class="pill warn">Maintenance mode &middot; successor: Agent Framework 1.0</span>
       <span class="pill indigo">MIT licensed</span>
       <span class="pill accent">Python</span>
       <span class="pill">Microsoft Research origin</span>
@@ -181,11 +181,11 @@
     <div class="prose fade-up" style="transition-delay: 0.05s">
       <p>AutoGen is a Python framework for building multi-agent systems where the agents primarily communicate through structured conversation. Released by Microsoft Research in <strong>October 2023</strong> as one of the first serious multi-agent frameworks, it pioneered patterns that other frameworks later borrowed: a "group chat" with multiple LLM-driven agents and optionally a human, the <code>ConversableAgent</code> base class, and the use of agent-to-agent dialogue as the primary control flow.</p>
       <p>The thesis: <strong>real reasoning often emerges from disagreement and debate</strong>. A single agent monologue tends to commit early to one approach; multiple agents arguing through a problem produces better answers on hard tasks &mdash; especially research, planning, and analysis where multiple perspectives genuinely matter. AutoGen codified this pattern when most frameworks were still single-agent ReAct loops.</p>
-      <p>What confuses people in 2026 is the framework's <strong>two-track present</strong>. After the original v0.2 design caught on, Microsoft restructured the project: <strong>Microsoft AutoGen v0.4+</strong> is a substantial rewrite with a more modular, message-passing-driven architecture, maintained inside the AutoGen GitHub org. <strong>AG2</strong> (originally also called "AutoGen 2") is the community-led fork that continued the original v0.2 design and APIs, governed independently. Both are still active. Both work well. They share design DNA but diverge on specific APIs &mdash; pick one and stick with it; mixing examples from both creates pain.</p>
+      <p>What confuses people is the framework's <strong>two-track history</strong>. After the original v0.2 design caught on, Microsoft rewrote the project as <strong>AutoGen v0.4+</strong>, a modular, message-passing architecture. Microsoft has since put AutoGen into <strong>maintenance mode</strong>: it takes bug fixes, security patches and documentation, and community contributors manage it. Microsoft's successor is <strong>Microsoft Agent Framework</strong>, which reached 1.0 (GA for Python and .NET) in April 2026 and merges AutoGen's multi-agent ideas with Semantic Kernel. <strong>AG2</strong> (originally also called "AutoGen 2") is the community-led fork that continued the original v0.2 design and APIs, governed independently and still active. AutoGen v0.2 code does not run unmodified on Agent Framework 1.0; the migration is a refactor, not a rename.</p>
     </div>
     <div class="info-card indigo fade-up" style="transition-delay: 0.08s">
       <h4>Which one to use?</h4>
-      <p>For new projects in 2026, the honest pragmatic answer: <strong>start with Microsoft AutoGen v0.4+</strong> if you want active Microsoft research backing, the newest features, and Magentic-One (their multi-agent research framework built on top of AutoGen). <strong>Use AG2</strong> if you want continuity with the v0.2 patterns most older tutorials and papers use, or if you prefer community-governed projects. Both are MIT, both are production-capable for research-shaped workloads, and both run against any LLM. Don't agonise over the choice &mdash; the design ideas transfer.</p>
+      <p>For new Microsoft-stack projects in late 2026, the honest answer is <strong>start with Microsoft Agent Framework 1.0</strong>, not AutoGen. AutoGen v0.4+ is still usable and stable enough for existing code, but it no longer gets new features. <strong>Use AG2</strong> if you want continuity with the v0.2 patterns most older tutorials and papers use, or if you prefer community-governed projects. Both AutoGen and AG2 are MIT-licensed and run against any LLM. The design ideas transfer; the packages do not.</p>
     </div>
   </div>
 </section>
@@ -256,8 +256,8 @@ human.initiate_chat(manager, <span class="h">message</span>=<span class="s">"Ide
     <div class="stack-grid fade-up" style="transition-delay: 0.05s">
       <div class="stack-cell">
         <span class="layer">Library &middot; Microsoft</span>
-        <h4>AutoGen v0.4+</h4>
-        <p>Python package <code>autogen-agentchat</code> (high-level) + <code>autogen-core</code> (runtime). Microsoft Research-backed. Modular architecture, distributed-deployment-ready, active development cadence.</p>
+        <h4>AutoGen v0.4+ (maintenance mode)</h4>
+        <p>Python package <code>autogen-agentchat</code> (high-level) + <code>autogen-core</code> (runtime). Modular architecture, distributed-deployment-ready. Now in maintenance mode; new Microsoft work lands in Agent Framework 1.0.</p>
       </div>
       <div class="stack-cell">
         <span class="layer">Library &middot; community</span>
@@ -459,6 +459,11 @@ human.initiate_chat(manager, <span class="h">message</span>=<span class="s">"Ide
         <span class="r-title">AutoGen v0.4+ documentation</span>
         <span class="r-url">microsoft.github.io/autogen/stable</span>
       </a>
+      <a href="https://devblogs.microsoft.com/agent-framework/microsoft-agent-framework-version-1-0/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Successor</span>
+        <span class="r-title">Microsoft Agent Framework 1.0 announcement</span>
+        <span class="r-url">devblogs.microsoft.com/agent-framework</span>
+      </a>
       <a href="https://github.com/microsoft/autogen" class="resource" target="_blank" rel="noopener">
         <span class="r-kind">Source &middot; MS</span>
         <span class="r-title">microsoft/autogen</span>
@@ -498,6 +503,7 @@ human.initiate_chat(manager, <span class="h">message</span>=<span class="s">"Ide
       <a href="https://microsoft.github.io/autogen/stable/" target="_blank" rel="noopener">AutoGen docs &nearr;</a>
     </div>
     <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant</p>
+    <p class="footer-copy">Last reviewed: 2026-11-21</p>
   </div>
 </footer>
 

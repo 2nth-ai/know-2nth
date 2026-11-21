@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ElevenLabs &mdash; the voice AI platform &mdash; know.2nth.ai</title>
-<meta name="description" content="ElevenLabs is the deepest voice AI platform as of mid-2026 — ElevenCreative (text-to-speech across 70+ languages, voice cloning, music, sound effects), ElevenAgents (conversational voice agents, omnichannel), and ElevenAPI for developers. Flagship models: Eleven Flash (75ms latency), Multilingual v2, Eleven v3 (most expressive), Scribe v2 (speech-to-text). Credit-based per-character pricing. The default pick for creators and developers; what to know before committing.">
+<meta name="description" content="ElevenLabs is the deepest voice AI platform as of mid-2026 — ElevenCreative (text-to-speech across 70+ languages, voice cloning, music, sound effects), ElevenAgents (conversational voice agents, omnichannel), and ElevenAPI for developers. Flagship models: Eleven v4 and v4 Turbo (announced September 2026), Eleven Flash (75ms latency), Multilingual v2, Eleven v3 (most expressive), Scribe v2 (speech-to-text). Credit-based per-character pricing. The default pick for creators and developers; what to know before committing.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="know.2nth.ai">
 <meta property="og:url" content="https://know.2nth.ai/explainers/media/elevenlabs">
@@ -221,7 +221,7 @@
   <div class="container">
     <div class="fade-up">
       <div class="section-label">03 &middot; The models</div>
-      <h2 class="section-title">Flash, Multilingual, v3, Scribe, Music.</h2>
+      <h2 class="section-title">Flash, Multilingual, v3, v4, Scribe, Music.</h2>
       <p class="section-lede">ElevenLabs ships several models tuned for different points on the latency / expressiveness trade-off. Pick by use case &mdash; real-time agent vs long-form narration vs maximum emotion.</p>
     </div>
 
@@ -232,7 +232,9 @@
           <tr><td><strong>Eleven Flash</strong> (v2.5)</td><td>TTS</td><td>Real-time agents. ~75ms latency, the fast tier. The pick when conversation pacing matters.</td></tr>
           <tr><td><strong>Eleven Turbo</strong> (v2.5)</td><td>TTS</td><td>Balanced &mdash; ~250&ndash;300ms, lower cost than the expressive models, good quality. The middle option.</td></tr>
           <tr><td><strong>Eleven Multilingual v2</strong></td><td>TTS</td><td>Long-form &mdash; audiobooks, narration. Consistency and lifelike quality over raw speed.</td></tr>
-          <tr><td><strong>Eleven v3</strong></td><td>TTS</td><td>Maximum expressiveness &mdash; the most emotionally nuanced model. Use when delivery matters more than latency.</td></tr>
+          <tr><td><strong>Eleven v4</strong> (<code>eleven_v4</code>)</td><td>TTS</td><td>Announced 28 September 2026. Higher-quality, more expressive speech and improved cloning across 90+ languages (vendor-stated). Used via Text to Dialogue for long-form and content work.</td></tr>
+          <tr><td><strong>Eleven v4 Turbo</strong> (<code>eleven_v4_turbo</code>)</td><td>TTS</td><td>Same family, built for real-time. ~100ms median inference latency (vendor-stated). Used via the Text to Dialogue WebSocket for agents.</td></tr>
+          <tr><td><strong>Eleven v3</strong></td><td>TTS</td><td>Maximum expressiveness &mdash; the most emotionally nuanced model. Use when delivery matters more than latency. Predates v4; check whether it is still the recommended expressive tier before you standardise on it.</td></tr>
           <tr><td><strong>Scribe v2</strong></td><td>STT</td><td>Speech-to-text. ElevenLabs' transcription model &mdash; the speech-in side of the platform.</td></tr>
           <tr><td><strong>Eleven Music</strong></td><td>Music gen</td><td>Studio-grade music from natural-language prompts. Trained on licensed data, so commercial use is clean.</td></tr>
         </tbody>
@@ -271,7 +273,7 @@
 
     <div class="info-card rose fade-up" style="transition-delay: 0.06s">
       <h4>Consent is not optional</h4>
-      <p>Cloning a real person's voice &mdash; a staff member, a client, a public figure &mdash; needs <strong>documented, explicit consent</strong>. ElevenLabs enforces a voice-verification step on professional cloning, but the legal responsibility sits with whoever commissions the clone. By 2026 this sits inside real law &mdash; the EU Digital Creativity Integrity Act, the US AI Transparency Act, Tennessee's ELVIS Act (see the <a href="landscape.html">landscape leaf</a>). Treat a cloned voice as personal information under POPIA.</p>
+      <p>Cloning a real person's voice &mdash; a staff member, a client, a public figure &mdash; needs <strong>documented, explicit consent</strong>. ElevenLabs enforces a voice-verification step on professional cloning, but the legal responsibility sits with whoever commissions the clone. By 2026 this sits inside real law &mdash; the EU AI Act's transparency rules (Article 50, applying from August 2026) and Tennessee's ELVIS Act (see the <a href="landscape.html">landscape leaf</a>). Treat a cloned voice as personal information under POPIA.</p>
     </div>
   </div>
 </section>
@@ -381,7 +383,7 @@
         <span class="label">Look elsewhere if&hellip;</span>
         <h4>A specialist wins</h4>
         <ul>
-          <li>You need the <strong>absolute lowest latency</strong> &mdash; Cartesia Sonic-3 (~90ms) beats Flash</li>
+          <li>You need the <strong>absolute lowest latency</strong> &mdash; Cartesia Sonic 3.5 (sub-90ms, vendor docs) is in the same range as Flash, and Eleven v4 Turbo (~100ms median, vendor) sits alongside it</li>
           <li>You need <strong>emotion as a first-class signal</strong> &mdash; Hume EVI reads and responds to it</li>
           <li>You want <strong>voice inside the LLM reasoning loop</strong> &mdash; OpenAI <code>gpt-realtime</code></li>
           <li>You need <strong>best-in-class transcription</strong> &mdash; Deepgram Nova or AssemblyAI</li>
@@ -462,7 +464,7 @@
       <a href="https://2nth.ai">2nth.ai</a>
     </div>
     <div class="footer-copy">&copy; 2026 imbila.ai &middot; All knowledge open</div>
-    <div class="footer-review">Last reviewed: 2026-05-22 &middot; Cadence: hot (quarterly)</div>
+    <div class="footer-review">Last reviewed: 2026-11-21 &middot; Cadence: hot (quarterly)</div>
   </div>
 </footer>
 
