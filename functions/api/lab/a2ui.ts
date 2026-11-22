@@ -218,6 +218,53 @@ export const SCENARIOS: Record<string, Scenario> = {
   },
 };
 
+// The "stay in touch" screen. Always stored, never model-written: a form that
+// collects personal information should not vary with a model's mood. The lab
+// page shows it once, after three tests, and handles its actions itself (the
+// host app posts to the 2nth CRM; the agent never sees the email address).
+export const LEAD_CONSENT = 'Email me new explainers and CEO briefings. I can unsubscribe at any time.';
+export const LEAD: Json[] = [
+  v({
+    createSurface: {
+      surfaceId: 'stay_in_touch',
+      catalogId: BASIC_CATALOG,
+      sendDataModel: false,
+      components: [
+        { id: 'root', component: 'Card', child: 'col' },
+        { id: 'col', component: 'Column', children: ['title', 'sub', 'name', 'email', 'consent', 'status', 'actions'] },
+        { id: 'title', component: 'Text', text: '### You have run a few of these now' },
+        { id: 'sub', component: 'Text', text: 'If this is the kind of thing you are building, leave your details and we will be in touch. This form is itself an A2UI screen, drawn by the same renderer.' },
+        { id: 'name', component: 'TextField', label: 'Name', value: { '@path': '/name' }, placeholder: 'Your name' },
+        { id: 'email', component: 'TextField', label: 'Email', value: { '@path': '/email' }, placeholder: 'you@company.co.za' },
+        { id: 'consent', component: 'CheckBox', label: LEAD_CONSENT, value: { '@path': '/consent' } },
+        { id: 'status', component: 'Text', variant: 'caption', text: { '@path': '/status' } },
+        { id: 'actions', component: 'Row', justify: 'end', children: ['skip', 'send'] },
+        { id: 'skip_label', component: 'Text', text: 'Not now' },
+        { id: 'skip', component: 'Button', variant: 'borderless', child: 'skip_label', action: { event: { name: 'lead_skip' } } },
+        { id: 'send_label', component: 'Text', text: 'Send' },
+        { id: 'send', component: 'Button', variant: 'primary', child: 'send_label', action: { event: { name: 'lead_submit', context: { name: { '@path': '/name' }, email: { '@path': '/email' }, consent: { '@path': '/consent' } } } } },
+      ],
+      dataModel: { name: '', email: '', consent: false, status: '' },
+    },
+  }),
+];
+export const LEAD_THANKS: Json[] = [
+  v({
+    updateComponents: {
+      surfaceId: 'stay_in_touch',
+      components: [
+        { id: 'root', component: 'Card', child: 'thanks_col' },
+        { id: 'thanks_col', component: 'Column', children: ['thanks_title', 'thanks_sub', 'thanks_actions'] },
+        { id: 'thanks_title', component: 'Text', text: '### Thanks, we have your details' },
+        { id: 'thanks_sub', component: 'Text', text: 'If you ticked the email option, check your inbox to confirm it.' },
+        { id: 'thanks_actions', component: 'Row', justify: 'end', children: ['go'] },
+        { id: 'go_label', component: 'Text', text: 'Back to the demo' },
+        { id: 'go', component: 'Button', variant: 'primary', child: 'go_label', action: { event: { name: 'lead_continue' } } },
+      ],
+    },
+  }),
+];
+
 // Stored follow-up: replace the surface with a plain confirmation of what the
 // renderer sent. Used when the model's follow-up fails validation twice.
 export function fallbackFollowUp(action: Json): Json[] {
@@ -469,6 +516,7 @@ export const onRequestGet: PagesFunction<Env> = async ({ env }) =>
     configured: Boolean(env.AI),
     model: MODEL,
     catalog: SUPPORTED,
+    lead: { screen: LEAD, thanks: LEAD_THANKS, consent: LEAD_CONSENT },
     scenarios: Object.fromEntries(Object.entries(SCENARIOS).map(([id, s]) => [id, { title: s.title, request: s.request, textReply: s.textReply }])),
     docs: 'https://know.2nth.ai/explainers/agents/a2ui',
   });

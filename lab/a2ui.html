@@ -276,6 +276,7 @@
           <div class="skin"><label>Design system</label><div class="seg"><button id="skin-a" class="on">This site</button><button id="skin-b">Another app</button></div></div>
         </div>
         <div class="surface" id="surface"><div class="empty">Pick a request to start.</div></div>
+        <div id="ts" style="margin-top:14px" hidden></div>
       </div>
     </div>
   </div>
@@ -293,6 +294,7 @@
       <p>This is a teaching renderer written for this page: ten components from the A2UI basic catalog, data bindings by path, no catalog functions, and nothing is streamed. Production apps use the official renderers for React, Angular, Lit, Flutter and SwiftUI. The message shapes follow the published v1.0 schemas.</p>
       <p>The model is a general open-weights model on Workers AI with the catalog described in its prompt, not Google's agent SDK and not A2UI Express. It sometimes gets the format wrong, which is the reason the validation loop exists. The four presets carry a stored reply so the page always has something to draw; your own prompts do not, and may fail.</p>
       <p>The facts in each preset are fictional and are given to the model in its prompt. Pressing a button changes nothing anywhere: the agent is told the action succeeded.</p>
+      <p>After three tests the page offers a "stay in touch" form once. That form is a stored A2UI screen, and it is the one place a button does something real: this page, not the model, sends your name and email to the 2nth CRM. You can dismiss it and carry on.</p>
     </div>
   </div>
 </section>
@@ -314,7 +316,12 @@
 <script>
 const $ = (id) => document.getElementById(id);
 const API = "/api/lab/a2ui";
-let SCEN = {}, current = null, busy = false;
+let SCEN = {}, LEAD = null, current = null, busy = false, pending = null;
+const CRM = "https://crm.2nth.app/v1/leads/forms/know-interest";
+const TS_KEY = "0x4AAAAAAFZCPG2NUVHxHdb4";   // the same public Turnstile site key as /join
+const LEAD_AFTER = 3;                          // offer the form when a 4th test is started
+let tsToken = "", tsId = null;
+const store = { get: (k) => { try { return localStorage.getItem(k); } catch (e) { return null; } }, set: (k, v) => { try { localStorage.setItem(k, v); } catch (e) {} } };
 const surfaces = {};          // surfaceId -> { components: {id: comp}, data: {} }
 let activeSurface = null;
 
@@ -482,14 +489,63 @@ function showAttempts(r) {
   if (r.note) log("demo", "note", r.note, "err");
 }
 function setBusy(b, label) { busy = b; document.querySelectorAll(".preset, #own-go, .a-btn").forEach((x) => (x.disabled = b)); $("wire-stat").textContent = b ? label || "waiting for the agent…" : $("wire-stat").textContent; }
+// ---- the lead screen: a stored A2UI surface, handled by this page (the host app), not by the model
+function showLead() {
+  Object.keys(surfaces).forEach((k) => delete surfaces[k]); activeSurface = null;
+  $("wire").textContent = ""; $("badges").textContent = ""; $("chat").hidden = true;
+  const b = el("span", "badge"); b.textContent = "Stored screen, not model-written"; $("badges").appendChild(b);
+  $("wire-stat").textContent = "";
+  LEAD.screen.forEach((m) => log("agent → renderer", "createSurface", m));
+  apply(LEAD.screen);
+  const box = $("ts"); box.hidden = false;
+  const draw = () => { if (window.turnstile && tsId === null) tsId = window.turnstile.render(box, { sitekey: TS_KEY, theme: "auto", callback: (t) => (tsToken = t), "expired-callback": () => (tsToken = "") }); };
+  if (window.turnstile) draw();
+  else { const sc = document.createElement("script"); sc.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"; sc.async = true; sc.onload = draw; document.head.appendChild(sc); }
+}
+function leadStatus(msg) { apply([{ version: "1.0", updateDataModel: { surfaceId: "stay_in_touch", path: "/status", value: msg } }]); }
+function resume() {
+  $("ts").hidden = true;
+  const p = pending; pending = null;
+  if (p) start(p.payload, p.label); else { Object.keys(surfaces).forEach((k) => delete surfaces[k]); activeSurface = null; render(); }
+}
+async function leadAction(name, context) {
+  if (name === "lead_skip") { store.set("a2ui_lead", "skipped"); return resume(); }
+  if (name === "lead_continue") return resume();
+  if (name !== "lead_submit") return;
+  const nm = String(context.name || "").trim(), em = String(context.email || "").trim();
+  if (!nm) return leadStatus("Please enter your name.");
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) return leadStatus("Please enter a valid email address.");
+  if (!tsToken) return leadStatus("Please complete the spam check below, then press Send again.");
+  const body = { name: nm, email: em, consent: context.consent === true, interest: "A2UI lab demo", message: "Signed up from the A2UI lab demo on know.2nth.ai.", page: location.href, website: "", "cf-turnstile-response": tsToken };
+  log("host app → crm.2nth.app", "lead", { ...body, name: "(entered)", email: "(entered)", "cf-turnstile-response": "(token)" }, "up");
+  setBusy(true, "sending…");
+  try {
+    const res = await fetch(CRM, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) });
+    const j = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(j.error || "Something went wrong.");
+    setBusy(false); $("wire-stat").textContent = "";
+    store.set("a2ui_lead", "done"); $("ts").hidden = true;
+    LEAD.thanks.forEach((m) => log("agent → renderer", "updateComponents", m));
+    apply(LEAD.thanks);
+  } catch (e) {
+    setBusy(false); $("wire-stat").textContent = "";
+    tsToken = ""; if (window.turnstile && tsId !== null) try { window.turnstile.reset(tsId); } catch (x) {}
+    leadStatus(/fetch|network|load/i.test(e.message || "") ? "Could not send. Please check your connection and try again." : e.message);
+  }
+}
+
 async function start(payload, label) {
   if (busy) return;
+  if (LEAD && !store.get("a2ui_lead") && Number(store.get("a2ui_tests") || 0) >= LEAD_AFTER && activeSurface !== "stay_in_touch") {
+    pending = { payload, label }; return showLead();
+  }
+  if (activeSurface === "stay_in_touch") $("ts").hidden = true;
   current = payload; Object.keys(surfaces).forEach((k) => delete surfaces[k]); activeSurface = null;
   $("wire").textContent = ""; $("badges").textContent = ""; render();
   const wait = el("div", "empty"); wait.textContent = "The agent is composing a screen. This usually takes 8 to 15 seconds."; $("surface").textContent = ""; $("surface").appendChild(wait);
   log("user → agent", "request", label);
   setBusy(true);
-  try { const r = await call(payload); showAttempts(r); r.messages.forEach((m) => log("agent → renderer", Object.keys(m).filter((k) => k !== "version")[0], m)); badges(r); setBusy(false); apply(r.messages); }
+  try { const r = await call(payload); showAttempts(r); r.messages.forEach((m) => log("agent → renderer", Object.keys(m).filter((k) => k !== "version")[0], m)); badges(r); setBusy(false); apply(r.messages); store.set("a2ui_tests", String(Number(store.get("a2ui_tests") || 0) + 1)); }
   catch (e) { setBusy(false); $("wire-stat").textContent = "failed"; if (e.detail && e.detail.attempts) showAttempts(e.detail); log("demo", "no valid reply", e.message, "err"); }
 }
 async function fire(comp) {
@@ -497,6 +553,11 @@ async function fire(comp) {
   const s = surfaces[activeSurface]; const ev = (comp.action && comp.action.event) || {};
   const context = {}; Object.entries(ev.context || {}).forEach(([k, v]) => (context[k] = resolve(v, s.data) ?? null));
   const action = { name: ev.name, surfaceId: activeSurface, sourceComponentId: comp.id, timestamp: new Date().toISOString(), context };
+  if (activeSurface === "stay_in_touch") {
+    // Personal details stay out of the log and never go to the model.
+    log("renderer → host app", "action", { version: "1.0", action: { ...action, context: Object.fromEntries(Object.keys(context).map((k) => [k, k === "consent" ? context[k] : "(entered)"])) } }, "up");
+    return leadAction(ev.name, context);
+  }
   log("renderer → agent", "action", { version: "1.0", action }, "up");
   setBusy(true);
   try {
@@ -529,7 +590,7 @@ $("own-go").addEventListener("click", () => {
 $("skin-a").addEventListener("click", () => { $("surface").classList.remove("paper"); $("skin-a").classList.add("on"); $("skin-b").classList.remove("on"); });
 $("skin-b").addEventListener("click", () => { $("surface").classList.add("paper"); $("skin-b").classList.add("on"); $("skin-a").classList.remove("on"); });
 fetch(API).then((r) => r.json()).then((j) => {
-  SCEN = j.scenarios || {}; presets();
+  SCEN = j.scenarios || {}; LEAD = j.lead || null; presets();
   if (!j.configured) { const n = $("notice"); n.hidden = false; n.textContent = "This deployment has no Workers AI binding, so every reply below is a stored one."; }
 }).catch(() => { const n = $("notice"); n.hidden = false; n.textContent = "The demo endpoint is not reachable from this page."; });
 
