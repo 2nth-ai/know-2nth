@@ -3,11 +3,11 @@
   "description": "The public knowledge tree for the 2nth.ai ecosystem. Every leaf is both a human-readable reference and an agent-consumable context document.",
   "agent_fetch": "https://know.2nth.ai/api/context/<domain>/<leaf>",
   "mcp": "https://know.2nth.ai/mcp",
-  "count": 235,
+  "count": 236,
   "items": [
     {
       "title": "Agents — know.2nth.ai",
-      "description": "The Agents domain on know.2nth.ai — the agentic frameworks, protocols, models, inference platforms, and coding CLI agents that matter in 2026. 38 Live leaves across six bands: nine frameworks (Google ADK, Google Antigravity, LangGraph, CrewAI, OpenAI Agents SDK, Anthropic Agent SDK, AutoGen, AgentForce, Deep Agents), four protocols (A2A, MCP, Agent Skills, OpenWiki + OKF), ten models, six inference leaves, and four coding CLI agents (Claude Code, OpenAI Codex CLI, GitHub Copilot CLI plus a comparison). Built around the principle that agents are software, not prompt soup.",
+      "description": "The Agents domain on know.2nth.ai — the agentic frameworks, protocols, models, inference platforms, and coding CLI agents that matter in 2026. 39 Live leaves across six bands: nine frameworks (Google ADK, Google Antigravity, LangGraph, CrewAI, OpenAI Agents SDK, Anthropic Agent SDK, AutoGen, AgentForce, Deep Agents), five protocols (A2A, MCP, A2UI, Agent Skills, OpenWiki + OKF), ten models, six inference leaves, and four coding CLI agents (Claude Code, OpenAI Codex CLI, GitHub Copilot CLI plus a comparison). Built around the principle that agents are software, not prompt soup.",
       "domain": "agents",
       "kind": "hub",
       "url": "https://know.2nth.ai/explainers/agents/",
@@ -20,6 +20,14 @@
       "kind": "leaf",
       "url": "https://know.2nth.ai/explainers/agents/a2a",
       "fetch": "agents/a2a"
+    },
+    {
+      "title": "A2UI — agent-driven interfaces — know.2nth.ai",
+      "description": "A2UI is Google's open protocol for agent-driven interfaces: the agent streams declarative JSON naming components from a catalog your app approves, and your app renders them natively. What v1.0 (11 Nov 2026) changed, what A2UI Express and macros really save, where the renderers lag, how it sits beside MCP Apps, and when to skip it.",
+      "domain": "agents",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/agents/a2ui",
+      "fetch": "agents/a2ui"
     },
     {
       "title": "Agent Skills — know.2nth.ai",

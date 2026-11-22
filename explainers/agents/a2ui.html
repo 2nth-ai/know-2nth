@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A2UI &mdash; agent-driven interfaces &mdash; know.2nth.ai</title>
+<meta name="description" content="A2UI is Google's open protocol for agent-driven interfaces: the agent streams declarative JSON naming components from a catalog your app approves, and your app renders them natively. What v1.0 (11 Nov 2026) changed, what A2UI Express and macros really save, where the renderers lag, how it sits beside MCP Apps, and when to skip it.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/agents/a2ui">
+<meta property="og:title" content="A2UI &mdash; agent-driven interfaces &mdash; know.2nth.ai">
+<meta property="og:description" content="A2UI is Google's open protocol for agent-driven interfaces: the agent streams declarative JSON naming components from a catalog your app approves, and your app renders them natively. What v1.0 (11 Nov 2026) changed, what A2UI Express and macros really save, where the renderers lag, how it sits beside MCP Apps, and when to skip it.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="A2UI &mdash; agent-driven interfaces &mdash; know.2nth.ai">
+<meta name="twitter:description" content="A2UI v1.0: agents describe the screen, your app draws it. Express, macros, renderer status, MCP Apps, and an honest decision guide.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3Cline x1='16' y1='3' x2='16' y2='7' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='16' y1='25' x2='16' y2='29' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='3' y1='16' x2='7' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='25' y1='16' x2='29' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3C/svg%3E">
+<style>
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12); --violet: #8B5CF6; --violet-soft: rgba(139, 92, 246, 0.12); --rose: #F43F5E; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-soft: rgba(99, 102, 241, 0.12); --bg: var(--ink); --bg-raised: var(--navy); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(37, 99, 235, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(56, 189, 248, 0.3); --max-w: 1200px; --read-w: 760px; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-raised: #FFFFFF; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(37, 99, 235, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(37, 99, 235, 0.25); }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.blue { width: 600px; height: 600px; background: var(--blue); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--sky); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--sky); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .read { max-width: var(--read-w); }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--sky); }
+  .crumb-sep { opacity: 0.5; }
+  .crumb-current { color: var(--text-secondary); }
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--indigo); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--indigo); box-shadow: 0 0 12px var(--indigo); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 16ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--blue-glow), var(--sky), var(--sky-muted)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.accent { background: rgba(37, 99, 235, 0.12); color: var(--blue-glow); border-color: rgba(37, 99, 235, 0.25); }
+  .pill.green { background: var(--green-soft); color: var(--green); border-color: rgba(16, 185, 129, 0.25); }
+  .pill.indigo { background: var(--indigo-soft); color: var(--indigo); border-color: rgba(99, 102, 241, 0.25); }
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--sky); margin-bottom: 14px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--sky); }
+  .prose ul, .prose ol { padding-left: 24px; margin-bottom: 18px; max-width: var(--read-w); }
+  .prose li { font-size: 15px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 8px; }
+  .prose li strong { color: var(--text-primary); font-weight: 600; }
+  pre.code { background: var(--ink-deep); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px 22px; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.65; color: var(--mist); margin: 0 0 20px; max-width: var(--read-w); }
+  [data-theme="light"] pre.code { background: #0F172A; color: #E2E8F0; }
+  pre.code .k { color: var(--sky); }
+  pre.code .s { color: #A5F3B8; }
+  pre.code .c { color: var(--text-muted); font-style: italic; }
+  pre.code .h { color: var(--blue-glow); font-weight: 600; }
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); margin-bottom: 20px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.indigo { border-left: 3px solid var(--indigo); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .stack-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; max-width: var(--read-w); margin-bottom: 20px; }
+  .stack-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--indigo); border-radius: var(--radius-md); padding: 18px 22px; }
+  .stack-cell .layer { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .stack-cell h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.3px; }
+  .stack-cell p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: var(--read-w); margin-bottom: 20px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--sky); background: rgba(37, 99, 235, 0.04); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); }
+  .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--sky); }
+  .compare td strong { color: var(--text-primary); }
+  .decision-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: var(--read-w); }
+  @media (max-width: 720px) { .decision-grid { grid-template-columns: 1fr; } }
+  .decision-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 24px; }
+  .decision-card.use { border-left: 3px solid var(--green); }
+  .decision-card.skip { border-left: 3px solid var(--rose); }
+  .decision-card h4 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 12px; }
+  .decision-card.use h4 { color: var(--green); }
+  .decision-card.skip h4 { color: var(--rose); }
+  .decision-card ul { list-style: none; padding: 0; }
+  .decision-card li { font-size: 13px; color: var(--text-secondary); line-height: 1.6; padding: 6px 0; border-bottom: 1px solid var(--border); }
+  .decision-card li:last-child { border-bottom: none; }
+  .connect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .connect-node { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; transition: all 0.3s; text-decoration: none; color: inherit; display: block; }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node.soon { cursor: default; opacity: 0.72; }
+  .connect-node .tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--sky); word-break: break-all; }
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--sky); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } pre.code { font-size: 11px; padding: 14px 16px; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+
+<div class="glow-orb blue"></div>
+<div class="glow-orb sky"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand"><span class="nav-brand-mark">know.2nth.ai</span><span class="nav-brand-sub">agents/a2ui</span></a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">&larr; Agents</a>
+      <a href="../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x1F319;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="./">Agents</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">A2UI</span>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> agents &middot; A2UI &middot; Skill Leaf</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      The agent describes the screen. <span class="gradient">Your app draws it.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      A2UI is Google's open protocol for agent-driven interfaces. Instead of replying with a paragraph, the agent streams JSON that names components from a catalog your app has approved, and your app renders them with its own native widgets. Version 1.0 shipped on 11 November 2026. It is the first release stable enough to build on, and it is still a young, Google-run project with an uneven renderer story.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill green">Spec v1.0 &middot; 11 Nov 2026</span>
+      <span class="pill indigo">Apache 2.0</span>
+      <span class="pill accent">Declarative JSON, no code on the wire</span>
+      <span class="pill">Web, Flutter, SwiftUI</span>
+      <span class="pill">Android still on 0.9.1</span>
+    </div>
+  </div>
+</section>
+
+<section id="what">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; What it is</div>
+      <h2 class="section-title">A format for screens, not a UI framework.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>Most agents answer in text. Ask one to rebook a flight and it writes out three options, waits for you to type "the second one", then asks you to confirm in another message. A2UI lets the same agent answer with a card, a date picker and a button. The agent does not send HTML or JavaScript. It sends a <strong>description</strong>: which components to show, how they nest, and what data fills them.</p>
+      <p>The app on the other end owns the rendering. It registers a <strong>catalog</strong> of components it is willing to draw, and maps each one to a real widget in its own design system. The agent can only compose from that catalog. Google's launch post put the pitch as "safe like data, but expressive like code".</p>
+      <p>The project went public on <strong>15 December 2025</strong> at v0.8, moved to v0.9 on 17 April 2026, and reached <strong>v1.0 on 11 November 2026</strong>. It lives at <a href="https://a2ui.org" target="_blank" rel="noopener" style="color:var(--sky)">a2ui.org</a> and <a href="https://github.com/a2ui-project/a2ui" target="_blank" rel="noopener" style="color:var(--sky)">github.com/a2ui-project/a2ui</a> under Apache 2.0.</p>
+    </div>
+    <div class="info-card indigo fade-up" style="transition-delay: 0.08s">
+      <h4>The four ideas</h4>
+      <p><strong>Surface</strong> &mdash; one screen or card the agent controls, identified by a <code>surfaceId</code>. <strong>Catalog</strong> &mdash; the approved set of components and functions; the renderer advertises which catalogs it supports. <strong>Data model</strong> &mdash; a JSON object held separately from the layout, so a value can change without rebuilding the screen. <strong>Actions and functions</strong> &mdash; how a tap or a form submit travels back to the agent, and how each side can call a registered function on the other.</p>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.1s">
+      <h4>Who runs it</h4>
+      <p>A2UI is a Google project. Contributions need Google's Contributor License Agreement, and nothing on the project's site or repository says it has been handed to a foundation. That is a real difference from <a href="a2a.html" style="color:var(--sky)">A2A</a>, which Google donated to the Linux Foundation. The licence is permissive, so the code is yours to use; the direction of the spec is Google's to set.</p>
+    </div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; How it works</div>
+      <h2 class="section-title">Ten message types, split by direction.</h2>
+      <p class="section-lede">The agent streams JSON messages to the renderer. The renderer sends user actions, function calls and errors back. Layout and data are separate, which is what makes live updates cheap.</p>
+    </div>
+
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead>
+          <tr><th>Direction</th><th>Message</th><th>What it does</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Agent &rarr; renderer</strong></td><td><code>createSurface</code></td><td>Opens a surface. In 1.0 it can carry the components and the starting data in the same message.</td></tr>
+          <tr><td></td><td><code>updateComponents</code></td><td>Adds or replaces components on an existing surface.</td></tr>
+          <tr><td></td><td><code>updateDataModel</code></td><td>Changes one value at a path. A <code>null</code> value deletes the key.</td></tr>
+          <tr><td></td><td><code>deleteSurface</code></td><td>Removes the surface.</td></tr>
+          <tr><td></td><td><code>callRendererFunction</code></td><td>Asks the app to run a catalog function and return the result.</td></tr>
+          <tr><td></td><td><code>agentFunctionResponse</code></td><td>Answers a function call the app made.</td></tr>
+          <tr><td><strong>Renderer &rarr; agent</strong></td><td><code>action</code></td><td>Reports a user interaction, such as a button press.</td></tr>
+          <tr><td></td><td><code>callAgentFunction</code></td><td>Asks the agent side to run a function, for example an availability check.</td></tr>
+          <tr><td></td><td><code>rendererFunctionResponse</code></td><td>Answers a function call the agent made.</td></tr>
+          <tr><td></td><td><code>error</code></td><td>Reports a validation or execution failure, with a code and a JSON pointer to the fault.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="prose fade-up" style="transition-delay: 0.08s">
+      <p><strong>A complete screen in one message.</strong> This is the spec's own small example, re-indented: a column holding one text component, bound to a value in the data model.</p>
+    </div>
+
+    <pre class="code fade-up" style="transition-delay: 0.1s">{
+  <span class="h">"version"</span>: <span class="s">"1.0"</span>,
+  <span class="h">"createSurface"</span>: {
+    <span class="h">"surfaceId"</span>: <span class="s">"user_profile_card"</span>,
+    <span class="h">"catalogId"</span>: <span class="s">"https://a2ui.org/specification/v1_0/catalogs/basic/catalog.json"</span>,
+    <span class="h">"sendDataModel"</span>: <span class="k">true</span>,
+    <span class="h">"components"</span>: [
+      { <span class="h">"id"</span>: <span class="s">"root"</span>, <span class="h">"component"</span>: <span class="s">"Column"</span>, <span class="h">"children"</span>: [<span class="s">"user_name"</span>] },
+      { <span class="h">"id"</span>: <span class="s">"user_name"</span>, <span class="h">"component"</span>: <span class="s">"Text"</span>, <span class="h">"text"</span>: { <span class="h">"@path"</span>: <span class="s">"/name"</span> } }
+    ],
+    <span class="h">"dataModel"</span>: { <span class="h">"name"</span>: <span class="s">"John Doe"</span> }
+  }
+}</pre>
+
+    <div class="prose fade-up" style="transition-delay: 0.12s">
+      <p>Three details matter. Components are a <strong>flat list with IDs</strong>, not a nested tree, so the model can emit them in any order and patch one later. <code>{"@path": "/name"}</code> is a <strong>data binding</strong> written as a JSON Pointer. And <code>catalogId</code> is an identifier, not a URL the renderer fetches. Changing the name afterwards is one small message:</p>
+    </div>
+
+    <pre class="code fade-up" style="transition-delay: 0.14s">{
+  <span class="h">"version"</span>: <span class="s">"1.0"</span>,
+  <span class="h">"updateDataModel"</span>: {
+    <span class="h">"surfaceId"</span>: <span class="s">"user_profile_card"</span>,
+    <span class="h">"path"</span>: <span class="s">"/name"</span>,
+    <span class="h">"value"</span>: <span class="s">"Jane Doe"</span>
+  }
+}</pre>
+
+    <div class="info-card green fade-up" style="transition-delay: 0.16s">
+      <h4>What happens when the model gets it wrong</h4>
+      <p>The renderer validates every message against the catalog. A failure comes back as an <code>error</code> with a code (<code>VALIDATION_FAILED</code>, <code>UNALLOWED_PARENT</code>, <code>UNALLOWED_CHILD</code>), the surface, a JSON pointer to the bad field and a one-sentence reason. The spec says these errors "can be reported back to the LLM in a subsequent prompt, allowing it to self-correct". Note the word <em>can</em>: the retry loop is yours to build. The protocol supplies the error, not the repair.</p>
+    </div>
+  </div>
+</section>
+
+<section id="v1">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; What 1.0 changed</div>
+      <h2 class="section-title">A stable target, and one breaking rename.</h2>
+      <p class="section-lede">The 1.0 release is mostly about making the protocol dependable enough to ship against. If you built on 0.9, it is a migration, not a version bump.</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead>
+          <tr><th>Change</th><th>What it means in practice</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Screen in one message</strong></td><td><code>createSurface</code> can embed components and data, so a new screen no longer needs three messages to appear.</td></tr>
+          <tr><td><strong>Function calls both ways</strong></td><td>The agent can call the app, and the app can call the agent, each with a structured response. Google's example is a reservation picker that checks availability on the spot.</td></tr>
+          <tr><td><strong>Mixed catalogs</strong></td><td>One surface can use components from more than one catalog, such as the basic set plus your own.</td></tr>
+          <tr><td><strong>The <code>@</code> prefix</strong></td><td>Bindings and function calls are now <code>{"@path": ...}</code> and <code>{"@call": ...}</code>. 0.9 used a bare <code>path</code>. The migration guide warns against a blanket find-and-replace, because <code>path</code> is still a plain field elsewhere.</td></tr>
+          <tr><td><strong>Themes removed</strong></td><td><code>theme</code> is gone from <code>createSurface</code>. Styling belongs to the app, not the agent.</td></tr>
+          <tr><td><strong>Accessibility and metadata</strong></td><td>Components carry <code>@accessibility</code>, <code>@checks</code> and <code>@metadata</code> keys.</td></tr>
+          <tr><td><strong>Renamed roles</strong></td><td>"Client" became "renderer" and "server" became "agent" throughout the spec.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.08s">
+      <h4>The pace is the risk</h4>
+      <p>Three versions in eleven months, with v0.8 already marked deprecated and a syntax break between 0.9 and 1.0. The project is collecting requirements for 1.1. A "1.0" label from a team moving this fast means the wire format is stable for now, not that the churn is over. Pin your renderer and SDK versions.</p>
+    </div>
+  </div>
+</section>
+
+<section id="express">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; Express and macros</div>
+      <h2 class="section-title">The model writes less. The server fills in the rest.</h2>
+      <p class="section-lede">Having a model type out verbose JSON is slow and costs tokens. Two additions from October 2026 attack that: a compact format the model writes instead of JSON, and macros that expand on your server.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p><strong>Inference formats.</strong> The agent SDKs separate what the model writes from what goes over the wire. The wire format is always A2UI JSON. The inference format is swappable, and since October the default is <strong>A2UI Express</strong>: a Python-style syntax, one statement per line, that the SDK compiles into validated JSON. It is available in the Python, TypeScript and Dart agent SDKs. The renderer never sees it.</p>
+    </div>
+
+    <pre class="code fade-up" style="transition-delay: 0.07s"><span class="h">from</span> a2ui.processor <span class="h">import</span> A2uiGenerator, CatalogConfig
+<span class="h">from</span> a2ui.inference_formats <span class="h">import</span> ExpressFormatFactory
+
+catalog = CatalogConfig.from_path(<span class="s">"catalog.json"</span>)
+generator = A2uiGenerator(
+    ...,  <span class="c"># catalog and other settings, see the SDK docs</span>
+    inference_format_factory=ExpressFormatFactory(),
+)
+processor = generator.create_processor(renderer_capabilities)
+
+<span class="c"># The SDK writes the prompt section that teaches the model the format</span>
+system_prompt = f<span class="s">"{instructions}\n\n{processor.prompt_snippet}"</span>
+
+<span class="c"># ...call your model, then turn its reply into validated A2UI messages</span>
+parts = processor.parse_response(model_reply)</pre>
+
+    <div class="prose fade-up" style="transition-delay: 0.09s">
+      <p><strong>What Express saves.</strong> The project's own benchmark (54 samples, basic catalog, a Gemini Flash model, temperature 0) reports the model's output dropping from a median of 807 tokens to 297, and input from 10,980 to 6,000, with the same first-try pass rate of 98.1% either way. That is roughly the "up to 3x fewer tokens" Google quotes. It is a vendor benchmark on a vendor model, and nobody independent has rerun it yet.</p>
+      <p><strong>Macros.</strong> A macro is a Python function that returns components. The model writes a short call; the SDK expands it on the server before anything reaches the renderer.</p>
+    </div>
+
+    <pre class="code fade-up" style="transition-delay: 0.11s"><span class="h">from</span> a2ui.transformers.macros <span class="h">import</span> macro
+
+<span class="k">@macro</span>
+<span class="h">def</span> FlightCard(flight: str, route: str, status: DynamicString) -> Card:
+    <span class="s">"""Args: ...  (the decorator reads these to describe the macro to the model)"""</span>
+    <span class="h">return</span> Card(...)  <span class="c"># a Column of Text components, e.g. Text(text=f"### {flight}")</span>
+
+<span class="c"># What the model writes, in Express:</span>
+<span class="c">#   root = FlightCard("OS 87", "Vienna to New York", $/flight/status)</span></pre>
+
+    <div class="prose fade-up" style="transition-delay: 0.13s">
+      <p>Macros can also look data up. The model passes an ID, such as an order number, and your code fetches the record and fills in the values. Every figure on screen then comes from your system, not from the model's memory of it. <strong>Macros are Python-only today</strong>; the docs say other languages come next.</p>
+    </div>
+
+    <div class="info-card amber fade-up" style="transition-delay: 0.15s">
+      <h4>Read the big numbers carefully</h4>
+      <p>A demo doing the rounds shows 170 characters of model output becoming about 6,000 characters of JSON, a 35x ratio. That measures one screen where macros did most of the work, in characters, not tokens. Express on its own is about 3x. Google also cites "up to 80x" faster layout decisions, which refers to a different approach entirely: handing layout choices to a <a href="system-one-models.html" style="color:var(--sky)">System One model</a> such as Jev. That path is on the roadmap as official SDK support, not shipped.</p>
+    </div>
+    <div class="info-card indigo fade-up" style="transition-delay: 0.17s">
+      <h4>What macros do and don't do for privacy</h4>
+      <p>If a macro fetches the data, the model only needs the ID, so account balances or patient details need not enter the prompt at all. That is a property of how you design the agent. The docs do not promise it, and it stops being true the moment you also pass that data to the model for reasoning. The docs' actual warning points the other way: treat macro arguments as untrusted model output and check every ID against your backend.</p>
+    </div>
+  </div>
+</section>
+
+<section id="where">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; Where it runs</div>
+      <h2 class="section-title">Renderers, transports and MCP Apps.</h2>
+      <p class="section-lede">The protocol is only useful where a renderer exists. Web and Flutter are the strong path. Native Android is behind.</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.05s">
+      <table class="compare">
+        <thead>
+          <tr><th>Renderer</th><th>Platform</th><th>Status at 1.0 launch</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>React, Angular, Lit</strong></td><td>Web</td><td>Official. Share a <code>web_core</code> library with a <code>v1_0</code> entry point.</td></tr>
+          <tr><td><strong>Flutter</strong></td><td>iOS, Android, web, desktop</td><td>Official. Also runs inside MCP Apps.</td></tr>
+          <tr><td><strong>SwiftUI</strong></td><td>Apple platforms</td><td>Official, in the main repository.</td></tr>
+          <tr><td><strong>Jetpack Compose</strong></td><td>Android</td><td>Official, but on <strong>0.9.1</strong>. Google says 1.0 is "coming soon" and gives no date.</td></tr>
+          <tr><td><strong>Lynx</strong></td><td>ByteDance's cross-platform framework</td><td>Community, by ByteDance. On 0.9, adapting to 1.0.</td></tr>
+          <tr><td><strong>Vue, Svelte, React Native, terminal and others</strong></td><td>Various</td><td>Community. Most are on 0.8 or 0.9; a few have reached 1.0.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.08s">
+      <p>Even Google's own products are mid-migration: the launch post says Gemini "supports A2UI 0.9.1 today" and that Gemini Enterprise is being upgraded. Named outside adopters are Atlassian, which is bringing it to Jira, Alation, ByteDance and Bloomberg. Bloomberg is named once with no detail.</p>
+      <p><strong>Transport.</strong> A2UI does not define its own connection. The spec names AG-UI as the standard binding for agent-to-user traffic, with an extension for carrying A2UI over <a href="a2a.html" style="color:var(--sky)">A2A</a> and a mapping onto <a href="mcp.html" style="color:var(--sky)">MCP</a> tool results and resources. Server-Sent Events and WebSockets work too. Plain REST is listed with the caveat that it cannot stream.</p>
+    </div>
+    <div class="info-card indigo fade-up" style="transition-delay: 0.1s">
+      <h4>A2UI and MCP Apps are different answers</h4>
+      <p>An MCP App is a sandboxed web page shown in an iframe inside an assistant such as Claude or Gemini. It can look like anything, and it looks like itself rather than like the host. A2UI sends a description and lets the host draw it natively. Google and the MCP Apps authors describe three ways to combine them: send A2UI over an MCP server, embed an MCP App inside an A2UI surface, or bundle an A2UI renderer inside an MCP App so it appears in assistants that have no A2UI support of their own. The last route has limits worth knowing: the iframe cannot use local storage or cookies, and cannot make its own network calls.</p>
+    </div>
+  </div>
+</section>
+
+<section id="decision">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; Decision guide</div>
+      <h2 class="section-title">When to build on A2UI. When to wait.</h2>
+      <p class="section-lede">A2UI earns its place when you own the app the user is looking at and the agent's replies are really forms and choices in disguise. It adds a renderer, a catalog and a validation loop to maintain, so it has to replace enough bad chat turns to pay for that.</p>
+    </div>
+    <div class="decision-grid fade-up" style="transition-delay: 0.05s">
+      <div class="decision-card use">
+        <h4>Use A2UI when</h4>
+        <ul>
+          <li>You own the web or mobile app the agent lives in</li>
+          <li>The agent keeps asking for dates, options and confirmations in text</li>
+          <li>You have a design system and want the agent held inside it</li>
+          <li>One agent backend must serve web and mobile at once</li>
+          <li>Your web stack is React, Angular or Lit, or your mobile stack is Flutter</li>
+          <li>Third-party or less-trusted agents will render into your app</li>
+        </ul>
+      </div>
+      <div class="decision-card skip">
+        <h4>Skip or wait when</h4>
+        <ul>
+          <li>Your users reach the agent through WhatsApp, SMS or email</li>
+          <li>You need native Android on Compose today and can't use Flutter</li>
+          <li>The agent's output is prose: analysis, drafting, explanation</li>
+          <li>You only need to appear inside Claude or ChatGPT; an MCP App is the shorter route</li>
+          <li>Your screens are fixed and known; ordinary tool calls driving your existing UI are simpler</li>
+          <li>You can't absorb a spec migration in the next year</li>
+        </ul>
+      </div>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.08s">
+      <h4>What the catalog does not protect you from</h4>
+      <p>The security argument is sound as far as it goes: no executable code crosses the wire, and an agent cannot draw a component the app has not registered. That closes script injection. It does not stop a manipulated agent from composing a misleading screen out of approved parts, putting the wrong amount on a legitimate "Confirm payment" button, or calling a function it is allowed to call at the wrong time. Treat every action coming back from a surface the way you would treat any request from an untrusted client: authorise it on the server.</p>
+    </div>
+  </div>
+</section>
+
+<section id="sa-context">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; South African context</div>
+      <h2 class="section-title">Useful in your own app. Irrelevant on WhatsApp.</h2>
+      <p class="section-lede">The local question is less about the protocol and more about where your customers actually meet your agent.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p><strong>Channel first.</strong> A2UI needs a renderer inside an app you control, or an assistant that hosts MCP Apps. A lot of South African customer service runs through WhatsApp, where neither exists; WhatsApp has its own buttons and flows, on its own terms. If that is your main channel, A2UI changes nothing for you today. It becomes interesting for the banking app, the insurer's self-service portal, the internal operations console: surfaces you already own.</p>
+      <p><strong>Android is the catch.</strong> In a market where most phones are Android, the official Compose renderer sitting a version behind is not a footnote. The practical route for a mobile team that wants 1.0 now is Flutter, which covers Android and iOS from one codebase and is not on Google's list of renderers still catching up.</p>
+      <p><strong>Tokens are billed in dollars.</strong> Output tokens are the expensive ones, and Express cuts the output for a screen by roughly two-thirds on the project's own numbers. For a high-volume agent that renders a card on most turns, that is a real line on a rand-denominated bill, and shorter output also means the screen appears sooner on a slow connection.</p>
+      <p><strong>POPIA.</strong> The macro pattern gives you a clean way to keep personal information out of a model hosted offshore: the model handles an order or account ID, and your server in-country fetches and fills the details. That helps with the cross-border transfer question only if you hold the line and never pass the same data to the model another way. It is an architecture you choose, not a compliance feature you switch on.</p>
+    </div>
+  </div>
+</section>
+
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 &middot; Connections</div>
+      <h2 class="section-title">Where A2UI links in the tree.</h2>
+      <p class="section-lede">A2UI is the presentation layer of the agent protocol stack: MCP reaches tools, A2A reaches other agents, A2UI reaches the person.</p>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="mcp.html" class="connect-node">
+        <span class="tag">agents/mcp</span>
+        <div class="skill">Model Context Protocol</div>
+        <div class="why">The tool and data protocol. A2UI can travel over MCP, and MCP Apps are the other way to give an agent a screen.</div>
+      </a>
+      <a href="a2a.html" class="connect-node">
+        <span class="tag">agents/a2a</span>
+        <div class="skill">A2A Protocol</div>
+        <div class="why">Agent-to-agent calls. A remote agent can return an A2UI surface through the A2A extension, so the screen survives the hop.</div>
+      </a>
+      <a href="google-adk.html" class="connect-node">
+        <span class="tag">agents/google-adk</span>
+        <div class="skill">Google ADK</div>
+        <div class="why">Google's agent framework. The Python SDK ships an ADK adapter, which makes ADK the shortest path to an A2UI agent.</div>
+      </a>
+      <a href="system-one-models.html" class="connect-node">
+        <span class="tag">agents/system-one-models</span>
+        <div class="skill">System One models</div>
+        <div class="why">Decision models such as Jev can pick components instead of a large model writing them. On the A2UI roadmap, and the source of the "80x" figure.</div>
+      </a>
+      <a href="claude-artifacts.html" class="connect-node">
+        <span class="tag">agents/claude-artifacts</span>
+        <div class="skill">Claude artifacts</div>
+        <div class="why">The opposite design: the model writes the whole page as code, and it runs in a sandbox. Expressive, but it never looks like your app.</div>
+      </a>
+      <a href="gemini.html" class="connect-node">
+        <span class="tag">agents/gemini</span>
+        <div class="skill">Gemini</div>
+        <div class="why">Google's own assistant renders A2UI, and was still on 0.9.1 at the 1.0 launch.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">09 &middot; Resources</div>
+      <h2 class="section-title">Specification, announcements and guides.</h2>
+      <p class="section-lede">Primary sources only. The spec and the evolution guide are the ones to read before writing code; the blog posts carry the dates and the adoption claims.</p>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://a2ui.org/specification/v1.0-a2ui/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Spec</span>
+        <span class="r-title">A2UI v1.0 protocol specification</span>
+        <span class="r-url">a2ui.org/specification/v1.0-a2ui</span>
+      </a>
+      <a href="https://github.com/a2ui-project/a2ui/blob/main/specification/v1_0/docs/evolution_guide.md" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Migration</span>
+        <span class="r-title">v0.9 to v1.0 evolution guide</span>
+        <span class="r-url">github.com/a2ui-project/a2ui</span>
+      </a>
+      <a href="https://developers.googleblog.com/a2ui-10-build-delightful-fast-reliable-agentic-experiences/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Announcement &middot; 11 Nov 2026</span>
+        <span class="r-title">A2UI 1.0: Build delightful, fast, reliable, agentic experiences</span>
+        <span class="r-url">developers.googleblog.com</span>
+      </a>
+      <a href="https://developers.googleblog.com/fast-reliable-a2ui/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Announcement &middot; 27 Oct 2026</span>
+        <span class="r-title">Fast, reliable A2UI, with swappable inference formats</span>
+        <span class="r-url">developers.googleblog.com/fast-reliable-a2ui</span>
+      </a>
+      <a href="https://a2ui.org/concepts/inference-formats/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs</span>
+        <span class="r-title">Inference formats and the Express benchmark</span>
+        <span class="r-url">a2ui.org/concepts/inference-formats</span>
+      </a>
+      <a href="https://a2ui.org/guides/macros/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs</span>
+        <span class="r-title">Using macros</span>
+        <span class="r-url">a2ui.org/guides/macros</span>
+      </a>
+      <a href="https://developers.googleblog.com/a2ui-and-mcp-apps/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Announcement &middot; 17 Jun 2026</span>
+        <span class="r-title">A2UI + MCP Apps: three architectural patterns</span>
+        <span class="r-url">developers.googleblog.com/a2ui-and-mcp-apps</span>
+      </a>
+      <a href="https://a2ui.org/ecosystem/renderers/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Ecosystem</span>
+        <span class="r-title">Community renderers and their protocol versions</span>
+        <span class="r-url">a2ui.org/ecosystem/renderers</span>
+      </a>
+      <a href="https://developers.googleblog.com/introducing-a2ui-an-open-project-for-agent-driven-interfaces/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Launch &middot; 15 Dec 2025</span>
+        <span class="r-title">Introducing A2UI: an open project for agent-driven interfaces</span>
+        <span class="r-url">developers.googleblog.com</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../index.html">Skills tree</a>
+      <a href="./">Agents hub</a>
+      <a href="https://a2ui.org" target="_blank" rel="noopener">a2ui.org &nearr;</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant</p>
+    <p class="footer-copy">Last reviewed: 2026-11-22 &middot; Cadence: hot (quarterly)</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme(){const html=document.documentElement;const current=html.getAttribute('data-theme');const next=current==='dark'?'light':'dark';html.setAttribute('data-theme',next);document.querySelector('.theme-toggle').textContent=next==='dark'?'☀️':'🌙';localStorage.setItem('theme',next);}
+  const saved=localStorage.getItem('theme');if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.theme-toggle').textContent=saved==='dark'?'☀️':'🌙';}
+  const observer=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting)entry.target.classList.add('visible');});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>
