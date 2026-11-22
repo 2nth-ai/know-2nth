@@ -4,19 +4,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Lab &mdash; know.2nth.ai</title>
-<meta name="description" content="Live demonstrations on know.2nth.ai: a tool-call gate and a tree race, both making real decisions with a System One model while you watch.">
+<meta name="description" content="Live demonstrations on know.2nth.ai: a tool-call gate and a tree race driven by a System One model, and an agent that answers in A2UI while the page draws the screen.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="know.2nth.ai">
 <meta property="og:url" content="https://know.2nth.ai/lab/">
 <meta property="og:title" content="Lab — know.2nth.ai">
-<meta property="og:description" content="Live demonstrations: a tool-call gate and a tree race, both making real decisions with a System One model while you watch.">
+<meta property="og:description" content="Live demonstrations: a tool-call gate, a tree race, and an agent that answers in A2UI.">
 <meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Lab — know.2nth.ai">
-<meta name="twitter:description" content="Live demonstrations: a tool-call gate and a tree race, both making real decisions with a System One model while you watch.">
+<meta name="twitter:description" content="Live demonstrations: a tool-call gate, a tree race, and an agent that answers in A2UI.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3C/svg%3E">
@@ -202,8 +202,8 @@
 <section class="hero">
   <div class="container">
     <div class="eyebrow fade-up"><span class="dot"></span> lab &middot; live demonstrations</div>
-    <h1 class="fade-up" style="transition-delay:.05s">Watch a model <span class="gradient">decide.</span></h1>
-    <p class="sub fade-up" style="transition-delay:.1s">Two live demonstrations of a System One model making real decisions, with the probabilities on screen. Nothing here is recorded. Every call goes to Jev while you watch, and the clock, the token count and the cost are real.</p>
+    <h1 class="fade-up" style="transition-delay:.05s">Watch a model <span class="gradient">do the work.</span></h1>
+    <p class="sub fade-up" style="transition-delay:.1s">Live demonstrations of the things the tree explains. Two show a System One model making real decisions, with the probabilities on screen. One shows an agent answering in A2UI and this page drawing the result. Nothing here is recorded: every call goes to a model while you watch.</p>
   </div>
 </section>
 
@@ -215,6 +215,11 @@
         <div class="skill">The tool-call gate</div>
         <div class="why">A coding agent works through a real task. Every tool call passes through Jev before it runs and lights green, amber or red with its probability. One of them is a disguised production delete.</div>
       </a>
+      <a href="/lab/a2ui" class="connect-node">
+        <span class="tag">A2UI</span>
+        <div class="skill">The agent draws a screen</div>
+        <div class="why">Ask for something and a model replies in A2UI instead of prose. See the JSON on the wire, the screen this page draws from it, and the action that goes back when you press a button.</div>
+      </a>
       <a href="/lab/tree-race" class="connect-node">
         <span class="tag">opener</span>
         <div class="skill">The tree race</div>
@@ -222,7 +227,7 @@
       </a>
     </div>
     <div class="info-card indigo fade-up" style="margin-top:28px">
-      <h4>What you are looking at</h4>
+      <h4>What the two Jev demos are showing</h4>
       <p>A System One model does not write. It answers typed questions about a piece of state with a probability for every allowed answer, all in one forward pass. The background is in the <a href="/explainers/agents/system-one-models" style="color:var(--sky);text-decoration:none">System One models leaf</a> and the <a href="/briefings/typed-decisions" style="color:var(--sky);text-decoration:none">CTO briefing</a>. The thresholds that turn a probability into an action live in our code, not in the model, which is the whole point.</p>
     </div>
   </div>
