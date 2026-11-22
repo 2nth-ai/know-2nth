@@ -183,7 +183,7 @@
   .surface .a-btn.primary { background: linear-gradient(135deg, var(--blue), var(--sky)); border-color: transparent; color: #fff; }
   .surface .a-btn.borderless { border-color: transparent; color: var(--sky); padding-left: 0; padding-right: 0; }
   .surface .a-btn:disabled { opacity: .5; cursor: default; }
-  .surface .a-field { display: flex; flex-direction: column; gap: 6px; }
+  .surface .a-field { display: flex; flex-direction: column; gap: 6px; align-self: stretch; min-width: 0; }
   .surface .a-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--text-muted); }
   .surface input[type=text], .surface input[type=number], .surface input[type=password], .surface input[type=date], .surface input[type=time], .surface input[type=datetime-local], .surface textarea { font-family: 'Outfit', sans-serif; font-size: 14px; background: var(--bg-card); color: var(--text-primary); border: 1px solid var(--border); border-radius: 8px; padding: 9px 12px; width: 100%; color-scheme: dark; }
   [data-theme="light"] .surface input, [data-theme="light"] .surface textarea { color-scheme: light; }
@@ -205,6 +205,7 @@
   .surface.paper .a-text.h { color: #111827; font-size: 20px; letter-spacing: 0; }
   .surface.paper .a-text.caption { color: #6B7280; font-size: 13px; font-style: italic; }
   .surface.paper .a-text strong { color: #111827; }
+  .surface.paper .a-btn .a-text { color: inherit; font-size: inherit; }
   .surface.paper .a-div { background: #1F2937; }
   .surface.paper .a-btn { font-family: Georgia, serif; border-radius: 0; border: 1px solid #1F2937; color: #1F2937; background: #FFFDF8; }
   .surface.paper .a-btn.primary { background: #1F2937; color: #FFFDF8; }
@@ -485,6 +486,7 @@ async function start(payload, label) {
   if (busy) return;
   current = payload; Object.keys(surfaces).forEach((k) => delete surfaces[k]); activeSurface = null;
   $("wire").textContent = ""; $("badges").textContent = ""; render();
+  const wait = el("div", "empty"); wait.textContent = "The agent is composing a screen. This usually takes 8 to 15 seconds."; $("surface").textContent = ""; $("surface").appendChild(wait);
   log("user → agent", "request", label);
   setBusy(true);
   try { const r = await call(payload); showAttempts(r); r.messages.forEach((m) => log("agent → renderer", Object.keys(m).filter((k) => k !== "version")[0], m)); badges(r); setBusy(false); apply(r.messages); }
