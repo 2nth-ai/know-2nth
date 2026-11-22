@@ -66,7 +66,7 @@ export const SCENARIOS: Record<string, Scenario> = {
     title: 'Rebook a cancelled flight',
     request: 'My flight to Cape Town was cancelled. Get me on another one today.',
     facts:
-      'Cancelled: FA 204, Johannesburg (JNB) to Cape Town (CPT), 14:10 today. Seats available today: FA 212 departs 15:40 arrives 17:50, R0 extra; FA 220 departs 17:15 arrives 19:25, R0 extra; FA 236 departs 19:30 arrives 21:40, R350 credit back. Passenger: T. Mokoena, booking ref K7QX2P.',
+      'Cancelled: FA 204, Johannesburg (JNB) to Cape Town (CPT), 14:10 today. Seats available today: FA 212 departs 15:40 arrives 17:50, R0 extra; FA 220 departs 17:15 arrives 19:25, R0 extra; FA 236 departs 19:30 arrives 21:40, R350 credit back. Passenger: T. Mokoena, booking ref K7QX2P. The screen should let the passenger pick one flight and confirm the rebooking.',
     textReply:
       "I'm sorry your flight FA 204 was cancelled. I can see three alternatives today: FA 212 leaving at 15:40 and arriving 17:50, FA 220 leaving at 17:15 and arriving 19:25, or FA 236 leaving at 19:30 and arriving 21:40, which also gives you a R350 credit. Please reply with the flight number you would like, and then I will ask you to confirm before I change the booking.",
     first: [
@@ -102,7 +102,7 @@ export const SCENARIOS: Record<string, Scenario> = {
     title: 'Triage a production incident',
     request: 'Checkout is failing. Show me the incident.',
     facts:
-      'Incident INC-4821 "Checkout returning 502s", opened 09:42, status: unacknowledged, severity: SEV1, service: checkout-api, region: af-south. Error rate 38%, about 1,240 customers affected in the last 15 minutes. On call: N. Dlamini.',
+      'Incident INC-4821 "Checkout returning 502s", opened 09:42, status: unacknowledged, severity: SEV1, service: checkout-api, region: af-south. Error rate 38%, about 1,240 customers affected in the last 15 minutes. On call: N. Dlamini. The screen should let the user set the severity (SEV1, SEV2 or SEV3) and either acknowledge or resolve the incident.',
     textReply:
       'There is an open incident, INC-4821, "Checkout returning 502s". It was opened at 09:42 and is currently SEV1 and unacknowledged. The error rate is 38% and roughly 1,240 customers have been affected in the last 15 minutes. Would you like me to acknowledge it? If so, please also tell me whether the severity should stay at SEV1 or change to SEV2 or SEV3.',
     first: [
@@ -140,7 +140,7 @@ export const SCENARIOS: Record<string, Scenario> = {
     title: 'Book a site visit',
     request: 'I need someone to come and look at the solar installation next week.',
     facts:
-      'Customer: Karoo Farm Stall, account 30117. Technicians visit Monday to Friday, slots 08:00, 11:00 or 14:00. Earliest date 2026-11-30, latest 2026-12-04. A visit needs a contact name and a short note on the fault.',
+      'Customer: Karoo Farm Stall, account 30117. Technicians visit Monday to Friday, slots 08:00, 11:00 or 14:00. Earliest date 2026-11-30, latest 2026-12-04. A visit needs a contact name and a short note on the fault. The screen should collect the date, the slot, the contact name and the note, then book.',
     textReply:
       'I can book a technician visit for Karoo Farm Stall. We have slots Monday to Friday next week, from 30 November to 4 December, at 08:00, 11:00 or 14:00. Which day and time suits you? I will also need the name of the person who will be on site, and a short description of the fault.',
     first: [
@@ -175,7 +175,7 @@ export const SCENARIOS: Record<string, Scenario> = {
     title: 'Approve a purchase order',
     request: 'Anything waiting for my approval?',
     facts:
-      'One purchase order awaits approval: PO-2291 from Bergvliet Hardware, raised by S. Naidoo for the Paarl depot. Lines: 40 x conduit 20mm at R48.00 = R1,920.00; 12 x isolator 63A at R410.00 = R4,920.00; delivery R350.00. Total R7,190.00 excluding VAT. Budget remaining on cost centre 4410: R22,600.00.',
+      'One purchase order awaits approval: PO-2291 from Bergvliet Hardware, raised by S. Naidoo for the Paarl depot. Lines: 40 x conduit 20mm at R48.00 = R1,920.00; 12 x isolator 63A at R410.00 = R4,920.00; delivery R350.00. Total R7,190.00 excluding VAT. Budget remaining on cost centre 4410: R22,600.00. The screen should show the lines and total, take an optional comment, and offer approve and reject.',
     textReply:
       'You have one purchase order waiting: PO-2291 from Bergvliet Hardware, raised by S. Naidoo for the Paarl depot. It covers 40 lengths of 20mm conduit at R48.00 each (R1,920.00), 12 63A isolators at R410.00 each (R4,920.00) and R350.00 delivery, for a total of R7,190.00 excluding VAT. Cost centre 4410 has R22,600.00 remaining. Reply "approve" or "reject", and add a comment if you would like one recorded.',
     first: [
@@ -407,7 +407,8 @@ DATA BINDING: a property may be a literal or {"@path":"/key"} pointing into data
 
 RULES
 - Use only the facts given. South African context: rand amounts as "R1,920.00".
-- Keep it to one Card, at most 25 components. One primary Button.
+- The "root" component must be a Card whose child is a Column. At most 25 components. One primary Button.
+- Put each heading or sentence in its own Text component; do not put line breaks inside text.
 - Prefer inputs (pickers, fields, buttons) over asking the user to type an answer.`;
 
 function firstTurnPrompt(request: string, facts: string): string {

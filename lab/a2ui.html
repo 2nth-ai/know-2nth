@@ -356,7 +356,12 @@ function apply(messages) {
 // ---- the renderer: every element is created here; model text only ever lands in textContent
 function el(tag, cls) { const e = document.createElement(tag); if (cls) e.className = cls; return e; }
 function textNode(str, variant) {
-  let s = String(str == null ? "" : str);
+  const lines = String(str == null ? "" : str).split(/\n+/).filter((l) => l.trim());
+  if (lines.length > 1) { const w = el("div", "a-col"); w.style.gap = "6px"; lines.forEach((l) => w.appendChild(textLine(l, variant))); return w; }
+  return textLine(lines[0] || "", variant);
+}
+function textLine(str, variant) {
+  let s = str;
   const e = el("div", "a-text");
   const h = s.match(/^#{1,4}\s+(.*)$/);
   if (h) { s = h[1]; e.classList.add("h"); }
