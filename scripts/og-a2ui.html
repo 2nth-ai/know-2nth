@@ -15,7 +15,7 @@ h1 span{background:linear-gradient(135deg,#3B82F6,#38BDF8,#7DD3FC);-webkit-backg
 .code{position:absolute;left:610px;top:70px;width:330px;height:430px;background:#060A14;border:1px solid rgba(148,163,184,.18);border-left:3px solid #6366F1;border-radius:14px;padding:18px 20px;font-family:'JetBrains Mono',monospace;font-size:13.5px;line-height:1.72;color:#CBD5E1;white-space:pre;overflow:hidden}
 .code .h{font-size:10px;letter-spacing:1.6px;color:#64748B;margin-bottom:8px;display:block}
 .k{color:#7DD3FC}.s{color:#A5F3B8}
-.card{position:absolute;left:800px;top:190px;width:340px;background:#0B1120;border:1px solid rgba(56,189,248,.35);border-radius:20px;padding:26px;box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 0 6px rgba(11,17,32,.9)}
+.card{position:absolute;left:800px;top:176px;width:340px;background:#0B1120;border:1px solid rgba(56,189,248,.35);border-radius:20px;padding:26px;box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 0 6px rgba(11,17,32,.9)}
 .card .t{font-size:21px;font-weight:700;letter-spacing:-.3px;line-height:1.25}
 .card .c{font-size:13px;color:#64748B;margin:8px 0 16px}
 .stats{display:flex;justify-content:space-between;font-size:14px;color:#94A3B8;padding:14px 0;border-top:1px solid rgba(148,163,184,.14)}
@@ -27,7 +27,8 @@ h1 span{background:linear-gradient(135deg,#3B82F6,#38BDF8,#7DD3FC);-webkit-backg
 .btns{display:flex;justify-content:flex-end;gap:10px}
 .btn{font-size:14px;font-weight:600;padding:10px 20px;border-radius:100px;border:1px solid rgba(148,163,184,.2);color:#94A3B8}
 .btn.p{background:linear-gradient(135deg,#2563EB,#38BDF8);border-color:transparent;color:#fff}
-.tag{position:absolute;left:800px;top:150px;background:#0B1120;border:1px solid rgba(56,189,248,.35);border-radius:100px;padding:5px 12px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.6px;color:#38BDF8;text-transform:uppercase}
+.opt{display:flex;align-items:center;gap:10px;font-size:14px;color:#94A3B8;border:1px solid rgba(148,163,184,.2);border-radius:10px;padding:9px 12px;margin-bottom:7px}.opt b{color:#F8FAFC;font-weight:600}.opt i{width:15px;height:15px;border-radius:50%;border:2px solid #64748B;flex:none}.opt.on{border-color:#38BDF8;background:rgba(56,189,248,.1)}.opt.on i{border:5px solid #38BDF8}
+.tag{position:absolute;left:800px;top:136px;background:#0B1120;border:1px solid rgba(56,189,248,.35);border-radius:100px;padding:5px 12px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.6px;color:#38BDF8;text-transform:uppercase}
 .foot{position:absolute;left:64px;bottom:52px;font-family:'JetBrains Mono',monospace;font-size:17px;color:#64748B}
 .foot b{color:#38BDF8;font-weight:500}
 </style></head><body>
@@ -41,30 +42,31 @@ h1 span{background:linear-gradient(135deg,#3B82F6,#38BDF8,#7DD3FC);-webkit-backg
 <div class="code"><span class="h">AGENT &rarr; RENDERER</span>{
  <span class="k">"version"</span>: <span class="s">"1.0"</span>,
  <span class="k">"createSurface"</span>: {
-  <span class="k">"surfaceId"</span>: <span class="s">"incident"</span>,
+  <span class="k">"surfaceId"</span>: <span class="s">"rebook"</span>,
   <span class="k">"components"</span>: [
    { <span class="k">"id"</span>: <span class="s">"root"</span>,
      <span class="k">"component"</span>: <span class="s">"Card"</span> },
-   { <span class="k">"id"</span>: <span class="s">"sev"</span>,
+   { <span class="k">"id"</span>: <span class="s">"pick"</span>,
      <span class="k">"component"</span>:
        <span class="s">"ChoicePicker"</span>,
      <span class="k">"value"</span>:
-       { <span class="k">"@path"</span>: <span class="s">"/severity"</span> } },
-   { <span class="k">"id"</span>: <span class="s">"ack"</span>,
+       { <span class="k">"@path"</span>: <span class="s">"/flight"</span> } },
+   { <span class="k">"id"</span>: <span class="s">"confirm"</span>,
      <span class="k">"component"</span>: <span class="s">"Button"</span> }
   ],
   <span class="k">"dataModel"</span>: {
-   <span class="k">"severity"</span>: [<span class="s">"SEV1"</span>] }
+   <span class="k">"flight"</span>: [<span class="s">"FA 212"</span>] }
  }
 }</div>
 <div class="tag">What the page draws</div>
 <div class="card">
-  <div class="t">INC-4821 &middot; Checkout returning 502s</div>
-  <div class="c">Opened 09:42 &middot; unacknowledged</div>
-  <div class="stats"><span><b>38%</b> error rate</span><span><b>1,240</b> affected</span></div>
-  <div class="lab">SEVERITY</div>
-  <div class="chips"><span class="chip on">SEV1</span><span class="chip">SEV2</span><span class="chip">SEV3</span></div>
-  <div class="btns"><span class="btn">Resolve</span><span class="btn p">Acknowledge</span></div>
+  <div class="t">FA 204 was cancelled</div>
+  <div class="c">Johannesburg to Cape Town &middot; today</div>
+  <div class="lab" style="padding-top:14px;border-top:1px solid rgba(148,163,184,.14)">AVAILABLE FLIGHTS</div>
+  <div class="opt on"><i></i><span><b>FA 212</b> &middot; 15:40 to 17:50</span></div>
+  <div class="opt"><i></i><span><b>FA 220</b> &middot; 17:15 to 19:25</span></div>
+  <div class="opt"><i></i><span><b>FA 236</b> &middot; 19:30 to 21:40</span></div>
+  <div class="btns" style="margin-top:16px"><span class="btn p">Rebook me</span></div>
 </div>
 <div class="foot"><b>know.2nth.ai</b>/lab/a2ui</div>
 </body></html>
