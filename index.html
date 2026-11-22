@@ -200,6 +200,51 @@
   }
   .btn-nav-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 20px rgba(37, 99, 235, 0.3); }
 
+  /* ── Jump bar: on-this-page links, second row of the sticky nav ── */
+  .jump {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    height: 42px;
+    border-top: 1px solid var(--border);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .jump::-webkit-scrollbar { display: none; }
+  .jump-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-right: 8px;
+    white-space: nowrap;
+  }
+  .jump a {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    padding: 5px 12px;
+    border-radius: var(--radius-pill);
+    border: 1px solid transparent;
+    white-space: nowrap;
+  }
+  .jump a:hover { color: var(--sky); }
+  .jump a.active {
+    color: var(--sky);
+    border-color: var(--border-hover);
+    background: var(--bg-card-hover);
+  }
+  .jump a:focus-visible { outline: 2px solid var(--sky); outline-offset: 1px; }
+  #domains, #how, #updates, #leaves, #access { scroll-margin-top: 118px; }
+  @media (max-width: 768px) {
+    .jump-label { display: none; }
+    .jump a { padding: 5px 10px; }
+  }
+
   /* ── Container ── */
   .container {
     max-width: var(--max-w);
@@ -994,6 +1039,14 @@
       <a href="#access" class="btn-nav btn-nav-primary">Get Access</a>
     </div>
   </div>
+  <div class="jump" aria-label="On this page">
+    <span class="jump-label">On this page</span>
+    <a href="#domains">The tree</a>
+    <a href="#how">How it works</a>
+    <a href="#updates">Sweeps &amp; updates</a>
+    <a href="#leaves">New leaves</a>
+    <a href="#access">Access</a>
+  </div>
 </nav>
 
 <!-- ── HERO ── -->
@@ -1416,7 +1469,7 @@
         </li>
       </ul>
     </div>
-    <div class="explainer-grid fade-up" style="transition-delay: 0.1s">
+    <div class="explainer-grid fade-up" id="leaves" style="transition-delay: 0.1s">
       <a href="explainers/software/autodesk-clones.html" class="explainer-card">
         <div class="explainer-meta">
           <span class="explainer-domain-tag" style="background: var(--code-soft); color: var(--code);">Software</span>
@@ -1804,6 +1857,24 @@
   }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 
   document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  // Jump bar: highlight the link for whichever target was last scrolled past.
+  (function () {
+    const bar = document.querySelector('.jump');
+    const links = Array.from(document.querySelectorAll('.jump a'));
+    const targets = links.map(a => document.querySelector(a.getAttribute('href')));
+    function mark() {
+      let current = -1;
+      targets.forEach((t, i) => { if (t && t.getBoundingClientRect().top <= 140) current = i; });
+      links.forEach((a, i) => {
+        const on = i === current;
+        if (on && !a.classList.contains('active')) bar.scrollLeft = a.offsetLeft - bar.offsetLeft - 24;
+        a.classList.toggle('active', on);
+      });
+    }
+    window.addEventListener('scroll', mark, { passive: true });
+    mark();
+  })();
 </script>
 <script>
   // Vinci — the on-site agent, backed by /api/ask (Cloudflare Workers AI).
