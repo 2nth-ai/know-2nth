@@ -818,6 +818,90 @@
     line-height: 1.5;
   }
 
+  /* ── Updates digest (sweeps, corrections, re-verifications) ── */
+  .digest {
+    background: var(--bg-card);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 8px 28px;
+    margin-bottom: 40px;
+  }
+  .digest-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    padding: 18px 0 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .digest-head h3 {
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.2px;
+  }
+  .digest-head span {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+  .digest-list { list-style: none; }
+  .digest-row {
+    display: grid;
+    grid-template-columns: 96px 104px 1fr;
+    gap: 16px;
+    align-items: baseline;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .digest-row:last-child { border-bottom: none; }
+  .digest-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+  .digest-kind {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: var(--radius-pill);
+    justify-self: start;
+    white-space: nowrap;
+  }
+  .digest-kind.sweep { background: rgba(56, 189, 248, 0.12); color: var(--sky); }
+  .digest-kind.new { background: var(--code-soft); color: var(--code); }
+  .digest-kind.verified { background: var(--green-soft); color: var(--green); }
+  .digest-kind.correction { background: var(--warm-soft); color: var(--warm); }
+  .digest-kind.opened { background: var(--violet-soft); color: var(--violet); }
+  .digest-body h4 {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    letter-spacing: -0.1px;
+  }
+  .digest-body p {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    max-width: 78ch;
+  }
+  .digest-body a {
+    color: var(--sky);
+    text-decoration: none;
+    border-bottom: 1px solid var(--border-hover);
+  }
+  .digest-body a:hover { border-bottom-color: var(--sky); }
+  @media (max-width: 768px) {
+    .digest { padding: 4px 20px; }
+    .digest-row { grid-template-columns: auto 1fr; gap: 6px 12px; }
+    .digest-body { grid-column: 1 / -1; }
+  }
+
   /* ── Footer ── */
   footer {
     padding: 60px 0 40px;
@@ -1275,6 +1359,62 @@
       <div class="section-label">04 · Latest</div>
       <h2 class="section-title">From the tree</h2>
       <p class="section-desc">Recently published skill nodes — each one making the tree more connected and every agent more capable.</p>
+    </div>
+    <div class="digest fade-up" id="updates">
+      <div class="digest-head">
+        <h3>Sweeps &amp; updates</h3>
+        <span>What changed on leaves that were already live</span>
+      </div>
+      <ul class="digest-list">
+        <li class="digest-row">
+          <span class="digest-date">21 Nov 2026</span>
+          <span class="digest-kind sweep">Sweep</span>
+          <div class="digest-body">
+            <h4>AI sweep &mdash; model, pricing and version claims as of November 2026</h4>
+            <p>36 leaves refreshed across agents, media, design, CRM, cloud AI, runtime and software, each with a new review stamp. The big movers: the <a href="explainers/agents/claude.html">Claude 5.5 lineup</a>, <a href="explainers/agents/gpt.html">GPT-6.2</a>, <a href="explainers/agents/gemini.html">Gemini 4</a>, the <a href="explainers/agents/mcp.html">MCP 2026-07-28 spec</a>, <a href="explainers/agents/google-adk.html">ADK 2.0 GA</a>, <a href="explainers/tech/cloudflare/workers-ai.html">Workers AI billing</a> and <a href="explainers/tech/runtime/node.html">Node v26 LTS</a>.</p>
+          </div>
+        </li>
+        <li class="digest-row">
+          <span class="digest-date">21 Nov 2026</span>
+          <span class="digest-kind new">New</span>
+          <div class="digest-body">
+            <h4>Claude artifacts &mdash; a reference and a decision leaf</h4>
+            <p><a href="explainers/agents/claude-artifacts.html">What artifacts are and where they stop</a>, paired with <a href="explainers/tools/artifacts-or-migrate.html">Artifacts are a surface, not a system</a> &mdash; when to keep building in one and when to move the work out.</p>
+          </div>
+        </li>
+        <li class="digest-row">
+          <span class="digest-date">11 Oct 2026</span>
+          <span class="digest-kind verified">Re-verified</span>
+          <div class="digest-body">
+            <h4>Where LLM inference actually runs in South Africa</h4>
+            <p>The <a href="sa-llm-residency-validation.html">residency memo</a> was rewritten as a reference and re-checked against vendor docs: Azure's in-region capacity has narrowed, Vertex does not list Gemini for Johannesburg, and Claude on Bedrock in Cape Town is still global cross-Region only. The Claude, GPT, Gemini, AWS and Microsoft leaves were synced to match.</p>
+          </div>
+        </li>
+        <li class="digest-row">
+          <span class="digest-date">11 Oct 2026</span>
+          <span class="digest-kind correction">Correction</span>
+          <div class="digest-body">
+            <h4>&ldquo;SARB Directive 6&rdquo; citations removed</h4>
+            <p>The <a href="explainers/tech/microsoft/">Microsoft explainers</a> named a directive we could not trace to a primary source. They now refer to bank offshoring rules in general until we can cite the specific instrument.</p>
+          </div>
+        </li>
+        <li class="digest-row">
+          <span class="digest-date">30 Aug 2026</span>
+          <span class="digest-kind opened">Opened</span>
+          <div class="digest-body">
+            <h4>Member gates removed &mdash; the whole tree is open</h4>
+            <p>The decision sections on <a href="explainers/tools/runtime.html">choosing a runtime</a> and <a href="explainers/tech/workstation.html">the malleable workstation</a> were unlocked. Nothing on the tree sits behind a gate.</p>
+          </div>
+        </li>
+        <li class="digest-row">
+          <span class="digest-date">29 Jul 2026</span>
+          <span class="digest-kind verified">Verified</span>
+          <div class="digest-body">
+            <h4>Kimi K3 &mdash; the weights shipped</h4>
+            <p>The <a href="explainers/agents/kimi-k3.html">Kimi K3 leaf</a> carried a dated flag for the promised open weights. They landed on time, so every &ldquo;promised&rdquo; became &ldquo;measured&rdquo;: architecture confirmed from the config file, licence read in full. Coding benchmarks are still vendor-reported.</p>
+          </div>
+        </li>
+      </ul>
     </div>
     <div class="explainer-grid fade-up" style="transition-delay: 0.1s">
       <a href="explainers/software/autodesk-clones.html" class="explainer-card">
