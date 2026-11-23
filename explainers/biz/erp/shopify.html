@@ -452,11 +452,11 @@ X-Shopify-Access-Token: <span class="s">shpat_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</
 X-Shopify-Storefront-Access-Token: <span class="s">xxxxxxxxxxxxxxxxxxxxxxxxxxxx</span>
 
 <span class="c"># Admin API base URLs</span>
-https://{store}.myshopify.com/admin/api/<span class="n">2024-10</span>/{resource}.json    <span class="c"># REST</span>
-https://{store}.myshopify.com/admin/api/<span class="n">2024-10</span>/graphql.json       <span class="c"># GraphQL</span></pre>
+https://{store}.myshopify.com/admin/api/<span class="n">2026-10</span>/{resource}.json    <span class="c"># REST</span>
+https://{store}.myshopify.com/admin/api/<span class="n">2026-10</span>/graphql.json       <span class="c"># GraphQL</span></pre>
     <pre class="code fade-up" style="transition-delay: 0.08s"><span class="c">// Cloudflare Worker — Shopify Admin API call</span>
 <span class="k">const</span> res = <span class="k">await</span> fetch(
-  `https://${env.SHOPIFY_STORE}.myshopify.com/admin/api/2024-10/products.json?limit=50&status=active`,
+  `https://${env.SHOPIFY_STORE}.myshopify.com/admin/api/2026-10/products.json?limit=50&status=active`,
   { headers: { <span class="s">'X-Shopify-Access-Token'</span>: env.SHOPIFY_ADMIN_TOKEN } }
 );
 <span class="k">const</span> { products } = <span class="k">await</span> res.json();</pre>
@@ -472,29 +472,34 @@ https://{store}.myshopify.com/admin/api/<span class="n">2024-10</span>/graphql.j
   <div class="container">
     <div class="fade-up">
       <div class="section-label">03 · Core patterns</div>
-      <h2 class="section-title">REST for CRUD, GraphQL for depth, webhooks for events.</h2>
-      <p class="section-lede">Four patterns carry most real Shopify integrations: the Admin REST endpoints for the loop-y workloads, the Admin GraphQL for anything that joins resources, an MCP tool matrix per role, and webhooks for reactive flows.</p>
+      <h2 class="section-title">GraphQL for new work, REST where it still pays, webhooks for events.</h2>
+      <p class="section-lede">Four patterns carry most real Shopify integrations: the Admin GraphQL API for anything new, the Admin REST endpoints you will still meet in inherited code, an MCP tool matrix per role, and webhooks for reactive flows.</p>
     </div>
 
+    <div class="info-card fade-up" style="transition-delay: 0.04s">
+      <h4>Read this before you write a line of REST</h4>
+      <p>Shopify has classed the <strong>REST Admin API as a legacy API since 1 October 2024</strong>. It is in maintenance mode — critical fixes only, no new features — and new features land on the GraphQL Admin API first. New public apps have had to use GraphQL since <strong>1 April 2025</strong>. The product and variant endpoints went first: public apps had to move by 1 February 2025, and REST-based custom apps that need more than 100 variants per product have no REST path at all.</p>
+      <p><strong>What we can't tell you:</strong> Shopify has not published a hard removal date for the rest of the REST surface. Treat its absence as a scheduling risk, not a reprieve — price the GraphQL migration into any Shopify integration you are costing now, rather than carrying it as an unfunded surprise later. The REST examples below are kept because inherited integrations are full of them and you need to read them; they are not the recommendation for new build.</p>
+    </div>
     <div class="prose fade-up" style="transition-delay: 0.05s">
-      <p><strong>Admin REST — the resources you'll touch most.</strong></p>
+      <p><strong>Admin REST — the resources you'll meet in existing code.</strong></p>
     </div>
     <pre class="code fade-up" style="transition-delay: 0.08s"><span class="c"># Products</span>
-GET  /admin/api/<span class="n">2024-10</span>/products.json?limit=<span class="n">50</span>&status=active
-POST /admin/api/<span class="n">2024-10</span>/products.json
-PUT  /admin/api/<span class="n">2024-10</span>/products/{id}.json
+GET  /admin/api/<span class="n">2026-10</span>/products.json?limit=<span class="n">50</span>&status=active
+POST /admin/api/<span class="n">2026-10</span>/products.json
+PUT  /admin/api/<span class="n">2026-10</span>/products/{id}.json
 
 <span class="c"># Orders</span>
-GET  /admin/api/<span class="n">2024-10</span>/orders.json?status=open&limit=<span class="n">50</span>
-POST /admin/api/<span class="n">2024-10</span>/orders/{id}/fulfillments.json
+GET  /admin/api/<span class="n">2026-10</span>/orders.json?status=open&limit=<span class="n">50</span>
+POST /admin/api/<span class="n">2026-10</span>/orders/{id}/fulfillments.json
 
 <span class="c"># Customers</span>
-GET /admin/api/<span class="n">2024-10</span>/customers.json?limit=<span class="n">50</span>
-GET /admin/api/<span class="n">2024-10</span>/customers/search.json?query=email:user@example.com
+GET /admin/api/<span class="n">2026-10</span>/customers.json?limit=<span class="n">50</span>
+GET /admin/api/<span class="n">2026-10</span>/customers/search.json?query=email:user@example.com
 
 <span class="c"># Inventory</span>
-GET  /admin/api/<span class="n">2024-10</span>/inventory_levels.json?location_ids=<span class="n">1234</span>
-POST /admin/api/<span class="n">2024-10</span>/inventory_levels/set.json</pre>
+GET  /admin/api/<span class="n">2026-10</span>/inventory_levels.json?location_ids=<span class="n">1234</span>
+POST /admin/api/<span class="n">2026-10</span>/inventory_levels/set.json</pre>
 
     <div class="prose fade-up" style="transition-delay: 0.1s">
       <p><strong>Admin GraphQL — when you need joins.</strong> REST makes you chain calls to get a product with its variants, SEO metadata, and tags. GraphQL gets it in one round trip. Cost-based rate limiting applies — check <code>extensions.cost</code> in responses to know what you just spent.</p>
@@ -583,8 +588,8 @@ POST /admin/api/<span class="n">2024-10</span>/inventory_levels/set.json</pre>
     </div>
     <div class="gotcha-list fade-up" style="transition-delay: 0.05s">
       <div class="gotcha">
-        <strong>Always specify API version</strong>
-        <p>Pin to <code>2024-10</code> (or whatever the current stable is). Deprecated versions return errors — not warnings — after their sunset date. Shopify ships a new version each quarter.</p>
+        <strong>Pin the API version, then diarise the bump</strong>
+        <p>Shopify cuts a new version on the first day of each quarter and supports each stable release for at least 12 months. <code>2026-10</code> is current, accessible until October 2027. Request an inaccessible version and Shopify does not error — it falls forward and answers on the oldest accessible stable version, so a stale pin fails quietly as a behaviour change, not a 400. Pin explicitly and put the quarterly bump in someone's calendar.</p>
       </div>
       <div class="gotcha">
         <strong>Pagination is different in REST vs GraphQL</strong>
@@ -672,6 +677,16 @@ POST /admin/api/<span class="n">2024-10</span>/inventory_levels/set.json</pre>
         <span class="r-title">Shopify API reference</span>
         <span class="r-url">shopify.dev/docs/api</span>
       </a>
+      <a href="https://shopify.dev/docs/api/usage/versioning" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Reference</span>
+        <span class="r-title">API versioning &amp; support windows</span>
+        <span class="r-url">shopify.dev/docs/api/usage/versioning</span>
+      </a>
+      <a href="https://shopify.dev/docs/apps/build/graphql/migrate" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Migration</span>
+        <span class="r-title">REST to GraphQL migration guide</span>
+        <span class="r-url">shopify.dev/docs/apps/build/graphql/migrate</span>
+      </a>
       <a href="https://shopify.dev/docs/api/admin-graphql" class="resource" target="_blank" rel="noopener">
         <span class="r-kind">Reference</span>
         <span class="r-title">Admin GraphQL API</span>
@@ -695,7 +710,7 @@ POST /admin/api/<span class="n">2024-10</span>/inventory_levels/set.json</pre>
       <a href="./">ERP sub-hub</a>
       <a href="https://github.com/2nth-ai/skills/tree/main/biz/erp/shopify" target="_blank" rel="noopener">Canonical skill</a>
     </div>
-    <p class="footer-copy">© 2026 2nth.ai · Built in South Africa — Globally relevant</p>
+    <p class="footer-copy">© 2026 2nth.ai · Built in South Africa — Globally relevant · Last reviewed: 2026-11-23</p>
   </div>
 </footer>
 
