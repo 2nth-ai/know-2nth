@@ -370,7 +370,7 @@
       <span class="pill">Python · Vue · MariaDB/Postgres</span>
       <span class="pill">AGPL v3</span>
       <span class="pill">REST + RPC</span>
-      <span class="pill">v15</span>
+      <span class="pill">v16 · v15 maintained</span>
     </div>
   </div>
 </section>
@@ -389,6 +389,11 @@
     <div class="info-card fade-up" style="transition-delay: 0.08s">
       <h4>Why this matters for an AI-native stack</h4>
       <p>Because every object in the system is described by metadata, an agent can introspect a Frappe site and discover its data model at runtime. <code>frappe.get_meta("Sales Order")</code> returns the full field list, types, options, and links. That makes Frappe one of the friendliest backends for an AI agent to operate against — it can ask the system what exists before doing anything destructive to it.</p>
+    </div>
+    <div class="info-card fade-up" style="transition-delay: 0.1s">
+      <h4>v16 ships an MCP server in the box</h4>
+      <p>As of v16 the framework serves Model Context Protocol over <code>/api/v2/mcp</code> (POST, GET, DELETE) from every site — no wrapper app, no bridge process. It is governed by <strong>System Settings → AI Agents</strong>, where <code>enable_mcp</code>, the advertised <code>server_name</code>, and site-level <code>agent_instructions</code> live. This is not in v15; the endpoint returns a 404 there.</p>
+      <p><strong>Read the default before you expose it.</strong> <code>enable_mcp</code> ships defaulted on. The registry is thirteen tools — doctype and method discovery, then <code>list</code>, <code>get</code>, <code>count</code>, <code>create</code>, <code>update</code>, <code>delete</code>, and two method-call tools — and the document tools delegate straight to the v2 REST handlers. So the permission boundary is exactly the authenticated user's: there is no per-doctype allowlist in front of it, and an agent signing in as a privileged user inherits that reach across the whole site, writes and whitelisted method calls included. Mint a dedicated role-scoped user for agent access, and switch the setting off on any site that doesn't need it.</p>
     </div>
   </div>
 </section>
@@ -735,7 +740,7 @@ scheduler_events = {
       <div class="connect-node soon">
         <span class="tag">data/postgres</span>
         <div class="skill">Postgres</div>
-        <div class="why">Frappe v15 supports Postgres alongside MariaDB. The data leaf covers the connection patterns and the schema pitfalls that come with running a Frappe doctype model on Postgres.</div>
+        <div class="why">Frappe has supported Postgres alongside MariaDB since v15. The data leaf covers the connection patterns and the schema pitfalls that come with running a Frappe doctype model on Postgres.</div>
       </div>
       <a href="../../biz/erp/" class="connect-node">
         <span class="tag">biz/erp</span>
@@ -798,7 +803,7 @@ scheduler_events = {
       <a href="./">Frappe sub-hub</a>
       <a href="https://frappe.io" target="_blank" rel="noopener">frappe.io ↗</a>
     </div>
-    <p class="footer-copy">© 2026 2nth.ai · Built in South Africa — Globally relevant</p>
+    <p class="footer-copy">© 2026 2nth.ai · Built in South Africa — Globally relevant · Last reviewed: 2026-11-23</p>
   </div>
 </footer>
 

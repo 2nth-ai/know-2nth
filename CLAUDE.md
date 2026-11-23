@@ -8,7 +8,12 @@ Sibling sites in the ecosystem:
 - **2nth.ai** — framework / GTM site (Human + AI = 2ⁿ)
 - **dev.2nth.ai** — partner / Gridline / openBUILD AI source content (Construction domain pulls from here)
 - **2nth.io** — compute infrastructure layer
+- **2nth.me** — personal / profile surface
+- **2nth.org** — non-commercial / community surface
+- **pay.2nth.ai** — payments surface
 - **imbila.ai** — parent consultancy brand
+
+Leaves here are source material the other properties draw on, so accuracy and voice matter beyond this site. None of those siblings are linked from know.2nth.ai today — the dependency runs the other way.
 
 ### Related repos that are NOT this one
 
@@ -43,26 +48,48 @@ Sibling sites in the ecosystem:
 ```
 know-2nth/
 ├── CLAUDE.md
-├── index.html                # root: 12 top-level domain cards
+├── index.html                # root: 14 top-level domain cards
 ├── about.html                # access model + how the site works
 ├── join.html                 # "Stay in touch" lead capture → 2nth CRM (crm-form.js)
+├── ask.html                  # agent-surface landing page (MCP / llms.txt / agent fetch)
 ├── gate.js                   # tier-gate hook, loaded on every leaf, currently inert
+├── crm-form.js               # posts /join to crm.2nth.app
 ├── og-image.jpg              # 1200×630 OG / Twitter card
 ├── og-image.svg              # source for the OG image
 ├── _redirects                # Cloudflare Pages redirects
-├── google-adk-explainer.md   # canonical source markdown for ADK leaf (PR #17)
+├── wrangler.toml             # Cloudflare Pages / Functions config
+├── llms.txt                  # GENERATED — do not hand-edit
+├── agent-index.json          # GENERATED — do not hand-edit
+├── *.md, *.html (root)       # canonical source markdown + one-off pages
+├── scripts/                  # gen-agent-index.mjs — regenerates llms.txt + agent-index.json
+├── functions/                # Cloudflare Pages Functions (agent-fetch converter, /mcp)
+├── briefings/                # ~20 opinion/briefing pieces + their own index
+├── lab/                      # interactive demos (e.g. the A2UI lab)
+├── claude/                   # Claude-facing assets
+├── diagrams/                 # diagram sources
 └── explainers/
     ├── agents/        # Frameworks, Protocols, Models, Inference (the strategic priority)
-    ├── biz/           # ERP, CRM, HR — has erp/ and crm/ sub-hubs
+    ├── biz/           # ERP, CRM, HR — has erp/, crm/, hr/, bpm/, ecm/ sub-hubs
     ├── construction/  # openBIM + Gridline / openBUILD AI partner-anchored
     ├── data/          # analytics/, warehousing/, engineering/ sub-hubs
     ├── design/        # tokens, components, motion, AI-assisted design
+    ├── fin/           # finance
+    ├── health/        # health
+    ├── leg/           # legal
+    ├── media/         # voice, TTS, media landscape
     ├── partners/      # co-branded leaves (no hub yet, not on root grid)
-    ├── people/        # coaching, leadership, typologies/
-    └── tech/          # cloudflare/, google/, microsoft/, frappe/, runtime/, android-hce/, embedded/, frameworks/
+    ├── people/        # coaching, leadership, typologies/, ai-roles/
+    ├── software/      # software engineering practice
+    ├── tech/          # cloudflare/, google/, microsoft/, frappe/, runtime/, android-hce/,
+    │                  #   embedded/, frameworks/, oracle/, hardware/, game-engines/
+    └── tools/         # tooling leaves (not on root grid)
 ```
 
-Five additional domains exist on the root grid as cards but have **no folder yet**: `edu`, `fin`, `health`, `iot`, `leg`. Building any of them out means: create `explainers/<domain>/index.html` hub, ship at least one Live leaf, then the root card becomes meaningful.
+Verified 2026-11-23 against the repo — the grid and the folders do not line up in two directions:
+
+- **Cards on the root grid with no folder:** `edu`, `iot`. These two are the only genuinely empty domains. Building one out means: create `explainers/<domain>/index.html` hub, ship at least one Live leaf, then the root card becomes meaningful.
+- **Folders with no card on the root grid:** `partners`, `tools`. Both hold live content that is unreachable from the root page.
+- `fin`, `health` and `leg` **do** have folders and live leaves. (This doc previously claimed otherwise.)
 
 ## How leaves are built
 
@@ -81,6 +108,7 @@ Five additional domains exist on the root grid as cards but have **no folder yet
   - `0N · Connections` — links elsewhere in the tree
   - `0N · Resources` — primary sources only
 - **Section labels**: JetBrains Mono, 11px, uppercase, 2px letter-spacing, sky colour. Format: `01 · Section name`.
+- **Review stamp**: end the footer copy line with `· Last reviewed: YYYY-MM-DD`. The agent-fetch Function parses exactly `Last reviewed:\s*(\d{4}-\d{2}-\d{2})` into the markdown frontmatter's `reviewed` field, so the colon is load-bearing. A handful of older leaves write it as prose ("Last reviewed 2026-06-17", no colon) inside a section lede — those do **not** parse. Use the footer form, and set the date whenever you touch a leaf's facts.
 
 ## Hubs and stubs
 
@@ -98,8 +126,8 @@ Both work; pick whichever the surrounding hub uses. **Stubs use the `soon` modif
 - **JetBrains Mono** — code, labels, badges, nav brand
 
 ### Theme
-- Dark mode is default (`data-theme="dark"`)
-- Light mode toggle persists via localStorage
+- The theme toggle persists via localStorage; both themes are fully defined on every leaf.
+- **The initial `data-theme` on `<html>` is inconsistent across the tree** — as of 2026-11-23 it is `dark` on 117 pages and `light` on 97, including whole sub-hubs that are internally consistent but differ from each other (all of `tech/frappe/*` is `light`). A saved localStorage preference overrides it, so the split only shows on a first visit. **When adding a leaf, match the sub-hub you are adding it to** rather than applying a global default. Normalising the tree is a deliberate, separate change — not something to do in passing.
 - All colours come from CSS custom properties — never hardcode hex in body markup. Define new tokens at `:root` if needed.
 
 ### Colour tokens (in `:root`)

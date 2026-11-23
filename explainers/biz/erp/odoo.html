@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Odoo &mdash; know.2nth.ai</title>
-<meta name="description" content="Odoo — Belgian-origin open-source ERP. Python + PostgreSQL, modular architecture, three editions (Community / Enterprise / Odoo.sh). Latest is Odoo 18 with 19 emerging. Native XML-RPC and JSON-RPC APIs; the Odoo Apps Store now hosts multiple MCP server modules that expose the ERP as natural-language-CRUD to Claude, ChatGPT, and Cursor agents. The most code-friendly ERP in the open-source field and the strongest agentic story among open-source ERPs in 2026.">
+<meta name="description" content="Odoo — Belgian-origin open-source ERP. Python + PostgreSQL, modular architecture, three editions (Community / Enterprise / Odoo.sh). Odoo 20 is the current release; 18, 19 and 20 are supported. Native XML-RPC and JSON-RPC APIs; the Odoo Apps Store now hosts multiple MCP server modules that expose the ERP as natural-language-CRUD to Claude, ChatGPT, and Cursor agents. The most code-friendly ERP in the open-source field.">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="know.2nth.ai">
 <meta property="og:url" content="https://know.2nth.ai/explainers/biz/erp/odoo">
@@ -171,10 +171,10 @@
       Modular ERP, <span class="gradient">built like Lego.</span>
     </h1>
     <p class="sub fade-up" style="transition-delay: 0.1s">
-      Odoo is the Belgian-origin open-source ERP that grew from a small accounting tool into the largest open-source ERP app marketplace in the world. Python + PostgreSQL stack, modular by design, three editions: <strong>Community</strong> (free), <strong>Enterprise</strong> (per-user + per-app subscription), and <strong>Odoo.sh</strong> (managed PaaS). Latest is Odoo 18; Odoo 19 modules are already appearing in the Apps Store. Native XML-RPC and JSON-RPC; the Apps Store now hosts a growing roster of <strong>MCP server modules</strong> that expose the ERP as natural-language CRUD for Claude, ChatGPT, and Cursor. The most code-friendly ERP in the open-source field &mdash; and the strongest agentic story among open-source ERPs in 2026.
+      Odoo is the Belgian-origin open-source ERP that grew from a small accounting tool into the largest open-source ERP app marketplace in the world. Python + PostgreSQL stack, modular by design, three editions: <strong>Community</strong> (free), <strong>Enterprise</strong> (per-user + per-app subscription), and <strong>Odoo.sh</strong> (managed PaaS). Latest is Odoo 20, released at Odoo Experience in September 2026; 18, 19 and 20 are the three supported lines. Native XML-RPC and JSON-RPC; the Apps Store now hosts a growing roster of <strong>MCP server modules</strong> that expose the ERP as natural-language CRUD for Claude, ChatGPT, and Cursor. The most code-friendly ERP in the open-source field, and the deepest module marketplace &mdash; though ERPNext now has the shorter agent path (see section 05).
     </p>
     <div class="hero-meta fade-up" style="transition-delay: 0.15s">
-      <span class="pill accent">Odoo 18 / 19</span>
+      <span class="pill accent">Odoo 20 · 18/19/20 supported</span>
       <span class="pill">Python &middot; PostgreSQL</span>
       <span class="pill">Community / Enterprise / Odoo.sh</span>
       <span class="pill indigo">Apps Store MCP modules</span>
@@ -342,7 +342,7 @@ partners = models.execute_kw(
     <div class="fade-up">
       <div class="section-label">04 &middot; The MCP / agent layer</div>
       <h2 class="section-title">Odoo as natural-language CRUD &mdash; via the Apps Store.</h2>
-      <p class="section-lede">The Odoo Apps Store hosts an active and growing roster of <strong>MCP server modules</strong> &mdash; both free and paid, for both Odoo 18 and 19 &mdash; that expose the ERP's models as Model Context Protocol tools consumable by Claude Code, ChatGPT, Cursor, and Gemini-based agents. The pattern is: install the module on the Odoo side, run a small Python client that bridges to the MCP transport, point an MCP-aware agent at the bridge.</p>
+      <p class="section-lede">The Odoo Apps Store hosts an active and growing roster of <strong>MCP server modules</strong> &mdash; both free and paid, tracking the supported 18/19/20 lines &mdash; that expose the ERP's models as Model Context Protocol tools consumable by Claude Code, ChatGPT, Cursor, and Gemini-based agents. The pattern is: install the module on the Odoo side, run a small Python client that bridges to the MCP transport, point an MCP-aware agent at the bridge.</p>
     </div>
 
     <div class="prose fade-up" style="transition-delay: 0.05s">
@@ -388,14 +388,14 @@ partners = models.execute_kw(
           <tr><td><strong>Pricing pressure</strong></td><td>Enterprise = per-user + per-app, scales fast at headcount</td><td>Frappe Cloud = flat infra cost, no per-user</td></tr>
           <tr><td><strong>App marketplace</strong></td><td>~36,000 apps (community + paid)</td><td>Smaller, growing &mdash; tighter quality bar</td></tr>
           <tr><td><strong>Visual customisation</strong></td><td>Studio (Enterprise) &mdash; drag-and-drop</td><td>Bench + developer mode &mdash; code-first</td></tr>
-          <tr><td><strong>AI / MCP</strong></td><td>Multiple Apps Store MCP modules in 2026</td><td>No native MCP yet; integration via API + custom wrapper</td></tr>
+          <tr><td><strong>AI / MCP</strong></td><td>Multiple Apps Store MCP modules &mdash; third-party, quality varies</td><td>Built into Frappe v16 &mdash; <code>/api/v2/mcp</code>, no module needed</td></tr>
           <tr><td><strong>Best fit</strong></td><td>Mid-market + enterprise; teams that need a large app library</td><td>SMB and dev-led teams; doctype-as-code workflow</td></tr>
         </tbody>
       </table>
     </div>
     <div class="info-card fade-up" style="transition-delay: 0.1s">
       <h4>Rule of thumb</h4>
-      <p>If the team's strongest asset is developers who want everything-as-code and a clean self-hosted story, ERPNext is the better cultural fit. If the team needs a polished editor experience, a deep marketplace of paid apps, and a credible managed-hosting offering from the vendor, Odoo is the better fit. The MCP / agent integration story is currently stronger on Odoo &mdash; not because the protocol prefers Python (both stacks are Python), but because the Odoo Apps Store has accumulated multiple production-ready MCP modules and the ERPNext ecosystem hasn't shipped equivalent.</p>
+      <p>If the team's strongest asset is developers who want everything-as-code and a clean self-hosted story, ERPNext is the better cultural fit. If the team needs a polished editor experience, a deep marketplace of paid apps, and a credible managed-hosting offering from the vendor, Odoo is the better fit. The MCP / agent story has flipped since this leaf was first written. Frappe v16 ships an MCP server in the framework itself &mdash; <code>/api/v2/mcp</code>, governed by a System Settings toggle &mdash; so ERPNext is agent-addressable with nothing installed. Odoo still reaches MCP through third-party Apps Store modules of varying quality. Odoo has more choice; ERPNext now has the shorter path and one thing to audit instead of a vendor's.</p>
     </div>
   </div>
 </section>
@@ -430,7 +430,7 @@ partners = models.execute_kw(
       </div>
       <div class="gotcha">
         <strong>Apps Store updates are not synchronous with Odoo releases</strong>
-        <p>A new Odoo version drops; the Apps Store catches up over weeks. Modules listed as 18.0-compatible may have rough edges; 19.0-compatible may be a single publisher's port. Don't upgrade production to a new major on day one of a third-party-module-critical workload.</p>
+        <p>A new Odoo version drops; the Apps Store catches up over weeks. Modules listed as 19.0-compatible may have rough edges; 20.0-compatible may be a single publisher's port. Don't upgrade production to a new major on day one of a third-party-module-critical workload.</p>
       </div>
     </div>
   </div>
@@ -504,10 +504,10 @@ partners = models.execute_kw(
         <span class="r-title">odoo.com</span>
         <span class="r-url">odoo.com</span>
       </a>
-      <a href="https://www.odoo.com/documentation/18.0/" class="resource" target="_blank" rel="noopener">
+      <a href="https://www.odoo.com/documentation/latest/" class="resource" target="_blank" rel="noopener">
         <span class="r-kind">Docs</span>
-        <span class="r-title">Odoo 18 documentation</span>
-        <span class="r-url">odoo.com/documentation/18.0</span>
+        <span class="r-title">Odoo documentation (latest)</span>
+        <span class="r-url">odoo.com/documentation/latest</span>
       </a>
       <a href="https://www.odoo.com/page/editions" class="resource" target="_blank" rel="noopener">
         <span class="r-kind">Reference</span>
@@ -519,15 +519,15 @@ partners = models.execute_kw(
         <span class="r-title">Odoo pricing</span>
         <span class="r-url">odoo.com/pricing</span>
       </a>
-      <a href="https://www.odoo.com/documentation/18.0/developer/reference/external_api.html" class="resource" target="_blank" rel="noopener">
+      <a href="https://www.odoo.com/documentation/latest/developer/reference/external_api.html" class="resource" target="_blank" rel="noopener">
         <span class="r-kind">API</span>
         <span class="r-title">External API &middot; XML-RPC / JSON-RPC reference</span>
-        <span class="r-url">odoo.com/documentation/18.0/developer/.../external_api</span>
+        <span class="r-url">odoo.com/documentation/latest/developer/.../external_api</span>
       </a>
-      <a href="https://www.odoo.com/odoo-18-release-notes" class="resource" target="_blank" rel="noopener">
+      <a href="https://www.odoo.com/odoo-20-release-notes" class="resource" target="_blank" rel="noopener">
         <span class="r-kind">Release</span>
-        <span class="r-title">Odoo 18 release notes</span>
-        <span class="r-url">odoo.com/odoo-18-release-notes</span>
+        <span class="r-title">Odoo 20 release notes</span>
+        <span class="r-url">odoo.com/odoo-20-release-notes</span>
       </a>
       <a href="https://apps.odoo.com/apps/modules/browse?search=mcp" class="resource" target="_blank" rel="noopener">
         <span class="r-kind">Apps Store</span>
@@ -539,7 +539,7 @@ partners = models.execute_kw(
         <span class="r-title">odoo/odoo &middot; main repository</span>
         <span class="r-url">github.com/odoo/odoo</span>
       </a>
-      <a href="https://www.odoo.com/documentation/18.0/administration/on_premise/community_to_enterprise.html" class="resource" target="_blank" rel="noopener">
+      <a href="https://www.odoo.com/documentation/latest/administration/on_premise/community_to_enterprise.html" class="resource" target="_blank" rel="noopener">
         <span class="r-kind">Migration</span>
         <span class="r-title">Switch from Community to Enterprise</span>
         <span class="r-url">odoo.com/.../community_to_enterprise</span>
@@ -557,7 +557,7 @@ partners = models.execute_kw(
       <a href="./">ERP sub-hub</a>
       <a href="https://www.odoo.com" target="_blank" rel="noopener">Odoo &nearr;</a>
     </div>
-    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant</p>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant · Last reviewed: 2026-11-23</p>
   </div>
 </footer>
 

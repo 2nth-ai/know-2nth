@@ -3,7 +3,7 @@
   "description": "The public knowledge tree for the 2nth.ai ecosystem. Every leaf is both a human-readable reference and an agent-consumable context document.",
   "agent_fetch": "https://know.2nth.ai/api/context/<domain>/<leaf>",
   "mcp": "https://know.2nth.ai/mcp",
-  "count": 236,
+  "count": 240,
   "items": [
     {
       "title": "Agents — know.2nth.ai",
@@ -415,7 +415,7 @@
     },
     {
       "title": "Odoo — know.2nth.ai",
-      "description": "Odoo — Belgian-origin open-source ERP. Python + PostgreSQL, modular architecture, three editions (Community / Enterprise / Odoo.sh). Latest is Odoo 18 with 19 emerging. Native XML-RPC and JSON-RPC APIs; the Odoo Apps Store now hosts multiple MCP server modules that expose the ERP as natural-language-CRUD to Claude, ChatGPT, and Cursor agents. The most code-friendly ERP in the open-source field and the strongest agentic story among open-source ERPs in 2026.",
+      "description": "Odoo — Belgian-origin open-source ERP. Python + PostgreSQL, modular architecture, three editions (Community / Enterprise / Odoo.sh). Odoo 20 is the current release; 18, 19 and 20 are supported. Native XML-RPC and JSON-RPC APIs; the Odoo Apps Store now hosts multiple MCP server modules that expose the ERP as natural-language-CRUD to Claude, ChatGPT, and Cursor agents. The most code-friendly ERP in the open-source field.",
       "domain": "biz",
       "kind": "leaf",
       "url": "https://know.2nth.ai/explainers/biz/erp/odoo",
@@ -1558,6 +1558,14 @@
       "fetch": "tech/frappe/books"
     },
     {
+      "title": "Frappe Builder — know.2nth.ai",
+      "description": "Frappe Builder — visual website builder on the Frappe Framework. Drag-and-drop blocks, Python data scripts bound to doctypes, dynamic routes, design tokens with dark values, and published pages that are plain HTML and CSS. MIT licensed.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/frappe/builder",
+      "fetch": "tech/frappe/builder"
+    },
+    {
       "title": "Frappe CRM — know.2nth.ai",
       "description": "Frappe CRM — lead-to-deal pipeline built on the Frappe Framework. Vue 3 frontend, kanban boards, email integration, call logs. The 2024 rebuild that replaced the old ERPNext CRM module.",
       "domain": "tech",
@@ -1588,6 +1596,22 @@
       "kind": "leaf",
       "url": "https://know.2nth.ai/explainers/tech/frappe/hr",
       "fetch": "tech/frappe/hr"
+    },
+    {
+      "title": "Frappe Learning (LMS) — know.2nth.ai",
+      "description": "Frappe Learning (LMS) — open-source learning management on the Frappe Framework. Courses, chapters, quizzes, batches, live classes, programming exercises and certificates as doctypes. AGPLv3, and honest about the SETA reporting it doesn't ship.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/frappe/lms",
+      "fetch": "tech/frappe/lms"
+    },
+    {
+      "title": "Frappe Wiki — know.2nth.ai",
+      "description": "Frappe Wiki — open-source wiki on the Frappe Framework. Change requests that review like pull requests, Markdown storage, GitHub sync, spaces with role permissions, and an llms.txt index for agents. MIT licensed.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/frappe/wiki",
+      "fetch": "tech/frappe/wiki"
     },
     {
       "title": "Furniture Guild — Architecture & review — know.2nth.ai",
@@ -1748,6 +1772,14 @@
       "kind": "leaf",
       "url": "https://know.2nth.ai/explainers/tech/embedded/platformio",
       "fetch": "tech/embedded/platformio"
+    },
+    {
+      "title": "Raven — know.2nth.ai",
+      "description": "Raven — open-source team chat on the Frappe Framework. Channels, threads, polls, scheduled messages, and bots that approve documents from the chat window. React frontend, AGPLv3, and your messages in your own database.",
+      "domain": "tech",
+      "kind": "leaf",
+      "url": "https://know.2nth.ai/explainers/tech/frappe/raven",
+      "fetch": "tech/frappe/raven"
     },
     {
       "title": "Redis — know.2nth.ai",
