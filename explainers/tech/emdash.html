@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EmDash &mdash; know.2nth.ai</title>
+<meta name="description" content="EmDash explained for builders. Cloudflare's open-source, MIT-licensed CMS on Astro: content types in the database, sandboxed plugins, a WordPress importer and an MCP server on every site. How it works, what a first deploy on Workers and D1 is really like, when to skip it, and SA context.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="know.2nth.ai">
+<meta property="og:url" content="https://know.2nth.ai/explainers/tech/emdash">
+<meta property="og:title" content="EmDash &mdash; know.2nth.ai">
+<meta property="og:description" content="EmDash for builders: Cloudflare's open-source CMS on Astro, with sandboxed plugins, a WordPress importer and an MCP server on every site. How it works, a first deploy, and when to skip it.">
+<meta property="og:image" content="https://know.2nth.ai/og-image.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="know.2nth.ai &mdash; The Knowledge Tree">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="EmDash &mdash; know.2nth.ai">
+<meta name="twitter:description" content="EmDash for builders: Cloudflare's open-source CMS on Astro, with sandboxed plugins, a WordPress importer and an MCP server on every site. How it works, a first deploy, and when to skip it.">
+<meta name="twitter:image" content="https://know.2nth.ai/og-image.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%233B82F6' stroke-width='1.6'/%3E%3Crect x='3.5' y='3.5' width='25' height='25' fill='none' stroke='%2338BDF8' stroke-width='1.3'/%3E%3Cline x1='16' y1='3' x2='16' y2='7' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='16' y1='25' x2='16' y2='29' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='3' y1='16' x2='7' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3Cline x1='25' y1='16' x2='29' y2='16' stroke='%2338BDF8' stroke-width='1.2'/%3E%3C/svg%3E">
+<style>
+  :root { --ink: #0B1120; --ink-deep: #060A14; --navy: #121D33; --blue: #2563EB; --blue-glow: #3B82F6; --sky: #38BDF8; --sky-muted: #7DD3FC; --paper: #F8FAFC; --mist: #E2E8F0; --slate: #94A3B8; --warm: #F59E0B; --warm-glow: #FBBF24; --warm-soft: rgba(245, 158, 11, 0.12); --green: #10B981; --green-soft: rgba(16, 185, 129, 0.12); --rose: #F43F5E; --rose-glow: #FB7185; --rose-soft: rgba(244, 63, 94, 0.12); --indigo: #6366F1; --indigo-soft: rgba(99, 102, 241, 0.12); --bg: var(--ink); --bg-card: rgba(18, 29, 51, 0.7); --bg-card-hover: rgba(37, 99, 235, 0.06); --text-primary: var(--paper); --text-secondary: var(--slate); --text-muted: #64748B; --border: rgba(148, 163, 184, 0.1); --border-hover: rgba(56, 189, 248, 0.3); --max-w: 1200px; --read-w: 760px; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 20px; --radius-pill: 100px; }
+  [data-theme="light"] { --bg: #F1F5F9; --bg-card: rgba(255, 255, 255, 0.85); --bg-card-hover: rgba(37, 99, 235, 0.04); --text-primary: var(--ink); --text-secondary: #475569; --text-muted: #94A3B8; --border: rgba(15, 23, 42, 0.08); --border-hover: rgba(37, 99, 235, 0.25); }
+  * { margin: 0; padding: 0; box-sizing: border-box; } html { scroll-behavior: smooth; }
+  body { font-family: 'Outfit', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body::before { content: ''; position: fixed; inset: 0; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; }
+  .glow-orb { position: fixed; border-radius: 50%; filter: blur(120px); opacity: 0.08; pointer-events: none; z-index: 0; }
+  .glow-orb.rose { width: 600px; height: 600px; background: var(--rose); top: -200px; right: -100px; }
+  .glow-orb.sky { width: 500px; height: 500px; background: var(--sky); bottom: 20%; left: -150px; }
+  [data-theme="light"] .glow-orb { opacity: 0.04; }
+  nav { position: sticky; top: 0; z-index: 100; padding: 0 24px; backdrop-filter: blur(20px) saturate(1.4); background: rgba(11, 17, 32, 0.75); border-bottom: 1px solid var(--border); }
+  [data-theme="light"] nav { background: rgba(241, 245, 249, 0.8); }
+  .nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text-primary); }
+  .nav-brand-mark { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 15px; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.5px; }
+  .nav-brand-sub { font-size: 12px; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; padding-left: 10px; border-left: 1px solid var(--border); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-link { font-size: 13px; color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+  .nav-link:hover { color: var(--sky); }
+  .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-secondary); width: 36px; height: 36px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; font-size: 16px; transition: all 0.2s; }
+  .theme-toggle:hover { border-color: var(--border-hover); color: var(--sky); }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+  .crumb { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.5px; padding: 28px 0 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .crumb a:hover { color: var(--sky); } .crumb-sep { opacity: 0.5; } .crumb-current { color: var(--text-secondary); }
+  .hero { padding: 48px 0 64px; }
+  .hero .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--rose-glow); margin-bottom: 24px; display: inline-flex; align-items: center; gap: 10px; }
+  .hero .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--rose-glow); box-shadow: 0 0 12px var(--rose-glow); }
+  .hero h1 { font-size: clamp(40px, 6vw, 66px); font-weight: 800; line-height: 1.04; letter-spacing: -2px; margin-bottom: 22px; max-width: 15ch; }
+  .hero h1 .gradient { background: linear-gradient(135deg, var(--rose-glow), #F87171, var(--warm-glow)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { font-size: 18px; color: var(--text-secondary); max-width: 680px; line-height: 1.65; font-weight: 300; margin-bottom: 28px; }
+  .hero-meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; padding: 6px 14px; border-radius: var(--radius-pill); border: 1px solid var(--border); color: var(--text-secondary); letter-spacing: 0.5px; }
+  .pill.accent { background: rgba(37, 99, 235, 0.12); color: var(--blue-glow); border-color: rgba(37, 99, 235, 0.25); }
+  .pill.green { background: var(--green-soft); color: var(--green); border-color: rgba(16, 185, 129, 0.25); }
+  .pill.rose { background: var(--rose-soft); color: var(--rose-glow); border-color: rgba(244, 63, 94, 0.25); }
+  .pill.warn { background: var(--warm-soft); color: var(--warm-glow); border-color: rgba(245, 158, 11, 0.25); }
+  section { padding: 52px 0; position: relative; }
+  .section-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--sky); margin-bottom: 14px; }
+  .section-title { font-size: clamp(26px, 3.4vw, 36px); font-weight: 700; letter-spacing: -0.8px; margin-bottom: 18px; line-height: 1.2; }
+  .section-lede { font-size: 16px; color: var(--text-secondary); max-width: var(--read-w); line-height: 1.75; font-weight: 300; margin-bottom: 32px; }
+  .prose p { font-size: 16px; color: var(--text-secondary); line-height: 1.75; max-width: var(--read-w); margin-bottom: 18px; }
+  .prose p strong { color: var(--text-primary); font-weight: 600; }
+  .prose code { font-family: 'JetBrains Mono', monospace; font-size: 0.88em; background: var(--bg-card); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--sky); }
+  .prose ul, .prose ol { padding-left: 24px; margin-bottom: 18px; max-width: var(--read-w); }
+  .prose li { font-size: 15px; color: var(--text-secondary); line-height: 1.75; margin-bottom: 8px; }
+  .prose li strong { color: var(--text-primary); font-weight: 600; }
+  pre.code { background: var(--ink-deep); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 20px 22px; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.65; color: var(--mist); margin: 0 0 20px; max-width: var(--read-w); }
+  [data-theme="light"] pre.code { background: #0F172A; color: #E2E8F0; }
+  pre.code .k { color: var(--sky); } pre.code .s { color: #A5F3B8; } pre.code .c { color: var(--text-muted); font-style: italic; } pre.code .h { color: var(--rose-glow); font-weight: 600; }
+  .info-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 32px; max-width: var(--read-w); margin-bottom: 20px; }
+  .info-card.amber { border-left: 3px solid var(--warm); }
+  .info-card.green { border-left: 3px solid var(--green); }
+  .info-card.indigo { border-left: 3px solid var(--indigo); }
+  .info-card.rose { border-left: 3px solid var(--rose); }
+  .info-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.2px; }
+  .info-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 10px; }
+  .info-card p:last-child { margin-bottom: 0; }
+  .info-card ul { padding-left: 20px; margin: 0; }
+  .info-card li { font-size: 14px; color: var(--text-secondary); line-height: 1.65; margin-bottom: 6px; }
+  .info-card li strong { color: var(--text-primary); }
+  .stack-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; max-width: var(--read-w); margin-bottom: 20px; }
+  .stack-cell { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-left: 3px solid var(--rose); border-radius: var(--radius-md); padding: 18px 22px; }
+  .stack-cell .layer { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .stack-cell h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; letter-spacing: -0.3px; }
+  .stack-cell p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+  .stack-cell .cmd { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--rose-glow); margin-top: 8px; display: block; }
+  .compare-wrap { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; max-width: var(--read-w); margin-bottom: 20px; }
+  .compare { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .compare th, .compare td { padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .compare thead th { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--sky); background: rgba(37, 99, 235, 0.04); }
+  .compare tbody tr:last-child td { border-bottom: none; }
+  .compare td { color: var(--text-secondary); } .compare td code { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; color: var(--sky); }
+  .compare td strong { color: var(--text-primary); }
+  .decision-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: var(--read-w); }
+  @media (max-width: 720px) { .decision-grid { grid-template-columns: 1fr; } }
+  .decision-card { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 22px 24px; }
+  .decision-card.use { border-left: 3px solid var(--green); } .decision-card.skip { border-left: 3px solid var(--rose); }
+  .decision-card h4 { font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 12px; }
+  .decision-card.use h4 { color: var(--green); } .decision-card.skip h4 { color: var(--rose); }
+  .decision-card ul { list-style: none; padding: 0; }
+  .decision-card li { font-size: 13px; color: var(--text-secondary); line-height: 1.6; padding: 6px 0; border-bottom: 1px solid var(--border); }
+  .decision-card li:last-child { border-bottom: none; }
+  .connect-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .connect-node { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; transition: all 0.3s; text-decoration: none; color: inherit; display: block; }
+  .connect-node:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+  .connect-node .tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 6px; }
+  .connect-node .skill { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .connect-node .why { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+  .resource-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+  .resource { background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 18px 22px; text-decoration: none; transition: all 0.3s; display: flex; flex-direction: column; gap: 4px; }
+  .resource:hover { border-color: var(--border-hover); }
+  .resource .r-kind { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; }
+  .resource .r-title { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .resource .r-url { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--sky); word-break: break-all; }
+  footer { padding: 60px 0 40px; border-top: 1px solid var(--border); text-align: center; margin-top: 40px; }
+  .footer-brand { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, var(--blue), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 8px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .footer-links { display: flex; justify-content: center; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--sky); }
+  .footer-copy { font-size: 12px; color: var(--text-muted); }
+  .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  @media (max-width: 768px) { .nav-brand-sub { display: none; } .nav-link { display: none; } pre.code { font-size: 11px; padding: 14px 16px; } }
+  *, *::before, *::after { transition-property: background-color, border-color, color, box-shadow; transition-duration: 0.3s; transition-timing-function: ease; }
+</style>
+</head>
+<body>
+
+<div class="glow-orb rose"></div>
+<div class="glow-orb sky"></div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="../../index.html" class="nav-brand"><span class="nav-brand-mark">know.2nth.ai</span><span class="nav-brand-sub">tech/emdash</span></a>
+    <div class="nav-right">
+      <a href="./" class="nav-link">&larr; Tech</a>
+      <a href="../../index.html#domains" class="nav-link">Tree</a>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">&#x2600;&#xFE0F;</button>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="crumb">
+    <a href="../../index.html">know.2nth.ai</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <a href="./">Tech</a>
+    <span class="crumb-sep">&rsaquo;</span>
+    <span class="crumb-current">EmDash</span>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="container">
+    <div class="eyebrow fade-up"><span class="dot"></span> tech &middot; EmDash CMS &middot; Skill Leaf</div>
+    <h1 class="fade-up" style="transition-delay: 0.05s">
+      WordPress's job, <span class="gradient">rebuilt for this decade.</span>
+    </h1>
+    <p class="sub fade-up" style="transition-delay: 0.1s">
+      EmDash is an <strong>open-source CMS from Cloudflare, built on Astro</strong>. It gives a client what they liked about WordPress, an admin screen where they write, preview and publish, and replaces what sat underneath: plugins run in a sandbox, content is structured data, and the site runs on Workers with a D1 database instead of a PHP server. Every site also ships with an <strong>MCP server</strong>, so an agent can edit it. This is what it is, how a build works, what our first deploy was really like, and when to leave it alone.
+    </p>
+    <div class="hero-meta fade-up" style="transition-delay: 0.15s">
+      <span class="pill green">MIT licence</span>
+      <span class="pill accent">Astro &middot; TypeScript</span>
+      <span class="pill">Workers &middot; D1 &middot; R2</span>
+      <span class="pill rose">MCP on every site</span>
+      <span class="pill warn">v1.6 &middot; young ecosystem</span>
+    </div>
+  </div>
+</section>
+
+<!-- 01 -->
+<section id="what">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">01 &middot; What it is</div>
+      <h2 class="section-title">A CMS with an admin screen, not a framework with a README.</h2>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p>EmDash describes itself as &quot;the spiritual successor to WordPress: an open source, agent-ready, full-stack CMS for Astro&quot;. In practice it is an Astro integration (<code>emdash</code>) that adds an admin UI at <code>/_emdash/admin</code>, a database-backed content model, media storage, authentication with passkeys, and a set of APIs to a normal Astro project.</p>
+      <p>The split of responsibilities is the WordPress one. A developer builds the theme: Astro pages and components. An editor runs the site: pages, menus, media, drafts, scheduled posts. The difference is where things live. Content types are <strong>defined in the database</strong> and edited in a schema builder, TypeScript types are generated from that schema, and rich text is stored as Portable Text (structured JSON) instead of HTML mixed with shortcodes.</p>
+      <p>It is released under the MIT licence. The core packages follow semantic versioning and the project's README calls them stable and ready for production; first-party plugins and the plugin tooling are still on <code>0.x</code>. Version 1.6 shipped on 23 November 2026, the third release in four weeks.</p>
+    </div>
+    <div class="info-card rose fade-up" style="transition-delay: 0.08s">
+      <h4>The mental model</h4>
+      <p>Think of it as <strong>WordPress's contract with the client, on Astro's contract with the developer</strong>. The client gets a login and can change their own site. The developer gets typed content, components and a Git repo, with no PHP, no server to patch and no plugin that can read the whole database.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 -->
+<section id="how">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">02 &middot; How it works</div>
+      <h2 class="section-title">Six parts worth knowing.</h2>
+      <p class="section-lede">A site is an Astro project in server mode. Pages query content at request time, so an edit in the admin shows up without a rebuild.</p>
+    </div>
+    <div class="stack-grid fade-up" style="transition-delay: 0.05s">
+      <div class="stack-cell">
+        <span class="layer">Content</span>
+        <h4>Collections and fields</h4>
+        <p>Content types live in the database. Define them in the admin's schema builder, in a seed file, or through the CLI and MCP tools.</p>
+        <span class="cmd">_emdash/admin &middot; seed.json</span>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Pages</span>
+        <h4>Blocks</h4>
+        <p>A <code>blocks</code> field holds an ordered list of typed, versioned sections (hero, pricing, FAQ). Each type maps to one Astro component.</p>
+        <span class="cmd">defineBlockComponents()</span>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Queries</span>
+        <h4>Live content</h4>
+        <p>Astro pages call <code>getEmDashEntry</code> and <code>getEmDashCollection</code>. Draft previews, revisions and scheduled publishing come with it.</p>
+        <span class="cmd">import &hellip; from "emdash"</span>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Plugins</span>
+        <h4>Sandboxed</h4>
+        <p>A plugin declares the permissions it needs and runs in an isolated Dynamic Worker with CPU and subrequest limits.</p>
+        <span class="cmd">Worker Loader &middot; paid plan</span>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Agents</span>
+        <h4>MCP server</h4>
+        <p>Every site exposes content, schema, media, menus and revisions as MCP tools, behind OAuth or a personal access token.</p>
+        <span class="cmd">POST /_emdash/api/mcp</span>
+      </div>
+      <div class="stack-cell">
+        <span class="layer">Migration</span>
+        <h4>WordPress importer</h4>
+        <p>Upload a WordPress export file or point it at a site. Pages, posts and media come across; the theme does not.</p>
+        <span class="cmd">/_emdash/admin/import</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 -->
+<section id="practice">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">03 &middot; In practice</div>
+      <h2 class="section-title">From nothing to an admin screen.</h2>
+      <p class="section-lede">The scaffolder asks for a platform (Node or Cloudflare) and a template (blog, starter, marketing, portfolio). On Cloudflare the first deploy creates the D1 database and R2 bucket named in the Wrangler config.</p>
+    </div>
+    <pre class="code fade-up" style="transition-delay: 0.05s"><span class="c"># Scaffold the marketing template for Cloudflare</span>
+<span class="h">npm create</span> emdash@latest my-site -- --template cloudflare:marketing --yes
+
+<span class="c"># Local: site on :4321, admin at /_emdash/admin (setup wizard on first visit)</span>
+<span class="h">npm run</span> dev
+
+<span class="c"># Check the first-run schema and content before it is applied</span>
+<span class="h">npx emdash</span> seed seed/seed.json --validate
+
+<span class="c"># Build and deploy; D1 and R2 are provisioned on the first run</span>
+<span class="h">npm run</span> deploy</pre>
+    <pre class="code fade-up" style="transition-delay: 0.06s"><span class="c">---</span>
+<span class="c">// src/pages/[slug].astro: one route renders every page an editor creates</span>
+<span class="h">import</span> { decodeSlug, getEmDashEntry } <span class="h">from</span> <span class="s">"emdash"</span>;
+
+<span class="h">const</span> slug = decodeSlug(Astro.params.slug);
+<span class="h">const</span> { entry: page } = <span class="h">await</span> getEmDashEntry(<span class="s">"pages"</span>, slug);
+<span class="h">if</span> (!page) <span class="h">return</span> Astro.rewrite(<span class="s">"/404"</span>);
+<span class="c">---</span></pre>
+    <div class="info-card green fade-up" style="transition-delay: 0.08s">
+      <h4>The seed file is the handover document</h4>
+      <p><code>seed/seed.json</code> declares the block types, collections, menus, settings and first content in one file, and the setup wizard applies it once. That makes a client site reproducible: the same repo and seed give you the same starting site on a laptop, on staging and in production. After setup the database is the source of truth, so treat the seed as a starting point, not a deploy step.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 -->
+<section id="deploy">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">04 &middot; The honest bit</div>
+      <h2 class="section-title">What our first Workers deploy was actually like.</h2>
+      <p class="section-lede">We rebuilt a seven-page agency site on EmDash 1.6 on 24 November 2026: the marketing template, one custom block, one API route, deployed to Workers with D1 and R2. One working session, with an agent doing the typing.</p>
+    </div>
+    <div class="prose fade-up" style="transition-delay: 0.05s">
+      <p><strong>What went well.</strong> The scaffold produced a working site with eleven block types, and it ships agent instructions and a docs MCP server in the repo, so a coding agent has the current API to hand. Re-skinning was a token file. Adding a block meant one entry in the seed and one Astro component, and the generated types followed. An ordinary Astro API route sat beside the CMS without ceremony.</p>
+      <p><strong>What bit us.</strong> On a new database the Worker applies core migrations on the first request. There were 97. We set a secret seconds after deploying, which redeploys the Worker, and that killed the migration partway and left its lock held. Every request then answered 503 until the lock was released. The documented fix is <code>emdash migrate</code>, which needs a Cloudflare API token with D1 edit rights; a Wrangler login is not enough.</p>
+      <p><strong>What to plan for.</strong> Passkeys are bound to the hostname used at setup, so set <code>EMDASH_SITE_URL</code> and the custom domain before you run the wizard. The wizard is open to whoever reaches it first, so finish setup straight after the first deploy. Back up <code>EMDASH_ENCRYPTION_KEY</code>; D1 cannot recover it. Sandboxed plugins need the Workers Paid plan; everything else here ran without it. The built-in search needs SQLite or D1, so a Postgres deployment gives that up.</p>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.08s">
+      <h4>Deploy order that avoids the trap</h4>
+      <p>Create the secrets and the custom domain first, deploy once, then leave the Worker alone until the first request has finished migrating. For anything that matters, run migrations from CI with <code>emdash migrate</code> before the deploy, which is the path the docs recommend for production.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 -->
+<section id="vs">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">05 &middot; EmDash vs the alternatives</div>
+      <h2 class="section-title">Where it sits.</h2>
+      <p class="section-lede">The useful comparison is not feature lists. It is who edits the site, who hosts it, and what happens when a plugin misbehaves.</p>
+    </div>
+    <div class="compare-wrap fade-up" style="transition-delay: 0.08s">
+      <table class="compare">
+        <thead><tr><th>Dimension</th><th>WordPress</th><th>EmDash</th><th>Git-based static site</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Who edits</strong></td><td>Client, in an admin</td><td>Client, in an admin</td><td>Developer, or a client who knows Git</td></tr>
+          <tr><td><strong>Content storage</strong></td><td>MySQL, HTML and shortcodes</td><td>D1 / SQLite / Postgres, structured JSON</td><td>Files in the repo</td></tr>
+          <tr><td><strong>Plugins</strong></td><td>Full access to site and database</td><td>Sandboxed, declared permissions</td><td>None; you write code</td></tr>
+          <tr><td><strong>Ecosystem</strong></td><td>Enormous</td><td>Young; first-party plugins on 0.x</td><td>Whatever npm offers</td></tr>
+          <tr><td><strong>Hosting</strong></td><td>PHP server to patch</td><td>Workers or Node</td><td>Any static host</td></tr>
+          <tr><td><strong>Agent access</strong></td><td>Via third-party plugins</td><td>Built-in MCP server</td><td>An agent edits files and opens a PR</td></tr>
+          <tr><td><strong>Licence</strong></td><td>GPL</td><td>MIT</td><td>n/a</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="info-card rose fade-up" style="transition-delay: 0.08s">
+      <h4>Practical guidance</h4>
+      <p>If nobody but a developer will ever edit the site, a static site in Git is simpler and has less to go wrong: this tree is one. If a client needs to change their own pages, EmDash is now a credible answer where the choice used to be WordPress or a paid headless CMS. If the business depends on WooCommerce or a specific WordPress plugin, the ecosystem gap decides it for you.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 06 -->
+<section id="decision">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">06 &middot; Decision guide</div>
+      <h2 class="section-title">Reach for it when. Skip it when.</h2>
+      <p class="section-lede">EmDash earns its place when a non-developer has to run the site. Without that requirement it is extra moving parts.</p>
+    </div>
+    <div class="decision-grid fade-up" style="transition-delay: 0.05s">
+      <div class="decision-card use">
+        <h4>Reach for it when</h4>
+        <ul>
+          <li>A client or marketing team must edit pages without a developer</li>
+          <li>You are replacing a brochure or blog site on WordPress</li>
+          <li>You already build with Astro and deploy to Cloudflare</li>
+          <li>You want an agent to draft and update content through MCP</li>
+          <li>Permissive licensing and a clean exit matter to the client</li>
+          <li>You want drafts, previews, revisions and scheduling without buying a headless CMS</li>
+        </ul>
+      </div>
+      <div class="decision-card skip">
+        <h4>Skip it when</h4>
+        <ul>
+          <li>The site is a shop on WooCommerce, or leans on specialist WordPress plugins</li>
+          <li>Only developers edit it: static files in Git are simpler</li>
+          <li>You need a large pool of freelancers who already know the platform</li>
+          <li>The client needs a plugin that does not exist yet and has no budget to build it</li>
+          <li>You need a long support track record before you can commit</li>
+          <li>You want a database-free static build: the docs assume server rendering</li>
+        </ul>
+      </div>
+    </div>
+    <div class="info-card amber fade-up" style="transition-delay: 0.08s">
+      <h4>Do the plugin inventory first</h4>
+      <p>Before quoting a WordPress migration, list every plugin on the old site and what it does for the business. Content moves with the importer. Behaviour does not: forms, bookings, memberships and payment flows each need an EmDash plugin, an Astro route or an external service. That list is the real size of the job.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 07 -->
+<section id="sa-context">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">07 &middot; South African context</div>
+      <h2 class="section-title">A client-editable site without a server to babysit.</h2>
+      <p class="section-lede">For SA agencies and small in-house teams the appeal is practical: fewer things to patch, pay for in dollars, or be phoned about on a Sunday.</p>
+    </div>
+    <div class="info-card indigo fade-up" style="transition-delay: 0.08s">
+      <h4>Cost &middot; little to rent</h4>
+      <p>The software is free and there is no per-seat CMS fee priced in dollars. A small brochure site fits comfortably in Cloudflare's included usage; the main paid item is the Workers Paid plan if you want sandboxed plugins. Check current Cloudflare pricing before you quote, because image transformations and heavy traffic are billed separately.</p>
+    </div>
+    <div class="info-card green fade-up" style="transition-delay: 0.08s">
+      <h4>Latency &middot; served from Johannesburg and Cape Town</h4>
+      <p>Workers run in Cloudflare's South African locations, so pages are rendered close to local visitors instead of on a shared host overseas. D1 is a single-primary database with read replication, so admin writes may travel further than page reads; for a content site that is rarely noticeable.</p>
+    </div>
+    <div class="info-card  fade-up" style="transition-delay: 0.08s">
+      <h4>Skills &middot; a small local pool, for now</h4>
+      <p>There are many WordPress developers in South Africa and very few people who have shipped EmDash. A client who leaves you can take the site, because it is MIT-licensed Astro, but they will be hiring an Astro developer, not a WordPress one. Say that plainly in the proposal.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 08 -->
+<section id="connect">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">08 &middot; Connections</div>
+      <h2 class="section-title">Where EmDash links in the tree.</h2>
+    </div>
+    <div class="connect-grid fade-up" style="transition-delay: 0.05s">
+      <a href="web-stacks.html" class="connect-node">
+        <span class="tag">tech/web-stacks</span>
+        <div class="skill">Web stacks</div>
+        <div class="why">Where a CMS sits among frameworks, hosts and headless options, and how the choices compare.</div>
+      </a>
+      <a href="cloudflare/workers.html" class="connect-node">
+        <span class="tag">tech/cloudflare/workers</span>
+        <div class="skill">Cloudflare Workers</div>
+        <div class="why">The runtime an EmDash site deploys to, and where the plugin sandbox comes from.</div>
+      </a>
+      <a href="cloudflare/d1.html" class="connect-node">
+        <span class="tag">tech/cloudflare/d1</span>
+        <div class="skill">Cloudflare D1</div>
+        <div class="why">The default database: content, schema, users and the migration history live here.</div>
+      </a>
+      <a href="cloudflare/r2.html" class="connect-node">
+        <span class="tag">tech/cloudflare/r2</span>
+        <div class="skill">Cloudflare R2</div>
+        <div class="why">Media storage for uploads and imported images.</div>
+      </a>
+      <a href="../agents/mcp.html" class="connect-node">
+        <span class="tag">agents/mcp</span>
+        <div class="skill">Model Context Protocol</div>
+        <div class="why">Every EmDash site is an MCP server; this is the protocol an agent uses to edit it.</div>
+      </a>
+      <a href="../../briefings/astro-cloudflare-github.html" class="connect-node">
+        <span class="tag">briefings/astro-cloudflare-github</span>
+        <div class="skill">Astro, Cloudflare, GitHub</div>
+        <div class="why">The plain-language case for the stack EmDash is built on.</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 09 -->
+<section id="resources">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-label">09 &middot; Resources</div>
+      <h2 class="section-title">Primary sources.</h2>
+      <p class="section-lede">The project's own site, documentation and repository. EmDash is releasing every few weeks, so check the version you install against the docs. Last reviewed 2026-11-24.</p>
+    </div>
+    <div class="resource-grid fade-up" style="transition-delay: 0.05s">
+      <a href="https://emdashcms.com/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Site</span>
+        <span class="r-title">EmDash CMS</span>
+        <span class="r-url">emdashcms.com</span>
+      </a>
+      <a href="https://docs.emdashcms.com/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Docs</span>
+        <span class="r-title">EmDash documentation</span>
+        <span class="r-url">docs.emdashcms.com</span>
+      </a>
+      <a href="https://github.com/emdash-cms/emdash" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Source</span>
+        <span class="r-title">emdash-cms/emdash (MIT)</span>
+        <span class="r-url">github.com/emdash-cms/emdash</span>
+      </a>
+      <a href="https://docs.emdashcms.com/deployment/cloudflare/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Guide</span>
+        <span class="r-title">Deploy to Cloudflare</span>
+        <span class="r-url">docs.emdashcms.com &middot; deployment</span>
+      </a>
+      <a href="https://docs.emdashcms.com/deployment/core-migrations/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Guide</span>
+        <span class="r-title">Core migrations and stuck locks</span>
+        <span class="r-url">docs.emdashcms.com &middot; core-migrations</span>
+      </a>
+      <a href="https://docs.emdashcms.com/migration/from-wordpress/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Guide</span>
+        <span class="r-title">Migrate from WordPress</span>
+        <span class="r-url">docs.emdashcms.com &middot; from-wordpress</span>
+      </a>
+      <a href="https://docs.emdashcms.com/reference/mcp-server/" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Reference</span>
+        <span class="r-title">MCP server</span>
+        <span class="r-url">docs.emdashcms.com &middot; mcp-server</span>
+      </a>
+      <a href="https://emdashcms.com/blog/emdash-1-6" class="resource" target="_blank" rel="noopener">
+        <span class="r-kind">Release</span>
+        <span class="r-title">EmDash 1.6</span>
+        <span class="r-url">emdashcms.com/blog</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-brand">know.2nth.ai</div>
+    <p class="footer-tagline">The operational intelligence layer for the modern stack.</p>
+    <div class="footer-links">
+      <a href="../../index.html">Knowledge tree</a>
+      <a href="./">Tech hub</a>
+      <a href="https://emdashcms.com/" target="_blank" rel="noopener">EmDash &nearr;</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 2nth.ai &middot; Built in South Africa — Globally relevant</p>
+  </div>
+</footer>
+
+<script>
+  function toggleTheme(){const html=document.documentElement;const current=html.getAttribute('data-theme');const next=current==='dark'?'light':'dark';html.setAttribute('data-theme',next);document.querySelector('.theme-toggle').textContent=next==='dark'?'☀️':'🌙';localStorage.setItem('theme',next);}
+  const saved=localStorage.getItem('theme');if(saved){document.documentElement.setAttribute('data-theme',saved);document.querySelector('.theme-toggle').textContent=saved==='dark'?'☀️':'🌙';}
+  const observer=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting)entry.target.classList.add('visible');});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
+</script>
+<script src="/gate.js" defer></script>
+</body>
+</html>
